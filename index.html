@@ -6815,16 +6815,16 @@
 
         async function fetchDashboardStats() {
             try {
-                // 1. Total Conversations
+                // 1. Total Conversations (from inbox_conversations)
                 const { count: countConversations } = await supabaseClient
-                    .from('test_chat_sessions')
+                    .from('inbox_conversations')
                     .select('*', { count: 'exact', head: true })
                     .eq('org_id', currentUserOrgId);
                 document.getElementById('kpi-conversations').innerText = countConversations || 0;
 
-                // 2. Total Messages
+                // 2. Total Messages (from inbox_messages)
                 const { count: countMessages } = await supabaseClient
-                    .from('test_chat_messages')
+                    .from('inbox_messages')
                     .select('*', { count: 'exact', head: true })
                     .eq('org_id', currentUserOrgId);
                 document.getElementById('kpi-messages').innerText = countMessages || 0;
@@ -6855,8 +6855,9 @@
         async function renderActivityFeed() {
             const list = document.getElementById('dashboard-activity');
             try {
+                // Activity feed from inbox_messages (real WhatsApp data)
                 const { data: messages } = await supabaseClient
-                    .from('test_chat_messages')
+                    .from('inbox_messages')
                     .select('*')
                     .eq('org_id', currentUserOrgId)
                     .order('created_at', { ascending: false })
@@ -6893,16 +6894,18 @@
         async function renderAgentPerformance() {
             const list = document.getElementById('dashboard-agent-stats');
             try {
-                // Group by agent (client side aggregation for simplicity)
+                // Group by platform (from inbox_conversations)
                 const { data: sessions } = await supabaseClient
-                    .from('test_chat_sessions')
-                    .select('agent')
+                    .from('inbox_conversations')
+                    .select('platform')
                     .eq('org_id', currentUserOrgId);
 
                 const agentCounts = {};
                 if (sessions) {
                     sessions.forEach(s => {
-                        agentCounts[s.agent] = (agentCounts[s.agent] || 0) + 1;
+                        // Map platform to agent id for display purposes
+                        const agentId = s.platform || 'website';
+                        agentCounts[agentId] = (agentCounts[agentId] || 0) + 1;
                     });
                 }
 
