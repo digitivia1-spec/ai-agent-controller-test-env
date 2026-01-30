@@ -6143,6 +6143,7 @@
                     `;
                     newContent.appendChild(div);
                 });
+                list.innerHTML = '';  // Clear before adding to prevent duplicates
                 list.appendChild(newContent);
             } catch (e) {
                 console.error(e);
