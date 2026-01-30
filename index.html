@@ -5190,6 +5190,18 @@
                         </div>
                     </div>
 
+                    <!-- Subscription Dates -->
+                    <div id="usage-dates-section" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                        <div style="flex: 1; min-width: 140px;">
+                            <div style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 4px;">📅 <span id="usage-start-label">Started</span></div>
+                            <div id="usage-period-start" style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">--</div>
+                        </div>
+                        <div style="flex: 1; min-width: 140px; text-align: right;">
+                            <div style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 4px;">⏰ <span id="usage-end-label">Expires</span></div>
+                            <div id="usage-period-end" style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">--</div>
+                        </div>
+                    </div>
+
                     <!-- Plan Features -->
                     <div id="usage-features" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
                         <!-- Features will be populated dynamically -->
@@ -6777,6 +6789,29 @@
                     document.getElementById('usage-conversations-bar').style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
                 } else if (percent > 70) {
                     document.getElementById('usage-conversations-bar').style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
+                }
+
+                // Subscription Dates
+                const formatDate = (dateStr) => {
+                    if (!dateStr) return '--';
+                    const date = new Date(dateStr);
+                    return date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                };
+
+                document.getElementById('usage-period-start').innerText = formatDate(usage.subscription?.period_start);
+                document.getElementById('usage-period-end').innerText = formatDate(usage.subscription?.period_end);
+
+                // Update labels based on language
+                document.getElementById('usage-start-label').innerText = currentLang === 'ar' ? 'بدأ في' : 'Started';
+                document.getElementById('usage-end-label').innerText = currentLang === 'ar' ? 'ينتهي في' : 'Expires';
+
+                // Highlight expired date in red
+                if (usage.subscription?.is_expired) {
+                    document.getElementById('usage-period-end').style.color = '#ef4444';
                 }
 
                 // Features - with translation mapping
