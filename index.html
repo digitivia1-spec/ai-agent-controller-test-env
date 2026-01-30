@@ -6131,10 +6131,9 @@
                     if (contact.id === currentChatUser) div.classList.add('active'); // contact.id is UUID likely
 
                     // Passing platform is safe since we filtered by it
-                    div.onclick = () => loadInboxMessages(platform, contact.id, contact.name);
-
-                    const displayName = contact.name || "Unknown";
-                    const displayId = contact.platform_id || "";
+                    const displayName = contact.display_name || contact.phone || "Unknown";
+                    const displayId = contact.phone || contact.external_contact_id || "";
+                    div.onclick = () => loadInboxMessages(platform, contact.id, displayName);
                     div.innerHTML = `
                         <div class="contact-avatar">${displayName.substring(0, 2).toUpperCase()}</div>
                         <div class="contact-info">
