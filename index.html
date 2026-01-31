@@ -1699,9 +1699,17 @@
             border: 1px solid rgba(41, 182, 246, 0.3);
         }
 
+        .lead-footer {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 10px;
+            justify-content: space-between;
+        }
+
         .export-group {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .export-btn {
@@ -1721,6 +1729,76 @@
         .export-btn:hover {
             background: var(--theme-color);
             border-color: var(--theme-color);
+        }
+
+        /* --- MOBILE RESPONSIVE: Leads Grid --- */
+        @media (max-width: 768px) {
+            .leads-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .leads-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .export-group {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .export-btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .lead-card {
+                padding: 16px;
+            }
+
+            .lead-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .lead-name {
+                min-width: 0;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                flex: 1;
+            }
+
+            .lead-platform {
+                flex-shrink: 0;
+            }
+
+            .lead-info-row {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .lead-card {
+                padding: 12px;
+            }
+
+            .lead-name {
+                font-size: 1rem;
+            }
+
+            .lead-info-row {
+                font-size: 0.85rem;
+            }
+
+            .export-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
         }
 
         /* --- Actions --- */
@@ -3375,6 +3453,47 @@
                 padding: 12px 16px;
                 font-size: 0.85rem;
             }
+
+            /* Hide desktop top-bar on mobile - mobile-top-bar handles it */
+            .top-bar {
+                display: none !important;
+            }
+
+            /* Ensure mobile-top-bar is visible and properly styled */
+            .mobile-top-bar {
+                display: flex !important;
+            }
+
+            /* Mobile header actions (inside mobile-top-bar) */
+            .mobile-actions {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .mobile-actions .top-bar-btn {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-actions .top-bar-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* Ensure avatar doesn't get cut off */
+            .mobile-actions .avatar,
+            .mobile-actions #user-avatar-btn {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+                flex-shrink: 0;
+            }
         }
 
         /* ========================================== */
@@ -3806,6 +3925,30 @@
     <div class="mobile-top-bar">
         <div class="mobile-hamburger-btn" onclick="toggleMobileMenu()">☰</div>
         <img src="cropped-White.png" alt="Digitivia" class="mobile-logo-img">
+        <div class="mobile-actions">
+            <button class="top-bar-btn" onclick="openPricingModal()" title="Pricing">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
+                </svg>
+            </button>
+            <button class="top-bar-btn" onclick="openDocsModal()" title="Docs">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                </svg>
+            </button>
+            <button class="top-bar-btn" onclick="openHelpModal()" title="Help">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
+                </svg>
+            </button>
+            <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
+                <span id="mobile-lang-label">AR</span>
+            </button>
+            <div class="profile-avatar" id="mobile-avatar-btn" onclick="openProfileModal()">U</div>
+        </div>
     </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileMenu()"></div>
@@ -5758,13 +5901,28 @@
         //        LEADS AREA LOGIC
         // ==========================================
 
+        // Helper: Safe date formatter
+        function formatLeadDate(value) {
+            if (!value) return '';
+            try {
+                const date = new Date(value);
+                if (isNaN(date.getTime())) return '';
+                return date.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit'
+                });
+            } catch (e) {
+                return '';
+            }
+        }
+
         async function fetchLeads() {
             if (!currentUserOrgId) return;
             const grid = document.getElementById('leads-grid');
             grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center;"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div><p style="margin-top:10px; color:#888;">${t('leads.fetching')}</p></div>`;
 
             try {
-                // PHASE 3: Direct Supabase Query
+                // 1. Fetch leads
                 const { data: leads, error } = await supabaseClient
                     .from('leads')
                     .select('*')
@@ -5780,7 +5938,47 @@
                     return;
                 }
 
-                renderLeads(cachedLeads);
+                // 2. Build contacts map for name fallback (batch query)
+                const phoneNumbers = cachedLeads.map(l => l.phone).filter(Boolean);
+                let contactsMap = {};
+                if (phoneNumbers.length > 0) {
+                    const { data: contacts } = await supabaseClient
+                        .from('inbox_contacts')
+                        .select('phone, external_contact_id, display_name')
+                        .eq('org_id', currentUserOrgId)
+                        .in('phone', phoneNumbers);
+
+                    if (contacts) {
+                        contacts.forEach(c => {
+                            if (c.phone) contactsMap[c.phone] = c.display_name;
+                            if (c.external_contact_id) contactsMap[c.external_contact_id] = c.display_name;
+                        });
+                    }
+                }
+
+                // 3. Build messages map for last_inbound fallback (batch query)
+                let messagesMap = {};
+                if (phoneNumbers.length > 0) {
+                    const { data: messages } = await supabaseClient
+                        .from('inbox_messages')
+                        .select('sender_external_id, content, created_at')
+                        .eq('org_id', currentUserOrgId)
+                        .eq('direction', 'inbound')
+                        .in('sender_external_id', phoneNumbers)
+                        .order('created_at', { ascending: false })
+                        .limit(100);
+
+                    if (messages) {
+                        // Keep only the first (latest) message per sender
+                        messages.forEach(m => {
+                            if (m.sender_external_id && !messagesMap[m.sender_external_id]) {
+                                messagesMap[m.sender_external_id] = m.content;
+                            }
+                        });
+                    }
+                }
+
+                renderLeads(cachedLeads, contactsMap, messagesMap);
 
             } catch (e) {
                 console.error(e);
@@ -5788,31 +5986,53 @@
             }
         }
 
-        function renderLeads(leads) {
+        function renderLeads(leads, contactsMap = {}, messagesMap = {}) {
             const grid = document.getElementById('leads-grid');
             grid.innerHTML = '';
 
             leads.forEach(lead => {
-                // Map columns based on assumed schema or fallback
-                const name = lead.user_name || lead.name || t('leads.unknown_user');
-                const phone = lead.phone_number || lead.phone || t('leads.no_phone');
-                const platform = lead.platform || "N/A";
-                const status = lead.status || lead.lead_status || "New";
-                const lastMsg = lead.last_message || t('leads.no_message');
-                const date = lead.created_at || lead.timestamp || "";
+                // Use REAL schema: full_name, phone, source, status, meta
+                const leadPhone = lead.phone || '';
+
+                // Name: prefer full_name, fallback to inbox_contacts display_name
+                let name = lead.full_name;
+                if (!name && leadPhone && contactsMap[leadPhone]) {
+                    name = contactsMap[leadPhone];
+                }
+                name = name || t('leads.unknown_user');
+
+                // Phone
+                const phone = leadPhone || t('leads.no_phone');
+
+                // Platform: use source field
+                const platform = (lead.source || 'whatsapp').charAt(0).toUpperCase() + (lead.source || 'whatsapp').slice(1);
+
+                // Status
+                const status = lead.status || 'New';
+
+                // Last message: prefer meta.last_inbound, fallback to inbox_messages
+                let lastMsg = lead.meta?.last_inbound;
+                if (!lastMsg && leadPhone && messagesMap[leadPhone]) {
+                    lastMsg = messagesMap[leadPhone];
+                }
+                lastMsg = lastMsg || t('leads.no_message');
+
+                // Date: prefer meta.last_inbound_at, fallback to updated_at, then created_at
+                const dateValue = lead.meta?.last_inbound_at || lead.updated_at || lead.created_at;
+                const formattedDate = formatLeadDate(dateValue);
 
                 // Determine Status Badge Class
                 let statusClass = "status-new";
-                if (status.toLowerCase() === 'qualified') statusClass = "status-qualified";
-                else if (status.toLowerCase() === 'pending') statusClass = "status-pending";
+                const statusLower = status.toLowerCase();
+                if (statusLower === 'qualified') statusClass = "status-qualified";
+                else if (statusLower === 'pending') statusClass = "status-pending";
+                else if (statusLower === 'contacted') statusClass = "status-pending";
 
                 const card = document.createElement('div');
                 card.className = 'lead-card';
                 card.innerHTML = `
                     <div class="lead-header">
-                        <div class="lead-name">
-                             ${name}
-                        </div>
+                        <div class="lead-name">${name}</div>
                         <div class="lead-platform">${platform}</div>
                     </div>
                     <div class="lead-info-row">
@@ -5821,8 +6041,8 @@
                     <div class="lead-info-row">
                         <span class="lead-info-icon">💬</span> "${lastMsg.length > 30 ? lastMsg.substring(0, 30) + '...' : lastMsg}"
                     </div>
-                    <div class="lead-info-row" style="font-size:0.8rem; color:#888; margin-top:10px; justify-content: space-between;">
-                        <span>${date.replace('T', ' ').substring(0, 16)}</span>
+                    <div class="lead-info-row lead-footer">
+                        <span>${formattedDate}</span>
                         <span class="status-badge ${statusClass}">${status}</span>
                     </div>
                 `;
