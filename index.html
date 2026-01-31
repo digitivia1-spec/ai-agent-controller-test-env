@@ -3494,6 +3494,26 @@
                 min-width: 32px;
                 flex-shrink: 0;
             }
+
+            /* Language toggle: show text label, not icon */
+            .mobile-actions .lang-toggle {
+                width: auto;
+                min-width: 40px;
+                padding: 0 10px;
+                background: var(--theme-color);
+                border-radius: 50px;
+            }
+
+            .mobile-actions .lang-toggle span,
+            .mobile-actions .lang-toggle #mobile-lang-label {
+                display: inline-block !important;
+                font-size: 12px;
+                font-weight: 700;
+                color: #fff;
+                opacity: 1;
+                visibility: visible;
+                line-height: 1;
+            }
         }
 
         /* ========================================== */
