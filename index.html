@@ -1453,6 +1453,24 @@
             transition: background 0.3s;
         }
 
+        /* Message timestamp styling */
+        .msg-content {
+            unicode-bidi: plaintext;
+            text-align: start;
+        }
+
+        .msg-time {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            text-align: end;
+        }
+
+        .msg-ai .msg-time {
+            text-align: start;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
         .chat-input-area {
             padding: 10px;
             background: rgba(255, 255, 255, 0.03);
@@ -6502,7 +6520,7 @@
                     // OR simple rebuild for now. Real-time is better.
                     if (!isAutoRefresh) {
                         messages.forEach(msg => {
-                            appendInboxMessage(msg.direction, msg.content);
+                            appendInboxMessage(msg.direction, msg.content, msg.created_at);
                         });
                         container.scrollTop = container.scrollHeight;
                     }
@@ -6518,7 +6536,7 @@
                             table: 'inbox_messages',
                             filter: `conversation_id=eq.${conversationId}`
                         }, payload => {
-                            appendInboxMessage(payload.new.direction, payload.new.content);
+                            appendInboxMessage(payload.new.direction, payload.new.content, payload.new.created_at);
                             container.scrollTop = container.scrollHeight;
                         })
                         .subscribe();
@@ -6530,7 +6548,7 @@
             }
         }
 
-        function appendInboxMessage(direction, text) {
+        function appendInboxMessage(direction, text, createdAt) {
             const container = document.getElementById('inbox-messages');
             const div = document.createElement('div');
             // direction: 'inbound' (User) vs 'outbound' (Agent/AI)
@@ -6539,8 +6557,24 @@
             // If 'inbound' is from user, it should be Left (msg-ai style in this CSS).
             // If 'outbound' is from agent, it should be Right (msg-user style).
 
+            // Format timestamp
+            let timeStr = '';
+            if (createdAt) {
+                try {
+                    const date = new Date(createdAt);
+                    timeStr = date.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                        hour: '2-digit', minute: '2-digit'
+                    });
+                } catch (e) {
+                    timeStr = '';
+                }
+            }
+
             div.className = `message ${typeClass}`;
-            div.innerHTML = text;
+            div.innerHTML = `
+                <div class="msg-content">${text}</div>
+                ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
+            `;
             container.appendChild(div);
         }
 
