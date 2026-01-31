@@ -4751,10 +4751,14 @@
             document.documentElement.setAttribute('dir', dir);
             document.documentElement.setAttribute('lang', lang);
 
-            // Update toggle button label
+            // Update toggle button label (both desktop and mobile)
             const toggleLabel = document.getElementById('lang-toggle-label');
             if (toggleLabel) {
                 toggleLabel.innerText = lang === 'ar' ? 'EN' : 'AR';
+            }
+            const mobileToggleLabel = document.getElementById('mobile-lang-label');
+            if (mobileToggleLabel) {
+                mobileToggleLabel.innerText = lang === 'ar' ? 'EN' : 'AR';
             }
 
             // Apply translations to all elements with data-i18n attribute
