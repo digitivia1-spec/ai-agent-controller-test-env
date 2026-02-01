@@ -5038,6 +5038,13 @@
         // ==========================================
 
         window.onload = async function () {
+            // Clean up malformed double-hash URLs
+            if (window.location.hash.includes('##')) {
+                const cleanUrl = window.location.origin + window.location.pathname +
+                    window.location.hash.replace(/##.*$/, '').replace(/#.*##/, '#');
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
+
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session) {
                 await ensureUserProfile(session.user);
@@ -5107,10 +5114,13 @@
 
         async function performOAuthLogin(provider) {
             try {
+                // Use clean base URL without query params or hash fragments
+                const cleanRedirectUrl = window.location.origin + window.location.pathname;
+
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: provider,
                     options: {
-                        redirectTo: window.location.href
+                        redirectTo: cleanRedirectUrl
                     }
                 });
                 if (error) throw error;
@@ -5122,7 +5132,8 @@
 
         async function performLogout() {
             await supabaseClient.auth.signOut();
-            location.reload();
+            // Clear hash fragments before reload to prevent double-hash issue
+            window.location.href = window.location.origin + window.location.pathname;
         }
 
         async function ensureUserProfile(user) {
