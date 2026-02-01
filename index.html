@@ -5006,14 +5006,8 @@
             const currentPrompt = document.getElementById(`prompt-${agentId}`).value;
             const currentTone = document.getElementById(`tone-${agentId}`).value || "";
 
-            // Get links
-            const linkInputs = document.querySelectorAll(`#links-container-${agentId} .link-input`);
-            const currentLinks = Array.from(linkInputs).map(i => i.value.trim()).filter(x => x !== "").sort().join('|');
-            const initLinks = (initialStates[agentId].links || []).sort().join('|');
-
             const isDirty = (currentPrompt !== initialStates[agentId].prompt) ||
-                (currentTone !== initialStates[agentId].tone) ||
-                (currentLinks !== initLinks);
+                (currentTone !== initialStates[agentId].tone);
 
             isDirtyState[agentId] = isDirty;
 
@@ -6736,39 +6730,25 @@
 
                 if (error) throw error;
 
-                const { data: linksData, error: linksError } = await supabaseClient
-                    .from('agent_kb_links')
-                    .select('*')
-                    .eq('org_id', currentUserOrgId);
-
                 // Initialize State
                 AGENTS.forEach(agent => {
                     const config = configs.find(c => c.agent === agent.id) || {};
-                    const links = linksData ? linksData.filter(l => l.agent === agent.id).map(l => l.url) : [];
 
                     // Populate Inputs
                     document.getElementById(`prompt-${agent.id}`).value = config.system_prompt || "";
                     document.getElementById(`tone-${agent.id}`).value = config.tone || "";
                     document.getElementById(`status-${agent.id}`).checked = config.is_active || false;
 
-                    // Render Links
-                    const container = document.getElementById(`links-container-${agent.id}`);
-                    container.innerHTML = '';
-                    links.forEach(url => addLinkField(agent.id, url));
-                    if (links.length === 0) addLinkField(agent.id); // Add one empty
-
-                    // Store Initial State
+                    // Store Initial State (removed links)
                     initialStates[agent.id] = {
                         prompt: config.system_prompt || "",
-                        tone: config.tone || "",
-                        links: links
+                        tone: config.tone || ""
                     };
                     isDirtyState[agent.id] = false;
                 });
 
             } catch (error) {
                 console.error("Error fetching configs:", error);
-                AGENTS.forEach(a => addLinkField(a.id));
             }
         }
 
@@ -6793,46 +6773,21 @@
                 // Remove undefined keys (if any)
                 Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
-                // 2. Upsert Config
+                // Upsert Config
                 const { error } = await supabaseClient
                     .from('agent_configs')
                     .upsert(updates, { onConflict: 'org_id, agent' });
 
                 if (error) throw error;
 
-                const inputs = document.querySelectorAll(`#links-container-${agentId} .link-input`);
-                const newLinks = Array.from(inputs).map(input => input.value.trim()).filter(val => val !== "");
-
-                const { error: delError } = await supabaseClient
-                    .from('agent_kb_links')
-                    .delete()
-                    .eq('org_id', currentUserOrgId)
-                    .eq('agent', agentId);
-
-                if (delError) throw delError;
-
-                if (newLinks.length > 0) {
-                    const { error: linkError } = await supabaseClient
-                        .from('agent_kb_links')
-                        .insert(newLinks.map(url => ({
-                            org_id: currentUserOrgId,
-                            agent: agentId,
-                            url: url
-                        })));
-
-                    if (linkError) throw linkError;
-                }
-
                 showToast(t('messages.toast_saved'), "success");
 
-                // Update Initial State
+                // Update Initial State (removed links)
                 initialStates[agentId] = {
                     prompt: prompt,
-                    tone: tone,
-                    links: newLinks
+                    tone: tone
                 };
                 checkDirty(agentId); // Will clear dirty state
-
 
                 const warn = document.getElementById(`warning-${agentId}`);
                 if (warn) warn.classList.remove('show');
