@@ -6557,14 +6557,35 @@
             // If 'inbound' is from user, it should be Left (msg-ai style in this CSS).
             // If 'outbound' is from agent, it should be Right (msg-user style).
 
-            // Format timestamp
+            // Format timestamp with smart logic
             let timeStr = '';
             if (createdAt) {
                 try {
                     const date = new Date(createdAt);
-                    timeStr = date.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const msgDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+                    const timeOnly = date.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
                         hour: '2-digit', minute: '2-digit'
                     });
+
+                    if (msgDate.getTime() === today.getTime()) {
+                        // Today: show time only
+                        timeStr = timeOnly;
+                    } else if (msgDate.getTime() === yesterday.getTime()) {
+                        // Yesterday: show "Yesterday" + time
+                        const yesterdayLabel = currentLang === 'ar' ? 'أمس' : 'Yesterday';
+                        timeStr = `${yesterdayLabel} ${timeOnly}`;
+                    } else {
+                        // Older: show date + time
+                        const dateStr = date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                            month: 'short', day: 'numeric'
+                        });
+                        timeStr = `${dateStr}, ${timeOnly}`;
+                    }
                 } catch (e) {
                     timeStr = '';
                 }
