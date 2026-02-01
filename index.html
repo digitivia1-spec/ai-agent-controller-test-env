@@ -5566,25 +5566,8 @@
                             <div class="section-header" onclick="toggleSection('${agent.id}-links-sec')" data-i18n="agent_config.header_kb">Knowledge Base (Links)</div>
                             <div id="${agent.id}-links-sec" class="section-content">
                                 <!-- Organization Resources (Read-only, from DB) -->
-                                <div style="margin-bottom: 20px;">
-                                    <h4 style="color: #a78bfa; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        📚 Organization Resources
-                                    </h4>
-                                    <div id="org-resources-${agent.id}" class="org-resources-container">
-                                        <div class="loading-spinner" style="padding: 20px;"></div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Separator -->
-                                <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;"></div>
-                                
-                                <!-- Custom Agent Links (Existing functionality) -->
-                                <div>
-                                    <h4 style="color: #94a3b8; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        🔗 Custom Agent Links
-                                    </h4>
-                                    <div id="links-container-${agent.id}"></div>
-                                    <div class="add-link-btn" onclick="addLinkField('${agent.id}')" data-i18n="agent_config.btn_add_link">+ Add Another Link</div>
+                                <div id="org-resources-${agent.id}" class="org-resources-container">
+                                    <div class="loading-spinner" style="padding: 20px;"></div>
                                 </div>
                             </div>
                         </div>
