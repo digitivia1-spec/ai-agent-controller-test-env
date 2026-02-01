@@ -5237,6 +5237,83 @@
             }
         }
 
+        // ==========================================
+        //   ORGANIZATION RESOURCES (KB FILES)
+        // ==========================================
+
+        async function fetchOrganizationResources() {
+            if (!currentUserOrgId) return [];
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('organization_resources')
+                    .select('*')
+                    .eq('org_id', currentUserOrgId)
+                    .order('created_at', { ascending: true });
+
+                if (error) throw error;
+                return data || [];
+            } catch (e) {
+                console.error('Error fetching org resources:', e);
+                return [];
+            }
+        }
+
+        function getFileTypeIcon(fileType) {
+            const icons = {
+                'xlsx': '📊',
+                'xls': '📊',
+                'csv': '📊',
+                'pdf': '📄',
+                'doc': '📝',
+                'docx': '📝',
+                'ppt': '📽️',
+                'pptx': '📽️',
+                'txt': '📃',
+                'zip': '🗜️',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'png': '🖼️',
+                'default': '📎'
+            };
+            return icons[fileType.toLowerCase()] || icons['default'];
+        }
+
+        function renderOrganizationResources(resources, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (!resources || resources.length === 0) {
+                container.innerHTML = `
+                    <div class="no-resources" style="padding: 16px; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+                        <span style="font-size: 2rem; opacity: 0.5;">📚</span>
+                        <p style="margin: 8px 0 0 0;">No knowledge base resources yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = resources.map(resource => `
+                <a href="${resource.url}" target="_blank" rel="noopener noreferrer" 
+                   class="kb-resource-link" 
+                   style="display: flex; align-items: center; gap: 12px; padding: 12px; 
+                          background: rgba(255,255,255,0.05); border-radius: 8px; 
+                          text-decoration: none; color: inherit; 
+                          transition: background 0.2s, transform 0.2s; margin-bottom: 8px;"
+                   onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.transform='translateX(4px)';"
+                   onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.transform='translateX(0)';">
+                    <span style="font-size: 1.5rem;">${getFileTypeIcon(resource.file_type)}</span>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-weight: 500; color: #e2e8f0; margin-bottom: 2px;">${resource.label}</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">${resource.file_type}</div>
+                    </div>
+                    <span style="opacity: 0.5; font-size: 1.2rem;">↗</span>
+                </a>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
         function setLoadingState(isLoading, text, isSecondary = false) {
             const btns = document.querySelectorAll('.login-btn');
             btns.forEach(b => {
@@ -5253,7 +5330,7 @@
             });
         }
 
-        function showApp() {
+        async function showApp() {
             document.getElementById('login-container').style.display = 'none';
             const app = document.getElementById('app-container');
             app.style.display = 'flex';
@@ -5269,6 +5346,12 @@
 
             // Force load Dashboard
             loadDashboard();
+
+            // Load organization resources into all agent tabs
+            const orgResources = await fetchOrganizationResources();
+            AGENTS.forEach(agent => {
+                renderOrganizationResources(orgResources, `org-resources-${agent.id}`);
+            });
 
             // Ensure only dashboard is active if it's the default
             // Ensure only dashboard is active (Robust Fix)
@@ -5482,8 +5565,27 @@
                         <div class="section-wrapper">
                             <div class="section-header" onclick="toggleSection('${agent.id}-links-sec')" data-i18n="agent_config.header_kb">Knowledge Base (Links)</div>
                             <div id="${agent.id}-links-sec" class="section-content">
-                                <div id="links-container-${agent.id}"></div>
-                                <div class="add-link-btn" onclick="addLinkField('${agent.id}')" data-i18n="agent_config.btn_add_link">+ Add Another Link</div>
+                                <!-- Organization Resources (Read-only, from DB) -->
+                                <div style="margin-bottom: 20px;">
+                                    <h4 style="color: #a78bfa; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        📚 Organization Resources
+                                    </h4>
+                                    <div id="org-resources-${agent.id}" class="org-resources-container">
+                                        <div class="loading-spinner" style="padding: 20px;"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Separator -->
+                                <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;"></div>
+                                
+                                <!-- Custom Agent Links (Existing functionality) -->
+                                <div>
+                                    <h4 style="color: #94a3b8; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        🔗 Custom Agent Links
+                                    </h4>
+                                    <div id="links-container-${agent.id}"></div>
+                                    <div class="add-link-btn" onclick="addLinkField('${agent.id}')" data-i18n="agent_config.btn_add_link">+ Add Another Link</div>
+                                </div>
                             </div>
                         </div>
                         <div class="section-wrapper">
