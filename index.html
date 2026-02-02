@@ -5072,7 +5072,11 @@
 
             } catch (e) {
                 console.error(e);
-                showToast(e.message || "Login Failed", "error");
+                let msg = e.message || "Login Failed";
+                if (msg.includes("Invalid login credentials")) {
+                    msg = "Invalid credentials. If you signed up with Google/LinkedIn, please use that.";
+                }
+                showToast(msg, "error");
             } finally {
                 setLoadingState(false, "LOGIN");
             }
@@ -5097,10 +5101,20 @@
 
                 if (error) throw error;
 
+                // Check if user already exists but identity not linked (Supabase specific behavior)
+                if (data.user && data.user.identities && data.user.identities.length === 0) {
+                    showToast("Account exists. Please log in.", "warning");
+                    return;
+                }
+
                 showToast("Registration successful! Check your email.", "success");
             } catch (e) {
                 console.error(e);
-                showToast(e.message || "Registration Failed", "error");
+                let msg = e.message || "Registration Failed";
+                if (msg.includes("User already registered")) {
+                    msg = "Account exists. Please log in or use Social Login.";
+                }
+                showToast(msg, "error");
             } finally {
                 setLoadingState(false, "REGISTER", true);
             }
