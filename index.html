@@ -7,6 +7,9 @@
     <title>AI Agent Command Center</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <!-- Language Files -->
+    <script src="lang/en.js?v=3"></script>
+    <script src="lang/ar.js?v=3"></script>
     <style>
         /* --- PRICING MODAL --- */
         #pricing-modal {
@@ -5222,8 +5225,10 @@
 
         async function ensureUserProfile(user) {
             try {
-                // Silent Auto-Join / Ownership Check (No UI)
-                await supabaseClient.rpc('ensure_my_org_membership').catch(err => console.log('Membership check:', err));
+                // Silent Auto-Join / Ownership Check (No UI) - v2 fix
+                console.log("Checking membership...");
+                const { error: memberError } = await supabaseClient.rpc('ensure_my_org_membership');
+                if (memberError) console.log('Membership check:', memberError);
 
                 const { data: profile, error } = await supabaseClient
                     .from('profiles')
