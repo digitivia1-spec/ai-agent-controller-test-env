@@ -112,6 +112,8 @@
             "inbox": {
                 "btn_export": "Export Data",
                 "label_platform": "Select Platform",
+                "loading": "Loading...",
+                "chat_with": "Chat with {name}",
                 "sidebar_select_platform": "Select Platform",
                 "sidebar_loading": "Loading...",
                 "sidebar_no_chats": "No chats found.",
@@ -129,6 +131,7 @@
             },
             "leads": {
                 "title": "Leads Area",
+                "fetching": "Fetching data...",
                 "btn_export_csv": "Export CSV",
                 "btn_export_excel": "Export Excel",
                 "loading": "Fetching Leads...",
@@ -471,6 +474,8 @@
             "inbox": {
                 "btn_export": "تصدير البيانات",
                 "label_platform": "اختر المنصة",
+                "loading": "جاري التحميل...",
+                "chat_with": "محادثة مع {name}",
                 "sidebar_select_platform": "اختر المنصة",
                 "sidebar_loading": "جاري التحميل...",
                 "sidebar_no_chats": "لا توجد محادثات.",
@@ -488,6 +493,7 @@
             },
             "leads": {
                 "title": "منطقة العملاء المحتملين",
+                "fetching": "جاري جلب البيانات...",
                 "btn_export_csv": "تصدير CSV",
                 "btn_export_excel": "تصدير Excel",
                 "loading": "جاري جلب البيانات...",
@@ -8323,6 +8329,9 @@
 
             await detectCurrency();
             await loadBillingPlans(currentCurrency);
+
+            // Initialize billing period toggle event listeners
+            initializeBillingToggle();
         }
 
         function closePricingModal() {
@@ -8333,6 +8342,48 @@
             }
             document.body.style.overflow = '';
         }
+
+        // Initialize billing period toggle event listeners
+        function initializeBillingToggle() {
+            // Try multiple possible toggle element patterns
+            const toggleInput = document.getElementById('billing-period-toggle');
+            const toggleCheckbox = document.querySelector('input[type="checkbox"][id*="yearly"]');
+            const toggleSwitch = document.querySelector('.billing-toggle-switch input');
+            const monthlyLabel = document.querySelector('[data-period="monthly"]');
+            const yearlyLabel = document.querySelector('[data-period="yearly"]');
+
+            // Attach listener to checkbox/input toggle
+            const toggle = toggleInput || toggleCheckbox || toggleSwitch;
+            if (toggle) {
+                // Remove any existing listeners to avoid duplicates
+                toggle.removeEventListener('change', toggleBillingPeriod);
+                toggle.addEventListener('change', toggleBillingPeriod);
+                console.log('Billing toggle initialized:', toggle);
+            }
+
+            // Attach listeners to label clicks
+            if (monthlyLabel) {
+                monthlyLabel.removeEventListener('click', handleMonthlyClick);
+                monthlyLabel.addEventListener('click', handleMonthlyClick);
+            }
+            if (yearlyLabel) {
+                yearlyLabel.removeEventListener('click', handleYearlyClick);
+                yearlyLabel.addEventListener('click', handleYearlyClick);
+            }
+        }
+
+        function handleMonthlyClick() {
+            if (billingPeriod !== 'monthly') {
+                toggleBillingPeriod();
+            }
+        }
+
+        function handleYearlyClick() {
+            if (billingPeriod !== 'yearly') {
+                toggleBillingPeriod();
+            }
+        }
+
 
         async function detectCurrency() {
             try {
@@ -8434,6 +8485,34 @@
                 console.error('Error loading plans:', err);
                 grid.innerHTML = `<div style="color:red; text-align:center;">Error: ${err.message}</div>`;
             }
+        }
+
+        // Function to toggle between monthly and yearly billing
+        function toggleBillingPeriod() {
+            // Toggle the period
+            billingPeriod = (billingPeriod === 'monthly') ? 'yearly' : 'monthly';
+
+            // Update toggle UI state if elements exist
+            const monthlyLabel = document.querySelector('[data-period="monthly"]');
+            const yearlyLabel = document.querySelector('[data-period="yearly"]');
+            const toggleInput = document.getElementById('billing-period-toggle');
+
+            if (monthlyLabel && yearlyLabel) {
+                if (billingPeriod === 'yearly') {
+                    monthlyLabel.classList.remove('active');
+                    yearlyLabel.classList.add('active');
+                } else {
+                    monthlyLabel.classList.add('active');
+                    yearlyLabel.classList.remove('active');
+                }
+            }
+
+            if (toggleInput) {
+                toggleInput.checked = (billingPeriod === 'yearly');
+            }
+
+            // Reload plans with new billing period
+            loadBillingPlans(currentCurrency);
         }
 
         function createPlanCard(plan) {
