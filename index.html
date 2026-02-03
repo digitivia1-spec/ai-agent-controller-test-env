@@ -8345,6 +8345,9 @@
 
         // Initialize billing period toggle event listeners
         function initializeBillingToggle() {
+            console.log('=== DEBUGGING BILLING TOGGLE ===');
+            console.log('Current billing period:', billingPeriod);
+
             // Try multiple possible toggle element patterns
             const toggleInput = document.getElementById('billing-period-toggle');
             const toggleCheckbox = document.querySelector('input[type="checkbox"][id*="yearly"]');
@@ -8352,24 +8355,76 @@
             const monthlyLabel = document.querySelector('[data-period="monthly"]');
             const yearlyLabel = document.querySelector('[data-period="yearly"]');
 
+            // Log what we found
+            console.log('Toggle elements found:');
+            console.log('  - billing-period-toggle:', toggleInput);
+            console.log('  - checkbox with yearly:', toggleCheckbox);
+            console.log('  - billing-toggle-switch:', toggleSwitch);
+            console.log('  - monthly label:', monthlyLabel);
+            console.log('  - yearly label:', yearlyLabel);
+
+            // Search for ANY checkbox in modal
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            console.log('All checkboxes found:', allCheckboxes.length, allCheckboxes);
+
+            // Search for elements containing "yearly" or "monthly" text
+            const allElements = document.querySelectorAll('*');
+            const yearlyElements = Array.from(allElements).filter(el =>
+                el.textContent && (el.textContent.toLowerCase().includes('yearly') || el.textContent.toLowerCase().includes('سنوي'))
+            );
+            const monthlyElements = Array.from(allElements).filter(el =>
+                el.textContent && (el.textContent.toLowerCase().includes('monthly') || el.textContent.toLowerCase().includes('شهري'))
+            );
+            console.log('Elements with "yearly" text:', yearlyElements.length);
+            console.log('Elements with "monthly" text:', monthlyElements.length);
+
             // Attach listener to checkbox/input toggle
-            const toggle = toggleInput || toggleCheckbox || toggleSwitch;
+            const toggle = toggleInput || toggleCheckbox || toggleSwitch || allCheckboxes[0];
             if (toggle) {
-                // Remove any existing listeners to avoid duplicates
                 toggle.removeEventListener('change', toggleBillingPeriod);
                 toggle.addEventListener('change', toggleBillingPeriod);
-                console.log('Billing toggle initialized:', toggle);
+                console.log('✅ Billing toggle initialized:', toggle);
+            } else {
+                console.warn('⚠️ No toggle input element found!');
             }
 
             // Attach listeners to label clicks
             if (monthlyLabel) {
                 monthlyLabel.removeEventListener('click', handleMonthlyClick);
                 monthlyLabel.addEventListener('click', handleMonthlyClick);
+                console.log('✅ Monthly label listener attached');
             }
             if (yearlyLabel) {
                 yearlyLabel.removeEventListener('click', handleYearlyClick);
                 yearlyLabel.addEventListener('click', handleYearlyClick);
+                console.log('✅ Yearly label listener attached');
             }
+
+            // Attach to any element containing yearly/monthly text as fallback
+            yearlyElements.forEach((el, idx) => {
+                if (idx < 3 && el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') {
+                    el.style.cursor = 'pointer';
+                    el.addEventListener('click', function (e) {
+                        console.log('Yearly element clicked:', el);
+                        if (billingPeriod !== 'yearly') {
+                            toggleBillingPeriod();
+                        }
+                    });
+                }
+            });
+            monthlyElements.forEach((el, idx) => {
+                if (idx < 3 && el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') {
+                    el.style.cursor = 'pointer';
+                    el.addEventListener('click', function (e) {
+                        console.log('Monthly element clicked:', el);
+                        if (billingPeriod !== 'monthly') {
+                            toggleBillingPeriod();
+                        }
+                    });
+                }
+            });
+
+            console.log('=== END DEBUGGING ===');
         }
 
         function handleMonthlyClick() {
