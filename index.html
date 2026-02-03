@@ -7,9 +7,6 @@
     <title>AI Agent Command Center</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <!-- Language Files -->
-    <script src="lang/en.js?v=3"></script>
-    <script src="lang/ar.js?v=3"></script>
     <style>
         /* --- PRICING MODAL --- */
         #pricing-modal {
@@ -4807,6 +4804,548 @@
             }
         };
 
+        // ==========================================
+        //        LANGUAGE & I18N (EMBEDDED)
+        // ==========================================
+
+        window.LANG_EN = {
+            "auth": {
+                "app_title": "DIGITIVIA AI AGENT",
+                "sign_in_google": "Sign in with Google",
+                "sign_in_linkedin": "Sign in with LinkedIn",
+                "separator_or": "OR",
+                "input_email_placeholder": "Email Address",
+                "input_password_placeholder": "Password",
+                "btn_login": "LOGIN",
+                "btn_register": "REGISTER",
+                "btn_loading_login": "LOGGING IN...",
+                "btn_loading_register": "REGISTERING..."
+            },
+            "sidebar": {
+                "nav_website": "Website Agent",
+                "nav_whatsapp": "WhatsApp Agent",
+                "nav_messenger": "Messenger Agent",
+                "nav_instagram": "Instagram Agent",
+                "nav_insights": "Live Insights",
+                "nav_inbox": "Live Inbox",
+                "nav_leads": "Leads Area",
+                "nav_reviews": "Customer Reviews",
+                "nav_followups": "Follow-ups",
+                "nav_logout": "Logout"
+            },
+            "top_bar": {
+                "btn_pricing": "Pricing",
+                "btn_docs": "Docs",
+                "btn_help": "Help"
+            },
+            "agent_config": {
+                "btn_connect_channel": "🔗 Connect Channel",
+                "label_live": "LIVE",
+                "header_role": "Agent Role (System Prompt)",
+                "header_tone": "Agent Tone",
+                "header_kb": "Knowledge Base (Links)",
+                "header_chat_test": "Test Chat Window",
+                "warning_title": "⚠️ Caution:",
+                "warning_text": "Modifying the system prompt will directly alter the agent's personality and behavior.",
+                "btn_locked": "🔒 Locked - Click to Edit",
+                "placeholder_prompt": "Define how your agent should behave...",
+                "suggestion_customer_service": "✨ Customer Service",
+                "suggestion_sales": "🚀 Sales Agent",
+                "placeholder_tone": "Select a tone...",
+                "options_tone": {
+                    "professional": "Professional & Formal",
+                    "friendly": "Friendly & Casual",
+                    "empathetic": "Empathetic & Helpful",
+                    "sales": "Sales-Oriented & Persuasive",
+                    "witty": "Witty & Humorous"
+                },
+                "placeholder_link": "https://example.com",
+                "btn_add_link": "+ Add Another Link",
+                "chat_welcome_msg": "Hello! I am the {agent_name}. How can I help?",
+                "placeholder_chat_input": "Type a message...",
+                "btn_save": "Save Role",
+                "btn_save_changes": "Save Changes *",
+                "btn_saving": "Saving..."
+            },
+            "insights": {
+                "title": "Live Insights",
+                "platform_facebook": "Facebook",
+                "platform_instagram": "Instagram",
+                "platform_messenger": "Messenger",
+                "period_daily": "Daily",
+                "period_weekly": "Weekly",
+                "period_28days": "28 Days",
+                "period_monthly": "Monthly",
+                "empty_title": "No Data Available",
+                "empty_text": "Connect your platform accounts to see live performance insights and post engagement.",
+                "btn_connect": "Connect Insights",
+                "section_posts_header": "Recent Posts Performance",
+                "loading_posts": "Loading posts...",
+                "empty_posts_title": "No Posts Yet",
+                "empty_posts_text": "Connect your {platform} account to see your post performance here.",
+                "btn_connect_posts": "Connect Posts",
+                "error_posts_load": "Failed to load posts",
+                "post_card_reach": "Reach",
+                "post_card_view": "➜ View Details",
+                "no_caption": "No caption",
+                "stats": {
+                    "video_views": "Video Views",
+                    "video_view_time": "Video View Time",
+                    "post_engagements": "Post Engagements",
+                    "unique_reach": "Unique Reach",
+                    "total_impressions": "Total Impressions",
+                    "profile_views": "Profile Views",
+                    "website_clicks": "Website Clicks",
+                    "total_interactions": "Total Interactions",
+                    "total_connections": "Total Connections",
+                    "new_conversations": "New Conversations"
+                }
+            },
+            "inbox": {
+                "btn_export": "Export Data",
+                "sidebar_select_platform": "Select Platform",
+                "sidebar_loading": "Loading...",
+                "sidebar_no_chats": "No chats found.",
+                "sidebar_error": "Error loading contacts.",
+                "header_select": "Select a conversation",
+                "header_chat_with": "Chat with {name}",
+                "loading_history": "Loading history...",
+                "empty_title": "No Conversations Yet",
+                "empty_text": "Connect your social channels to start chatting with your customers in real-time.",
+                "btn_connect": "Connect Channels",
+                "empty_messages": "No messages yet.",
+                "error_loading_messages": "Error loading messages",
+                "msg_error_agent": "Error: Could not reach agent.",
+                "msg_no_reply": "No reply received."
+            },
+            "leads": {
+                "title": "Leads Area",
+                "btn_export_csv": "Export CSV",
+                "btn_export_excel": "Export Excel",
+                "loading": "Fetching Leads...",
+                "empty_search": "No leads found.",
+                "error_loading": "Failed to load leads. Check connection.",
+                "empty_title": "No Leads Yet",
+                "empty_text": "Connect your channels to start capturing leads from conversations.",
+                "btn_connect": "Connect Your Channels",
+                "status": {
+                    "qualified": "Qualified",
+                    "pending": "Pending",
+                    "new": "New"
+                }
+            },
+            "reviews": {
+                "title": "Customer Reviews",
+                "btn_connect_google": "Connect Google Reviews",
+                "stat_avg": "Average Rating",
+                "stat_total": "Total Reviews",
+                "stat_positive": "Positive (4-5★)",
+                "empty_title": "No Reviews Connected",
+                "empty_text": "Link your Google Business profile to monitor and reply to reviews here."
+            },
+            "followups": {
+                "title": "Scheduled Follow-ups",
+                "empty_title": "No Scheduled Tasks",
+                "empty_text": "When your agents schedule callbacks or follow-ups, they will appear here.",
+                "btn_setup": "Set Up Automations"
+            },
+            "modals": {
+                "unlock": {
+                    "title": "⚠️ Critical Warning",
+                    "text": "Changing the System Prompt will fundamentally alter how this agent behaves, answers, and interacts.",
+                    "text_confirm_ask": "Are you sure you want to proceed?",
+                    "btn_cancel": "Cancel",
+                    "btn_confirm": "Yes, Unlock Editing"
+                },
+                "post_detail": {
+                    "date_label": "Date",
+                    "caption_default": "Caption text...",
+                    "stat_likes": "Likes",
+                    "stat_comments": "Comments",
+                    "stat_reach": "Reach",
+                    "section_comments": "RECENT COMMENTS",
+                    "comments_not_loaded": "Comments not loaded"
+                },
+                "pricing": {
+                    "header_title": "Choose Your Plan",
+                    "header_text": "Scale your AI agents with the perfect plan for your business",
+                    "plans": {
+                        "free": "Free",
+                        "starter": "Starter",
+                        "growth": "Growth",
+                        "enterprise": "Enterprise"
+                    },
+                    "price_custom": "Custom",
+                    "period_month": "/month",
+                    "period_year": "/year",
+                    "badge_popular": "POPULAR",
+                    "features": {
+                        "msg_100": "100 messages/month",
+                        "agent_1": "1 AI agent",
+                        "analytics_basic": "Basic analytics",
+                        "support_community": "Community support",
+                        "msg_1000": "1,000 messages/month",
+                        "agent_2": "2 AI agents",
+                        "analytics_adv": "Advanced analytics",
+                        "support_email": "Email support",
+                        "msg_10000": "10,000 messages/month",
+                        "agent_4": "4 AI agents",
+                        "analytics_prio": "Priority analytics",
+                        "support_prio": "Priority support",
+                        "integrations_custom": "Custom integrations",
+                        "msg_unlim": "Unlimited messages",
+                        "agent_unlim": "Unlimited agents",
+                        "whitelabel": "White-label options",
+                        "manager_ded": "Dedicated manager",
+                        "sla": "SLA guarantee"
+                    },
+                    "btn_current": "Current Plan",
+                    "btn_upgrade": "Upgrade",
+                    "btn_contact": "Contact Sales"
+                },
+                "docs": {
+                    "title": "Documentation & User Guide",
+                    "sec_start_title": "🚀 Getting Started",
+                    "sec_start_text": "Welcome to Digitivia AI Agent! This platform allows you to create, manage, and monitor powerful AI agents across multiple communication channels.",
+                    "sec_config_title": "🤖 Configuring Your Agents",
+                    "sec_config_text": "Each agent (Website, WhatsApp, Messenger, Instagram) can be customized independently:",
+                    "sec_config_list_prompt": "<strong>System Prompt:</strong> This is the \"brain\" of your agent. Define its personality, knowledge, and boundaries.",
+                    "sec_config_list_tone": "<strong>Tone:</strong> Choose how the agent should sound (e.g., Professional, Friendly, Helpful).",
+                    "sec_config_list_kb": "<strong>Knowledge Base Links:</strong> Add URLs that your agent should use as a reference to answer questions accurately.",
+                    "tip_label": "Pro Tip:",
+                    "tip_text": "Be specific in your System Prompt. Instead of \"You are a helpful assistant,\" try \"You are an expert real estate consultant for Acme Realty, specializing in downtown apartments.\"",
+                    "sec_connect_title": "🔌 Connecting Channels",
+                    "sec_connect_text": "To start receiving messages, you need to connect your social channels:",
+                    "sec_connect_list_1": "Go to the specific agent tab in the left sidebar.",
+                    "sec_connect_list_2": "Click the <strong>\"Connect Channel\"</strong> button.",
+                    "sec_connect_list_3": "Follow the integration steps (currently requires a consultation for setup).",
+                    "sec_inbox_title": "📨 Using the Live Inbox & Leads",
+                    "sec_inbox_list_inbox": "<strong>Live Inbox:</strong> Monitor real-time conversations between your agents and customers. You can step in at any time to take over the chat.",
+                    "sec_inbox_list_leads": "<strong>Leads Area:</strong> Automatically captures contact details and interests from conversations, allowing you to export or manage your pipeline.",
+                    "sec_inbox_list_insights": "<strong>Live Insights:</strong> View performance metrics, message volume, and engagement statistics across all platforms.",
+                    "cta_title": "Need more help?",
+                    "cta_text": "If you're stuck or need a custom implementation, our team is here to help.",
+                    "btn_book": "Book Free Consultation"
+                },
+                "profile": {
+                    "default_name": "User Name",
+                    "label_org": "Organization",
+                    "placeholder_org": "Organization Name",
+                    "label_plan": "Current Plan",
+                    "val_free": "Free",
+                    "btn_save": "Save Organization Name",
+                    "btn_upgrade": "Upgrade Plan",
+                    "btn_logout": "Logout"
+                },
+                "help": {
+                    "title": "Free Consultation Meeting",
+                    "text": "Book a 30-minute consultation with our team to help you get the most out of your AI agents.",
+                    "remaining_prefix": "You have",
+                    "remaining_suffix": "free consultation(s) remaining",
+                    "btn_book": "Book Consultation",
+                    "btn_contact": "Contact Sales"
+                }
+            },
+            "export": {
+                "title": "Export Inbox Data",
+                "subtitle": "Download your conversation history",
+                "platform_label": "Select Platform",
+                "platform_all": "All Platforms",
+                "format_label": "Select Format",
+                "format_excel": "Excel (.xlsx)",
+                "format_csv": "CSV",
+                "btn_download": "Download File"
+            },
+            "messages": {
+                "toast_saved": "Saved Successfully!",
+                "toast_fill_login": "Please fill in email and password",
+                "toast_login_failed": "Login Failed",
+                "toast_reg_success": "Registration successful! Check your email.",
+                "toast_reg_failed": "Registration Failed",
+                "toast_error_connect": "Error connecting to {provider}",
+                "toast_org_empty": "Organization name cannot be empty",
+                "toast_session_error": "User session issue. Please reload.",
+                "toast_org_updated": "Organization name updated!",
+                "toast_stripe_soon": "Stripe checkout for \"{plan}\" plan coming soon!",
+                "toast_no_org": "No Organization Found. Please contact admin.",
+                "toast_saving_error": "Error saving data: ",
+                "toast_activated": "Activated {agent}",
+                "toast_deactivated": "Deactivated {agent}",
+                "toast_status_fail": "Failed to update status",
+                "toast_no_leads_export": "No leads to export",
+                "loading_config": "Fetching Agent Configurations..."
+            }
+        };
+
+        window.LANG_AR = {
+            "auth": {
+                "app_title": "وكيل الذكاء الاصطناعي ديجيتيفيا",
+                "sign_in_google": "تسجيل الدخول عبر Google",
+                "sign_in_linkedin": "تسجيل الدخول عبر LinkedIn",
+                "separator_or": "أو",
+                "input_email_placeholder": "البريد الإلكتروني",
+                "input_password_placeholder": "كلمة المرور",
+                "btn_login": "دخول",
+                "btn_register": "إنشاء حساب",
+                "btn_loading_login": "جاري الدخول...",
+                "btn_loading_register": "جاري التسجيل..."
+            },
+            "sidebar": {
+                "nav_website": "وكيل الموقع الإلكتروني",
+                "nav_whatsapp": "وكيل واتساب",
+                "nav_messenger": "وكيل ماسنجر",
+                "nav_instagram": "وكيل انستغرام",
+                "nav_insights": "رؤى مباشرة",
+                "nav_inbox": "صندوق الوارد المباشر",
+                "nav_leads": "العملاء المحتملين",
+                "nav_reviews": "آراء العملاء",
+                "nav_followups": "المتابعات",
+                "nav_logout": "تسجيل خروج"
+            },
+            "top_bar": {
+                "btn_pricing": "الأسعار",
+                "btn_docs": "الوثائق",
+                "btn_help": "مساعدة"
+            },
+            "agent_config": {
+                "btn_connect_channel": "🔗 ربط القناة",
+                "label_live": "نشط",
+                "header_role": "دور الوكيل (توجيهات النظام)",
+                "header_tone": "نبرة المحادثة",
+                "header_kb": "قاعدة المعرفة (روابط)",
+                "header_chat_test": "نافذة اختبار المحادثة",
+                "warning_title": "⚠️ تنبيه:",
+                "warning_text": "تعديل توجيهات النظام سيؤدي إلى تغيير جذري في شخصية الوكيل وسلوكه.",
+                "btn_locked": "🔒 مقفل - اضغط للتعديل",
+                "placeholder_prompt": "حدد كيف يجب أن يتصرف وكيلك...",
+                "suggestion_customer_service": "✨ خدمة عملاء",
+                "suggestion_sales": "🚀 وكيل مبيعات",
+                "placeholder_tone": "اختر نبرة الصوت...",
+                "options_tone": {
+                    "professional": "رسمي ومهني",
+                    "friendly": "ودود وعفوي",
+                    "empathetic": "متعاطف ومساعد",
+                    "sales": "تسوِيقي ومُقنع",
+                    "witty": "ذكي ومرح"
+                },
+                "placeholder_link": "https://example.com",
+                "btn_add_link": "+ إضافة رابط آخر",
+                "chat_welcome_msg": "أهلاً! أنا {agent_name}. كيف يمكنني مساعدتك؟",
+                "placeholder_chat_input": "اكتب رسالتك هنا...",
+                "btn_save": "حفظ الدور",
+                "btn_save_changes": "حفظ التغييرات *",
+                "btn_saving": "جاري الحفظ..."
+            },
+            "insights": {
+                "title": "رؤى مباشرة",
+                "platform_facebook": "فيسبوك",
+                "platform_instagram": "انستغرام",
+                "platform_messenger": "ماسنجر",
+                "period_daily": "يومي",
+                "period_weekly": "أسبوعي",
+                "period_28days": "آخر 28 يوم",
+                "period_monthly": "شهري",
+                "empty_title": "لا توجد بيانات متاحة",
+                "empty_text": "قم بربط حسابات منصات التواصل لرؤية الأداء والتفاعل بشكل مباشر.",
+                "btn_connect": "ربط الرؤى",
+                "section_posts_header": "أداء أحدث المنشورات",
+                "loading_posts": "جاري تحميل المنشورات...",
+                "empty_posts_title": "لا توجد منشورات",
+                "empty_posts_text": "قم بربط حسابك على {platform} لرؤية أداء منشوراتك هنا.",
+                "btn_connect_posts": "ربط المنشورات",
+                "error_posts_load": "فشل تحميل المنشورات",
+                "post_card_reach": "الوصول",
+                "post_card_view": "➜ عرض التفاصيل",
+                "no_caption": "بدون تسمية توضيحية",
+                "stats": {
+                    "video_views": "مشاهدات الفيديو",
+                    "video_view_time": "وقت مشاهدة الفيديو",
+                    "post_engagements": "تفاعلات المنشور",
+                    "unique_reach": "وصول فريد",
+                    "total_impressions": "إجمالي مرات الظهور",
+                    "profile_views": "زيارات الملف الشخصي",
+                    "website_clicks": "نقر الروابط",
+                    "total_interactions": "إجمالي التفاعلات",
+                    "total_connections": "إجمالي الاتصالات",
+                    "new_conversations": "محادثات جديدة"
+                }
+            },
+            "inbox": {
+                "btn_export": "تصدير البيانات",
+                "sidebar_select_platform": "اختر المنصة",
+                "sidebar_loading": "جاري التحميل...",
+                "sidebar_no_chats": "لا توجد محادثات.",
+                "sidebar_error": "خطأ في تحميل جهات الاتصال.",
+                "header_select": "اختر محادثة",
+                "header_chat_with": "محادثة مع {name}",
+                "loading_history": "جاري تحميل السجل...",
+                "empty_title": "لا توجد محادثات بعد",
+                "empty_text": "قم بربط قنوات التواصل الاجتماعي للبدء في الدردشة مع عملائك في الوقت الفعلي.",
+                "btn_connect": "ربط القنوات",
+                "empty_messages": "لا توجد رسائل.",
+                "error_loading_messages": "خطأ في تحميل الرسائل",
+                "msg_error_agent": "خطأ: تعذر الوصول إلى الوكيل.",
+                "msg_no_reply": "لم يتم استلام رد."
+            },
+            "leads": {
+                "title": "منطقة العملاء المحتملين",
+                "btn_export_csv": "تصدير CSV",
+                "btn_export_excel": "تصدير Excel",
+                "loading": "جاري جلب البيانات...",
+                "empty_search": "لم يتم العثور على عملاء.",
+                "error_loading": "فشل التحميل. تحقق من الاتصال.",
+                "empty_title": "لا يوجد عملاء محتملين",
+                "empty_text": "قم بربط قنواتك للبدء في تجميع بيانات العملاء من المحادثات.",
+                "btn_connect": "ربط القنوات",
+                "status": {
+                    "qualified": "مؤهل",
+                    "pending": "قيد الانتظار",
+                    "new": "جديد"
+                }
+            },
+            "reviews": {
+                "title": "آراء العملاء",
+                "btn_connect_google": "ربط تقييمات Google",
+                "stat_avg": "متوسط التقييم",
+                "stat_total": "إجمالي المراجعات",
+                "stat_positive": "إيجابية (4-5★)",
+                "empty_title": "التقييمات غير متصلة",
+                "empty_text": "اربط ملف Google التجاري الخاص بك لمراقبة المراجعات والرد عليها هنا."
+            },
+            "followups": {
+                "title": "المتابعات المجدولة",
+                "empty_title": "لا توجد مهام مجدولة",
+                "empty_text": "عندما يقوم الوكلاء بجدولة مكالمات أو متابعات، ستظهر هنا.",
+                "btn_setup": "إعداد الأتمتة"
+            },
+            "modals": {
+                "unlock": {
+                    "title": "⚠️ تحذير هام",
+                    "text": "تغيير توجيهات النظام سيغير بشكل أساسي طريقة إجابة وتفاعل الوكيل.",
+                    "text_confirm_ask": "هل أنت متأكد أنك تريد المتابعة؟",
+                    "btn_cancel": "إلغاء",
+                    "btn_confirm": "نعم، إلغاء القفل"
+                },
+                "post_detail": {
+                    "date_label": "التاريخ",
+                    "caption_default": "نص المنشور...",
+                    "stat_likes": "إعجابات",
+                    "stat_comments": "تعليقات",
+                    "stat_reach": "وصول",
+                    "section_comments": "أحدث التعليقات",
+                    "comments_not_loaded": "لم يتم تحميل التعليقات"
+                },
+                "pricing": {
+                    "header_title": "اختر خطتك",
+                    "header_text": "طور وكلاء الذكاء الاصطناعي مع الخطة المثالية لعملك",
+                    "plans": {
+                        "free": "مجانية",
+                        "starter": "بداية",
+                        "growth": "نمو",
+                        "enterprise": "شركات"
+                    },
+                    "price_custom": "مخصص",
+                    "period_month": "/شهر",
+                    "period_year": "/سنة",
+                    "badge_popular": "الأكثر شيوعاً",
+                    "features": {
+                        "msg_100": "100 رسالة/شهر",
+                        "agent_1": "1 وكيل ذكاء اصطناعي",
+                        "analytics_basic": "تحليلات أساسية",
+                        "support_community": "دعم مجتمعي",
+                        "msg_1000": "1,000 رسالة/شهر",
+                        "agent_2": "2 وكيل ذكاء اصطناعي",
+                        "analytics_adv": "تحليلات متقدمة",
+                        "support_email": "دعم عبر البريد",
+                        "msg_10000": "10,000 رسالة/شهر",
+                        "agent_4": "4 وكلاء ذكاء اصطناعي",
+                        "analytics_prio": "تحليلات ذات أولوية",
+                        "support_prio": "دعم ذو أولوية",
+                        "integrations_custom": "تكاملات مخصصة",
+                        "msg_unlim": "رسائل غير محدودة",
+                        "agent_unlim": "وكلاء غير محدودين",
+                        "whitelabel": "خيارات العلامة البيضاء",
+                        "manager_ded": "مدير حساب مخصص",
+                        "sla": "ضمان مستوى الخدمة"
+                    },
+                    "btn_current": "الخطة الحالية",
+                    "btn_upgrade": "ترقية",
+                    "btn_contact": "تواصل مع المبيعات"
+                },
+                "docs": {
+                    "title": "التوثيق ودليل المستخدم",
+                    "sec_start_title": "🚀 البداية",
+                    "sec_start_text": "مرحباً بك في Digitivia AI Agent! تتيح لك هذه المنصة إنشاء وإدارة ومراقبة وكلاء ذكاء اصطناعي أقوياء عبر قنوات تواصل متعددة.",
+                    "sec_config_title": "🤖 إعداد الوكلاء",
+                    "sec_config_text": "يمكن تخصيص كل وكيل (الموقع، واتساب، ماسنجر، انستغرام) بشكل مستقل:",
+                    "sec_config_list_prompt": "<strong>توجيهات النظام:</strong> هذا هو \"عقل\" الوكيل. حدد شخصيته ومعرفته وحدوده.",
+                    "sec_config_list_tone": "<strong>نبرة الصوت:</strong> اختر كيف يجب أن يتحدث الوكيل (مثلاً: مهني، ودود، مساعد).",
+                    "sec_config_list_kb": "<strong>روابط المعرفة:</strong> أضف الروابط التي يجب أن يستخدمها الوكيل كمرجع للإجابة بدقة.",
+                    "tip_label": "نصيحة احترافية:",
+                    "tip_text": "كن محدداً في توجيهات النظام. بدلاً من \"أنت مساعد مفيد\"، جرب \"أنت مستشار عقاري خبير لدى شركة القمة، متخصص في شقق وسط المدينة.\"",
+                    "sec_connect_title": "🔌 ربط القنوات",
+                    "sec_connect_text": "لبدء استقبال الرسائل، تحتاج لربط قنواتك:",
+                    "sec_connect_list_1": "اذهب لتبويب الوكيل المحدد في القائمة الجانبية.",
+                    "sec_connect_list_2": "اضغط على زر <strong>\"ربط القناة\"</strong>.",
+                    "sec_connect_list_3": "اتبع خطوات التكامل (يتطلب استشارة للإعداد حالياً).",
+                    "sec_inbox_title": "📨 استخدام الصندوق المباشر والعملاء",
+                    "sec_inbox_list_inbox": "<strong>صندوق الوارد المباشر:</strong> راقب المحادثات الحية بين وكلائك والعملاء. يمكنك التدخل في أي وقت لاستلام المحادثة.",
+                    "sec_inbox_list_leads": "<strong>منطقة العملاء المحتملين:</strong> يتم التقاط بيانات الاتصال والاهتمامات تلقائياً من المحادثات، مما يتيح لك تصديرها أو إدارة الفرص.",
+                    "sec_inbox_list_insights": "<strong>رؤى مباشرة:</strong> اعرض مقاييس الأداء وحجم الرسائل وإحصائيات التفاعل عبر جميع المنصات.",
+                    "cta_title": "تحتاج مساعدة إضافية؟",
+                    "cta_text": "إذا كنت تواجه صعوبة أو تحتاج لتنفيذ مخصص، فريقنا هنا للمساعدة.",
+                    "btn_book": "حجز استشارة مجانية"
+                },
+                "profile": {
+                    "default_name": "اسم المستخدم",
+                    "label_org": "الشركة",
+                    "placeholder_org": "اسم الشركة",
+                    "label_plan": "الخطة الحالية",
+                    "val_free": "مجانية",
+                    "btn_save": "حفظ اسم الشركة",
+                    "btn_upgrade": "ترقية الخطة",
+                    "btn_logout": "تسجيل خروج"
+                },
+                "help": {
+                    "title": "اجتماع استشارة مجاني",
+                    "text": "احجز استشارة لمدة 30 دقيقة مع فريقنا لمساعدتك في تحقيق أقصى استفادة من وكلاء الذكاء الاصطناعي.",
+                    "remaining_prefix": "لديك",
+                    "remaining_suffix": "استشارة مجانية متبقية",
+                    "btn_book": "حجز استشارة",
+                    "btn_contact": "تواصل مع المبيعات"
+                },
+            },
+            "export": {
+                "title": "تصدير المحادثات",
+                "subtitle": "تحميل أرشيف المحادثات كاملاً",
+                "platform_label": "اختر المنصة",
+                "platform_all": "كل المنصات",
+                "format_label": "اختر الصيغة",
+                "format_excel": "اكسل (.xlsx)",
+                "format_csv": "ملف CSV",
+                "btn_download": "تحميل الملف"
+            },
+            "messages": {
+                "toast_saved": "تم الحفظ بنجاح!",
+                "toast_fill_login": "يرجى تعبئة البريد الإلكتروني وكلمة المرور",
+                "toast_login_failed": "فشل تسجيل الدخول",
+                "toast_reg_success": "تم التسجيل بنجاح! تفقد بريدك الإلكتروني.",
+                "toast_reg_failed": "فشل التسجيل",
+                "toast_error_connect": "خطأ في الاتصال بـ {provider}",
+                "toast_org_empty": "لا يمكن أن يكون اسم الشركة فارغاً",
+                "toast_session_error": "مشكلة في جلسة المستخدم. يرجى إعادة التحميل.",
+                "toast_org_updated": "تم تحديث اسم الشركة!",
+                "toast_stripe_soon": "الدفع عبر Stripe لخطة \"{plan}\" قادم قريباً!",
+                "toast_no_org": "لم يتم العثور على شركة. يرجى التواصل مع المسؤول.",
+                "toast_saving_error": "خطأ في حفظ البيانات: ",
+                "toast_activated": "تم تفعيل {agent}",
+                "toast_deactivated": "تم إيقاف {agent}",
+                "toast_status_fail": "فشل تحديث الحالة",
+                "toast_no_leads_export": "لا يوجد عملاء لتصديرهم",
+                "loading_config": "جاري جلب إعدادات الوكيل..."
+            }
+        };
+
         let currentLang = localStorage.getItem('app_language') || 'en';
 
         // Get current language strings
@@ -8003,13 +8542,24 @@
             // If currency mismatch in fallback, just show what's in plan
             const currencyCode = plan.currency || currentCurrency;
 
+
+
+            let calculatedPrice = plan.unit_amount_cents / 100;
+            let displayPeriod = 'month';
+
+            // Calculate Yearly Logic
+            if (billingPeriod === 'yearly') {
+                calculatedPrice = calculatedPrice * 12; // Yearly Total
+                displayPeriod = 'year';
+            }
+
             const priceFormatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: currencyCode,
                 maximumFractionDigits: 0
             });
 
-            const priceDisplay = priceFormatter.format(plan.unit_amount_cents / 100);
+            const priceDisplay = priceFormatter.format(calculatedPrice);
 
             // Icons
             const icons = {
@@ -8030,7 +8580,11 @@
             // Translated texts
             const planName = translateText(plan.plan_name, 'plan_names');
             const planDesc = translateText(plan.plan_description, 'plan_descriptions');
-            const billingPeriod = translateText(plan.billing_interval || 'month', 'ui');
+
+            // Period Label
+            const periodLabelKey = billingPeriod === 'yearly' ? 'period_year' : 'period_month';
+            const periodText = translateText(periodLabelKey, 'modals.pricing') || (billingPeriod === 'yearly' ? '/year' : '/month');
+
             const vatText = translateText('Prices include VAT', 'ui');
             const idealLabel = currentLang === 'ar' ? '💡 مثالي إذا:' : '💡 IDEAL IF:';
             const mostPopularText = translateText('MOST POPULAR', 'ui');
@@ -8052,7 +8606,7 @@
         
         <div class="pc-price-area">
             <span class="pc-price">${priceDisplay}</span>
-            <span class="pc-period">/ ${billingPeriod}</span>
+            <span class="pc-period">${periodText}</span>
             <span class="pc-vat">${vatText}</span>
         </div>
 
