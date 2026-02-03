@@ -4826,9 +4826,6 @@
                 <div style="color:white; text-align:center; width:100%; grid-column:1/-1; padding:30px;">Loading
                     plans...</div>
             </div>
-            <div class="pricing-footer">
-                <p data-i18n="modals.pricing.secure_payment">🔒 Secure Payment via Stripe</p>
-            </div>
         </div>
     </div>
 
@@ -5121,235 +5118,10 @@
 
         // --- INTERNATIONALIZATION (i18n) SYSTEM ---
 
-        // English Language Strings
-        const LANG_EN_OLD = {
-            auth: { app_title: "DIGITIVIA AI AGENT", sign_in_google: "Sign in with Google", sign_in_linkedin: "Sign in with LinkedIn", separator_or: "OR", input_email_placeholder: "Email Address", input_password_placeholder: "Password", btn_login: "LOGIN", btn_register: "REGISTER", btn_loading_login: "LOGGING IN...", btn_loading_register: "REGISTERING..." },
-            sidebar: { nav_dashboard: "Dashboard", nav_website: "Website Agent", nav_whatsapp: "WhatsApp Agent", nav_messenger: "Messenger Agent", nav_instagram: "Instagram Agent", nav_insights: "Live Insights", nav_inbox: "Live Inbox", nav_leads: "Leads Area", nav_create_post: "Content Studio", nav_reviews: "Customer Reviews", nav_followups: "Follow-ups", nav_plans: "Plans", nav_logout: "Logout" },
-            top_bar: { btn_pricing: "Pricing", btn_docs: "Docs", btn_help: "Help" },
-            agent_config: { btn_connect_channel: "🔗 Connect Channel", label_live: "LIVE", header_role: "Agent Role (System Prompt)", header_tone: "Agent Tone", header_kb: "Knowledge Base (Links)", header_chat_test: "Test Chat Window", btn_locked: "🔒 Locked - Click to Edit", placeholder_prompt: "Define how your agent should behave...", btn_save: "Save Role", btn_save_changes: "Save Changes *", btn_saving: "Saving...", chat_greeting: "Hello! I am the {name}. How can I help?", chat_placeholder: "Type a message...", btn_add_link: "+ Add Another Link" },
-            dashboard: {
-                welcome: "Welcome back,",
-                stats: { conversations: "Total Conversations", messages: "Total Messages", leads: "Total Leads", reviews: "Total Reviews" },
-                headers: { recent_activity: "Recent Activity", agent_performance: "Agent Performance" },
-                usage: {
-                    loading: "Loading...",
-                    days_remaining: "days remaining",
-                    conversations: "Conversations",
-                    upgrade_plan: "⚡ Upgrade Plan",
-                    status_active: "ACTIVE",
-                    status_trial: "TRIAL",
-                    status_canceled: "CANCELED",
-                    status_expired: "EXPIRED"
-                }
-            },
-            insights: { title: "Live Insights", empty_title: "No Data Available", empty_text: "Connect your platform accounts to see live performance insights.", btn_connect: "Connect Insights", empty_posts_title: "No Posts Yet", btn_connect_posts: "Connect Posts", loading: "Loading..." },
-            inbox: { empty_title: "No Conversations Yet", empty_text: "Connect your social channels to start chatting with your customers.", btn_connect: "Connect Channels", label_platform: "Select Platform", header_select: "Select a conversation", loading: "Loading...", no_chats: "No chats found.", chat_with: "Chat with {name}", loading_history: "Loading history...", no_messages: "No messages yet.", error_loading: "Error loading contacts." },
-            leads: { title: "Leads Area", btn_export_csv: "Export CSV", btn_export_excel: "Export Excel", empty_title: "No Leads Yet", empty_text: "Connect your channels to start capturing leads from conversations.", btn_connect: "Connect Your Channels", fetching: "Fetching Leads...", no_leads_found: "No leads found.", failed_load: "Failed to load leads. Check connection.", unknown_user: "Unknown User", no_phone: "No Phone", no_message: "No message" },
-            reviews: { title: "Customer Reviews", empty_title: "No Reviews Connected", empty_text: "Connect your Google Reviews to see what customers are saying.", btn_connect: "Connect Google Reviews", label_avg: "Average Rating", label_total: "Total Reviews", label_positive: "Positive (4-5★)" },
-            followups: { title: "Scheduled Follow-ups", empty_title: "No Scheduled Tasks", empty_text: "When your agents schedule callbacks or follow-ups, they will appear here.", btn_setup: "Set Up Automations" },
-            posts: { loading: "Loading posts...", no_posts_found: "No posts found.", failed_load: "Failed to load posts", no_caption: "No caption", view_details: "➜ View Details", comments_not_loaded: "Comments not loaded", reach: "Reach" },
-            metrics: { video_views: "Video Views", video_view_time: "Video View Time", post_engagements: "Post Engagements", unique_reach: "Unique Reach", total_impressions: "Total Impressions", profile_views: "Profile Views", website_clicks: "Website Clicks", total_interactions: "Total Interactions", total_connections: "Total Connections", new_conversations: "New Conversations" },
-            modals: {
-                pricing: {
-                    header_title: "Choose Your Plan",
-                    subtitle: "Scale your AI agents with the perfect plan",
-                    monthly: "Monthly",
-                    yearly: "Yearly",
-                    secure_payment: "🔒 Secure Payment via Stripe"
-                },
-                docs: {
-                    title: "Documentation & User Guide",
-                    section_roles_title: "🤖 Agent Roles & System Prompts",
-                    section_roles_text: "The <strong>System Prompt</strong> is the brain of your agent. It defines who the agent is, what it knows, and how it speaks.",
-                    list_role: "<strong>Role:</strong> Define the persona (e.g., Support Agent, Sales Rep).",
-                    list_tone: "<strong>Tone:</strong> Adjectives that describe the personality (e.g., Professional, Friendly, Helpful).",
-                    list_kb: "<strong>Knowledge Base Links:</strong> Add URLs that your agent should use as a reference to answer questions accurately.",
-                    tip: "<strong>Pro Tip:</strong> Be specific in your System Prompt. Instead of 'You are a helpful assistant,' try 'You are an expert real estate consultant for Acme Realty, specializing in downtown apartments.'",
-                    section_channels_title: "🔌 Connecting Channels",
-                    section_channels_text: "To start receiving messages, you need to connect your social channels:",
-                    list_channel_step1: "Go to the specific agent tab in the left sidebar.",
-                    list_channel_step2: "Click the <strong>'Connect Channel'</strong> button.",
-                    list_channel_step3: "Follow the integration steps (currently requires a consultation for setup).",
-                    section_inbox_title: "📨 Using the Live Inbox & Leads",
-                    list_inbox: "<strong>Live Inbox:</strong> Monitor real-time conversations between your agents and consumers.",
-                    list_leads: "<strong>Leads Area:</strong> Automatically captures contact details and interests from conversations.",
-                    list_insights: "<strong>Live Insights:</strong> View performance metrics, message volume, and engagement statistics.",
-                    cta_title: "Need more help?",
-                    cta_text: "If you're stuck or need a custom implementation, our team is here to help.",
-                    btn_book: "Book Free Consultation"
-                },
-                profile: { label_org: "Organization", label_plan: "Current Plan", btn_save: "Save Organization Name", btn_upgrade: "Upgrade Plan", btn_logout: "Logout", placeholder_org: "Organization Name" },
-                help: { title: "Free Consultation Meeting", btn_book: "Book Consultation", text: "Book a 30-minute consultation with our team to help you get the most out of your AI agents.", remaining: "You have <strong id='help-remaining-count'>2</strong> free consultation(s) remaining" }
-            },
-            agents: { website: "Website Agent", whatsapp: "WhatsApp Agent", messenger: "Messenger Agent", instagram: "Instagram Agent" },
-            roles: { sales: "Sales Agent 🚀", service: "Customer Service ✨", service_short: "Customer Service", sales_short: "Sales Agent" },
-            messages: { toast_saved: "Saved Successfully!", toast_org_updated: "Organization name updated!", loading_config: "Fetching Agent Configurations...", agent_activated: "Activated", agent_deactivated: "Deactivated", error_no_org: "No Organization Found. Please contact admin.", error_saving: "Error saving data: ", error_status_update: "Failed to update status" },
-            create_post: {
-                title: "Content Studio",
-                tab_create: "Create Post",
-                tab_schedule: "Schedule Post",
-                tab_queue: "Scheduled Queue",
-                upload_image: "Upload Image",
-                ai_generate: "AI Generate",
-                image_prompt: "Image Prompt",
-                generate_btn: "Generate Image",
-                caption_label: "Caption",
-                magic_caption: "Magic Caption",
-                publish_options: "Publishing Options",
-                click_upload: "Click to Upload Image",
-                file_type_hint: "JPG or PNG recommended",
-                just_now: "Just now",
-                preview_placeholder: "Your caption will appear here...",
-                preview_area: "Preview Area",
-                like: "Like",
-                comment: "Comment",
-                share: "Share",
-                image_source: "Image Source",
-                use_created: "Use Created Image",
-                upload_new: "Upload New Image",
-                date_label: "Date",
-                time_label: "Time",
-                timezone_label: "Timezone",
-                platforms_label: "Platforms",
-                schedule_btn: "Schedule Post",
-                queue_empty: "No scheduled posts",
-                queue_empty_hint: "Schedule a post to see it here",
-                status_pending: "Pending",
-                status_posted: "Posted",
-                status_failed: "Failed",
-                cancel_btn: "Cancel",
-                image_ready: "Image ready!",
-                enter_prompt: "Please enter a prompt first",
-                ai_working: "AI is working...",
-                content_generated: "Content Generated!",
-                generate_failed: "Failed to generate content",
-                no_image: "No image selected/generated",
-                publishing: "Publishing to",
-                published: "Published to",
-                enter_caption: "Please enter a caption",
-                select_datetime: "Please select date and time",
-                select_platform: "Please select at least one platform",
-                scheduled_success: "Post scheduled successfully!",
-                cancelled: "Post cancelled"
-            }
-        };
+        let currentLang = localStorage.getItem('app_language') || 'en';
 
-        const LANG_AR_OLD = {
-            auth: { app_title: "وكيل الذكاء الاصطناعي ديجيتيفيا", sign_in_google: "تسجيل الدخول عبر Google", sign_in_linkedin: "تسجيل الدخول عبر LinkedIn", separator_or: "أو", input_email_placeholder: "البريد الإلكتروني", input_password_placeholder: "كلمة المرور", btn_login: "دخول", btn_register: "إنشاء حساب", btn_loading_login: "جاري الدخول...", btn_loading_register: "جاري التسجيل..." },
-            sidebar: { nav_dashboard: "لوحة التحكم", nav_website: "وكيل الموقع", nav_whatsapp: "وكيل واتساب", nav_messenger: "وكيل ماسنجر", nav_instagram: "وكيل انستغرام", nav_insights: "رؤى مباشرة", nav_inbox: "صندوق الوارد", nav_leads: "العملاء المحتملين", nav_create_post: "استوديو المحتوى", nav_reviews: "آراء العملاء", nav_followups: "المتابعات", nav_plans: "الخطط", nav_logout: "تسجيل خروج" },
-            top_bar: { btn_pricing: "الأسعار", btn_docs: "الوثائق", btn_help: "مساعدة" },
-            agent_config: { btn_connect_channel: "🔗 ربط القناة", label_live: "نشط", header_role: "دور الوكيل", header_tone: "نبرة المحادثة", header_kb: "قاعدة المعرفة", header_chat_test: "نافذة الاختبار", btn_locked: "🔒 مقفل - اضغط للتعديل", placeholder_prompt: "حدد كيف يجب أن يتصرف وكيلك...", btn_save: "حفظ الدور", btn_save_changes: "حفظ التغييرات *", btn_saving: "جاري الحفظ...", chat_greeting: "مرحباً! أنا {name}. كيف يمكنني مساعدتك؟", chat_placeholder: "اكتب رسالة...", btn_add_link: "+ إضافة رابط آخر" },
-            dashboard: {
-                welcome: "مرحباً بك،",
-                stats: { conversations: "إجمالي المحادثات", messages: "إجمالي الرسائل", leads: "إجمالي العملاء", reviews: "إجمالي التقييمات" },
-                headers: { recent_activity: "النشاط الأخير", agent_performance: "أداء الوكيل" },
-                usage: {
-                    loading: "جاري التحميل...",
-                    days_remaining: "يوم متبقي",
-                    conversations: "المحادثات",
-                    upgrade_plan: "ترقية الخطة",
-                    status_active: "نشط",
-                    status_trial: "تجريبي",
-                    status_canceled: "ملغي",
-                    status_expired: "منتهي"
-                }
-            },
-            insights: { title: "رؤى مباشرة", empty_title: "لا توجد بيانات", empty_text: "قم بربط حساباتك لرؤية الأداء.", btn_connect: "ربط الرؤى", empty_posts_title: "لا توجد منشورات", btn_connect_posts: "ربط المنشورات", loading: "جاري التحميل..." },
-            inbox: { empty_title: "لا توجد محادثات", empty_text: "قم بربط قنواتك للبدء في الدردشة.", btn_connect: "ربط القنوات", label_platform: "اختر المنصة", header_select: "اختر محادثة", loading: "جاري التحميل...", no_chats: "لا توجد محادثات.", chat_with: "محادثة مع {name}", loading_history: "جاري تحميل السجل...", no_messages: "لا توجد رسائل بعد.", error_loading: "خطأ في تحميل جهات الاتصال." },
-            leads: { title: "العملاء المحتملين", btn_export_csv: "تصدير CSV", btn_export_excel: "تصدير Excel", empty_title: "لا يوجد عملاء", empty_text: "قم بربط قنواتك للبدء في جلب العملاء المحتملين.", btn_connect: "ربط القنوات", fetching: "جاري جلب العملاء...", no_leads_found: "لم يتم العثور على عملاء.", failed_load: "فشل تحميل العملاء. تحقق من الاتصال.", unknown_user: "مستخدم غير معروف", no_phone: "لا يوجد هاتف", no_message: "لا توجد رسالة" },
-            reviews: { title: "آراء العملاء", empty_title: "التقييمات غير متصلة", empty_text: "قم بربط تقييمات جوجل لرؤية آراء العملاء.", btn_connect: "ربط تقييمات جوجل", label_avg: "متوسط التقييم", label_total: "إجمالي التقييمات", label_positive: "إيجابية (4-5★)" },
-            followups: { title: "المتابعات المجدولة", empty_title: "لا توجد مهام", empty_text: "عندما يقوم وكلاؤك بجدولة مكالمات أو متابعات، ستظهر هنا.", btn_setup: "إعداد الأتمتة" },
-            posts: { loading: "جاري تحميل المنشورات...", no_posts_found: "لم يتم العثور على منشورات.", failed_load: "فشل تحميل المنشورات", no_caption: "لا يوجد تعليق", view_details: "➜ عرض التفاصيل", comments_not_loaded: "التعليقات غير محملة", reach: "الوصول" },
-            metrics: { video_views: "مشاهدات الفيديو", video_view_time: "وقت مشاهدة الفيديو", post_engagements: "تفاعلات المنشور", unique_reach: "وصول فريد", total_impressions: "إجمالي الظهور", profile_views: "زيارات الملف الشخصي", website_clicks: "نقرات الموقع", total_interactions: "إجمالي التفاعلات", total_connections: "إجمالي الاتصالات", new_conversations: "محادثات جديدة" },
-            modals: {
-                pricing: {
-                    header_title: "اختر خطتك",
-                    subtitle: "وسع نطاق وكلائك مع الخطة المثالية",
-                    monthly: "شهري",
-                    yearly: "سنوي",
-                    secure_payment: "🔒 دفع آمن عبر Stripe"
-                },
-                docs: {
-                    title: "التوثيق ودليل المستخدم",
-                    section_roles_title: "🤖 أدوار الوكيل وموجهات النظام",
-                    section_roles_text: "<strong>موجه النظام</strong> هو عقل وكيلك. إنه يحدد من هو الوكيل، وماذا يعرف، وكيف يتحدث.",
-                    list_role: "<strong>الدور:</strong> حدد الشخصية (مثل وكيل دعم، ممثل مبيعات).",
-                    list_tone: "<strong>النبرة:</strong> الصفات التي تصف الشخصية (مثل مهني، ودود، مفيد).",
-                    list_kb: "<strong>قاعدة المعرفة:</strong> أضف روابط URL التي يجب أن يستخدمها وكيلك كمرجع للإجابة بدقة.",
-                    tip: "<strong>نصيحة محترف:</strong> كن محددًا في موجه النظام. بدلاً من 'أنت مساعد مفيد'، جرب 'أنت مستشار عقاري خبير لشركة Acme Realty، متخصص في شقق وسط المدينة.'",
-                    section_channels_title: "🔌 ربط القنوات",
-                    section_channels_text: "للبدء في تلقي الرسائل، تحتاج إلى ربط قنوات التواصل الاجتماعي الخاصة بك:",
-                    list_channel_step1: "اذهب إلى تبويب الوكيل المحدد في القائمة الجانبية اليسرى.",
-                    list_channel_step2: "اضغط على زر <strong>'ربط القناة'</strong>.",
-                    list_channel_step3: "اتبع خطوات التكامل (يتطلب حاليًا استشارة للإعداد).",
-                    section_inbox_title: "📨 استخدام صندوق الوارد والعملاء المحتملين",
-                    list_inbox: "<strong>صندوق الوارد المباشر:</strong> مراقبة المحادثات في الوقت الفعلي بين وكلائك والعملاء.",
-                    list_leads: "<strong>منطقة العملاء المحتملين:</strong> التقاط تفاصيل الاتصال والاهتمامات تلقائيًا من المحادثات.",
-                    list_insights: "<strong>رؤى مباشرة:</strong> عرض مقاييس الأداء وحجم الرسائل وإحصائيات التفاعل.",
-                    cta_title: "تحتاج لمزيد من المساعدة؟",
-                    cta_text: "إذا كنت عالقًا أو تحتاج إلى تنفيذ مخصص، فريقنا هنا للمساعدة.",
-                    btn_book: "حجز استشارة مجانية"
-                },
-                profile: { label_org: "الشركة", label_plan: "الخطة الحالية", btn_save: "حفظ اسم الشركة", btn_upgrade: "ترقية الخطة", btn_logout: "تسجيل خروج", placeholder_org: "اسم الشركة" },
-                help: { title: "استشارة مجانية", btn_book: "حجز استشارة", text: "احجز استشارة لمدة 30 دقيقة مع فريقنا لمساعدتك في تحقيق أقصى استفادة من وكلاء الذكاء الاصطناعي الخاصين بك.", remaining: "لديك <strong id='help-remaining-count'>2</strong> استشارة مجانية متبقية" }
-            },
-            agents: { website: "وكيل الموقع", whatsapp: "وكيل واتساب", messenger: "وكيل ماسنجر", instagram: "وكيل انستغرام" },
-            roles: { sales: "وكيل مبيعات 🚀", service: "خدمة عملاء ✨", service_short: "خدمة عملاء", sales_short: "وكيل مبيعات" },
-            messages: { toast_saved: "تم الحفظ بنجاح!", toast_org_updated: "تم تحديث اسم الشركة!", loading_config: "جاري جلب الإعدادات...", agent_activated: "تم تفعيل", agent_deactivated: "تم تعطيل", error_no_org: "لم يتم العثور على شركة. يرجى الاتصال بالمسؤول.", error_saving: "خطأ في حفظ البيانات: ", error_status_update: "فشل تحديث الحالة" },
-            create_post: {
-                title: "استوديو المحتوى",
-                tab_create: "إنشاء منشور",
-                tab_schedule: "جدولة منشور",
-                tab_queue: "المنشورات المجدولة",
-                upload_image: "رفع صورة",
-                ai_generate: "إنشاء بالذكاء الاصطناعي",
-                image_prompt: "وصف الصورة",
-                generate_btn: "إنشاء الصورة",
-                caption_label: "النص",
-                magic_caption: "نص سحري",
-                publish_options: "خيارات النشر",
-                click_upload: "اضغط لرفع صورة",
-                file_type_hint: "يُفضل JPG أو PNG",
-                just_now: "الآن",
-                preview_placeholder: "سيظهر النص هنا...",
-                preview_area: "منطقة المعاينة",
-                like: "إعجاب",
-                comment: "تعليق",
-                share: "مشاركة",
-                image_source: "مصدر الصورة",
-                use_created: "استخدام الصورة المنشأة",
-                upload_new: "رفع صورة جديدة",
-                date_label: "التاريخ",
-                time_label: "الوقت",
-                timezone_label: "المنطقة الزمنية",
-                platforms_label: "المنصات",
-                schedule_btn: "جدولة المنشور",
-                queue_empty: "لا توجد منشورات مجدولة",
-                queue_empty_hint: "جدول منشوراً لرؤيته هنا",
-                status_pending: "قيد الانتظار",
-                status_posted: "تم النشر",
-                status_failed: "فشل",
-                cancel_btn: "إلغاء",
-                image_ready: "الصورة جاهزة!",
-                enter_prompt: "الرجاء إدخال وصف أولاً",
-                ai_working: "الذكاء الاصطناعي يعمل...",
-                content_generated: "تم إنشاء المحتوى!",
-                generate_failed: "فشل إنشاء المحتوى",
-                no_image: "لم يتم اختيار/إنشاء صورة",
-                publishing: "جاري النشر على",
-                published: "تم النشر على",
-                enter_caption: "الرجاء إدخال نص",
-                select_datetime: "الرجاء تحديد التاريخ والوقت",
-                select_platform: "الرجاء اختيار منصة واحدة على الأقل",
-                scheduled_success: "تمت جدولة المنشور بنجاح!",
-                cancelled: "تم إلغاء المنشور"
-
-
-                // Get current language strings
-            };
-
-            function getLangStrings() {
-                return currentLang === 'ar' ? window.LANG_AR : window.LANG_EN;
+        function getLangStrings() {
+            return currentLang === 'ar' ? window.LANG_AR : window.LANG_EN;
         }
 
         // Translation function - get string by dot notation path
@@ -8597,6 +8369,11 @@
                 actionBtn = `<button class="pc-btn" onclick="initiateStripeCheckout('${plan.plan_slug}')">${btnText}</button>`;
             }
 
+            // Get secure payment text with proper translation
+            const securePaymentText = currentLang === 'ar' ?
+                (window.LANG_AR?.modals?.pricing?.secure_payment || '🔒 دفع آمن عبر Stripe') :
+                (window.LANG_EN?.modals?.pricing?.secure_payment || '🔒 Secure Payment via Stripe');
+
             div.innerHTML = `
         ${isPopular ? `<div class="most-popular-badge">${mostPopularText}</div>` : ''}
         <div class="pc-icon">${icons[plan.plan_slug] || '✨'}</div>
@@ -8620,6 +8397,10 @@
         </ul>
 
         ${actionBtn}
+        
+        <div style="margin-top: auto; padding-top: 16px; text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.6); border-top: 1px solid rgba(255,255,255,0.1);">
+            ${securePaymentText}
+        </div>
     `;
 
             return div;
