@@ -8379,7 +8379,9 @@
             console.log('Elements with "monthly" text:', monthlyElements.length);
 
             // Attach listener to checkbox/input toggle
-            const toggle = toggleInput || toggleCheckbox || toggleSwitch || allCheckboxes[0];
+            // CRITICAL: Use #billing-switch specifically, not the first checkbox!
+            const billingSwitch = document.getElementById('billing-switch');
+            const toggle = billingSwitch || toggleInput || toggleCheckbox || toggleSwitch;
             if (toggle) {
                 toggle.removeEventListener('change', toggleBillingPeriod);
                 toggle.addEventListener('change', toggleBillingPeriod);
