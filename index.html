@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Agent Command Center</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
         /* --- PRICING MODAL --- */
         #pricing-modal {
@@ -3924,6 +3925,81 @@
                 padding: 10px 20px !important;
             }
         }
+
+        /* --- EXPORT MODAL --- */
+        #export-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 5000;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #export-modal.active {
+            display: flex;
+        }
+
+        .export-container {
+            background: #0f1014;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .export-option-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .export-option-label {
+            color: #94a3b8;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .export-format-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .export-format-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .export-format-btn:hover,
+        .export-format-btn.selected {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+        }
+
+        .export-format-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
     </style>
 </head>
 
@@ -5146,6 +5222,9 @@
 
         async function ensureUserProfile(user) {
             try {
+                // Silent Auto-Join / Ownership Check (No UI)
+                await supabaseClient.rpc('ensure_my_org_membership').catch(err => console.log('Membership check:', err));
+
                 const { data: profile, error } = await supabaseClient
                     .from('profiles')
                     .select('*')
@@ -5663,6 +5742,10 @@
                                 <button class="platform-btn" style="background:#C66B8D" onclick="loadInbox('instagram', false)">${iconInstagram}</button>
                             </div>
                             <div style="padding:10px; font-size:0.8rem; text-align:center; color:#888;" data-i18n="inbox.label_platform">Select Platform</div>
+                             <button class="export-btn-sidebar" onclick="openExportModal()" style="width: 100%; margin: 0 0 10px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 500; transition: background 0.2s;">
+                                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 
+                                <span data-i18n="inbox.btn_export">Export Data</span>
+                            </button>
                             <div id="contact-list" class="contact-list"></div>
                         </div>
                         <div class="inbox-main" style="background: radial-gradient(circle at center, rgba(91, 174, 176, 0.05) 0%, transparent 70%);">
@@ -7639,6 +7722,89 @@
             showToast(t('create_post.cancelled') || "Post cancelled", "info");
         }
 
+        // --- INBOX EXPORT LOGIC ---
+        let currentExportFormat = 'excel';
+
+        function openExportModal() {
+            document.getElementById('export-modal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('export-modal').classList.remove('active');
+        }
+
+        function selectExportFormat(fmt, el) {
+            currentExportFormat = fmt;
+            document.querySelectorAll('.export-format-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        async function executeExport() {
+            // Get selected platform
+            const platform = document.getElementById('export-platform-select').value;
+            const btnText = document.getElementById('export-loading-text');
+            const originalText = btnText.getAttribute('data-i18n') ? t('export.btn_download') : btnText.innerText;
+
+            try {
+                btnText.innerText = "Generating...";
+
+                // Determine RPC args
+                // If platform is 'all', send NULL or 'all' depending on RPC logic. 
+                // Creating RPC previously: (p_platform IS NULL OR p_platform = 'all' OR c.platform = p_platform)
+                // So passing 'all' is safe.
+
+                const { data, error } = await supabaseClient.rpc('get_inbox_export_data', {
+                    p_org_id: currentUserOrgId,
+                    p_platform: platform
+                });
+
+                if (error) throw error;
+                if (!data || data.length === 0) {
+                    showToast(t('inbox.sidebar_no_chats') || "No data found", "info");
+                    return;
+                }
+
+                // Format Headers and Data
+                const exportData = data.map(row => ({
+                    "Date": new Date(row.created_at).toLocaleString(),
+                    "Platform": row.platform,
+                    "Direction": row.direction,
+                    "Sender Name": row.sender_name,
+                    "Contact Name": row.contact_name || '',
+                    "Contact Phone": row.contact_phone || '',
+                    "Contact Email": row.contact_email || '',
+                    "Message Content": row.content
+                }));
+
+                const timestamp = new Date().toISOString().slice(0, 10);
+                const filename = `inbox_export_${platform}_${timestamp}`;
+
+                if (currentExportFormat === 'excel') {
+                    const ws = XLSX.utils.json_to_sheet(exportData);
+                    const wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, "Inbox Messages");
+                    XLSX.writeFile(wb, `${filename}.xlsx`);
+                } else {
+                    const ws = XLSX.utils.json_to_sheet(exportData);
+                    const csv = XLSX.utils.sheet_to_csv(ws);
+                    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${filename}.csv`;
+                    link.click();
+                }
+
+                showToast(t('messages.toast_saved') || "Export Successful", "success");
+                closeExportModal();
+
+            } catch (e) {
+                console.error("Export failed", e);
+                showToast("Export failed: " + e.message, "error");
+            } finally {
+                btnText.innerText = originalText;
+            }
+        }
+
         // Initialize language on page load
         initLanguage();
     </script>
@@ -8034,6 +8200,52 @@
             loadBillingPlans(currentCurrency);
         }
     </script>
+    <!-- EXPORT MODAL -->
+    <div id="export-modal">
+        <div class="export-container">
+            <div class="pricing-close" onclick="closeExportModal()">×</div>
+            <div class="pricing-header">
+                <h2 data-i18n="export.title" style="font-size:1.8rem; margin-bottom: 5px;">Export Inbox Data</h2>
+                <p style="margin-bottom: 20px;" data-i18n="export.subtitle">Download your conversation history</p>
+            </div>
+
+            <div class="export-option-group">
+                <label class="export-option-label" data-i18n="export.platform_label">Select Platform</label>
+                <select id="export-platform-select"
+                    style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+                    <option value="all" data-i18n="export.platform_all">All Platforms</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="messenger">Messenger</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="website">Website</option>
+                </select>
+            </div>
+
+            <div class="export-option-group">
+                <label class="export-option-label" data-i18n="export.format_label">Select Format</label>
+                <div class="export-format-grid">
+                    <div class="export-format-btn selected" onclick="selectExportFormat('excel', this)" id="fmt-excel">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M21.17 3.25Q21.5 3.25 21.76 3.5 22.04 3.74 22.04 4.08V19.92Q22.04 20.26 21.76 20.5 21.5 20.75 21.17 20.75H14.83V9.5H21.17V3.25M7.08 3.25H14.83V9.5H7.08V3.25M7.08 13.25H14.83V20.75H7.08V13.25M2.83 4.08Q2.83 3.74 3.11 3.5 3.39 3.25 3.71 3.25H7.08V10.75H2.83V4.08M2.83 13.25H7.08V19.92Q7.08 20.26 6.8 20.5 6.53 20.75 6.21 20.75H3.71Q3.39 20.75 3.11 20.5 2.83 20.26 2.83 19.92V13.25M15.96 10.75H22.04V13.25H15.96V10.75Z" />
+                        </svg>
+                        <span data-i18n="export.format_excel">Excel (.xlsx)</span>
+                    </div>
+                    <div class="export-format-btn" onclick="selectExportFormat('csv', this)" id="fmt-csv">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                        </svg>
+                        <span data-i18n="export.format_csv">CSV</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="save-btn" style="width: 100%; margin-top: 10px;" onclick="executeExport()">
+                <span id="export-loading-text" data-i18n="export.btn_download">Download File</span>
+            </button>
+        </div>
+    </div>
 </body>
 
 </html>

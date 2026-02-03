@@ -93,6 +93,7 @@ window.LANG_EN = {
         }
     },
     "inbox": {
+        "btn_export": "Export Data",
         "sidebar_select_platform": "Select Platform",
         "sidebar_loading": "Loading...",
         "sidebar_no_chats": "No chats found.",
@@ -234,6 +235,16 @@ window.LANG_EN = {
             "btn_book": "Book Consultation",
             "btn_contact": "Contact Sales"
         }
+    },
+    "export": {
+        "title": "Export Inbox Data",
+        "subtitle": "Download your conversation history",
+        "platform_label": "Select Platform",
+        "platform_all": "All Platforms",
+        "format_label": "Select Format",
+        "format_excel": "Excel (.xlsx)",
+        "format_csv": "CSV",
+        "btn_download": "Download File"
     },
     "messages": {
         "toast_saved": "Saved Successfully!",

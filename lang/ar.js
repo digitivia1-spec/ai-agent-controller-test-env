@@ -93,6 +93,7 @@ window.LANG_AR = {
         }
     },
     "inbox": {
+        "btn_export": "تصدير البيانات",
         "sidebar_select_platform": "اختر المنصة",
         "sidebar_loading": "جاري التحميل...",
         "sidebar_no_chats": "لا توجد محادثات.",
@@ -234,6 +235,16 @@ window.LANG_AR = {
             "btn_book": "حجز استشارة",
             "btn_contact": "تواصل مع المبيعات"
         }
+    },
+    "export": {
+        "title": "تصدير المحادثات",
+        "subtitle": "تحميل أرشيف المحادثات كاملاً",
+        "platform_label": "اختر المنصة",
+        "platform_all": "كل المنصات",
+        "format_label": "اختر الصيغة",
+        "format_excel": "اكسل (.xlsx)",
+        "format_csv": "ملف CSV",
+        "btn_download": "تحميل الملف"
     },
     "messages": {
         "toast_saved": "تم الحفظ بنجاح!",
