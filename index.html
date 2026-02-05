@@ -186,7 +186,9 @@
                 "col_total": "Total",
                 "col_status": "Status",
                 "col_actions": "Actions",
+                "col_actions": "Actions",
                 "btn_delete": "Delete Order",
+                "confirm_delete": "Are you sure you want to delete this order?",
                 "no_data": "No orders to export"
             },
             "reviews": {
@@ -592,6 +594,7 @@
                 "col_status": "الحالة",
                 "col_actions": "الإجراءات",
                 "btn_delete": "حذف الطلب",
+                "confirm_delete": "هل أنت متأكد من حذف هذا الطلب؟",
                 "no_data": "لا توجد طلبات للتصدير"
             },
             "reviews": {
@@ -8593,7 +8596,8 @@
                 if (error) throw error;
 
                 // Remove from cache and re-render
-                cachedOrders = cachedOrders.filter(o => o.id !== orderId);
+                // Remove from cache and re-render (handle string vs number id)
+                cachedOrders = cachedOrders.filter(o => String(o.id) !== String(orderId));
 
                 if (cachedOrders.length === 0) {
                     document.getElementById('orders-table').style.display = 'none';
