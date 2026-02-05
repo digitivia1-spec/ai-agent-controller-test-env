@@ -4482,6 +4482,96 @@
             }
         }
 
+        /* ==========================================
+           ORDERS TABLE STYLES
+           ========================================== */
+        .orders-table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        .orders-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .orders-table th:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .orders-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            text-transform: capitalize;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        /* RTL for Orders Table */
+        [dir="rtl"] .orders-table th,
+        [dir="rtl"] .orders-table td {
+            text-align: right;
+        }
+
+        /* Mobile responsiveness for Orders */
+        @media (max-width: 768px) {
+            .orders-table {
+                font-size: 0.8rem;
+            }
+
+            .orders-table th,
+            .orders-table td {
+                padding: 8px 10px;
+            }
+
+            .status-badge {
+                padding: 3px 8px;
+                font-size: 0.7rem;
+            }
+        }
+
         /* Language Toggle Button */
         .lang-toggle {
             min-width: 48px;
@@ -4925,6 +5015,13 @@
                             d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                     </svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_leads">Leads Area</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('orders', this)">
+                <div class="nav-icon"><svg viewBox="0 0 24 24">
+                        <path
+                            d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z" />
+                    </svg></div>
+                <span class="nav-label" data-i18n="sidebar.nav_orders">Orders Area</span>
             </li>
             <li class="nav-item" onclick="switchTab('create-post', this)">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
@@ -6360,6 +6457,51 @@
                 </div>
             </div>
 
+            <!-- ORDERS AREA TAB -->
+            <div id="orders" class="tab-content">
+                <div class="card glass">
+                    <div class="leads-controls">
+                        <h2 data-i18n="orders.title">Orders Area</h2>
+                        <div class="export-group">
+                            <button class="export-btn" onclick="exportOrdersCSV()">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                                <span data-i18n="orders.btn_export_csv">Export CSV</span>
+                            </button>
+                            <button class="export-btn" onclick="exportOrdersExcel()">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14h-2v-4H6v-2h2V7h2v4h3v2h-3v4zm6-5h-2V7h2v5z"/></svg>
+                                <span data-i18n="orders.btn_export_excel">Export Excel</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="orders-table-container" class="orders-table-container">
+                        <div id="orders-loading" style="text-align:center; padding: 40px; color: #888;">
+                            <div class="loading-spinner"></div>
+                            <p data-i18n="orders.loading">Loading orders...</p>
+                        </div>
+                        <div id="orders-empty" style="display:none; text-align:center; padding: 60px; color:#888;">
+                            <div style="font-size: 3rem; margin-bottom: 20px;">🛒</div>
+                            <h3 data-i18n="orders.empty_title">No Orders Yet</h3>
+                            <p data-i18n="orders.empty_text">Orders placed through your AI agents will appear here.</p>
+                        </div>
+                        <table id="orders-table" class="orders-table" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th onclick="sortOrdersTable('customer_name')" style="cursor:pointer;" data-i18n="orders.col_customer">Customer ↕</th>
+                                    <th onclick="sortOrdersTable('phone')" style="cursor:pointer;" data-i18n="orders.col_phone">Phone ↕</th>
+                                    <th onclick="sortOrdersTable('items_summary')" style="cursor:pointer;" data-i18n="orders.col_items">Items ↕</th>
+                                    <th onclick="sortOrdersTable('total_amount')" style="cursor:pointer;" data-i18n="orders.col_total">Total ↕</th>
+                                    <th onclick="sortOrdersTable('status')" style="cursor:pointer;" data-i18n="orders.col_status">Status ↕</th>
+                                    <th onclick="sortOrdersTable('created_at')" style="cursor:pointer;" data-i18n="orders.col_date">Date ↕</th>
+                                    <th data-i18n="orders.col_actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- E. CREATE POST STUDIO TAB -->
             <div id="create-post" class="tab-content">
                 <div class="card glass">
@@ -6616,6 +6758,10 @@
             if (tabId === 'leads') {
                 color = '#e6b72a'; // Gold for leads
                 fetchLeads(); // Fetch data when tab opens
+            }
+            if (tabId === 'orders') {
+                color = '#f97316'; // Orange for orders
+                fetchOrders(); // Fetch data when tab opens
             }
             if (tabId === 'insights') {
                 color = '#7C4DFF';
@@ -7975,6 +8121,240 @@
                 list.innerHTML = html;
             } catch (e) {
                 list.innerHTML = '<div style="color:var(--error)">Failed to load stats</div>';
+            }
+        }
+
+        // ==========================================
+        //        ORDERS AREA FUNCTIONS
+        // ==========================================
+
+        let cachedOrders = [];
+        let ordersSortColumn = 'created_at';
+        let ordersSortDirection = 'desc';
+
+        async function fetchOrders() {
+            if (!currentUserOrgId) {
+                console.warn("No org ID available for fetching orders");
+                return;
+            }
+
+            const loadingEl = document.getElementById('orders-loading');
+            const emptyEl = document.getElementById('orders-empty');
+            const tableEl = document.getElementById('orders-table');
+
+            if (loadingEl) loadingEl.style.display = 'block';
+            if (emptyEl) emptyEl.style.display = 'none';
+            if (tableEl) tableEl.style.display = 'none';
+
+            try {
+                const { data: orders, error } = await supabaseClient
+                    .from('orders')
+                    .select('*')
+                    .eq('org_id', currentUserOrgId)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                cachedOrders = orders || [];
+
+                if (loadingEl) loadingEl.style.display = 'none';
+
+                if (cachedOrders.length === 0) {
+                    if (emptyEl) emptyEl.style.display = 'block';
+                } else {
+                    if (tableEl) tableEl.style.display = 'table';
+                    renderOrders();
+                }
+            } catch (e) {
+                console.error("Error fetching orders:", e);
+                if (loadingEl) loadingEl.innerHTML = `<p style="color:var(--error);">${t('orders.error_loading')}</p>`;
+            }
+        }
+
+        function renderOrders() {
+            const tbody = document.getElementById('orders-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            cachedOrders.forEach(order => {
+                const row = document.createElement('tr');
+
+                // Status badge with color
+                const statusColors = {
+                    'new': '#6366f1',
+                    'confirmed': '#3b82f6',
+                    'processing': '#f59e0b',
+                    'shipped': '#8b5cf6',
+                    'delivered': '#22c55e',
+                    'cancelled': '#ef4444'
+                };
+                const statusColor = statusColors[order.status] || '#6b7280';
+                const statusLabel = t(`orders.status.${order.status}`) || order.status;
+
+                // Format date
+                let dateStr = '--';
+                if (order.created_at) {
+                    const date = new Date(order.created_at);
+                    dateStr = date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric'
+                    });
+                }
+
+                // Format total with currency
+                const totalStr = order.total_amount
+                    ? `${order.currency || ''} ${parseFloat(order.total_amount).toFixed(2)}`
+                    : '--';
+
+                row.innerHTML = `
+                    <td>${order.customer_name || '--'}</td>
+                    <td>${order.phone || '--'}</td>
+                    <td>${order.items_summary || '--'}</td>
+                    <td>${totalStr}</td>
+                    <td><span class="status-badge" style="background:${statusColor}">${statusLabel}</span></td>
+                    <td>${dateStr}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteOrder('${order.id}')" title="${t('orders.btn_delete')}">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function sortOrdersTable(column) {
+            if (ordersSortColumn === column) {
+                ordersSortDirection = ordersSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                ordersSortColumn = column;
+                ordersSortDirection = 'asc';
+            }
+
+            cachedOrders.sort((a, b) => {
+                let valA = a[column] || '';
+                let valB = b[column] || '';
+
+                // Handle numbers
+                if (column === 'total_amount') {
+                    valA = parseFloat(valA) || 0;
+                    valB = parseFloat(valB) || 0;
+                }
+
+                // Handle dates
+                if (column === 'created_at') {
+                    valA = new Date(valA).getTime() || 0;
+                    valB = new Date(valB).getTime() || 0;
+                }
+
+                // Handle strings
+                if (typeof valA === 'string') {
+                    valA = valA.toLowerCase();
+                    valB = valB.toLowerCase();
+                }
+
+                if (valA < valB) return ordersSortDirection === 'asc' ? -1 : 1;
+                if (valA > valB) return ordersSortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            renderOrders();
+        }
+
+        function exportOrdersCSV() {
+            if (cachedOrders.length === 0) {
+                showToast(t('orders.no_data'), 'warning');
+                return;
+            }
+
+            const headers = ['Customer Name', 'Phone', 'Email', 'Address', 'Items', 'Total', 'Currency', 'Status', 'Date'];
+            const rows = cachedOrders.map(o => [
+                o.customer_name || '',
+                o.phone || '',
+                o.email || '',
+                o.delivery_address || '',
+                o.items_summary || '',
+                o.total_amount || '',
+                o.currency || '',
+                o.status || '',
+                o.created_at ? new Date(o.created_at).toISOString() : ''
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${(cell + '').replace(/"/g, '""')}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `orders_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showToast(t('orders.exported_csv'), 'success');
+        }
+
+        function exportOrdersExcel() {
+            if (cachedOrders.length === 0) {
+                showToast(t('orders.no_data'), 'warning');
+                return;
+            }
+
+            if (typeof XLSX === 'undefined') {
+                showToast('Excel export library not loaded', 'error');
+                return;
+            }
+
+            const data = cachedOrders.map(o => ({
+                'Customer Name': o.customer_name || '',
+                'Phone': o.phone || '',
+                'Email': o.email || '',
+                'Delivery Address': o.delivery_address || '',
+                'Items': o.items_summary || '',
+                'Total': o.total_amount || '',
+                'Currency': o.currency || '',
+                'Status': o.status || '',
+                'Date': o.created_at ? new Date(o.created_at).toISOString() : ''
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+            XLSX.writeFile(wb, `orders_${new Date().toISOString().slice(0, 10)}.xlsx`);
+
+            showToast(t('orders.exported_excel'), 'success');
+        }
+
+        async function deleteOrder(orderId) {
+            if (!confirm(t('orders.confirm_delete'))) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .delete()
+                    .eq('id', orderId)
+                    .eq('org_id', currentUserOrgId);
+
+                if (error) throw error;
+
+                // Remove from cache and re-render
+                cachedOrders = cachedOrders.filter(o => o.id !== orderId);
+
+                if (cachedOrders.length === 0) {
+                    document.getElementById('orders-table').style.display = 'none';
+                    document.getElementById('orders-empty').style.display = 'block';
+                } else {
+                    renderOrders();
+                }
+
+                showToast(t('orders.deleted_success'), 'success');
+            } catch (e) {
+                console.error("Error deleting order:", e);
+                showToast(t('orders.error_deleting'), 'error');
             }
         }
 
