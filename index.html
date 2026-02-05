@@ -8358,6 +8358,130 @@
             }
         }
 
+        // ==========================================
+        //        MANUAL ORDER ENTRY FUNCTIONS
+        // ==========================================
+
+        function addOrder() {
+            const modal = document.getElementById('add-order-modal');
+            if (modal) {
+                modal.classList.add('active');
+
+                // Reset form
+                document.getElementById('new-order-name').value = '';
+                document.getElementById('new-order-phone').value = '';
+                document.getElementById('new-order-total').innerText = '0.00';
+                document.getElementById('new-order-status').value = 'new';
+
+                // Reset Rows (Keep 1 empty row)
+                const list = document.getElementById('order-items-list');
+                list.innerHTML = '';
+                addOrderItemRow();
+            }
+        }
+
+        function closeAddOrderModal() {
+            const modal = document.getElementById('add-order-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function addOrderItemRow() {
+            const list = document.getElementById('order-items-list');
+            const div = document.createElement('div');
+            div.className = 'order-item-row';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '2fr 1fr 1fr 30px';
+            div.style.gap = '10px';
+            div.innerHTML = `
+                <input type="text" class="form-input item-name" placeholder="Item Name" oninput="calculateNewOrderTotal()">
+                <input type="number" class="form-input item-qty" placeholder="Qty" value="1" min="1" oninput="calculateNewOrderTotal()">
+                <input type="number" class="form-input item-price" placeholder="Price" min="0" step="0.01" oninput="calculateNewOrderTotal()">
+                <button type="button" class="remove-link-btn" onclick="removeOrderItemRow(this)">×</button>
+            `;
+            list.appendChild(div);
+        }
+
+        function removeOrderItemRow(btn) {
+            btn.parentElement.remove();
+            calculateNewOrderTotal();
+        }
+
+        function calculateNewOrderTotal() {
+            let total = 0;
+            const rows = document.querySelectorAll('.order-item-row');
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                total += (qty * price);
+            });
+            document.getElementById('new-order-total').innerText = total.toFixed(2);
+        }
+
+        async function saveNewOrder() {
+            const name = document.getElementById('new-order-name').value.trim();
+            const phone = document.getElementById('new-order-phone').value.trim();
+            const status = document.getElementById('new-order-status').value;
+
+            if (!name) {
+                showToast(t('orders.error_name_required'), 'error');
+                return;
+            }
+
+            // Collect Items
+            const items = [];
+            let total = 0;
+            const rows = document.querySelectorAll('.order-item-row');
+
+            rows.forEach(row => {
+                const iName = row.querySelector('.item-name').value.trim();
+                const iQty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const iPrice = parseFloat(row.querySelector('.item-price').value) || 0;
+
+                if (iName) {
+                    items.push({ name: iName, quantity: iQty, price: iPrice });
+                    total += (iQty * iPrice);
+                }
+            });
+
+            if (items.length === 0) {
+                showToast(t('orders.error_items_required'), 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('orders')
+                    .insert({
+                        org_id: currentUserOrgId,
+                        customer_name: name,
+                        customer_phone: phone, // Using Correct Column
+                        status: status,
+                        total_amount: total,
+                        currency: 'EGP', // Default currency
+                        items: items, // JSONB structure
+                        created_at: new Date().toISOString()
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                // Add to cache (at the top) and re-render
+                cachedOrders.unshift(data);
+
+                document.getElementById('orders-empty').style.display = 'none';
+                document.getElementById('orders-table').style.display = 'table';
+
+                renderOrders();
+                closeAddOrderModal();
+                showToast(t('orders.saved_success'), 'success');
+
+            } catch (e) {
+                console.error("Error saving order:", e);
+                showToast(t('orders.error_saving'), 'error');
+            }
+        }
+
         // INJECT DASHBOARD TRANSLATIONS
         // We use a timeout to ensure LANG objects are defined if they rely on async loading, 
         // though typically they are defined at top of script.
@@ -9327,6 +9451,61 @@
             <button class="save-btn" style="width: 100%; margin-top: 10px;" onclick="executeExport()">
                 <span id="export-loading-text" data-i18n="export.btn_download">Download File</span>
             </button>
+        </div>
+    </div>
+    <!-- ADD ORDER MODAL -->
+    <div id="add-order-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 data-i18n="orders.modal_title">Add New Order</h3>
+                <span class="close-modal" onclick="closeAddOrderModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="orders.lbl_customer_name">Customer Name</label>
+                    <input type="text" id="new-order-name" class="form-input" placeholder="e.g. Ahmed Ali">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="orders.lbl_customer_phone">Phone Number</label>
+                    <input type="tel" id="new-order-phone" class="form-input" placeholder="e.g. 010xxxxxxxx">
+                </div>
+
+                <div class="form-group">
+                    <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span data-i18n="orders.lbl_items">Order Items</span>
+                        <button type="button" class="text-btn small" onclick="addOrderItemRow()"
+                            style="color:var(--theme-color);">+ Add Item</button>
+                    </label>
+                    <div id="order-items-list"
+                        style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;">
+                        <!-- Dynamic Rows -->
+                    </div>
+                </div>
+
+                <div class="form-group"
+                    style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                    <label style="margin:0;" data-i18n="orders.lbl_total">Total Amount</label>
+                    <div style="font-size:1.2rem; font-weight:bold;">
+                        <span id="new-order-currency">EGP</span> <span id="new-order-total">0.00</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="orders.lbl_status">Status</label>
+                    <select id="new-order-status" class="form-input">
+                        <option value="new">New</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeAddOrderModal()" data-i18n="common.cancel">Cancel</button>
+                <button class="primary-btn" onclick="saveNewOrder()" data-i18n="common.save">Save Order</button>
+            </div>
         </div>
     </div>
 </body>
