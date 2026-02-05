@@ -178,7 +178,14 @@
                 "delete_confirm": "Are you sure you want to delete this order?",
                 "deleted_success": "Order deleted successfully",
                 "error_loading": "Failed to load orders",
-                "error_deleting": "Failed to delete order"
+                "error_deleting": "Failed to delete order",
+                "col_customer": "Customer",
+                "col_phone": "Phone",
+                "col_date": "Date",
+                "col_items": "Items",
+                "col_total": "Total",
+                "btn_delete": "Delete Order",
+                "no_data": "No orders to export"
             },
             "reviews": {
                 "title": "Customer Reviews",
@@ -574,7 +581,14 @@
                 "delete_confirm": "هل أنت متأكد من حذف هذا الطلب؟",
                 "deleted_success": "تم حذف الطلب بنجاح",
                 "error_loading": "فشل تحميل الطلبات",
-                "error_deleting": "فشل حذف الطلب"
+                "error_deleting": "فشل حذف الطلب",
+                "col_customer": "العميل",
+                "col_phone": "الهاتف",
+                "col_date": "التاريخ",
+                "col_items": "المنتجات",
+                "col_total": "الإجمالي",
+                "btn_delete": "حذف الطلب",
+                "no_data": "لا توجد طلبات للتصدير"
             },
             "reviews": {
                 "title": "آراء العملاء",
@@ -4657,6 +4671,87 @@
             }
         }
 
+        /* Mobile Card View for Orders */
+        .orders-mobile-list {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-card-mobile {
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-card-id {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .order-row span:first-child {
+            color: #94a3b8;
+        }
+
+        .total-row {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--theme-color);
+        }
+
+        @media (max-width: 768px) {
+            .orders-table {
+                display: none !important;
+            }
+
+            .orders-mobile-list {
+                display: flex !important;
+            }
+        }
+
+        /* Leads Card Fixes */
+        .lead-card {
+            /* Ensure containment */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .lead-info h3 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        /* Fix badge overlap */
+        .lead-source {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+
         /* Language Toggle Button */
         .lang-toggle {
             min-width: 48px;
@@ -8258,9 +8353,15 @@
 
         function renderOrders() {
             const tbody = document.getElementById('orders-tbody');
+            const mobileList = document.getElementById('orders-mobile-list');
             if (!tbody) return;
 
             tbody.innerHTML = '';
+            if (mobileList) mobileList.innerHTML = '';
+
+            // Toggle View based on width (simple check, or CSS media query handles visibility)
+            // Actually, we render BOTH and let CSS hide/show
+            // BUT for performance, we can check. For now, render BOTH to be safe.
 
             cachedOrders.forEach(order => {
                 const row = document.createElement('tr');
@@ -8342,6 +8443,29 @@
                     </td>
                 `;
                 tbody.appendChild(row);
+
+                // Render Mobile Card
+                if (mobileList) {
+                    const card = document.createElement('div');
+                    card.className = 'order-card-mobile glass';
+                    card.innerHTML = `
+                        <div class="order-card-header">
+                            <span class="order-card-id">#${(order.id || '').substring(0, 8)}</span>
+                            <span class="status-badge" style="background:${statusColor}">${statusLabel}</span>
+                        </div>
+                        <div class="order-card-body">
+                            <div class="order-row"><span>${t('orders.col_customer')}:</span> <strong>${order.customer_name || '--'}</strong></div>
+                            <div class="order-row"><span>${t('orders.col_phone')}:</span> <span>${phone}</span></div>
+                            <div class="order-row"><span>${t('orders.col_date')}:</span> <span>${dateStr}</span></div>
+                            <div class="order-row"><span>${t('orders.col_items')}:</span> <div>${itemsSummary}</div></div>
+                            <div class="order-row total-row"><span>${t('orders.col_total')}:</span> <span>${totalStr}</span></div>
+                        </div>
+                        <div class="order-card-actions">
+                            <button class="delete-btn" onclick="deleteOrder('${order.id}')">${t('orders.btn_delete')}</button>
+                        </div>
+                    `;
+                    mobileList.appendChild(card);
+                }
             });
         }
 
