@@ -4483,6 +4483,91 @@
         }
 
         /* ==========================================
+           CONTROLS & BUTTONS (Fixes Top Right Card)
+           ========================================== */
+        .leads-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .leads-controls h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .export-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn,
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .export-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ccc;
+        }
+
+        .export-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .add-btn {
+            background: var(--theme-color, #8B5CF6);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* Mobile override for controls */
+        @media (max-width: 600px) {
+            .leads-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .export-group {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .export-btn,
+            .add-btn {
+                flex: 1;
+                justify-content: center;
+                white-space: nowrap;
+            }
+        }
+
+        /* ==========================================
            ORDERS TABLE STYLES
            ========================================== */
         .orders-table-container {
@@ -6471,6 +6556,10 @@
                                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14h-2v-4H6v-2h2V7h2v4h3v2h-3v4zm6-5h-2V7h2v5z"/></svg>
                                 <span data-i18n="orders.btn_export_excel">Export Excel</span>
                             </button>
+                            <button class="add-btn" onclick="addOrder()">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                <span data-i18n="orders.btn_add_order">Add Order</span>
+                            </button>
                         </div>
                     </div>
                     <div id="orders-table-container" class="orders-table-container">
@@ -8206,13 +8295,31 @@
                     ? `${order.currency || ''} ${parseFloat(order.total_amount).toFixed(2)}`
                     : '--';
 
+                // Handle Phone Mapping
+                const phone = order.customer_phone || order.phone || '--';
+
+                // Handle Items Parsing
+                let itemsSummary = '--';
+                if (order.items) {
+                    if (Array.isArray(order.items) && order.items.length > 0) {
+                        itemsSummary = order.items.map(item => {
+                            // Handle both snake_case and camelCase just in case
+                            const iName = item.name || item.product_name || 'Item';
+                            const iQty = item.quantity || item.qty || 1;
+                            return `<div>• ${iName} <span style="opacity:0.7">[x${iQty}]</span></div>`;
+                        }).join('');
+                    } else if (typeof order.items === 'string') {
+                        itemsSummary = order.items; // Fallback if regular string
+                    }
+                }
+
                 row.innerHTML = `
                     <td>${order.customer_name || '--'}</td>
-                    <td>${order.phone || '--'}</td>
-                    <td>${order.items_summary || '--'}</td>
-                    <td>${totalStr}</td>
+                    <td>${phone}</td>
+                    <td style="min-width: 200px; white-space: normal; line-height: 1.4;">${itemsSummary}</td>
+                    <td style="white-space: nowrap;">${totalStr}</td>
                     <td><span class="status-badge" style="background:${statusColor}">${statusLabel}</span></td>
-                    <td>${dateStr}</td>
+                    <td style="white-space: nowrap;">${dateStr}</td>
                     <td>
                         <button class="delete-btn" onclick="deleteOrder('${order.id}')" title="${t('orders.btn_delete')}">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
