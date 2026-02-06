@@ -28,7 +28,7 @@
                 "nav_dashboard": "Dashboard",
                 "nav_website": "Website Agent",
                 "nav_whatsapp": "WhatsApp Agent",
-                "nav_messenger": "Messenger Agent",
+                "nav_page": "Messenger Agent",
                 "nav_instagram": "Instagram Agent",
                 "nav_insights": "Live Insights",
                 "nav_inbox": "Live Inbox",
@@ -80,7 +80,7 @@
                 "title": "Live Insights",
                 "platform_facebook": "Facebook",
                 "platform_instagram": "Instagram",
-                "platform_messenger": "Messenger",
+                "platform_page": "page",
                 "period_daily": "Daily",
                 "period_weekly": "Weekly",
                 "period_28days": "28 Days",
@@ -288,7 +288,7 @@
                     "sec_start_title": "🚀 Getting Started",
                     "sec_start_text": "Welcome to Digitivia AI Agent! This platform allows you to create, manage, and monitor powerful AI agents across multiple communication channels.",
                     "sec_config_title": "🤖 Configuring Your Agents",
-                    "sec_config_text": "Each agent (Website, WhatsApp, Messenger, Instagram) can be customized independently:",
+                    "sec_config_text": "Each agent (Website, WhatsApp, page, Instagram) can be customized independently:",
                     "sec_config_list_prompt": "<strong>System Prompt:</strong> This is the \"brain\" of your agent. Define its personality, knowledge, and boundaries.",
                     "sec_config_list_tone": "<strong>Tone:</strong> Choose how the agent should sound (e.g., Professional, Friendly, Helpful).",
                     "sec_config_list_kb": "<strong>Knowledge Base Links:</strong> Add URLs that your agent should use as a reference to answer questions accurately.",
@@ -340,7 +340,7 @@
             "agents": {
                 "website": "Website Agent",
                 "whatsapp": "WhatsApp Agent",
-                "messenger": "Messenger Agent",
+                "page": "Messenger Agent",
                 "instagram": "Instagram Agent"
             },
             "roles": {
@@ -435,7 +435,7 @@
                 "nav_dashboard": "لوحة التحكم",
                 "nav_website": "وكيل الموقع الإلكتروني",
                 "nav_whatsapp": "وكيل واتساب",
-                "nav_messenger": "وكيل ماسنجر",
+                "nav_page": "وكيل ماسنجر",
                 "nav_instagram": "وكيل انستغرام",
                 "nav_insights": "رؤى مباشرة",
                 "nav_inbox": "صندوق الوارد المباشر",
@@ -487,7 +487,7 @@
                 "title": "رؤى مباشرة",
                 "platform_facebook": "فيسبوك",
                 "platform_instagram": "انستغرام",
-                "platform_messenger": "ماسنجر",
+                "platform_page": "ماسنجر",
                 "period_daily": "يومي",
                 "period_weekly": "أسبوعي",
                 "period_28days": "آخر 28 يوم",
@@ -746,7 +746,7 @@
             "agents": {
                 "website": "وكيل الموقع الإلكتروني",
                 "whatsapp": "وكيل واتساب",
-                "messenger": "وكيل ماسنجر",
+                "page": "وكيل ماسنجر",
                 "instagram": "وكيل انستغرام"
             },
             "roles": {
@@ -5168,12 +5168,12 @@
                     </svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_whatsapp">WhatsApp Agent</span>
             </li>
-            <li class="nav-item" onclick="switchTab('messenger', this)">
+            <li class="nav-item" onclick="switchTab('page', this)">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
                         <path
                             d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z" />
                     </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_messenger">Messenger Agent</span>
+                <span class="nav-label" data-i18n="sidebar.nav_page">Messenger Agent</span>
             </li>
             <li class="nav-item" onclick="switchTab('instagram', this)">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
@@ -5504,7 +5504,7 @@
         const AGENTS = [
             { id: 'website', nameKey: 'agents.website', color: '#5BAEB0' },
             { id: 'whatsapp', nameKey: 'agents.whatsapp', color: '#57B078' },
-            { id: 'messenger', nameKey: 'agents.messenger', color: '#5B89CE' },
+            { id: 'page', nameKey: 'agents.page', color: '#5B89CE' },
             { id: 'instagram', nameKey: 'agents.instagram', color: '#C66B8D' }
         ];
 
@@ -6551,8 +6551,8 @@
                             <div class="platform-chip" id="chip-instagram" onclick="setInsightPlatform('instagram')">
                                 ${iconInsta} Instagram
                             </div>
-                            <div class="platform-chip" id="chip-messenger" onclick="setInsightPlatform('messenger')">
-                                ${iconMsg} Messenger
+                            <div class="platform-chip" id="chip-page" onclick="setInsightPlatform('page')">
+                                ${iconMsg} page
                             </div>
                         </div>
                         <select class="period-select" id="insight-period" onchange="setInsightPeriod(this.value)">
@@ -6580,7 +6580,7 @@
             // C. LIVE INBOX TAB
             const iconWebsite = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
             const iconWhatsapp = `<svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c1.024.558 1.815.842 2.802.842h.002c3.178 0 5.769-2.587 5.769-5.766 0-1.545-.601-2.997-1.692-4.088-1.09-1.091-2.539-1.691-4.085-1.691zm0-2c2.083 0 4.041.812 5.513 2.285 1.472 1.474 2.282 3.432 2.281 5.515 0 4.296-3.499 7.794-7.796 7.794-1.312 0-2.551-.33-3.666-.921l-4.093 1.073 1.092-3.987c-.672-1.163-1.025-2.478-1.025-3.959.001-4.301 3.502-7.8 7.802-7.8"/></svg>`;
-            const iconMessenger = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z"/></svg>`;
+            const iconpage = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z"/></svg>`;
             const iconInstagram = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z" fill-rule="evenodd"/></svg>`;
 
             html += `
@@ -6591,7 +6591,7 @@
                             <div class="platform-selector">
                                 <button class="platform-btn" style="background:#5BAEB0" onclick="loadInbox('website', false)">${iconWebsite}</button>
                                 <button class="platform-btn" style="background:#57B078" onclick="loadInbox('whatsapp', false)">${iconWhatsapp}</button>
-                                <button class="platform-btn" style="background:#5B89CE" onclick="loadInbox('messenger', false)">${iconMessenger}</button>
+                                <button class="platform-btn" style="background:#5B89CE" onclick="loadInbox('page', false)">${iconpage}</button>
                                 <button class="platform-btn" style="background:#C66B8D" onclick="loadInbox('instagram', false)">${iconInstagram}</button>
                             </div>
                             <div style="padding:10px; font-size:0.8rem; text-align:center; color:#888;" data-i18n="inbox.label_platform">Select Platform</div>
@@ -6941,7 +6941,7 @@
 
             let color = '#5BAEB0';
             if (tabId === 'whatsapp') color = '#57B078';
-            if (tabId === 'page' || tabId === 'messenger') color = '#5B89CE';
+            if (tabId === 'page' || tabId === 'page') color = '#5B89CE';
             if (tabId === 'instagram') color = '#C66B8D';
             if (tabId === 'website') color = '#5BAEB0';
             if (tabId === 'inbox') color = '#6366f1'; // Indigo for inbox
@@ -7430,7 +7430,7 @@
                     { label: t('metrics.website_clicks'), value: data.website_clicks || 0, icon: '🖱️' },
                     { label: t('metrics.total_interactions'), value: data.total_interactions || 0, icon: '❤️' }
                 ];
-            } else if (insightPlatform === 'messenger') {
+            } else if (insightPlatform === 'page') {
                 cardsData = [
                     { label: t('metrics.total_connections'), value: data.page_messages_total_messaging_connections || 0, icon: '💬' },
                     { label: t('metrics.new_conversations'), value: data.page_messages_new_conversations_unique || 0, icon: '✨' }
@@ -7467,7 +7467,7 @@
                 let color = '#5BAEB0';
                 if (platform === 'whatsapp') color = '#57B078';
                 if (platform === 'whatsapp') color = '#57B078';
-                if (platform === 'messenger') color = '#5B89CE';
+                if (platform === 'page') color = '#5B89CE';
                 if (platform === 'instagram') color = '#C66B8D';
                 document.documentElement.style.setProperty('--theme-color', color);
             }
@@ -9553,7 +9553,7 @@
                     style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
                     <option value="all" data-i18n="export.platform_all">All Platforms</option>
                     <option value="whatsapp">WhatsApp</option>
-                    <option value="messenger">Messenger</option>
+                    <option value="page">page</option>
                     <option value="instagram">Instagram</option>
                     <option value="website">Website</option>
                 </select>
