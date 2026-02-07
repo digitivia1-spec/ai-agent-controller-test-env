@@ -8410,8 +8410,11 @@
                 // Handle Items Parsing - ROBUST
                 let itemsSummary = '--';
 
-                if (order.items) {
-                    let itemsData = order.items;
+                // DB column is 'order_items', keeping 'items' as fallback
+                let rawItems = order.order_items || order.items;
+
+                if (rawItems) {
+                    let itemsData = rawItems;
 
                     // If string, try to parse if it looks like JSON
                     if (typeof itemsData === 'string') {
@@ -8427,7 +8430,8 @@
 
                     if (Array.isArray(itemsData) && itemsData.length > 0) {
                         itemsSummary = itemsData.map(item => {
-                            const iName = item.name || item.product_name || item.item_name || 'Item';
+                            // Added item.product based on DB schema
+                            const iName = item.product || item.name || item.product_name || item.item_name || 'Item';
                             const iQty = item.quantity || item.qty || item.count || 1;
                             return `<div>• ${iName} <span style="opacity:0.7">[x${iQty}]</span></div>`;
                         }).join('');
