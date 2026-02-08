@@ -9328,6 +9328,7 @@
             if (modal) {
                 modal.classList.remove('active');
                 modal.classList.remove('show');
+                modal.style.display = 'none'; // Force hide
             }
             document.body.style.overflow = '';
         }
