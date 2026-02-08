@@ -5560,34 +5560,7 @@
 
     <div id="toast">Saved Successfully!</div>
 
-    <!-- PRICING MODAL -->
-    <div id="pricing-modal" class="pricing-modal-overlay" onclick="closePricingModal(event)">
-        <div class="pricing-modal" onclick="event.stopPropagation()">
-            <button class="pricing-close" onclick="closePricingModal()">&times;</button>
-            <div class="pricing-header">
-                <h2 data-i18n="modals.pricing.header_title">Choose Your Plan</h2>
-                <div class="pricing-subtitle">
-                    <span data-i18n="modals.pricing.subtitle">Scale your AI agents with the perfect plan</span>
-                    <div class="billing-toggle">
-                        <span class="billing-period active" id="billing-monthly"
-                            data-i18n="modals.pricing.monthly">Monthly</span>
-                        <label class="switch">
-                            <input type="checkbox" id="billing-switch">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="billing-period" id="billing-yearly" data-i18n="modals.pricing.yearly">Yearly <span
-                                class="discount-badge">-20%</span></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pricing-grid" id="pricing-grid">
-                <!-- Content will be loaded dynamically by JS -->
-                <div style="color:white; text-align:center; width:100%; grid-column:1/-1; padding:30px;">Loading
-                    plans...</div>
-            </div>
-        </div>
-    </div>
+    <!-- OLD PRICING MODAL REMOVED -->
 
     <!-- DOCUMENTATION MODAL -->
     <div id="docs-modal" class="docs-modal-overlay" onclick="closeDocsModal(event)">
@@ -9847,59 +9820,7 @@
             loadBillingPlans(currentCurrency);
         }
     </script>
-    <!-- PRICING MODAL -->
-    <div id="pricing-modal">
-        <div class="pricing-container">
-            <div class="pricing-close" onclick="closePricingModal()">×</div>
-
-            <div class="pricing-header">
-                <h2 data-i18n="modals.pricing.header_title">Choose Your Plan</h2>
-                <p data-i18n="modals.pricing.subtitle">Scale your AI agents with the perfect plan</p>
-            </div>
-
-            <!-- TABS -->
-            <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
-                <button class="pricing-tab-btn active" id="btn-tab-plans" onclick="switchPricingTab('plans')">
-                    <span data-i18n="modals.pricing.tab_plans">Plans</span>
-                </button>
-                <button class="pricing-tab-btn" id="btn-tab-addons" onclick="switchPricingTab('addons')">
-                    <span data-i18n="modals.pricing.tab_addons">Add-ons</span>
-                </button>
-            </div>
-
-            <!-- PLANS CONTENT -->
-            <div id="pricing-content-plans">
-                <div class="billing-toggle">
-                    <span id="billing-monthly" class="active" data-period="monthly"
-                        data-i18n="modals.pricing.monthly">Monthly</span>
-                    <label class="billing-toggle-switch">
-                        <input type="checkbox" id="billing-switch">
-                        <span class="slider round"></span>
-                    </label>
-                    <span id="billing-yearly" data-period="yearly" data-i18n="modals.pricing.yearly">Yearly</span>
-                    <span class="discount-badge">SAVE 50%</span>
-                </div>
-
-                <div class="pricing-grid" id="pricing-grid">
-                    <!-- Cards injected by JS -->
-                </div>
-            </div>
-
-            <!-- ADDONS CONTENT -->
-            <div id="pricing-content-addons" style="display: none;">
-                <div class="addons-section">
-                    <div class="addons-header">
-                        <h3 data-i18n="addons.title">Add-ons</h3>
-                        <p data-i18n="addons.subtitle">Need more capacity? Top up anytime.</p>
-                    </div>
-                    <div class="addons-grid" id="addons-grid">
-                        <!-- Addups injected by JS -->
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    <!-- OLD PRICING MODAL REMOVED -->
 
     <!-- EXPORT MODAL -->
     <div id="export-modal">
