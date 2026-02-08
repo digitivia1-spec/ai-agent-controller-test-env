@@ -142,6 +142,7 @@
                 "empty_text": "Connect your channels to start capturing leads from conversations.",
                 "btn_connect": "Connect Your Channels",
                 "status": {
+                    pric
                     "qualified": "Qualified",
                     "pending": "Pending",
                     "new": "New",
@@ -5075,6 +5076,107 @@
             height: 24px;
             fill: currentColor;
         }
+
+        /* ADD-ONS SECTION */
+        .addons-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+
+        .addons-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .addons-header h3 {
+            font-size: 1.4rem;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .addons-header p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .addons-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .addon-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            width: 220px;
+            text-align: center;
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .addon-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--theme-color);
+        }
+
+        .addon-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .addon-count {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .addon-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+
+        .addon-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--theme-color);
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .addon-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: white;
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: auto;
+        }
+
+        .addon-btn:hover {
+            filter: brightness(0.9);
+        }
+
+        /* RTL Addons */
+        [dir="rtl"] .addon-card {
+            direction: rtl;
+        }
     </style>
 </head>
 
@@ -5365,6 +5467,17 @@
                 <!-- Content will be loaded dynamically by JS -->
                 <div style="color:white; text-align:center; width:100%; grid-column:1/-1; padding:30px;">Loading
                     plans...</div>
+            </div>
+
+            <!-- ADD-ONS SECTION -->
+            <div class="addons-section">
+                <div class="addons-header">
+                    <h3 data-i18n="addons.title">Add-ons</h3>
+                    <p data-i18n="addons.subtitle">Need more capacity? Top up anytime.</p>
+                </div>
+                <div class="addons-grid" id="addons-grid">
+                    <!-- Content loaded via JS -->
+                </div>
             </div>
         </div>
     </div>
@@ -9038,6 +9151,7 @@
 
             await detectCurrency();
             await loadBillingPlans(currentCurrency);
+            loadAddons(currentCurrency);
 
             // Initialize billing period toggle event listeners
             initializeBillingToggle();
@@ -9135,8 +9249,10 @@
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
-                if (data.country_code === 'EG') {
+                if (data.currency === 'EGP') {
                     currentCurrency = 'EGP';
+                } else if (data.currency === 'EUR') {
+                    currentCurrency = 'EUR';
                 } else {
                     currentCurrency = 'USD';
                 }
@@ -9231,6 +9347,74 @@
                 console.error('Error loading plans:', err);
                 grid.innerHTML = `<div style="color:red; text-align:center;">Error: ${err.message}</div>`;
             }
+        }
+
+        // --- ADD-ONS LOGIC ---
+        const ADDON_BUNDLES = [
+            { id: 'addon_50', count: 50, price_usd: 5, price_egp: 250, price_eur: 5 },
+            { id: 'addon_100', count: 100, price_usd: 9, price_egp: 450, price_eur: 9 },
+            { id: 'addon_500', count: 500, price_usd: 39, price_egp: 1950, price_eur: 39 }
+        ];
+
+        function loadAddons(currency) {
+            const grid = document.getElementById('addons-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            // Inject Translations if needed
+            setTimeout(() => {
+                let needsUpdate = false;
+                if (typeof LANG_EN !== 'undefined' && !LANG_EN.addons) {
+                    LANG_EN.addons = {
+                        title: "Add-ons",
+                        subtitle: "Need more capacity? Top up anytime.",
+                        conversations: "Conversations",
+                        buy_now: "Buy Now"
+                    };
+                    needsUpdate = true;
+                }
+                if (typeof LANG_AR !== 'undefined' && !LANG_AR.addons) {
+                    LANG_AR.addons = {
+                        title: "إضافات",
+                        subtitle: "هل تحتاج إلى سعة أكبر؟ اشحن رصيدك في أي وقت.",
+                        conversations: "محادثة",
+                        buy_now: "شراء الآن"
+                    };
+                    needsUpdate = true;
+                }
+                if (needsUpdate) applyTranslations();
+            }, 0);
+
+            ADDON_BUNDLES.forEach(addon => {
+                grid.appendChild(createAddonCard(addon, currency));
+            });
+        }
+
+        function createAddonCard(addon, currency) {
+            const div = document.createElement('div');
+            div.className = 'addon-card';
+
+            let price = addon.price_usd;
+            let symbol = '$';
+            if (currency === 'EGP') { price = addon.price_egp; symbol = 'EGP '; }
+            if (currency === 'EUR') { price = addon.price_eur; symbol = '€'; }
+
+            const btnLabel = t('addons.buy_now') || 'Buy Now';
+            const convLabel = t('addons.conversations') || 'Conversations';
+
+            div.innerHTML = `
+                <div class="addon-icon">🔋</div>
+                <div class="addon-count">+${addon.count}</div>
+                <div class="addon-desc">${convLabel}</div>
+                <div class="addon-price">${symbol}${price}</div>
+                <button class="addon-btn" onclick="buyAddon('${addon.id}')">${btnLabel}</button>
+            `;
+            return div;
+        }
+
+        function buyAddon(addonId) {
+            showToast(t('create_post.preview_placeholder') ? (currentLang === 'ar' ? 'تم اختيار الباقة: ' + addonId : 'Selected: ' + addonId) : 'Selected: ' + addonId, 'info');
+            // initiateStripeCheckout(addonId); // Future
         }
 
         // Function to toggle between monthly and yearly billing
