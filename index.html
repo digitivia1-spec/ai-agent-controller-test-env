@@ -5810,7 +5810,11 @@
             <div class="profile-actions" style="flex-direction: column; gap: 10px;">
                 <button class="btn-secondary" onclick="requestNotificationAccess()"
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
-                    🔔 Test System Notifications
+                    🔔 Enable/Test Notifications
+                </button>
+                <button class="btn-secondary" onclick="simulateIncomingOrder()"
+                    style="width:100%; border-radius:8px; background: rgba(255, 165, 0, 0.2); border: 1px solid orange; color: orange;">
+                    🧪 Simulate Order (Local)
                 </button>
                 <div style="height: 10px;"></div>
                 <button class="btn-confirm" id="save-org-btn" onclick="saveOrganizationName()"
@@ -10287,6 +10291,12 @@
             return;
         }
 
+        // Unlock Audio Context immediately on user interaction
+        notificationSound.play().then(() => {
+            notificationSound.pause();
+            notificationSound.currentTime = 0;
+        }).catch(e => console.log("Audio unlock failed:", e));
+
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 const notif = new Notification("Test Notification", {
@@ -10294,10 +10304,42 @@
                     icon: 'cropped-White.png'
                 });
                 notif.onclick = () => window.focus();
+
+                // Play sound for test
+                notificationSound.play();
             } else {
                 alert("Notifications denied. Please enable them in your browser settings.");
             }
         });
+    }
+
+    // Client-side Simulation (Bypass Backend)
+    function simulateIncomingOrder() {
+        const fakeOrder = {
+            id: 'sim-' + Date.now(),
+            title: 'Simulated Order',
+            message: 'This is a test from the frontend.',
+            link: '#orders',
+            created_at: new Date().toISOString(),
+            is_read: false
+        };
+
+        console.log("Simulating order:", fakeOrder);
+        notifications.unshift(fakeOrder);
+
+        showToast(`🔔 ${fakeOrder.title}: ${fakeOrder.message}`, 'info');
+
+        if ("Notification" in window && Notification.permission === "granted") {
+            const systemNotif = new Notification(fakeOrder.title, {
+                body: fakeOrder.message,
+                icon: 'cropped-White.png',
+                requireInteraction: true
+            });
+            systemNotif.onclick = () => window.focus();
+        }
+
+        notificationSound.play().catch(e => console.error(e));
+        updateNotificationUI();
     }
 </script>
 
