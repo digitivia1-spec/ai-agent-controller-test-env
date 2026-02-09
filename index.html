@@ -10092,6 +10092,14 @@
 
     async function setupNotifications() {
         if (!currentUserOrgId) return;
+
+        // Request System Notification Permission
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                await Notification.requestPermission();
+            } catch (e) { console.error("Notification permission error:", e); }
+        }
+
         await fetchNotifications();
         subscribeToNotifications();
     }
@@ -10115,7 +10123,6 @@
 
     function subscribeToNotifications() {
         supabaseClient
-            .channel('public:notifications')
             .on('postgres_changes', {
                 event: 'INSERT',
                 schema: 'public',
@@ -10125,8 +10132,27 @@
                 console.log("New notification:", payload);
                 const newNotif = payload.new;
                 notifications.unshift(newNotif);
-                // Show Toast
+
+                // Show App Toast
                 showToast(`🔔 ${newNotif.title}: ${newNotif.message}`, 'info');
+
+                // System Notification (Desktop/Mobile)
+                if ("Notification" in window && Notification.permission === "granted") {
+                    try {
+                        const systemNotif = new Notification(newNotif.title, {
+                            body: newNotif.message,
+                            icon: 'cropped-White.png',
+                            tag: newNotif.id // Prevent duplicates
+                        });
+
+                        systemNotif.onclick = function () {
+                            window.focus();
+                            handleNotificationClick(newNotif.id, newNotif.link);
+                            this.close();
+                        };
+                    } catch (e) { console.error("System notification error:", e); }
+                }
+
                 // Play sound (optional)
                 // ...
                 updateNotificationUI();
