@@ -10267,8 +10267,10 @@
 
     function closeNotificationsOnClickOutside(event) {
         const dd = document.getElementById('notification-dropdown');
-        const bell = document.querySelector('.notification-bell');
-        if (dd && !dd.contains(event.target) && !bell.contains(event.target)) {
+        // Check if click is inside dropdown OR inside ANY notification bell
+        const isClickInsideBell = event.target.closest('.notification-bell');
+
+        if (dd && !dd.contains(event.target) && !isClickInsideBell) {
             dd.classList.remove('show');
             document.removeEventListener('click', closeNotificationsOnClickOutside);
         }
