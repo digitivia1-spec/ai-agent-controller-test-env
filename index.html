@@ -5435,6 +5435,16 @@
             text-align: center;
             color: #666;
             font-size: 0.9rem;
+
+            /* --- NOTIFICATION DROPDOWN MOBILE --- */
+            .notification-dropdown {
+                width: 90vw;
+                right: -50px;
+                /* Center it relative to bell */
+                top: 40px;
+            }
+
+            /* --- END MOBILE STYLES --- */
         }
     </style>
 </head>
@@ -5497,6 +5507,20 @@
             <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
                 <span id="mobile-lang-label">AR</span>
             </button>
+
+            <!-- Mobile Notification Bell -->
+            <div class="notification-container" style="position: relative; margin-block: auto;">
+                <div class="notification-bell" onclick="toggleNotifications()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                        <path
+                            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
+                    </svg>
+                    <span class="notification-badge" id="mobile-notification-badge" style="display: none;">0</span>
+                </div>
+            </div>
+
             <div class="profile-avatar" id="mobile-avatar-btn" onclick="openProfileModal()">U</div>
         </div>
     </div>
@@ -5811,10 +5835,6 @@
                 <button class="btn-secondary" onclick="requestNotificationAccess()"
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
                     🔔 Enable/Test Notifications
-                </button>
-                <button class="btn-secondary" onclick="simulateIncomingOrder()"
-                    style="width:100%; border-radius:8px; background: rgba(255, 165, 0, 0.2); border: 1px solid orange; color: orange;">
-                    🧪 Simulate Order (Local)
                 </button>
                 <div style="height: 10px;"></div>
                 <button class="btn-confirm" id="save-org-btn" onclick="saveOrganizationName()"
@@ -10195,17 +10215,24 @@
     function updateNotificationUI() {
         const list = document.getElementById('notification-list');
         const badge = document.getElementById('notification-badge');
+        const mobileBadge = document.getElementById('mobile-notification-badge');
 
-        if (!list || !badge) return;
+        if (!list) return;
 
         unreadCount = notifications.filter(n => !n.is_read).length;
 
-        if (unreadCount > 0) {
-            badge.style.display = 'block';
-            badge.innerText = unreadCount > 9 ? '9+' : unreadCount;
-        } else {
-            badge.style.display = 'none';
-        }
+        const setBadge = (el) => {
+            if (!el) return;
+            if (unreadCount > 0) {
+                el.style.display = 'block';
+                el.innerText = unreadCount > 9 ? '9+' : unreadCount;
+            } else {
+                el.style.display = 'none';
+            }
+        };
+
+        setBadge(badge);
+        setBadge(mobileBadge);
 
         if (notifications.length === 0) {
             list.innerHTML = `<div class="no-notifications">No notifications yet</div>`;
