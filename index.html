@@ -10149,6 +10149,7 @@
 
     function subscribeToNotifications() {
         supabaseClient
+            .channel('public:notifications')
             .on('postgres_changes', {
                 event: 'INSERT',
                 schema: 'public',
@@ -10186,7 +10187,9 @@
 
                 updateNotificationUI();
             })
-            .subscribe();
+            .subscribe((status) => {
+                console.log("Notification subscription status:", status);
+            });
     }
 
     function updateNotificationUI() {
