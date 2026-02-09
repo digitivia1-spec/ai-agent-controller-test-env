@@ -5808,6 +5808,11 @@
                 <span class="profile-info-value" id="profile-plan">Free</span>
             </div>
             <div class="profile-actions" style="flex-direction: column; gap: 10px;">
+                <button class="btn-secondary" onclick="requestNotificationAccess()"
+                    style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
+                    🔔 Test System Notifications
+                </button>
+                <div style="height: 10px;"></div>
                 <button class="btn-confirm" id="save-org-btn" onclick="saveOrganizationName()"
                     style="width:100%; border-radius:8px;" data-i18n="modals.profile.btn_save">Save Organization
                     Name</button>
@@ -10093,11 +10098,27 @@
     async function setupNotifications() {
         if (!currentUserOrgId) return;
 
-        // Request System Notification Permission
-        if ("Notification" in window && Notification.permission === "default") {
-            try {
-                await Notification.requestPermission();
-            } catch (e) { console.error("Notification permission error:", e); }
+        // Check permission, if default, request it.
+        // Note: Browsers block this unless triggered by user interaction.
+        // We will add a button in Profile Settings to enable it manually if needed.
+        if ("Notification" in window) {
+            if (Notification.permission === "granted") {
+                console.log("Notifications already granted");
+            } else if (Notification.permission !== "denied") {
+                // Try to request, but might be blocked if not user interaction
+                try {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            new Notification("Notifications Enabled", {
+                                body: "You will now receive alerts for new orders.",
+                                icon: 'cropped-White.png'
+                            });
+                        }
+                    });
+                } catch (e) {
+                    console.error("Auto-request notification permission failed:", e);
+                }
+            }
         }
 
         await fetchNotifications();
@@ -10253,6 +10274,26 @@
                 .eq('org_id', currentUserOrgId)
                 .eq('is_read', false);
         } catch (e) { console.error(e); }
+    }
+
+    // Manual Permission Request & Test
+    function requestNotificationAccess() {
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notifications");
+            return;
+        }
+
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                const notif = new Notification("Test Notification", {
+                    body: "Desktop notifications are working! 🚀",
+                    icon: 'cropped-White.png'
+                });
+                notif.onclick = () => window.focus();
+            } else {
+                alert("Notifications denied. Please enable them in your browser settings.");
+            }
+        });
     }
 </script>
 
