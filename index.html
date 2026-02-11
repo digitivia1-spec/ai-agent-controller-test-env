@@ -4030,11 +4030,48 @@
             background: linear-gradient(145deg, #1a1b20 0%, #0f1014 100%);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            max-width: 400px;
-            width: 90%;
+            max-width: 500px;
+            width: 95%;
             padding: 30px;
             text-align: center;
             animation: popIn 0.3s ease;
+        }
+
+        /* Mobile Adjustments for Profile Modal */
+        @media (max-width: 480px) {
+            .profile-modal {
+                padding: 20px;
+                max-width: 95%;
+            }
+
+            .profile-info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .profile-info-label {
+                width: 100%;
+                margin-bottom: 2px;
+                font-size: 0.85rem;
+                text-align: left;
+            }
+
+            .profile-info-value,
+            .profile-info-row input,
+            .profile-info-row div {
+                width: 100% !important;
+                text-align: left;
+            }
+
+            /* Specifically target the container inside row */
+            .profile-info-row>div {
+                width: 100%;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
         }
 
         .profile-modal-avatar {
