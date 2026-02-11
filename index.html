@@ -7908,7 +7908,6 @@
                 currentInboxPlatform = platform;
                 let color = '#5BAEB0';
                 if (platform === 'whatsapp') color = '#57B078';
-                if (platform === 'whatsapp') color = '#57B078';
                 if (platform === 'page') color = '#5B89CE';
                 if (platform === 'instagram') color = '#C66B8D';
                 document.documentElement.style.setProperty('--theme-color', color);
@@ -7918,34 +7917,63 @@
             if (!isAutoRefresh) list.innerHTML = `<div style="padding:20px; text-align:center;">${t('inbox.loading')}</div>`;
 
             try {
-                // PHASE 4: Fetch from inbox_contacts (Supabase)
-                const { data: contacts, error } = await supabaseClient
-                    .from('inbox_contacts')
-                    .select('*')
+                // Fetch conversations joined with contacts, sorted by last_message_at DESC
+                // This gives stable WhatsApp-like ordering (most recent conversations first)
+                const { data: conversations, error } = await supabaseClient
+                    .from('inbox_conversations')
+                    .select('id, last_message_at, created_at, contact:inbox_contacts!contact_id(id, display_name, phone, external_contact_id)')
                     .eq('org_id', currentUserOrgId)
-                    .eq('platform', platform);
+                    .eq('platform', platform)
+                    .order('last_message_at', { ascending: false, nullsFirst: false });
 
                 if (error) throw error;
 
-                if (!contacts || contacts.length === 0) {
+                if (!conversations || conversations.length === 0) {
                     if (!isAutoRefresh) list.innerHTML = `<div style="padding:20px; text-align:center;">${t('inbox.no_chats')}</div>`;
                     return;
                 }
 
                 const newContent = document.createElement('div');
-                contacts.forEach(contact => {
+                conversations.forEach(conv => {
+                    const contact = conv.contact;
+                    if (!contact) return; // Skip if no contact linked
+
                     const div = document.createElement('div');
                     div.className = 'contact-item';
-                    if (contact.id === currentChatUser) div.classList.add('active'); // contact.id is UUID likely
+                    if (contact.id === currentChatUser) div.classList.add('active');
 
-                    // Passing platform is safe since we filtered by it
                     const displayName = contact.display_name || contact.phone || "Unknown";
                     const displayId = contact.phone || contact.external_contact_id || "";
+
+                    // Format last message time for WhatsApp-like display
+                    let timeLabel = '';
+                    if (conv.last_message_at) {
+                        try {
+                            const msgDate = new Date(conv.last_message_at);
+                            const now = new Date();
+                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                            const yesterday = new Date(today);
+                            yesterday.setDate(yesterday.getDate() - 1);
+                            const msgDay = new Date(msgDate.getFullYear(), msgDate.getMonth(), msgDate.getDate());
+
+                            if (msgDay.getTime() === today.getTime()) {
+                                timeLabel = msgDate.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+                            } else if (msgDay.getTime() === yesterday.getTime()) {
+                                timeLabel = currentLang === 'ar' ? 'أمس' : 'Yesterday';
+                            } else {
+                                timeLabel = msgDate.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
+                            }
+                        } catch (e) { /* ignore format errors */ }
+                    }
+
                     div.onclick = () => loadInboxMessages(platform, contact.id, displayName);
                     div.innerHTML = `
                         <div class="contact-avatar">${displayName.substring(0, 2).toUpperCase()}</div>
-                        <div class="contact-info">
-                            <div class="contact-name">${displayName}</div>
+                        <div class="contact-info" style="min-width:0; flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                                <div class="contact-name" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${displayName}</div>
+                                ${timeLabel ? `<div style="font-size:0.7rem; color:#888; white-space:nowrap; flex-shrink:0;">${timeLabel}</div>` : ''}
+                            </div>
                             <div class="contact-id">${displayId}</div>
                         </div>
                     `;
