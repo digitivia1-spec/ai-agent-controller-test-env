@@ -925,7 +925,8 @@
                 "toast_deactivated": "تم الإيقاف",
                 "toast_status_fail": "فشل الحالة",
                 "toast_no_leads_export": "لا يوجد عملاء",
-                "loading_config": "جاري التحميل..."
+                "loading_config": "جاري التحميل...",
+                "access_denied": "ليس لديك الصلاحية للقيام بهذا الإجراء."
             }
         };
     </script>
@@ -4035,6 +4036,33 @@
             padding: 30px;
             text-align: center;
             animation: popIn 0.3s ease;
+            position: relative;
+            /* For close button */
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 10;
+            transition: color 0.2s;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal-btn:hover {
+            color: white;
+            transform: scale(1.1);
         }
 
         /* Mobile Adjustments for Profile Modal */
@@ -4042,6 +4070,12 @@
             .profile-modal {
                 padding: 20px;
                 max-width: 95%;
+            }
+
+            .close-modal-btn {
+                top: 10px;
+                right: 15px;
+                font-size: 1.8rem;
             }
 
             .profile-info-row {
@@ -5910,6 +5944,7 @@
     <!-- PROFILE MODAL -->
     <div id="profile-modal" class="profile-modal-overlay" onclick="closeProfileModal(event)">
         <div class="profile-modal" onclick="event.stopPropagation()">
+            <button class="close-modal-btn" onclick="closeProfileModal()">×</button>
             <div class="profile-modal-avatar" id="profile-avatar-initial">U</div>
             <h3 id="profile-name">User Name</h3>
             <div class="email" id="profile-email">user@example.com</div>
@@ -6232,6 +6267,20 @@
         // Initialize language on page load
         function initLanguage() {
             const savedLang = localStorage.getItem('app_language') || 'en';
+
+            // Handle Read-Only Profile Input
+            const orgInput = document.getElementById('profile-org-input');
+            const saveOrgBtn = document.getElementById('save-org-btn'); // Assuming button ID, check HTML
+
+            if (window.currentUserRole === 'moderator') {
+                if (orgInput) orgInput.disabled = true;
+                // We need to hide/disable the button.
+                // Button logic implies find element by onclick or ID.
+                const btn = document.querySelector('button[onclick="saveOrganizationName()"]');
+                if (btn) btn.style.display = 'none';
+            }
+
+            const securePaymentText = savedLang === 'ar' ? 'الدفع الآمن بواسطة Stripe' : 'Secure Payment by Stripe';
             setLanguage(savedLang);
         }
 
@@ -6347,6 +6396,10 @@
         }
 
         async function saveOrganizationName() {
+            if (window.currentUserRole === 'moderator') {
+                showToast(t('messages.access_denied'), "error");
+                return;
+            }
             const newName = document.getElementById('profile-org-input').value.trim();
             if (!newName) {
                 showToast("Organization name cannot be empty", "error");
@@ -6805,6 +6858,9 @@
             const app = document.getElementById('app-container');
             app.style.display = 'flex';
 
+            // Fetch role before building interface
+            await fetchUserRole();
+
             buildInterface();
             fetchCurrentConfigurations();
             document.getElementById('loader-overlay').style.display = 'none';
@@ -6999,7 +7055,7 @@
                                 <div class="agent-toggle-container">
                                     <span class="toggle-label" data-i18n="agent_config.label_live">LIVE</span>
                                     <label class="switch">
-                                        <input type="checkbox" id="status-${agent.id}" onchange="toggleAgentStatus('${agent.id}')">
+                                        <input type="checkbox" id="status-${agent.id}" onchange="toggleAgentStatus('${agent.id}')" ${window.currentUserRole === 'moderator' ? 'disabled' : ''}>
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -7014,7 +7070,7 @@
                                     <span><b>Caution:</b> Modifying the system prompt will directly alter the agent's personality and behavior.</span>
                                 </div>
                                 
-                                <div onclick="requestUnlock('${agent.id}')" class="edit-lock-btn" id="lock-btn-${agent.id}">
+                                <div onclick="requestUnlock('${agent.id}')" class="edit-lock-btn" id="lock-btn-${agent.id}" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">
                                     <span>🔒</span> <span data-i18n="agent_config.btn_locked">Locked - Click to Edit</span>
                                 </div>
 
@@ -7061,7 +7117,7 @@
                             </div>
                         </div>
                         <div class="action-container">
-                            <button class="save-btn" onclick="saveRole('${agent.id}')" data-i18n="agent_config.btn_save">Save Role</button>
+                            <button class="save-btn" onclick="saveRole('${agent.id}')" data-i18n="agent_config.btn_save" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">Save Role</button>
                         </div>
                     </div>
                 </div>`;
@@ -8316,6 +8372,10 @@
         }
 
         async function saveRole(agentId) {
+            if (window.currentUserRole === 'moderator') {
+                showToast(t('messages.access_denied'), "error");
+                return;
+            }
             if (!currentUserOrgId) { showToast(t('messages.error_no_org'), "error"); return; }
 
             const prompt = document.getElementById(`prompt-${agentId}`).value;
@@ -8363,6 +8423,13 @@
         }
 
         async function toggleAgentStatus(agentId) {
+            if (window.currentUserRole === 'moderator') {
+                // Revert visual state
+                const cb = document.getElementById(`status-${agentId}`);
+                if (cb) cb.checked = !cb.checked;
+                showToast(t('messages.access_denied'), "error");
+                return;
+            }
             if (!currentUserOrgId) return;
 
             const isChecked = document.getElementById(`status-${agentId}`).checked;
