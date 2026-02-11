@@ -5885,6 +5885,23 @@
                 <span class="profile-info-label" data-i18n="modals.profile.label_plan">Current Plan</span>
                 <span class="profile-info-value" id="profile-plan">Free</span>
             </div>
+
+            <!-- NEW: Password Change Section -->
+            <div class="profile-info-row"
+                style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 10px;">
+                <span class="profile-info-label" data-i18n="modals.profile.label_password">Password</span>
+                <div style="flex:2; display:flex; flex-direction:column; gap:8px;">
+                    <input type="password" id="profile-new-pass" class="login-input"
+                        style="margin:0; padding:8px; font-size:0.9rem;" placeholder="New Password"
+                        data-i18n-placeholder="modals.profile.placeholder_new_pass">
+                    <input type="password" id="profile-confirm-pass" class="login-input"
+                        style="margin:0; padding:8px; font-size:0.9rem;" placeholder="Confirm Password"
+                        data-i18n-placeholder="modals.profile.placeholder_confirm_pass">
+                    <button class="btn-secondary" onclick="updateUserPassword()"
+                        style="font-size:0.8rem; padding:6px; background: rgba(91, 174, 176, 0.1); border: 1px solid var(--theme-color);"
+                        data-i18n="modals.profile.btn_update_pass">Update Password</button>
+                </div>
+            </div>
             <div class="profile-actions" style="flex-direction: column; gap: 10px;">
                 <button class="btn-secondary" onclick="requestNotificationAccess()"
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
@@ -6332,6 +6349,43 @@
                 showToast(`Failed: ${e.message || "Unknown error"}`, "error");
             } finally {
                 btn.innerText = "Save Organization Name";
+                btn.disabled = false;
+            }
+        }
+
+        async function updateUserPassword() {
+            const newPass = document.getElementById('profile-new-pass').value;
+            const confirmPass = document.getElementById('profile-confirm-pass').value;
+            const btn = document.querySelector('button[onclick="updateUserPassword()"]');
+
+            if (newPass !== confirmPass) {
+                showToast(t('modals.profile.pass_mismatch') || "Passwords mismatch", "error");
+                return;
+            }
+            if (newPass.length < 6) {
+                showToast(t('modals.profile.pass_short') || "Password must be 6+ chars", "error");
+                return;
+            }
+
+            try {
+                btn.innerText = t('modals.profile.pass_updating') || "Updating...";
+                btn.disabled = true;
+
+                const { data, error } = await supabaseClient.auth.updateUser({ password: newPass });
+
+                if (error) throw error;
+
+                showToast(t('modals.profile.pass_updated_success') || "Password updated!", "success");
+
+                // Clear inputs
+                document.getElementById('profile-new-pass').value = '';
+                document.getElementById('profile-confirm-pass').value = '';
+
+            } catch (e) {
+                console.error("Error updating password:", e);
+                showToast(e.message || "Failed to update password", "error");
+            } finally {
+                btn.innerText = t('modals.profile.btn_update_pass') || "Update Password";
                 btn.disabled = false;
             }
         }
@@ -10485,6 +10539,36 @@
         notificationSound.play().catch(e => console.error(e));
         updateNotificationUI();
     }
+</script>
+
+<script>
+    // --- INJECT TRANSLATIONS FOR PASSWORD CHANGE ---
+    (function injectPasswordTranslations() {
+        if (window.LANG_EN && window.LANG_EN.modals && window.LANG_EN.modals.profile) {
+            Object.assign(window.LANG_EN.modals.profile, {
+                label_password: "Change Password",
+                placeholder_new_pass: "New Password",
+                placeholder_confirm_pass: "Confirm Password",
+                btn_update_pass: "Update Password",
+                pass_updated_success: "Password updated successfully!",
+                pass_mismatch: "Passwords do not match.",
+                pass_short: "Password must be at least 6 characters.",
+                pass_updating: "Updating..."
+            });
+        }
+        if (window.LANG_AR && window.LANG_AR.modals && window.LANG_AR.modals.profile) {
+            Object.assign(window.LANG_AR.modals.profile, {
+                label_password: "تغيير كلمة المرور",
+                placeholder_new_pass: "كلمة المرور الجديدة",
+                placeholder_confirm_pass: "تأكيد كلمة المرور",
+                btn_update_pass: "تحديث كلمة المرور",
+                pass_updated_success: "تم تحديث كلمة المرور بنجاح!",
+                pass_mismatch: "كلمات المرور غير متطابقة.",
+                pass_short: "يجب أن تكون كلمة المرور 6 أحرف على الأقل.",
+                pass_updating: "جاري التحديث..."
+            });
+        }
+    })();
 </script>
 
 </html>
