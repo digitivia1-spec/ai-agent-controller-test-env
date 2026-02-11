@@ -423,6 +423,10 @@
                     "val_free": "Free",
                     "btn_save": "Save Organization Name",
                     "btn_upgrade": "Upgrade Plan",
+                    "label_password": "Password",
+                    "placeholder_new_pass": "New Password",
+                    "placeholder_confirm_pass": "Confirm Password",
+                    "btn_update_pass": "Update Password",
                     "btn_logout": "Logout"
                 },
                 "help": {
@@ -817,6 +821,10 @@
                     "val_free": "مجانية",
                     "btn_save": "حفظ",
                     "btn_upgrade": "ترقية",
+                    "label_password": "كلمة المرور",
+                    "placeholder_new_pass": "كلمة المرور الجديدة",
+                    "placeholder_confirm_pass": "تأكيد كلمة المرور",
+                    "btn_update_pass": "تحديث كلمة المرور",
                     "btn_logout": "خروج"
                 },
                 "help": {
@@ -6645,6 +6653,44 @@
             } catch (e) {
                 console.error(e);
                 showToast(`Error connecting to ${provider}`, "error");
+            }
+        }
+
+        // Fetch User Role
+        async function fetchUserRole() {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) return;
+
+                // Get current profile to know org_id
+                if (!currentUserOrgId && currentUserProfile) {
+                    currentUserOrgId = currentUserProfile.org_id;
+                }
+
+                if (currentUserOrgId) {
+                    const { data: member } = await supabaseClient
+                        .from('organization_members')
+                        .select('role')
+                        .eq('user_id', user.id)
+                        .eq('org_id', currentUserOrgId)
+                        .maybeSingle();
+
+                    if (member) {
+                        window.currentUserRole = member.role;
+                        console.log("User Role:", window.currentUserRole);
+                    }
+                } else {
+                    const { data: member } = await supabaseClient
+                        .from('organization_members')
+                        .select('role')
+                        .eq('user_id', user.id)
+                        .limit(1)
+                        .maybeSingle();
+                    if (member) window.currentUserRole = member.role;
+                }
+            } catch (e) {
+                console.error("Error fetching role:", e);
+                window.currentUserRole = 'member';
             }
         }
 
