@@ -2368,6 +2368,8 @@
             /* AUTO DETECT RTL/LTR */
             text-align: start;
             /* ALIGN BASED ON CONTENT */
+            white-space: pre-wrap;
+            /* Preserve newlines */
         }
 
         .msg-ai {
@@ -8347,8 +8349,12 @@
             }
 
             div.className = `message ${typeClass}`;
+
+            // Fix for null content (e.g. image messages)
+            const safeText = text === null || text === undefined || text === 'null' ? '' : text;
+
             div.innerHTML = `
-                <div class="msg-content">${text}</div>
+                <div class="msg-content">${safeText}</div>
                 ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
             `;
             container.appendChild(div);
