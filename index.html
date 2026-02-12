@@ -8358,11 +8358,7 @@
             // Fix for null content (e.g. image messages)
             const safeText = text === null || text === undefined || text === 'null' ? '' : text;
 
-            // DEBUG: Log if this is the missing message
-            if (safeText.includes('هبعت لك دلوقتي واحده')) {
-                console.warn("!!! RENDERING MISSING MESSAGE !!!", { safeText, typeClass, div });
-                div.style.border = "2px solid red"; // Temporary visual aid
-            }
+
 
             div.innerHTML = `
                 <div class="msg-content">${safeText}</div>
