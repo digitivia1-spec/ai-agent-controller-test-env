@@ -8372,12 +8372,12 @@
         }
 
         function addLinkField(agentId, value = "") {
-            const container = document.getElementById(`links - container - ${agentId} `);
+            const container = document.getElementById(`links-container-${agentId}`);
             const div = document.createElement('div');
             div.className = 'link-row';
             div.innerHTML = `
-                < input type = "text" class="link-input" value = "${value}" placeholder = "https://example.com" oninput = "checkDirty('${agentId}')" >
-                    <button class="remove-link-btn" onclick="removeLink(this, '${agentId}')">×</button>
+                <input type="text" class="link-input" value="${value}" placeholder="https://example.com" oninput="checkDirty('${agentId}')">
+                <button class="remove-link-btn" onclick="removeLink(this, '${agentId}')">×</button>
             `;
             container.appendChild(div);
             if (value === '') div.querySelector('input').focus();
@@ -9233,8 +9233,10 @@
 
             let csv = headers.join(',') + '\n';
             rows.forEach(row => {
-                csv += row.map(cell => `"${(cell + '').replace(/" / g, '""')
-                    } "`).join(',') + '\n';
+                csv += row.map(cell => {
+                    const cellStr = (cell + '').replace(/"/g, '""');
+                    return `"${cellStr}"`;
+                }).join(',') + '\n';
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
