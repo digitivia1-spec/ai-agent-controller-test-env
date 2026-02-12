@@ -8417,9 +8417,9 @@
                     const config = configs.find(c => c.agent === agent.id) || {};
 
                     // Populate Inputs
-                    document.getElementById(`prompt - ${agent.id} `).value = config.system_prompt || "";
-                    document.getElementById(`tone - ${agent.id} `).value = config.tone || "";
-                    document.getElementById(`status - ${agent.id} `).checked = config.is_active || false;
+                    document.getElementById(`prompt-${agent.id}`).value = config.system_prompt || "";
+                    document.getElementById(`tone-${agent.id}`).value = config.tone || "";
+                    document.getElementById(`status-${agent.id}`).checked = config.is_active || false;
 
                     // Store Initial State (removed links)
                     initialStates[agent.id] = {
@@ -8441,9 +8441,9 @@
             }
             if (!currentUserOrgId) { showToast(t('messages.error_no_org'), "error"); return; }
 
-            const prompt = document.getElementById(`prompt - ${agentId} `).value;
-            const tone = document.getElementById(`tone - ${agentId} `).value;
-            const btn = document.querySelector(`#${agentId} .save - btn`);
+            const prompt = document.getElementById(`prompt-${agentId}`).value;
+            const tone = document.getElementById(`tone-${agentId}`).value;
+            const btn = document.querySelector(`#${agentId} .save-btn`);
             const originalText = btn.innerText;
             btn.innerText = t('agent_config.btn_saving');
 
@@ -8877,7 +8877,7 @@
                 if (usage.plan?.features && Array.isArray(usage.plan.features)) {
                     featuresContainer.innerHTML = usage.plan.features.map(f => {
                         const translatedFeature = currentLang === 'ar' ? (featureTranslations[f] || f) : f;
-                        return `< span style = "background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem;" >✓ ${translatedFeature}</span > `;
+                        return `<span style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem;">✓ ${translatedFeature}</span>`;
                     }).join('');
                 }
 
@@ -8954,14 +8954,14 @@
                     const time = new Date(msg.created_at).toLocaleTimeString();
 
                     html += `
-                < div class="activity-item" >
+                <div class="activity-item">
                         <div class="act-icon">${icon}</div>
                         <div class="act-content">
                             <div class="act-title">${title}</div>
                             <div style="font-size:0.85rem; color:#aaa; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:300px;">${msg.content}</div>
                         </div>
                         <div class="act-time">${time}</div>
-                    </div > `;
+                    </div>`;
                 });
                 list.innerHTML = html;
             } catch (e) {
@@ -8991,13 +8991,13 @@
                 AGENTS.forEach(agent => {
                     const count = agentCounts[agent.id] || 0;
                     html += `
-                < div class="agent-stat-row" >
+                <div class="agent-stat-row">
                         <div class="agent-stat-info">
                             <div class="agent-dot" style="background:${agent.color}"></div>
                             <div class="agent-stat-name">${t(agent.nameKey)}</div>
                         </div>
                         <div class="agent-stat-count">${count} chats</div>
-                    </div > `;
+                    </div>`;
                 });
                 list.innerHTML = html;
             } catch (e) {
@@ -9048,7 +9048,7 @@
                 }
             } catch (e) {
                 console.error("Error fetching orders:", e);
-                if (loadingEl) loadingEl.innerHTML = `< p style = "color:var(--error);" > ${t('orders.error_loading')}</p > `;
+                if (loadingEl) loadingEl.innerHTML = `<p style="color:var(--error);">${t('orders.error_loading')}</p>`;
             }
         }
 
@@ -9121,7 +9121,7 @@
                         itemsSummary = itemsData.map(item => {
                             const iName = item.name || item.product_name || item.item_name || 'Item';
                             const iQty = item.quantity || item.qty || item.count || 1;
-                            return `< div >• ${iName} <span style="opacity:0.7">[x${iQty}]</span></div > `;
+                            return `<div>• ${iName} <span style="opacity:0.7">[x${iQty}]</span></div>`;
                         }).join('');
                     } else if (typeof itemsData === 'string' && itemsData.trim().length > 0) {
                         // Plain string items (common from AI agent orders)
@@ -9133,7 +9133,7 @@
                 }
 
                 row.innerHTML = `
-                < td > ${order.customer_name || '--'}</td >
+                <td>${order.customer_name || '--'}</td>
                     <td>${phone}</td>
                     <td style="min-width: 200px; white-space: normal; line-height: 1.4;">${itemsSummary}</td>
                     <td style="white-space: nowrap;">${totalStr}</td>
@@ -9154,10 +9154,10 @@
                     const card = document.createElement('div');
                     card.className = 'order-card-mobile glass';
                     card.innerHTML = `
-                < div class="order-card-header" >
+                <div class="order-card-header">
                             <span class="order-card-id">#${(order.id || '').substring(0, 8)}</span>
                             <span class="status-badge" style="background:${statusColor}">${statusLabel}</span>
-                        </div >
+                        </div>
                         <div class="order-card-body">
                             <div class="order-row"><span>${t('orders.col_customer')}:</span> <strong>${order.customer_name || '--'}</strong></div>
                             <div class="order-row"><span>${t('orders.col_phone')}:</span> <span>${phone}</span></div>
