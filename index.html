@@ -8267,7 +8267,13 @@
                     .eq('conversation_id', conversationId)
                     .order('created_at', { ascending: true });
 
-                if (error) throw error;
+                if (error) {
+                    console.error("Supabase Error fetching messages:", error);
+                    throw error;
+                }
+
+                console.log(`Fetched ${messages.length} messages for conversation ${conversationId}`);
+                console.log("Messages Data:", messages);
 
                 if (messages.length === 0 && !isAutoRefresh) {
                     container.innerHTML = `<div style="padding:20px; text-align:center;">${t('inbox.no_messages')}</div>`;
@@ -8293,6 +8299,7 @@
                             table: 'inbox_messages',
                             filter: `conversation_id=eq.${conversationId}`
                         }, payload => {
+                            console.log('Realtime message received:', payload.new);
                             appendInboxMessage(payload.new.direction, payload.new.content, payload.new.created_at);
                             container.scrollTop = container.scrollHeight;
                         })
@@ -8300,7 +8307,7 @@
                 }
 
             } catch (e) {
-                console.error(e);
+                console.error("Critical Error in loadInboxMessages:", e);
                 if (!isAutoRefresh) container.innerHTML = 'Error loading messages';
             }
         }
