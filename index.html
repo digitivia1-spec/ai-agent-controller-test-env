@@ -7325,10 +7325,10 @@
                     <div class="header-right">
                         <select id="dashboard-date-filter" class="date-select glass" onchange="setDashboardPeriod(this.value)">
                             <option value="today" data-i18n="dashboard.filter.today">Today</option>
-                            <option value="7days" selected data-i18n="dashboard.filter.7days">Last 7 Days</option>
+                            <option value="7days" data-i18n="dashboard.filter.7days">Last 7 Days</option>
                             <option value="30days" data-i18n="dashboard.filter.30days">Last 30 Days</option>
                             <option value="month" data-i18n="dashboard.filter.month">This Month</option>
-                            <option value="all" data-i18n="dashboard.filter.all">All Time</option>
+                            <option value="all" selected data-i18n="dashboard.filter.all">All Time</option>
                         </select>
                     </div>
                 </div>
@@ -9152,7 +9152,7 @@
 
             // Initialize Date Range if null
             if (!dashboardDateRange.label) {
-                setDashboardPeriod('7days');
+                setDashboardPeriod('all');
                 return; // setDashboardPeriod calls loadDashboard
             }
 
@@ -9448,18 +9448,32 @@
                     }
                 }
 
-                // Fetch usage (count messages in current month)
-                const startOfMonth = new Date();
-                startOfMonth.setDate(1);
-                startOfMonth.setHours(0, 0, 0, 0);
+                // Fetch usage (count CONVERSATIONS in current month/period from org_usage)
+                // If org_usage available, use it. Else count manually.
 
-                const { count } = await supabaseClient
-                    .from('inbox_messages')
-                    .select('id', { count: 'exact', head: true })
+                const { data: usageData } = await supabaseClient
+                    .from('org_usage')
+                    .select('conversations_used, period_start, period_end')
                     .eq('org_id', currentUserOrgId)
-                    .gte('created_at', startOfMonth.toISOString());
+                    .maybeSingle();
 
-                msgUsed = count || 0;
+                if (usageData) {
+                    msgUsed = usageData.conversations_used || 0;
+                } else {
+                    // Fallback: count conversations created this month
+                    const startOfMonth = new Date();
+                    startOfMonth.setDate(1);
+                    startOfMonth.setHours(0, 0, 0, 0);
+
+                    const { count } = await supabaseClient
+                        .from('inbox_conversations')
+                        .select('id', { count: 'exact', head: true })
+                        .eq('org_id', currentUserOrgId)
+                        .gte('created_at', startOfMonth.toISOString());
+
+                    msgUsed = count || 0;
+                }
+
                 const percent = Math.min(100, Math.round((msgUsed / msgLimit) * 100));
 
                 // Calculate Days Remaining
