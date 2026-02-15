@@ -984,6 +984,62 @@
             }
         };
     </script>
+    <script>
+        // --- FALLBACK TRANSLATION INJECTION (ROBUST FIX) ---
+        // Ensures dashboard keys exist even if main definition had issues
+        (function () {
+            const dashboardEn = {
+                "welcome": "Welcome back, {name}",
+                "subtitle": "Here is what's happening with your agents today.",
+                "filter": {
+                    "today": "Today",
+                    "7days": "Last 7 Days",
+                    "30days": "Last 30 Days",
+                    "month": "This Month",
+                    "all": "All Time"
+                },
+                "stats": {
+                    "revenue": "Total Revenue",
+                    "leads": "New Leads",
+                    "conversations": "Active Chats",
+                    "rating": "Avg. Rating"
+                },
+                "headers": {
+                    "recent_activity": "Recent Activity",
+                    "platform_dist": "Platform Distribution",
+                    "plan_usage": "Plan Usage"
+                },
+                "empty_activity": "No recent activity found."
+            };
+
+            const dashboardAr = {
+                "welcome": "مرحباً بعودتك، {name}",
+                "subtitle": "إليك ما يحدث مع عملائك اليوم.",
+                "filter": {
+                    "today": "اليوم",
+                    "7days": "آخر 7 أيام",
+                    "30days": "آخر 30 يوم",
+                    "month": "هذا الشهر",
+                    "all": "كل الوقت"
+                },
+                "stats": {
+                    "revenue": "إجمالي الإيرادات",
+                    "leads": "عملاء جدد",
+                    "conversations": "محادثات نشطة",
+                    "rating": "متوسط التقييم"
+                },
+                "headers": {
+                    "recent_activity": "النشاط الأخير",
+                    "platform_dist": "توزيع المنصات",
+                    "plan_usage": "استخدام الخطة"
+                },
+                "empty_activity": "لا يوجد نشاط حديث."
+            };
+
+            if (window.LANG_EN) window.LANG_EN.dashboard = dashboardEn;
+            if (window.LANG_AR) window.LANG_AR.dashboard = dashboardAr;
+        })();
+    </script>
     <style>
         /* --- NEW DASHBOARD STYLES --- */
         .dashboard-header-new {
