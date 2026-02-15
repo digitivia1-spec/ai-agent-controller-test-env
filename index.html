@@ -7969,10 +7969,36 @@
                                 <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 
                                 <span data-i18n="inbox.btn_export">Export Data</span>
                             </button>
+                            
+                            <!-- Search Bar -->
+                            <div class="inbox-search-container" style="padding: 0 10px 10px 10px; position:relative;">
+                                <div style="position:relative;">
+                                    <input type="text" id="inbox-search-input" placeholder="Search chats..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value)" 
+                                        style="width:100%; padding:10px 35px 10px 15px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white; outline:none;">
+                                    <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); opacity:0.5;">🔍</span>
+                                    <button id="inbox-search-clear" onclick="clearInboxSearch()" style="display:none; position:absolute; right:30px; top:50%; transform:translateY(-50%); background:none; border:none; color:white; cursor:pointer;">×</button>
+                                </div>
+                                <div id="global-search-results" class="global-search-results glass" style="display:none;"></div>
+                            </div>
+
                             <div id="contact-list" class="contact-list"></div>
                         </div>
                         <div class="inbox-main" style="background: radial-gradient(circle at center, rgba(91, 174, 176, 0.05) 0%, transparent 70%);">
-                            <div class="inbox-header" id="inbox-header-title" data-i18n="inbox.header_select">Select a conversation</div>
+                            <div class="inbox-header">
+                                <span id="inbox-header-title" data-i18n="inbox.header_select">Select a conversation</span>
+                                <div class="chat-search-wrapper">
+                                    <div id="chat-search-bar" class="chat-search-bar hidden">
+                                        <input type="text" id="chat-search-input" placeholder="Find in chat..." oninput="handleChatSearch(this.value)" onkeydown="if(event.key==='Enter') findNextMsg()">
+                                        <span id="chat-search-count">0/0</span>
+                                        <div class="chat-search-nav">
+                                            <button onclick="findPrevMsg()">▲</button>
+                                            <button onclick="findNextMsg()">▼</button>
+                                        </div>
+                                        <button onclick="closeChatSearch()" class="close-search">×</button>
+                                    </div>
+                                    <button class="icon-btn-small" onclick="toggleChatSearch()" title="Search in chat">🔍</button>
+                                </div>
+                            </div>
                             <div id="inbox-messages" class="chat-history">
                                 <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:#888; text-align:center; padding:40px;">
                                     <div style="font-size: 3rem; margin-bottom: 20px;">💬</div>
