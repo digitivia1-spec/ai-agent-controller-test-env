@@ -9406,6 +9406,7 @@
             const barEl = document.getElementById('usage-conversations-bar');
             const daysEl = document.getElementById('usage-days-remaining');
             const badgeEl = document.getElementById('usage-plan-badge');
+            const periodEndEl = document.getElementById('usage-period-end');
 
             if (!nameEl) return;
 
@@ -9415,27 +9416,37 @@
                 let msgLimit = 100;
                 let msgUsed = 0;
                 let subscriptionEnd = null;
+                let status = 'TRIALING';
 
                 if (currentUserOrgId) {
-                    const { data: org } = await supabaseClient
-                        .from('organizations')
-                        .select('plan, subscription_status')
-                        .eq('id', currentUserOrgId)
-                        .single();
-                    if (org) {
-                        if (org.plan) planName = org.plan;
-                        // Try to get subscription end date
-                        if (org.subscription_data && org.subscription_data.current_period_end) {
-                            subscriptionEnd = new Date(org.subscription_data.current_period_end * 1000);
+                    const { data: sub, error } = await supabaseClient
+                        .from('org_subscriptions')
+                        .select(`
+                            status,
+                            current_period_end,
+                            plan:billing_plans(plan_slug, limits)
+                        `)
+                        .eq('org_id', currentUserOrgId)
+                        .maybeSingle();
+
+                    if (sub) {
+                        if (sub.status) status = sub.status.toUpperCase();
+                        if (sub.current_period_end) {
+                            subscriptionEnd = new Date(sub.current_period_end);
+                        }
+
+                        if (sub.plan) {
+                            // Handle array or object just in case (though single plan expected)
+                            const planData = Array.isArray(sub.plan) ? sub.plan[0] : sub.plan;
+                            if (planData) {
+                                planName = planData.plan_slug || 'free';
+                                if (planData.limits && planData.limits.conversations_limit) {
+                                    msgLimit = planData.limits.conversations_limit;
+                                }
+                            }
                         }
                     }
                 }
-
-                // Set limits based on plan
-                if (planName === 'starter') msgLimit = 1000;
-                if (planName === 'growth') msgLimit = 5000;
-                if (planName === 'pro') msgLimit = 10000;
-                if (planName === 'enterprise') msgLimit = 100000;
 
                 // Fetch usage (count messages in current month)
                 const startOfMonth = new Date();
@@ -9455,8 +9466,12 @@
                 let daysRemaining = 30;
                 if (subscriptionEnd) {
                     const now = new Date();
-                    const diffTime = Math.abs(subscriptionEnd - now);
-                    daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    const diffTime = subscriptionEnd - now;
+                    if (diffTime > 0) {
+                        daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    } else {
+                        daysRemaining = 0;
+                    }
                 } else {
                     // Fallback: days until end of month
                     const now = new Date();
@@ -9467,7 +9482,7 @@
 
                 // Update UI
                 if (nameEl) nameEl.innerText = planName.charAt(0).toUpperCase() + planName.slice(1) + ' Plan';
-                if (badgeEl) badgeEl.innerText = 'ACTIVE'; // Could be STATUS from DB
+                if (badgeEl) badgeEl.innerText = status;
 
                 if (usedEl) usedEl.innerText = msgUsed.toLocaleString();
                 if (limitEl) limitEl.innerText = msgLimit.toLocaleString();
@@ -9475,11 +9490,11 @@
                     barEl.style.width = `${percent}%`;
                     if (percent > 90) barEl.style.background = '#ef4444'; // Red if full
                     else if (percent > 75) barEl.style.background = '#f59e0b'; // Orange if warning
+                    else barEl.style.background = '#10b981'; // Green default
                 }
 
                 if (daysEl) daysEl.innerText = daysRemaining;
 
-                const periodEndEl = document.getElementById('usage-period-end');
                 if (periodEndEl) {
                     periodEndEl.innerText = subscriptionEnd
                         ? subscriptionEnd.toLocaleDateString()
