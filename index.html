@@ -528,6 +528,29 @@
                 "toast_status_fail": "Failed to update status",
                 "toast_no_leads_export": "No leads to export",
                 "loading_config": "Fetching Agent Configurations..."
+            },
+            "dashboard": {
+                "welcome": "Welcome back, {name}",
+                "subtitle": "Here is what's happening with your agents today.",
+                "filter": {
+                    "today": "Today",
+                    "7days": "Last 7 Days",
+                    "30days": "Last 30 Days",
+                    "month": "This Month",
+                    "all": "All Time"
+                },
+                "stats": {
+                    "revenue": "Total Revenue",
+                    "leads": "New Leads",
+                    "conversations": "Active Chats",
+                    "rating": "Avg. Rating"
+                },
+                "headers": {
+                    "recent_activity": "Recent Activity",
+                    "platform_dist": "Platform Distribution",
+                    "plan_usage": "Plan Usage"
+                },
+                "empty_activity": "No recent activity found."
             }
         };
 
@@ -935,10 +958,337 @@
                 "toast_no_leads_export": "لا يوجد عملاء",
                 "loading_config": "جاري التحميل...",
                 "access_denied": "ليس لديك الصلاحية للقيام بهذا الإجراء."
+            },
+            "dashboard": {
+                "welcome": "مرحباً بعودتك، {name}",
+                "subtitle": "إليك ما يحدث مع عملائك اليوم.",
+                "filter": {
+                    "today": "اليوم",
+                    "7days": "آخر 7 أيام",
+                    "30days": "آخر 30 يوم",
+                    "month": "هذا الشهر",
+                    "all": "كل الوقت"
+                },
+                "stats": {
+                    "revenue": "إجمالي الإيرادات",
+                    "leads": "عملاء جدد",
+                    "conversations": "محادثات نشطة",
+                    "rating": "متوسط التقييم"
+                },
+                "headers": {
+                    "recent_activity": "النشاط الأخير",
+                    "platform_dist": "توزيع المنصات",
+                    "plan_usage": "استخدام الخطة"
+                },
+                "empty_activity": "لا يوجد نشاط حديث."
             }
         };
     </script>
     <style>
+        /* --- NEW DASHBOARD STYLES --- */
+        .dashboard-header-new {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .dashboard-welcome h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dashboard-welcome p {
+            color: var(--text-muted);
+        }
+
+        .dashboard-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .date-filter-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .date-filter-select:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-dark);
+            /* Fallback */
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 60%);
+            pointer-events: none;
+        }
+
+        .kpi-content h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-trend {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .kpi-trend.positive {
+            color: var(--success);
+        }
+
+        .kpi-trend.negative {
+            color: var(--error);
+        }
+
+        .kpi-trend.neutral {
+            color: var(--text-muted);
+        }
+
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--theme-color);
+        }
+
+        /* Dashboard Main Grid */
+        .dashboard-grid-new {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .dashboard-col-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border-left: 3px solid transparent;
+            transition: background 0.2s;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .activity-item.type-message {
+            border-left-color: #3b82f6;
+        }
+
+        /* Blue */
+        .activity-item.type-lead {
+            border-left-color: #10b981;
+        }
+
+        /* Green */
+        .activity-item.type-order {
+            border-left-color: #f59e0b;
+        }
+
+        /* Orange */
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.95rem;
+            color: #ececec;
+            margin-bottom: 2px;
+        }
+
+        .activity-text strong {
+            color: white;
+        }
+
+        .activity-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Platform Stats */
+        .platform-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .platform-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .platform-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .platform-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .platform-bar-container {
+            flex: 1;
+            margin: 0 1rem;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .platform-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .platform-count {
+            font-weight: bold;
+            color: white;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .dashboard-grid-new {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-header-new {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .dashboard-controls {
+                width: 100%;
+            }
+
+            .date-filter-select {
+                flex: 1;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* --- PRICING MODAL --- */
         #pricing-modal {
             display: none;
@@ -6962,127 +7312,141 @@
             const container = document.getElementById('dynamic-content-area');
             let html = `
             <!-- DASHBOARD TAB -->
-            <div id="dashboard" class="tab-content">
-                <div class="dashboard-header">
-                    <h1 class="welcome-text">
-                        <span data-i18n="dashboard.welcome">Welcome back,</span> 
-                        <span id="dashboard-user-name">User</span>!
-                    </h1>
-                    <div class="date-display" id="dashboard-date">Monday, Jan 20</div>
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-header-new">
+                    <div class="header-left">
+                        <h1 class="welcome-text">
+                            <span data-i18n="dashboard.welcome">Welcome back,</span> 
+                            <span id="dashboard-user-name">User</span>!
+                        </h1>
+                        <p class="header-subtitle" data-i18n="dashboard.subtitle">Here is your performance overview</p>
+                    </div>
+                    <div class="header-right">
+                        <select id="dashboard-date-filter" class="date-select glass" onchange="setDashboardPeriod(this.value)">
+                            <option value="today" data-i18n="dashboard.filter.today">Today</option>
+                            <option value="7days" selected data-i18n="dashboard.filter.7days">Last 7 Days</option>
+                            <option value="30days" data-i18n="dashboard.filter.30days">Last 30 Days</option>
+                            <option value="month" data-i18n="dashboard.filter.month">This Month</option>
+                            <option value="all" data-i18n="dashboard.filter.all">All Time</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- KPI CARDS -->
                 <div class="kpi-grid">
-                    <div class="kpi-card glass">
-                        <div class="kpi-icon conversation-icon">
-                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                    <!-- Revenue Card -->
+                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('orders')">
+                        <div class="kpi-icon-wrapper revenue-bg">
+                            <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.31 0 1.04-1.11 1.99-2.71 1.99-2.2 0-3-.9-3.22-2.39H5.67c.22 2.65 1.77 4.11 3.83 4.6V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.2-4.4z"/></svg>
                         </div>
                         <div class="kpi-info">
-                            <div class="kpi-label" data-i18n="dashboard.stats.conversations">Total Conversations</div>
-                            <div class="kpi-value" id="kpi-conversations">0</div>
+                            <div class="kpi-label" data-i18n="dashboard.stats.revenue">Total Revenue</div>
+                            <div class="kpi-value" id="kpi-revenue">--</div>
+                            <div class="kpi-subtext" id="kpi-revenue-sub">0 Orders</div>
                         </div>
                     </div>
-                    <div class="kpi-card glass">
-                        <div class="kpi-icon message-icon">
-                            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-6 10l-4 4-4-4v-6h8v6z"/></svg>
-                        </div>
-                        <div class="kpi-info">
-                            <div class="kpi-label" data-i18n="dashboard.stats.messages">Total Messages</div>
-                            <div class="kpi-value" id="kpi-messages">0</div>
-                        </div>
-                    </div>
-                    <div class="kpi-card glass">
-                         <div class="kpi-icon leads-icon">
+
+                    <!-- Leads Card -->
+                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('leads')">
+                        <div class="kpi-icon-wrapper leads-bg">
                             <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                         </div>
-                        <div class="kpi-info">
+                         <div class="kpi-info">
                             <div class="kpi-label" data-i18n="dashboard.stats.leads">Total Leads</div>
-                            <div class="kpi-value" id="kpi-leads">0</div>
+                            <div class="kpi-value" id="kpi-leads">--</div>
+                             <div class="kpi-subtext" id="kpi-leads-sub">-- New</div>
                         </div>
                     </div>
-                    <div class="kpi-card glass">
-                         <div class="kpi-icon reviews-icon">
-                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+
+                    <!-- Active Chats Card -->
+                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('inbox')">
+                        <div class="kpi-icon-wrapper conversation-bg">
+                             <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
                         </div>
-                        <div class="kpi-info">
-                            <div class="kpi-label" data-i18n="dashboard.stats.reviews">Total Reviews</div>
-                            <div class="kpi-value" id="kpi-reviews">0</div>
+                         <div class="kpi-info">
+                            <div class="kpi-label" data-i18n="dashboard.stats.conversations">Active Chats</div>
+                            <div class="kpi-value" id="kpi-conversations">--</div>
+                             <div class="kpi-subtext" id="kpi-conversations-sub">-- Total Messages</div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Card -->
+                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('reviews')">
+                         <div class="kpi-icon-wrapper reviews-bg">
+                             <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        </div>
+                         <div class="kpi-info">
+                            <div class="kpi-label" data-i18n="dashboard.stats.rating">Avg Rating</div>
+                             <div class="kpi-value" id="kpi-rating">--</div>
+                             <div class="kpi-subtext" id="kpi-reviews-sub">0 Reviews</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PLAN USAGE WIDGET -->
-                <div class="usage-widget glass" id="plan-usage-widget" style="margin-bottom: 30px; padding: 24px; border-radius: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <div>
-                            <h3 style="margin: 0; color: white; font-size: 1.3rem;">
-                                <span id="usage-plan-name">Loading...</span>
-                                <span id="usage-plan-badge" style="background: linear-gradient(135deg, #4ade80, #22c55e); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; margin-left: 10px; color: black; font-weight: 600;">ACTIVE</span>
-                            </h3>
-                            <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 0.9rem;" id="usage-plan-description">Plan description</p>
-                        </div>
-                        <div style="text-align: right;" class="usage-days-section">
-                            <div id="usage-days-remaining" style="font-size: 2rem; font-weight: 700; background: linear-gradient(90deg, #fff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">--</div>
-                            <div id="usage-days-label" style="color: #94a3b8; font-size: 0.85rem;">days remaining</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Conversations Usage -->
-                    <div style="margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-                            <span id="usage-conversations-label" style="color: #e2e8f0; font-size: 0.95rem;">💬 Conversations</span>
-                            <span style="color: #94a3b8; font-size: 0.9rem;">
-                                <span id="usage-conversations-used" style="color: white; font-weight: 600;">0</span> / 
-                                <span id="usage-conversations-limit">500</span>
-                            </span>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 12px; overflow: hidden;">
-                            <div id="usage-conversations-bar" style="height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
-                        </div>
-                        <div style="text-align: right; mt: 4px;">
-                            <span id="usage-conversations-percent" style="color: #6366f1; font-size: 0.8rem; font-weight: 600;">0%</span>
-                        </div>
-                    </div>
-
-                    <!-- Subscription Dates -->
-                    <div id="usage-dates-section" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px;">
-                        <div style="flex: 1; min-width: 140px;">
-                            <div style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 4px;">📅 <span id="usage-start-label">Started</span></div>
-                            <div id="usage-period-start" style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">--</div>
-                        </div>
-                        <div style="flex: 1; min-width: 140px; text-align: right;">
-                            <div style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 4px;">⏰ <span id="usage-end-label">Expires</span></div>
-                            <div id="usage-period-end" style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">--</div>
-                        </div>
-                    </div>
-
-                    <!-- Plan Features -->
-                    <div id="usage-features" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
-                        <!-- Features will be populated dynamically -->
-                    </div>
-
-                    <!-- Upgrade Button -->
-                    <div style="margin-top: 20px; text-align: center;">
-                        <button onclick="openPricingModal()" id="usage-upgrade-btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; padding: 12px 30px; border-radius: 25px; color: white; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-                            ⚡ Upgrade Plan
-                        </button>
-                    </div>
-                </div>
-
-                <!-- DASHBOARD GRID -->
-                <div class="dashboard-grid">
+                <!-- MAIN DASHBOARD GRID -->
+                <div class="dashboard-grid-new">
+                     <!-- Left Column: Activity Feed -->
                     <div class="dashboard-panel glass large-panel">
-                        <h3 data-i18n="dashboard.headers.recent_activity">Recent Activity</h3>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                            <h3 data-i18n="dashboard.headers.recent_activity" style="margin:0;">Recent Activity</h3>
+                            <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh">↻</button>
+                        </div>
                         <div class="activity-feed" id="dashboard-activity">
                             <div class="loading-spinner"></div>
                         </div>
                     </div>
 
-                    <div class="dashboard-panel glass">
-                        <h3 data-i18n="dashboard.headers.agent_performance">Agent Performance</h3>
-                         <div class="agent-stats-list" id="dashboard-agent-stats">
-                            <div class="loading-spinner"></div>
-                         </div>
+                    <!-- Right Column: Usage & Charts -->
+                    <div class="dashboard-right-col">
+                         <!-- Plan Usage (Re-inserted here) -->
+                        <div class="usage-widget glass" id="plan-usage-widget" style="margin-bottom: 20px; padding: 20px; border-radius: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <div>
+                                    <h3 style="margin: 0; color: white; font-size: 1.1rem;">
+                                        <span id="usage-plan-name">Loading...</span>
+                                        <span id="usage-plan-badge" style="background: linear-gradient(135deg, #4ade80, #22c55e); padding: 2px 8px; border-radius: 12px; font-size: 0.65rem; margin-left: 8px; color: black; font-weight: 600;">ACTIVE</span>
+                                    </h3>
+                                    <p style="margin: 2px 0 0 0; color: #94a3b8; font-size: 0.8rem;" id="usage-plan-description">Plan description</p>
+                                </div>
+                                <div style="text-align: right;" class="usage-days-section">
+                                    <div id="usage-days-remaining" style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, #fff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">--</div>
+                                    <div id="usage-days-label" style="color: #94a3b8; font-size: 0.75rem;">days remaining</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Conversations Usage -->
+                            <div style="margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+                                    <span id="usage-conversations-label" style="color: #e2e8f0; font-size: 0.85rem;">💬 Conversations</span>
+                                    <span style="color: #94a3b8; font-size: 0.8rem;">
+                                        <span id="usage-conversations-used" style="color: white; font-weight: 600;">0</span> / 
+                                        <span id="usage-conversations-limit">500</span>
+                                    </span>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                                    <div id="usage-conversations-bar" style="height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
+                                </div>
+                            </div>
+
+                             <!-- Subscription Dates & Upgrade -->
+                             <div style="display:flex; gap:10px; margin-top:15px; align-items:center;">
+                                <div style="flex:1; font-size:0.75rem; color:#888;">
+                                    <span id="usage-end-label">Expires</span>: <span id="usage-period-end" style="color:#fff;">--</span>
+                                </div>
+                                <button onclick="openPricingModal()" id="usage-upgrade-btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; padding: 8px 16px; border-radius: 20px; color: white; font-weight: 600; cursor: pointer; font-size:0.8rem;">
+                                    ⚡ Upgrade
+                                </button>
+                             </div>
+                             <div id="usage-features" style="display:none;"></div> <!-- Hidden but kept for logic -->
+                        </div>
+
+                        <!-- Platform Stats -->
+                        <div class="dashboard-panel glass">
+                            <h3 data-i18n="dashboard.headers.platforms" style="font-size:1.1rem; margin-bottom:15px;">Platform Distribution</h3>
+                             <div id="dashboard-platform-stats" class="platform-stats-list">
+                                <div class="loading-spinner"></div>
+                             </div>
+                        </div>
                     </div>
                 </div>
             </div>`;
@@ -8739,187 +9103,152 @@
         //        DASHBOARD LOGIC
         // ==========================================
 
+        // ==========================================
+        //        DASHBOARD LOGIC (ENHANCED)
+        // ==========================================
+
+        let dashboardDateRange = { start: null, end: null, label: '7days' };
+
+        function navigateToTab(tabId) {
+            // Find sidebar element
+            const sidebarItem = document.querySelector(`.nav-item[onclick*="switchTab('${tabId}'"]`);
+            if (sidebarItem) {
+                switchTab(tabId, sidebarItem);
+            } else {
+                // Fallback if selector fails (e.g. mobile)
+                switchTab(tabId, null);
+            }
+        }
+
+        function setDashboardPeriod(val) {
+            dashboardDateRange.label = val;
+            const now = new Date();
+            const start = new Date();
+
+            if (val === 'today') {
+                start.setHours(0, 0, 0, 0);
+            } else if (val === '7days') {
+                start.setDate(now.getDate() - 7);
+            } else if (val === '30days') {
+                start.setDate(now.getDate() - 30);
+            } else if (val === 'month') {
+                start.setDate(1); // First day of current month
+            } else if (val === 'all') {
+                dashboardDateRange.start = null; // No filter
+                dashboardDateRange.end = null;
+                loadDashboard();
+                return;
+            }
+
+            dashboardDateRange.start = start.toISOString();
+            dashboardDateRange.end = now.toISOString();
+            loadDashboard(); // Reload data
+        }
+
         async function loadDashboard() {
-            // console.log("Loading Dashboard...");
             const userName = currentUserProfile?.full_name || currentUserProfile?.email || 'User';
             document.getElementById('dashboard-user-name').innerText = userName;
-            document.getElementById('dashboard-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+            // Initialize Date Range if null
+            if (!dashboardDateRange.label) {
+                setDashboardPeriod('7days');
+                return; // setDashboardPeriod calls loadDashboard
+            }
 
             if (!currentUserOrgId) return;
 
-            // Fetch Plan Usage (new)
-            await loadPlanUsage();
-
-            // Fetch Stats
-            await fetchDashboardStats();
-
-            // Activity Feed (Top 5 messages)
-            await renderActivityFeed();
-
-            // Agent Performance
-            await renderAgentPerformance();
-        }
-
-        // LOAD PLAN USAGE WIDGET
-        async function loadPlanUsage() {
-            try {
-                const { data, error } = await supabaseClient
-                    .rpc('get_dashboard_usage', { p_org_id: currentUserOrgId });
-
-                if (error || !data) {
-                    console.warn('Could not load plan usage:', error);
-                    return;
-                }
-
-                const usage = data;
-
-                // Plan Name & Badge
-                document.getElementById('usage-plan-name').innerText = usage.plan?.name || 'Free';
-                document.getElementById('usage-plan-description').innerText = usage.plan?.description || '';
-
-                // Get translations directly from language object with fallbacks
-                const lang = getLangStrings();
-                const usageStrings = lang?.dashboard?.usage || {
-                    status_active: currentLang === 'ar' ? 'نشط' : 'ACTIVE',
-                    status_trial: currentLang === 'ar' ? 'تجريبي' : 'TRIAL',
-                    status_canceled: currentLang === 'ar' ? 'ملغي' : 'CANCELED',
-                    status_expired: currentLang === 'ar' ? 'منتهي' : 'EXPIRED',
-                    days_remaining: currentLang === 'ar' ? 'يوم متبقي' : 'days remaining',
-                    conversations: currentLang === 'ar' ? 'المحادثات' : 'Conversations',
-                    upgrade_plan: currentLang === 'ar' ? 'ترقية الخطة' : '⚡ Upgrade Plan'
-                };
-
-                // Status Badge
-                const badge = document.getElementById('usage-plan-badge');
-                if (usage.subscription?.is_trial) {
-                    badge.innerText = usageStrings.status_trial;
-                    badge.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
-                } else if (usage.subscription?.status === 'active') {
-                    badge.innerText = usageStrings.status_active;
-                    badge.style.background = 'linear-gradient(135deg, #4ade80, #22c55e)';
-                } else if (usage.subscription?.status === 'canceled') {
-                    badge.innerText = usageStrings.status_canceled;
-                    badge.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
-                } else if (usage.subscription?.status === 'expired') {
-                    badge.innerText = usageStrings.status_expired;
-                    badge.style.background = '#6b7280';
-                } else {
-                    badge.innerText = usage.subscription?.status?.toUpperCase() || 'UNKNOWN';
-                    badge.style.background = '#6b7280';
-                }
-
-                // Days Remaining
-                document.getElementById('usage-days-remaining').innerText = Math.floor(usage.subscription?.days_remaining || 0);
-                document.getElementById('usage-days-label').innerText = usageStrings.days_remaining;
-
-                // Conversations Usage
-                const used = usage.usage?.conversations_used || 0;
-                const limit = usage.usage?.conversations_limit || 500;
-                const percent = usage.usage?.conversations_percent || 0;
-
-                document.getElementById('usage-conversations-label').innerText = '💬 ' + usageStrings.conversations;
-                document.getElementById('usage-conversations-used').innerText = used.toLocaleString();
-                document.getElementById('usage-conversations-limit').innerText = limit.toLocaleString();
-                document.getElementById('usage-conversations-bar').style.width = Math.min(percent, 100) + '%';
-                document.getElementById('usage-conversations-percent').innerText = percent + '%';
-
-                // Change bar color if high usage
-                if (percent > 90) {
-                    document.getElementById('usage-conversations-bar').style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
-                } else if (percent > 70) {
-                    document.getElementById('usage-conversations-bar').style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
-                }
-
-                // Subscription Dates
-                const formatDate = (dateStr) => {
-                    if (!dateStr) return '--';
-                    const date = new Date(dateStr);
-                    return date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                    });
-                };
-
-                document.getElementById('usage-period-start').innerText = formatDate(usage.subscription?.period_start);
-                document.getElementById('usage-period-end').innerText = formatDate(usage.subscription?.period_end);
-
-                // Update labels based on language
-                document.getElementById('usage-start-label').innerText = currentLang === 'ar' ? 'بدأ في' : 'Started';
-                document.getElementById('usage-end-label').innerText = currentLang === 'ar' ? 'ينتهي في' : 'Expires';
-
-                // Highlight expired date in red
-                if (usage.subscription?.is_expired) {
-                    document.getElementById('usage-period-end').style.color = '#ef4444';
-                }
-
-                // Features - with translation mapping
-                const featureTranslations = {
-                    'Basic Auto Replies': 'ردود تلقائية أساسية',
-                    'Standard Dashboard': 'لوحة تحكم قياسية',
-                    '24/7 Auto Replies': 'ردود تلقائية على مدار الساعة',
-                    'Lead Qualification': 'تأهيل العملاء المحتملين',
-                    'Advanced Lead Qualify': 'تأهيل متقدم للعملاء',
-                    'Order Confirmation': 'تأكيد الطلبات',
-                    'CRM Integration': 'تكامل مع CRM',
-                    'Priority Support': 'دعم أولوية',
-                    '500 conversations': '500 محادثة',
-                    '5,000 conversations': '5,000 محادثة',
-                    '12,000 conversations': '12,000 محادثة',
-                    '30,000 conversations': '30,000 محادثة'
-                };
-
-                const featuresContainer = document.getElementById('usage-features');
-                if (usage.plan?.features && Array.isArray(usage.plan.features)) {
-                    featuresContainer.innerHTML = usage.plan.features.map(f => {
-                        const translatedFeature = currentLang === 'ar' ? (featureTranslations[f] || f) : f;
-                        return `<span style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem;">✓ ${translatedFeature}</span>`;
-                    }).join('');
-                }
-
-                // Hide Upgrade button if on Pro
-                if (usage.plan?.slug === 'pro') {
-                    document.getElementById('usage-upgrade-btn').style.display = 'none';
-                }
-
-            } catch (err) {
-                console.error('Error loading plan usage:', err);
-            }
+            // Use Promise.all for parallel fetching
+            await Promise.all([
+                loadPlanUsage(),
+                fetchDashboardStats(),
+                renderActivityFeed(),
+                renderPlatformStats()
+            ]);
         }
 
         async function fetchDashboardStats() {
             try {
-                // 1. Total Conversations (from inbox_conversations)
-                const { count: countConversations } = await supabaseClient
-                    .from('inbox_conversations')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('org_id', currentUserOrgId);
-                document.getElementById('kpi-conversations').innerText = countConversations || 0;
+                // Helper to Apply Date Filter
+                const applyDateFilter = (query) => {
+                    if (dashboardDateRange.start) {
+                        return query.gte('created_at', dashboardDateRange.start);
+                    }
+                    return query;
+                };
 
-                // 2. Total Messages (from inbox_messages)
-                const { count: countMessages } = await supabaseClient
-                    .from('inbox_messages')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('org_id', currentUserOrgId);
-                document.getElementById('kpi-messages').innerText = countMessages || 0;
+                // 1. Total Revenue (Orders)
+                // Note: Summing via client as Supabase generic .select doesn't do sum easily without RPC
+                // We'll fetch limited recent orders or use count for now if sum is heavy
+                let revenue = 0;
+                let orderCount = 0;
 
-                // 3. Leads (Try/Catch in case table missing)
                 try {
-                    const { count: countLeads } = await supabaseClient
-                        .from('leads')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('org_id', currentUserOrgId);
-                    document.getElementById('kpi-leads').innerText = countLeads || 0;
-                } catch (e) { console.warn("Leads table missing?", e); }
+                    let q = supabaseClient.from('orders').select('total_amount, created_at').eq('org_id', currentUserOrgId);
+                    q = applyDateFilter(q);
+                    const { data: orders, error: orderErr } = await q;
 
-                // 4. Reviews
+                    if (!orderErr && orders) {
+                        orderCount = orders.length;
+                        revenue = orders.reduce((sum, o) => sum + (parseFloat(o.total_amount) || 0), 0);
+                    }
+                } catch (e) { console.warn("Order Stats Error", e); }
+
+                document.getElementById('kpi-revenue').innerText = `$${revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('kpi-revenue-sub').innerText = `${orderCount} Orders`;
+
+                // 2. Leads (New Leads in period)
+                let leadsCount = 0;
                 try {
-                    const { count: countReviews } = await supabaseClient
-                        .from('reviews')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('org_id', currentUserOrgId);
-                    document.getElementById('kpi-reviews').innerText = countReviews || 0;
-                } catch (e) { console.warn("Reviews table missing?", e); }
+                    let q = supabaseClient.from('leads').select('id, created_at', { count: 'exact', head: true }).eq('org_id', currentUserOrgId);
+                    q = applyDateFilter(q);
+                    const { count } = await q;
+                    leadsCount = count || 0;
+                } catch (e) { console.warn("Lead Stats Error", e); }
+
+                document.getElementById('kpi-leads').innerText = leadsCount;
+                document.getElementById('kpi-leads-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+
+
+                // 3. Active Chats (Unresolved or All in period?)
+                // Let's show All Conversations in Period
+                let convCount = 0;
+                let msgCount = 0;
+                try {
+                    let q = supabaseClient.from('inbox_conversations').select('id, created_at', { count: 'exact', head: true }).eq('org_id', currentUserOrgId);
+                    q = applyDateFilter(q);
+                    const { count } = await q;
+                    convCount = count || 0;
+
+                    // Messages count (approx)
+                    let mq = supabaseClient.from('inbox_messages').select('id', { count: 'exact', head: true }).eq('org_id', currentUserOrgId);
+                    mq = applyDateFilter(mq);
+                    const { count: mCount } = await mq;
+                    msgCount = mCount || 0;
+
+                } catch (e) { }
+
+                document.getElementById('kpi-conversations').innerText = convCount;
+                document.getElementById('kpi-conversations-sub').innerText = `${msgCount} Msgs`;
+
+
+                // 4. Rating (Reviews)
+                // Reviews are essential. Average rating.
+                let avgRating = 0;
+                let reviewCount = 0;
+                try {
+                    // Fetch actual reviews to calc avg
+                    let q = supabaseClient.from('reviews').select('rating, created_at').eq('org_id', currentUserOrgId);
+                    q = applyDateFilter(q);
+                    const { data: reviews } = await q;
+                    if (reviews && reviews.length > 0) {
+                        reviewCount = reviews.length;
+                        const sum = reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
+                        avgRating = (sum / reviewCount).toFixed(1);
+                    }
+                } catch (e) { }
+
+                document.getElementById('kpi-rating').innerText = avgRating > 0 ? avgRating : '--';
+                document.getElementById('kpi-reviews-sub').innerText = `${reviewCount} Reviews`;
 
             } catch (e) {
                 console.error("Error fetching dashboard stats:", e);
@@ -8928,76 +9257,136 @@
 
         async function renderActivityFeed() {
             const list = document.getElementById('dashboard-activity');
+            list.innerHTML = '<div class="loading-spinner"></div>';
+
             try {
-                // Activity feed from inbox_messages (real WhatsApp data)
-                const { data: messages } = await supabaseClient
+                // Combine recent messages, new leads, new orders
+                // This is a "Unified Feed". For MVC, let's keep it simple: 
+                // Just use inbox_messages for now (Chat dominant app) 
+                // OR better: fetch 5 recent items from each and sort.
+
+                // 1. Messages
+                const { data: msgs } = await supabaseClient
                     .from('inbox_messages')
-                    .select('*')
+                    .select('content, created_at, direction')
                     .eq('org_id', currentUserOrgId)
                     .order('created_at', { ascending: false })
-                    .limit(10);
+                    .limit(5);
 
-                if (!messages || messages.length === 0) {
-                    list.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">No recent activity</div>';
+                // 2. Leads
+                const { data: leads } = await supabaseClient
+                    .from('leads')
+                    .select('full_name, created_at, source')
+                    .eq('org_id', currentUserOrgId)
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+
+                // Combine & Sort
+                let activities = [];
+                if (msgs) activities.push(...msgs.map(m => ({
+                    type: 'message',
+                    title: m.direction === 'inbound' ? 'New Message' : 'AI Reply',
+                    desc: m.content,
+                    time: m.created_at,
+                    icon: m.direction === 'inbound' ? '📩' : '🤖'
+                })));
+
+                if (leads) activities.push(...leads.map(l => ({
+                    type: 'lead',
+                    title: 'New Lead Captured',
+                    desc: `${l.full_name || 'Unknown'} via ${l.source}`,
+                    time: l.created_at,
+                    icon: '⚡'
+                })));
+
+                activities.sort((a, b) => new Date(b.time) - new Date(a.time));
+                activities = activities.slice(0, 8); // Top 8
+
+                if (activities.length === 0) {
+                    list.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">No recent activity.</p>';
                     return;
                 }
 
                 let html = '';
-                messages.forEach(msg => {
-                    const isUser = msg.direction === 'inbound';
-                    const icon = isUser ? '👤' : '🤖';
-                    const title = isUser ? 'New Message from User' : 'AI Response Sent';
-                    const time = new Date(msg.created_at).toLocaleTimeString();
+                activities.forEach(act => {
+                    const date = new Date(act.time);
+                    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const isToday = new Date().toDateString() === date.toDateString();
+                    const dateStr = isToday ? timeStr : date.toLocaleDateString();
 
                     html += `
-                <div class="activity-item">
-                        <div class="act-icon">${icon}</div>
-                        <div class="act-content">
-                            <div class="act-title">${title}</div>
-                            <div style="font-size:0.85rem; color:#aaa; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:300px;">${msg.content}</div>
+                        <div class="activity-item">
+                            <div class="act-icon">${act.icon}</div>
+                            <div class="act-content">
+                                <div class="act-title">${act.title} <span style="font-weight:normal; font-size:0.75rem; color:#888; float:right;">${dateStr}</span></div>
+                                <div class="act-desc">${act.desc ? act.desc.substring(0, 60) + (act.desc.length > 60 ? '...' : '') : ''}</div>
+                            </div>
                         </div>
-                        <div class="act-time">${time}</div>
-                    </div>`;
+                     `;
                 });
+
                 list.innerHTML = html;
+
             } catch (e) {
-                list.innerHTML = '<div style="color:var(--error)">Failed to load activity</div>';
+                console.error(e);
+                list.innerHTML = '<p style="color:var(--error); padding:10px;">Failed to load activity.</p>';
             }
         }
 
-        async function renderAgentPerformance() {
-            const list = document.getElementById('dashboard-agent-stats');
+        async function renderPlatformStats() {
+            const container = document.getElementById('dashboard-platform-stats');
+            if (!container) return;
+            container.innerHTML = '<div class="loading-spinner"></div>';
+
             try {
-                // Group by platform (from inbox_conversations)
-                const { data: sessions } = await supabaseClient
+                // Count conversations by platform
+                const { data: convs } = await supabaseClient
                     .from('inbox_conversations')
                     .select('platform')
                     .eq('org_id', currentUserOrgId);
 
-                const agentCounts = {};
-                if (sessions) {
-                    sessions.forEach(s => {
-                        // Map platform to agent id for display purposes
-                        const agentId = s.platform || 'website';
-                        agentCounts[agentId] = (agentCounts[agentId] || 0) + 1;
-                    });
+                const counts = {};
+                (convs || []).forEach(c => {
+                    const p = c.platform || 'website';
+                    counts[p] = (counts[p] || 0) + 1;
+                });
+
+                if (Object.keys(counts).length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">No platform data yet.</p>';
+                    return;
                 }
 
+                const total = (convs || []).length;
+                const colors = {
+                    'whatsapp': '#25D366',
+                    'facebook': '#1877F2',
+                    'instagram': '#E1306C',
+                    'website': '#5BAEB0'
+                };
+
                 let html = '';
-                AGENTS.forEach(agent => {
-                    const count = agentCounts[agent.id] || 0;
+                for (const [platform, count] of Object.entries(counts)) {
+                    const percent = Math.round((count / total) * 100);
+                    const color = colors[platform] || '#888';
+                    const label = platform.charAt(0).toUpperCase() + platform.slice(1);
+
                     html += `
-                <div class="agent-stat-row">
-                        <div class="agent-stat-info">
-                            <div class="agent-dot" style="background:${agent.color}"></div>
-                            <div class="agent-stat-name">${t(agent.nameKey)}</div>
+                        <div style="margin-bottom:12px;">
+                            <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
+                                <span>${label}</span>
+                                <span>${count} (${percent}%)</span>
+                            </div>
+                            <div style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+                                <div style="height:100%; width:${percent}%; background:${color};"></div>
+                            </div>
                         </div>
-                        <div class="agent-stat-count">${count} chats</div>
-                    </div>`;
-                });
-                list.innerHTML = html;
+                    `;
+                }
+                container.innerHTML = html;
+
             } catch (e) {
-                list.innerHTML = '<div style="color:var(--error)">Failed to load stats</div>';
+                console.warn(e);
+                container.innerHTML = '<p>Error loading platform stats.</p>';
             }
         }
 
