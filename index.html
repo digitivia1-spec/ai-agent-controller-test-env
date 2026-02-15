@@ -548,6 +548,7 @@
                 "headers": {
                     "recent_activity": "Recent Activity",
                     "platform_dist": "Platform Distribution",
+                    "platforms": "Platform Stats",
                     "plan_usage": "Plan Usage"
                 },
                 "empty_activity": "No recent activity found."
@@ -978,6 +979,7 @@
                 "headers": {
                     "recent_activity": "النشاط الأخير",
                     "platform_dist": "توزيع المنصات",
+                    "platforms": "إحصائيات المنصات",
                     "plan_usage": "استخدام الخطة"
                 },
                 "empty_activity": "لا يوجد نشاط حديث."
@@ -7317,10 +7319,7 @@
             <div id="dashboard" class="tab-content active">
                 <div class="dashboard-header-new">
                     <div class="header-left">
-                        <h1 class="welcome-text">
-                            <span data-i18n="dashboard.welcome">Welcome back,</span> 
-                            <span id="dashboard-user-name">User</span>!
-                        </h1>
+                        <h1 class="welcome-text" id="dashboard-welcome-msg">Welcome...</h1>
                         <p class="header-subtitle" data-i18n="dashboard.subtitle">Here is your performance overview</p>
                     </div>
                     <div class="header-right">
@@ -9149,7 +9148,7 @@
 
         async function loadDashboard() {
             const userName = currentUserProfile?.full_name || currentUserProfile?.email || 'User';
-            document.getElementById('dashboard-user-name').innerText = userName;
+            document.getElementById('dashboard-welcome-msg').innerText = t('dashboard.welcome', { name: userName });
 
             // Initialize Date Range if null
             if (!dashboardDateRange.label) {
@@ -9420,7 +9419,7 @@
                 if (currentUserOrgId) {
                     const { data: org } = await supabaseClient
                         .from('organizations')
-                        .select('plan, subscription_status, subscription_data')
+                        .select('plan, subscription_status')
                         .eq('id', currentUserOrgId)
                         .single();
                     if (org) {
