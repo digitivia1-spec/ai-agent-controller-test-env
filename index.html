@@ -128,7 +128,11 @@
                 "empty_messages": "No messages yet.",
                 "error_loading_messages": "Error loading messages",
                 "msg_error_agent": "Error: Could not reach agent.",
-                "msg_no_reply": "No reply received."
+                "msg_no_reply": "No reply received.",
+                "search_placeholder": "Search...",
+                "mode_chats": "Chats",
+                "mode_messages": "Messages",
+                "find_placeholder": "Find..."
             },
             "leads": {
                 "title": "Leads Area",
@@ -672,7 +676,11 @@
                 "empty_messages": "لا توجد رسائل.",
                 "error_loading_messages": "خطأ في تحميل الرسائل",
                 "msg_error_agent": "خطأ: تعذر الوصول إلى الوكيل.",
-                "msg_no_reply": "لم يتم استلام رد."
+                "msg_no_reply": "لم يتم استلام رد.",
+                "search_placeholder": "بحث...",
+                "mode_chats": "المحادثات",
+                "mode_messages": "الرسائل",
+                "find_placeholder": "بحث..."
             },
             "leads": {
                 "title": "منطقة العملاء المحتملين",
@@ -8099,8 +8107,8 @@
                                 </div>
                                 
                                 <div class="inbox-search-modes">
-                                    <button type="button" class="mode-btn active" id="mode-btn-chats" onclick="setInboxSearchMode('chats')">Chats</button>
-                                    <button type="button" class="mode-btn" id="mode-btn-messages" onclick="setInboxSearchMode('messages')">Messages</button>
+                                    <button type="button" class="mode-btn active" id="mode-btn-chats" onclick="setInboxSearchMode('chats')" data-i18n="inbox.mode_chats">Chats</button>
+                                    <button type="button" class="mode-btn" id="mode-btn-messages" onclick="setInboxSearchMode('messages')" data-i18n="inbox.mode_messages">Messages</button>
                                 </div>
 
                                 <!-- Results Panel (Replaces Contact List in Messages Mode) -->
@@ -8113,8 +8121,8 @@
                             <div class="inbox-header">
                                 <span id="inbox-header-title" data-i18n="inbox.header_select">Select a conversation</span>
                                 <div class="chat-search-wrapper">
-                                    <div id="chat-search-bar" class="chat-search-bar hidden">
-                                        <input type="text" id="chat-search-input" placeholder="Find..." oninput="handleChatSearch(this.value)" onkeydown="if(event.key==='Enter') findNextMsg()">
+                                     <div id="chat-search-bar" class="chat-search-bar hidden">
+                                        <input type="text" id="chat-search-input" placeholder="Find..." data-i18n-placeholder="inbox.find_placeholder" oninput="handleChatSearch(this.value)" onkeydown="if(event.key==='Enter') findNextMsg()">
                                         <span id="chat-search-count" style="font-size:0.8rem; color:#888; min-width:40px; text-align:center;">0/0</span>
                                         <div class="chat-search-nav">
                                             <button onclick="findPrevMsg()">▲</button>
