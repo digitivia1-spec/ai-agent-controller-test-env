@@ -7595,7 +7595,7 @@
                             <!-- Conversations Usage -->
                             <div style="margin-bottom: 12px;">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
-                                    <span id="usage-conversations-label" style="color: #e2e8f0; font-size: 0.85rem;">💬 Conversations</span>
+                                    <span id="usage-conversations-label" style="color: #e2e8f0; font-size: 0.85rem;">💬 Conversations <span style="font-size:0.7em; opacity:0.7;">(Billing Cycle)</span></span>
                                     <span style="color: #94a3b8; font-size: 0.8rem;">
                                         <span id="usage-conversations-used" style="color: white; font-weight: 600;">0</span> / 
                                         <span id="usage-conversations-limit">500</span>
@@ -9303,8 +9303,11 @@
             const now = new Date();
             const start = new Date();
 
+            // Set start to midnight by default for consistent overlapping
+            start.setHours(0, 0, 0, 0);
+
             if (val === 'today') {
-                start.setHours(0, 0, 0, 0);
+                // Already set to midnight
             } else if (val === '7days') {
                 start.setDate(now.getDate() - 7);
             } else if (val === '30days') {
@@ -9355,8 +9358,6 @@
                 };
 
                 // 1. Total Revenue (Orders)
-                // Note: Summing via client as Supabase generic .select doesn't do sum easily without RPC
-                // We'll fetch limited recent orders or use count for now if sum is heavy
                 let revenue = 0;
                 let orderCount = 0;
 
@@ -9387,13 +9388,17 @@
                 document.getElementById('kpi-leads-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
 
 
-                // 3. Active Chats (Unresolved or All in period?)
-                // Let's show All Conversations in Period
+                // 3. Conversations (Was Active Chats) - CONSISTENCY FIX
+                // Goal: Match Plan Usage if filter is 'month' or similar.
                 let convCount = 0;
                 let msgCount = 0;
                 try {
                     let q = supabaseClient.from('inbox_conversations').select('id, created_at', { count: 'exact', head: true }).eq('org_id', currentUserOrgId);
+
+                    // Special Case: If filter is month, ensure we match Plan Usage logic exactly if possible
+                    // But for dashboard generic filter, applyDateFilter is correct.
                     q = applyDateFilter(q);
+
                     const { count } = await q;
                     convCount = count || 0;
 
@@ -9405,16 +9410,18 @@
 
                 } catch (e) { }
 
+                // Update UI Labels to "Conversations"
+                const kpiLabel = document.querySelector('[data-i18n="dashboard.stats.conversations"]');
+                if (kpiLabel) kpiLabel.innerText = "Conversations";
+
                 document.getElementById('kpi-conversations').innerText = convCount;
-                document.getElementById('kpi-conversations-sub').innerText = `${msgCount} Msgs`;
+                document.getElementById('kpi-conversations-sub').innerText = `${msgCount} Messages`;
 
 
                 // 4. Rating (Reviews)
-                // Reviews are essential. Average rating.
                 let avgRating = 0;
                 let reviewCount = 0;
                 try {
-                    // Fetch actual reviews to calc avg
                     let q = supabaseClient.from('reviews').select('rating, created_at').eq('org_id', currentUserOrgId);
                     q = applyDateFilter(q);
                     const { data: reviews } = await q;
