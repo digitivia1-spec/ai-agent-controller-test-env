@@ -9300,6 +9300,13 @@
 
         function setDashboardPeriod(val) {
             dashboardDateRange.label = val;
+
+            // Sync UI Dropdown if this function is called programmatically
+            const filterEl = document.getElementById('dashboard-date-filter');
+            if (filterEl && filterEl.value !== val) {
+                filterEl.value = val;
+            }
+
             const now = new Date();
             const start = new Date();
 
@@ -9317,6 +9324,7 @@
             } else if (val === 'all') {
                 dashboardDateRange.start = null; // No filter
                 dashboardDateRange.end = null;
+                // Important: Even for 'all', we might want to check org usage, so loadDashboard handles it
                 loadDashboard();
                 return;
             }
@@ -9332,7 +9340,10 @@
 
             // Initialize Date Range if null
             if (!dashboardDateRange.label) {
-                setDashboardPeriod('all');
+                // Check if there's a selected option in the DOM, otherwise default to 'all'
+                const filterEl = document.getElementById('dashboard-date-filter');
+                const defaultMsg = filterEl ? filterEl.value : 'all';
+                setDashboardPeriod(defaultMsg);
                 return; // setDashboardPeriod calls loadDashboard
             }
 
@@ -9407,8 +9418,8 @@
                     // and org_usage is higher, we should probably show that to avoid "Why is usage > conversations?" confusion.
                     // Especially important if rows were deleted.
 
-                    // DEBUG: Log the values to understand why it's not applying
-                    console.log(`Debug Consistency: Label=${dashboardDateRange.label}, DB=${convCount}`);
+                    // DEBUG: Log for troubleshooting
+                    // console.log(`Debug Consistency: Label=${dashboardDateRange.label}, DB=${convCount}`);
 
                     if (dashboardDateRange.label === 'all' || dashboardDateRange.label === 'month') {
                         try {
@@ -9418,11 +9429,11 @@
                                 .eq('org_id', currentUserOrgId)
                                 .maybeSingle();
 
-                            console.log('Debug Consistency UsageData:', usageData);
+                            // console.log('Debug Consistency UsageData:', usageData);
 
                             if (usageData && usageData.conversations_used > convCount) {
                                 // Only override if billing is HIGHER (to explain the limit usage)
-                                console.log(`Consistency Patch: Overriding DB count (${convCount}) with Billing count (${usageData.conversations_used})`);
+                                // console.log(`Consistency Patch: Overriding DB count (${convCount}) with Billing count (${usageData.conversations_used})`);
                                 convCount = usageData.conversations_used;
                             }
                         } catch (err) { console.error("Consistency Patch Error:", err); }
