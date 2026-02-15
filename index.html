@@ -9016,7 +9016,7 @@
                     // OR simple rebuild for now. Real-time is better.
                     if (!isAutoRefresh) {
                         messages.forEach(msg => {
-                            appendInboxMessage(msg.direction, msg.content, msg.created_at);
+                            appendInboxMessage(msg.direction, msg.content, msg.created_at, msg.id);
                         });
                         container.scrollTop = container.scrollHeight;
                     }
@@ -9033,7 +9033,7 @@
                             filter: `conversation_id=eq.${conversationId}`
                         }, payload => {
                             console.log('Realtime message received:', payload.new);
-                            appendInboxMessage(payload.new.direction, payload.new.content, payload.new.created_at);
+                            appendInboxMessage(payload.new.direction, payload.new.content, payload.new.created_at, payload.new.id);
                             container.scrollTop = container.scrollHeight;
                         })
                         .subscribe();
@@ -9045,7 +9045,7 @@
             }
         }
 
-        function appendInboxMessage(direction, text, createdAt) {
+        function appendInboxMessage(direction, text, createdAt, id = null) {
             const container = document.getElementById('inbox-messages');
             const div = document.createElement('div');
             // direction: 'inbound' (User) vs 'outbound' (Agent/AI)
@@ -9099,6 +9099,7 @@
                 <div class="msg-content">${safeText}</div>
                 ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
             `;
+            if (id) div.id = `msg-${id}`;
             container.appendChild(div);
         }
 
@@ -11529,16 +11530,13 @@
 
                 const div = document.createElement('div');
                 div.className = 'global-result-item';
-                div.onclick = () => {
-                    // Load Chat
-                    loadInboxMessages(conversation.platform, contact.id, name);
-                    // Hide results
+                div.onclick = async () => {
+                    // Hide results immediately
                     resultsContainer.style.display = 'none';
-                    // Wait and Scroll (rough logic)
-                    setTimeout(() => {
-                        // Ideally, scrollToMessage(msg.id) would go here
-                        // For now, loading the chat is the primary goal
-                    }, 1000);
+                    // Load Chat (await ensures DOM is ready)
+                    await loadInboxMessages(conversation.platform, contact.id, name);
+                    // Scroll to message
+                    scrollToMessage(msg.id);
                 };
 
                 const dateStr = new Date(msg.created_at).toLocaleDateString();
@@ -11559,6 +11557,28 @@
             console.error("Global search error", e);
             resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:red;">Search error</div>`;
         }
+    }
+
+    function scrollToMessage(id) {
+        // Retry a few times in case rendering takes a moment
+        let attempts = 0;
+        const interval = setInterval(() => {
+            const el = document.getElementById('msg-' + id);
+            if (el) {
+                clearInterval(interval);
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Visual highlight
+                el.style.transition = 'background 0.5s';
+                const originalBg = el.style.background;
+                el.style.background = 'rgba(91, 174, 176, 0.3)'; // Theme color dim
+                setTimeout(() => {
+                    el.style.background = originalBg;
+                }, 2000);
+            } else {
+                attempts++;
+                if (attempts >= 10) clearInterval(interval); // Give up after 1s
+            }
+        }, 100);
     }
 
     // 2. In-Chat Search Logic
