@@ -988,7 +988,184 @@
     </script>
 
     <style>
-        /* --- NEW DASHBOARD STYLES --- */
+        /* DASHBOARD V2 – BLACKBOX-INSPIRED (SCOPED) */
+        #dashboard {
+            --dash-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            --dash-border: rgba(255, 255, 255, 0.06);
+            --dash-card-radius: 24px;
+            --dash-card-pad: 24px;
+            --dash-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        #dashboard .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 24px !important;
+            margin-bottom: 24px !important;
+            padding: 0 !important;
+        }
+
+        #dashboard .kpi-card {
+            background: var(--dash-bg) !important;
+            border: 1px solid var(--dash-border) !important;
+            border-radius: var(--dash-card-radius) !important;
+            padding: var(--dash-card-pad) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 16px !important;
+            box-shadow: none !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            position: relative;
+            overflow: hidden;
+            min-height: 140px;
+        }
+
+        #dashboard .kpi-card:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: var(--dash-shadow) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #dashboard .kpi-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), transparent);
+            pointer-events: none;
+        }
+
+        /* Order: Info left (1), Icon right (2) */
+        #dashboard .kpi-info {
+            order: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #dashboard .kpi-icon-wrapper {
+            order: 2;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #dashboard .kpi-icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+            opacity: 0.9;
+        }
+
+        #dashboard .kpi-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        #dashboard .kpi-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+            margin: 0;
+        }
+
+        #dashboard .kpi-subtext {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 0;
+        }
+
+        /* MAIN DASHBOARD LAYOUT */
+        #dashboard .dashboard-grid-new {
+            display: grid;
+            grid-template-columns: 1fr 380px !important;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Activity Feed Panel */
+        #dashboard .dashboard-panel.large-panel {
+            background: #0f1014 !important;
+            border: 1px solid var(--dash-border);
+            border-radius: var(--dash-card-radius);
+            padding: var(--dash-card-pad);
+            min-height: 600px;
+        }
+
+        #dashboard .dashboard-right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Widgets (Usage & Platforms) */
+        #dashboard .usage-widget,
+        #dashboard .dashboard-panel:not(.large-panel) {
+            background: #0f1014 !important;
+            border: 1px solid var(--dash-border) !important;
+            border-radius: var(--dash-card-radius) !important;
+            padding: var(--dash-card-pad) !important;
+            margin: 0 !important;
+        }
+
+        /* Plan Badge */
+        #dashboard #usage-plan-badge {
+            background: linear-gradient(135deg, #a855f7, #6366f1) !important;
+            color: white !important;
+            border: none;
+            padding: 4px 10px !important;
+        }
+
+        /* Platform Stats List */
+        #dashboard .platform-stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            #dashboard .dashboard-grid-new {
+                grid-template-columns: 1fr !important;
+            }
+
+            #dashboard .dashboard-right-col {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            #dashboard .dashboard-right-col {
+                grid-template-columns: 1fr;
+            }
+
+            #dashboard .kpi-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #dashboard .kpi-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* --- END NEW STYLES --- */
+        /* --- ORIGINAL STYLES FOLLOW --- */
         .dashboard-header-new {
             display: flex;
             justify-content: space-between;
@@ -7399,13 +7576,13 @@
 
                     <!-- Right Column: Usage & Charts -->
                     <div class="dashboard-right-col">
-                         <!-- Plan Usage (Re-inserted here) -->
-                        <div class="usage-widget glass" id="plan-usage-widget" style="margin-bottom: 20px; padding: 20px; border-radius: 16px;">
+                         <!-- Plan Usage Widget -->
+                        <div class="usage-widget glass" id="plan-usage-widget">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                                 <div>
                                     <h3 style="margin: 0; color: white; font-size: 1.1rem;">
                                         <span id="usage-plan-name">Loading...</span>
-                                        <span id="usage-plan-badge" style="background: linear-gradient(135deg, #4ade80, #22c55e); padding: 2px 8px; border-radius: 12px; font-size: 0.65rem; margin-left: 8px; color: black; font-weight: 600;">ACTIVE</span>
+                                        <span id="usage-plan-badge">ACTIVE</span>
                                     </h3>
                                     <p style="margin: 2px 0 0 0; color: #94a3b8; font-size: 0.8rem;" id="usage-plan-description">Plan description</p>
                                 </div>
@@ -7438,7 +7615,7 @@
                                     ⚡ Upgrade
                                 </button>
                              </div>
-                             <div id="usage-features" style="display:none;"></div> <!-- Hidden but kept for logic -->
+                             <div id="usage-features" style="display:none;"></div>
                         </div>
 
                         <!-- Platform Stats -->
