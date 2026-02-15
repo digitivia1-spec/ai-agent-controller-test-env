@@ -7827,7 +7827,7 @@
                     <!-- Revenue Card -->
                     <div class="kpi-card glass clickable-card" onclick="navigateToTab('orders')">
                         <div class="kpi-icon-wrapper revenue-bg">
-                            <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.31 0 1.04-1.11 1.99-2.71 1.99-2.2 0-3-.9-3.22-2.39H5.67c.22 2.65 1.77 4.11 3.83 4.6V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.2-4.4z"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M19,14H5c-1.1,0-2-0.9-2-2V7c0-1.1,0.9-2,2-2h14c1.1,0,2,0.9,2,2v5C21,13.1,20.1,14,19,14z M12,12c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S10.9,12,12,12z" fill="currentColor"/></svg>
                         </div>
                         <div class="kpi-info">
                             <div class="kpi-label" data-i18n="dashboard.stats.revenue">Total Revenue</div>
@@ -9738,7 +9738,7 @@
                     }
                 } catch (e) { console.warn("Order Stats Error", e); }
 
-                document.getElementById('kpi-revenue').innerText = `$${revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('kpi-revenue').innerText = `${revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                 document.getElementById('kpi-revenue-sub').innerText = `${orderCount} Orders`;
 
                 // 2. Leads (New Leads in period)
