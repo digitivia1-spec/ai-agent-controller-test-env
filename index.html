@@ -6271,6 +6271,13 @@
             display: none !important;
         }
 
+        .inbox-search-container {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+        }
+
         .inbox-search-modes {
             display: flex;
             gap: 8px;
@@ -8084,7 +8091,7 @@
                             
                             <!-- Search Bar -->
                             <!-- Search Bar -->
-                            <div class="inbox-search-container" style="padding: 0 10px 10px 10px;">
+                            <div class="inbox-search-container">
                                 <div class="inbox-search-input-wrapper">
                                     <input type="text" id="inbox-search-input" placeholder="Search..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value)">
                                     <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); opacity:0.5; pointer-events:none;">🔍</span>
@@ -8465,7 +8472,7 @@
             if (tabId === 'page' || tabId === 'page') color = '#5B89CE';
             if (tabId === 'instagram') color = '#C66B8D';
             if (tabId === 'website') color = '#5BAEB0';
-            if (tabId === 'inbox') color = '#6366f1'; // Indigo for inbox
+            if (tabId === 'inbox') color = '#5BAEB0'; // Consistent Teal for inbox
             if (tabId === 'leads') {
                 color = '#e6b72a'; // Gold for leads
                 fetchLeads(); // Fetch data when tab opens
@@ -8985,11 +8992,6 @@
         async function loadInbox(platform, isAutoRefresh = false) {
             if (!isAutoRefresh) {
                 currentInboxPlatform = platform;
-                let color = '#5BAEB0';
-                if (platform === 'whatsapp') color = '#57B078';
-                if (platform === 'page') color = '#5B89CE';
-                if (platform === 'instagram') color = '#C66B8D';
-                document.documentElement.style.setProperty('--theme-color', color);
             }
 
             const list = document.getElementById('contact-list');
