@@ -1648,6 +1648,199 @@
             margin-right: 10px;
         }
 
+        /* =========================================
+           INBOX SEARCH STYLES
+           ========================================= */
+        .inbox-search-container {
+            padding: 10px 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(13, 13, 16, 0.95);
+            /* Match sidebar bg */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-input-wrapper:focus-within {
+            border-color: var(--theme-color, #5BAEB0);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 10px 5px;
+            outline: none;
+            font-size: 0.9rem;
+            min-width: 0;
+            /* Flex fix */
+        }
+
+        .search-input-wrapper i {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .search-clear-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1rem;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .search-clear-btn:hover {
+            color: white;
+        }
+
+        /* Global Results Dropdown */
+        #global-search-results {
+            position: absolute;
+            top: 100%;
+            left: 15px;
+            right: 15px;
+            background: #1a1a1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+            /* Hidden by default */
+        }
+
+        .global-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .global-result-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .global-result-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .global-result-content {
+            font-size: 0.9rem;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .global-match-highlight {
+            background: rgba(255, 255, 0, 0.2);
+            color: #ffff00;
+            font-weight: bold;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+
+        /* In-Chat Search Bar */
+        .chat-search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #chat-search-bar {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: #1a1a1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 50;
+            min-width: 280px;
+        }
+
+        [dir="rtl"] #chat-search-bar {
+            right: auto;
+            left: 0;
+        }
+
+        #chat-search-bar input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            flex: 1;
+            font-size: 0.9rem;
+            min-width: 0;
+            outline: none;
+        }
+
+        #chat-search-bar button {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        #chat-search-bar button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        #chat-search-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* In-Chat Highlight */
+        .search-highlight {
+            background: rgba(255, 255, 0, 0.3);
+            color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 0, 0.5);
+        }
+
+        .search-highlight.active {
+            background: rgba(255, 165, 0, 0.6);
+            box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.8);
+            z-index: 1;
+            position: relative;
+        }
+
         .pc-period {
             font-size: 0.9rem;
             color: var(--text-muted);
@@ -11221,6 +11414,268 @@
             .subscribe((status) => {
                 console.log("Notification subscription status:", status);
             });
+    }
+
+    /* =========================================
+       INBOX SEARCH LOGIC
+       ========================================= */
+
+    let globalSearchDebounceTimer = null;
+    let inChatSearchMatches = [];
+    let inChatSearchIndex = -1;
+
+    // 1. Inbox Chat List Search (Local + Global)
+    function handleInboxSearch(query) {
+        const input = document.getElementById('inbox-search-input');
+        const clearBtn = document.getElementById('inbox-search-clear');
+        const list = document.getElementById('contact-list');
+        const items = list.getElementsByClassName('contact-item');
+        const globalResults = document.getElementById('global-search-results');
+
+        query = query.toLowerCase().trim();
+
+        // Toggle Clear Button
+        clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+
+        // Local Filter
+        let hasLocalMatch = false;
+        Array.from(items).forEach(item => {
+            const text = item.innerText.toLowerCase();
+            if (text.includes(query)) {
+                item.style.display = 'flex';
+                hasLocalMatch = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Global Search Trigger (Debounced)
+        // Only search global if query length > 2
+        clearTimeout(globalSearchDebounceTimer);
+        if (query.length > 2) {
+            globalSearchDebounceTimer = setTimeout(() => {
+                performGlobalSearch(query);
+            }, 400); // 400ms debounce
+        } else {
+            globalResults.style.display = 'none';
+            globalResults.innerHTML = '';
+        }
+    }
+
+    function clearInboxSearch() {
+        const input = document.getElementById('inbox-search-input');
+        input.value = '';
+        handleInboxSearch('');
+    }
+
+    async function performGlobalSearch(query) {
+        const resultsContainer = document.getElementById('global-search-results');
+        resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:#888;">Searching all messages...</div>`;
+        resultsContainer.style.display = 'block';
+
+        try {
+            // Query: Join inbox_messages with conversations and contacts
+            const { data: messages, error } = await supabaseClient
+                .from('inbox_messages')
+                .select(`
+                    id,
+                    content,
+                    created_at,
+                    conversation:inbox_conversations!inner (
+                        id,
+                        platform,
+                        contact:inbox_contacts!inner (
+                            id,
+                            display_name,
+                            phone
+                        )
+                    )
+                `)
+                .eq('org_id', currentUserOrgId)
+                .ilike('content', `%${query}%`)
+                .limit(15);
+
+            if (error) throw error;
+
+            if (!messages || messages.length === 0) {
+                resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:#888;">No matches found.</div>`;
+                return;
+            }
+
+            resultsContainer.innerHTML = '';
+            // Header
+            const header = document.createElement('div');
+            header.className = 'global-result-header';
+            header.style.padding = '8px 15px';
+            header.style.background = 'rgba(255,255,255,0.02)';
+            header.innerText = `Found ${messages.length} matches in messages`;
+            resultsContainer.appendChild(header);
+
+            messages.forEach(msg => {
+                const conv = msg.conversation;
+                // Handle array or object return style
+                const conversation = Array.isArray(conv) ? conv[0] : conv;
+                if (!conversation) return;
+
+                const ct = conversation.contact;
+                const contact = Array.isArray(ct) ? ct[0] : ct;
+
+                const name = contact ? (contact.display_name || contact.phone || "Unknown") : "Unknown";
+
+                // Highlight match in content (safe logic)
+                const safeContent = msg.content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                const highlightedPreview = safeContent.replace(regex, '<span class="global-match-highlight">$1</span>');
+
+                const div = document.createElement('div');
+                div.className = 'global-result-item';
+                div.onclick = () => {
+                    // Load Chat
+                    loadInboxMessages(conversation.platform, contact.id, name);
+                    // Hide results
+                    resultsContainer.style.display = 'none';
+                    // Wait and Scroll (rough logic)
+                    setTimeout(() => {
+                        // Ideally, scrollToMessage(msg.id) would go here
+                        // For now, loading the chat is the primary goal
+                    }, 1000);
+                };
+
+                const dateStr = new Date(msg.created_at).toLocaleDateString();
+
+                div.innerHTML = `
+                        <div class="global-result-header">
+                        <span>${name} <i style="font-size:0.7em; margin-left:5px; opacity:0.7;">${conversation.platform}</i></span>
+                        <span>${dateStr}</span>
+                    </div>
+                    <div class="global-result-content">
+                        ${highlightedPreview}
+                    </div>
+                `;
+                resultsContainer.appendChild(div);
+            });
+
+        } catch (e) {
+            console.error("Global search error", e);
+            resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:red;">Search error</div>`;
+        }
+    }
+
+    // 2. In-Chat Search Logic
+    function toggleChatSearch() {
+        const bar = document.getElementById('chat-search-bar');
+        bar.classList.toggle('hidden');
+        if (!bar.classList.contains('hidden')) {
+            setTimeout(() => document.getElementById('chat-search-input').focus(), 100);
+        } else {
+            clearChatSearchHighlights();
+        }
+    }
+
+    function closeChatSearch() {
+        document.getElementById('chat-search-bar').classList.add('hidden');
+        clearChatSearchHighlights();
+    }
+
+    function clearChatSearchHighlights() {
+        // Remove .search-highlight class or unwrap.
+        const highlights = document.querySelectorAll('.search-highlight');
+        highlights.forEach(span => {
+            const parent = span.parentNode;
+            parent.replaceChild(document.createTextNode(span.textContent), span);
+            parent.normalize(); // Merge text nodes
+        });
+        inChatSearchMatches = [];
+        inChatSearchIndex = -1;
+        document.getElementById('chat-search-count').innerText = "0/0";
+    }
+
+    function handleChatSearch(query) {
+        clearChatSearchHighlights();
+        if (!query || query.length < 2) return;
+
+        query = query.toLowerCase();
+        const container = document.getElementById('inbox-messages');
+        // Target specific message content
+        const nodes = container.querySelectorAll('.message .msg-content');
+
+        inChatSearchMatches = [];
+
+        nodes.forEach(node => {
+            // Use TreeWalker to handle text nodes safely
+            const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            let currentNode;
+            while (currentNode = walker.nextNode()) {
+                textNodes.push(currentNode);
+            }
+
+            textNodes.forEach(textNode => {
+                const text = textNode.nodeValue;
+                if (text.toLowerCase().includes(query)) {
+                    // Match found in this text node
+                    const index = text.toLowerCase().indexOf(query);
+
+                    const before = text.substring(0, index);
+                    const match = text.substring(index, index + query.length);
+                    const after = text.substring(index + query.length);
+
+                    if (index >= 0) {
+                        const wrapper = document.createDocumentFragment();
+                        wrapper.appendChild(document.createTextNode(before));
+                        const highlightSpan = document.createElement('span');
+                        highlightSpan.className = 'search-highlight';
+                        highlightSpan.textContent = match;
+                        wrapper.appendChild(highlightSpan);
+                        wrapper.appendChild(document.createTextNode(after));
+
+                        textNode.parentNode.replaceChild(wrapper, textNode);
+
+                        // Push the highlight span to matches array
+                        inChatSearchMatches.push(highlightSpan);
+                    }
+                }
+            });
+        });
+
+        if (inChatSearchMatches.length > 0) {
+            inChatSearchIndex = 0;
+            highlightCurrentMatch();
+        }
+        updateSearchCount();
+    }
+
+    function highlightCurrentMatch() {
+        // Remove active from all
+        document.querySelectorAll('.search-highlight.active').forEach(el => el.classList.remove('active'));
+
+        if (inChatSearchIndex >= 0 && inChatSearchIndex < inChatSearchMatches.length) {
+            const activeEl = inChatSearchMatches[inChatSearchIndex];
+            activeEl.classList.add('active');
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function findNextMsg() {
+        if (inChatSearchMatches.length === 0) return;
+        inChatSearchIndex++;
+        if (inChatSearchIndex >= inChatSearchMatches.length) inChatSearchIndex = 0;
+        highlightCurrentMatch();
+        updateSearchCount();
+    }
+
+    function findPrevMsg() {
+        if (inChatSearchMatches.length === 0) return;
+        inChatSearchIndex--;
+        if (inChatSearchIndex < 0) inChatSearchIndex = inChatSearchMatches.length - 1;
+        highlightCurrentMatch();
+        updateSearchCount();
+    }
+
+    function updateSearchCount() {
+        const countEl = document.getElementById('chat-search-count');
+        if (inChatSearchMatches.length === 0) countEl.innerText = "0/0";
+        else countEl.innerText = `${inChatSearchIndex + 1}/${inChatSearchMatches.length}`;
     }
 
     function updateNotificationUI() {
