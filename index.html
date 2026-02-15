@@ -6265,6 +6265,95 @@
 
             /* --- END MOBILE STYLES --- */
         }
+
+        /* --- REFINED INBOX SEARCH --- */
+        .hidden {
+            display: none !important;
+        }
+
+        .inbox-search-modes {
+            display: flex;
+            gap: 8px;
+            padding: 0 10px 10px 10px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: white;
+            font-weight: 500;
+        }
+
+        .inbox-search-input-wrapper {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        #inbox-search-input {
+            width: 100%;
+            padding: 10px 35px 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        #inbox-search-input:focus {
+            border-color: var(--theme-color);
+        }
+
+        /* Static Global Results Panel */
+        .global-search-results {
+            margin: 0 10px 10px 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            display: none;
+            /* Controlled by JS */
+        }
+
+        /* In-Chat Search Overlay */
+        .chat-search-bar {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: #1a1b20;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .chat-search-bar.hidden {
+            display: none !important;
+        }
+
+        /* RTL Support */
+        [dir="rtl"] .chat-search-bar {
+            right: auto;
+            left: 20px;
+        }
     </style>
 </head>
 
@@ -7971,14 +8060,21 @@
                             </button>
                             
                             <!-- Search Bar -->
-                            <div class="inbox-search-container" style="padding: 0 10px 10px 10px; position:relative;">
-                                <div style="position:relative;">
-                                    <input type="text" id="inbox-search-input" placeholder="Search chats..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value)" 
-                                        style="width:100%; padding:10px 35px 10px 15px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white; outline:none;">
-                                    <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); opacity:0.5;">🔍</span>
-                                    <button id="inbox-search-clear" onclick="clearInboxSearch()" style="display:none; position:absolute; right:30px; top:50%; transform:translateY(-50%); background:none; border:none; color:white; cursor:pointer;">×</button>
+                            <!-- Search Bar -->
+                            <div class="inbox-search-container" style="padding: 0 10px 10px 10px;">
+                                <div class="inbox-search-input-wrapper">
+                                    <input type="text" id="inbox-search-input" placeholder="Search..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value)">
+                                    <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); opacity:0.5; pointer-events:none;">🔍</span>
+                                    <button id="inbox-search-clear" onclick="clearInboxSearch()" class="hidden" style="position:absolute; right:30px; top:50%; transform:translateY(-50%); background:none; border:none; color:white; cursor:pointer;">×</button>
                                 </div>
-                                <div id="global-search-results" class="global-search-results glass" style="display:none;"></div>
+                                
+                                <div class="inbox-search-modes">
+                                    <button type="button" class="mode-btn active" id="mode-btn-chats" onclick="setInboxSearchMode('chats')">Chats</button>
+                                    <button type="button" class="mode-btn" id="mode-btn-messages" onclick="setInboxSearchMode('messages')">Messages</button>
+                                </div>
+
+                                <!-- Results Panel (Replaces Contact List in Messages Mode) -->
+                                <div id="global-search-results" class="global-search-results"></div>
                             </div>
 
                             <div id="contact-list" class="contact-list"></div>
@@ -7988,15 +8084,21 @@
                                 <span id="inbox-header-title" data-i18n="inbox.header_select">Select a conversation</span>
                                 <div class="chat-search-wrapper">
                                     <div id="chat-search-bar" class="chat-search-bar hidden">
-                                        <input type="text" id="chat-search-input" placeholder="Find in chat..." oninput="handleChatSearch(this.value)" onkeydown="if(event.key==='Enter') findNextMsg()">
-                                        <span id="chat-search-count">0/0</span>
+                                        <input type="text" id="chat-search-input" placeholder="Find..." oninput="handleChatSearch(this.value)" onkeydown="if(event.key==='Enter') findNextMsg()">
+                                        <span id="chat-search-count" style="font-size:0.8rem; color:#888; min-width:40px; text-align:center;">0/0</span>
                                         <div class="chat-search-nav">
                                             <button onclick="findPrevMsg()">▲</button>
                                             <button onclick="findNextMsg()">▼</button>
                                         </div>
                                         <button onclick="closeChatSearch()" class="close-search">×</button>
                                     </div>
-                                    <button class="icon-btn-small" onclick="toggleChatSearch()" title="Search in chat">🔍</button>
+                                    <!-- Modern SVG Icon for Find in Chat -->
+                                    <button class="icon-btn-small" onclick="openChatSearch()" title="Find in chat (Ctrl+F)">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                             <div id="inbox-messages" class="chat-history">
@@ -11444,14 +11546,46 @@
     }
 
     /* =========================================
-       INBOX SEARCH LOGIC
+       INBOX SEARCH LOGIC (REFINED)
        ========================================= */
 
+    let inboxSearchMode = 'chats'; // 'chats' or 'messages'
     let globalSearchDebounceTimer = null;
     let inChatSearchMatches = [];
     let inChatSearchIndex = -1;
 
-    // 1. Inbox Chat List Search (Local + Global)
+    // --- Mode Switching ---
+    function setInboxSearchMode(mode) {
+        inboxSearchMode = mode;
+        const chatsBtn = document.getElementById('mode-btn-chats');
+        const msgsBtn = document.getElementById('mode-btn-messages');
+        const contactList = document.getElementById('contact-list');
+        const globalResults = document.getElementById('global-search-results');
+        const input = document.getElementById('inbox-search-input');
+
+        // Toggle UI
+        if (mode === 'chats') {
+            chatsBtn.classList.add('active');
+            msgsBtn.classList.remove('active');
+            contactList.style.display = 'block';
+            globalResults.style.display = 'none';
+            // Re-run search logic for chats
+            handleInboxSearch(input.value);
+        } else {
+            msgsBtn.classList.add('active');
+            chatsBtn.classList.remove('active');
+            contactList.style.display = 'none';
+            globalResults.style.display = 'block';
+            // Trigger global search if input exists
+            if (input.value.length > 2) {
+                performGlobalSearch(input.value);
+            } else {
+                globalResults.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">Type to search messages...</div>';
+            }
+        }
+    }
+
+    // 1. Sidebar Search Input Handler
     function handleInboxSearch(query) {
         const input = document.getElementById('inbox-search-input');
         const clearBtn = document.getElementById('inbox-search-clear');
@@ -11462,30 +11596,37 @@
         query = query.toLowerCase().trim();
 
         // Toggle Clear Button
-        clearBtn.style.display = query.length > 0 ? 'block' : 'none';
-
-        // Local Filter
-        let hasLocalMatch = false;
-        Array.from(items).forEach(item => {
-            const text = item.innerText.toLowerCase();
-            if (text.includes(query)) {
-                item.style.display = 'flex';
-                hasLocalMatch = true;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        // Global Search Trigger (Debounced)
-        // Only search global if query length > 2
-        clearTimeout(globalSearchDebounceTimer);
-        if (query.length > 2) {
-            globalSearchDebounceTimer = setTimeout(() => {
-                performGlobalSearch(query);
-            }, 400); // 400ms debounce
+        if (query.length > 0) {
+            clearBtn.classList.remove('hidden');
+            clearBtn.style.display = 'block';
         } else {
+            clearBtn.classList.add('hidden');
+            clearBtn.style.display = 'none';
+        }
+
+        if (inboxSearchMode === 'chats') {
+            // Local Filter ONLY
+            Array.from(items).forEach(item => {
+                const text = item.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            // Ensure global results are hidden
             globalResults.style.display = 'none';
-            globalResults.innerHTML = '';
+        } else {
+            // Messages Mode: Global Search
+            clearTimeout(globalSearchDebounceTimer);
+            if (query.length > 2) {
+                globalResults.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">Searching...</div>';
+                globalSearchDebounceTimer = setTimeout(() => {
+                    performGlobalSearch(query);
+                }, 400);
+            } else {
+                globalResults.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">Type to search messages...</div>';
+            }
         }
     }
 
@@ -11493,15 +11634,16 @@
         const input = document.getElementById('inbox-search-input');
         input.value = '';
         handleInboxSearch('');
+        // Restore focus
+        input.focus();
     }
 
     async function performGlobalSearch(query) {
+        if (inboxSearchMode !== 'messages') return;
+
         const resultsContainer = document.getElementById('global-search-results');
-        resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:#888;">Searching all messages...</div>`;
-        resultsContainer.style.display = 'block';
 
         try {
-            // Query: Join inbox_messages with conversations and contacts
             const { data: messages, error } = await supabaseClient
                 .from('inbox_messages')
                 .select(`
@@ -11520,59 +11662,60 @@
                 `)
                 .eq('org_id', currentUserOrgId)
                 .ilike('content', `%${query}%`)
-                .limit(15);
+                .limit(20);
 
             if (error) throw error;
 
             if (!messages || messages.length === 0) {
-                resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:#888;">No matches found.</div>`;
+                resultsContainer.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">No matches found.</div>`;
                 return;
             }
 
             resultsContainer.innerHTML = '';
             // Header
             const header = document.createElement('div');
-            header.className = 'global-result-header';
-            header.style.padding = '8px 15px';
-            header.style.background = 'rgba(255,255,255,0.02)';
-            header.innerText = `Found ${messages.length} matches in messages`;
+            header.style.padding = '10px';
+            header.style.color = '#888';
+            header.style.fontSize = '0.85rem';
+            header.innerText = `Found ${messages.length} matches`;
             resultsContainer.appendChild(header);
 
             messages.forEach(msg => {
                 const conv = msg.conversation;
-                // Handle array or object return style
                 const conversation = Array.isArray(conv) ? conv[0] : conv;
                 if (!conversation) return;
 
                 const ct = conversation.contact;
                 const contact = Array.isArray(ct) ? ct[0] : ct;
-
                 const name = contact ? (contact.display_name || contact.phone || "Unknown") : "Unknown";
 
-                // Highlight match in content (safe logic)
                 const safeContent = msg.content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
                 const highlightedPreview = safeContent.replace(regex, '<span class="global-match-highlight">$1</span>');
+                const dateStr = new Date(msg.created_at).toLocaleDateString();
 
                 const div = document.createElement('div');
                 div.className = 'global-result-item';
+                div.style.padding = '10px';
+                div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                div.style.cursor = 'pointer';
+                div.style.transition = 'background 0.2s';
+
+                div.onmouseover = () => div.style.background = 'rgba(255,255,255,0.05)';
+                div.onmouseout = () => div.style.background = 'transparent';
+
                 div.onclick = async () => {
-                    // Hide results immediately
-                    resultsContainer.style.display = 'none';
-                    // Load Chat (await ensures DOM is ready)
+                    // Do not close panel in messages mode, just load logic
                     await loadInboxMessages(conversation.platform, contact.id, name);
-                    // Scroll to message
                     scrollToMessage(msg.id);
                 };
 
-                const dateStr = new Date(msg.created_at).toLocaleDateString();
-
                 div.innerHTML = `
-                        <div class="global-result-header">
-                        <span>${name} <i style="font-size:0.7em; margin-left:5px; opacity:0.7;">${conversation.platform}</i></span>
-                        <span>${dateStr}</span>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                        <span style="font-weight:600; color:#eee;">${name}</span>
+                        <span style="font-size:0.75rem; color:#666;">${dateStr}</span>
                     </div>
-                    <div class="global-result-content">
+                    <div style="font-size:0.9rem; color:#aaa; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
                         ${highlightedPreview}
                     </div>
                 `;
@@ -11581,55 +11724,56 @@
 
         } catch (e) {
             console.error("Global search error", e);
-            resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:red;">Search error</div>`;
+            resultsContainer.innerHTML = `<div style="padding:10px; text-align:center; color:red;">Error searching messages</div>`;
         }
     }
 
     function scrollToMessage(id) {
-        // Retry a few times in case rendering takes a moment
         let attempts = 0;
         const interval = setInterval(() => {
             const el = document.getElementById('msg-' + id);
             if (el) {
                 clearInterval(interval);
                 el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Visual highlight
                 el.style.transition = 'background 0.5s';
                 const originalBg = el.style.background;
-                el.style.background = 'rgba(91, 174, 176, 0.3)'; // Theme color dim
+                el.style.background = 'rgba(91, 174, 176, 0.3)';
                 setTimeout(() => {
                     el.style.background = originalBg;
                 }, 2000);
             } else {
                 attempts++;
-                if (attempts >= 10) clearInterval(interval); // Give up after 1s
+                if (attempts >= 20) clearInterval(interval); // 2 seconds max
             }
         }, 100);
     }
 
     // 2. In-Chat Search Logic
+    function openChatSearch() {
+        // Hide global results if overlapping (though they are in sidebar now)
+        const bar = document.getElementById('chat-search-bar');
+        bar.classList.remove('hidden');
+        setTimeout(() => document.getElementById('chat-search-input').focus(), 100);
+    }
+
     function toggleChatSearch() {
         const bar = document.getElementById('chat-search-bar');
-        bar.classList.toggle('hidden');
-        if (!bar.classList.contains('hidden')) {
-            setTimeout(() => document.getElementById('chat-search-input').focus(), 100);
-        } else {
-            clearChatSearchHighlights();
-        }
+        if (bar.classList.contains('hidden')) openChatSearch();
+        else closeChatSearch();
     }
 
     function closeChatSearch() {
-        document.getElementById('chat-search-bar').classList.add('hidden');
+        const bar = document.getElementById('chat-search-bar');
+        bar.classList.add('hidden');
         clearChatSearchHighlights();
     }
 
     function clearChatSearchHighlights() {
-        // Remove .search-highlight class or unwrap.
         const highlights = document.querySelectorAll('.search-highlight');
         highlights.forEach(span => {
             const parent = span.parentNode;
             parent.replaceChild(document.createTextNode(span.textContent), span);
-            parent.normalize(); // Merge text nodes
+            parent.normalize();
         });
         inChatSearchMatches = [];
         inChatSearchIndex = -1;
@@ -11642,46 +11786,37 @@
 
         query = query.toLowerCase();
         const container = document.getElementById('inbox-messages');
-        // Target specific message content
-        const nodes = container.querySelectorAll('.message .msg-content');
+        const nodes = container.querySelectorAll('.message .msg-content'); // Matches specific content class
 
         inChatSearchMatches = [];
 
         nodes.forEach(node => {
-            // Use TreeWalker to handle text nodes safely
             const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
-            const textNodes = [];
-            let currentNode;
-            while (currentNode = walker.nextNode()) {
-                textNodes.push(currentNode);
-            }
-
-            textNodes.forEach(textNode => {
+            let textNode;
+            while (textNode = walker.nextNode()) {
                 const text = textNode.nodeValue;
-                if (text.toLowerCase().includes(query)) {
-                    // Match found in this text node
-                    const index = text.toLowerCase().indexOf(query);
+                const lowerText = text.toLowerCase();
 
-                    const before = text.substring(0, index);
-                    const match = text.substring(index, index + query.length);
-                    const after = text.substring(index + query.length);
+                if (lowerText.includes(query)) {
+                    // Logic from previous working version
+                    const idx = lowerText.indexOf(query);
+                    const before = text.substring(0, idx);
+                    const match = text.substring(idx, idx + query.length);
+                    const after = text.substring(idx + query.length);
 
-                    if (index >= 0) {
-                        const wrapper = document.createDocumentFragment();
-                        wrapper.appendChild(document.createTextNode(before));
-                        const highlightSpan = document.createElement('span');
-                        highlightSpan.className = 'search-highlight';
-                        highlightSpan.textContent = match;
-                        wrapper.appendChild(highlightSpan);
-                        wrapper.appendChild(document.createTextNode(after));
+                    const wrapper = document.createDocumentFragment();
+                    wrapper.appendChild(document.createTextNode(before));
+                    const span = document.createElement('span');
+                    span.className = 'search-highlight';
+                    span.innerText = match;
+                    wrapper.appendChild(span);
+                    wrapper.appendChild(document.createTextNode(after));
 
-                        textNode.parentNode.replaceChild(wrapper, textNode);
-
-                        // Push the highlight span to matches array
-                        inChatSearchMatches.push(highlightSpan);
-                    }
+                    textNode.parentNode.replaceChild(wrapper, textNode);
+                    inChatSearchMatches.push(span);
+                    // Single match per node for safety
                 }
-            });
+            }
         });
 
         if (inChatSearchMatches.length > 0) {
@@ -11690,6 +11825,24 @@
         }
         updateSearchCount();
     }
+
+    // Keyboard Listener
+    document.addEventListener('keydown', function (e) {
+        // Check if Inbox is active
+        const inboxTab = document.getElementById('inbox');
+        if (!inboxTab || inboxTab.style.display === 'none') return;
+
+        // Ctrl+F or Cmd+F
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault(); // Stop browser find
+            openChatSearch();
+        }
+
+        // Esc to close
+        if (e.key === 'Escape') {
+            closeChatSearch();
+        }
+    });
 
     function highlightCurrentMatch() {
         // Remove active from all
