@@ -9406,6 +9406,10 @@
                     // If filter is 'all' (Lifetime) or 'month' (Current Billing approx), 
                     // and org_usage is higher, we should probably show that to avoid "Why is usage > conversations?" confusion.
                     // Especially important if rows were deleted.
+
+                    // DEBUG: Log the values to understand why it's not applying
+                    console.log(`Debug Consistency: Label=${dashboardDateRange.label}, DB=${convCount}`);
+
                     if (dashboardDateRange.label === 'all' || dashboardDateRange.label === 'month') {
                         try {
                             const { data: usageData } = await supabaseClient
@@ -9414,13 +9418,14 @@
                                 .eq('org_id', currentUserOrgId)
                                 .maybeSingle();
 
+                            console.log('Debug Consistency UsageData:', usageData);
+
                             if (usageData && usageData.conversations_used > convCount) {
                                 // Only override if billing is HIGHER (to explain the limit usage)
-                                // Console log for debugging consistency
-                                // console.log(`Consistency Patch: Overriding DB count (${convCount}) with Billing count (${usageData.conversations_used})`);
+                                console.log(`Consistency Patch: Overriding DB count (${convCount}) with Billing count (${usageData.conversations_used})`);
                                 convCount = usageData.conversations_used;
                             }
-                        } catch (err) { }
+                        } catch (err) { console.error("Consistency Patch Error:", err); }
                     }
 
                     // Messages count (approx)
