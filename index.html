@@ -6290,10 +6290,33 @@
         }
 
         .mode-btn.active {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
+            background: var(--theme-color);
+            border-color: var(--theme-color);
             color: white;
             font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .export-btn-sidebar {
+            width: 100%;
+            margin: 0 0 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .export-btn-sidebar:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .inbox-search-input-wrapper {
@@ -8054,7 +8077,7 @@
                                 <button class="platform-btn" style="background:#C66B8D" onclick="loadInbox('instagram', false)">${iconInstagram}</button>
                             </div>
                             <div style="padding:10px; font-size:0.8rem; text-align:center; color:#888;" data-i18n="inbox.label_platform">Select Platform</div>
-                             <button class="export-btn-sidebar" onclick="openExportModal()" style="width: 100%; margin: 0 0 10px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 500; transition: background 0.2s;">
+                             <button class="export-btn-sidebar" onclick="openExportModal()">
                                 <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 
                                 <span data-i18n="inbox.btn_export">Export Data</span>
                             </button>
