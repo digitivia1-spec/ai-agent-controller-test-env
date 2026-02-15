@@ -999,6 +999,7 @@
             font-weight: 700;
             margin-bottom: 0.5rem;
             background: linear-gradient(90deg, #fff, #a1a1aa);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -9387,6 +9388,75 @@
             } catch (e) {
                 console.warn(e);
                 container.innerHTML = '<p>Error loading platform stats.</p>';
+            }
+        }
+
+        // ==========================================
+        //        ORDERS AREA FUNCTIONS
+        // ==========================================
+
+        // ==========================================
+        //        PLAN USAGE (MISSING FUNC FIXED)
+        // ==========================================
+        async function loadPlanUsage() {
+            const container = document.getElementById('plan-usage-stats');
+            if (!container) return; // Element might be missing if structure changed
+
+            try {
+                // Determine Plan (Mock or Actual)
+                // For MVP, we use static or basic org data
+                let planName = 'free';
+                let msgLimit = 100;
+                let msgUsed = 0;
+
+                if (currentUserOrgId) {
+                    const { data: org } = await supabaseClient
+                        .from('organizations')
+                        .select('plan, subscription_status')
+                        .eq('id', currentUserOrgId)
+                        .single();
+                    if (org && org.plan) planName = org.plan;
+                }
+
+                // Set limits based on plan
+                if (planName === 'starter') msgLimit = 1000;
+                if (planName === 'growth') msgLimit = 5000;
+                if (planName === 'pro') msgLimit = 10000;
+
+                // Fetch usage (count messages in current month)
+                // Approximate usage for speed
+                const startOfMonth = new Date();
+                startOfMonth.setDate(1);
+                startOfMonth.setHours(0, 0, 0, 0);
+
+                const { count } = await supabaseClient
+                    .from('inbox_messages')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .gte('created_at', startOfMonth.toISOString());
+
+                msgUsed = count || 0;
+                const percent = Math.min(100, Math.round((msgUsed / msgLimit) * 100));
+
+                container.innerHTML = `
+                    <div style="margin-bottom:15px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.9rem;">
+                            <span style="color:var(--text-muted);">Messages Limit</span>
+                            <span style="color:white; font-weight:bold;">${msgUsed} / ${msgLimit.toLocaleString()}</span>
+                        </div>
+                        <div style="height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;">
+                            <div style="height:100%; width:${percent}%; background:var(--theme-color);"></div>
+                        </div>
+                    </div>
+                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+                        <span class="badge badge-outline">${planName.toUpperCase()} PLAN</span>
+                        <a href="javascript:void(0)" onclick="openPricingModal()" style="font-size:0.85rem; color:var(--theme-color);">Upgrade &rarr;</a>
+                    </div>
+                `;
+
+            } catch (e) {
+                console.warn("Plan Usage Error", e);
+                container.innerHTML = '<p style="color:var(--text-muted); font-size:0.8rem;">Usage data unavailable.</p>';
             }
         }
 
