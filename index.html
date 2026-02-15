@@ -9632,7 +9632,7 @@
         //        DASHBOARD LOGIC (ENHANCED)
         // ==========================================
 
-        let dashboardDateRange = { start: null, end: null, label: '7days' };
+        let dashboardDateRange = { start: null, end: null, label: 'all' }; // Sync with HTML default
 
         function navigateToTab(tabId) {
             // Find sidebar element
@@ -9685,27 +9685,35 @@
             const userName = currentUserProfile?.full_name || currentUserProfile?.email || 'User';
             document.getElementById('dashboard-welcome-msg').innerText = t('dashboard.welcome', { name: userName });
 
-            // Initialize Date Range if null
+            if (!currentUserOrgId) return;
+
+            // Initialize Date Range if null (safety check)
             if (!dashboardDateRange.label) {
-                // Check if there's a selected option in the DOM, otherwise default to 'all'
-                const filterEl = document.getElementById('dashboard-date-filter');
-                const defaultMsg = filterEl ? filterEl.value : 'all';
-                setDashboardPeriod(defaultMsg);
-                return; // setDashboardPeriod calls loadDashboard
+                dashboardDateRange.label = 'all';
             }
 
-            if (!currentUserOrgId) return;
+            // Fetch Usage Data ONCE for both Dashboard and Plan Usage
+            let usageData = null;
+            try {
+                const { data } = await supabaseClient
+                    .from('org_usage')
+                    .select('conversations_used, period_start, period_end')
+                    .eq('org_id', currentUserOrgId)
+                    .maybeSingle();
+                usageData = data;
+                // console.log("Dashboard Central Usage:", usageData);
+            } catch (err) { console.warn("Central Usage Fetch Error", err); }
 
             // Use Promise.all for parallel fetching
             await Promise.all([
-                loadPlanUsage(),
-                fetchDashboardStats(),
+                loadPlanUsage(usageData),
+                fetchDashboardStats(usageData),
                 renderActivityFeed(),
                 renderPlatformStats()
             ]);
         }
 
-        async function fetchDashboardStats() {
+        async function fetchDashboardStats(usageData = null) {
             try {
                 // Helper to Apply Date Filter
                 const applyDateFilter = (query) => {
@@ -9760,30 +9768,14 @@
                     const { count } = await q;
                     convCount = count || 0;
 
-                    // PATCH: Check org_usage (Billing Count) for consistency
-                    // If filter is 'all' (Lifetime) or 'month' (Current Billing approx), 
-                    // and org_usage is higher, we should probably show that to avoid "Why is usage > conversations?" confusion.
-                    // Especially important if rows were deleted.
-
-                    // DEBUG: Log for troubleshooting
-                    // console.log(`Debug Consistency: Label=${dashboardDateRange.label}, DB=${convCount}`);
-
                     if (dashboardDateRange.label === 'all' || dashboardDateRange.label === 'month') {
-                        try {
-                            const { data: usageData } = await supabaseClient
-                                .from('org_usage')
-                                .select('conversations_used')
-                                .eq('org_id', currentUserOrgId)
-                                .maybeSingle();
-
-                            // console.log('Debug Consistency UsageData:', usageData);
-
-                            if (usageData && usageData.conversations_used > convCount) {
-                                // Only override if billing is HIGHER (to explain the limit usage)
-                                // console.log(`Consistency Patch: Overriding DB count (${convCount}) with Billing count (${usageData.conversations_used})`);
+                        if (usageData && usageData.conversations_used !== undefined) {
+                            // STRICT SYNC: Force DB count to match Billing count for consistent branding
+                            if (usageData.conversations_used !== convCount) {
+                                // console.log(`Dashboard Sync: Updating DB count (${convCount}) to Billing count (${usageData.conversations_used})`);
                                 convCount = usageData.conversations_used;
                             }
-                        } catch (err) { console.error("Consistency Patch Error:", err); }
+                        }
                     }
 
                     // Messages count (approx)
@@ -9966,7 +9958,7 @@
         // ==========================================
         //        PLAN USAGE (MISSING FUNC FIXED)
         // ==========================================
-        async function loadPlanUsage() {
+        async function loadPlanUsage(usageData = null) {
             // Target the specific elements already in the DOM
             const nameEl = document.getElementById('usage-plan-name');
             const usedEl = document.getElementById('usage-conversations-used');
@@ -10004,7 +9996,6 @@
                         }
 
                         if (sub.plan) {
-                            // Handle array or object just in case (though single plan expected)
                             const planData = Array.isArray(sub.plan) ? sub.plan[0] : sub.plan;
                             if (planData) {
                                 planName = planData.plan_slug || 'free';
@@ -10016,30 +10007,30 @@
                     }
                 }
 
-                // Fetch usage (count CONVERSATIONS in current month/period from org_usage)
-                // If org_usage available, use it. Else count manually.
-
-                const { data: usageData } = await supabaseClient
-                    .from('org_usage')
-                    .select('conversations_used, period_start, period_end')
-                    .eq('org_id', currentUserOrgId)
-                    .maybeSingle();
-
+                // If usageData passed centrally, use it. Else fetch/count.
                 if (usageData) {
                     msgUsed = usageData.conversations_used || 0;
                 } else {
-                    // Fallback: count conversations created this month
-                    const startOfMonth = new Date();
-                    startOfMonth.setDate(1);
-                    startOfMonth.setHours(0, 0, 0, 0);
-
-                    const { count } = await supabaseClient
-                        .from('inbox_conversations')
-                        .select('id', { count: 'exact', head: true })
+                    const { data: localUsage } = await supabaseClient
+                        .from('org_usage')
+                        .select('conversations_used')
                         .eq('org_id', currentUserOrgId)
-                        .gte('created_at', startOfMonth.toISOString());
+                        .maybeSingle();
 
-                    msgUsed = count || 0;
+                    if (localUsage) {
+                        msgUsed = localUsage.conversations_used || 0;
+                    } else {
+                        // Monthly Fallback
+                        const startOfMonth = new Date();
+                        startOfMonth.setDate(1);
+                        startOfMonth.setHours(0, 0, 0, 0);
+                        const { count } = await supabaseClient
+                            .from('inbox_conversations')
+                            .select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId)
+                            .gte('created_at', startOfMonth.toISOString());
+                        msgUsed = count || 0;
+                    }
                 }
 
                 const percent = Math.min(100, Math.round((msgUsed / msgLimit) * 100));
