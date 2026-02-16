@@ -547,7 +547,12 @@
                     "revenue": "Total Revenue",
                     "leads": "New Leads",
                     "conversations": "Active Chats",
-                    "rating": "Avg. Rating"
+                    "rating": "Avg. Rating",
+                    "orders_subtext": "{count} Orders",
+                    "leads_subtext_all": "All time",
+                    "leads_subtext_period": "In selected period",
+                    "conversations_subtext": "{count} Messages",
+                    "rating_subtext": "{count} Reviews"
                 },
                 "headers": {
                     "recent_activity": "Recent Activity",
@@ -555,7 +560,22 @@
                     "platforms": "Platform Stats",
                     "plan_usage": "Plan Usage"
                 },
-                "empty_activity": "No recent activity found."
+                "empty_activity": "No recent activity found.",
+                "activity": {
+                    "new_message": "New Message",
+                    "ai_reply": "AI Reply",
+                    "new_lead": "New Lead Captured",
+                    "failed_load": "Failed to load activity."
+                },
+                "platform_stats": {
+                    "no_data": "No platform data yet.",
+                    "error": "Error loading platform stats."
+                }
+            },
+            "notifications": {
+                "header": "Notifications",
+                "mark_read": "Mark all read",
+                "empty": "No notifications yet"
             }
         };
 
@@ -982,7 +1002,12 @@
                     "revenue": "إجمالي الإيرادات",
                     "leads": "عملاء جدد",
                     "conversations": "محادثات نشطة",
-                    "rating": "متوسط التقييم"
+                    "rating": "متوسط التقييم",
+                    "orders_subtext": "{count} طلبات",
+                    "leads_subtext_all": "كل الوقت",
+                    "leads_subtext_period": "في الفترة المختارة",
+                    "conversations_subtext": "{count} رسائل",
+                    "rating_subtext": "{count} مراجعات"
                 },
                 "headers": {
                     "recent_activity": "النشاط الأخير",
@@ -990,7 +1015,64 @@
                     "platforms": "إحصائيات المنصات",
                     "plan_usage": "استخدام الخطة"
                 },
-                "empty_activity": "لا يوجد نشاط حديث."
+                "empty_activity": "لا يوجد نشاط حديث.",
+                "activity": {
+                    "new_message": "رسالة جديدة",
+                    "ai_reply": "رد الذكاء الاصطناعي",
+                    "new_lead": "تم التقاط عميل جديد",
+                    "failed_load": "فشل تحميل النشاط."
+                },
+                "platform_stats": {
+                    "no_data": "لا توجد بيانات للمنصة بعد.",
+                    "error": "خطأ في تحميل إحصائيات المنصة."
+                }
+            },
+            "notifications": {
+                "header": "الإشعارات",
+                "mark_read": "تحديد الكل كمقروء",
+                "empty": "لا توجد إشعارات بعد"
+            },
+            "modals": {
+                "unlock": {
+                    "title": "⚠️ تحذير حرج",
+                    "text": "تغيير موجه النظام سيغير بشكل أساسي كيفية تصرف هذا الوكيل وإجابته وتفاعله.",
+                    "text_confirm_ask": "هل أنت متأكد أنك تريد الاستمرار؟",
+                    "btn_cancel": "إلغاء",
+                    "btn_confirm": "نعم، فك القفل للتحرير"
+                },
+                "post_detail": {
+                    "date_label": "التاريخ",
+                    "caption_default": "نص التسمية التوضيحية...",
+                    "stat_likes": "إعجابات",
+                    "stat_comments": "تعليقات",
+                    "stat_reach": "وصول",
+                    "section_comments": "التعليقات الأخيرة",
+                    "comments_not_loaded": "لم يتم تحميل التعليقات"
+                },
+                "docs": {
+                    "title": "التوثيق ودليل المستخدم",
+                    "sec_start_title": "🚀 البداية",
+                    "sec_start_text": "مرحباً بك في وكيل الذكاء الاصطناعي ديجيتيفيا! تتيح لك هذه المنصة إنشاء وإدارة ومراقبة وكلاء ذكاء اصطناعي أقوياء عبر عدة قنوات اتصال.",
+                    "sec_config_title": "🤖 تهيئة وكلائك",
+                    "sec_config_text": "يمكن تخصيص كل وكيل (الموقع الإلكتروني، واتساب، فيسبوك، انستغرام) بشكل مستقل:",
+                    "sec_config_list_prompt": "<strong>موجه النظام:</strong> هذا هو \"عقل\" وكيلك. حدد شخصيته ومعرفته وحدوده.",
+                    "sec_config_list_tone": "<strong>النبرة:</strong> اختر كيف يجب أن يبدو صوت الوكيل (مثلاً: احترافي، ودود، متعاطف).",
+                    "sec_config_list_kb": "<strong>روابط قاعدة المعرفة:</strong> أضف روابط المواقع التي يجب أن يستخدمها وكيلك كمرجع للإجابة على الأسئلة بدقة.",
+                    "tip_label": "نصيحة احترافية:",
+                    "tip_text": "كن محدداً في موجه النظام الخاص بك. بدلاً من \"أنت مساعد مفيد\"، جرب \"أنت خبير استشارات عقارية لشركة Acme Realty، متخصص في شقق وسط المدينة.\"",
+                    "sec_connect_title": "🔌 توصيل القنوات",
+                    "sec_connect_text": "لبدء استقبال الرسائل، تحتاج إلى توصيل قنوات التواصل الاجتماعي الخاصة بك:",
+                    "sec_connect_list_1": "انتقل إلى علامة تبويب الوكيل المحدد في الشريط الجانبي الأيسر.",
+                    "sec_connect_list_2": "انقر على زر <strong>\"توصيل القناة\"</strong>.",
+                    "sec_connect_list_3": "اتبع خطوات التكامل (تتطلب حالياً استشارة للإعداد).",
+                    "sec_inbox_title": "📨 استخدام صندوق الوارد والعملاء المحتملين",
+                    "sec_inbox_list_inbox": "<strong>صندوق الوارد المباشر:</strong> راقب المحادثات في الوقت الفعلي بين وكلائك وعملائك. يمكنك التدخل في أي وقت لتولي الدردشة.",
+                    "sec_inbox_list_leads": "<strong>منطقة العملاء المحتملين:</strong> يلتقط تلقائياً تفاصيل الاتصال والاهتمامات من المحادثات، مما يسمح لك بتصدير أو إدارة مبيعاتك.",
+                    "sec_inbox_list_insights": "<strong>رؤى مباشرة:</strong> اعرض مقاييس الأداء وحجم الرسائل وإحصائيات التفاعل عبر جميع المنصات.",
+                    "cta_title": "تحتاج لمزيد من المساعدة؟",
+                    "cta_text": "إذا كنت عالقاً أو تحتاج إلى تنفيذ مخصص، فإن فريقنا هنا للمساعدة.",
+                    "btn_book": "احجز استشارة مجانية"
+                }
             }
         };
     </script>
@@ -6470,11 +6552,12 @@
 
                 <div class="notification-dropdown" id="mobile-notification-dropdown">
                     <div class="notification-header">
-                        <span>Notifications</span>
-                        <span class="mark-read" onclick="markAllNotificationsRead()">Mark all read</span>
+                        <span data-i18n="notifications.header">Notifications</span>
+                        <span class="mark-read" data-i18n="notifications.mark_read"
+                            onclick="markAllNotificationsRead()">Mark all read</span>
                     </div>
                     <div class="notification-list" id="mobile-notification-list">
-                        <div class="no-notifications">No notifications yet</div>
+                        <div class="no-notifications" data-i18n="notifications.empty">No notifications yet</div>
                     </div>
                 </div>
             </div>
@@ -6650,11 +6733,12 @@
 
                 <div class="notification-dropdown" id="notification-dropdown">
                     <div class="notification-header">
-                        <span>Notifications</span>
-                        <span class="mark-read" onclick="markAllNotificationsRead()">Mark all read</span>
+                        <span data-i18n="notifications.header">Notifications</span>
+                        <span class="mark-read" data-i18n="notifications.mark_read"
+                            onclick="markAllNotificationsRead()">Mark all read</span>
                     </div>
                     <div class="notification-list" id="notification-list">
-                        <div class="no-notifications">No notifications yet</div>
+                        <div class="no-notifications" data-i18n="notifications.empty">No notifications yet</div>
                     </div>
                 </div>
             </div>
@@ -6676,15 +6760,18 @@
 
     <div id="unlock-modal" class="confirm-modal-overlay">
         <div class="confirm-modal">
-            <div class="confirm-title">⚠️ Critical Warning</div>
+            <div class="confirm-title" data-i18n="modals.unlock.title">⚠️ Critical Warning</div>
             <div class="confirm-text">
-                Changing the System Prompt will fundamentally alter how this agent behaves, answers, and interacts.
+                <span data-i18n="modals.unlock.text">Changing the System Prompt will fundamentally alter how this agent
+                    behaves, answers, and interacts.</span>
                 <br><br>
-                Are you sure you want to proceed?
+                <span data-i18n="modals.unlock.text_confirm_ask">Are you sure you want to proceed?</span>
             </div>
             <div class="confirm-actions">
-                <button class="btn-cancel" onclick="closeUnlockModal()">Cancel</button>
-                <button class="btn-confirm" onclick="confirmUnlockAgent()">Yes, Unlock Editing</button>
+                <button class="btn-cancel" data-i18n="modals.unlock.btn_cancel"
+                    onclick="closeUnlockModal()">Cancel</button>
+                <button class="btn-confirm" data-i18n="modals.unlock.btn_confirm" onclick="confirmUnlockAgent()">Yes,
+                    Unlock Editing</button>
             </div>
         </div>
     </div>
@@ -6704,13 +6791,16 @@
                 </div>
 
                 <div class="modal-stats">
-                    <div class="m-stat"><span id="m-likes">0</span> ❤️ Likes</div>
-                    <div class="m-stat"><span id="m-comments">0</span> 💬 Comments</div>
-                    <div class="m-stat"><span id="m-reach">0</span> 👁️ Reach</div>
+                    <div class="m-stat"><span id="m-likes">0</span> ❤️ <span
+                            data-i18n="modals.post_detail.stat_likes">Likes</span></div>
+                    <div class="m-stat"><span id="m-comments">0</span> 💬 <span
+                            data-i18n="modals.post_detail.stat_comments">Comments</span></div>
+                    <div class="m-stat"><span id="m-reach">0</span> 👁️ <span
+                            data-i18n="modals.post_detail.stat_reach">Reach</span></div>
                 </div>
 
                 <div class="comments-section">
-                    <div
+                    <div data-i18n="modals.post_detail.section_comments"
                         style="font-size:0.85rem; color:#888; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">
                         Recent Comments</div>
                     <div id="m-comments-list">
@@ -6728,13 +6818,14 @@
     <div id="docs-modal" class="docs-modal-overlay" onclick="closeDocsModal(event)">
         <div class="docs-modal" onclick="event.stopPropagation()">
             <div class="docs-header">
-                <h2>Documentation & User Guide</h2>
+                <h2 data-i18n="modals.docs.title">Documentation & User Guide</h2>
                 <button class="pricing-close" onclick="closeDocsModal()" style="position: static;">&times;</button>
             </div>
             <div class="docs-content">
                 <div class="docs-section">
-                    <h3>🚀 Getting Started</h3>
-                    <p>Welcome to Digitivia AI Agent! This platform allows you to create, manage, and monitor
+                    <h3 data-i18n="modals.docs.sec_start_title">🚀 Getting Started</h3>
+                    <p data-i18n="modals.docs.sec_start_text">Welcome to Digitivia AI Agent! This platform allows you to
+                        create, manage, and monitor
                         powerful
                         AI agents across multiple communication channels.</p>
                 </div>
@@ -9746,8 +9837,8 @@
                     }
                 } catch (e) { console.warn("Order Stats Error", e); }
 
-                document.getElementById('kpi-revenue').innerText = `${revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                document.getElementById('kpi-revenue-sub').innerText = `${orderCount} Orders`;
+                document.getElementById('kpi-revenue').innerText = `${revenue.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('kpi-revenue-sub').innerText = t('dashboard.stats.orders_subtext', { count: orderCount });
 
                 // 2. Leads (New Leads in period)
                 let leadsCount = 0;
@@ -9759,7 +9850,9 @@
                 } catch (e) { console.warn("Lead Stats Error", e); }
 
                 document.getElementById('kpi-leads').innerText = leadsCount;
-                document.getElementById('kpi-leads-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+                document.getElementById('kpi-leads-sub').innerText = dashboardDateRange.label === 'all'
+                    ? t('dashboard.stats.leads_subtext_all')
+                    : t('dashboard.stats.leads_subtext_period');
 
 
                 // 3. Conversations (Was Active Chats) - CONSISTENCY FIX
@@ -9796,10 +9889,10 @@
 
                 // Update UI Labels to "Conversations"
                 const kpiLabel = document.querySelector('[data-i18n="dashboard.stats.conversations"]');
-                if (kpiLabel) kpiLabel.innerText = "Conversations";
+                if (kpiLabel) kpiLabel.innerText = t('dashboard.stats.conversations');
 
-                document.getElementById('kpi-conversations').innerText = convCount;
-                document.getElementById('kpi-conversations-sub').innerText = `${msgCount} Messages`;
+                document.getElementById('kpi-conversations').innerText = convCount.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
+                document.getElementById('kpi-conversations-sub').innerText = t('dashboard.stats.conversations_subtext', { count: msgCount.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US') });
 
 
                 // 4. Rating (Reviews)
@@ -9817,7 +9910,7 @@
                 } catch (e) { }
 
                 document.getElementById('kpi-rating').innerText = avgRating > 0 ? avgRating : '--';
-                document.getElementById('kpi-reviews-sub').innerText = `${reviewCount} Reviews`;
+                document.getElementById('kpi-reviews-sub').innerText = t('dashboard.stats.rating_subtext', { count: reviewCount });
 
             } catch (e) {
                 console.error("Error fetching dashboard stats:", e);
@@ -9854,7 +9947,7 @@
                 let activities = [];
                 if (msgs) activities.push(...msgs.map(m => ({
                     type: 'message',
-                    title: m.direction === 'inbound' ? 'New Message' : 'AI Reply',
+                    title: m.direction === 'inbound' ? t('dashboard.activity.new_message') : t('dashboard.activity.ai_reply'),
                     desc: m.content,
                     time: m.created_at,
                     icon: m.direction === 'inbound' ? '📩' : '🤖'
@@ -9862,8 +9955,8 @@
 
                 if (leads) activities.push(...leads.map(l => ({
                     type: 'lead',
-                    title: 'New Lead Captured',
-                    desc: `${l.full_name || 'Unknown'} via ${l.source}`,
+                    title: t('dashboard.activity.new_lead'),
+                    desc: `${l.full_name || t('leads.status.no_phone')} via ${l.source}`,
                     time: l.created_at,
                     icon: '⚡'
                 })));
@@ -9872,7 +9965,7 @@
                 activities = activities.slice(0, 8); // Top 8
 
                 if (activities.length === 0) {
-                    list.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">No recent activity.</p>';
+                    list.innerHTML = `<p style="text-align:center; padding:20px; color:#888;">${t('dashboard.empty_activity')}</p>`;
                     return;
                 }
 
@@ -9898,7 +9991,7 @@
 
             } catch (e) {
                 console.error(e);
-                list.innerHTML = '<p style="color:var(--error); padding:10px;">Failed to load activity.</p>';
+                list.innerHTML = `<p style="color:var(--error); padding:10px;">${t('dashboard.activity.failed_load')}</p>`;
             }
         }
 
@@ -9921,7 +10014,7 @@
                 });
 
                 if (Object.keys(counts).length === 0) {
-                    container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">No platform data yet.</p>';
+                    container.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">${t('dashboard.platform_stats.no_data')}</p>`;
                     return;
                 }
 
@@ -9955,7 +10048,7 @@
 
             } catch (e) {
                 console.warn(e);
-                container.innerHTML = '<p>Error loading platform stats.</p>';
+                container.innerHTML = `<p>${t('dashboard.platform_stats.error')}</p>`;
             }
         }
 
