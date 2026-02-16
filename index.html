@@ -18,6 +18,7 @@
                 "sign_in_linkedin": "Sign in with LinkedIn",
                 "separator_or": "OR",
                 "input_email_placeholder": "Email Address",
+                "input_name_placeholder": "Full Name",
                 "input_password_placeholder": "Password",
                 "btn_login": "LOGIN",
                 "btn_register": "REGISTER",
@@ -479,6 +480,7 @@
                 "sign_in_linkedin": "تسجيل الدخول عبر LinkedIn",
                 "separator_or": "أو",
                 "input_email_placeholder": "البريد الإلكتروني",
+                "input_name_placeholder": "الاسم الكامل",
                 "input_password_placeholder": "كلمة المرور",
                 "btn_login": "دخول",
                 "btn_register": "إنشاء حساب",
@@ -6395,8 +6397,12 @@
 
             <div class="social-login-divider">OR</div>
 
-            <input type="email" id="login-user" class="login-input" placeholder="Email Address">
-            <input type="password" id="login-pass" class="login-input" placeholder="Password">
+            <input type="text" id="login-name" class="login-input" data-i18n-placeholder="auth.input_name_placeholder"
+                placeholder="Full Name">
+            <input type="email" id="login-user" class="login-input" data-i18n-placeholder="auth.input_email_placeholder"
+                placeholder="Email Address">
+            <input type="password" id="login-pass" class="login-input"
+                data-i18n-placeholder="auth.input_password_placeholder" placeholder="Password">
 
             <div class="login-btn-group">
                 <button class="login-btn" onclick="performLogin()">LOGIN</button>
@@ -7440,6 +7446,7 @@
         async function performSignUp() {
             const email = document.getElementById('login-user').value;
             const pass = document.getElementById('login-pass').value;
+            const name = document.getElementById('login-name').value;
 
             if (!email || !pass) {
                 showToast("Please fill in email and password", "error");
@@ -7452,6 +7459,11 @@
                 const { data, error } = await supabaseClient.auth.signUp({
                     email: email,
                     password: pass,
+                    options: {
+                        data: {
+                            full_name: name
+                        }
+                    }
                 });
 
                 if (error) throw error;
