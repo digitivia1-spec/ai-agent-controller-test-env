@@ -9263,12 +9263,14 @@
             }
             // C) build from Supabase Storage (prefer signed URL for private buckets)
             if (msg.media_bucket && msg.media_path) {
+                // Normalize bucket name: data may use hyphens but actual bucket uses underscores
+                const bucket = msg.media_bucket.replace(/-/g, '_');
                 try {
-                    const { data } = await supabaseClient.storage.from(msg.media_bucket).createSignedUrl(msg.media_path, 60 * 60);
+                    const { data } = await supabaseClient.storage.from(bucket).createSignedUrl(msg.media_path, 60 * 60);
                     if (data && data.signedUrl) return data.signedUrl;
                 } catch (e) { console.warn('Signed URL failed, trying public URL', e); }
                 try {
-                    const { data: pubData } = supabaseClient.storage.from(msg.media_bucket).getPublicUrl(msg.media_path);
+                    const { data: pubData } = supabaseClient.storage.from(bucket).getPublicUrl(msg.media_path);
                     const publicUrl = pubData && pubData.publicUrl;
                     if (publicUrl) return publicUrl;
                 } catch (e) { /* all URL methods failed */ }
