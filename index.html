@@ -9261,17 +9261,17 @@
                 const url = msg.meta.url || msg.meta.media_url || msg.meta.image_url || msg.meta.imageUrl;
                 if (url) return url;
             }
-            // C) build from Supabase Storage
+            // C) build from Supabase Storage (prefer signed URL for private buckets)
             if (msg.media_bucket && msg.media_path) {
+                try {
+                    const { data } = await supabaseClient.storage.from(msg.media_bucket).createSignedUrl(msg.media_path, 60 * 60);
+                    if (data && data.signedUrl) return data.signedUrl;
+                } catch (e) { console.warn('Signed URL failed, trying public URL', e); }
                 try {
                     const { data: pubData } = supabaseClient.storage.from(msg.media_bucket).getPublicUrl(msg.media_path);
                     const publicUrl = pubData && pubData.publicUrl;
                     if (publicUrl) return publicUrl;
-                } catch (e) { /* fall through to signed */ }
-                try {
-                    const { data } = await supabaseClient.storage.from(msg.media_bucket).createSignedUrl(msg.media_path, 60 * 60);
-                    if (data && data.signedUrl) return data.signedUrl;
-                } catch (e) { console.warn('Failed to create signed URL', e); }
+                } catch (e) { /* all URL methods failed */ }
             }
             return null;
         }
