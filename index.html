@@ -3112,6 +3112,47 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        /* --- Image Message Styles --- */
+        .msg-media {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .msg-image {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .msg-image:hover {
+            opacity: 0.85;
+        }
+
+        .msg-image-placeholder {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #cfcfcf;
+            font-size: 0.9rem;
+        }
+
+        .msg-caption {
+            unicode-bidi: plaintext;
+            text-align: start;
+        }
+
+        @media (max-width: 480px) {
+            .msg-image {
+                max-width: 220px;
+            }
+        }
+
         .chat-input-area {
             padding: 10px;
             background: rgba(255, 255, 255, 0.03);
@@ -9164,9 +9205,9 @@
                     // Only rebuild if not auto-refresh to avoid jitter, 
                     // OR simple rebuild for now. Real-time is better.
                     if (!isAutoRefresh) {
-                        messages.forEach(msg => {
-                            appendInboxMessage(msg.direction, msg.content, msg.created_at, msg.id);
-                        });
+                        for (const msg of messages) {
+                            await appendInboxMessage(container, msg, { allowScroll: false });
+                        }
                         container.scrollTop = container.scrollHeight;
                     }
                 }
@@ -9180,10 +9221,19 @@
                             schema: 'public',
                             table: 'inbox_messages',
                             filter: `conversation_id=eq.${conversationId}`
-                        }, payload => {
-                            console.log('Realtime message received:', payload.new);
-                            appendInboxMessage(payload.new.direction, payload.new.content, payload.new.created_at, payload.new.id);
+                        }, async (payload) => {
+                            console.log('Realtime INSERT message received:', payload.new);
+                            await upsertInboxMessage(container, payload.new);
                             container.scrollTop = container.scrollHeight;
+                        })
+                        .on('postgres_changes', {
+                            event: 'UPDATE',
+                            schema: 'public',
+                            table: 'inbox_messages',
+                            filter: `conversation_id=eq.${conversationId}`
+                        }, async (payload) => {
+                            console.log('Realtime UPDATE message received:', payload.new);
+                            await upsertInboxMessage(container, payload.new);
                         })
                         .subscribe();
                 }
@@ -9194,62 +9244,162 @@
             }
         }
 
-        function appendInboxMessage(direction, text, createdAt, id = null) {
-            const container = document.getElementById('inbox-messages');
+        // --- Image Message Helpers ---
+        function isImageMsg(msg) {
+            if (!msg) return false;
+            const ct = (msg.content_type || '').toLowerCase();
+            if (ct === 'image' || ct === 'media' || ct.startsWith('image/')) return true;
+            if (msg.media_bucket && msg.media_path) return true;
+            return false;
+        }
+
+        async function resolveMsgMediaUrl(msg) {
+            // A) direct media_url
+            if (msg.media_url) return msg.media_url;
+            // B) meta object may contain a URL
+            if (msg.meta && typeof msg.meta === 'object') {
+                const url = msg.meta.url || msg.meta.media_url || msg.meta.image_url || msg.meta.imageUrl;
+                if (url) return url;
+            }
+            // C) build from Supabase Storage
+            if (msg.media_bucket && msg.media_path) {
+                try {
+                    const { data: pubData } = supabaseClient.storage.from(msg.media_bucket).getPublicUrl(msg.media_path);
+                    const publicUrl = pubData && pubData.publicUrl;
+                    if (publicUrl) return publicUrl;
+                } catch (e) { /* fall through to signed */ }
+                try {
+                    const { data } = await supabaseClient.storage.from(msg.media_bucket).createSignedUrl(msg.media_path, 60 * 60);
+                    if (data && data.signedUrl) return data.signedUrl;
+                } catch (e) { console.warn('Failed to create signed URL', e); }
+            }
+            return null;
+        }
+
+        function formatMsgTime(createdAt) {
+            if (!createdAt) return '';
+            try {
+                const date = new Date(createdAt);
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+                const msgDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+                const timeOnly = date.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                if (msgDate.getTime() === today.getTime()) {
+                    return timeOnly;
+                } else if (msgDate.getTime() === yesterday.getTime()) {
+                    const yesterdayLabel = currentLang === 'ar' ? 'أمس' : 'Yesterday';
+                    return `${yesterdayLabel} ${timeOnly}`;
+                } else {
+                    const dateStr = date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                        month: 'short', day: 'numeric'
+                    });
+                    return `${dateStr}, ${timeOnly}`;
+                }
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function makeSafeText(text) {
+            if (text === null || text === undefined || text === 'null') return '';
+            return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        async function renderMsgContentHTML(msg) {
+            const safeCaption = makeSafeText(msg.content);
+            if (!isImageMsg(msg)) {
+                // Plain text message
+                return `<div class="msg-content">${safeCaption}</div>`;
+            }
+            // Image message
+            const url = await resolveMsgMediaUrl(msg);
+            let mediaHTML;
+            if (url) {
+                mediaHTML = `<a href="${url}" target="_blank" rel="noopener"><img class="msg-image" src="${url}" loading="lazy" alt="Image"/></a>`;
+            } else {
+                mediaHTML = `<div class="msg-image-placeholder">📷 Image…</div>`;
+            }
+            const captionHTML = safeCaption ? `<div class="msg-caption">${safeCaption}</div>` : '';
+            return `<div class="msg-content"><div class="msg-media">${mediaHTML}${captionHTML}</div></div>`;
+        }
+
+        async function appendInboxMessage(container, msg, { allowScroll = true } = {}) {
             const div = document.createElement('div');
             // direction: 'inbound' (User) vs 'outbound' (Agent/AI)
-            const typeClass = direction === 'inbound' ? 'msg-ai' : 'msg-user';
-            // Note: In visual logic, usually Right=Me(Agent), Left=Them(User). 
-            // If 'inbound' is from user, it should be Left (msg-ai style in this CSS).
-            // If 'outbound' is from agent, it should be Right (msg-user style).
+            const typeClass = msg.direction === 'inbound' ? 'msg-ai' : 'msg-user';
 
-            // Format timestamp with smart logic
-            let timeStr = '';
-            if (createdAt) {
-                try {
-                    const date = new Date(createdAt);
-                    const now = new Date();
-                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    const yesterday = new Date(today);
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    const msgDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-                    const timeOnly = date.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
-                        hour: '2-digit', minute: '2-digit'
-                    });
-
-                    if (msgDate.getTime() === today.getTime()) {
-                        // Today: show time only
-                        timeStr = timeOnly;
-                    } else if (msgDate.getTime() === yesterday.getTime()) {
-                        // Yesterday: show "Yesterday" + time
-                        const yesterdayLabel = currentLang === 'ar' ? 'أمس' : 'Yesterday';
-                        timeStr = `${yesterdayLabel} ${timeOnly}`;
-                    } else {
-                        // Older: show date + time
-                        const dateStr = date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
-                            month: 'short', day: 'numeric'
-                        });
-                        timeStr = `${dateStr}, ${timeOnly}`;
-                    }
-                } catch (e) {
-                    timeStr = '';
-                }
-            }
+            const timeStr = formatMsgTime(msg.created_at);
 
             div.className = `message ${typeClass}`;
+            if (msg.id) div.id = `msg-${msg.id}`;
+            div.dataset.msgId = msg.id || '';
 
-            // Fix for null content (e.g. image messages)
-            const safeText = text === null || text === undefined || text === 'null' ? '' : text;
+            // For images, show placeholder first, then resolve
+            if (isImageMsg(msg)) {
+                const safeCaption = makeSafeText(msg.content);
+                const captionHTML = safeCaption ? `<div class="msg-caption">${safeCaption}</div>` : '';
+                div.innerHTML = `
+                    <div class="msg-content"><div class="msg-media"><div class="msg-image-placeholder">📷 Image…</div>${captionHTML}</div></div>
+                    ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
+                `;
+                container.appendChild(div);
+                if (allowScroll) container.scrollTop = container.scrollHeight;
 
+                // Resolve actual image URL asynchronously
+                const url = await resolveMsgMediaUrl(msg);
+                if (url) {
+                    const mediaDiv = div.querySelector('.msg-media');
+                    if (mediaDiv) {
+                        const placeholder = mediaDiv.querySelector('.msg-image-placeholder');
+                        if (placeholder) {
+                            const imgLink = document.createElement('a');
+                            imgLink.href = url;
+                            imgLink.target = '_blank';
+                            imgLink.rel = 'noopener';
+                            imgLink.innerHTML = `<img class="msg-image" src="${url}" loading="lazy" alt="Image"/>`;
+                            placeholder.replaceWith(imgLink);
+                        }
+                    }
+                }
+            } else {
+                // Plain text message
+                const safeText = makeSafeText(msg.content);
+                div.innerHTML = `
+                    <div class="msg-content">${safeText}</div>
+                    ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
+                `;
+                container.appendChild(div);
+            }
+            return div;
+        }
 
-
-            div.innerHTML = `
-                <div class="msg-content">${safeText}</div>
-                ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
-            `;
-            if (id) div.id = `msg-${id}`;
-            container.appendChild(div);
+        async function upsertInboxMessage(container, msg) {
+            const existing = container.querySelector(`[data-msg-id="${msg.id}"]`);
+            if (existing) {
+                // Update in-place: re-render msg-content
+                const contentHTML = await renderMsgContentHTML(msg);
+                const contentEl = existing.querySelector('.msg-content');
+                if (contentEl) {
+                    contentEl.outerHTML = contentHTML;
+                } else {
+                    // Fallback: insert content before msg-time
+                    const timeEl = existing.querySelector('.msg-time');
+                    if (timeEl) {
+                        timeEl.insertAdjacentHTML('beforebegin', contentHTML);
+                    } else {
+                        existing.insertAdjacentHTML('afterbegin', contentHTML);
+                    }
+                }
+            } else {
+                // New message - append
+                await appendInboxMessage(container, msg, { allowScroll: true });
+            }
         }
 
         function addLinkField(agentId, value = "") {
