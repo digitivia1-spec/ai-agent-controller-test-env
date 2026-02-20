@@ -6659,27 +6659,37 @@
            WHATSAPP GREEN SCOPED THEME
            ========================================== */
         .whatsapp-theme {
-            --wa-accent: #25D366;
+            --theme-color: #25D366;
+            background-color: transparent !important;
+            /* Let dashboard background show */
+            --accent: #128C7E;
+            --accent-glow: 37, 211, 102;
+            /* #25D366 in RGB */
+        }
+
+        /* Override specific active tab & buttons inside the WA scope */
+        .whatsapp-theme .orders-subtab.active {
+            background: var(--theme-color);
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+            color: #fff;
         }
 
         .whatsapp-theme .wa-save-btn {
-            background: var(--wa-accent);
+            background: var(--theme-color);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
 
         .whatsapp-theme .wa-save-btn:hover {
-            background: #20bd5a;
+            background: var(--accent);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
         }
 
         .whatsapp-theme .wa-trigger-row.checked .wa-trigger-check {
-            background: var(--wa-accent);
-        }
-
-        .whatsapp-theme .orders-subtab.active {
-            background: var(--wa-accent);
+            background: var(--theme-color);
         }
 
         .whatsapp-theme .wa-toggle input:checked+.wa-toggle-slider {
-            background: var(--wa-accent);
+            background: var(--theme-color);
         }
 
         /* ==========================================
@@ -9305,6 +9315,60 @@
                                 <div class="kpi-subtext" id="kpi-wa-contact-sub">--</div>
                             </div>
                         </div>
+
+                        <!-- Confirmation Rate -->
+                        <div class="kpi-card glass clickable-card" onclick="navigateToOrdersLogs('all')">
+                            <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3.41 12.59L12 12.01L8.41 15.59L7 14.18l3.59-3.59L7 7l1.41-1.41L12 9.18l3.59-3.59L17 7l-3.59 3.59l3.59 3.59l-1.41 1.41z"/></svg>
+                            </div>
+                            <div class="kpi-info">
+                                <div class="kpi-label" data-i18n="dashboard.wa_stats.rate">Confirmation Rate</div>
+                                <div class="kpi-value" id="kpi-wa-rate">--%</div>
+                                <div class="kpi-subtext" id="kpi-wa-rate-sub">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WA RECENT LOGS PANEL (A2) -->
+                <div class="dashboard-panel glass" style="margin-bottom: 24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <h3 data-i18n="dashboard.headers.wa_recent_logs" style="margin:0;">WhatsApp Confirmation — Recent Logs</h3>
+                        <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh">↻</button>
+                    </div>
+                    <div class="logs-table-container">
+                        <table class="logs-table dashboard-wa-logs-table" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="orders.logs.col_time">Time</th>
+                                    <th data-i18n="orders.logs.col_order_id">Order ID</th>
+                                    <th data-i18n="orders.logs.col_customer">Customer</th>
+                                    <th data-i18n="orders.logs.col_phone">Phone</th>
+                                    <th data-i18n="orders.logs.col_trigger">Trigger</th>
+                                    <th data-i18n="orders.logs.col_action">Action</th>
+                                    <th data-i18n="orders.logs.col_result">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboard-wa-logs-tbody">
+                                <!-- Ghost Skeleton Empty State -->
+                                <tr>
+                                    <td colspan="7" style="padding: 0;">
+                                        <div class="logs-empty-premium" style="min-height: 200px; margin:0;">
+                                            <div class="logs-skeleton-table">
+                                                <div class="skeleton-row" style="opacity: 0.6"><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:15%;"></div><div class="skeleton-bar" style="width:20%;"></div><div class="skeleton-bar" style="width:15%;"></div><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:10%;"></div></div>
+                                                <div class="skeleton-row" style="opacity: 0.3"><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:15%;"></div><div class="skeleton-bar" style="width:20%;"></div><div class="skeleton-bar" style="width:15%;"></div><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:10%;"></div></div>
+                                                <div class="skeleton-row" style="opacity: 0.1"><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:15%;"></div><div class="skeleton-bar" style="width:20%;"></div><div class="skeleton-bar" style="width:15%;"></div><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:10%;"></div><div class="skeleton-bar" style="width:10%;"></div></div>
+                                            </div>
+                                            <div class="logs-empty-overlay">
+                                                <div style="font-size: 2.5rem; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">📲</div>
+                                                <h3 data-i18n="dashboard.wa_logs.empty_title" style="margin:0 0 8px; font-size:1.2rem;">No WhatsApp confirmation activity yet</h3>
+                                                <p data-i18n="dashboard.wa_logs.empty_text" style="color:#94a3b8; font-size:0.9rem; margin:0; max-width:80%;">Once messages are sent, confirmed, or canceled, logs will appear here.</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -9350,6 +9414,20 @@
                                 </div>
                                 <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
                                     <div id="usage-conversations-bar" style="height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
+                                </div>
+                            </div>
+
+                            <!-- WA Outbound Usage (A3) -->
+                            <div style="margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+                                    <span id="usage-wa-outbound-label" style="color: #e2e8f0; font-size: 0.85rem;">📲 WhatsApp Outbound <span style="font-size:0.7em; opacity:0.7;">(Billing Cycle)</span></span>
+                                    <span style="color: #94a3b8; font-size: 0.8rem;">
+                                        <span id="usage-wa-outbound-used" style="color: white; font-weight: 600;">0</span> / 
+                                        <span id="usage-wa-outbound-limit">No limit</span>
+                                    </span>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                                    <div id="usage-wa-outbound-bar" style="height: 100%; background: linear-gradient(90deg, #25D366, #128C7E); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
                                 </div>
                             </div>
 
@@ -9763,35 +9841,23 @@ Thank you for shopping with {store_name}!</textarea>
                                 <div class="wa-settings-section">
                                     <div class="wa-section-title" data-i18n="orders.confirmation.additional_info_title">Additional Info</div>
                                     <div class="wa-section-subtitle" data-i18n="orders.confirmation.additional_info_desc">This info will appear in Order Created notification and Post-order confirmation (Order Details).</div>
-                                    <textarea id="wa-additional-info" class="wa-additional-textarea" maxlength="400" oninput="updateAdditionalInfoCounter()" data-i18n-placeholder="orders.confirmation.additional_info_placeholder" placeholder="e.g. &quot;Delivery in 2-3 business days&quot;, &quot;Working hours: 9AM-6PM daily&quot;"></textarea>
+                                    <textarea id="wa-additional-info" class="wa-additional-textarea" maxlength="400" oninput="updateAdditionalInfoCounter(); updateWaPreview();" data-i18n-placeholder="orders.confirmation.additional_info_placeholder" placeholder="e.g. &quot;Delivery in 2-3 business days&quot;, &quot;Working hours: 9AM-6PM daily&quot;"></textarea>
                                     <div class="wa-char-counter" id="wa-additional-counter">0/400</div>
                                 </div>
 
-                                <!-- Contact Us Settings -->
+                                <!-- Message Buttons -->
                                 <div class="wa-settings-section">
-                                    <div class="wa-section-title" data-i18n="orders.confirmation.contact_title">Contact Us Settings</div>
-                                    <div class="wa-toggle-row" style="margin-top:10px;">
-                                        <span class="wa-toggle-label" data-i18n="orders.confirmation.contact_enable">Enable Contact Us button</span>
-                                        <label class="wa-toggle">
-                                            <input type="checkbox" id="wa-contact-toggle" onchange="updateWaPreview()">
-                                            <span class="wa-toggle-slider"></span>
-                                        </label>
+                                    <div class="wa-section-title" data-i18n="orders.confirmation.buttons_title">Message Buttons</div>
+                                    <div class="wa-section-subtitle" data-i18n="orders.confirmation.buttons_desc">Choose up to 3 buttons to include with your messages. Use arrows to reorder.</div>
+                                    
+                                    <div class="wa-buttons-list" id="wa-buttons-list" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+                                        <!-- Rendered via JS -->
                                     </div>
-                                    <div id="wa-contact-phone-group" style="display:none;">
-                                        <label style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px; display:block;" data-i18n="orders.confirmation.support_phone">Support Phone Number</label>
-                                        <input type="tel" id="wa-support-phone" class="wa-phone-input" data-i18n-placeholder="orders.confirmation.support_phone_placeholder" placeholder="Enter phone number with country code">
-                                    </div>
-                                </div>
-
-                                <!-- Rate Experience -->
-                                <div class="wa-settings-section">
-                                    <div class="wa-section-title" data-i18n="orders.confirmation.rate_experience">Rate Experience</div>
-                                    <div class="wa-toggle-row" style="margin-top:10px;">
-                                        <span class="wa-toggle-label" data-i18n="orders.confirmation.rate_enable">Enable Rate Experience button</span>
-                                        <label class="wa-toggle">
-                                            <input type="checkbox" id="wa-rate-toggle" checked onchange="updateWaPreview()">
-                                            <span class="wa-toggle-slider"></span>
-                                        </label>
+                                    <div id="wa-buttons-warning" style="color:#ef4444; font-size:0.8rem; margin-top:8px; display:none; align-items:center; gap:4px;" data-i18n="orders.confirmation.buttons_warning">⚠️ WhatsApp allows a maximum of 3 buttons. Please disable one.</div>
+                                    
+                                    <div id="wa-contact-phone-group" style="display:none; margin-top:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05);">
+                                        <label style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px; display:block;" data-i18n="orders.confirmation.support_phone">Contact Us - Phone Number</label>
+                                        <input type="tel" id="wa-support-phone" class="wa-phone-input" data-i18n-placeholder="orders.confirmation.support_phone_placeholder" placeholder="Enter phone number with country code" oninput="updateWaPreview()">
                                     </div>
                                 </div>
 
@@ -9806,6 +9872,11 @@ Thank you for shopping with {store_name}!</textarea>
                             <div class="wa-preview-panel">
                                 <button class="wa-preview-toggle-btn" onclick="toggleWaPreview()" data-i18n="orders.confirmation.preview_title">📱 Message Preview</button>
                                 <div class="wa-preview-collapsible open">
+                                    <div id="wa-preview-auto-lang-toggle" style="display:none; align-items:center; justify-content:center; gap:8px; margin-bottom: 12px; background:rgba(255,255,255,0.05); padding:6px; border-radius:20px;">
+                                        <span style="font-size:0.75rem; color:#94a3b8;" data-i18n="orders.confirmation.preview_sample_lang">Preview:</span>
+                                        <button id="wa-preview-btn-en" onclick="setPreviewSampleLang('en')" style="padding:4px 10px; font-size:0.75rem; background:var(--theme-color); color:white; border:none; border-radius:12px; cursor:pointer;" data-i18n="orders.confirmation.lang_en">EN</button>
+                                        <button id="wa-preview-btn-ar" onclick="setPreviewSampleLang('ar')" style="padding:4px 10px; font-size:0.75rem; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:12px; cursor:pointer;" data-i18n="orders.confirmation.lang_ar">AR</button>
+                                    </div>
                                     <div class="wa-phone-frame">
                                         <div class="wa-phone-header">
                                             <div class="wa-phone-avatar" id="wa-preview-avatar">S</div>
@@ -9935,6 +10006,13 @@ Thank you for shopping with {store_name}!</textarea>
 
                             <!-- Mobile cards (populated by JS) -->
                             <div id="logs-mobile-list" class="logs-mobile-list"></div>
+
+                            <!-- Pagination -->
+                            <div style="text-align: center; margin-top: 20px;">
+                                <button id="logs-load-more-btn" class="pill-btn secondary" style="display:none; width: auto; padding: 8px 24px;" onclick="loadMoreOrderLogs()">
+                                    Load More
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -11541,7 +11619,8 @@ Thank you for shopping with {store_name}!</textarea>
                 loadPlanUsage(usageData),
                 fetchDashboardStats(usageData),
                 renderActivityFeed(),
-                renderPlatformStats()
+                renderPlatformStats(),
+                loadWaLogMetrics() // New A1/A2 Dashboard WA Data
             ]);
         }
 
@@ -11733,19 +11812,33 @@ Thank you for shopping with {store_name}!</textarea>
                     .eq('org_id', currentUserOrgId);
 
                 const counts = {};
+                let total = 0;
                 (convs || []).forEach(c => {
                     const p = c.platform || 'website';
                     counts[p] = (counts[p] || 0) + 1;
+                    total++;
                 });
+
+                // Add WA Outbound to Platform Stats
+                try {
+                    const { count: waOutboundCount } = await supabaseClient
+                        .from('whatsapp_order_logs')
+                        .select('id', { count: 'exact', head: true })
+                        .eq('org_id', currentUserOrgId);
+
+                    if (waOutboundCount > 0) {
+                        counts['whatsapp_outbound'] = waOutboundCount;
+                        total += waOutboundCount;
+                    }
+                } catch (e) { /* ignore if table missing */ }
 
                 if (Object.keys(counts).length === 0) {
                     container.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">${t('dashboard.platform_stats.no_data')}</p>`;
                     return;
                 }
-
-                const total = (convs || []).length;
                 const colors = {
                     'whatsapp': '#25D366',
+                    'whatsapp_outbound': '#128C7E',
                     'facebook': '#1877F2',
                     'instagram': '#E1306C',
                     'website': '#5BAEB0'
@@ -11753,9 +11846,10 @@ Thank you for shopping with {store_name}!</textarea>
 
                 let html = '';
                 for (const [platform, count] of Object.entries(counts)) {
-                    const percent = Math.round((count / total) * 100);
+                    const percent = total > 0 ? Math.round((count / total) * 100) : 0;
                     const color = colors[platform] || '#888';
-                    const label = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    let label = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    if (platform === 'whatsapp_outbound') label = 'WhatsApp Outbound';
 
                     html += `
                         <div style="margin-bottom:12px;">
@@ -11774,6 +11868,128 @@ Thank you for shopping with {store_name}!</textarea>
             } catch (e) {
                 console.warn(e);
                 container.innerHTML = `<p>${t('dashboard.platform_stats.error')}</p>`;
+            }
+        }
+
+        // ==========================================
+        //        DASHBOARD WA LOGS & KPIS (A1/A2)
+        // ==========================================
+        async function loadWaLogMetrics() {
+            if (!currentUserOrgId) return;
+
+            try {
+                // 1. Fetch the raw logs for the period
+                let q = supabaseClient.from('whatsapp_order_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false });
+
+                // Use dashboard date range just like fetchDashboardStats
+                if (dashboardDateRange.start) {
+                    q = q.gte('created_at', dashboardDateRange.start);
+                }
+
+                const { data: logs, error } = await q;
+
+                if (error) {
+                    console.warn("Could not fetch WA logs for dashboard", error);
+                    return;
+                }
+
+                if (!logs) return;
+
+                // 2. Calculate KPIs (A1)
+                let sent = 0;
+                let confirmed = 0;
+                let cancelled = 0;
+                let contact = 0;
+                let rate = 0;
+
+                logs.forEach(log => {
+                    if (log.action === 'sent') sent++;
+                    if (log.action === 'confirmed') confirmed++;
+                    if (log.action === 'cancelled') cancelled++;
+                    if (log.action === 'contact_request') contact++;
+                });
+
+                if (sent > 0) {
+                    rate = Math.round((confirmed / sent) * 100);
+                }
+
+                // Update KPI UI
+                const u = {
+                    'kpi-wa-sent': sent.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US'),
+                    'kpi-wa-confirmed': confirmed.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US'),
+                    'kpi-wa-cancelled': cancelled.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US'),
+                    'kpi-wa-contact': contact.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US'),
+                    'kpi-wa-rate': rate + '%' // A1
+                };
+
+                for (let k in u) {
+                    const el = document.getElementById(k);
+                    if (el) el.innerText = u[k];
+                }
+
+                // 3. Render Recent Logs Panel (A2)
+                const tbody = document.getElementById('dashboard-wa-logs-tbody');
+                if (!tbody) return;
+
+                // Take top 10 for dashboard
+                const recentLogs = logs.slice(0, 10);
+
+                if (recentLogs.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="padding: 0;">
+                                <div class="logs-empty-premium" style="min-height: 200px; margin:0;">
+                                    <div class="logs-empty-overlay">
+                                        <div style="font-size: 2.5rem; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">📲</div>
+                                        <h3 data-i18n="dashboard.wa_logs.empty_title" style="margin:0 0 8px; font-size:1.2rem;">${t('dashboard.wa_logs.empty_title', 'No WhatsApp activity')}</h3>
+                                        <p data-i18n="dashboard.wa_logs.empty_text" style="color:#94a3b8; font-size:0.9rem; margin:0; max-width:80%;">${t('dashboard.wa_logs.empty_text', 'Once messages are sent, logs will appear here.')}</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                     `;
+                    return;
+                }
+
+                const actionBadges = {
+                    'sent': '<span class="log-badge badge-neutral">Sent</span>',
+                    'confirmed': '<span class="log-badge badge-success">Confirmed</span>',
+                    'cancelled': '<span class="log-badge badge-error">Cancelled</span>',
+                    'contact_request': '<span class="log-badge badge-warning">Contact Req</span>',
+                    'error': '<span class="log-badge badge-error">Error</span>'
+                };
+
+                const resultBadges = {
+                    'success': '<span class="log-badge badge-success">Success</span>',
+                    'failed': '<span class="log-badge badge-error">Failed</span>',
+                    'pending': '<span class="log-badge badge-warning">Pending</span>'
+                };
+
+                let html = '';
+                recentLogs.forEach(log => {
+                    const d = new Date(log.created_at);
+                    const timeStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    const pActionBadge = actionBadges[log.action] || `<span class="log-badge">${log.action}</span>`;
+                    const pResultBadge = resultBadges[log.result] || `<span class="log-badge">${log.result}</span>`;
+
+                    html += `
+                        <tr>
+                            <td>${timeStr}</td>
+                            <td style="font-family: monospace; color: #a78bfa;">${log.order_id || '--'}</td>
+                            <td>${log.customer_name || 'Unknown'}</td>
+                            <td>${log.phone || '--'}</td>
+                            <td><span style="color:#94a3b8; font-size:0.8rem;">${log.trigger || 'manual'}</span></td>
+                            <td>${pActionBadge}</td>
+                            <td>${pResultBadge} ${log.notes ? '<span style="margin-left:5px;cursor:help;opacity:0.6" title="' + log.notes + '">ℹ️</span>' : ''}</td>
+                        </tr>
+                    `;
+                });
+
+                tbody.innerHTML = html;
+
+            } catch (err) {
+                console.error("Error loading WA dashboard logs", err);
             }
         }
 
@@ -11830,6 +12046,31 @@ Thank you for shopping with {store_name}!</textarea>
                                 }
                             }
                         }
+                    }
+                }
+
+                // WhatsApp Outbound Usage Logic (A3)
+                let waUsed = 0;
+                let waLimit = 'No limit'; // Assuming WA outbound is pay-per-use or high limit
+                const waUsedEl = document.getElementById('usage-wa-outbound-used');
+                const waLimitEl = document.getElementById('usage-wa-outbound-limit');
+                const waBarEl = document.getElementById('usage-wa-outbound-bar');
+
+                if (currentUserOrgId) {
+                    try {
+                        const startOfMonth = new Date();
+                        startOfMonth.setDate(1);
+                        startOfMonth.setHours(0, 0, 0, 0);
+
+                        const { count: waCount } = await supabaseClient
+                            .from('whatsapp_order_logs')
+                            .select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId)
+                            .gte('created_at', startOfMonth.toISOString());
+
+                        waUsed = waCount || 0;
+                    } catch (e) {
+                        console.warn("WA Logs table might not exist yet", e);
                     }
                 }
 
@@ -11890,6 +12131,16 @@ Thank you for shopping with {store_name}!</textarea>
                     if (percent > 90) barEl.style.background = '#ef4444'; // Red if full
                     else if (percent > 75) barEl.style.background = '#f59e0b'; // Orange if warning
                     else barEl.style.background = '#10b981'; // Green default
+                }
+
+                // Update WA Outbound UI
+                if (waUsedEl) waUsedEl.innerText = waUsed.toLocaleString();
+                if (waLimitEl) waLimitEl.innerText = waLimit;
+                if (waBarEl) {
+                    // Assuming 1000 is a visual 100% just for the bar if no limit
+                    let waPercent = Math.min(100, Math.round((waUsed / 1000) * 100));
+                    if (waPercent < 2 && waUsed > 0) waPercent = 2; // Show at least a sliver
+                    waBarEl.style.width = `${waPercent}%`;
                 }
 
                 if (daysEl) daysEl.innerText = daysRemaining;
@@ -12225,6 +12476,7 @@ Thank you for shopping with {store_name}!</textarea>
         let ordersSubView = 'incoming';
         let waTemplateLang = 'en';
         let waSelectedTrigger = 'created';
+        let previewSampleLang = 'en';
 
         /* --- Mock logs placeholder & data --- */
         let mockOrderLogs = [];
@@ -12267,13 +12519,13 @@ Thank you for shopping with {store_name}!</textarea>
 
         /* --- Fetch logs from Supabase (graceful failure) --- */
         async function fetchOrderLogs() {
-            if (!window.supabase || !currentUserOrgId) {
-                console.warn('[Logs] No Supabase or org_id, using empty data');
+            if (!window.supabaseClient || !currentUserOrgId) {
+                console.warn('[Logs] No Supabase client or org_id, using empty data');
                 mockOrderLogs = [];
                 return;
             }
             try {
-                const { data, error } = await window.supabase
+                const { data, error } = await window.supabaseClient
                     .from('whatsapp_order_logs')
                     .select('*')
                     .eq('org_id', currentUserOrgId)
@@ -12313,6 +12565,9 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         /* --- Filter logs client-side --- */
+        let currentLogsPage = 1;
+        const LOGS_PER_PAGE = 50;
+
         function filterOrderLogs() {
             const search = (document.getElementById('logs-search')?.value || '').toLowerCase();
             const period = document.getElementById('logs-period-filter')?.value || 'all';
@@ -12336,56 +12591,83 @@ Thank you for shopping with {store_name}!</textarea>
                     if (period === 'month' && (logDate.getMonth() !== now.getMonth() || logDate.getFullYear() !== now.getFullYear())) return false;
                 }
                 // Action filter
-                if (action !== 'all' && log.action_type !== action) return false;
+                if (action !== 'all' && log.action !== action) return false;
                 // Result filter
                 if (result !== 'all' && log.result !== result) return false;
                 return true;
             });
 
-            // Render desktop table
+            currentLogsPage = 1;
+            renderOrderLogsPage();
+        }
+
+        function renderOrderLogsPage(append = false) {
             const tbody = document.getElementById('logs-tbody');
-            if (tbody) {
-                tbody.innerHTML = filteredOrderLogs.map(log => {
-                    const ts = log.created_at ? new Date(log.created_at).toLocaleString() : '--';
-                    const resultClass = log.result === 'success' ? 'success' : (log.result === 'failed' ? 'failed' : 'pending');
-                    return `<tr>
-                        <td>${ts}</td>
-                        <td>${log.order_id || '--'}</td>
-                        <td>${log.customer_name || '--'}</td>
-                        <td>${log.phone || '--'}</td>
-                        <td>${log.language || '--'}</td>
-                        <td>${log.trigger || '--'}</td>
-                        <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">${log.template || '--'}</td>
-                        <td>${log.actions_offered || '--'}</td>
-                        <td>${log.action_clicked || '--'}</td>
-                        <td><span class="log-badge ${resultClass}">${log.result || 'pending'}</span></td>
-                        <td style="font-size:0.75rem;">${log.message_id || '--'}</td>
-                        <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;">${log.notes || '--'}</td>
-                    </tr>`;
-                }).join('');
+            const mobileList = document.getElementById('logs-mobile-list');
+            const btn = document.getElementById('logs-load-more-btn');
+
+            if (!tbody) return;
+
+            const startIndex = append ? (currentLogsPage - 1) * LOGS_PER_PAGE : 0;
+            const endIndex = currentLogsPage * LOGS_PER_PAGE;
+            const pageLogs = filteredOrderLogs.slice(startIndex, endIndex);
+
+            const buildRow = (log) => {
+                const ts = log.created_at ? new Date(log.created_at).toLocaleString() : '--';
+                const resultClass = log.result === 'success' ? 'success' : (log.result === 'failed' ? 'failed' : 'pending');
+                return `<tr>
+                    <td>${ts}</td>
+                    <td style="font-family: monospace; color: #a78bfa;">${log.order_id || '--'}</td>
+                    <td>${log.customer_name || '--'}</td>
+                    <td>${log.phone || '--'}</td>
+                    <td>${log.language || '--'}</td>
+                    <td>${log.trigger || '--'}</td>
+                    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;" title="${log.template || ''}">${log.template || '--'}</td>
+                    <td>${log.actions_offered || '--'}</td>
+                    <td>${log.action_clicked || '--'}</td>
+                    <td><span class="log-badge ${resultClass}">${log.result || 'pending'}</span></td>
+                    <td style="font-size:0.75rem;">${log.message_id || '--'}</td>
+                    <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;" title="${log.notes || ''}">${log.notes || '--'}</td>
+                </tr>`;
+            };
+
+            const buildCard = (log) => {
+                const ts = log.created_at ? new Date(log.created_at).toLocaleString() : '--';
+                const resultClass = log.result === 'success' ? 'success' : (log.result === 'failed' ? 'failed' : 'pending');
+                return `<div class="log-card-mobile glass">
+                    <div class="log-card-header">
+                        <span class="log-card-id">#${log.order_id || '--'}</span>
+                        <span class="log-badge ${resultClass}">${log.result || 'pending'}</span>
+                    </div>
+                    <div class="log-card-body">
+                        <div class="log-row"><span>${t('orders.logs.col_timestamp')}:</span> <span>${ts}</span></div>
+                        <div class="log-row"><span>${t('orders.logs.col_customer')}:</span> <strong>${log.customer_name || '--'}</strong></div>
+                        <div class="log-row"><span>${t('orders.logs.col_phone')}:</span> <span>${log.phone || '--'}</span></div>
+                        <div class="log-row"><span>${t('orders.logs.col_trigger')}:</span> <span>${log.trigger || '--'}</span></div>
+                        <div class="log-row"><span>${t('orders.logs.col_action_clicked')}:</span> <span>${log.action_clicked || '--'}</span></div>
+                    </div>
+                </div>`;
+            };
+
+            const tableHtml = pageLogs.map(buildRow).join('');
+            const mobileHtml = pageLogs.map(buildCard).join('');
+
+            if (append) {
+                tbody.insertAdjacentHTML('beforeend', tableHtml);
+                if (mobileList) mobileList.insertAdjacentHTML('beforeend', mobileHtml);
+            } else {
+                tbody.innerHTML = tableHtml;
+                if (mobileList) mobileList.innerHTML = mobileHtml;
             }
 
-            // Render mobile cards
-            const mobileList = document.getElementById('logs-mobile-list');
-            if (mobileList) {
-                mobileList.innerHTML = filteredOrderLogs.map(log => {
-                    const ts = log.created_at ? new Date(log.created_at).toLocaleString() : '--';
-                    const resultClass = log.result === 'success' ? 'success' : (log.result === 'failed' ? 'failed' : 'pending');
-                    return `<div class="log-card-mobile">
-                        <div class="log-card-header">
-                            <span class="log-card-id">#${log.order_id || '--'}</span>
-                            <span class="log-badge ${resultClass}">${log.result || 'pending'}</span>
-                        </div>
-                        <div class="log-card-body">
-                            <div class="log-row"><span>${t('orders.logs.col_timestamp')}:</span> <span>${ts}</span></div>
-                            <div class="log-row"><span>${t('orders.logs.col_customer')}:</span> <strong>${log.customer_name || '--'}</strong></div>
-                            <div class="log-row"><span>${t('orders.logs.col_phone')}:</span> <span>${log.phone || '--'}</span></div>
-                            <div class="log-row"><span>${t('orders.logs.col_trigger')}:</span> <span>${log.trigger || '--'}</span></div>
-                            <div class="log-row"><span>${t('orders.logs.col_action_clicked')}:</span> <span>${log.action_clicked || '--'}</span></div>
-                        </div>
-                    </div>`;
-                }).join('');
+            if (btn) {
+                btn.style.display = endIndex >= filteredOrderLogs.length ? 'none' : 'inline-block';
             }
+        }
+
+        function loadMoreOrderLogs() {
+            currentLogsPage++;
+            renderOrderLogsPage(true);
         }
 
         /* --- Export logs --- */
@@ -12460,12 +12742,28 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
+        const WA_AVAILABLE_BUTTONS = {
+            'confirm': { icon: '✅', label: { en: 'Confirm Order (Quick Reply)', ar: 'تأكيد الطلب (رد سريع)' } },
+            'cancel': { icon: '❌', label: { en: 'Cancel Order (Quick Reply)', ar: 'إلغاء الطلب (رد سريع)' } },
+            'order_details': { icon: '📋', label: { en: 'Order Tracking (URL)', ar: 'تتبع الطلب (رابط)' } },
+            'rate': { icon: '⭐', label: { en: 'Rate Experience (URL)', ar: 'تقييم التجربة (رابط)' } },
+            'contact': { icon: '📞', label: { en: 'Contact Us (Phone)', ar: 'اتصل بنا (هاتف)' } }
+        };
+        let waCurrentButtons = [];
+
         function getDefaultWaSettings() {
             return {
                 language: 'auto',
                 triggers: { created: true, fulfilled: false, cancelled: false },
                 templates: JSON.parse(JSON.stringify(WA_DEFAULT_TEMPLATES)),
                 additionalInfo: '',
+                buttons: [
+                    { id: 'confirm', enabled: false },
+                    { id: 'cancel', enabled: false },
+                    { id: 'order_details', enabled: true },
+                    { id: 'rate', enabled: true },
+                    { id: 'contact', enabled: false }
+                ],
                 contactEnabled: false,
                 supportPhone: '',
                 rateEnabled: true
@@ -12497,6 +12795,12 @@ Thank you for shopping with {store_name}!</textarea>
         function selectWaLang(el) {
             document.querySelectorAll('.wa-lang-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
+            updateWaPreview();
+        }
+
+        function setPreviewSampleLang(lang) {
+            previewSampleLang = lang;
+            updateWaPreview();
         }
 
         function toggleWaTrigger(row) {
@@ -12568,10 +12872,72 @@ Thank you for shopping with {store_name}!</textarea>
             return {
                 language, triggers, templates,
                 additionalInfo: document.getElementById('wa-additional-info').value,
-                contactEnabled: document.getElementById('wa-contact-toggle').checked,
+                buttons: waCurrentButtons,
+                contactEnabled: waCurrentButtons.find(b => b.id === 'contact')?.enabled || false,
                 supportPhone: document.getElementById('wa-support-phone').value,
-                rateEnabled: document.getElementById('wa-rate-toggle').checked
+                rateEnabled: waCurrentButtons.find(b => b.id === 'rate')?.enabled || false
             };
+        }
+
+        function renderWaButtonsList() {
+            const listEl = document.getElementById('wa-buttons-list');
+            if (!listEl) return;
+
+            const currentLangUI = currentLang || 'en';
+            let enabledCount = waCurrentButtons.filter(b => b.enabled).length;
+            const warningEl = document.getElementById('wa-buttons-warning');
+
+            if (enabledCount > 3) {
+                if (warningEl) warningEl.style.display = 'flex';
+            } else {
+                if (warningEl) warningEl.style.display = 'none';
+            }
+
+            const contactBtn = waCurrentButtons.find(b => b.id === 'contact');
+            const phoneGroup = document.getElementById('wa-contact-phone-group');
+            if (phoneGroup) {
+                phoneGroup.style.display = (contactBtn && contactBtn.enabled) ? 'block' : 'none';
+            }
+
+            let html = '';
+            waCurrentButtons.forEach((btn, index) => {
+                const info = WA_AVAILABLE_BUTTONS[btn.id];
+                if (!info) return;
+                const labelText = info.label[currentLangUI] || info.label.en;
+
+                html += `
+                <div class="wa-button-item ${!btn.enabled ? 'disabled' : ''}">
+                    <div class="wa-button-item-left">
+                        <label class="wa-toggle">
+                            <input type="checkbox" onchange="toggleWaButton('${btn.id}', this.checked)" ${btn.enabled ? 'checked' : ''}>
+                            <span class="wa-toggle-slider"></span>
+                        </label>
+                        <span style="font-size:0.85rem;">${info.icon} ${labelText}</span>
+                    </div>
+                    <div class="wa-button-item-right">
+                        ${index > 0 ? `<button class="wa-btn-move" onclick="moveWaButton(${index}, -1)" title="Move Up">▲</button>` : `<div style="width:24px;"></div>`}
+                        ${index < waCurrentButtons.length - 1 ? `<button class="wa-btn-move" onclick="moveWaButton(${index}, 1)" title="Move Down">▼</button>` : `<div style="width:24px;"></div>`}
+                    </div>
+                </div>
+                `;
+            });
+            listEl.innerHTML = html;
+        }
+
+        function toggleWaButton(id, isEnabled) {
+            const btn = waCurrentButtons.find(b => b.id === id);
+            if (btn) btn.enabled = isEnabled;
+            renderWaButtonsList();
+            updateWaPreview();
+        }
+
+        function moveWaButton(index, direction) {
+            if (index + direction < 0 || index + direction >= waCurrentButtons.length) return;
+            const temp = waCurrentButtons[index];
+            waCurrentButtons[index] = waCurrentButtons[index + direction];
+            waCurrentButtons[index + direction] = temp;
+            renderWaButtonsList();
+            updateWaPreview();
         }
 
         function loadWaConfirmSettingsRaw() {
@@ -12608,16 +12974,17 @@ Thank you for shopping with {store_name}!</textarea>
             // Additional info
             document.getElementById('wa-additional-info').value = settings.additionalInfo || '';
             updateAdditionalInfoCounter();
-            // Contact
-            document.getElementById('wa-contact-toggle').checked = !!settings.contactEnabled;
+            // Buttons
+            waCurrentButtons = settings.buttons || [
+                { id: 'confirm', enabled: false },
+                { id: 'cancel', enabled: false },
+                { id: 'order_details', enabled: true },
+                { id: 'rate', enabled: settings.rateEnabled !== false },
+                { id: 'contact', enabled: !!settings.contactEnabled }
+            ];
             document.getElementById('wa-support-phone').value = settings.supportPhone || '';
-            document.getElementById('wa-contact-phone-group').style.display = settings.contactEnabled ? '' : 'none';
-            document.getElementById('wa-contact-toggle').onchange = function () {
-                document.getElementById('wa-contact-phone-group').style.display = this.checked ? '' : 'none';
-                updateWaPreview();
-            };
-            // Rate
-            document.getElementById('wa-rate-toggle').checked = settings.rateEnabled !== false;
+            renderWaButtonsList();
+
             // Preview store name
             const storeName = (currentOrgData && currentOrgData.name) ? currentOrgData.name : 'Store Name';
             const avatarEl = document.getElementById('wa-preview-avatar');
@@ -12697,8 +13064,22 @@ Thank you for shopping with {store_name}!</textarea>
                 delivery_address: 'Riyadh, KSA', payment_method: 'Cash on Delivery',
                 created_at: new Date().toISOString(), status: 'new'
             };
+
+            const autoToggle = document.getElementById('wa-preview-auto-lang-toggle');
             let previewLang = settings.language;
-            if (previewLang === 'auto') previewLang = currentLang || 'en';
+
+            if (previewLang === 'auto') {
+                if (autoToggle) autoToggle.style.display = 'flex';
+                const btnEn = document.getElementById('wa-preview-btn-en');
+                const btnAr = document.getElementById('wa-preview-btn-ar');
+                if (btnEn) btnEn.style.background = previewSampleLang === 'en' ? 'var(--theme-color)' : 'rgba(255,255,255,0.1)';
+                if (btnAr) btnAr.style.background = previewSampleLang === 'ar' ? 'var(--theme-color)' : 'rgba(255,255,255,0.1)';
+
+                previewLang = previewSampleLang;
+            } else {
+                if (autoToggle) autoToggle.style.display = 'none';
+            }
+
             const triggerTitles = {
                 created: { en: '✅ Order Confirmed', ar: '✅ تم تأكيد الطلب' },
                 fulfilled: { en: '🚚 Order Shipped', ar: '🚚 تم شحن الطلب' },
@@ -12718,13 +13099,24 @@ Thank you for shopping with {store_name}!</textarea>
                 }
                 html += '<div class="wa-msg-time">' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</div>';
                 html += '<div class="wa-msg-buttons">';
-                html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg> ' + t('orders.confirmation.btn_order_details') + '</div>';
-                if (settings.contactEnabled) {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg> ' + t('orders.confirmation.btn_contact_us') + '</div>';
-                }
-                if (settings.rateEnabled) {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> ' + t('orders.confirmation.btn_rate_experience') + '</div>';
-                }
+
+                // Get active buttons (max 3)
+                const activeButtons = (settings.buttons || []).filter(b => b.enabled).slice(0, 3);
+
+                activeButtons.forEach(btn => {
+                    if (btn.id === 'order_details') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg> ' + t('orders.confirmation.btn_order_details') + '</div>';
+                    } else if (btn.id === 'contact') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg> ' + t('orders.confirmation.btn_contact_us') + '</div>';
+                    } else if (btn.id === 'rate') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> ' + t('orders.confirmation.btn_rate_experience') + '</div>';
+                    } else if (btn.id === 'confirm') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> ' + (previewLang === 'ar' ? 'تأكيد الطلب' : 'Confirm Order') + '</div>';
+                    } else if (btn.id === 'cancel') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> ' + (previewLang === 'ar' ? 'إلغاء الطلب' : 'Cancel Order') + '</div>';
+                    }
+                });
+
                 html += '</div></div>';
             });
             body.innerHTML = html;
@@ -12752,6 +13144,33 @@ Thank you for shopping with {store_name}!</textarea>
             phone = phone.replace(/^\+/, '');
             const waUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
             window.open(waUrl, '_blank');
+
+            // Log to Supabase
+            if (window.supabaseClient && currentUserOrgId) {
+                const activeButtons = (settings.buttons || []).filter(b => b.enabled).slice(0, 3).map(b => b.id).join(',');
+                window.supabaseClient.from('whatsapp_order_logs').insert([{
+                    org_id: currentUserOrgId,
+                    order_id: String(order.id),
+                    customer_name: order.customer_name || '',
+                    phone: phone,
+                    language_used: msgLang,
+                    trigger: trigger,
+                    action: 'sent',
+                    result: 'success',
+                    template: template,
+                    actions_offered: activeButtons,
+                    notes: settings.additionalInfo || ''
+                }]).then(({ error }) => {
+                    if (error) {
+                        console.error('Error logging WA confirmation:', error);
+                    } else {
+                        // If we are currently on the logs tab, refresh it
+                        if (ordersSubView === 'logs') {
+                            fetchOrderLogs().then(() => renderOrderLogs());
+                        }
+                    }
+                });
+            }
         }
 
         // Switch schedule image mode
