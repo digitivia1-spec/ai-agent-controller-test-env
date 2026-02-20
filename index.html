@@ -13209,47 +13209,58 @@ Thank you for shopping with {store_name}!</textarea>
 
             let html = '';
 
-            // Show only the waSelectedTrigger instead of looping all enabledTriggers
-            const trigger = waSelectedTrigger || 'created';
+            // Show all enabled triggers plus the currently selected one (in case it's disabled but being edited)
+            const triggersToShow = ['created', 'fulfilled', 'cancelled'].filter(t => settings.triggers[t] || t === waSelectedTrigger);
 
-            const template = settings.templates[trigger] ? (settings.templates[trigger][previewLang] || settings.templates[trigger].en) : '';
-            const renderedMsg = renderTemplate(template, sampleOrder);
-            const title = triggerTitles[trigger] ? (triggerTitles[trigger][previewLang] || triggerTitles[trigger].en) : trigger;
-            const isRtl = previewLang === 'ar';
-            html += '<div class="wa-msg-bubble"' + (isRtl ? ' style="direction:rtl; text-align:right;"' : '') + '>';
+            triggersToShow.forEach(trigger => {
 
-            // Indicate if the trigger is currently disabled
-            if (!settings.triggers[trigger]) {
-                html += '<div style="background:rgba(239, 68, 68, 0.1); color:#ef4444; font-size:0.75rem; text-align:center; padding:4px; margin:-12px -12px 12px -12px; border-bottom:1px solid rgba(239, 68, 68, 0.2);">' + t('orders.confirmation.trigger_disabled_note') + ' (Disabled)</div>';
-            }
+                const template = settings.templates[trigger] ? (settings.templates[trigger][previewLang] || settings.templates[trigger].en) : '';
+                const renderedMsg = renderTemplate(template, sampleOrder);
+                const title = triggerTitles[trigger] ? (triggerTitles[trigger][previewLang] || triggerTitles[trigger].en) : trigger;
+                const isRtl = previewLang === 'ar';
+                html += '<div class="wa-msg-bubble"' + (isRtl ? ' style="direction:rtl; text-align:right;"' : '') + '>';
 
-            html += '<div class="wa-msg-title-bar"><div class="wa-msg-title">' + title + '</div></div>';
-            html += '<div class="wa-msg-body">' + renderedMsg.replace(/\n/g, '<br>') + '</div>';
-            if (settings.additionalInfo && trigger === 'created') {
-                html += '<div class="wa-msg-detail-line" style="padding-bottom:8px; font-style:italic; color:rgba(255,255,255,0.6);">' + settings.additionalInfo + '</div>';
-            }
-            html += '<div class="wa-msg-time">' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</div>';
-            html += '<div class="wa-msg-buttons">';
-
-            // Get active buttons (max 3)
-            const activeButtons = (settings.buttons || []).filter(b => b.enabled).slice(0, 3);
-
-            activeButtons.forEach(btn => {
-                if (btn.id === 'order_details') {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg> ' + t('orders.confirmation.btn_order_details') + '</div>';
-                } else if (btn.id === 'contact') {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg> ' + t('orders.confirmation.btn_contact_us') + '</div>';
-                } else if (btn.id === 'rate') {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> ' + t('orders.confirmation.btn_rate_experience') + '</div>';
-                } else if (btn.id === 'confirm') {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> ' + (previewLang === 'ar' ? 'تأكيد الطلب' : 'Confirm Order') + '</div>';
-                } else if (btn.id === 'cancel') {
-                    html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> ' + (previewLang === 'ar' ? 'إلغاء الطلب' : 'Cancel Order') + '</div>';
+                // Indicate if the trigger is currently disabled
+                if (!settings.triggers[trigger]) {
+                    html += '<div style="background:rgba(239, 68, 68, 0.1); color:#ef4444; font-size:0.75rem; text-align:center; padding:4px; margin:-12px -12px 12px -12px; border-bottom:1px solid rgba(239, 68, 68, 0.2);">' + t('orders.confirmation.trigger_disabled_note') + ' (Disabled)</div>';
                 }
+
+                html += '<div class="wa-msg-title-bar"><div class="wa-msg-title">' + title + '</div></div>';
+                html += '<div class="wa-msg-body">' + renderedMsg.replace(/\n/g, '<br>') + '</div>';
+                if (settings.additionalInfo && trigger === 'created') {
+                    html += '<div class="wa-msg-detail-line" style="padding-bottom:8px; font-style:italic; color:rgba(255,255,255,0.6);">' + settings.additionalInfo + '</div>';
+                }
+                html += '<div class="wa-msg-time">' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</div>';
+                html += '<div class="wa-msg-buttons">';
+
+                // Get active buttons (max 3)
+                const activeButtons = (settings.buttons || []).filter(b => b.enabled).slice(0, 3);
+
+                activeButtons.forEach(btn => {
+                    let btnText = '';
+                    if (btn.id === 'order_details') btnText = previewLang === 'ar' ? 'تتبع الطلب (رابط)' : 'Order Tracking (URL)';
+                    else if (btn.id === 'contact') btnText = previewLang === 'ar' ? 'اتصل بنا (هاتف)' : 'Contact Us (Phone)';
+                    else if (btn.id === 'rate') btnText = previewLang === 'ar' ? 'تقييم التجربة (رابط)' : 'Rate Experience (URL)';
+                    else if (btn.id === 'confirm') btnText = previewLang === 'ar' ? 'تأكيد الطلب (رد سريع)' : 'Confirm Order (Quick Reply)';
+                    else if (btn.id === 'cancel') btnText = previewLang === 'ar' ? 'إلغاء الطلب (رد سريع)' : 'Cancel Order (Quick Reply)';
+
+                    if (btn.id === 'order_details') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg> ' + btnText + '</div>';
+                    } else if (btn.id === 'contact') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg> ' + btnText + '</div>';
+                    } else if (btn.id === 'rate') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> ' + btnText + '</div>';
+                    } else if (btn.id === 'confirm') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> ' + btnText + '</div>';
+                    } else if (btn.id === 'cancel') {
+                        html += '<div class="wa-msg-btn"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> ' + btnText + '</div>';
+                    }
+                });
+
+
+                html += '</div></div>';
+
             });
-
-
-            html += '</div></div>';
 
             body.innerHTML = html;
         }
