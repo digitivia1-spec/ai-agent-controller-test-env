@@ -201,6 +201,11 @@
                     "switch_confirmation": "Order Confirmation",
                     "save": "Save Settings",
                     "reset": "Reset to Defaults",
+                    "buttons_title": "Message Buttons",
+                    "buttons_desc": "Choose up to 3 buttons to include with your messages. Use arrows to reorder.",
+                    "buttons_warning": "⚠️ You have selected more than 3 buttons. Only the first 3 active buttons will be sent via WhatsApp.",
+                    "preview_sample_lang": "Preview Language",
+                    "trigger_disabled_note": "This trigger is currently disabled. Enable it to send notifications.",
                     "lang_title": "WhatsApp Message Language",
                     "lang_auto": "Based on user language",
                     "lang_en": "English",
@@ -248,6 +253,8 @@
                 "logs": {
                     "title": "Order & WhatsApp Logs",
                     "search_placeholder": "Search logs...",
+                    "col_time": "Time",
+                    "col_action": "Action",
                     "filter_period": "Period",
                     "filter_action": "Action Type",
                     "filter_result": "Result",
@@ -539,9 +546,15 @@
                     "platform_dist": "Platform Distribution",
                     "platforms": "Platform Stats",
                     "plan_usage": "Plan Usage",
-                    "wa_activity": "Orders & WhatsApp Activity"
+                    "wa_activity": "Orders & WhatsApp Activity",
+                    "wa_recent_logs": "Recent WhatsApp Logs"
+                },
+                "wa_logs": {
+                    "empty_title": "No Recent WhatsApp Activity",
+                    "empty_text": "Activity will appear here once your agents start engaging with customers via WhatsApp."
                 },
                 "wa_stats": {
+                    "rate": "Confirmation Rate",
                     "sent": "Messages Sent",
                     "confirmed": "Orders Confirmed",
                     "cancelled": "Orders Cancelled",
@@ -755,6 +768,11 @@
                     "switch_confirmation": "تأكيد الطلب",
                     "save": "حفظ الإعدادات",
                     "reset": "إعادة تعيين",
+                    "buttons_title": "أزرار الرسائل",
+                    "buttons_desc": "اختر حتى 3 أزرار لإضافتها في رسائلك. استخدم الأسهم للترتيب.",
+                    "buttons_warning": "⚠️ لقد اخترت أكثر من 3 أزرار. سيتم إرسال أول 3 أزرار نشطة فقط عبر واتساب.",
+                    "preview_sample_lang": "لغة المعاينة",
+                    "trigger_disabled_note": "هذا المشغل معطل حالياً. قم بتفعيله لإرسال الإشعارات.",
                     "lang_title": "لغة رسائل واتساب",
                     "lang_auto": "حسب لغة المستخدم",
                     "lang_en": "الإنجليزية",
@@ -802,6 +820,8 @@
                 "logs": {
                     "title": "سجلات الطلبات والواتساب",
                     "search_placeholder": "بحث في السجلات...",
+                    "col_time": "الوقت",
+                    "col_action": "الإجراء",
                     "filter_period": "الفترة",
                     "filter_action": "نوع الإجراء",
                     "filter_result": "النتيجة",
@@ -1090,9 +1110,15 @@
                     "platform_dist": "توزيع المنصات",
                     "platforms": "إحصائيات المنصات",
                     "plan_usage": "استخدام الخطة",
-                    "wa_activity": "نشاط الطلبات والواتساب"
+                    "wa_activity": "نشاط الطلبات والواتساب",
+                    "wa_recent_logs": "سجلات واتساب الحديثة"
+                },
+                "wa_logs": {
+                    "empty_title": "لا يوجد نشاط واتساب حديث",
+                    "empty_text": "سيظهر النشاط هنا بمجرد أن يبدأ وكلاؤك في التفاعل مع العملاء عبر واتساب."
                 },
                 "wa_stats": {
+                    "rate": "معدل التأكيد",
                     "sent": "رسائل مرسلة",
                     "confirmed": "طلبات مؤكدة",
                     "cancelled": "طلبات ملغية",
@@ -7780,15 +7806,15 @@
 
         /* WhatsApp ambient background override */
         body.wa-bg-active .dashboard-bg .gradient-1 {
-            background: radial-gradient(circle at center, rgba(37, 211, 102, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at center, rgba(37, 211, 102, 0.15) 0%, transparent 60%) !important;
         }
 
         body.wa-bg-active .dashboard-bg .gradient-2 {
-            background: radial-gradient(circle at center, rgba(18, 140, 126, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at center, rgba(18, 140, 126, 0.15) 0%, transparent 60%) !important;
         }
 
         body.wa-bg-active .dashboard-bg .gradient-3 {
-            background: radial-gradient(circle at center, rgba(7, 94, 84, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at center, rgba(7, 94, 84, 0.15) 0%, transparent 60%) !important;
         }
 
         /* Mobile specific adjusting */
@@ -9415,7 +9441,12 @@
                 <div class="dashboard-panel glass" style="margin-bottom: 24px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                         <h3 data-i18n="dashboard.headers.wa_recent_logs" style="margin:0;">WhatsApp Confirmation — Recent Logs</h3>
-                        <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh">↻</button>
+                        <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh" aria-label="Refresh">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                        </button>
                     </div>
                     <div class="logs-table-container">
                         <table class="logs-table dashboard-wa-logs-table" style="width:100%;">
@@ -9459,7 +9490,12 @@
                     <div class="dashboard-panel glass large-panel">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                             <h3 data-i18n="dashboard.headers.recent_activity" style="margin:0;">Recent Activity</h3>
-                            <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh">↻</button>
+                            <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh" aria-label="Refresh">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;">
+                                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                    <path d="M3 3v5h5"></path>
+                                </svg>
+                            </button>
                         </div>
                         <div class="activity-feed" id="dashboard-activity">
                             <div class="loading-spinner"></div>
@@ -12992,18 +13028,20 @@ Thank you for shopping with {store_name}!</textarea>
                 if (!info) return;
                 const labelText = info.label[currentLangUI] || info.label.en;
 
+                const isFirst = index === 0;
+                const isLast = index === waCurrentButtons.length - 1;
                 html += `
-                <div class="wa-button-item ${!btn.enabled ? 'disabled' : ''}">
-                    <div class="wa-button-item-left">
-                        <label class="wa-toggle">
+                <div class="wa-button-item ${!btn.enabled ? 'disabled' : ''}" style="transition: all 0.3s; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px; background:rgba(0,0,0,0.2); display:flex; justify-content:space-between; align-items:center;">
+                    <div class="wa-button-item-left" style="display:flex; align-items:center; gap:12px;">
+                        <label class="wa-toggle" style="margin:0;">
                             <input type="checkbox" onchange="toggleWaButton('${btn.id}', this.checked)" ${btn.enabled ? 'checked' : ''}>
                             <span class="wa-toggle-slider"></span>
                         </label>
-                        <span style="font-size:0.85rem;">${info.icon} ${labelText}</span>
+                        <span style="font-size:0.85rem; color:${btn.enabled ? '#fff' : 'rgba(255,255,255,0.5)'}; transition: color 0.3s;">${info.icon} ${labelText}</span>
                     </div>
-                    <div class="wa-button-item-right" style="display:flex; gap:4px; align-items:center;">
-                        ${index > 0 ? `<button class="wa-btn-move" onclick="moveWaButton(${index}, -1)" title="Move Up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg></button>` : `<div style="width:28px;"></div>`}
-                        ${index < waCurrentButtons.length - 1 ? `<button class="wa-btn-move" onclick="moveWaButton(${index}, 1)" title="Move Down"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>` : `<div style="width:28px;"></div>`}
+                    <div class="wa-button-item-right" style="display:flex; flex-direction:column; gap:2px; justify-content:center; align-items:center;">
+                        <button class="wa-btn-move" onclick="moveWaButton(${index}, -1)" title="Move Up" ${isFirst ? 'disabled style="opacity:0.2; cursor:not-allowed;"' : ''}><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+                        <button class="wa-btn-move" onclick="moveWaButton(${index}, 1)" title="Move Down" ${isLast ? 'disabled style="opacity:0.2; cursor:not-allowed;"' : ''}><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
                     </div>
                 </div>
                 `;
