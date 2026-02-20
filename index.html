@@ -241,6 +241,47 @@
                     "preview_order_received": "Order received",
                     "preview_order_enroute": "Your order is en route!",
                     "preview_order_cancelled": "Order cancelled"
+                },
+                "subtab_incoming": "Incoming Orders",
+                "subtab_whatsapp": "WhatsApp Confirmation",
+                "subtab_logs": "Logs",
+                "logs": {
+                    "title": "Order & WhatsApp Logs",
+                    "search_placeholder": "Search logs...",
+                    "filter_period": "Period",
+                    "filter_action": "Action Type",
+                    "filter_result": "Result",
+                    "period_today": "Today",
+                    "period_7d": "7 Days",
+                    "period_30d": "30 Days",
+                    "period_month": "This Month",
+                    "period_all": "All",
+                    "action_sent": "Sent",
+                    "action_confirmed": "Confirmed",
+                    "action_cancelled": "Cancelled",
+                    "action_details": "Details Clicked",
+                    "action_rate": "Rate Clicked",
+                    "action_contact": "Contact Requested",
+                    "action_error": "Error",
+                    "result_success": "Success",
+                    "result_failed": "Failed",
+                    "result_pending": "Pending",
+                    "col_timestamp": "Timestamp",
+                    "col_order_id": "Order ID",
+                    "col_customer": "Customer",
+                    "col_phone": "Phone",
+                    "col_language": "Language",
+                    "col_trigger": "Trigger",
+                    "col_template": "Template",
+                    "col_actions_offered": "Actions Offered",
+                    "col_action_clicked": "Action Clicked",
+                    "col_result": "Result",
+                    "col_message_id": "Message ID",
+                    "col_notes": "Notes",
+                    "empty_title": "No logs yet",
+                    "empty_text": "Logs will appear here once WhatsApp confirmations are sent and customers interact with them.",
+                    "empty_cta": "Send a Test Confirmation",
+                    "coming_soon": "Coming soon!"
                 }
             },
             "reviews": {
@@ -497,7 +538,14 @@
                     "recent_activity": "Recent Activity",
                     "platform_dist": "Platform Distribution",
                     "platforms": "Platform Stats",
-                    "plan_usage": "Plan Usage"
+                    "plan_usage": "Plan Usage",
+                    "wa_activity": "Orders & WhatsApp Activity"
+                },
+                "wa_stats": {
+                    "sent": "Messages Sent",
+                    "confirmed": "Orders Confirmed",
+                    "cancelled": "Orders Cancelled",
+                    "contact": "Contact Requests"
                 },
                 "empty_activity": "No recent activity found.",
                 "activity": {
@@ -747,6 +795,47 @@
                     "preview_order_received": "تم استلام الطلب",
                     "preview_order_enroute": "طلبك في الطريق!",
                     "preview_order_cancelled": "تم إلغاء الطلب"
+                },
+                "subtab_incoming": "الطلبات الواردة",
+                "subtab_whatsapp": "تأكيد واتساب",
+                "subtab_logs": "السجلات",
+                "logs": {
+                    "title": "سجلات الطلبات والواتساب",
+                    "search_placeholder": "بحث في السجلات...",
+                    "filter_period": "الفترة",
+                    "filter_action": "نوع الإجراء",
+                    "filter_result": "النتيجة",
+                    "period_today": "اليوم",
+                    "period_7d": "7 أيام",
+                    "period_30d": "30 يوم",
+                    "period_month": "هذا الشهر",
+                    "period_all": "الكل",
+                    "action_sent": "مُرسل",
+                    "action_confirmed": "مؤكد",
+                    "action_cancelled": "ملغي",
+                    "action_details": "تم النقر على التفاصيل",
+                    "action_rate": "تم النقر على التقييم",
+                    "action_contact": "طلب تواصل",
+                    "action_error": "خطأ",
+                    "result_success": "نجاح",
+                    "result_failed": "فشل",
+                    "result_pending": "قيد الانتظار",
+                    "col_timestamp": "الوقت",
+                    "col_order_id": "رقم الطلب",
+                    "col_customer": "العميل",
+                    "col_phone": "الهاتف",
+                    "col_language": "اللغة",
+                    "col_trigger": "المشغل",
+                    "col_template": "القالب",
+                    "col_actions_offered": "الإجراءات المتاحة",
+                    "col_action_clicked": "الإجراء المنفذ",
+                    "col_result": "النتيجة",
+                    "col_message_id": "رقم الرسالة",
+                    "col_notes": "ملاحظات",
+                    "empty_title": "لا توجد سجلات بعد",
+                    "empty_text": "ستظهر السجلات بمجرد إرسال تأكيدات واتساب وتفاعل العملاء معها.",
+                    "empty_cta": "إرسال تأكيد تجريبي",
+                    "coming_soon": "قريباً!"
                 }
             },
             "reviews": {
@@ -1000,7 +1089,14 @@
                     "recent_activity": "النشاط الأخير",
                     "platform_dist": "توزيع المنصات",
                     "platforms": "إحصائيات المنصات",
-                    "plan_usage": "استخدام الخطة"
+                    "plan_usage": "استخدام الخطة",
+                    "wa_activity": "نشاط الطلبات والواتساب"
+                },
+                "wa_stats": {
+                    "sent": "رسائل مرسلة",
+                    "confirmed": "طلبات مؤكدة",
+                    "cancelled": "طلبات ملغية",
+                    "contact": "طلبات تواصل"
                 },
                 "empty_activity": "لا يوجد نشاط حديث.",
                 "activity": {
@@ -6512,6 +6608,429 @@
             transform: translateX(-18px);
         }
 
+        /* ==========================================
+           ORDERS SUB-TABS (Content Studio pattern)
+           ========================================== */
+        .orders-subtabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px;
+            border-radius: 14px;
+        }
+
+        .orders-subtab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+            border: none;
+            background: transparent;
+        }
+
+        .orders-subtab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .orders-subtab.active {
+            background: var(--theme-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .orders-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .orders-section.active {
+            display: block;
+        }
+
+        /* ==========================================
+           WHATSAPP GREEN SCOPED THEME
+           ========================================== */
+        .whatsapp-theme {
+            --wa-accent: #25D366;
+        }
+
+        .whatsapp-theme .wa-save-btn {
+            background: var(--wa-accent);
+        }
+
+        .whatsapp-theme .wa-save-btn:hover {
+            background: #20bd5a;
+        }
+
+        .whatsapp-theme .wa-trigger-row.checked .wa-trigger-check {
+            background: var(--wa-accent);
+        }
+
+        .whatsapp-theme .orders-subtab.active {
+            background: var(--wa-accent);
+        }
+
+        .whatsapp-theme .wa-toggle input:checked+.wa-toggle-slider {
+            background: var(--wa-accent);
+        }
+
+        /* ==========================================
+           LOGS TABLE
+           ========================================== */
+        .logs-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .logs-filters input[type="text"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 9px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        .logs-filters input[type="text"]::placeholder {
+            color: #64748b;
+        }
+
+        .logs-filters select {
+            padding: 9px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            min-width: 130px;
+        }
+
+        .logs-filters select option {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+
+        .logs-table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .logs-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .logs-table th,
+        .logs-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            white-space: nowrap;
+        }
+
+        .logs-table th {
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .logs-table td {
+            color: #e2e8f0;
+        }
+
+        .logs-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* RTL logs */
+        [dir="rtl"] .logs-table th,
+        [dir="rtl"] .logs-table td {
+            text-align: right;
+        }
+
+        .log-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .log-badge.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+
+        .log-badge.failed {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .log-badge.pending {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        /* ==========================================
+           LOGS PREMIUM EMPTY STATE
+           ========================================== */
+        .logs-empty-premium {
+            position: relative;
+        }
+
+        .logs-empty-premium .logs-table th {
+            color: rgba(148, 163, 184, 0.4);
+        }
+
+        .logs-skeleton-row td {
+            padding: 14px 12px;
+        }
+
+        .skeleton-bar {
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.04) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s infinite ease-in-out;
+        }
+
+        .skeleton-bar.w60 {
+            width: 60%;
+        }
+
+        .skeleton-bar.w40 {
+            width: 40%;
+        }
+
+        .skeleton-bar.w80 {
+            width: 80%;
+        }
+
+        .skeleton-bar.w50 {
+            width: 50%;
+        }
+
+        .skeleton-bar.w30 {
+            width: 30%;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .logs-empty-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.85) 40%, rgba(15, 23, 42, 0.98) 100%);
+            text-align: center;
+            padding: 40px 20px;
+            z-index: 2;
+        }
+
+        .logs-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .logs-empty-overlay h3 {
+            color: #e2e8f0;
+            font-size: 1.2rem;
+            margin: 0 0 8px;
+        }
+
+        .logs-empty-overlay p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            max-width: 380px;
+            margin: 0 0 20px;
+            line-height: 1.5;
+        }
+
+        .logs-empty-cta {
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid rgba(37, 211, 102, 0.4);
+            background: rgba(37, 211, 102, 0.1);
+            color: #25D366;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logs-empty-cta:hover {
+            background: rgba(37, 211, 102, 0.2);
+            border-color: #25D366;
+        }
+
+        /* ==========================================
+           LOGS MOBILE LIST
+           ========================================== */
+        .logs-mobile-list {
+            display: none;
+        }
+
+        .log-card-mobile {
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 10px;
+        }
+
+        .log-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .log-card-header .log-card-id {
+            font-weight: 700;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        .log-card-body .log-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: #cbd5e1;
+        }
+
+        .log-card-body .log-row span:first-child {
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        .log-card-body .log-row span:last-child,
+        .log-card-body .log-row strong {
+            text-align: end;
+        }
+
+        /* Mobile skeleton cards for empty state */
+        .logs-mobile-empty {
+            display: none;
+        }
+
+        .log-skeleton-card {
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 10px;
+        }
+
+        .log-skeleton-card .skeleton-bar {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .logs-table {
+                display: none !important;
+            }
+
+            .logs-mobile-list {
+                display: flex !important;
+                flex-direction: column;
+            }
+
+            .logs-mobile-empty {
+                display: block !important;
+            }
+
+            .logs-empty-premium .logs-table-container {
+                display: none;
+            }
+
+            .orders-subtabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .orders-subtab {
+                padding: 10px 12px;
+                font-size: 0.82rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .logs-filters {
+                flex-direction: column;
+            }
+
+            .logs-filters input[type="text"],
+            .logs-filters select {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+
+        /* ==========================================
+           DASHBOARD WHATSAPP KPI CARDS
+           ========================================== */
+        .wa-kpi-section {
+            margin-bottom: 30px;
+        }
+
+        .wa-kpi-section h3 {
+            margin: 0 0 16px;
+            font-size: 1rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .whatsapp-bg {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .wa-confirmed-bg {
+            background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .wa-cancelled-bg {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .wa-contact-bg {
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
         /* Leads Card Fixes */
         .lead-card {
             /* Ensure containment */
@@ -8735,6 +9254,60 @@
                     </div>
                 </div>
 
+                <!-- WHATSAPP ACTIVITY KPI CARDS -->
+                <div class="wa-kpi-section">
+                    <h3 data-i18n="dashboard.headers.wa_activity">Orders & WhatsApp Activity</h3>
+                    <div class="kpi-grid">
+                        <!-- Messages Sent -->
+                        <div class="kpi-card glass clickable-card" onclick="navigateToOrdersLogs('sent')">
+                            <div class="kpi-icon-wrapper whatsapp-bg">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            </div>
+                            <div class="kpi-info">
+                                <div class="kpi-label" data-i18n="dashboard.wa_stats.sent">Messages Sent</div>
+                                <div class="kpi-value" id="kpi-wa-sent">0</div>
+                                <div class="kpi-subtext" id="kpi-wa-sent-sub">--</div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Confirmed -->
+                        <div class="kpi-card glass clickable-card" onclick="navigateToOrdersLogs('confirmed')">
+                            <div class="kpi-icon-wrapper wa-confirmed-bg">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                            <div class="kpi-info">
+                                <div class="kpi-label" data-i18n="dashboard.wa_stats.confirmed">Orders Confirmed</div>
+                                <div class="kpi-value" id="kpi-wa-confirmed">0</div>
+                                <div class="kpi-subtext" id="kpi-wa-confirmed-sub">--</div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Cancelled -->
+                        <div class="kpi-card glass clickable-card" onclick="navigateToOrdersLogs('cancelled')">
+                            <div class="kpi-icon-wrapper wa-cancelled-bg">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            </div>
+                            <div class="kpi-info">
+                                <div class="kpi-label" data-i18n="dashboard.wa_stats.cancelled">Orders Cancelled</div>
+                                <div class="kpi-value" id="kpi-wa-cancelled">0</div>
+                                <div class="kpi-subtext" id="kpi-wa-cancelled-sub">--</div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Requests -->
+                        <div class="kpi-card glass clickable-card" onclick="navigateToOrdersLogs('contact')">
+                            <div class="kpi-icon-wrapper wa-contact-bg">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+                            </div>
+                            <div class="kpi-info">
+                                <div class="kpi-label" data-i18n="dashboard.wa_stats.contact">Contact Requests</div>
+                                <div class="kpi-value" id="kpi-wa-contact">0</div>
+                                <div class="kpi-subtext" id="kpi-wa-contact-sub">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- MAIN DASHBOARD GRID -->
                 <div class="dashboard-grid-new">
                      <!-- Left Column: Activity Feed -->
@@ -9037,14 +9610,10 @@
             <!-- ORDERS AREA TAB -->
             <div id="orders" class="tab-content">
                 <div class="card glass">
-                    <!-- Header row: title + segmented control + export buttons -->
+                    <!-- Header row: title + export buttons -->
                     <div class="orders-header-row">
                         <div class="orders-header-left">
                             <h2 data-i18n="orders.title">Orders Area</h2>
-                            <div class="orders-segmented-control">
-                                <button class="orders-seg-btn active" onclick="switchOrdersView('incoming')" data-i18n="orders.confirmation.switch_incoming">Incoming Orders</button>
-                                <button class="orders-seg-btn" onclick="switchOrdersView('confirmation')" data-i18n="orders.confirmation.switch_confirmation">Order Confirmation</button>
-                            </div>
                         </div>
                         <div class="orders-header-right" id="orders-export-btns">
                             <button class="export-btn" onclick="exportOrdersCSV()">
@@ -9058,8 +9627,15 @@
                         </div>
                     </div>
 
+                    <!-- Sub-tabs: Incoming | WhatsApp Confirmation | Logs -->
+                    <div class="orders-subtabs" id="orders-subtabs">
+                        <button class="orders-subtab active" onclick="switchOrdersSubtab('incoming', this)" data-i18n="orders.subtab_incoming">Incoming Orders</button>
+                        <button class="orders-subtab" onclick="switchOrdersSubtab('confirmation', this)" data-i18n="orders.subtab_whatsapp">WhatsApp Confirmation</button>
+                        <button class="orders-subtab" onclick="switchOrdersSubtab('logs', this)" data-i18n="orders.subtab_logs">Logs</button>
+                    </div>
+
                     <!-- VIEW 1: Incoming Orders (existing) -->
-                    <div id="orders-incoming-view">
+                    <div id="orders-incoming-view" class="orders-section active">
                         <div id="orders-table-container" class="orders-table-container">
                             <div id="orders-loading" style="text-align:center; padding: 40px; color: #888;">
                                 <div class="loading-spinner"></div>
@@ -9090,8 +9666,8 @@
                         </div>
                     </div>
 
-                    <!-- VIEW 2: Order Confirmation Settings -->
-                    <div id="orders-confirmation-view" style="display:none;">
+                    <!-- VIEW 2: Order Confirmation Settings (WhatsApp themed) -->
+                    <div id="orders-confirmation-view" class="orders-section whatsapp-theme">
                         <div class="wa-confirm-layout">
                             <!-- Left: Settings -->
                             <div class="wa-settings-panel">
@@ -9248,6 +9824,120 @@ Thank you for shopping with {store_name}!</textarea>
                             </div>
                         </div>
                     </div>
+
+                    <!-- VIEW 3: Logs -->
+                    <div id="orders-logs-view" class="orders-section">
+                        <!-- Filters row -->
+                        <div class="logs-filters">
+                            <input type="text" id="logs-search" data-i18n-placeholder="orders.logs.search_placeholder" placeholder="Search logs..." oninput="filterOrderLogs()">
+                            <select id="logs-period-filter" onchange="filterOrderLogs()">
+                                <option value="all" data-i18n="orders.logs.period_all">All</option>
+                                <option value="today" data-i18n="orders.logs.period_today">Today</option>
+                                <option value="7d" data-i18n="orders.logs.period_7d">7 Days</option>
+                                <option value="30d" data-i18n="orders.logs.period_30d">30 Days</option>
+                                <option value="month" data-i18n="orders.logs.period_month">This Month</option>
+                            </select>
+                            <select id="logs-action-filter" onchange="filterOrderLogs()">
+                                <option value="all" data-i18n="orders.logs.filter_action">Action Type</option>
+                                <option value="sent" data-i18n="orders.logs.action_sent">Sent</option>
+                                <option value="confirmed" data-i18n="orders.logs.action_confirmed">Confirmed</option>
+                                <option value="cancelled" data-i18n="orders.logs.action_cancelled">Cancelled</option>
+                                <option value="details" data-i18n="orders.logs.action_details">Details Clicked</option>
+                                <option value="rate" data-i18n="orders.logs.action_rate">Rate Clicked</option>
+                                <option value="contact" data-i18n="orders.logs.action_contact">Contact Requested</option>
+                                <option value="error" data-i18n="orders.logs.action_error">Error</option>
+                            </select>
+                            <select id="logs-result-filter" onchange="filterOrderLogs()">
+                                <option value="all" data-i18n="orders.logs.filter_result">Result</option>
+                                <option value="success" data-i18n="orders.logs.result_success">Success</option>
+                                <option value="failed" data-i18n="orders.logs.result_failed">Failed</option>
+                                <option value="pending" data-i18n="orders.logs.result_pending">Pending</option>
+                            </select>
+                            <button class="export-btn" onclick="exportLogsCsv()">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                                <span>CSV</span>
+                            </button>
+                            <button class="export-btn" onclick="exportLogsExcel()">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14h-2v-4H6v-2h2V7h2v4h3v2h-3v4zm6-5h-2V7h2v5z"/></svg>
+                                <span>Excel</span>
+                            </button>
+                        </div>
+
+                        <!-- Desktop logs table -->
+                        <div id="logs-table-wrapper">
+                            <!-- Premium empty state -->
+                            <div class="logs-empty-premium" id="logs-empty-state">
+                                <div class="logs-table-container">
+                                    <table class="logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th data-i18n="orders.logs.col_timestamp">Timestamp</th>
+                                                <th data-i18n="orders.logs.col_order_id">Order ID</th>
+                                                <th data-i18n="orders.logs.col_customer">Customer</th>
+                                                <th data-i18n="orders.logs.col_phone">Phone</th>
+                                                <th data-i18n="orders.logs.col_language">Language</th>
+                                                <th data-i18n="orders.logs.col_trigger">Trigger</th>
+                                                <th data-i18n="orders.logs.col_template">Template</th>
+                                                <th data-i18n="orders.logs.col_actions_offered">Actions Offered</th>
+                                                <th data-i18n="orders.logs.col_action_clicked">Action Clicked</th>
+                                                <th data-i18n="orders.logs.col_result">Result</th>
+                                                <th data-i18n="orders.logs.col_message_id">Message ID</th>
+                                                <th data-i18n="orders.logs.col_notes">Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="logs-skeleton-row"><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w80"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w60"></div></td></tr>
+                                            <tr class="logs-skeleton-row"><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w80"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w50"></div></td></tr>
+                                            <tr class="logs-skeleton-row"><td><div class="skeleton-bar w80"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w40"></div></td></tr>
+                                            <tr class="logs-skeleton-row"><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w60"></div></td><td><div class="skeleton-bar w50"></div></td><td><div class="skeleton-bar w40"></div></td><td><div class="skeleton-bar w30"></div></td><td><div class="skeleton-bar w80"></div></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Mobile skeleton cards -->
+                                <div class="logs-mobile-empty">
+                                    <div class="log-skeleton-card"><div class="skeleton-bar w80"></div><div class="skeleton-bar w60"></div><div class="skeleton-bar w40"></div></div>
+                                    <div class="log-skeleton-card"><div class="skeleton-bar w60"></div><div class="skeleton-bar w80"></div><div class="skeleton-bar w50"></div></div>
+                                    <div class="log-skeleton-card"><div class="skeleton-bar w40"></div><div class="skeleton-bar w60"></div><div class="skeleton-bar w80"></div></div>
+                                </div>
+
+                                <!-- Centered overlay message -->
+                                <div class="logs-empty-overlay">
+                                    <div class="logs-empty-icon">📋</div>
+                                    <h3 data-i18n="orders.logs.empty_title">No logs yet</h3>
+                                    <p data-i18n="orders.logs.empty_text">Logs will appear here once WhatsApp confirmations are sent and customers interact with them.</p>
+                                    <button class="logs-empty-cta" onclick="switchOrdersSubtab('confirmation', document.querySelectorAll('.orders-subtab')[1])" data-i18n="orders.logs.empty_cta">Send a Test Confirmation</button>
+                                </div>
+                            </div>
+
+                            <!-- Live data table (hidden until logs exist) -->
+                            <div class="logs-table-container" id="logs-data-container" style="display:none;">
+                                <table class="logs-table" id="logs-data-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n="orders.logs.col_timestamp">Timestamp</th>
+                                            <th data-i18n="orders.logs.col_order_id">Order ID</th>
+                                            <th data-i18n="orders.logs.col_customer">Customer</th>
+                                            <th data-i18n="orders.logs.col_phone">Phone</th>
+                                            <th data-i18n="orders.logs.col_language">Language</th>
+                                            <th data-i18n="orders.logs.col_trigger">Trigger</th>
+                                            <th data-i18n="orders.logs.col_template">Template</th>
+                                            <th data-i18n="orders.logs.col_actions_offered">Actions Offered</th>
+                                            <th data-i18n="orders.logs.col_action_clicked">Action Clicked</th>
+                                            <th data-i18n="orders.logs.col_result">Result</th>
+                                            <th data-i18n="orders.logs.col_message_id">Message ID</th>
+                                            <th data-i18n="orders.logs.col_notes">Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="logs-tbody"></tbody>
+                                </table>
+                            </div>
+
+                            <!-- Mobile cards (populated by JS) -->
+                            <div id="logs-mobile-list" class="logs-mobile-list"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -11535,6 +12225,225 @@ Thank you for shopping with {store_name}!</textarea>
         let ordersSubView = 'incoming';
         let waTemplateLang = 'en';
         let waSelectedTrigger = 'created';
+
+        /* --- Mock logs placeholder & data --- */
+        let mockOrderLogs = [];
+        let filteredOrderLogs = [];
+
+        function switchOrdersSubtab(tabKey, el) {
+            ordersSubView = tabKey;
+            // Update tab buttons
+            document.querySelectorAll('.orders-subtab').forEach(btn => btn.classList.remove('active'));
+            if (el) el.classList.add('active');
+            // Toggle view sections
+            document.querySelectorAll('.orders-section').forEach(s => s.classList.remove('active'));
+            const viewMap = {
+                incoming: 'orders-incoming-view',
+                confirmation: 'orders-confirmation-view',
+                logs: 'orders-logs-view'
+            };
+            const target = document.getElementById(viewMap[tabKey]);
+            if (target) target.classList.add('active');
+            // Show/hide header export buttons (only for incoming)
+            const exportBtns = document.getElementById('orders-export-btns');
+            if (exportBtns) exportBtns.style.display = (tabKey === 'incoming') ? '' : 'none';
+            // WA confirmation specific init
+            if (tabKey === 'confirmation') {
+                loadWaConfirmSettings();
+                updateWaPreview();
+            }
+            // Logs specific init
+            if (tabKey === 'logs') {
+                renderOrderLogs();
+            }
+        }
+
+        // Keep backward compat for old references
+        function switchOrdersView(view) {
+            const mapped = view === 'confirmation' ? 'confirmation' : 'incoming';
+            const btn = document.querySelectorAll('.orders-subtab')[mapped === 'confirmation' ? 1 : 0];
+            switchOrdersSubtab(mapped, btn);
+        }
+
+        /* --- Fetch logs from Supabase (graceful failure) --- */
+        async function fetchOrderLogs() {
+            if (!window.supabase || !currentUserOrgId) {
+                console.warn('[Logs] No Supabase or org_id, using empty data');
+                mockOrderLogs = [];
+                return;
+            }
+            try {
+                const { data, error } = await window.supabase
+                    .from('whatsapp_order_logs')
+                    .select('*')
+                    .eq('org_id', currentUserOrgId)
+                    .order('created_at', { ascending: false })
+                    .limit(500);
+                if (error) {
+                    console.warn('[Logs] Table may not exist yet:', error.message);
+                    mockOrderLogs = [];
+                } else {
+                    mockOrderLogs = data || [];
+                }
+            } catch (e) {
+                console.warn('[Logs] Fetch failed:', e);
+                mockOrderLogs = [];
+            }
+        }
+
+        /* --- Render logs table or empty state --- */
+        function renderOrderLogs() {
+            const emptyState = document.getElementById('logs-empty-state');
+            const dataContainer = document.getElementById('logs-data-container');
+            const tbody = document.getElementById('logs-tbody');
+            const mobileList = document.getElementById('logs-mobile-list');
+
+            if (!mockOrderLogs || mockOrderLogs.length === 0) {
+                if (emptyState) emptyState.style.display = '';
+                if (dataContainer) dataContainer.style.display = 'none';
+                if (mobileList) mobileList.innerHTML = '';
+                return;
+            }
+
+            if (emptyState) emptyState.style.display = 'none';
+            if (dataContainer) dataContainer.style.display = '';
+
+            // Apply filters
+            filterOrderLogs();
+        }
+
+        /* --- Filter logs client-side --- */
+        function filterOrderLogs() {
+            const search = (document.getElementById('logs-search')?.value || '').toLowerCase();
+            const period = document.getElementById('logs-period-filter')?.value || 'all';
+            const action = document.getElementById('logs-action-filter')?.value || 'all';
+            const result = document.getElementById('logs-result-filter')?.value || 'all';
+
+            const now = new Date();
+            filteredOrderLogs = mockOrderLogs.filter(log => {
+                // Search filter
+                if (search) {
+                    const haystack = [log.order_id, log.customer_name, log.phone, log.trigger, log.notes, log.message_id].filter(Boolean).join(' ').toLowerCase();
+                    if (!haystack.includes(search)) return false;
+                }
+                // Period filter
+                if (period !== 'all' && log.created_at) {
+                    const logDate = new Date(log.created_at);
+                    const daysDiff = (now - logDate) / (1000 * 60 * 60 * 24);
+                    if (period === 'today' && daysDiff > 1) return false;
+                    if (period === '7d' && daysDiff > 7) return false;
+                    if (period === '30d' && daysDiff > 30) return false;
+                    if (period === 'month' && (logDate.getMonth() !== now.getMonth() || logDate.getFullYear() !== now.getFullYear())) return false;
+                }
+                // Action filter
+                if (action !== 'all' && log.action_type !== action) return false;
+                // Result filter
+                if (result !== 'all' && log.result !== result) return false;
+                return true;
+            });
+
+            // Render desktop table
+            const tbody = document.getElementById('logs-tbody');
+            if (tbody) {
+                tbody.innerHTML = filteredOrderLogs.map(log => {
+                    const ts = log.created_at ? new Date(log.created_at).toLocaleString() : '--';
+                    const resultClass = log.result === 'success' ? 'success' : (log.result === 'failed' ? 'failed' : 'pending');
+                    return `<tr>
+                        <td>${ts}</td>
+                        <td>${log.order_id || '--'}</td>
+                        <td>${log.customer_name || '--'}</td>
+                        <td>${log.phone || '--'}</td>
+                        <td>${log.language || '--'}</td>
+                        <td>${log.trigger || '--'}</td>
+                        <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">${log.template || '--'}</td>
+                        <td>${log.actions_offered || '--'}</td>
+                        <td>${log.action_clicked || '--'}</td>
+                        <td><span class="log-badge ${resultClass}">${log.result || 'pending'}</span></td>
+                        <td style="font-size:0.75rem;">${log.message_id || '--'}</td>
+                        <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;">${log.notes || '--'}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            // Render mobile cards
+            const mobileList = document.getElementById('logs-mobile-list');
+            if (mobileList) {
+                mobileList.innerHTML = filteredOrderLogs.map(log => {
+                    const ts = log.created_at ? new Date(log.created_at).toLocaleString() : '--';
+                    const resultClass = log.result === 'success' ? 'success' : (log.result === 'failed' ? 'failed' : 'pending');
+                    return `<div class="log-card-mobile">
+                        <div class="log-card-header">
+                            <span class="log-card-id">#${log.order_id || '--'}</span>
+                            <span class="log-badge ${resultClass}">${log.result || 'pending'}</span>
+                        </div>
+                        <div class="log-card-body">
+                            <div class="log-row"><span>${t('orders.logs.col_timestamp')}:</span> <span>${ts}</span></div>
+                            <div class="log-row"><span>${t('orders.logs.col_customer')}:</span> <strong>${log.customer_name || '--'}</strong></div>
+                            <div class="log-row"><span>${t('orders.logs.col_phone')}:</span> <span>${log.phone || '--'}</span></div>
+                            <div class="log-row"><span>${t('orders.logs.col_trigger')}:</span> <span>${log.trigger || '--'}</span></div>
+                            <div class="log-row"><span>${t('orders.logs.col_action_clicked')}:</span> <span>${log.action_clicked || '--'}</span></div>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        /* --- Export logs --- */
+        function exportLogsCsv() {
+            if (!filteredOrderLogs || filteredOrderLogs.length === 0) {
+                showToast(t('orders.logs.empty_title'), 'info');
+                return;
+            }
+            const headers = ['Timestamp', 'Order ID', 'Customer', 'Phone', 'Language', 'Trigger', 'Template', 'Actions Offered', 'Action Clicked', 'Result', 'Message ID', 'Notes'];
+            const rows = filteredOrderLogs.map(l => [
+                l.created_at || '', l.order_id || '', l.customer_name || '', l.phone || '',
+                l.language || '', l.trigger || '', (l.template || '').replace(/,/g, ';'),
+                l.actions_offered || '', l.action_clicked || '', l.result || '',
+                l.message_id || '', (l.notes || '').replace(/,/g, ';')
+            ]);
+            let csv = '\uFEFF' + headers.join(',') + '\n' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'order_logs.csv';
+            link.click();
+        }
+
+        function exportLogsExcel() {
+            if (!filteredOrderLogs || filteredOrderLogs.length === 0) {
+                showToast(t('orders.logs.empty_title'), 'info');
+                return;
+            }
+            if (typeof XLSX === 'undefined') {
+                showToast('SheetJS library not loaded', 'error');
+                return;
+            }
+            const wsData = [['Timestamp', 'Order ID', 'Customer', 'Phone', 'Language', 'Trigger', 'Template', 'Actions Offered', 'Action Clicked', 'Result', 'Message ID', 'Notes']];
+            filteredOrderLogs.forEach(l => {
+                wsData.push([l.created_at || '', l.order_id || '', l.customer_name || '', l.phone || '', l.language || '', l.trigger || '', l.template || '', l.actions_offered || '', l.action_clicked || '', l.result || '', l.message_id || '', l.notes || '']);
+            });
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Order Logs');
+            XLSX.writeFile(wb, 'order_logs.xlsx');
+        }
+
+        /* --- Deep-link from Dashboard KPI cards --- */
+        function navigateToOrdersLogs(filterType) {
+            navigateToTab('orders');
+            setTimeout(() => {
+                const logsTab = document.querySelectorAll('.orders-subtab')[2];
+                switchOrdersSubtab('logs', logsTab);
+                // Pre-select filter if applicable
+                if (filterType) {
+                    const actionFilter = document.getElementById('logs-action-filter');
+                    if (actionFilter) {
+                        actionFilter.value = filterType;
+                        filterOrderLogs();
+                    }
+                }
+            }, 100);
+        }
 
         const WA_DEFAULT_TEMPLATES = {
             created: {
