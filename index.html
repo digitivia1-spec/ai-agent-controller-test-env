@@ -1140,48 +1140,6 @@
                 "header": "الإشعارات",
                 "mark_read": "تحديد الكل كمقروء",
                 "empty": "لا توجد إشعارات بعد"
-            },
-            "modals": {
-                "unlock": {
-                    "title": "⚠️ تحذير حرج",
-                    "text": "تغيير موجه النظام سيغير بشكل أساسي كيفية تصرف هذا الوكيل وإجابته وتفاعله.",
-                    "text_confirm_ask": "هل أنت متأكد أنك تريد الاستمرار؟",
-                    "btn_cancel": "إلغاء",
-                    "btn_confirm": "نعم، فك القفل للتحرير"
-                },
-                "post_detail": {
-                    "date_label": "التاريخ",
-                    "caption_default": "نص التسمية التوضيحية...",
-                    "stat_likes": "إعجابات",
-                    "stat_comments": "تعليقات",
-                    "stat_reach": "وصول",
-                    "section_comments": "التعليقات الأخيرة",
-                    "comments_not_loaded": "لم يتم تحميل التعليقات"
-                },
-                "docs": {
-                    "title": "التوثيق ودليل المستخدم",
-                    "sec_start_title": "🚀 البداية",
-                    "sec_start_text": "مرحباً بك في وكيل الذكاء الاصطناعي ديجيتيفيا! تتيح لك هذه المنصة إنشاء وإدارة ومراقبة وكلاء ذكاء اصطناعي أقوياء عبر عدة قنوات اتصال.",
-                    "sec_config_title": "🤖 تهيئة وكلائك",
-                    "sec_config_text": "يمكن تخصيص كل وكيل (الموقع الإلكتروني، واتساب، فيسبوك، انستغرام) بشكل مستقل:",
-                    "sec_config_list_prompt": "<strong>موجه النظام:</strong> هذا هو \"عقل\" وكيلك. حدد شخصيته ومعرفته وحدوده.",
-                    "sec_config_list_tone": "<strong>النبرة:</strong> اختر كيف يجب أن يبدو صوت الوكيل (مثلاً: احترافي، ودود، متعاطف).",
-                    "sec_config_list_kb": "<strong>روابط قاعدة المعرفة:</strong> أضف روابط المواقع التي يجب أن يستخدمها وكيلك كمرجع للإجابة على الأسئلة بدقة.",
-                    "tip_label": "نصيحة احترافية:",
-                    "tip_text": "كن محدداً في موجه النظام الخاص بك. بدلاً من \"أنت مساعد مفيد\"، جرب \"أنت خبير استشارات عقارية لشركة Acme Realty، متخصص في شقق وسط المدينة.\"",
-                    "sec_connect_title": "🔌 توصيل القنوات",
-                    "sec_connect_text": "لبدء استقبال الرسائل، تحتاج إلى توصيل قنوات التواصل الاجتماعي الخاصة بك:",
-                    "sec_connect_list_1": "انتقل إلى علامة تبويب الوكيل المحدد في الشريط الجانبي الأيسر.",
-                    "sec_connect_list_2": "انقر على زر <strong>\"توصيل القناة\"</strong>.",
-                    "sec_connect_list_3": "اتبع خطوات التكامل (تتطلب حالياً استشارة للإعداد).",
-                    "sec_inbox_title": "📨 استخدام صندوق الوارد والعملاء المحتملين",
-                    "sec_inbox_list_inbox": "<strong>صندوق الوارد المباشر:</strong> راقب المحادثات في الوقت الفعلي بين وكلائك وعملائك. يمكنك التدخل في أي وقت لتولي الدردشة.",
-                    "sec_inbox_list_leads": "<strong>منطقة العملاء المحتملين:</strong> يلتقط تلقائياً تفاصيل الاتصال والاهتمامات من المحادثات، مما يسمح لك بتصدير أو إدارة مبيعاتك.",
-                    "sec_inbox_list_insights": "<strong>رؤى مباشرة:</strong> اعرض مقاييس الأداء وحجم الرسائل وإحصائيات التفاعل عبر جميع المنصات.",
-                    "cta_title": "تحتاج لمزيد من المساعدة؟",
-                    "cta_text": "إذا كنت عالقاً أو تحتاج إلى تنفيذ مخصص، فإن فريقنا هنا للمساعدة.",
-                    "btn_book": "احجز استشارة مجانية"
-                }
             }
         };
     </script>
@@ -8585,6 +8543,10 @@
 
             // Apply translations to all elements with data-i18n attribute
             applyTranslations();
+
+            // Re-render dynamically generated elements that rely on language
+            if (typeof renderWaButtonsList === 'function') renderWaButtonsList();
+            if (typeof updateWaPreview === 'function') updateWaPreview();
         }
 
         // Toggle between English and Arabic
