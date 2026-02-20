@@ -13195,8 +13195,16 @@ Thank you for shopping with {store_name}!</textarea>
                 html += '<div class="wa-msg-time">' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</div>';
                 html += '<div class="wa-msg-buttons">';
 
-                // Get active buttons (max 3)
-                const activeButtons = (settings.buttons || []).filter(b => b.enabled).slice(0, 3);
+                // Get active buttons (max 3), filtered by logical relevance to the trigger
+                let activeButtons = (settings.buttons || []).filter(b => b.enabled);
+                if (trigger === 'fulfilled') {
+                    // It doesn't make sense to confirm or cancel an already fulfilled order
+                    activeButtons = activeButtons.filter(b => b.id !== 'confirm' && b.id !== 'cancel');
+                } else if (trigger === 'cancelled') {
+                    // For cancelled orders, we don't need confirm, cancel, rate, or track
+                    activeButtons = activeButtons.filter(b => !['confirm', 'cancel', 'rate', 'order_details'].includes(b.id));
+                }
+                activeButtons = activeButtons.slice(0, 3);
 
                 activeButtons.forEach(btn => {
                     let btnText = '';
@@ -13252,7 +13260,14 @@ Thank you for shopping with {store_name}!</textarea>
 
             // Log to Supabase
             if (window.supabaseClient && currentUserOrgId) {
-                const activeButtons = (settings.buttons || []).filter(b => b.enabled).slice(0, 3).map(b => b.id).join(',');
+                let activeButtonsList = (settings.buttons || []).filter(b => b.enabled);
+                if (trigger === 'fulfilled') {
+                    activeButtonsList = activeButtonsList.filter(b => b.id !== 'confirm' && b.id !== 'cancel');
+                } else if (trigger === 'cancelled') {
+                    activeButtonsList = activeButtonsList.filter(b => !['confirm', 'cancel', 'rate', 'order_details'].includes(b.id));
+                }
+                const activeButtonsStr = activeButtonsList.slice(0, 3).map(b => b.id).join(',');
+
                 window.supabaseClient.from('whatsapp_order_logs').insert([{
                     org_id: currentUserOrgId,
                     order_id: String(order.id),
@@ -13263,7 +13278,7 @@ Thank you for shopping with {store_name}!</textarea>
                     action: 'sent',
                     result: 'success',
                     template: template,
-                    actions_offered: activeButtons,
+                    actions_offered: activeButtonsStr,
                     notes: settings.additionalInfo || ''
                 }]).then(({ error }) => {
                     if (error) {
