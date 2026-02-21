@@ -8364,6 +8364,19 @@
         let cachedLeads = [];
         let realtimeSubscription = null; // Store subscription
 
+        // --- ORDERS SUBTAB STATE ---
+        const ORDERS_BASE_COLOR = '#FF6B00'; // Assume orange as base, will check actual UI later
+        const WHATSAPP_LIGHT_GREEN = 'rgba(87, 176, 120, 0.15)'; // #57B078 but very light
+        let currentOrdersSubtab = 'incoming';
+
+        function applyOrdersSubtabTheme() {
+            if (currentOrdersSubtab === 'wa' || currentOrdersSubtab === 'logs') {
+                document.documentElement.style.setProperty('--theme-color', WHATSAPP_LIGHT_GREEN);
+            } else {
+                document.documentElement.style.setProperty('--theme-color', ORDERS_BASE_COLOR);
+            }
+        }
+
         // --- MODAL & TOP BAR STATE ---
         let consultationMeetingsUsed = 0;
         const WHATSAPP_CONTACT_URL = 'placeholder'; // Replace with actual WhatsApp URL
@@ -10356,7 +10369,7 @@ Thank you for shopping with {store_name}!</textarea>
                 fetchLeads(); // Fetch data when tab opens
             }
             if (tabId === 'orders') {
-                color = '#f97316'; // Orange for orders
+                color = (currentOrdersSubtab === 'wa' || currentOrdersSubtab === 'logs') ? WHATSAPP_LIGHT_GREEN : ORDERS_BASE_COLOR;
                 fetchOrders(); // Fetch data when tab opens
             }
             if (tabId === 'insights') {
@@ -10373,6 +10386,35 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             document.documentElement.style.setProperty('--theme-color', color);
+        }
+
+        function switchOrdersSubtab(subtabId, element) {
+            currentOrdersSubtab = subtabId;
+
+            // UI toggles
+            document.querySelectorAll('.orders-subtab').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            document.querySelectorAll('.orders-section').forEach(sec => sec.classList.remove('active'));
+            const viewEl = document.getElementById('orders-' + subtabId + '-view');
+            if (viewEl) viewEl.classList.add('active');
+
+            // Export buttons visibility (only show on incoming orders)
+            const exportBtns = document.getElementById('orders-export-btns');
+            if (exportBtns) {
+                exportBtns.style.display = (subtabId === 'incoming') ? 'flex' : 'none';
+            }
+
+            // Theme
+            applyOrdersSubtabTheme();
+
+            // Lazy load / initialization
+            if (subtabId === 'confirmation') {
+                if (typeof loadWaConfirmSettings === 'function') loadWaConfirmSettings();
+                if (typeof updateWaPreview === 'function') updateWaPreview();
+            } else if (subtabId === 'logs') {
+                if (typeof loadOrderLogs === 'function') loadOrderLogs();
+            }
         }
 
         function toggleMobileMenu() {
