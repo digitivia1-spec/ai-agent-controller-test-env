@@ -7063,6 +7063,146 @@
             z-index: 2;
         }
 
+        /* Meta Partner Badge */
+        .meta-partner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .meta-partner-badge:hover,
+        .meta-partner-badge:focus-visible {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+
+        .meta-partner-badge:focus-visible {
+            outline: 2px solid rgba(59, 130, 246, 0.8);
+            outline-offset: 2px;
+        }
+
+        .meta-icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            flex-shrink: 0;
+        }
+
+        .meta-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+        }
+
+        .meta-badge-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .meta-badge-short {
+            display: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .meta-badge-mini {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            margin-left: 2px;
+        }
+
+        @media (prefers-color-scheme: light) {
+            .meta-icon-wrap {
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(0, 0, 0, 0.20);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .meta-badge-text {
+                display: none !important;
+            }
+
+            .meta-badge-short {
+                display: inline !important;
+            }
+
+            .meta-badge-mini {
+                display: none !important;
+            }
+
+            .meta-partner-badge {
+                gap: 6px;
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .mobile-actions {
+                gap: 6px !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+
+            .meta-badge-text,
+            .meta-badge-short,
+            .meta-badge-mini {
+                display: none !important;
+            }
+
+            .meta-partner-badge {
+                padding: 6px;
+                gap: 0;
+            }
+        }
+
+        /* Meta Partner Modal */
+        .meta-modal-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .meta-modal-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        .meta-modal-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
         /* Language Toggle Button */
         .lang-toggle {
             min-width: 48px;
@@ -7093,7 +7233,7 @@
             }
 
             /* Hide text labels in top bar buttons on mobile to save space */
-            .top-bar button span:not(#lang-toggle-label) {
+            .top-bar button span:not(#lang-toggle-label):not([class^="meta-badge-"]) {
                 display: none !important;
             }
 
@@ -7905,6 +8045,16 @@
                         d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
                 </svg>
             </button>
+            <button class="top-bar-btn meta-partner-badge" aria-label="Meta Business Partner"
+                onclick="openMetaPartnerModal()">
+                <div class="meta-icon-wrap">
+                    <img src="https://i.ibb.co/1JjdZyr7/download-transparent.png" alt="Meta icon" class="meta-icon"
+                        width="18" height="18"
+                        onerror="this.onerror=null; this.outerHTML='<svg class=\'meta-icon inline-svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M5.5 12C3.57 12 2 13.57 2 15.5S3.57 19 5.5 19c1.64 0 3.03-1.12 3.42-2.64L12 12l3.08-4.36C14.69 6.12 13.3 5 11.66 5 9.73 5 8.16 6.57 8.16 8.5\'></path><circle cx=\'18.5\' cy=\'12\' r=\'3.5\'></circle></svg>';">
+                </div>
+                <span class="meta-badge-text">Meta Business Partner</span>
+                <span class="meta-badge-short">Meta</span>
+            </button>
             <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
                 <span id="mobile-lang-label">AR</span>
             </button>
@@ -8115,6 +8265,16 @@
                     </div>
                 </div>
             </div>
+            <button class="top-bar-btn meta-partner-badge" aria-label="Meta Business Partner"
+                onclick="openMetaPartnerModal()">
+                <div class="meta-icon-wrap">
+                    <img src="https://i.ibb.co/1JjdZyr7/download-transparent.png" alt="Meta icon" class="meta-icon"
+                        width="18" height="18"
+                        onerror="this.onerror=null; this.outerHTML='<svg class=\'meta-icon inline-svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M5.5 12C3.57 12 2 13.57 2 15.5S3.57 19 5.5 19c1.64 0 3.03-1.12 3.42-2.64L12 12l3.08-4.36C14.69 6.12 13.3 5 11.66 5 9.73 5 8.16 6.57 8.16 8.5\'></path><circle cx=\'18.5\' cy=\'12\' r=\'3.5\'></circle></svg>';">
+                </div>
+                <span class="meta-badge-text">Meta Business Partner</span>
+                <span class="meta-badge-mini">Verified</span>
+            </button>
             <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
                 <span id="lang-toggle-label">AR</span>
             </button>
@@ -15087,6 +15247,51 @@ Thank you for shopping with {store_name}!</textarea>
             });
         }
     })();
+</script>
+
+<!-- Meta Partner Modal -->
+<div id="meta-partner-modal" class="confirm-modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="meta-modal-title" onclick="if(event.target === this) closeMetaPartnerModal()"
+    style="display: none;">
+    <div class="confirm-modal" style="text-align: left; padding: 24px; max-width: 400px; width: 90%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div class="confirm-title" id="meta-modal-title" style="margin: 0;">Meta Business Partner</div>
+            <button aria-label="Close" onclick="closeMetaPartnerModal()"
+                style="background: none; border: none; color: #fff; cursor: pointer; font-size: 1.2rem;">✕</button>
+        </div>
+        <div class="confirm-text">
+            <ul class="meta-modal-list">
+                <li>Vetted expertise across Meta platforms</li>
+                <li>Advanced implementation support (Pixel/CAPI/Catalog)</li>
+                <li>Proven performance delivery (case studies)</li>
+            </ul>
+        </div>
+        <div class="confirm-actions" style="margin-top: 24px; display: flex; gap: 12px;">
+            <button class="btn-cancel" onclick="closeMetaPartnerModal()">Close</button>
+            <a href="META_VERIFY_URL" target="_blank" rel="noopener noreferrer" class="btn-confirm"
+                style="flex:1; text-align:center; text-decoration: none; display: flex; align-items: center; justify-content: center;">Verify
+                partnership</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openMetaPartnerModal() {
+        const modal = document.getElementById('meta-partner-modal');
+        if (modal) modal.style.display = 'flex';
+        document.addEventListener('keydown', handleMetaPartnerEsc);
+    }
+
+    function closeMetaPartnerModal() {
+        const modal = document.getElementById('meta-partner-modal');
+        if (modal) modal.style.display = 'none';
+        document.removeEventListener('keydown', handleMetaPartnerEsc);
+    }
+
+    function handleMetaPartnerEsc(e) {
+        if (e.key === 'Escape') closeMetaPartnerModal();
+    }
+
 </script>
 
 </html>
