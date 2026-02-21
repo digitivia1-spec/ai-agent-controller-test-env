@@ -8381,13 +8381,13 @@
         let realtimeSubscription = null; // Store subscription
 
         // --- ORDERS SUBTAB STATE ---
-        const ORDERS_BASE_COLOR = '#FF6B00'; // Assume orange as base, will check actual UI later
-        const WHATSAPP_LIGHT_GREEN = 'rgba(87, 176, 120, 0.15)'; // #57B078 but very light
+        const ORDERS_BASE_COLOR = '#FF6B00';
+        const WHATSAPP_SOLID_GREEN = '#25D366';
         let currentOrdersSubtab = 'incoming';
 
         function applyOrdersSubtabTheme() {
             if (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') {
-                document.documentElement.style.setProperty('--theme-color', WHATSAPP_LIGHT_GREEN);
+                document.documentElement.style.setProperty('--theme-color', WHATSAPP_SOLID_GREEN);
             } else {
                 document.documentElement.style.setProperty('--theme-color', ORDERS_BASE_COLOR);
             }
@@ -10385,7 +10385,7 @@ Thank you for shopping with {store_name}!</textarea>
                 fetchLeads(); // Fetch data when tab opens
             }
             if (tabId === 'orders') {
-                color = (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') ? WHATSAPP_LIGHT_GREEN : ORDERS_BASE_COLOR;
+                color = (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') ? WHATSAPP_SOLID_GREEN : ORDERS_BASE_COLOR;
                 fetchOrders(); // Fetch data when tab opens
             }
             if (tabId === 'insights') {
