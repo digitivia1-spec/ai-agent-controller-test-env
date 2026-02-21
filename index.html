@@ -12895,6 +12895,7 @@ Thank you for shopping with {store_name}!</textarea>
             'contact': { icon: '📞', label: { en: 'Contact Us (Phone)', ar: 'اتصل بنا (هاتف)' } }
         };
         let waCurrentButtons = [];
+        let waCurrentTemplates = null;
 
         function getDefaultWaSettings() {
             return {
@@ -12948,8 +12949,21 @@ Thank you for shopping with {store_name}!</textarea>
             updateWaPreview();
         }
 
+        function syncTemplatesFromUI() {
+            if (waCurrentTemplates && waSelectedTrigger) {
+                waCurrentTemplates[waSelectedTrigger] = {
+                    en: document.getElementById('wa-template-en').value,
+                    ar: document.getElementById('wa-template-ar').value
+                };
+            }
+        }
+
         function toggleWaTrigger(row) {
             row.classList.toggle('checked');
+
+            // Sync current editor to the old trigger BEFORE we change waSelectedTrigger
+            syncTemplatesFromUI();
+
             const trigger = row.getAttribute('data-trigger');
             waSelectedTrigger = trigger;
             document.querySelectorAll('.wa-trigger-row').forEach(r => r.classList.remove('selected'));
@@ -12959,12 +12973,11 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function updateTemplateForTrigger() {
-            const settings = getWaSettingsFromUI();
             const enTA = document.getElementById('wa-template-en');
             const arTA = document.getElementById('wa-template-ar');
-            if (settings.templates[waSelectedTrigger]) {
-                enTA.value = settings.templates[waSelectedTrigger].en || '';
-                arTA.value = settings.templates[waSelectedTrigger].ar || '';
+            if (waCurrentTemplates && waCurrentTemplates[waSelectedTrigger]) {
+                enTA.value = waCurrentTemplates[waSelectedTrigger].en || '';
+                arTA.value = waCurrentTemplates[waSelectedTrigger].ar || '';
             }
         }
 
@@ -13007,11 +13020,10 @@ Thank you for shopping with {store_name}!</textarea>
             const langOption = document.querySelector('.wa-lang-option.active');
             const language = langOption ? langOption.getAttribute('data-lang') : 'auto';
             const storedSettings = loadWaConfirmSettingsRaw();
-            const templates = storedSettings.templates || JSON.parse(JSON.stringify(WA_DEFAULT_TEMPLATES));
-            templates[waSelectedTrigger] = {
-                en: document.getElementById('wa-template-en').value,
-                ar: document.getElementById('wa-template-ar').value
-            };
+
+            syncTemplatesFromUI();
+            const templates = waCurrentTemplates || storedSettings.templates || JSON.parse(JSON.stringify(WA_DEFAULT_TEMPLATES));
+
             return {
                 language, triggers, templates,
                 additionalInfo: document.getElementById('wa-additional-info').value,
@@ -13096,6 +13108,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         function loadWaConfirmSettings() {
             const settings = loadWaConfirmSettingsRaw();
+            waCurrentTemplates = settings.templates || JSON.parse(JSON.stringify(WA_DEFAULT_TEMPLATES));
             // Language
             document.querySelectorAll('.wa-lang-option').forEach(o => {
                 o.classList.toggle('active', o.getAttribute('data-lang') === settings.language);
