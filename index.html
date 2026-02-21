@@ -8381,13 +8381,17 @@
         let realtimeSubscription = null; // Store subscription
 
         // --- ORDERS SUBTAB STATE ---
-        const ORDERS_BASE_COLOR = '#FF6B00';
-        const WHATSAPP_SOLID_GREEN = '#25D366';
-        let currentOrdersSubtab = 'incoming';
+        const ORDERS_BASE_COLOR = '#f97316';
+        const WHATSAPP_LIGHT_GREEN = '#33E27A';
+        let currentOrdersSubtab = 'incoming'; // 'incoming' | 'wa' | 'logs'
 
         function applyOrdersSubtabTheme() {
-            if (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') {
-                document.documentElement.style.setProperty('--theme-color', WHATSAPP_SOLID_GREEN);
+            // Only if Orders tab is currently active
+            const ordersTab = document.getElementById('orders');
+            if (!ordersTab || !ordersTab.classList.contains('active')) return;
+
+            if (currentOrdersSubtab === 'wa' || currentOrdersSubtab === 'logs') {
+                document.documentElement.style.setProperty('--theme-color', WHATSAPP_LIGHT_GREEN);
             } else {
                 document.documentElement.style.setProperty('--theme-color', ORDERS_BASE_COLOR);
             }
@@ -9816,12 +9820,12 @@
                     <!-- Sub-tabs: Incoming | WhatsApp Confirmation | Logs -->
                     <div class="orders-subtabs" id="orders-subtabs">
                         <button class="orders-subtab active" onclick="switchOrdersSubtab('incoming', this)" data-i18n="orders.subtab_incoming">Incoming Orders</button>
-                        <button class="orders-subtab" onclick="switchOrdersSubtab('confirmation', this)" data-i18n="orders.subtab_whatsapp">WhatsApp Confirmation</button>
+                        <button class="orders-subtab" onclick="switchOrdersSubtab('wa', this)" data-i18n="orders.subtab_wa">WhatsApp Order Confirmation</button>
                         <button class="orders-subtab" onclick="switchOrdersSubtab('logs', this)" data-i18n="orders.subtab_logs">Logs</button>
                     </div>
 
                     <!-- VIEW 1: Incoming Orders (existing) -->
-                    <div id="orders-incoming-view" class="orders-section active">
+                    <div id="orders-section-incoming" class="orders-subtab-section active">
                         <div id="orders-table-container" class="orders-table-container">
                             <div id="orders-loading" style="text-align:center; padding: 40px; color: #888;">
                                 <div class="loading-spinner"></div>
@@ -9853,7 +9857,7 @@
                     </div>
 
                     <!-- VIEW 2: Order Confirmation Settings (WhatsApp themed) -->
-                    <div id="orders-confirmation-view" class="orders-section whatsapp-theme">
+                    <div id="orders-section-wa" class="orders-subtab-section whatsapp-theme">
                         <div class="wa-confirm-layout">
                             <!-- Left: Settings -->
                             <div class="wa-settings-panel">
@@ -10005,7 +10009,7 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
 
                     <!-- VIEW 3: Logs -->
-                    <div id="orders-logs-view" class="orders-section">
+                    <div id="orders-section-logs" class="orders-subtab-section">
                         <!-- Filters row -->
                         <div class="logs-filters">
                             <input type="text" id="logs-search" data-i18n-placeholder="orders.logs.search_placeholder" placeholder="Search logs..." oninput="filterOrderLogs()">
@@ -10085,7 +10089,7 @@ Thank you for shopping with {store_name}!</textarea>
                                     <div class="logs-empty-icon">📋</div>
                                     <h3 data-i18n="orders.logs.empty_title">No logs yet</h3>
                                     <p data-i18n="orders.logs.empty_text">Logs will appear here once WhatsApp confirmations are sent and customers interact with them.</p>
-                                    <button class="logs-empty-cta" onclick="switchOrdersSubtab('confirmation', document.querySelectorAll('.orders-subtab')[1])" data-i18n="orders.logs.empty_cta">Send a Test Confirmation</button>
+                                    <button class="logs-empty-cta" onclick="switchOrdersSubtab('wa', document.querySelectorAll('.orders-subtab')[1])" data-i18n="orders.logs.empty_cta">Send a Test Confirmation</button>
                                 </div>
                             </div>
 
@@ -10385,7 +10389,7 @@ Thank you for shopping with {store_name}!</textarea>
                 fetchLeads(); // Fetch data when tab opens
             }
             if (tabId === 'orders') {
-                color = (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') ? WHATSAPP_SOLID_GREEN : ORDERS_BASE_COLOR;
+                color = ORDERS_BASE_COLOR;
                 fetchOrders(); // Fetch data when tab opens
             }
             if (tabId === 'insights') {
@@ -10402,34 +10406,40 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             document.documentElement.style.setProperty('--theme-color', color);
+            if (tabId === 'orders') applyOrdersSubtabTheme();
         }
 
-        function switchOrdersSubtab(subtabId, element) {
-            currentOrdersSubtab = subtabId;
+        function switchOrdersSubtab(key, el) {
+            currentOrdersSubtab = key;
 
-            // UI toggles
-            document.querySelectorAll('.orders-subtab').forEach(btn => btn.classList.remove('active'));
-            if (element) element.classList.add('active');
+            // toggle buttons
+            document.querySelectorAll('.orders-subtab').forEach(b => b.classList.remove('active'));
+            if (el) el.classList.add('active');
 
-            document.querySelectorAll('.orders-section').forEach(sec => sec.classList.remove('active'));
-            const viewEl = document.getElementById('orders-' + subtabId + '-view');
+            // toggle sections
+            document.querySelectorAll('.orders-subtab-section').forEach(s => s.classList.remove('active'));
+            const viewEl = document.getElementById('orders-section-' + key);
             if (viewEl) viewEl.classList.add('active');
 
-            // Export buttons visibility (only show on incoming orders)
-            const exportBtns = document.getElementById('orders-export-btns');
-            if (exportBtns) {
-                exportBtns.style.display = (subtabId === 'incoming') ? 'flex' : 'none';
+            // toggle export group
+            const exportGroup = document.querySelector('#orders .export-group');
+            if (exportGroup) {
+                exportGroup.style.display = (key === 'incoming') ? 'flex' : 'none';
             }
 
-            // Theme
+            // apply theme ONLY for wa/logs
             applyOrdersSubtabTheme();
 
-            // Lazy load / initialization
-            if (subtabId === 'confirmation') {
+            // lazy-load behavior:
+            if (key === 'incoming') fetchOrders();
+            if (key === 'logs') {
+                if (typeof fetchOrderLogs === 'function') fetchOrderLogs().then(() => {
+                    if (typeof renderOrderLogs === 'function') renderOrderLogs();
+                });
+            }
+            if (key === 'wa') {
                 if (typeof loadWaConfirmSettings === 'function') loadWaConfirmSettings();
                 if (typeof updateWaPreview === 'function') updateWaPreview();
-            } else if (subtabId === 'logs') {
-                if (typeof loadOrderLogs === 'function') loadOrderLogs();
             }
         }
 
@@ -11744,7 +11754,7 @@ Thank you for shopping with {store_name}!</textarea>
             try {
                 const { data } = await supabaseClient
                     .from('org_usage')
-                    .select('conversations_used, period_start, period_end')
+                    .select('conversations_used, whatsapp_outbound_used, period_start, period_end')
                     .eq('org_id', currentUserOrgId)
                     .maybeSingle();
                 usageData = data;
@@ -11809,7 +11819,7 @@ Thank you for shopping with {store_name}!</textarea>
                 let convCount = 0;
                 let msgCount = 0;
                 try {
-                    let q = supabaseClient.from('inbox_conversations').select('id, created_at', { count: 'exact', head: true }).eq('org_id', currentUserOrgId);
+                    let q = supabaseClient.from('inbox_conversations').select('id', { count: 'exact', head: true }).eq('org_id', currentUserOrgId);
 
                     // Special Case: If filter is month, ensure we match Plan Usage logic exactly if possible
                     // But for dashboard generic filter, applyDateFilter is correct.
@@ -11852,6 +11862,50 @@ Thank you for shopping with {store_name}!</textarea>
 
                 document.getElementById('kpi-rating').innerText = avgRating > 0 ? avgRating : '--';
                 document.getElementById('kpi-reviews-sub').innerText = t('dashboard.stats.rating_subtext', { count: reviewCount });
+
+                // 5. WhatsApp Order Confirmation Logs
+                let waSent = 0, waConfirmed = 0, waCancelled = 0, waContact = 0;
+                try {
+                    let q = supabaseClient.from('whatsapp_order_logs').select('action, result').eq('org_id', currentUserOrgId);
+                    q = applyDateFilter(q);
+                    const { data: waLogs } = await q;
+
+                    if (waLogs && waLogs.length > 0) {
+                        waSent = waLogs.filter(l => l.action === 'sent').length;
+                        waConfirmed = waLogs.filter(l => l.action === 'confirmed').length;
+                        waCancelled = waLogs.filter(l => l.action === 'cancelled').length;
+                        waContact = waLogs.filter(l => l.action === 'contact').length;
+                    }
+                } catch (e) {
+                    console.warn("WA Logs Stats Error", e);
+                }
+
+                const eSent = document.getElementById('kpi-wa-sent');
+                if (eSent) {
+                    eSent.innerText = waSent;
+                    document.getElementById('kpi-wa-sent-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+                }
+                const eConfirmed = document.getElementById('kpi-wa-confirmed');
+                if (eConfirmed) {
+                    eConfirmed.innerText = waConfirmed;
+                    document.getElementById('kpi-wa-confirmed-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+                }
+                const eCancelled = document.getElementById('kpi-wa-cancelled');
+                if (eCancelled) {
+                    eCancelled.innerText = waCancelled;
+                    document.getElementById('kpi-wa-cancelled-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+                }
+                const eContact = document.getElementById('kpi-wa-contact');
+                if (eContact) {
+                    eContact.innerText = waContact;
+                    document.getElementById('kpi-wa-contact-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+                }
+                const eRate = document.getElementById('kpi-wa-rate');
+                if (eRate) {
+                    const sum = waSent > 0 ? ((waConfirmed / waSent) * 100).toFixed(1) : 0;
+                    eRate.innerText = sum + '%';
+                    document.getElementById('kpi-wa-rate-sub').innerText = dashboardDateRange.label === 'all' ? 'All time' : 'In selected period';
+                }
 
             } catch (e) {
                 console.error("Error fetching dashboard stats:", e);
@@ -12000,6 +12054,7 @@ Thank you for shopping with {store_name}!</textarea>
                         </div>
                     `;
                 }
+
                 container.innerHTML = html;
 
             } catch (e) {
@@ -12188,27 +12243,38 @@ Thank you for shopping with {store_name}!</textarea>
 
                 // WhatsApp Outbound Usage Logic (A3)
                 let waUsed = 0;
-                let waLimit = 'No limit'; // Assuming WA outbound is pay-per-use or high limit
+                let waLimit = 1000; // Use a default or fetch from plan limits
                 const waUsedEl = document.getElementById('usage-wa-outbound-used');
                 const waLimitEl = document.getElementById('usage-wa-outbound-limit');
                 const waBarEl = document.getElementById('usage-wa-outbound-bar');
 
-                if (currentUserOrgId) {
-                    try {
-                        const startOfMonth = new Date();
-                        startOfMonth.setDate(1);
-                        startOfMonth.setHours(0, 0, 0, 0);
+                if (usageData && usageData.whatsapp_outbound_used !== undefined) {
+                    waUsed = usageData.whatsapp_outbound_used;
+                } else {
+                    if (currentUserOrgId) {
+                        try {
+                            const startOfMonth = new Date();
+                            startOfMonth.setDate(1);
+                            startOfMonth.setHours(0, 0, 0, 0);
 
-                        const { count: waCount } = await supabaseClient
-                            .from('whatsapp_order_logs')
-                            .select('id', { count: 'exact', head: true })
-                            .eq('org_id', currentUserOrgId)
-                            .gte('created_at', startOfMonth.toISOString());
+                            const { count: waCount } = await supabaseClient
+                                .from('whatsapp_order_logs')
+                                .select('id', { count: 'exact', head: true })
+                                .eq('org_id', currentUserOrgId)
+                                .gte('created_at', startOfMonth.toISOString());
 
-                        waUsed = waCount || 0;
-                    } catch (e) {
-                        console.warn("WA Logs table might not exist yet", e);
+                            waUsed = waCount || 0;
+                        } catch (e) {
+                            console.warn("WA Logs table might not exist yet", e);
+                        }
                     }
+                }
+
+                if (waUsedEl) waUsedEl.innerText = waUsed;
+                if (waLimitEl) waLimitEl.innerText = waLimit; // or "No limit" if you prefer
+                if (waBarEl) {
+                    const waPercent = Math.min(100, Math.round((waUsed / Math.max(waLimit, 1)) * 100));
+                    waBarEl.style.width = waPercent + '%';
                 }
 
                 // If usageData passed centrally, use it. Else fetch/count.
