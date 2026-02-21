@@ -8386,7 +8386,7 @@
         let currentOrdersSubtab = 'incoming';
 
         function applyOrdersSubtabTheme() {
-            if (currentOrdersSubtab === 'wa' || currentOrdersSubtab === 'logs') {
+            if (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') {
                 document.documentElement.style.setProperty('--theme-color', WHATSAPP_LIGHT_GREEN);
             } else {
                 document.documentElement.style.setProperty('--theme-color', ORDERS_BASE_COLOR);
@@ -10385,7 +10385,7 @@ Thank you for shopping with {store_name}!</textarea>
                 fetchLeads(); // Fetch data when tab opens
             }
             if (tabId === 'orders') {
-                color = (currentOrdersSubtab === 'wa' || currentOrdersSubtab === 'logs') ? WHATSAPP_LIGHT_GREEN : ORDERS_BASE_COLOR;
+                color = (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') ? WHATSAPP_LIGHT_GREEN : ORDERS_BASE_COLOR;
                 fetchOrders(); // Fetch data when tab opens
             }
             if (tabId === 'insights') {
