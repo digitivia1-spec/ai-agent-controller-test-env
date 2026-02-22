@@ -7104,7 +7104,7 @@
             .lang-toggle {
                 min-width: 40px !important;
                 padding: 6px 10px !important;
-                font-size: 0.75rem !important;
+                font-size: 0.8rem !important;
                 margin-inline-end: 8px !important;
                 /* Add spacing between button and avatar */
             }
@@ -7845,90 +7845,6 @@
             right: auto;
             left: 20px;
         }
-        /* =========================================
-   META BADGE (IMAGE ONLY) — CLEAN + MODERN
-   ========================================= */
-.meta-badge {
-  /* frosted plaque that works with transparent logos */
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.10),
-    rgba(0,0,0,0.35)
-  );
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.10),
-    0 12px 30px rgba(0,0,0,0.45);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border-radius: 16px;
-  padding: 8px 12px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Important: don’t break layout */
-  flex: 0 1 auto;
-  min-width: 0;
-  max-width: 100%;
-  user-select: none;
-  pointer-events: none; /* purely visual */
-}
-
-/* The image itself (make it CLEAR) */
-.meta-badge img {
-  display: block;
-  height: 26px;        /* default clarity */
-  width: auto;
-  max-width: 170px;    /* prevents overflow in headers */
-  object-fit: contain;
-
-  /* Improve visibility on dark backgrounds without “changing” the logo */
-  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.55));
-  -webkit-transform: translateZ(0); /* crisp on some browsers */
-}
-
-/* ===== Sizes by placement ===== */
-.meta-badge--login {
-  margin: 14px auto 18px auto;
-  padding: 10px 14px;
-  border-radius: 18px;
-}
-.meta-badge--login img {
-  height: 34px;
-  max-width: 240px;
-}
-
-.meta-badge--topbar img {
-  height: 24px;
-  max-width: 165px;
-}
-
-.meta-badge--mobile img {
-  height: 22px;
-  max-width: 125px;
-}
-
-/* Mobile safety: shrink slightly if space is tight */
-@media (max-width: 420px) {
-  .meta-badge--mobile img {
-    height: 20px;
-    max-width: 105px;
-  }
-}
-@media (max-width: 360px) {
-  .meta-badge--mobile img {
-    height: 18px;
-    max-width: 88px;
-  }
-}
-
-/* Reduced motion safety (even though it’s not animated) */
-@media (prefers-reduced-motion: reduce) {
-  .meta-badge { transition: none; }
-}
     </style>
 </head>
 
@@ -7937,17 +7853,7 @@
     <div id="login-container">
         <div class="card glass login-card">
             <div class="login-title">DIGITIVIA AI AGENT</div>
-<div class="login-title">DIGITIVIA AI AGENT</div>
 
-<div class="meta-badge meta-badge--login" aria-label="Meta Business Partner badge">
-  <img
-    src="https://i.ibb.co/1JjdZyr7/download-transparent.png"
-    alt="Meta Business Partner badge"
-    loading="eager"
-    decoding="async"
-    onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';"
-  />
-</div>
             <button class="social-btn google" onclick="performOAuthLogin('google')">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                     <path
@@ -7981,48 +7887,21 @@
         <div class="mobile-hamburger-btn" onclick="toggleMobileMenu()">☰</div>
         <img src="cropped-White.png" alt="Digitivia" class="mobile-logo-img">
         <div class="mobile-actions">
-            <div class="mobile-actions">
+            <!-- Mobile Badge -->
+            <a class="meta-partner-pill"
+                href="https://adsmanager.facebook.com/business/marketing-partners/campaign-management-agencies/?ref_marketingPartners_campaign_management="
+                target="_blank" rel="noopener noreferrer" aria-label="Meta Business Partner (Verified)">
+                <span class="meta-icon-wrap" aria-hidden="true">
+                    <img class="meta-icon" src="https://i.ibb.co/1JjdZyr7/download-transparent.png" alt="" width="22"
+                        height="22" loading="eager" decoding="async"
+                        onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';" />
+                </span>
 
-  <div class="meta-badge meta-badge--mobile" aria-label="Meta Business Partner badge">
-    <img
-      src="https://i.ibb.co/1JjdZyr7/download-transparent.png"
-      alt="Meta Business Partner badge"
-      loading="eager"
-      decoding="async"
-      onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';"
-    />
-  </div>
+                <span class="meta-text-full">Meta Business Partner</span>
+                <span class="meta-text-short">Meta Partner</span>
+                <span class="meta-text-mini">Verified</span>
+            </a>
 
-  <!-- existing buttons continue here (AR / user / etc) -->
-            <button class="top-bar-btn" onclick="openPricingModal()" title="Pricing">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
-                </svg>
-            </button>
-            <button class="top-bar-btn" onclick="openDocsModal()" title="Docs">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
-                </svg>
-            </button>
-            <button class="top-bar-btn" onclick="openHelpModal()" title="Help">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
-                </svg>
-            </button>
-            <div class="meta-badge meta-badge--topbar" aria-label="Meta Business Partner badge">
-  <img
-    src="https://i.ibb.co/1JjdZyr7/download-transparent.png"
-    alt="Meta Business Partner badge"
-    loading="eager"
-    decoding="async"
-    onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';"
-  />
-</div>
-
-<button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
             <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
                 <span id="mobile-lang-label">AR</span>
             </button>
@@ -8233,6 +8112,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Desktop Badge -->
+            <a class="meta-partner-pill"
+                href="https://adsmanager.facebook.com/business/marketing-partners/campaign-management-agencies/?ref_marketingPartners_campaign_management="
+                target="_blank" rel="noopener noreferrer" aria-label="Meta Business Partner (Verified)">
+                <span class="meta-icon-wrap" aria-hidden="true">
+                    <img class="meta-icon" src="https://i.ibb.co/1JjdZyr7/download-transparent.png" alt="" width="22"
+                        height="22" loading="eager" decoding="async"
+                        onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';" />
+                </span>
+
+                <span class="meta-text-full">Meta Business Partner</span>
+                <span class="meta-text-short">Meta Partner</span>
+                <span class="meta-text-mini">Verified</span>
+            </a>
+
             <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
                 <span id="lang-toggle-label">AR</span>
             </button>
