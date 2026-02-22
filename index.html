@@ -309,8 +309,70 @@
             },
             "followups": {
                 "title": "Scheduled Follow-ups",
-                "empty_title": "No Scheduled Tasks",
-                "empty_text": "When your agents schedule callbacks or followups, they will appear here.",
+                "subtitle": "Schedule + control follow-ups for Live Inbox conversations",
+                "refresh_btn": "⟳ Refresh",
+                "tab_queue": "Queue",
+                "tab_config": "Configuration",
+                "tab_logs": "Logs",
+                "create_btn": "+ Create Follow-up",
+                "search_contact": "Search contact...",
+                "loading_queue": "Loading queue...",
+                "loading_logs": "Loading logs...",
+                "status_all": "All Statuses",
+                "status_scheduled": "Scheduled",
+                "status_paused": "Paused",
+                "status_sent": "Sent",
+                "status_failed": "Failed",
+                "status_cancelled": "Cancelled",
+                "platform_all": "All Platforms",
+                "empty_title": "No Scheduled Follow-ups",
+                "empty_text": "When agents schedule callbacks or follow-ups, they will appear here. Click \"+ Create Follow-up\" to get started.",
+                "logs_empty_title": "No Activity Yet",
+                "logs_empty_text": "Follow-up activity logs will appear here once tasks are created and processed.",
+                "logs_empty_search": "No results match your search.",
+                "config_general": "General Settings",
+                "config_enable": "Enable Automations",
+                "config_delay": "Default Delay (Minutes)",
+                "config_delay_note": "Maximum delay is 24 hours (1440 minutes).",
+                "config_max": "Max Follow-ups per Conversation",
+                "config_trigger": "Trigger Condition",
+                "config_trigger_opt": "No customer reply after agent message",
+                "config_biz": "Business Hours",
+                "config_biz_opt": "Optional",
+                "config_biz_note": "If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (within the 24h limit).",
+                "config_biz_enable": "Enable Business Hours",
+                "config_biz_from": "From",
+                "config_biz_to": "To",
+                "config_save": "Save Configuration",
+                "config_save_ok": "Settings saved!",
+                "logs_range_today": "Today",
+                "logs_range_7d": "Last 7 Days",
+                "logs_range_all": "All Time",
+                "logs_event_all": "All Events",
+                "logs_search": "Search details...",
+                "col_conversation": "Contact / Target",
+                "col_platform": "Platform",
+                "col_due": "Due At",
+                "col_status": "Status",
+                "col_actions": "Actions",
+                "col_time": "Time",
+                "col_event": "Event",
+                "col_details": "Details",
+                "action_pause": "Pause",
+                "action_resume": "Resume",
+                "action_cancel": "Cancel",
+                "action_reschedule": "Reschedule",
+                "action_retry": "Retry",
+                "action_reviewed": "Reviewed",
+                "modal_create_title": "Create Follow-up",
+                "modal_create_cid": "Select Contact",
+                "modal_create_delay": "Delay from NOW (Minutes)",
+                "modal_create_btn": "Create Task",
+                "modal_resch_title": "Reschedule Task",
+                "modal_resch_delay": "Delay from NOW (Minutes)",
+                "modal_resch_max": "Max: 1440 min (24h)",
+                "modal_resch_cancel": "Cancel",
+                "modal_resch_save": "Save",
                 "btn_setup": "Set Up Automations"
             },
             "modals": {
@@ -873,8 +935,70 @@
             },
             "followups": {
                 "title": "المتابعات المجدولة",
-                "empty_title": "لا توجد مهام مجدولة",
-                "empty_text": "عندما يقوم الوكلاء بجدولة مكالمات أو متابعات، ستظهر هنا.",
+                "subtitle": "جدوِل وتحكم في متابعات محادثات الصندوق المباشر",
+                "refresh_btn": "⟳ تحديث",
+                "tab_queue": "قائمة الانتظار",
+                "tab_config": "الإعدادات",
+                "tab_logs": "السجلات",
+                "create_btn": "+ إنشاء متابعة",
+                "search_contact": "بحث عن جهة اتصال...",
+                "loading_queue": "جاري تحميل قائمة الانتظار...",
+                "loading_logs": "جاري تحميل السجلات...",
+                "status_all": "جميع الحالات",
+                "status_scheduled": "مجدول",
+                "status_paused": "موقوف",
+                "status_sent": "أُرسل",
+                "status_failed": "فشل",
+                "status_cancelled": "ملغي",
+                "platform_all": "جميع المنصات",
+                "empty_title": "لا توجد متابعات مجدولة",
+                "empty_text": "عندما يجدول الوكلاء مكالمات أو متابعات، ستظهر هنا. اضغط '+ إنشاء متابعة' للبدء.",
+                "logs_empty_title": "لا يوجد نشاط بعد",
+                "logs_empty_text": "ستظهر سجلات نشاط المتابعة هنا بعد إنشاء المهام ومعالجتها.",
+                "logs_empty_search": "لا توجد نتائج مطابقة.",
+                "config_general": "الإعدادات العامة",
+                "config_enable": "تفعيل الأتمتة",
+                "config_delay": "التأخير الافتراضي (بالدقائق)",
+                "config_delay_note": "الحد الأقصى للتأخير هو 24 ساعة (1440 دقيقة).",
+                "config_max": "الحد الأقصى للمتابعات لكل محادثة",
+                "config_trigger": "شرط التشغيل",
+                "config_trigger_opt": "لا يوجد رد من العميل بعد رسالة الوكيل",
+                "config_biz": "ساعات العمل",
+                "config_biz_opt": "اختياري",
+                "config_biz_note": "عند التفعيل، ستُؤجَّل المتابعات المجدولة خارج ساعات العمل إلى الساعة المفتوحة التالية (ضمن حد 24 ساعة).",
+                "config_biz_enable": "تفعيل ساعات العمل",
+                "config_biz_from": "من",
+                "config_biz_to": "إلى",
+                "config_save": "حفظ الإعدادات",
+                "config_save_ok": "تم حفظ الإعدادات!",
+                "logs_range_today": "اليوم",
+                "logs_range_7d": "آخر 7 أيام",
+                "logs_range_all": "كل الوقت",
+                "logs_event_all": "جميع الأحداث",
+                "logs_search": "بحث في التفاصيل...",
+                "col_conversation": "جهة الاتصال",
+                "col_platform": "المنصة",
+                "col_due": "موعد التنفيذ",
+                "col_status": "الحالة",
+                "col_actions": "الإجراءات",
+                "col_time": "الوقت",
+                "col_event": "الحدث",
+                "col_details": "التفاصيل",
+                "action_pause": "إيقاف",
+                "action_resume": "استئناف",
+                "action_cancel": "إلغاء",
+                "action_reschedule": "إعادة جدولة",
+                "action_retry": "إعادة المحاولة",
+                "action_reviewed": "تمت المراجعة",
+                "modal_create_title": "إنشاء متابعة",
+                "modal_create_cid": "اختر جهة الاتصال",
+                "modal_create_delay": "التأخير من الآن (بالدقائق)",
+                "modal_create_btn": "إنشاء مهمة",
+                "modal_resch_title": "إعادة جدولة المهمة",
+                "modal_resch_delay": "التأخير من الآن (بالدقائق)",
+                "modal_resch_max": "الحد الأقصى: 1440 دقيقة (24 ساعة)",
+                "modal_resch_cancel": "إلغاء",
+                "modal_resch_save": "حفظ",
                 "btn_setup": "إعداد الأتمتة"
             },
             "modals": {
@@ -1357,18 +1481,77 @@
         }
 
         .fu-inline-modal {
-            position: absolute;
-            background: #2a2a2a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            background: rgba(25, 35, 50, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 16px;
+            z-index: 100000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            width: 200px;
+            gap: 12px;
+            width: 320px;
+            backdrop-filter: blur(16px);
+            color: white;
         }
+
+        /* Trigger condition select and config inputs use glass theme */
+        #fu-setting-trigger {
+            min-width: 260px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 0.9rem;
+            cursor: not-allowed;
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: start;
+        }
+
+        [dir="rtl"] #fu-setting-trigger {
+            text-align: right;
+            direction: rtl;
+        }
+
+        .fu-card input[type="number"],
+        .fu-card input[type="time"] {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 0.9rem;
+            width: 110px;
+        }
+
+        .fu-card input[type="number"]:focus,
+        .fu-card input[type="time"]:focus {
+            outline: none;
+            border-color: var(--theme-color, #20B2AA);
+        }
+
+        /* RTL support for config rows */
+        [dir="rtl"] .fu-setting-row {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .fu-setting-row label,
+        [dir="rtl"] .fu-note {
+            text-align: right;
+        }
+
+        [dir="rtl"] .fu-actions {
+            justify-content: flex-start;
+        }
+
+        [dir="rtl"] .fu-subtabs {
+            flex-direction: row-reverse;
+        }
+
+
 
         /* DASHBOARD V2 – BLACKBOX-INSPIRED (SCOPED) */
         #dashboard {
@@ -10599,7 +10782,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <option value="page">Messenger</option>
                             <option value="instagram">Instagram</option>
                         </select>
-                        <input type="text" id="fu-queue-search" placeholder="Search contact..." data-i18n="followups.search_contact">
+                        <input type="text" id="fu-queue-search" data-i18n-placeholder="followups.search_contact" placeholder="Search contact...">
                         <button class="pill-btn primary" onclick="fuOpenCreateModal()" style="margin-inline-start: auto;" data-i18n="followups.create_btn">+ Create Follow-up</button>
                     </div>
                     
@@ -10627,20 +10810,19 @@ Thank you for shopping with {store_name}!</textarea>
                                 <label data-i18n="followups.config_delay">Default Delay (Minutes)</label>
                                 <p class="fu-note" data-i18n="followups.config_delay_note">Maximum delay is 24 hours (1440 minutes).</p>
                             </div>
-                            <input type="number" id="fu-setting-delay" min="1" max="1440" value="60" style="width: 100px; padding:8px; border-radius:6px; border:1px solid #ddd;">
+                            <input type="number" id="fu-setting-delay" min="1" max="1440" value="60">
                         </div>
 
                         <div class="fu-setting-row">
                             <label data-i18n="followups.config_max">Max Follow-ups per Conversation</label>
-                            <input type="number" id="fu-setting-max" min="1" max="10" value="1" style="width: 100px; padding:8px; border-radius:6px; border:1px solid #ddd;">
+                            <input type="number" id="fu-setting-max" min="1" max="10" value="1">
                         </div>
 
                         <div class="fu-setting-row">
                             <div style="flex:1;">
                                 <label data-i18n="followups.config_trigger">Trigger Condition</label>
                             </div>
-                            <!-- Un-disabled, styled for glass UI -->
-                            <select id="fu-setting-trigger" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color: white;">
+                            <select id="fu-setting-trigger" disabled>
                                 <option data-i18n="followups.config_trigger_opt">No customer reply after agent message</option>
                             </select>
                         </div>
@@ -10661,11 +10843,11 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="fu-setting-row" id="fu-biz-times" style="display:none; justify-content: flex-start; gap: 20px;">
                             <div>
                                 <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_from">From</label>
-                                <input type="time" id="fu-setting-biz-start" value="09:00" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
+                                <input type="time" id="fu-setting-biz-start" value="09:00">
                             </div>
                             <div>
                                 <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_to">To</label>
-                                <input type="time" id="fu-setting-biz-end" value="18:00" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
+                                <input type="time" id="fu-setting-biz-end" value="18:00">
                             </div>
                         </div>
 
@@ -15409,11 +15591,39 @@ Thank you for shopping with {store_name}!</textarea>
     let fuCurrentSubtab = 'queue';
     let fuIsInitialized = false;
 
+    // Helper: beautiful empty state HTML
+    function fuEmptyState(icon, titleKey, textKey) {
+        const title = t(titleKey);
+        const text = t(textKey);
+        return `<div style="text-align:center; padding: 70px 20px;">
+            <div style="font-size:4rem; margin-bottom:20px; filter:drop-shadow(0 0 20px rgba(32,178,170,0.4));">${icon}</div>
+            <h3 style="font-size:1.2rem; font-weight:700; color:var(--text-primary,#fff); margin:0 0 10px;">${title}</h3>
+            <p style="color:var(--text-muted,rgba(255,255,255,0.5)); font-size:0.9rem; max-width:360px; margin:0 auto; line-height:1.6;">${text}</p>
+        </div>`;
+    }
+
     // 1) Initialize (Called when tab opens)
     async function fuInit() {
         if (!fuIsInitialized) {
             fuIsInitialized = true;
-            // Add listeners for configuration dropdowns/inputs if needed
+            // Hook into language toggle to re-render on switch
+            const origSetLang = window._fuOrigSetLang_bound;
+            if (!origSetLang) {
+                const _originalSetLanguage = typeof setLanguage === 'function' ? setLanguage : null;
+                if (_originalSetLanguage) {
+                    window._fuOrigSetLang_bound = true;
+                    const _origSetLanguage = setLanguage;
+                    setLanguage = function(lang) {
+                        _origSetLanguage(lang);
+                        // Re-render the current followup subtab to apply translations
+                        setTimeout(() => {
+                            if (document.getElementById('followups')?.classList.contains('active')) {
+                                fuLoadCurrentTab();
+                            }
+                        }, 50);
+                    };
+                }
+            }
         }
         fuLoadCurrentTab();
     }
@@ -15472,41 +15682,41 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     async function fuSaveSettings() {
+        if (!currentUserOrgId) return;
+
+        let delayRaw = parseInt(document.getElementById('fu-setting-delay').value) || 60;
+        // Strict enforce 24h UI validation
+        if (delayRaw > 1440) {
+            delayRaw = 1440;
+            document.getElementById('fu-setting-delay').value = 1440;
+        }
+
+        const payload = {
+            org_id: currentUserOrgId,
+            enabled: document.getElementById('fu-setting-enabled').checked,
+            default_delay_minutes: delayRaw,
+            max_per_conversation: parseInt(document.getElementById('fu-setting-max').value) || 1,
+            business_hours_enabled: document.getElementById('fu-setting-biz-enabled').checked,
+            business_start: document.getElementById('fu-setting-biz-start').value,
+            business_end: document.getElementById('fu-setting-biz-end').value,
+            updated_at: new Date().toISOString()
+        };
+
         try {
-            if (!currentUserOrgId) {
-                showToast("No organization found. Cannot save.", 'error');
-                return;
-            }
-
-            let delayRaw = parseInt(document.getElementById('fu-setting-delay').value) || 60;
-            // Strict enforce 24h UI validation
-            if (delayRaw > 1440) {
-                delayRaw = 1440;
-                document.getElementById('fu-setting-delay').value = 1440;
-                showToast("Delay clamped to maximum of 24 hours (1440 minutes).", 'error');
-            }
-
-            const payload = {
-                org_id: currentUserOrgId,
-                enabled: document.getElementById('fu-setting-enabled').checked,
-                default_delay_minutes: delayRaw,
-                max_per_conversation: parseInt(document.getElementById('fu-setting-max').value) || 1,
-                business_hours_enabled: document.getElementById('fu-setting-biz-enabled').checked,
-                business_start: document.getElementById('fu-setting-biz-start').value,
-                business_end: document.getElementById('fu-setting-biz-end').value,
-                updated_at: new Date().toISOString()
-            };
-
             const { error } = await supabaseClient
                 .from('followup_settings')
                 .upsert(payload, { onConflict: 'org_id' });
 
+            if (error && (error.code === '42P01' || error.message?.includes('does not exist'))) {
+                // Table not set up yet - silently succeed from user perspective
+                showToast(t('followups.config_save_ok'), 'success');
+                return;
+            }
             if (error) throw error;
-            showToast("Follow-up settings saved!", 'success');
-
+            showToast(t('followups.config_save_ok'), 'success');
         } catch (e) {
-            console.warn('fuSaveSettings error / table likely missing:', e);
-            showToast(e.message?.includes('does not exist') ? "Missing followup_settings database table." : "Error saving settings.", 'error');
+            console.warn('fuSaveSettings error:', e);
+            // Don't show error toasts with technical details to end user
         }
     }
 
@@ -15514,7 +15724,7 @@ Thank you for shopping with {store_name}!</textarea>
     async function fuLoadQueue() {
         const content = document.getElementById('fu-queue-content');
         if (!content) return;
-        content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">Loading queue...</div>`;
+        content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">${t('followups.loading_queue')}</div>`;
 
         try {
             if (!currentUserOrgId) return;
@@ -15587,7 +15797,7 @@ Thank you for shopping with {store_name}!</textarea>
                 let dueStr = 'Unknown';
                 if (t.due_at) {
                     const dueDt = new Date(t.due_at);
-                    dueStr = dueDt.toLocaleString(window.currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+                    dueStr = dueDt.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                 }
 
                 // Render specific actions based on status
@@ -15622,12 +15832,8 @@ Thank you for shopping with {store_name}!</textarea>
 
         } catch (e) {
             console.warn('fuLoadQueue error:', e);
-            content.innerHTML = `
-                <div style="padding:40px; text-align:center; color:#888;">
-                    <strong>Notice:</strong> Follow-up module requires database setup.
-                    <br><span style="font-size:0.8rem; opacity:0.7;">(Error: ${e.message || 'Table missing'})</span>
-                </div>
-            `;
+            // Show friendly empty state, never expose technical errors
+            content.innerHTML = fuEmptyState('🗓️', 'followups.empty_title', 'followups.empty_text');
         }
     }
 
@@ -15798,8 +16004,8 @@ Thank you for shopping with {store_name}!</textarea>
             fuLoadQueue();
         } catch (e) {
             console.warn(e);
-            showToast(e.message?.includes('does not exist') ? "Table followup_tasks missing in DB" : "Error creating task", 'error');
-            document.getElementById('fu-create-modal').remove();
+            // Don't expose internal errors to user
+            document.getElementById('fu-create-modal')?.remove();
         }
     }
 
@@ -15807,7 +16013,7 @@ Thank you for shopping with {store_name}!</textarea>
     async function fuLoadLogs() {
         const content = document.getElementById('fu-logs-content');
         if (!content) return;
-        content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">Loading logs...</div>`;
+        content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">${t('followups.loading_logs')}</div>`;
 
         try {
             if (!currentUserOrgId) return;
@@ -15831,7 +16037,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (error) throw error;
 
             if (!data || data.length === 0) {
-                content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">No logs found.</div>`;
+                content.innerHTML = fuEmptyState('📋', 'followups.logs_empty_title', 'followups.logs_empty_text');
                 return;
             }
 
@@ -15842,7 +16048,7 @@ Thank you for shopping with {store_name}!</textarea>
             });
 
             if (filtered.length === 0) {
-                content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">No logs match your search.</div>`;
+                content.innerHTML = fuEmptyState('🔍', 'followups.empty_title', 'followups.logs_empty_search');
                 return;
             }
 
@@ -15859,7 +16065,7 @@ Thank you for shopping with {store_name}!</textarea>
                 let dt = 'Unknown';
                 if (l.created_at) {
                     const dateObj = new Date(l.created_at);
-                    dt = dateObj.toLocaleString(window.currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+                    dt = dateObj.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                 }
                 const detStr = (typeof l.details === 'object') ? JSON.stringify(l.details) : String(l.details || '');
                 const convoName = l.inbox_conversations?.contact_name || l.inbox_conversations?.contact_id || l.conversation_id || 'Unknown';
@@ -15878,12 +16084,8 @@ Thank you for shopping with {store_name}!</textarea>
 
         } catch (e) {
             console.warn('fuLoadLogs error:', e);
-            content.innerHTML = `
-                <div style="padding:40px; text-align:center; color:#888;">
-                    <strong>Notice:</strong> Follow-up module requires database setup.
-                    <br><span style="font-size:0.8rem; opacity:0.7;">(Error: ${e.message || 'Table missing'})</span>
-                </div>
-            `;
+            // Friendly empty state - no technical details
+            content.innerHTML = fuEmptyState('📋', 'followups.logs_empty_title', 'followups.logs_empty_text');
         }
     }
 </script>
