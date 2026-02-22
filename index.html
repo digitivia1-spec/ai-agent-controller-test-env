@@ -10573,49 +10573,49 @@ Thank you for shopping with {store_name}!</textarea>
                 <div class="fu-header">
                     <div>
                         <h2 data-i18n="followups.title">Follow-ups</h2>
-                        <p class="fu-subtitle">Schedule + control follow-ups for Live Inbox conversations</p>
+                        <p class="fu-subtitle" data-i18n="followups.subtitle">Schedule + control follow-ups for Live Inbox conversations</p>
                     </div>
-                    <button class="export-btn" onclick="fuLoadCurrentTab()">⟳ Refresh</button>
+                    <button class="export-btn" onclick="fuLoadCurrentTab()" data-i18n="followups.refresh_btn">⟳ Refresh</button>
                 </div>
 
                 <!-- Sub-tabs -->
                 <div class="fu-subtabs">
-                    <button class="fu-subtab active" onclick="fuSwitchSubtab('queue', this)">Queue</button>
-                    <button class="fu-subtab" onclick="fuSwitchSubtab('config', this)">Configuration</button>
-                    <button class="fu-subtab" onclick="fuSwitchSubtab('logs', this)">Logs</button>
+                    <button class="fu-subtab active" onclick="fuSwitchSubtab('queue', this)" data-i18n="followups.tab_queue">Queue</button>
+                    <button class="fu-subtab" onclick="fuSwitchSubtab('config', this)" data-i18n="followups.tab_config">Configuration</button>
+                    <button class="fu-subtab" onclick="fuSwitchSubtab('logs', this)" data-i18n="followups.tab_logs">Logs</button>
                 </div>
 
                 <!-- 1) Queue Panel -->
                 <div id="fu-queue-panel" class="fu-panel active">
                     <div class="fu-filters">
                         <select id="fu-queue-status">
-                            <option value="all">All Statuses</option>
-                            <option value="scheduled">Scheduled</option>
-                            <option value="paused">Paused</option>
+                            <option value="all" data-i18n="followups.status_all">All Statuses</option>
+                            <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
+                            <option value="paused" data-i18n="followups.status_paused">Paused</option>
                         </select>
                         <select id="fu-queue-platform">
-                            <option value="all">All Platforms</option>
+                            <option value="all" data-i18n="followups.platform_all">All Platforms</option>
                             <option value="whatsapp">WhatsApp</option>
                             <option value="page">Messenger</option>
                             <option value="instagram">Instagram</option>
                         </select>
-                        <input type="text" id="fu-queue-search" placeholder="Search contact...">
-                        <button class="pill-btn primary" onclick="fuOpenCreateModal()" style="margin-inline-start: auto;">+ Create Follow-up</button>
+                        <input type="text" id="fu-queue-search" placeholder="Search contact..." data-i18n="followups.search_contact">
+                        <button class="pill-btn primary" onclick="fuOpenCreateModal()" style="margin-inline-start: auto;" data-i18n="followups.create_btn">+ Create Follow-up</button>
                     </div>
                     
                     <div id="fu-queue-content">
                         <!-- Desktop Table / Mobile Cards rendered here -->
-                        <div style="padding:40px; text-align:center; color:#888;">Loading queue...</div>
+                        <div style="padding:40px; text-align:center; color:#888;" data-i18n="followups.loading_queue">Loading queue...</div>
                     </div>
                 </div>
 
                 <!-- 2) Configuration Panel -->
                 <div id="fu-config-panel" class="fu-panel">
                     <div class="card glass fu-card">
-                        <h3>General Settings</h3>
+                        <h3 data-i18n="followups.config_general">General Settings</h3>
                         
                         <div class="fu-setting-row">
-                            <label>Enable Automations</label>
+                            <label data-i18n="followups.config_enable">Enable Automations</label>
                             <label class="switch">
                                 <input type="checkbox" id="fu-setting-enabled">
                                 <span class="slider round"></span>
@@ -10624,33 +10624,34 @@ Thank you for shopping with {store_name}!</textarea>
 
                         <div class="fu-setting-row">
                             <div style="flex:1;">
-                                <label>Default Delay (Minutes)</label>
-                                <p class="fu-note">Maximum delay is 24 hours (1440 minutes).</p>
+                                <label data-i18n="followups.config_delay">Default Delay (Minutes)</label>
+                                <p class="fu-note" data-i18n="followups.config_delay_note">Maximum delay is 24 hours (1440 minutes).</p>
                             </div>
                             <input type="number" id="fu-setting-delay" min="1" max="1440" value="60" style="width: 100px; padding:8px; border-radius:6px; border:1px solid #ddd;">
                         </div>
 
                         <div class="fu-setting-row">
-                            <label>Max Follow-ups per Conversation</label>
+                            <label data-i18n="followups.config_max">Max Follow-ups per Conversation</label>
                             <input type="number" id="fu-setting-max" min="1" max="10" value="1" style="width: 100px; padding:8px; border-radius:6px; border:1px solid #ddd;">
                         </div>
 
                         <div class="fu-setting-row">
                             <div style="flex:1;">
-                                <label>Trigger Condition</label>
+                                <label data-i18n="followups.config_trigger">Trigger Condition</label>
                             </div>
-                            <select id="fu-setting-trigger" disabled style="padding:8px; border-radius:6px; border:1px solid #ddd; background:#f5f5f5;">
-                                <option>No customer reply after agent message</option>
+                            <!-- Un-disabled, styled for glass UI -->
+                            <select id="fu-setting-trigger" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color: white;">
+                                <option data-i18n="followups.config_trigger_opt">No customer reply after agent message</option>
                             </select>
                         </div>
                         
                         <hr style="border:0; border-top:1px solid rgba(0,0,0,0.1); margin: 20px 0;">
 
-                        <h3>Business Hours <span class="fu-badge">Optional</span></h3>
-                        <p class="fu-note">If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (but never exceeding the 24h absolute limit).</p>
+                        <h3><span data-i18n="followups.config_biz">Business Hours</span> <span class="fu-badge" data-i18n="followups.config_biz_opt">Optional</span></h3>
+                        <p class="fu-note" data-i18n="followups.config_biz_note">If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (but never exceeding the 24h absolute limit).</p>
 
                         <div class="fu-setting-row" style="margin-top: 15px;">
-                            <label>Enable Business Hours</label>
+                            <label data-i18n="followups.config_biz_enable">Enable Business Hours</label>
                             <label class="switch">
                                 <input type="checkbox" id="fu-setting-biz-enabled" onchange="document.getElementById('fu-biz-times').style.display=this.checked?'flex':'none'">
                                 <span class="slider round"></span>
@@ -10659,17 +10660,17 @@ Thank you for shopping with {store_name}!</textarea>
                         
                         <div class="fu-setting-row" id="fu-biz-times" style="display:none; justify-content: flex-start; gap: 20px;">
                             <div>
-                                <label style="display:block; font-size:12px; margin-bottom:4px;">From</label>
+                                <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_from">From</label>
                                 <input type="time" id="fu-setting-biz-start" value="09:00" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
                             </div>
                             <div>
-                                <label style="display:block; font-size:12px; margin-bottom:4px;">To</label>
+                                <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_to">To</label>
                                 <input type="time" id="fu-setting-biz-end" value="18:00" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
                             </div>
                         </div>
 
                         <div style="margin-top: 30px; text-align: end;">
-                            <button class="pill-btn primary" onclick="fuSaveSettings()">Save Configuration</button>
+                            <button class="pill-btn primary" onclick="fuSaveSettings()" data-i18n="followups.config_save">Save Configuration</button>
                         </div>
                     </div>
                 </div>
@@ -10678,18 +10679,18 @@ Thank you for shopping with {store_name}!</textarea>
                 <div id="fu-logs-panel" class="fu-panel">
                     <div class="fu-filters">
                         <select id="fu-logs-range">
-                            <option value="today">Today</option>
-                            <option value="7d">Last 7 Days</option>
-                            <option value="all">All Time</option>
+                            <option value="today" data-i18n="followups.logs_range_today">Today</option>
+                            <option value="7d" data-i18n="followups.logs_range_7d">Last 7 Days</option>
+                            <option value="all" data-i18n="followups.logs_range_all">All Time</option>
                         </select>
                         <select id="fu-logs-event">
-                            <option value="all">All Events</option>
-                            <option value="scheduled">Scheduled</option>
-                            <option value="sent">Sent</option>
-                            <option value="failed">Failed</option>
-                            <option value="cancelled">Cancelled</option>
+                            <option value="all" data-i18n="followups.logs_event_all">All Events</option>
+                            <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
+                            <option value="sent" data-i18n="followups.status_sent">Sent</option>
+                            <option value="failed" data-i18n="followups.status_failed">Failed</option>
+                            <option value="cancelled" data-i18n="followups.status_cancelled">Cancelled</option>
                         </select>
-                        <input type="text" id="fu-logs-search" placeholder="Search details...">
+                        <input type="text" id="fu-logs-search" placeholder="Search details..." data-i18n="followups.logs_search">
                     </div>
                     
                     <div id="fu-logs-content">
@@ -15569,11 +15570,11 @@ Thank you for shopping with {store_name}!</textarea>
             // Render Table Component / List
             let html = `<div class="fu-list header">
                 <div class="fu-row">
-                    <div>Conversation</div>
-                    <div>Platform</div>
-                    <div>Due At</div>
-                    <div>Status</div>
-                    <div style="text-align:end;">Actions</div>
+                    <div data-i18n="followups.col_conversation">Contact / Target</div>
+                    <div data-i18n="followups.col_platform">Platform</div>
+                    <div data-i18n="followups.col_due">Due At</div>
+                    <div data-i18n="followups.col_status">Status</div>
+                    <div style="text-align:end;" data-i18n="followups.col_actions">Actions</div>
                 </div>
             </div>`;
 
@@ -15592,16 +15593,16 @@ Thank you for shopping with {store_name}!</textarea>
                 // Render specific actions based on status
                 let actionsHtml = '';
                 if (t.status === 'scheduled') {
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'paused')">Pause</button>`;
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'cancelled')">Cancel</button>`;
-                    actionsHtml += `<button onclick="fuOpenReschedule('${t.id}')">Reschedule</button>`;
+                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'paused')" data-i18n="followups.action_pause">Pause</button>`;
+                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'cancelled')" data-i18n="followups.action_cancel">Cancel</button>`;
+                    actionsHtml += `<button onclick="fuOpenReschedule('${t.id}')" data-i18n="followups.action_reschedule">Reschedule</button>`;
                 } else if (t.status === 'paused') {
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'scheduled')">Resume</button>`;
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'cancelled')">Cancel</button>`;
+                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'scheduled')" data-i18n="followups.action_resume">Resume</button>`;
+                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'cancelled')" data-i18n="followups.action_cancel">Cancel</button>`;
                 } else if (t.status === 'failed') {
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'scheduled')">Retry</button>`;
+                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'scheduled')" data-i18n="followups.action_retry">Retry</button>`;
                 } else {
-                    actionsHtml += `<button disabled style="opacity:0.5; cursor:default;">Reviewed</button>`;
+                    actionsHtml += `<button disabled style="opacity:0.5; cursor:default;" data-i18n="followups.action_reviewed">Reviewed</button>`;
                 }
 
                 html += `
@@ -15609,7 +15610,7 @@ Thank you for shopping with {store_name}!</textarea>
                         <div style="font-weight:600;" class="truncate">${cName}</div>
                         <div style="text-transform:capitalize;">${plt}</div>
                         <div>${dueStr}</div>
-                        <div><span class="fu-status-pill fu-status-${t.status || 'unknown'}">${t.status || 'Unknown'}</span></div>
+                        <div><span class="fu-status-pill fu-status-${t.status || 'unknown'}" data-i18n="followups.status_${t.status}">${t.status || 'Unknown'}</span></div>
                         <div class="fu-actions">
                             ${actionsHtml}
                         </div>
@@ -15710,7 +15711,7 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     // 6) Create stub modal in Queue view
-    function fuOpenCreateModal() {
+    async function fuOpenCreateModal() {
         const existing = document.getElementById('fu-create-modal');
         if (existing) existing.remove();
 
@@ -15723,29 +15724,53 @@ Thank you for shopping with {store_name}!</textarea>
         m.style.position = 'fixed';
         m.style.width = '300px';
 
-        // Pre-fill a hardcoded dropdown for UI demo or grab from cached data if preferred.
-        // Easiest is to prompt for Minutes and a test CID just for the UI hook.
-
         m.innerHTML = `
-            <h4 style="margin:0 0 10px 0;">Create Manual Follow-up</h4>
-            <label style="font-size:12px;color:#aaa;">Conversation ID (or Contact ID)</label>
-            <input type="text" id="fu-create-cid" placeholder="Test_Conv_1" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
+            <h4 style="margin:0 0 10px 0;" data-i18n="followups.modal_create_title">Create Manual Follow-up</h4>
+            <label style="font-size:12px;color:#aaa;" data-i18n="followups.modal_create_cid">Select Contact History</label>
+            <select id="fu-create-cid" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.8); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
+                <option value="">Loading contacts...</option>
+            </select>
             
-            <label style="font-size:12px;color:#aaa;margin-top:10px;display:block;">Delay from NOW (Minutes)*</label>
-            <p style="font-size:11px; margin:0; color:#888;">Max: 1440 min (24h)</p>
+            <label style="font-size:12px;color:#aaa;margin-top:10px;display:block;" data-i18n="followups.modal_create_delay">Delay from NOW (Minutes)*</label>
+            <p style="font-size:11px; margin:0; color:#888;" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
             <input type="number" id="fu-create-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
             
             <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:15px;">
-                <button class="pill-btn" onclick="document.getElementById('fu-create-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);">Cancel</button>
-                <button class="pill-btn primary" onclick="fuCommitCreate()" style="padding:6px 12px;">Create Task</button>
+                <button class="pill-btn" onclick="document.getElementById('fu-create-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
+                <button class="pill-btn primary" onclick="fuCommitCreate()" style="padding:6px 12px;" data-i18n="followups.modal_create_btn">Create Task</button>
             </div>
         `;
         document.body.appendChild(m);
+
+        // Fetch recent conversations for selection
+        try {
+            const { data, error } = await supabaseClient.from('inbox_conversations').select('*').eq('org_id', currentUserOrgId).order('updated_at', { ascending: false }).limit(20);
+            const selectEl = document.getElementById('fu-create-cid');
+            if (error || !data || data.length === 0) {
+                selectEl.innerHTML = `<option value="">No recent contacts found</option>`;
+                return;
+            }
+            selectEl.innerHTML = data.map(c => {
+                const text = c.contact_name || c.contact_id || c.id;
+                return `<option value="${c.id}" data-plat="${c.platform}">${text} (${c.platform})</option>`;
+            }).join('');
+        } catch (e) {
+            console.warn(e);
+            document.getElementById('fu-create-cid').innerHTML = `<option value="">Error loading</option>`;
+        }
     }
 
     async function fuCommitCreate() {
         let mins = parseInt(document.getElementById('fu-create-mins').value) || 60;
-        let cid = document.getElementById('fu-create-cid').value || 'Test_Conv_1';
+        const selectEl = document.getElementById('fu-create-cid');
+        const cid = selectEl.value;
+        const opt = selectEl.options[selectEl.selectedIndex];
+        const platform = opt ? opt.getAttribute('data-plat') : 'website';
+
+        if (!cid) {
+            showToast("Please select a contact.", 'error');
+            return;
+        }
 
         // JS 24h MAX Validation
         if (mins > 1440) {
@@ -15759,7 +15784,7 @@ Thank you for shopping with {store_name}!</textarea>
             const payload = {
                 org_id: currentUserOrgId,
                 conversation_id: cid,
-                platform: 'website',
+                platform: platform,
                 triggered_at: new Date().toISOString(),
                 due_at: dueAt,
                 status: 'scheduled'
@@ -15790,7 +15815,13 @@ Thank you for shopping with {store_name}!</textarea>
             const eventFilter = document.getElementById('fu-logs-event').value;
             const searchRaw = (document.getElementById('fu-logs-search').value || '').toLowerCase();
 
-            let query = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
+            let query = supabaseClient.from('followup_logs').select(`
+                *,
+                inbox_conversations (
+                    contact_id,
+                    contact_name
+                )
+            `).eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
 
             if (eventFilter !== 'all') {
                 query = query.eq('event_type', eventFilter);
@@ -15817,10 +15848,10 @@ Thank you for shopping with {store_name}!</textarea>
 
             let html = `<div class="fu-list header">
                 <div class="fu-row" style="grid-template-columns: 1fr 1fr 2fr 3fr;">
-                    <div>Time</div>
-                    <div>Event</div>
-                    <div>Conversation ID</div>
-                    <div>Details</div>
+                    <div data-i18n="followups.col_time">Time</div>
+                    <div data-i18n="followups.col_event">Event</div>
+                    <div data-i18n="followups.col_conversation">Contact / Target</div>
+                    <div data-i18n="followups.col_details">Details</div>
                 </div>
             </div><div class="fu-list">`;
 
@@ -15831,12 +15862,13 @@ Thank you for shopping with {store_name}!</textarea>
                     dt = dateObj.toLocaleString(window.currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                 }
                 const detStr = (typeof l.details === 'object') ? JSON.stringify(l.details) : String(l.details || '');
+                const convoName = l.inbox_conversations?.contact_name || l.inbox_conversations?.contact_id || l.conversation_id || 'Unknown';
 
                 html += `
                     <div class="fu-row" style="grid-template-columns: 1fr 1fr 2fr 3fr;">
                         <div style="font-size:0.85rem; color:var(--text-muted);">${dt}</div>
-                        <div style="text-transform:capitalize; font-weight:600;">${l.event_type}</div>
-                        <div style="font-size:0.85rem; word-break:break-all;">${l.conversation_id}</div>
+                        <div style="text-transform:capitalize; font-weight:600;" data-i18n="followups.status_${l.event_type}">${l.event_type}</div>
+                        <div style="font-size:0.85rem; word-break:break-all;" class="truncate">${convoName}</div>
                         <div style="font-size:0.85rem; opacity:0.8;">${detStr}</div>
                     </div>
                 `;
