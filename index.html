@@ -326,10 +326,10 @@
                 "status_cancelled": "Cancelled",
                 "platform_all": "All Platforms",
                 "empty_title": "No Scheduled Follow-ups",
-                "empty_text": "When agents schedule callbacks or follow-ups, they will appear here. Click \"+ Create Follow-up\" to get started.",
-                "logs_empty_title": "No Activity Yet",
+                "empty_text": "When agents schedule follow-ups, they will appear here. Press '+ Create Follow-up' to start.",
+                "logs_empty_title": "No activity yet",
                 "logs_empty_text": "Follow-up activity logs will appear here once tasks are created and processed.",
-                "logs_empty_search": "No results match your search.",
+                "logs_empty_search": "No results matched your search.",
                 "config_general": "General Settings",
                 "config_enable": "Enable Automations",
                 "config_delay": "Default Delay (Minutes)",
@@ -339,20 +339,20 @@
                 "config_trigger_opt": "No customer reply after agent message",
                 "config_biz": "Business Hours",
                 "config_biz_opt": "Optional",
-                "config_biz_note": "If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (within the 24h limit).",
+                "config_biz_note": "If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (but never exceeding the 24h absolute limit).",
                 "config_biz_enable": "Enable Business Hours",
                 "config_biz_from": "From",
                 "config_biz_to": "To",
                 "config_save": "Save Configuration",
-                "config_save_ok": "Settings saved!",
+                "config_save_ok": "Configuration saved successfully!",
                 "logs_range_today": "Today",
                 "logs_range_7d": "Last 7 Days",
                 "logs_range_all": "All Time",
                 "logs_event_all": "All Events",
                 "logs_search": "Search details...",
-                "col_conversation": "Contact / Target",
+                "col_conversation": "Contact",
                 "col_platform": "Platform",
-                "col_due": "Due At",
+                "col_due": "Due date",
                 "col_status": "Status",
                 "col_actions": "Actions",
                 "col_time": "Time",
@@ -373,7 +373,31 @@
                 "modal_resch_max": "Max: 1440 min (24h)",
                 "modal_resch_cancel": "Cancel",
                 "modal_resch_save": "Save",
-                "btn_setup": "Set Up Automations"
+                "btn_setup": "Set Up Automations",
+                "config_message_template": "Message Template",
+                "config_message_template_note": "Define the follow-up message that will be sent to customers.",
+                "config_message": "Message Content (English)",
+                "config_message_ar": "Message Content (Arabic)",
+                "config_lang_en": "English",
+                "config_lang_ar": "Arabic",
+                "config_variable_hint": "Click to insert variable:",
+                "config_channels_title": "Channel Monitoring",
+                "config_channels_desc": "Select which channels the automation should monitor.",
+                "config_live_preview": "Live Preview",
+                "config_preview_platform": "Platform:",
+                "config_preview_just_now": "Just now",
+                "config_preview_type": "Type a message...",
+                "variable_customer_name": "Customer Name",
+                "variable_agent_name": "Agent Name",
+                "variable_business_name": "Business Name",
+                "toast_clamped_delay": "Delay clamped to maximum of 24h.",
+                "toast_task_rescheduled": "Task rescheduled successfully.",
+                "toast_error_rescheduling": "Error rescheduling task.",
+                "toast_select_contact": "Please select a contact.",
+                "toast_task_created": "Manual follow-up scheduled.",
+                "toast_error_creating": "Error creating follow-up task.",
+                "modal_create_no_contacts": "No recent contacts found.",
+                "modal_create_error_loading": "Error loading contacts."
             },
             "modals": {
                 "unlock": {
@@ -999,7 +1023,31 @@
                 "modal_resch_max": "الحد الأقصى: 1440 دقيقة (24 ساعة)",
                 "modal_resch_cancel": "إلغاء",
                 "modal_resch_save": "حفظ",
-                "btn_setup": "إعداد الأتمتة"
+                "btn_setup": "إعداد الأتمتة",
+                "config_message_template": "قالب الرسالة",
+                "config_message_template_note": "حدد رسالة المتابعة التي سيتم إرسالها للعملاء.",
+                "config_message": "محتوى الرسالة (الإنجليزية)",
+                "config_message_ar": "محتوى الرسالة (العربية)",
+                "config_lang_en": "الإنجليزية",
+                "config_lang_ar": "العربية",
+                "config_variable_hint": "انقر لإدراج متغير:",
+                "config_channels_title": "مراقبة القنوات",
+                "config_channels_desc": "اختر القنوات التي يجب أن تراقبها أتمتة المتابعة.",
+                "config_live_preview": "المعاينة الحية",
+                "config_preview_platform": "المنصة:",
+                "config_preview_just_now": "الآن",
+                "config_preview_type": "اكتب رسالة...",
+                "variable_customer_name": "اسم العميل",
+                "variable_agent_name": "اسم الوكيل",
+                "variable_business_name": "اسم الشركة",
+                "toast_clamped_delay": "تم تقييد التأخير بحد أقصى 24 ساعة.",
+                "toast_task_rescheduled": "تمت إعادة جدولة المهمة بنجاح.",
+                "toast_error_rescheduling": "خطأ في إعادة جدولة المهمة.",
+                "toast_select_contact": "يرجى اختيار جهة اتصال.",
+                "toast_task_created": "تمت جدولة المتابعة اليدوية.",
+                "toast_error_creating": "خطأ في إنشاء مهمة المتابعة.",
+                "modal_create_no_contacts": "لم يتم العثور على جهات اتصال حديثة.",
+                "modal_create_error_loading": "خطأ في تحميل جهات الاتصال."
             },
             "modals": {
                 "pricing": {
@@ -1269,37 +1317,45 @@
     </script>
 
     <style>
-        /* --- FOLLOW-UPS UI --- */
+        /* --- FOLLOW-UPS NEW UI --- */
         .fu-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .fu-subtitle {
             margin: 0;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            opacity: 0.8;
         }
 
         .fu-subtabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
-            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .fu-subtabs::-webkit-scrollbar {
+            display: none;
         }
 
         .fu-subtab {
             background: none;
             border: none;
             color: var(--text-muted);
-            padding: 8px 16px;
+            padding: 10px 20px;
             cursor: pointer;
             font-size: 0.95rem;
             position: relative;
+            white-space: nowrap;
+            transition: color 0.3s ease;
         }
 
         .fu-subtab.active {
@@ -1310,11 +1366,13 @@
         .fu-subtab.active::after {
             content: '';
             position: absolute;
-            bottom: -11px;
+            bottom: -5px;
             inset-inline-start: 0;
             width: 100%;
-            height: 2px;
+            height: 3px;
             background: var(--theme-color);
+            border-radius: 3px;
+            box-shadow: 0 0 10px var(--theme-color);
         }
 
         .fu-panel {
@@ -1323,78 +1381,399 @@
 
         .fu-panel.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .fu-filters {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .fu-filters select,
         .fu-filters input {
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
-            color: var(--text-color);
-            min-width: 150px;
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 0.9rem;
+            min-width: 140px;
+            transition: all 0.3s ease;
         }
 
-        .fu-card {
+        /* CONFIGURATION 2-COLUMN LAYOUT */
+        .fu-config-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .fu-config-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fu-config-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             padding: 24px;
         }
 
-        .fu-setting-row {
+        .fu-card-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .fu-note {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-
-        .fu-badge {
-            background: rgba(91, 174, 176, 0.2);
-            color: var(--theme-color);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            margin-inline-start: 10px;
-        }
-
-        /* Table / Card List */
-        .fu-list {
-            display: flex;
-            flex-direction: column;
             gap: 10px;
         }
 
-        .fu-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            align-items: center;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: start;
-            gap: 15px;
+        .fu-setting-group {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .fu-list.header .fu-row {
-            background: none;
-            border: none;
-            color: var(--text-muted);
+        .fu-setting-group:last-child {
+            border-bottom: none;
+        }
+
+        .fu-label {
+            display: block;
             font-weight: 600;
-            padding-bottom: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        /* Message Template Styling */
+        .fu-msg-editor {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .fu-lang-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .fu-lang-tab {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .fu-lang-tab.active {
+            background: rgba(32, 178, 170, 0.15);
+            border-color: var(--theme-color, #20B2AA);
+            color: var(--theme-color, #20B2AA);
+        }
+
+        .fu-msg-textarea {
+            width: 100%;
+            height: 120px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.95rem;
+            resize: none;
+            line-height: 1.5;
+            outline: none;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .fu-variables {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .fu-variable-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            font-size: 0.75rem;
+            color: var(--theme-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fu-variable-tag:hover {
+            background: rgba(91, 174, 176, 0.15);
+            border-style: solid;
+        }
+
+        /* Channel Selection */
+        .fu-channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        .fu-channel-check {
+            cursor: pointer;
+        }
+
+        .fu-channel-check input {
+            display: none;
+        }
+
+        .fu-channel-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s;
+            opacity: 0.5;
+            font-weight: 600;
+        }
+
+        .fu-channel-check input:checked+.fu-channel-pill {
+            opacity: 1;
+            background: rgba(91, 174, 176, 0.1);
+            border-color: var(--theme-color);
+            box-shadow: 0 4px 12px rgba(91, 174, 176, 0.2);
+        }
+
+        /* PREVIEW FRAME */
+        .fu-preview-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fu-preview-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            justify-content: center;
+        }
+
+        .fu-preview-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fu-preview-tab.active {
+            background: var(--theme-color);
+            color: #000;
+            border-color: var(--theme-color);
+        }
+
+        .fu-preview-screen {
+            padding: 24px;
+            background: #0b141a;
+            min-height: 280px;
+            position: relative;
+        }
+
+        /* Smartphone Frames (Abstracted) */
+        .fu-phone-frame {
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .fu-phone-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #1c2b33;
+        }
+
+        .fu-phone-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+        }
+
+        .fu-phone-meta {
+            flex: 1;
+        }
+
+        .fu-phone-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+        }
+
+        .fu-phone-status {
+            font-size: 0.7rem;
+            color: #8596a0;
+        }
+
+        .fu-phone-body {
+            padding: 20px 14px;
+            background-color: #0b141a;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+            background-repeat: repeat;
+            min-height: 180px;
+        }
+
+        .fu-msg-bubble {
+            background: #005c4b;
+            color: #e9edef;
+            padding: 10px 14px;
+            border-radius: 0 12px 12px 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 85%;
+            position: relative;
+            box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+        }
+
+        /* Platform variations */
+        .fu-prev-ig .fu-phone-header {
+            background: #000;
+            border-bottom: 1px solid #262626;
+        }
+
+        .fu-prev-ig .fu-phone-body {
+            background: #000;
+            background-image: none;
+        }
+
+        .fu-prev-ig .fu-phone-avatar {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .fu-prev-ig .fu-msg-bubble {
+            background: #262626;
+            border-radius: 20px;
+        }
+
+        .fu-prev-fb .fu-phone-header {
+            background: #242526;
+            border-bottom: 1px solid #3e4042;
+        }
+
+        .fu-prev-fb .fu-phone-body {
+            background: #18191a;
+            background-image: none;
+        }
+
+        .fu-prev-fb .fu-phone-avatar {
+            background: #0084FF;
+        }
+
+        .fu-prev-fb .fu-msg-bubble {
+            background: #3e4042;
+            border-radius: 18px;
+        }
+
+        .fu-msg-time {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            text-align: end;
+            margin-top: 4px;
+        }
+
+        /* TABLE DESIGN */
+        .fu-table-container {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .fu-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .fu-table th {
+            text-align: start;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .fu-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .fu-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .fu-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .fu-plat-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .fu-tag-whatsapp {
+            background: rgba(37, 211, 102, 0.1);
+            color: #25D366;
+        }
+
+        .fu-tag-instagram {
+            background: rgba(225, 48, 108, 0.1);
+            color: #E1306C;
+        }
+
+        .fu-tag-messenger {
+            background: rgba(24, 119, 242, 0.1);
+            color: #1877F2;
         }
 
         .fu-status-pill {
@@ -1402,156 +1781,215 @@
             border-radius: 12px;
             font-size: 0.8rem;
             font-weight: 500;
-            display: inline-block;
-            text-align: center;
         }
 
-        .fu-status-scheduled {
-            background: rgba(91, 174, 176, 0.2);
-            color: #5BAEB0;
+        .st-scheduled {
+            background: rgba(91, 174, 176, 0.15);
+            color: var(--theme-color);
         }
 
-        .fu-status-paused {
-            background: rgba(255, 193, 7, 0.2);
-            color: #FFC107;
-        }
-
-        .fu-status-sent {
-            background: rgba(76, 175, 80, 0.2);
+        .st-sent {
+            background: rgba(76, 175, 80, 0.15);
             color: #4CAF50;
         }
 
-        .fu-status-failed {
-            background: rgba(244, 67, 54, 0.2);
+        .st-failed {
+            background: rgba(244, 67, 54, 0.15);
             color: #F44336;
         }
 
-        .fu-status-cancelled {
-            background: rgba(158, 158, 158, 0.2);
-            color: #9E9E9E;
-        }
-
-        .fu-actions {
+        /* MODAL OVERLAY */
+        .fu-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
             display: flex;
-            gap: 8px;
-            justify-content: flex-end;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .fu-actions button {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            padding: 6px 12px;
-            border-radius: 6px;
+        .fu-modal-box {
+            background: #151b23;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            padding: 32px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+            animation: slideUp 0.3s ease;
+        }
+
+        /* TOGGLE SWITCH */
+        .fu-toggle {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .fu-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .fu-slider {
+            position: absolute;
             cursor: pointer;
-            font-size: 0.85rem;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .3s;
+            border-radius: 34px;
         }
 
-        .fu-actions button:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .fu-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
         }
 
-        /* Responsive Layouts */
+        input:checked+.fu-slider {
+            background-color: var(--theme-color);
+        }
+
+        input:checked+.fu-slider:before {
+            transform: translateX(22px);
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .fu-list.header {
+            .fu-modal-box {
+                padding: 24px;
+            }
+
+            .fu-table th:nth-child(2),
+            .fu-table td:nth-child(2) {
                 display: none;
             }
-
-            .fu-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .fu-actions {
-                justify-content: flex-start;
-                margin-top: 10px;
-            }
-
-            .fu-setting-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .fu-setting-row input,
-            .fu-setting-row select {
-                width: 100% !important;
-                /* overrides inline styles on mobile */
-            }
         }
 
-        .fu-inline-modal {
-            position: fixed;
-            background: rgba(25, 35, 50, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 16px;
-            z-index: 100000;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 320px;
-            backdrop-filter: blur(16px);
-            color: white;
+        [dir="rtl"] .fu-lang-tabs,
+        [dir="rtl"] .fu-variables {
+            flex-direction: row-reverse;
         }
 
-        /* Trigger condition select and config inputs use glass theme */
-        #fu-setting-trigger {
-            min-width: 260px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-            font-size: 0.9rem;
-            cursor: not-allowed;
-            appearance: none;
-            -webkit-appearance: none;
-            text-align: start;
-        }
-
-        [dir="rtl"] #fu-setting-trigger {
-            text-align: right;
+        [dir="rtl"] .fu-msg-textarea {
             direction: rtl;
         }
 
-        .fu-card input[type="number"],
-        .fu-card input[type="time"] {
-            padding: 10px 12px;
-            border-radius: 8px;
+        [dir="rtl"] .fu-msg-bubble {
+            border-radius: 12px 0 12px 12px;
+            margin-inline-start: 15%;
+            align-self: flex-end;
+        }
+
+        [dir="rtl"] .fu-msg-time {
+            text-align: start;
+        }
+
+
+        .fu-modal-input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: rgba(255, 255, 255, 0.06);
             color: white;
             font-size: 0.9rem;
-            width: 110px;
+            box-sizing: border-box;
         }
 
-        .fu-card input[type="number"]:focus,
-        .fu-card input[type="time"]:focus {
+        .fu-modal-input:focus {
             outline: none;
             border-color: var(--theme-color, #20B2AA);
         }
 
-        /* RTL support for config rows */
-        [dir="rtl"] .fu-setting-row {
-            flex-direction: row-reverse;
+        .fu-modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 4px;
         }
 
-        [dir="rtl"] .fu-setting-row label,
-        [dir="rtl"] .fu-note {
-            text-align: right;
+        /* ─── Preview container in right config ──────────────────── */
+        .fu-preview-container {
+            margin-top: 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        [dir="rtl"] .fu-actions {
-            justify-content: flex-start;
+        .fu-preview-meta {
+            flex: 1;
+            min-width: 0;
         }
 
-        [dir="rtl"] .fu-subtabs {
-            flex-direction: row-reverse;
+        .fu-preview-name {
+            font-weight: 700;
+            font-size: 0.88rem;
         }
 
+        .fu-preview-time {
+            font-size: 0.72rem;
+            opacity: 0.55;
+        }
 
+        .fu-preview-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--theme-color, #14b8a6);
+            flex-shrink: 0;
+        }
+
+        .fu-preview-bubble {
+            padding: 14px 16px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            background: rgba(20, 184, 166, 0.07);
+            color: rgba(255, 255, 255, 0.85);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            word-break: break-word;
+        }
+
+        #fu-setting-message {
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 6px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 90px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        #fu-setting-message:focus {
+            outline: none;
+            border-color: var(--theme-color, #14b8a6);
+        }
+
+        .fu-config-right .fu-setting-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
 
         /* DASHBOARD V2 – BLACKBOX-INSPIRED (SCOPED) */
         #dashboard {
@@ -10758,7 +11196,9 @@ Thank you for shopping with {store_name}!</textarea>
                         <h2 data-i18n="followups.title">Follow-ups</h2>
                         <p class="fu-subtitle" data-i18n="followups.subtitle">Schedule + control follow-ups for Live Inbox conversations</p>
                     </div>
-                    <button class="export-btn" onclick="fuLoadCurrentTab()" data-i18n="followups.refresh_btn">⟳ Refresh</button>
+                    <button class="pill-btn primary" onclick="fuLoadCurrentTab()">
+                        <span data-i18n="followups.refresh_btn">⟳ Refresh</span>
+                    </button>
                 </div>
 
                 <!-- Sub-tabs -->
@@ -10771,88 +11211,166 @@ Thank you for shopping with {store_name}!</textarea>
                 <!-- 1) Queue Panel -->
                 <div id="fu-queue-panel" class="fu-panel active">
                     <div class="fu-filters">
-                        <select id="fu-queue-status">
+                        <select id="fu-queue-status" onchange="fuLoadQueue()">
                             <option value="all" data-i18n="followups.status_all">All Statuses</option>
                             <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
-                            <option value="paused" data-i18n="followups.status_paused">Paused</option>
+                            <option value="sent" data-i18n="followups.status_sent">Sent</option>
+                            <option value="failed" data-i18n="followups.status_failed">Failed</option>
                         </select>
-                        <select id="fu-queue-platform">
+                        <select id="fu-queue-platform" onchange="fuLoadQueue()">
                             <option value="all" data-i18n="followups.platform_all">All Platforms</option>
                             <option value="whatsapp">WhatsApp</option>
                             <option value="page">Messenger</option>
                             <option value="instagram">Instagram</option>
                         </select>
-                        <input type="text" id="fu-queue-search" data-i18n-placeholder="followups.search_contact" placeholder="Search contact...">
+                        <input type="text" id="fu-queue-search" oninput="fuLoadQueue()" data-i18n-placeholder="followups.search_contact" placeholder="Search contact...">
                         <button class="pill-btn primary" onclick="fuOpenCreateModal()" style="margin-inline-start: auto;" data-i18n="followups.create_btn">+ Create Follow-up</button>
                     </div>
                     
                     <div id="fu-queue-content">
-                        <!-- Desktop Table / Mobile Cards rendered here -->
-                        <div style="padding:40px; text-align:center; color:#888;" data-i18n="followups.loading_queue">Loading queue...</div>
+                        <div style="padding:100px 40px; text-align:center; opacity:0.5;">
+                            <div class="spinner" style="margin:0 auto 20px;"></div>
+                            <p data-i18n="followups.loading_queue">Loading queue...</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 2) Configuration Panel -->
                 <div id="fu-config-panel" class="fu-panel">
-                    <div class="card glass fu-card">
-                        <h3 data-i18n="followups.config_general">General Settings</h3>
-                        
-                        <div class="fu-setting-row">
-                            <label data-i18n="followups.config_enable">Enable Automations</label>
-                            <label class="switch">
-                                <input type="checkbox" id="fu-setting-enabled">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
+                    <div class="fu-config-layout">
+                        <!-- LEFT: SETTINGS -->
+                        <div class="fu-config-col">
+                            <div class="fu-config-card">
+                                <div class="fu-card-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--theme-color)"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32 c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84 c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.68,4.82,12c0,0.32,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                                    <span data-i18n="followups.config_general">General Settings</span>
+                                </div>
 
-                        <div class="fu-setting-row">
-                            <div style="flex:1;">
-                                <label data-i18n="followups.config_delay">Default Delay (Minutes)</label>
-                                <p class="fu-note" data-i18n="followups.config_delay_note">Maximum delay is 24 hours (1440 minutes).</p>
+                                <div class="fu-setting-group">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <span class="fu-label" data-i18n="followups.config_enable">Enable Automations</span>
+                                            <p class="fu-note" data-i18n="followups.config_delay_note">System will monitor and schedule follow-ups</p>
+                                        </div>
+                                        <label class="fu-toggle">
+                                            <input type="checkbox" id="fu-setting-enabled">
+                                            <span class="fu-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="fu-setting-group">
+                                    <span class="fu-label" data-i18n="followups.config_message_template">Message Template</span>
+                                    <p class="fu-note" style="margin-bottom:12px;" data-i18n="followups.config_message_template_note">Customize what gets sent to consumers</p>
+                                    
+                                    <div class="fu-msg-editor">
+                                        <div class="fu-lang-tabs">
+                                            <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en">English</button>
+                                            <button class="fu-lang-tab" id="fu-ltab-ar" onclick="fuSwitchMsgLang('ar')" data-i18n="followups.config_lang_ar">Arabic</button>
+                                        </div>
+                                        
+                                        <textarea id="fu-setting-message" class="fu-msg-textarea" oninput="fuUpdatePreview()" placeholder="Enter message..."></textarea>
+                                        <textarea id="fu-setting-message-ar" class="fu-msg-textarea" style="display:none;" oninput="fuUpdatePreview()" placeholder="اكتب الرسالة هنا..." dir="rtl"></textarea>
+                                        
+                                        <div class="fu-variables">
+                                            <span class="fu-variable-tag" onclick="fuInsertVariable('{name}')">{name}</span>
+                                            <span class="fu-variable-tag" onclick="fuInsertVariable('{agent_name}')">{agent_name}</span>
+                                            <span class="fu-variable-tag" onclick="fuInsertVariable('{business_name}')">{business_name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="fu-setting-group">
+                                    <span class="fu-label" data-i18n="followups.config_channels_title">Channel Monitoring</span>
+                                    <p class="fu-note" style="margin-bottom:12px;" data-i18n="followups.config_channels_desc">Which platforms should follow-up auto-trigger on?</p>
+                                    
+                                    <div class="fu-channels-grid">
+                                        <label class="fu-channel-check">
+                                            <input type="checkbox" id="fu-ch-whatsapp" checked>
+                                            <div class="fu-channel-pill whatsapp">
+                                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.069-.543c.961.527 1.91.806 3.22.806 3.181 0 5.767-2.586 5.768-5.767 0-3.18-2.586-5.765-5.769-5.765zm3.425 8.121c-.131.369-.747.671-1.029.715-.282.043-.564.07-.847-.013-.284-.083-.733-.243-1.631-.641-1.464-.648-2.42-2.147-2.493-2.245-.073-.098-.593-.787-.593-1.464 0-.678.354-1.012.479-1.144.125-.132.274-.165.365-.165s.182.001.26.002c.084.001.196-.032.307.236.111.268.384.939.418 1.006.035.068.058.147.012.239-.046.094-.069.151-.139.231-.07.081-.147.18-.21.24-.07.068-.142.141-.061.282.081.14.359.593.771.959.53.473.978.618 1.116.685.138.067.218.056.299-.037.081-.094.346-.402.438-.539.091-.137.183-.114.307-.069s.785.369.919.437c.134.067.224.101.258.157.034.056.034.323-.097.692z"/></svg>
+                                                <span>WhatsApp</span>
+                                            </div>
+                                        </label>
+                                        <label class="fu-channel-check">
+                                            <input type="checkbox" id="fu-ch-instagram" checked>
+                                            <div class="fu-channel-pill instagram">
+                                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                                <span>Instagram</span>
+                                            </div>
+                                        </label>
+                                        <label class="fu-channel-check">
+                                            <input type="checkbox" id="fu-ch-page" checked>
+                                            <div class="fu-channel-pill messenger">
+                                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2c5.523 0 10 4.105 10 9.168 0 2.87-1.439 5.432-3.692 7.135.244.75 1.052 2.6 1.052 2.6-.75-.052-2.316-.6-3.368-1.105C14.93 20.105 13.5 20.337 12 20.337c-5.523 0-10-4.105-10-9.169S6.477 2 12 2zm1.684 11.526l-2.053-2.21-4.105 2.21 4.526-4.842 2.105 2.21 4-2.21-4.473 4.842z"/></svg>
+                                                <span>Messenger</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button class="pill-btn primary" style="width:100%; height:48px;" onclick="fuSaveSettings()" data-i18n="followups.config_save">Save Configuration</button>
                             </div>
-                            <input type="number" id="fu-setting-delay" min="1" max="1440" value="60">
                         </div>
 
-                        <div class="fu-setting-row">
-                            <label data-i18n="followups.config_max">Max Follow-ups per Conversation</label>
-                            <input type="number" id="fu-setting-max" min="1" max="10" value="1">
-                        </div>
+                        <!-- RIGHT: PREVIEW -->
+                        <div class="fu-config-col">
+                            <div class="fu-preview-card">
+                                <div class="fu-preview-tabs">
+                                    <button class="fu-preview-tab active" id="fu-ptab-wa" onclick="fuSwitchPreview('wa')">WhatsApp</button>
+                                    <button class="fu-preview-tab" id="fu-ptab-ig" onclick="fuSwitchPreview('ig')">Instagram</button>
+                                    <button class="fu-preview-tab" id="fu-ptab-fb" onclick="fuSwitchPreview('fb')">Messenger</button>
+                                </div>
 
-                        <div class="fu-setting-row">
-                            <div style="flex:1;">
-                                <label data-i18n="followups.config_trigger">Trigger Condition</label>
+                                <div class="fu-preview-screen">
+                                    <div id="fu-prev-wa" class="fu-phone-frame fu-prev-platform active">
+                                        <div class="fu-phone-header" style="background: #1c2b33;">
+                                            <div class="fu-phone-avatar">JD</div>
+                                            <div class="fu-phone-meta">
+                                                <span class="fu-phone-name">John Doe</span>
+                                                <span class="fu-phone-status">online</span>
+                                            </div>
+                                        </div>
+                                        <div class="fu-phone-body">
+                                            <div class="fu-msg-bubble">
+                                                <div id="fu-prev-msg-wa">Preview message here...</div>
+                                                <div class="fu-msg-time" data-i18n="followups.config_preview_just_now">Just now</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="fu-prev-ig" class="fu-phone-frame fu-prev-platform" style="display:none;">
+                                        <div class="fu-phone-header">
+                                            <div class="fu-phone-avatar">JD</div>
+                                            <div class="fu-phone-meta">
+                                                <span class="fu-phone-name">johndoe_official</span>
+                                                <span class="fu-phone-status">Active now</span>
+                                            </div>
+                                        </div>
+                                        <div class="fu-phone-body">
+                                            <div class="fu-msg-bubble">
+                                                <div id="fu-prev-msg-ig">Preview message here...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="fu-prev-fb" class="fu-phone-frame fu-prev-platform" style="display:none;">
+                                        <div class="fu-phone-header">
+                                            <div class="fu-phone-avatar">JD</div>
+                                            <div class="fu-phone-meta">
+                                                <span class="fu-phone-name">John Doe</span>
+                                                <span class="fu-phone-status">Active</span>
+                                            </div>
+                                        </div>
+                                        <div class="fu-phone-body">
+                                            <div class="fu-msg-bubble">
+                                                <div id="fu-prev-msg-fb">Preview message here...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="fu-preview-note">Visual preview simulates app interface appearance</p>
                             </div>
-                            <select id="fu-setting-trigger" disabled>
-                                <option data-i18n="followups.config_trigger_opt">No customer reply after agent message</option>
-                            </select>
-                        </div>
-                        
-                        <hr style="border:0; border-top:1px solid rgba(0,0,0,0.1); margin: 20px 0;">
-
-                        <h3><span data-i18n="followups.config_biz">Business Hours</span> <span class="fu-badge" data-i18n="followups.config_biz_opt">Optional</span></h3>
-                        <p class="fu-note" data-i18n="followups.config_biz_note">If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (but never exceeding the 24h absolute limit).</p>
-
-                        <div class="fu-setting-row" style="margin-top: 15px;">
-                            <label data-i18n="followups.config_biz_enable">Enable Business Hours</label>
-                            <label class="switch">
-                                <input type="checkbox" id="fu-setting-biz-enabled" onchange="document.getElementById('fu-biz-times').style.display=this.checked?'flex':'none'">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="fu-setting-row" id="fu-biz-times" style="display:none; justify-content: flex-start; gap: 20px;">
-                            <div>
-                                <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_from">From</label>
-                                <input type="time" id="fu-setting-biz-start" value="09:00">
-                            </div>
-                            <div>
-                                <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_to">To</label>
-                                <input type="time" id="fu-setting-biz-end" value="18:00">
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 30px; text-align: end;">
-                            <button class="pill-btn primary" onclick="fuSaveSettings()" data-i18n="followups.config_save">Save Configuration</button>
                         </div>
                     </div>
                 </div>
@@ -10860,23 +11378,25 @@ Thank you for shopping with {store_name}!</textarea>
                 <!-- 3) Logs Panel -->
                 <div id="fu-logs-panel" class="fu-panel">
                     <div class="fu-filters">
-                        <select id="fu-logs-range">
+                        <select id="fu-logs-range" onchange="fuLoadLogs()">
                             <option value="today" data-i18n="followups.logs_range_today">Today</option>
                             <option value="7d" data-i18n="followups.logs_range_7d">Last 7 Days</option>
                             <option value="all" data-i18n="followups.logs_range_all">All Time</option>
                         </select>
-                        <select id="fu-logs-event">
+                        <select id="fu-logs-event" onchange="fuLoadLogs()">
                             <option value="all" data-i18n="followups.logs_event_all">All Events</option>
                             <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
                             <option value="sent" data-i18n="followups.status_sent">Sent</option>
                             <option value="failed" data-i18n="followups.status_failed">Failed</option>
-                            <option value="cancelled" data-i18n="followups.status_cancelled">Cancelled</option>
                         </select>
-                        <input type="text" id="fu-logs-search" placeholder="Search details..." data-i18n="followups.logs_search">
+                        <input type="text" id="fu-logs-search" oninput="fuLoadLogs()" placeholder="Search details..." data-i18n="followups.logs_search">
                     </div>
                     
                     <div id="fu-logs-content">
-                        <div style="padding:40px; text-align:center; color:#888;">Loading logs...</div>
+                        <div style="padding:100px 40px; text-align:center; opacity:0.5;">
+                            <div class="spinner" style="margin:0 auto 20px;"></div>
+                            <p data-i18n="followups.loading_logs">Loading logs...</p>
+                        </div>
                     </div>
                 </div>
             </div>`;
@@ -10920,7 +11440,7 @@ Thank you for shopping with {store_name}!</textarea>
             }
             if (tabId === 'reviews') color = '#FFD700'; // Gold for reviews
             if (tabId === 'followups') {
-                color = '#20B2AA'; // SeaGreen for followups
+                color = '#14b8a6'; // Balanced Teal for followups
                 if (typeof fuInit === 'function') fuInit();
             }
             if (tabId === 'create-post') {
@@ -10994,7 +11514,7 @@ Thank you for shopping with {store_name}!</textarea>
             lockBtn.style.display = 'none';
 
             // 3. Show Warning Banner
-            const warningBanner = document.getElementById(`warning-${agentToUnlock}`);
+            const warningBanner = document.getElementById(`warning-${agentId}`);
             warningBanner.classList.add('show');
 
             // 4. Focus
@@ -15580,7 +16100,6 @@ Thank you for shopping with {store_name}!</textarea>
             });
             systemNotif.onclick = () => window.focus();
         }
-
         notificationSound.play().catch(e => console.error(e));
         updateNotificationUI();
     }
@@ -15590,6 +16109,7 @@ Thank you for shopping with {store_name}!</textarea>
     // ==========================================
     let fuCurrentSubtab = 'queue';
     let fuIsInitialized = false;
+    let fuConversationCache = {}; // Cache for conversation details
 
     // Helper: beautiful empty state HTML
     function fuEmptyState(icon, titleKey, textKey) {
@@ -15613,7 +16133,7 @@ Thank you for shopping with {store_name}!</textarea>
                 if (_originalSetLanguage) {
                     window._fuOrigSetLang_bound = true;
                     const _origSetLanguage = setLanguage;
-                    setLanguage = function(lang) {
+                    setLanguage = function (lang) {
                         _origSetLanguage(lang);
                         // Re-render the current followup subtab to apply translations
                         setTimeout(() => {
@@ -15665,16 +16185,25 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             if (data) {
-                document.getElementById('fu-setting-enabled').checked = !!data.enabled;
-                // clamp UI to max 1440
-                document.getElementById('fu-setting-delay').value = Math.min(parseInt(data.default_delay_minutes || 60), 1440);
-                document.getElementById('fu-setting-max').value = data.max_per_conversation || 1;
+                if (document.getElementById('fu-setting-enabled'))
+                    document.getElementById('fu-setting-enabled').checked = !!data.enabled;
+                if (document.getElementById('fu-setting-delay'))
+                    document.getElementById('fu-setting-delay').value = Math.min(parseInt(data.default_delay_minutes || 60), 1440);
+                if (document.getElementById('fu-setting-max'))
+                    document.getElementById('fu-setting-max').value = data.max_per_conversation || 1;
 
-                const bizEnabled = !!data.business_hours_enabled;
-                document.getElementById('fu-setting-biz-enabled').checked = bizEnabled;
-                document.getElementById('fu-biz-times').style.display = bizEnabled ? 'flex' : 'none';
-                if (data.business_start) document.getElementById('fu-setting-biz-start').value = data.business_start;
-                if (data.business_end) document.getElementById('fu-setting-biz-end').value = data.business_end;
+                if (data.followup_message && document.getElementById('fu-setting-message'))
+                    document.getElementById('fu-setting-message').value = data.followup_message;
+                if (data.followup_message_ar && document.getElementById('fu-setting-message-ar'))
+                    document.getElementById('fu-setting-message-ar').value = data.followup_message_ar;
+
+                const channels = data.active_channels || ['whatsapp', 'instagram', 'page'];
+                ['whatsapp', 'instagram', 'page'].forEach(ch => {
+                    const el = document.getElementById(`fu-ch-${ch}`);
+                    if (el) el.checked = channels.includes(ch);
+                });
+
+                fuUpdatePreview();
             }
         } catch (e) {
             console.warn('fuLoadSettings error:', e);
@@ -15684,21 +16213,22 @@ Thank you for shopping with {store_name}!</textarea>
     async function fuSaveSettings() {
         if (!currentUserOrgId) return;
 
-        let delayRaw = parseInt(document.getElementById('fu-setting-delay').value) || 60;
-        // Strict enforce 24h UI validation
+        let delayRaw = parseInt(document.getElementById('fu-setting-delay')?.value) || 60;
         if (delayRaw > 1440) {
             delayRaw = 1440;
             document.getElementById('fu-setting-delay').value = 1440;
         }
 
+        const activeChannels = ['whatsapp', 'instagram', 'page'].filter(ch => document.getElementById(`fu-ch-${ch}`)?.checked);
+
         const payload = {
             org_id: currentUserOrgId,
-            enabled: document.getElementById('fu-setting-enabled').checked,
+            enabled: document.getElementById('fu-setting-enabled')?.checked,
             default_delay_minutes: delayRaw,
-            max_per_conversation: parseInt(document.getElementById('fu-setting-max').value) || 1,
-            business_hours_enabled: document.getElementById('fu-setting-biz-enabled').checked,
-            business_start: document.getElementById('fu-setting-biz-start').value,
-            business_end: document.getElementById('fu-setting-biz-end').value,
+            max_per_conversation: parseInt(document.getElementById('fu-setting-max')?.value) || 1,
+            followup_message: document.getElementById('fu-setting-message')?.value || '',
+            followup_message_ar: document.getElementById('fu-setting-message-ar')?.value || '',
+            active_channels: activeChannels,
             updated_at: new Date().toISOString()
         };
 
@@ -15708,7 +16238,6 @@ Thank you for shopping with {store_name}!</textarea>
                 .upsert(payload, { onConflict: 'org_id' });
 
             if (error && (error.code === '42P01' || error.message?.includes('does not exist'))) {
-                // Table not set up yet - silently succeed from user perspective
                 showToast(t('followups.config_save_ok'), 'success');
                 return;
             }
@@ -15716,8 +16245,87 @@ Thank you for shopping with {store_name}!</textarea>
             showToast(t('followups.config_save_ok'), 'success');
         } catch (e) {
             console.warn('fuSaveSettings error:', e);
-            // Don't show error toasts with technical details to end user
         }
+    }
+
+    // Helper to fetch conversation details
+    async function fuGetConversationDetails(conversationId) {
+        if (fuConversationCache[conversationId]) {
+            return fuConversationCache[conversationId];
+        }
+        try {
+            const { data, error } = await supabaseClient
+                .from('inbox_conversations')
+                .select('contact_id, contact_name, platform')
+                .eq('id', conversationId)
+                .single();
+            if (error) throw error;
+            fuConversationCache[conversationId] = data;
+            return data;
+        } catch (e) {
+            console.warn(`Error fetching conversation ${conversationId}:`, e);
+            return null;
+        }
+    }
+
+    // --- PREVIEW & TEMPLATE LOGIC ---
+    let fuCurrentMsgLang = 'en';
+    let fuCurrentPreviewPlatform = 'wa';
+
+    function fuSwitchMsgLang(lang) {
+        fuCurrentMsgLang = lang;
+        document.querySelectorAll('.fu-lang-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ltab-${lang}`)?.classList.add('active');
+
+        if (lang === 'en') {
+            document.getElementById('fu-setting-message').style.display = 'block';
+            document.getElementById('fu-setting-message-ar').style.display = 'none';
+        } else {
+            document.getElementById('fu-setting-message').style.display = 'none';
+            document.getElementById('fu-setting-message-ar').style.display = 'block';
+        }
+        fuUpdatePreview();
+    }
+
+    function fuSwitchPreview(plt) {
+        fuCurrentPreviewPlatform = plt;
+        document.querySelectorAll('.fu-preview-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ptab-${plt}`)?.classList.add('active');
+        
+        document.querySelectorAll('.fu-prev-platform').forEach(p => p.style.display = 'none');
+        document.getElementById(`fu-prev-${plt}`).style.display = 'flex';
+        fuUpdatePreview();
+    }
+
+    function fuInsertVariable(v) {
+        const textarea = fuCurrentMsgLang === 'en' ? document.getElementById('fu-setting-message') : document.getElementById('fu-setting-message-ar');
+        if (!textarea) return;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        textarea.value = text.substring(0, start) + v + text.substring(end);
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = start + v.length;
+        fuUpdatePreview();
+    }
+
+    function fuUpdatePreview() {
+        const rawMsg = (fuCurrentMsgLang === 'en' ? document.getElementById('fu-setting-message')?.value : document.getElementById('fu-setting-message-ar')?.value) || '';
+        const isAr = fuCurrentMsgLang === 'ar';
+        const sampleName = isAr ? 'أحمد محمد' : 'John Doe';
+        
+        const previewText = rawMsg.replace(/\{name\}/g, sampleName)
+                                  .replace(/\{customer_name\}/g, sampleName)
+                                  .replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent')
+                                  .replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
+
+        ['wa', 'ig', 'fb'].forEach(k => {
+            const el = document.getElementById(`fu-prev-msg-${k}`);
+            if (el) {
+                el.innerText = previewText || (isAr ? '[نص المعاينة]' : '[Preview Text]');
+                el.dir = isAr ? 'rtl' : 'ltr';
+            }
+        });
     }
 
     // 3) Queue loading
@@ -15733,14 +16341,7 @@ Thank you for shopping with {store_name}!</textarea>
             const platformFilter = document.getElementById('fu-queue-platform').value;
             const searchRaw = (document.getElementById('fu-queue-search').value || '').toLowerCase();
 
-            let query = supabaseClient.from('followup_tasks').select(`
-                *,
-                inbox_conversations (
-                    platform,
-                    contact_id,
-                    contact_name
-                )
-            `).eq('org_id', currentUserOrgId);
+            let query = supabaseClient.from('followup_tasks').select(`*`).eq('org_id', currentUserOrgId);
 
             if (statusFilter !== 'all') {
                 query = query.eq('status', statusFilter);
@@ -15749,10 +16350,10 @@ Thank you for shopping with {store_name}!</textarea>
             // order by due date ASC
             query = query.order('due_at', { ascending: true }).limit(50);
 
-            const { data, error } = await query;
+            const { data: tasks, error } = await query;
             if (error) throw error;
 
-            if (!data || data.length === 0) {
+            if (!tasks || tasks.length === 0) {
                 content.innerHTML = `
                     <div style="text-align:center; padding: 60px; color:#888;">
                         <div style="font-size: 3rem; margin-bottom: 20px;">🗓️</div>
@@ -15763,9 +16364,22 @@ Thank you for shopping with {store_name}!</textarea>
                 return;
             }
 
+            // Fetch conversation details for all tasks concurrently
+            const conversationDetailsPromises = tasks.map(task => fuGetConversationDetails(task.conversation_id));
+            const allConversationDetails = await Promise.all(conversationDetailsPromises);
+
+            // Map conversation details back to tasks
+            const tasksWithDetails = tasks.map((task, index) => {
+                const details = allConversationDetails[index];
+                return {
+                    ...task,
+                    conversation_details: details
+                };
+            });
+
             // Apply platform/search filters
-            let filtered = data.filter(task => {
-                const c = task.inbox_conversations || {};
+            let filtered = tasksWithDetails.filter(task => {
+                const c = task.conversation_details || {};
                 const plat = c.platform || task.platform || '';
                 const pMatch = platformFilter === 'all' || plat.toLowerCase().includes(platformFilter);
                 const sMatch = !searchRaw || (c.contact_name || '').toLowerCase().includes(searchRaw) || (c.contact_id || '').toLowerCase().includes(searchRaw) || (task.conversation_id || '').includes(searchRaw);
@@ -15790,8 +16404,8 @@ Thank you for shopping with {store_name}!</textarea>
 
             html += `<div class="fu-list">`;
             for (const t of filtered) {
-                const cName = t.inbox_conversations?.contact_name || t.inbox_conversations?.contact_id || t.conversation_id;
-                const plt = t.inbox_conversations?.platform || t.platform || 'unknown';
+                const cName = t.conversation_details?.contact_name || t.conversation_details?.contact_id || t.conversation_id;
+                const plt = t.conversation_details?.platform || t.platform || 'unknown';
 
                 // Format Due At
                 let dueStr = 'Unknown';
@@ -15870,16 +16484,17 @@ Thank you for shopping with {store_name}!</textarea>
         m.style.position = 'fixed';
 
         m.innerHTML = `
-            <h4 style="margin:0 0 5px 0;">Reschedule Task</h4>
-            <label style="font-size:12px;color:#aaa;">Delay from NOW (Minutes)</label>
-            <p style="font-size:11px; margin:0; color:#888;">Max: 1440 min (24h)</p>
+            <h4 style="margin:0 0 5px 0;" data-i18n="followups.modal_resch_title">Reschedule Task</h4>
+            <label style="font-size:12px;color:#aaa;" data-i18n="followups.modal_resch_delay">Delay from NOW (Minutes)</label>
+            <p style="font-size:11px; margin:0; color:#888;" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
             <input type="number" id="fu-resch-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%;">
             <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
-                <button class="pill-btn" onclick="document.getElementById('fu-reschedule-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);">Cancel</button>
-                <button class="pill-btn primary" onclick="fuCommitReschedule()" style="padding:6px 12px;">Save</button>
+                <button class="pill-btn" onclick="document.getElementById('fu-reschedule-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
+                <button class="pill-btn primary" onclick="fuCommitReschedule()" style="padding:6px 12px;" data-i18n="followups.modal_resch_save">Save</button>
             </div>
         `;
         document.body.appendChild(m);
+        translateElement(m); // Translate new modal content
     }
 
     async function fuCommitReschedule() {
@@ -15890,7 +16505,7 @@ Thank you for shopping with {store_name}!</textarea>
         // JS 24h MAX Validation
         if (mins > 1440) {
             mins = 1440;
-            showToast("Clamped to maximum allowed delay (24h).", 'error');
+            showToast(t("followups.toast_clamped_delay"), 'error');
         }
 
         const dueAt = new Date(Date.now() + mins * 60000).toISOString();
@@ -15907,12 +16522,12 @@ Thank you for shopping with {store_name}!</textarea>
             if (error) throw error;
 
             document.getElementById('fu-reschedule-modal').remove();
-            showToast("Task rescheduled.", 'success');
+            showToast(t("followups.toast_task_rescheduled"), 'success');
             fuLoadQueue();
 
         } catch (e) {
             console.warn(e);
-            showToast("Error rescheduling task.", 'error');
+            showToast(t("followups.toast_error_rescheduling"), 'error');
         }
     }
 
@@ -15936,24 +16551,25 @@ Thank you for shopping with {store_name}!</textarea>
             <select id="fu-create-cid" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.8); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
                 <option value="">Loading contacts...</option>
             </select>
-            
+
             <label style="font-size:12px;color:#aaa;margin-top:10px;display:block;" data-i18n="followups.modal_create_delay">Delay from NOW (Minutes)*</label>
             <p style="font-size:11px; margin:0; color:#888;" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
             <input type="number" id="fu-create-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
-            
+
             <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:15px;">
                 <button class="pill-btn" onclick="document.getElementById('fu-create-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
                 <button class="pill-btn primary" onclick="fuCommitCreate()" style="padding:6px 12px;" data-i18n="followups.modal_create_btn">Create Task</button>
             </div>
         `;
         document.body.appendChild(m);
+        translateElement(m); // Translate new modal content
 
         // Fetch recent conversations for selection
         try {
-            const { data, error } = await supabaseClient.from('inbox_conversations').select('*').eq('org_id', currentUserOrgId).order('updated_at', { ascending: false }).limit(20);
+            const { data, error } = await supabaseClient.from('inbox_conversations').select('id, contact_id, contact_name, platform').eq('org_id', currentUserOrgId).order('updated_at', { ascending: false }).limit(20);
             const selectEl = document.getElementById('fu-create-cid');
             if (error || !data || data.length === 0) {
-                selectEl.innerHTML = `<option value="">No recent contacts found</option>`;
+                selectEl.innerHTML = `<option value="">${t('followups.modal_create_no_contacts')}</option>`;
                 return;
             }
             selectEl.innerHTML = data.map(c => {
@@ -15962,7 +16578,7 @@ Thank you for shopping with {store_name}!</textarea>
             }).join('');
         } catch (e) {
             console.warn(e);
-            document.getElementById('fu-create-cid').innerHTML = `<option value="">Error loading</option>`;
+            document.getElementById('fu-create-cid').innerHTML = `<option value="">${t('followups.modal_create_error_loading')}</option>`;
         }
     }
 
@@ -15974,14 +16590,14 @@ Thank you for shopping with {store_name}!</textarea>
         const platform = opt ? opt.getAttribute('data-plat') : 'website';
 
         if (!cid) {
-            showToast("Please select a contact.", 'error');
+            showToast(t("followups.toast_select_contact"), 'error');
             return;
         }
 
         // JS 24h MAX Validation
         if (mins > 1440) {
             mins = 1440;
-            showToast("Clamped to 1440 min (24h).", 'error');
+            showToast(t("followups.toast_clamped_delay"), 'error');
         }
 
         const dueAt = new Date(Date.now() + mins * 60000).toISOString();
@@ -16000,11 +16616,11 @@ Thank you for shopping with {store_name}!</textarea>
             if (error) throw error;
 
             document.getElementById('fu-create-modal').remove();
-            showToast("Follow-up created successfully.", 'success');
+            showToast(t("followups.toast_task_created"), 'success');
             fuLoadQueue();
         } catch (e) {
             console.warn(e);
-            // Don't expose internal errors to user
+            showToast(t("followups.toast_error_creating"), 'error');
             document.getElementById('fu-create-modal')?.remove();
         }
     }
@@ -16021,30 +16637,39 @@ Thank you for shopping with {store_name}!</textarea>
             const eventFilter = document.getElementById('fu-logs-event').value;
             const searchRaw = (document.getElementById('fu-logs-search').value || '').toLowerCase();
 
-            let query = supabaseClient.from('followup_logs').select(`
-                *,
-                inbox_conversations (
-                    contact_id,
-                    contact_name
-                )
-            `).eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
+            let query = supabaseClient.from('followup_logs').select(`*`).eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
 
             if (eventFilter !== 'all') {
                 query = query.eq('event_type', eventFilter);
             }
 
-            const { data, error } = await query;
+            const { data: logs, error } = await query;
             if (error) throw error;
 
-            if (!data || data.length === 0) {
+            if (!logs || logs.length === 0) {
                 content.innerHTML = fuEmptyState('📋', 'followups.logs_empty_title', 'followups.logs_empty_text');
                 return;
             }
 
-            const filtered = data.filter(l => {
+            // Fetch conversation details for all logs concurrently
+            const conversationDetailsPromises = logs.map(log => log.conversation_id ? fuGetConversationDetails(log.conversation_id) : Promise.resolve(null));
+            const allConversationDetails = await Promise.all(conversationDetailsPromises);
+
+            // Map conversation details back to logs
+            const logsWithDetails = logs.map((log, index) => {
+                const details = allConversationDetails[index];
+                return {
+                    ...log,
+                    conversation_details: details
+                };
+            });
+
+            const filtered = logsWithDetails.filter(l => {
                 const det = (l.details || '');
+                const convoName = l.conversation_details?.contact_name || l.conversation_details?.contact_id || l.conversation_id || '';
                 if (!searchRaw) return true;
-                return typeof det === 'string' ? det.toLowerCase().includes(searchRaw) : JSON.stringify(det).toLowerCase().includes(searchRaw);
+                return (typeof det === 'string' ? det.toLowerCase().includes(searchRaw) : JSON.stringify(det).toLowerCase().includes(searchRaw)) ||
+                    convoName.toLowerCase().includes(searchRaw);
             });
 
             if (filtered.length === 0) {
@@ -16068,7 +16693,7 @@ Thank you for shopping with {store_name}!</textarea>
                     dt = dateObj.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                 }
                 const detStr = (typeof l.details === 'object') ? JSON.stringify(l.details) : String(l.details || '');
-                const convoName = l.inbox_conversations?.contact_name || l.inbox_conversations?.contact_id || l.conversation_id || 'Unknown';
+                const convoName = l.conversation_details?.contact_name || l.conversation_details?.contact_id || l.conversation_id || 'Unknown';
 
                 html += `
                     <div class="fu-row" style="grid-template-columns: 1fr 1fr 2fr 3fr;">
@@ -16081,6 +16706,7 @@ Thank you for shopping with {store_name}!</textarea>
             }
             html += `</div>`;
             content.innerHTML = html;
+            translateElement(content); // Translate new log content
 
         } catch (e) {
             console.warn('fuLoadLogs error:', e);
