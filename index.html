@@ -7845,134 +7845,6 @@
             right: auto;
             left: 20px;
         }
-        /* =========================================
-   META BUSINESS PARTNER BADGE (PREMIUM)
-   ========================================= */
-
-.meta-partner-pill {
-  --pill-bg: rgba(255, 255, 255, 0.06);
-  --pill-border: rgba(255, 255, 255, 0.14);
-  --pill-outline: rgba(91, 174, 176, 0.28); /* matches your --theme-color vibe */
-
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  height: 40px;
-  padding: 0 14px 0 10px;
-  border-radius: 999px;
-
-  background: var(--pill-bg);
-  border: 1px solid var(--pill-border);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.40);
-
-  flex-shrink: 0;
-  white-space: nowrap;
-  user-select: none;
-  cursor: default;
-  position: relative;
-}
-
-.meta-partner-pill::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: 999px;
-  pointer-events: none;
-  border: 1px solid var(--pill-outline);
-  opacity: 0.9;
-}
-
-.meta-partner-pill:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.52);
-  border-color: rgba(255,255,255,0.20);
-}
-
-/* Icon backplate = always visible (no white-on-white problem) */
-.meta-icon-wrap {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(0, 0, 0, 0.38);
-  border: 1px solid rgba(255,255,255,0.14);
-  flex-shrink: 0;
-}
-
-.meta-icon {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.55));
-}
-
-/* Text */
-.meta-pill-full {
-  font-size: 0.94rem;
-  font-weight: 750;
-  letter-spacing: 0.2px;
-}
-.meta-pill-short {
-  display: none;
-  font-size: 0.88rem;
-  font-weight: 750;
-}
-.meta-pill-mini {
-  font-size: 0.70rem;
-  font-weight: 800;
-  letter-spacing: 0.7px;
-  text-transform: uppercase;
-  opacity: 0.72;
-}
-
-/* ===== TOP BAR sizing ===== */
-.meta-partner-pill--topbar {
-  height: 38px;
-}
-
-/* ===== LOGIN sizing (slightly larger and centered) ===== */
-.meta-partner-pill--login {
-  height: 44px;
-  padding: 0 16px 0 12px;
-  margin: 0 auto 18px auto;
-}
-
-/* ===== Responsive: mobile must be clear ===== */
-@media (max-width: 768px) {
-  /* On mobile top-bar, your .top-bar-btn becomes 36x36.
-     This badge is NOT .top-bar-btn, so it won't be squashed. */
-
-  .meta-partner-pill {
-    height: 36px;
-    padding: 0 12px 0 8px;
-    gap: 8px;
-  }
-
-  .meta-pill-full { display: none; }
-  .meta-pill-short { display: inline; }
-  .meta-pill-mini { display: none; }
-}
-
-@media (max-width: 360px) {
-  /* Very small phones: icon-only (still visible + clean) */
-  .meta-pill-short { display: none; }
-  .meta-partner-pill { padding: 0 8px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .meta-partner-pill { transition: none; }
-  .meta-partner-pill:hover { transform: none; }
-}
     </style>
 </head>
 
@@ -7981,22 +7853,7 @@
     <div id="login-container">
         <div class="card glass login-card">
             <div class="login-title">DIGITIVIA AI AGENT</div>
-            <div class="meta-partner-pill meta-partner-pill--login" aria-label="Meta Business Partner">
-  <span class="meta-icon-wrap" aria-hidden="true">
-    <img class="meta-icon"
-         src="https://i.ibb.co/1JjdZyr7/download-transparent.png"
-         alt=""
-         width="22"
-         height="22"
-         loading="eager"
-         decoding="async"
-         onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';" />
-  </span>
 
-  <span class="meta-pill-full">Meta Business Partner</span>
-  <span class="meta-pill-short">Meta Partner</span>
-  <span class="meta-pill-mini">Partner</span>
-</div>
             <button class="social-btn google" onclick="performOAuthLogin('google')">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                     <path
@@ -8030,22 +7887,6 @@
         <div class="mobile-hamburger-btn" onclick="toggleMobileMenu()">☰</div>
         <img src="cropped-White.png" alt="Digitivia" class="mobile-logo-img">
         <div class="mobile-actions">
-            <div class="meta-partner-pill meta-partner-pill--topbar" aria-label="Meta Business Partner">
-  <span class="meta-icon-wrap" aria-hidden="true">
-    <img class="meta-icon"
-         src="https://i.ibb.co/1JjdZyr7/download-transparent.png"
-         alt=""
-         width="22"
-         height="22"
-         loading="eager"
-         decoding="async"
-         onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';" />
-  </span>
-
-  <span class="meta-pill-full">Meta Business Partner</span>
-  <span class="meta-pill-short">Meta Partner</span>
-  <span class="meta-pill-mini">Partner</span>
-</div>
             <button class="top-bar-btn" onclick="openPricingModal()" title="Pricing">
                 <svg viewBox="0 0 24 24">
                     <path
@@ -8274,24 +8115,7 @@
                     </div>
                 </div>
             </div>
-            <div class="meta-partner-pill meta-partner-pill--topbar" aria-label="Meta Business Partner">
-  <span class="meta-icon-wrap" aria-hidden="true">
-    <img class="meta-icon"
-         src="https://i.ibb.co/1JjdZyr7/download-transparent.png"
-         alt=""
-         width="22"
-         height="22"
-         loading="eager"
-         decoding="async"
-         onerror="this.onerror=null;this.src='https://i.ibb.co/234pdB7p/download-2.png';" />
-  </span>
-
-  <span class="meta-pill-full">Meta Business Partner</span>
-  <span class="meta-pill-short">Meta Partner</span>
-  <span class="meta-pill-mini">Partner</span>
-</div>
             <button class="top-bar-btn lang-toggle" onclick="toggleLanguage()" title="Switch Language">
-            
                 <span id="lang-toggle-label">AR</span>
             </button>
             <div class="profile-avatar" id="top-bar-avatar" onclick="openProfileModal()">U</div>
