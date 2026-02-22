@@ -16291,9 +16291,9 @@ Thank you for shopping with {store_name}!</textarea>
         fuCurrentPreviewPlatform = plt;
         document.querySelectorAll('.fu-preview-tab').forEach(b => b.classList.remove('active'));
         document.getElementById(`fu-ptab-${plt}`)?.classList.add('active');
-        
+
         document.querySelectorAll('.fu-prev-platform').forEach(p => p.style.display = 'none');
-        document.getElementById(`fu-prev-${plt}`).style.display = 'flex';
+        document.getElementById(`fu-prev-${plt}`).style.display = 'block';
         fuUpdatePreview();
     }
 
@@ -16313,11 +16313,11 @@ Thank you for shopping with {store_name}!</textarea>
         const rawMsg = (fuCurrentMsgLang === 'en' ? document.getElementById('fu-setting-message')?.value : document.getElementById('fu-setting-message-ar')?.value) || '';
         const isAr = fuCurrentMsgLang === 'ar';
         const sampleName = isAr ? 'أحمد محمد' : 'John Doe';
-        
+
         const previewText = rawMsg.replace(/\{name\}/g, sampleName)
-                                  .replace(/\{customer_name\}/g, sampleName)
-                                  .replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent')
-                                  .replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
+            .replace(/\{customer_name\}/g, sampleName)
+            .replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent')
+            .replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
 
         ['wa', 'ig', 'fb'].forEach(k => {
             const el = document.getElementById(`fu-prev-msg-${k}`);
