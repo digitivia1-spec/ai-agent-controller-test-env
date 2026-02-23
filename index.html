@@ -16442,6 +16442,18 @@ Thank you for shopping with {store_name}!</textarea>
     const FU_CHANNELS = ['whatsapp', 'instagram', 'page'];
     const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page' };
     const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb' };
+    const FU_MOCK_MESSAGES = {
+        en: {
+            whatsapp: "Hi {name}, just checking in on your request. I can share pricing, availability, or next steps whenever you're ready.",
+            instagram: "Hey {name}! Quick follow-up on our chat. Want me to send options that match your style and budget?",
+            page: "Hello {name}, this is a friendly follow-up from {business_name}. Reply here and I’ll help you with the next best step."
+        },
+        ar: {
+            whatsapp: "مرحباً {name}، فقط متابعة سريعة على طلبك. أستطيع إرسال الأسعار أو التوفر أو الخطوة المناسبة لك الآن.",
+            instagram: "أهلاً {name}! متابعة سريعة لمحادثتنا. هل ترغب أن أرسل لك خيارات مناسبة لاحتياجك وميزانيتك؟",
+            page: "مرحباً {name}، هذه متابعة ودية من {business_name}. رد هنا وسأساعدك بالخطوة التالية المناسبة."
+        }
+    };
     let fuCurrentMsgLang = 'en';
     let fuCurrentMessageChannel = 'whatsapp';
     let fuCurrentPreviewPlatform = 'wa';
@@ -16490,6 +16502,8 @@ Thank you for shopping with {store_name}!</textarea>
         const ar = document.getElementById('fu-setting-message-ar');
         if (en) en.value = fuMessageByChannel[fuCurrentMessageChannel] || '';
         if (ar) ar.value = fuMessageByChannelAr[fuCurrentMessageChannel] || '';
+        if (en) en.placeholder = FU_MOCK_MESSAGES.en[fuCurrentMessageChannel] || 'Enter message...';
+        if (ar) ar.placeholder = FU_MOCK_MESSAGES.ar[fuCurrentMessageChannel] || 'اكتب الرسالة هنا...';
     }
 
     function fuCaptureEditorToState() {
@@ -16707,7 +16721,9 @@ Thank you for shopping with {store_name}!</textarea>
         ['wa', 'ig', 'fb'].forEach(k => {
             const channel = fuPreviewToChannelMap[k];
             const rawMsg = isAr ? fuMessageByChannelAr[channel] : fuMessageByChannel[channel];
-            const previewText = (rawMsg || '').replace(/\{name\}/g, sampleName)
+            const fallbackMsg = isAr ? FU_MOCK_MESSAGES.ar[channel] : FU_MOCK_MESSAGES.en[channel];
+            const effectiveRaw = (rawMsg || '').trim() || fallbackMsg;
+            const previewText = (effectiveRaw || '').replace(/\{name\}/g, sampleName)
                 .replace(/\{customer_name\}/g, sampleName)
                 .replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent')
                 .replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
