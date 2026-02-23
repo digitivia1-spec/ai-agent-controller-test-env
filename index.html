@@ -1716,42 +1716,131 @@
 
         /* Platform variations */
         .fu-prev-ig .fu-phone-header {
-            background: #0f1720;
-            border-bottom: 1px solid #262626;
+            background: #0f1117;
+            border-bottom: 1px solid #232833;
+            padding: 10px 12px;
         }
 
         .fu-prev-ig .fu-phone-body {
-            background: linear-gradient(180deg, #0b1119 0%, #07080c 100%);
-            background-image: radial-gradient(circle at 80% -20%, rgba(220, 39, 67, 0.2), transparent 50%);
+            background: #05070b;
+            padding: 14px;
+            min-height: 210px;
+            justify-content: flex-end;
+            align-items: flex-end;
+            position: relative;
         }
 
         .fu-prev-ig .fu-phone-avatar {
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
         }
 
+        .fu-prev-ig .fu-phone-name {
+            font-size: 0.86rem;
+        }
+
+        .fu-prev-ig .fu-phone-status {
+            color: #8f95a3;
+            font-size: 0.74rem;
+        }
+
         .fu-prev-ig .fu-msg-bubble {
-            background: #273545;
-            border-radius: 18px;
+            background: #2a2f39;
+            border-radius: 22px;
+            color: #f1f5f9;
+            max-width: min(88%, 275px);
+            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 11px 14px;
         }
 
         .fu-prev-fb .fu-phone-header {
-            background: #17202a;
-            border-bottom: 1px solid #3e4042;
+            background: #ffffff;
+            border-bottom: 1px solid #d9e0ea;
+            padding: 10px 12px;
         }
 
         .fu-prev-fb .fu-phone-body {
-            background: linear-gradient(180deg, #101820 0%, #0b131b 100%);
+            background: linear-gradient(180deg, #f1f5fb 0%, #edf2f8 100%);
             background-image: none;
+            min-height: 210px;
+            padding: 14px;
+            justify-content: flex-end;
+            align-items: flex-end;
         }
 
         .fu-prev-fb .fu-phone-avatar {
             background: #0084FF;
         }
 
+        .fu-prev-fb .fu-phone-name {
+            color: #111827;
+            font-size: 0.9rem;
+        }
+
+        .fu-prev-fb .fu-phone-status {
+            color: #4b5563;
+            font-size: 0.74rem;
+        }
+
         .fu-prev-fb .fu-msg-bubble {
             background: #1f7aff;
             color: #fff;
-            border-radius: 18px;
+            border-radius: 18px 18px 6px 18px;
+            max-width: min(86%, 275px);
+            box-shadow: 0 4px 14px rgba(31, 122, 255, 0.28);
+        }
+
+        .fu-ig-topbar,
+        .fu-fb-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+            color: #a4acba;
+        }
+
+        .fu-fb-topbar {
+            color: #4b5563;
+        }
+
+        .fu-ig-icons,
+        .fu-fb-icons {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fu-ig-icons span,
+        .fu-fb-icons span {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.66rem;
+        }
+
+        .fu-fb-icons span {
+            background: rgba(59, 130, 246, 0.16);
+            color: #1d4ed8;
+        }
+
+        .fu-ig-thread,
+        .fu-fb-thread {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .fu-prev-ig .fu-msg-time,
+        .fu-prev-fb .fu-msg-time {
+            font-size: 0.66rem;
+            opacity: 0.75;
+            margin-top: 6px;
         }
 
         .fu-msg-time {
@@ -11504,8 +11593,19 @@ Thank you for shopping with {store_name}!</textarea>
                                             </div>
                                         </div>
                                         <div class="fu-phone-body">
-                                            <div class="fu-msg-bubble">
-                                                <div id="fu-prev-msg-ig">Preview message here...</div>
+                                            <div class="fu-ig-topbar">
+                                                <span>Seen now</span>
+                                                <div class="fu-ig-icons">
+                                                    <span>📷</span>
+                                                    <span>🎙</span>
+                                                    <span>❤</span>
+                                                </div>
+                                            </div>
+                                            <div class="fu-ig-thread">
+                                                <div class="fu-msg-bubble">
+                                                    <div id="fu-prev-msg-ig">Preview message here...</div>
+                                                    <div class="fu-msg-time" data-i18n="followups.config_preview_just_now">Just now</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -11519,8 +11619,19 @@ Thank you for shopping with {store_name}!</textarea>
                                             </div>
                                         </div>
                                         <div class="fu-phone-body">
-                                            <div class="fu-msg-bubble">
-                                                <div id="fu-prev-msg-fb">Preview message here...</div>
+                                            <div class="fu-fb-topbar">
+                                                <span>End-to-end encrypted</span>
+                                                <div class="fu-fb-icons">
+                                                    <span>👍</span>
+                                                    <span>GIF</span>
+                                                    <span>✚</span>
+                                                </div>
+                                            </div>
+                                            <div class="fu-fb-thread">
+                                                <div class="fu-msg-bubble">
+                                                    <div id="fu-prev-msg-fb">Preview message here...</div>
+                                                    <div class="fu-msg-time" data-i18n="followups.config_preview_just_now">Just now</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
