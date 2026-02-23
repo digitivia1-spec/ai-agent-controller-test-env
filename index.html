@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Agent Command Center</title>
+    <link rel="icon" type="image/png" href="cropped-White.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script>
@@ -309,6 +310,39 @@
             },
             "followups": {
                 "title": "Scheduled Follow-ups",
+                "subtitle": "Schedule + control follow-ups for Live Inbox conversations",
+                "refresh_btn": "⟳ Refresh",
+                "tab_queue": "Queue",
+                "tab_config": "Configuration",
+                "tab_logs": "Logs",
+                "status_all": "All Statuses",
+                "status_scheduled": "Scheduled",
+                "status_sent": "Sent",
+                "status_failed": "Failed",
+                "platform_all": "All Platforms",
+                "create_btn": "+ Create Follow-up",
+                "search_contact": "Search contact...",
+                "loading_queue": "Loading queue...",
+                "config_enable": "Enable Automations",
+                "config_message_template": "Message Template",
+                "config_lang_en": "English",
+                "config_lang_ar": "Arabic",
+                "config_channels_title": "Channel Monitoring",
+                "config_save": "Save Configuration",
+                "config_save_ok": "Configuration saved",
+                "logs_event_all": "All Events",
+                "logs_search": "Search details...",
+                "loading_logs": "Loading logs...",
+                "logs_empty_text": "No logs available yet.",
+                "action_cancel": "Cancel",
+                "contact_unknown": "Unknown",
+                "modal_create_title": "Create Manual Follow-up",
+                "modal_create_delay": "Delay (Minutes)",
+                "modal_create_btn": "Create",
+                "modal_resch_cancel": "Cancel",
+                "modal_select_placeholder": "Select contact",
+                "toast_select_contact": "Select contact",
+                "toast_task_created": "Follow-up created",
                 "empty_title": "No Scheduled Tasks",
                 "empty_text": "When your agents schedule callbacks or followups, they will appear here.",
                 "btn_setup": "Set Up Automations"
@@ -873,6 +907,39 @@
             },
             "followups": {
                 "title": "المتابعات المجدولة",
+                "subtitle": "جدولة + التحكم في المتابعات لمحادثات صندوق الوارد المباشر",
+                "refresh_btn": "⟳ تحديث",
+                "tab_queue": "الطابور",
+                "tab_config": "الإعدادات",
+                "tab_logs": "السجلات",
+                "status_all": "كل الحالات",
+                "status_scheduled": "مجدولة",
+                "status_sent": "تم الإرسال",
+                "status_failed": "فشلت",
+                "platform_all": "كل المنصات",
+                "create_btn": "+ إنشاء متابعة",
+                "search_contact": "ابحث عن جهة اتصال...",
+                "loading_queue": "جاري تحميل الطابور...",
+                "config_enable": "تفعيل الأتمتة",
+                "config_message_template": "قالب الرسالة",
+                "config_lang_en": "English",
+                "config_lang_ar": "العربية",
+                "config_channels_title": "مراقبة القنوات",
+                "config_save": "حفظ الإعدادات",
+                "config_save_ok": "تم حفظ الإعدادات",
+                "logs_event_all": "كل الأحداث",
+                "logs_search": "ابحث في التفاصيل...",
+                "loading_logs": "جاري تحميل السجلات...",
+                "logs_empty_text": "لا توجد سجلات بعد.",
+                "action_cancel": "إلغاء",
+                "contact_unknown": "غير معروف",
+                "modal_create_title": "إنشاء متابعة يدوية",
+                "modal_create_delay": "التأخير (بالدقائق)",
+                "modal_create_btn": "إنشاء",
+                "modal_resch_cancel": "إلغاء",
+                "modal_select_placeholder": "اختر جهة اتصال",
+                "toast_select_contact": "اختر جهة اتصال",
+                "toast_task_created": "تم إنشاء المتابعة",
                 "empty_title": "لا توجد مهام مجدولة",
                 "empty_text": "عندما يقوم الوكلاء بجدولة مكالمات أو متابعات، ستظهر هنا.",
                 "btn_setup": "إعداد الأتمتة"
@@ -8528,18 +8595,45 @@
         }
 
         /* Customer Reviews Configurator */
+        .cr-root {
+            --cr-muted: #9fb0c4;
+            --cr-border: rgba(255, 255, 255, 0.12);
+            --cr-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+        }
+        .cr-root[dir="rtl"], .cr-root[dir="ltr"] { text-align: start; }
         .cr-title-row { margin-block-end: 16px; }
         .cr-title-row h2 { margin: 0; }
         .cr-title-row p { margin: 6px 0 0; color: var(--text-muted); text-align: start; }
-        .cr-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
-            gap: 16px;
-            align-items: start;
+
+        .cr-subtabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-block-end: 14px;
+            border-block-end: 1px solid rgba(255, 255, 255, 0.08);
+            padding-block-end: 10px;
         }
+        .cr-subtab {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #c7d2e3;
+            border-radius: 999px;
+            padding-block: 8px;
+            padding-inline: 14px;
+            cursor: pointer;
+        }
+        .cr-subtab.active {
+            background: rgba(20, 184, 166, 0.2);
+            border-color: rgba(20, 184, 166, 0.45);
+            color: #9ff2ec;
+            font-weight: 700;
+        }
+        .cr-subpanel { display: none; }
+        .cr-subpanel.active { display: block; }
+
         .cr-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-            border: 1px solid rgba(255, 255, 255, 0.11);
+            background: var(--cr-glass);
+            border: 1px solid var(--cr-border);
             border-radius: 16px;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -8560,7 +8654,8 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 999px;
-            padding: 6px;
+            padding-block: 6px;
+            padding-inline: 6px;
             margin-block-end: 14px;
         }
         .cr-seg-btn {
@@ -8579,10 +8674,10 @@
             font-weight: 700;
         }
         .cr-field { display: block; margin-block-end: 12px; }
-        .cr-field input, .cr-field textarea {
-            width: 100%;
+        .cr-field input, .cr-field textarea, .cr-filter-select, .cr-filter-input {
+            inline-size: 100%;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid var(--cr-border);
             background: rgba(0, 0, 0, 0.22);
             color: #fff;
             padding-block: 10px;
@@ -8590,10 +8685,10 @@
             text-align: start;
             outline: none;
         }
-        .cr-field textarea { resize: vertical; min-height: 130px; }
-        .cr-field input:focus, .cr-field textarea:focus { border-color: var(--theme-color); }
+        .cr-field textarea { resize: vertical; min-block-size: 130px; }
+        .cr-field input:focus, .cr-field textarea:focus, .cr-filter-select:focus, .cr-filter-input:focus { border-color: var(--theme-color); }
         .cr-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 14px; }
-        .cr-actions .pill-btn { min-height: 42px; }
+        .cr-actions .pill-btn { min-block-size: 42px; }
 
         .cr-preview-head {
             display: flex;
@@ -8616,19 +8711,30 @@
             background: linear-gradient(180deg, rgba(3, 14, 26, 0.95), rgba(5, 22, 34, 0.96));
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 14px;
-            min-height: 360px;
-            padding: 14px;
+            min-block-size: 360px;
+            padding-block: 14px;
+            padding-inline: 14px;
             overflow: hidden;
+            text-align: start;
         }
         .cr-preview-view { display: none; }
-        .cr-preview-view.active { display: block; }
+        .cr-preview-view.active {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .cr-root[dir="rtl"] .cr-preview-view.active {
+            justify-content: flex-start;
+            direction: rtl;
+        }
+        .cr-root[dir="ltr"] .cr-preview-view.active { direction: ltr; }
         .cr-phone-shell {
-            max-width: 330px;
-            margin-inline: auto;
+            max-inline-size: 330px;
+            inline-size: 100%;
             border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: #0f2233;
-            padding: 12px;
+            padding-block: 12px;
+            padding-inline: 12px;
         }
         .cr-sms-bubble {
             border-radius: 14px;
@@ -8638,13 +8744,16 @@
             padding-inline: 12px;
             text-align: start;
             line-height: 1.5;
+            overflow-wrap: anywhere;
         }
         .cr-email-card, .cr-web-card {
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: rgba(20, 31, 45, 0.86);
-            padding: 14px;
+            padding-block: 14px;
+            padding-inline: 14px;
             text-align: start;
+            inline-size: min(100%, 620px);
         }
         .cr-email-subject {
             font-weight: 700;
@@ -8665,17 +8774,16 @@
             border-radius: 10px;
             padding-block: 9px;
             padding-inline: 12px;
-            text-align: center;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 132px;
+            min-inline-size: 132px;
             font-weight: 700;
         }
         .cr-link-chip {
             margin-block-start: 10px;
             display: inline-block;
-            max-width: 100%;
+            max-inline-size: 100%;
             border-radius: 999px;
             border: 1px dashed rgba(255, 255, 255, 0.22);
             color: #8fb2cf;
@@ -8689,7 +8797,8 @@
             margin-block-start: 14px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 12px;
+            padding-block: 12px;
+            padding-inline: 12px;
             display: grid;
             gap: 8px;
             justify-items: center;
@@ -8706,10 +8815,123 @@
             box-shadow: inset 0 0 0 8px rgba(17, 24, 39, 0.1);
         }
         .cr-qr-placeholder span { color: #8aa0b8; font-size: 0.82rem; }
+
+        .cr-logs-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            margin-block-end: 12px;
+        }
+        .cr-summary-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .cr-chip {
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            color: #c9d8ea;
+            padding-block: 5px;
+            padding-inline: 10px;
+            font-size: 0.8rem;
+        }
+        .cr-inline-clear { display: grid; gap: 8px; }
+        .cr-clear-confirm {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.86rem;
+            color: var(--cr-muted);
+            text-align: start;
+        }
+        .cr-clear-confirm.active { display: flex; flex-wrap: wrap; }
+        .cr-filter-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin-block-end: 12px;
+        }
+        .cr-logs-table-wrap {
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+        }
+        .cr-logs-table {
+            inline-size: 100%;
+            border-collapse: collapse;
+            min-inline-size: 760px;
+        }
+        .cr-logs-table th, .cr-logs-table td {
+            padding-block: 10px;
+            padding-inline: 10px;
+            border-block-end: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: start;
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+        .cr-logs-table th { color: #a9bdd6; font-weight: 600; }
+        .cr-status {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding-block: 3px;
+            padding-inline: 9px;
+            font-size: 0.78rem;
+            border: 1px solid transparent;
+        }
+        .cr-status.sent { background: rgba(34, 197, 94, 0.16); color: #7dedab; border-color: rgba(34, 197, 94, 0.35); }
+        .cr-status.failed { background: rgba(239, 68, 68, 0.16); color: #ff9d9d; border-color: rgba(239, 68, 68, 0.35); }
+        .cr-status.not_sent { background: rgba(245, 158, 11, 0.16); color: #ffd28a; border-color: rgba(245, 158, 11, 0.35); }
+        .cr-status.queued { background: rgba(59, 130, 246, 0.16); color: #9cc7ff; border-color: rgba(59, 130, 246, 0.35); }
+        .cr-actions-inline { display: flex; gap: 6px; flex-wrap: wrap; }
+        .cr-actions-inline .pill-btn { padding-inline: 10px; min-block-size: 30px; font-size: 0.8rem; }
+        .cr-row-details {
+            margin-block-start: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(12, 20, 30, 0.8);
+            padding-block: 8px;
+            padding-inline: 9px;
+            text-align: start;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            color: #c9d8ea;
+            font-size: 0.82rem;
+        }
+        .cr-logs-mobile-list { display: none; }
+        .cr-log-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding-block: 10px;
+            padding-inline: 10px;
+            margin-block-end: 8px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .cr-log-row { display: grid; grid-template-columns: minmax(90px, auto) 1fr; gap: 8px; margin-block-end: 6px; font-size: 0.88rem; }
+        .cr-log-row strong { color: #9fb0c4; font-weight: 600; }
+        .cr-logs-empty {
+            display: none;
+            text-align: center;
+            color: var(--cr-muted);
+            padding-block: 18px;
+            padding-inline: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+        }
+        .pill-btn.danger { border-color: rgba(239,68,68,0.45); color: #ffb4b4; }
+
+        @media (max-width: 920px) {
+            .cr-filter-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
         @media (max-width: 768px) {
-            .cr-layout { grid-template-columns: 1fr; }
-            .cr-preview { min-height: 300px; }
-            .cr-actions .pill-btn { width: 100%; }
+            .cr-actions .pill-btn { inline-size: 100%; }
+            .cr-filter-row { grid-template-columns: 1fr; }
+            .cr-logs-table-wrap { display: none; }
+            .cr-logs-mobile-list { display: block; }
+            .cr-preview { min-block-size: 300px; }
         }
 
         /* RTL Support */
@@ -11224,54 +11446,64 @@ Thank you for shopping with {store_name}!</textarea>
 
             <!-- F. CUSTOMER REVIEWS TAB -->
             <div id="reviews" class="tab-content">
-                <div class="card glass">
+                <div class="card glass cr-root" id="cr-root" dir="ltr">
                     <div class="cr-title-row">
-                        <h2>Google Review Request</h2>
-                        <p>Configure request message and preview in real time.</p>
+                        <h2 data-cr-i18n="title">Google Review Request</h2>
+                        <p data-cr-i18n="subtitle">Configure request message and preview in real time.</p>
                     </div>
-                    <div class="cr-layout">
+
+                    <div class="cr-subtabs">
+                        <button type="button" class="cr-subtab active" id="cr-sub-config" onclick="crSwitchSubtab('config')" data-cr-i18n="subtab_config">Configuration</button>
+                        <button type="button" class="cr-subtab" id="cr-sub-preview" onclick="crSwitchSubtab('preview')" data-cr-i18n="subtab_preview">Preview</button>
+                        <button type="button" class="cr-subtab" id="cr-sub-logs" onclick="crSwitchSubtab('logs')" data-cr-i18n="subtab_logs">Logs</button>
+                    </div>
+
+                    <div class="cr-subpanel active" id="cr-panel-config">
                         <section class="cr-card">
-                            <div class="cr-label">Channel</div>
+                            <label class="cr-label" for="cr-channel-segment" data-cr-i18n="label_channel">Channel</label>
                             <div class="cr-segment" id="cr-channel-segment">
-                                <button type="button" class="cr-seg-btn active" id="cr-ch-sms" onclick="crSetChannel('sms')">SMS</button>
-                                <button type="button" class="cr-seg-btn" id="cr-ch-email" onclick="crSetChannel('email')">Email</button>
-                                <button type="button" class="cr-seg-btn" id="cr-ch-web" onclick="crSetChannel('webqr')">Web/QR</button>
+                                <button type="button" class="cr-seg-btn active" id="cr-ch-sms" onclick="crSetChannel('sms')" data-cr-i18n="channel_sms">SMS</button>
+                                <button type="button" class="cr-seg-btn" id="cr-ch-email" onclick="crSetChannel('email')" data-cr-i18n="channel_email">Email</button>
+                                <button type="button" class="cr-seg-btn" id="cr-ch-web" onclick="crSetChannel('webqr')" data-cr-i18n="channel_webqr">Web/QR</button>
                             </div>
 
                             <label class="cr-field">
-                                <span class="cr-label">Google Review Link</span>
-                                <input id="cr-review-link" type="text" placeholder="https://g.page/r/your-business/review">
+                                <span class="cr-label" data-cr-i18n="label_review_link">Google Review Link</span>
+                                <input id="cr-review-link" type="text">
                             </label>
 
                             <label class="cr-field">
-                                <span class="cr-label">CTA Button Label</span>
-                                <input id="cr-cta-label" type="text" placeholder="Leave a Review">
+                                <span class="cr-label" data-cr-i18n="label_cta">CTA Button Label</span>
+                                <input id="cr-cta-label" type="text">
                             </label>
 
                             <label class="cr-field">
-                                <span class="cr-label">Message Template</span>
-                                <textarea id="cr-message" rows="6" placeholder="Type your review request..."></textarea>
+                                <span class="cr-label" data-cr-i18n="label_message">Message Template</span>
+                                <textarea id="cr-message" rows="6"></textarea>
                             </label>
 
-                            <div class="cr-label">Language</div>
+                            <label class="cr-label" for="cr-lang-segment" data-cr-i18n="label_language">Language</label>
                             <div class="cr-segment" id="cr-lang-segment">
                                 <button type="button" class="cr-seg-btn active" id="cr-lang-en" onclick="crSetLanguage('en')">English</button>
                                 <button type="button" class="cr-seg-btn" id="cr-lang-ar" onclick="crSetLanguage('ar')">العربية</button>
                             </div>
 
                             <div class="cr-actions">
-                                <button type="button" class="pill-btn" onclick="crResetDefaults()">Reset to Default</button>
-                                <button type="button" class="pill-btn" onclick="crCopyMessage()">Copy Message</button>
-                                <button type="button" class="pill-btn primary" onclick="crCopyLink()">Copy Review Link</button>
+                                <button type="button" class="pill-btn" onclick="crResetDefaults()" data-cr-i18n="btn_reset">Reset to Default</button>
+                                <button type="button" class="pill-btn" onclick="crCopyMessage()" data-cr-i18n="btn_copy_message">Copy Message</button>
+                                <button type="button" class="pill-btn" onclick="crCopyLink()" data-cr-i18n="btn_copy_link">Copy Review Link</button>
+                                <button type="button" class="pill-btn primary" onclick="crSimulateSend()" data-cr-i18n="btn_simulate_send">Simulate Send</button>
                             </div>
                         </section>
+                    </div>
 
+                    <div class="cr-subpanel" id="cr-panel-preview">
                         <section class="cr-card">
                             <div class="cr-preview-head">
-                                <h3>Live Preview</h3>
+                                <h3 data-cr-i18n="preview_title">Live Preview</h3>
                                 <span id="cr-preview-channel-pill">SMS</span>
                             </div>
-                            <div class="cr-preview" id="cr-preview-root">
+                            <div class="cr-preview" id="cr-preview-root" dir="ltr">
                                 <div class="cr-preview-view active" id="cr-preview-sms">
                                     <div class="cr-phone-shell">
                                         <div class="cr-sms-bubble">
@@ -11280,7 +11512,6 @@ Thank you for shopping with {store_name}!</textarea>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="cr-preview-view" id="cr-preview-email">
                                     <div class="cr-email-card">
                                         <div class="cr-email-subject" id="cr-preview-email-subject"></div>
@@ -11289,7 +11520,6 @@ Thank you for shopping with {store_name}!</textarea>
                                         <div class="cr-link-chip" id="cr-preview-email-link"></div>
                                     </div>
                                 </div>
-
                                 <div class="cr-preview-view" id="cr-preview-webqr">
                                     <div class="cr-web-card">
                                         <p id="cr-preview-web-message"></p>
@@ -11297,11 +11527,52 @@ Thank you for shopping with {store_name}!</textarea>
                                         <div class="cr-link-chip" id="cr-preview-web-link"></div>
                                         <div class="cr-qr-placeholder">
                                             <div class="cr-qr-grid"></div>
-                                            <span>QR Preview</span>
+                                            <span data-cr-i18n="qr_preview_label">QR Preview</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </section>
+                    </div>
+
+                    <div class="cr-subpanel" id="cr-panel-logs">
+                        <section class="cr-card">
+                            <div class="cr-logs-toolbar">
+                                <div class="cr-summary-chips" id="cr-summary-chips"></div>
+                                <div class="cr-inline-clear">
+                                    <button type="button" class="pill-btn" id="cr-clear-logs-btn" onclick="crToggleClearConfirm()" data-cr-i18n="btn_clear_logs">Clear all logs</button>
+                                    <div id="cr-clear-confirm" class="cr-clear-confirm">
+                                        <span data-cr-i18n="confirm_clear">Confirm clear?</span>
+                                        <button type="button" class="pill-btn danger" onclick="crClearAllLogs(true)" data-cr-i18n="confirm_yes">Yes</button>
+                                        <button type="button" class="pill-btn" onclick="crClearAllLogs(false)" data-cr-i18n="confirm_no">No</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cr-filter-row">
+                                <select id="cr-filter-status" class="cr-filter-select" onchange="crRenderLogs()"></select>
+                                <select id="cr-filter-channel" class="cr-filter-select" onchange="crRenderLogs()"></select>
+                                <select id="cr-filter-date" class="cr-filter-select" onchange="crRenderLogs()"></select>
+                                <input id="cr-filter-search" class="cr-filter-input" type="text" oninput="crRenderLogs()">
+                            </div>
+
+                            <div class="cr-logs-table-wrap">
+                                <table class="cr-logs-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-cr-i18n="col_time">Time</th>
+                                            <th data-cr-i18n="col_status">Status</th>
+                                            <th data-cr-i18n="col_channel">Channel</th>
+                                            <th data-cr-i18n="col_recipient">Recipient</th>
+                                            <th data-cr-i18n="col_preview">Preview</th>
+                                            <th data-cr-i18n="col_actions">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cr-logs-table-body"></tbody>
+                                </table>
+                            </div>
+                            <div class="cr-logs-mobile-list" id="cr-logs-mobile-list"></div>
+                            <div class="cr-logs-empty" id="cr-logs-empty" data-cr-i18n="logs_empty">No logs yet.</div>
                         </section>
                     </div>
                 </div>
@@ -16192,53 +16463,234 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     // ==========================================
-    //     CUSTOMER REVIEWS (LOCAL CONFIG ONLY)
+    //     CUSTOMER REVIEWS (LOCAL CONFIG + LOGS)
     // ==========================================
-    const CR_STORAGE_KEY = 'customerReviewsConfig.v1';
+    const CR_CONFIG_KEY = 'customerReviewsConfig.v2';
+    const CR_LANG_KEY = 'cr_lang';
+    const CR_LOGS_KEY = 'cr_review_logs';
+    const CR_LAST_SENT_KEY = 'cr_last_sent_at';
+    const CR_STATUSES = ['queued', 'sent', 'not_sent', 'failed'];
+    const CR_CHANNELS = ['sms', 'email', 'webqr'];
+    const crI18n = {
+        en: {
+            title: 'Google Review Request',
+            subtitle: 'Configure request message and preview in real time.',
+            subtab_config: 'Configuration',
+            subtab_preview: 'Preview',
+            subtab_logs: 'Logs',
+            label_channel: 'Channel',
+            label_review_link: 'Google Review Link',
+            label_cta: 'CTA Button Label',
+            label_message: 'Message Template',
+            label_language: 'Language',
+            channel_sms: 'SMS',
+            channel_email: 'Email',
+            channel_webqr: 'Web/QR',
+            btn_reset: 'Reset to Default',
+            btn_copy_message: 'Copy Message',
+            btn_copy_link: 'Copy Review Link',
+            btn_simulate_send: 'Simulate Send',
+            btn_clear_logs: 'Clear all logs',
+            preview_title: 'Live Preview',
+            qr_preview_label: 'QR Preview',
+            ph_link: 'https://g.page/r/your-business/review',
+            ph_cta: 'Leave a Review',
+            ph_message: 'Type your review request...',
+            ph_search: 'Search recipient or message...',
+            status_all: 'All Statuses',
+            status_sent: 'Sent',
+            status_failed: 'Failed',
+            status_not_sent: 'Not sent',
+            status_queued: 'Queued',
+            channel_all: 'All Channels',
+            date_all: 'All Time',
+            date_today: 'Today',
+            date_7d: '7 Days',
+            date_30d: '30 Days',
+            col_time: 'Time',
+            col_status: 'Status',
+            col_channel: 'Channel',
+            col_recipient: 'Recipient',
+            col_preview: 'Preview',
+            col_actions: 'Actions',
+            action_view: 'View',
+            action_hide: 'Hide',
+            action_delete: 'Delete',
+            logs_empty: 'No logs yet.',
+            confirm_clear: 'Confirm clear?',
+            confirm_yes: 'Yes',
+            confirm_no: 'No',
+            summary_total: 'Total',
+            summary_sent: 'Sent',
+            summary_failed: 'Failed',
+            summary_not_sent: 'Not sent',
+            summary_queued: 'Queued',
+            details_title: 'Details',
+            detail_channel: 'Channel',
+            detail_lang: 'Language',
+            detail_link: 'Review link',
+            detail_message: 'Message snapshot',
+            detail_cta: 'CTA snapshot',
+            detail_error: 'Error',
+            subject_line: 'Subject: We would love your Google review',
+            toast_copied_message: 'Message copied',
+            toast_copied_link: 'Review link copied',
+            toast_copy_failed: 'Copy failed',
+            toast_required: 'Review link and message are required',
+            toast_log_deleted: 'Log deleted',
+            toast_logs_cleared: 'All logs cleared',
+            toast_simulated: 'Send simulation added'
+        },
+        ar: {
+            title: 'طلب مراجعة جوجل',
+            subtitle: 'اضبط رسالة الطلب وشاهد المعاينة مباشرة.',
+            subtab_config: 'الإعدادات',
+            subtab_preview: 'المعاينة',
+            subtab_logs: 'السجل',
+            label_channel: 'القناة',
+            label_review_link: 'رابط مراجعة جوجل',
+            label_cta: 'نص زر الدعوة',
+            label_message: 'قالب الرسالة',
+            label_language: 'اللغة',
+            channel_sms: 'رسالة SMS',
+            channel_email: 'بريد إلكتروني',
+            channel_webqr: 'ويب/QR',
+            btn_reset: 'إعادة الافتراضي',
+            btn_copy_message: 'نسخ الرسالة',
+            btn_copy_link: 'نسخ رابط المراجعة',
+            btn_simulate_send: 'محاكاة إرسال',
+            btn_clear_logs: 'مسح كل السجلات',
+            preview_title: 'معاينة مباشرة',
+            qr_preview_label: 'معاينة QR',
+            ph_link: 'https://g.page/r/your-business/review',
+            ph_cta: 'قيّمنا على جوجل',
+            ph_message: 'اكتب رسالة طلب المراجعة...',
+            ph_search: 'ابحث في المستلم أو الرسالة...',
+            status_all: 'كل الحالات',
+            status_sent: 'تم الإرسال',
+            status_failed: 'فشل',
+            status_not_sent: 'لم يُرسل',
+            status_queued: 'قيد الانتظار',
+            channel_all: 'كل القنوات',
+            date_all: 'كل الوقت',
+            date_today: 'اليوم',
+            date_7d: '7 أيام',
+            date_30d: '30 يوم',
+            col_time: 'الوقت',
+            col_status: 'الحالة',
+            col_channel: 'القناة',
+            col_recipient: 'المستلم',
+            col_preview: 'المعاينة',
+            col_actions: 'الإجراءات',
+            action_view: 'عرض',
+            action_hide: 'إخفاء',
+            action_delete: 'حذف',
+            logs_empty: 'لا توجد سجلات بعد.',
+            confirm_clear: 'تأكيد المسح؟',
+            confirm_yes: 'نعم',
+            confirm_no: 'لا',
+            summary_total: 'الإجمالي',
+            summary_sent: 'المرسل',
+            summary_failed: 'الفاشل',
+            summary_not_sent: 'غير المرسل',
+            summary_queued: 'قيد الانتظار',
+            details_title: 'تفاصيل',
+            detail_channel: 'القناة',
+            detail_lang: 'اللغة',
+            detail_link: 'رابط المراجعة',
+            detail_message: 'نسخة الرسالة',
+            detail_cta: 'نسخة زر الدعوة',
+            detail_error: 'الخطأ',
+            subject_line: 'الموضوع: يسعدنا تقييمك لنا على جوجل',
+            toast_copied_message: 'تم نسخ الرسالة',
+            toast_copied_link: 'تم نسخ رابط المراجعة',
+            toast_copy_failed: 'فشل النسخ',
+            toast_required: 'رابط المراجعة والرسالة مطلوبان',
+            toast_log_deleted: 'تم حذف السجل',
+            toast_logs_cleared: 'تم مسح جميع السجلات',
+            toast_simulated: 'تمت إضافة محاكاة الإرسال'
+        }
+    };
     const CR_DEFAULTS = {
-        channel: 'sms',
-        lang: 'en',
-        reviewLink: 'https://g.page/r/digitivia/review',
-        ctaLabel: 'Leave a Review',
-        message: 'Hi {name}, thank you for choosing us. Would you share your experience in a quick Google review?'
+        en: {
+            channel: 'sms',
+            lang: 'en',
+            reviewLink: 'https://g.page/r/digitivia/review',
+            ctaLabel: 'Leave a Review',
+            message: 'Hi {name}, thank you for choosing us. Would you share your experience in a quick Google review?'
+        },
+        ar: {
+            channel: 'sms',
+            lang: 'ar',
+            reviewLink: 'https://g.page/r/digitivia/review',
+            ctaLabel: 'قيّمنا على جوجل',
+            message: 'مرحباً {name}، شكراً لاختيارك لنا. هل يمكنك مشاركة تجربتك بتقييم سريع على جوجل؟'
+        }
     };
-    const CR_DEFAULTS_AR = {
-        channel: 'sms',
-        lang: 'ar',
-        reviewLink: 'https://g.page/r/digitivia/review',
-        ctaLabel: 'قيّمنا على جوجل',
-        message: 'مرحباً {name}، شكراً لاختيارك لنا. هل يمكنك مشاركة تجربتك بتقييم سريع على جوجل؟'
-    };
-    let customerReviewsConfig = { ...CR_DEFAULTS };
+    let customerReviewsConfig = { ...CR_DEFAULTS.en };
     let crInitialized = false;
     let crSaveTimer = null;
+    let crActiveSubtab = 'config';
+    let crExpandedLogId = '';
 
+    function crT(key) {
+        const lang = customerReviewsConfig.lang === 'ar' ? 'ar' : 'en';
+        return crI18n[lang][key] || crI18n.en[key] || key;
+    }
+    function crEscapeHtml(v) {
+        return String(v || '').replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+    function crUid() {
+        return `cr_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    }
     function crGetDefaultsByLang(lang) {
-        return lang === 'ar' ? { ...CR_DEFAULTS_AR } : { ...CR_DEFAULTS };
+        return { ...(lang === 'ar' ? CR_DEFAULTS.ar : CR_DEFAULTS.en) };
+    }
+    function crNormalizeConfig(raw = {}) {
+        const lang = raw.lang === 'ar' ? 'ar' : 'en';
+        return {
+            ...crGetDefaultsByLang(lang),
+            ...raw,
+            lang,
+            channel: CR_CHANNELS.includes(raw.channel) ? raw.channel : 'sms'
+        };
     }
     function crLoadConfigFromLocalStorage() {
         try {
-            const raw = localStorage.getItem(CR_STORAGE_KEY);
-            if (!raw) {
-                customerReviewsConfig = { ...CR_DEFAULTS };
-                return;
-            }
-            const parsed = JSON.parse(raw);
-            customerReviewsConfig = {
-                ...CR_DEFAULTS,
-                ...parsed,
-                lang: parsed?.lang === 'ar' ? 'ar' : 'en',
-                channel: ['sms', 'email', 'webqr'].includes(parsed?.channel) ? parsed.channel : 'sms'
-            };
+            const lang = localStorage.getItem(CR_LANG_KEY) === 'ar' ? 'ar' : 'en';
+            const raw = localStorage.getItem(CR_CONFIG_KEY);
+            customerReviewsConfig = raw ? crNormalizeConfig(JSON.parse(raw)) : crGetDefaultsByLang(lang);
+            customerReviewsConfig.lang = lang;
         } catch (e) {
-            customerReviewsConfig = { ...CR_DEFAULTS };
+            const lang = localStorage.getItem(CR_LANG_KEY) === 'ar' ? 'ar' : 'en';
+            customerReviewsConfig = crGetDefaultsByLang(lang);
         }
     }
     function crSaveConfigToLocalStorageDebounced() {
         clearTimeout(crSaveTimer);
         crSaveTimer = setTimeout(() => {
-            try { localStorage.setItem(CR_STORAGE_KEY, JSON.stringify(customerReviewsConfig)); } catch (e) { /* ignore */ }
+            try {
+                localStorage.setItem(CR_CONFIG_KEY, JSON.stringify(customerReviewsConfig));
+                localStorage.setItem(CR_LANG_KEY, customerReviewsConfig.lang);
+            } catch (e) { /* ignore */ }
         }, 220);
+    }
+    function crLoadLogs() {
+        try {
+            const parsed = JSON.parse(localStorage.getItem(CR_LOGS_KEY) || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return [];
+        }
+    }
+    function crSaveLogs(logs) {
+        try { localStorage.setItem(CR_LOGS_KEY, JSON.stringify(logs)); } catch (e) { /* ignore */ }
+    }
+    function crAddLog(entry) {
+        const logs = crLoadLogs();
+        logs.push(entry);
+        crSaveLogs(logs);
+        localStorage.setItem(CR_LAST_SENT_KEY, entry.timestamp);
     }
     function crGetInputEls() {
         return {
@@ -16246,6 +16698,72 @@ Thank you for shopping with {store_name}!</textarea>
             ctaLabel: document.getElementById('cr-cta-label'),
             message: document.getElementById('cr-message')
         };
+    }
+    function crApplyDir() {
+        const dir = customerReviewsConfig.lang === 'ar' ? 'rtl' : 'ltr';
+        const root = document.getElementById('cr-root');
+        const previewRoot = document.getElementById('cr-preview-root');
+        if (root) root.setAttribute('dir', dir);
+        if (previewRoot) previewRoot.setAttribute('dir', dir);
+        const { message, reviewLink, ctaLabel } = crGetInputEls();
+        [message, reviewLink, ctaLabel].forEach((el) => {
+            if (!el) return;
+            el.setAttribute('dir', dir);
+            el.style.textAlign = 'start';
+        });
+    }
+    function crBuildFilterSelectOptions() {
+        const statusSel = document.getElementById('cr-filter-status');
+        const channelSel = document.getElementById('cr-filter-channel');
+        const dateSel = document.getElementById('cr-filter-date');
+        if (!statusSel || !channelSel || !dateSel) return;
+        const sv = statusSel.value || 'all';
+        const cv = channelSel.value || 'all';
+        const dv = dateSel.value || 'all';
+        statusSel.innerHTML = `
+            <option value="all">${crT('status_all')}</option>
+            <option value="sent">${crT('status_sent')}</option>
+            <option value="failed">${crT('status_failed')}</option>
+            <option value="not_sent">${crT('status_not_sent')}</option>
+            <option value="queued">${crT('status_queued')}</option>
+        `;
+        channelSel.innerHTML = `
+            <option value="all">${crT('channel_all')}</option>
+            <option value="sms">${crT('channel_sms')}</option>
+            <option value="email">${crT('channel_email')}</option>
+            <option value="webqr">${crT('channel_webqr')}</option>
+        `;
+        dateSel.innerHTML = `
+            <option value="all">${crT('date_all')}</option>
+            <option value="today">${crT('date_today')}</option>
+            <option value="7d">${crT('date_7d')}</option>
+            <option value="30d">${crT('date_30d')}</option>
+        `;
+        statusSel.value = sv;
+        channelSel.value = cv;
+        dateSel.value = dv;
+    }
+    function crApplyI18n() {
+        document.querySelectorAll('[data-cr-i18n]').forEach((el) => {
+            const key = el.getAttribute('data-cr-i18n');
+            if (key) el.textContent = crT(key);
+        });
+        const { reviewLink, ctaLabel, message } = crGetInputEls();
+        const search = document.getElementById('cr-filter-search');
+        if (reviewLink) reviewLink.placeholder = crT('ph_link');
+        if (ctaLabel) ctaLabel.placeholder = crT('ph_cta');
+        if (message) message.placeholder = crT('ph_message');
+        if (search) search.placeholder = crT('ph_search');
+        crBuildFilterSelectOptions();
+    }
+    function crSwitchSubtab(name) {
+        crActiveSubtab = ['config', 'preview', 'logs'].includes(name) ? name : 'config';
+        document.querySelectorAll('.cr-subtab').forEach((el) => el.classList.remove('active'));
+        document.querySelectorAll('.cr-subpanel').forEach((el) => el.classList.remove('active'));
+        document.getElementById(`cr-sub-${crActiveSubtab}`)?.classList.add('active');
+        document.getElementById(`cr-panel-${crActiveSubtab}`)?.classList.add('active');
+        if (crActiveSubtab === 'logs') crRenderLogs();
+        if (crActiveSubtab === 'preview') crRenderPreview();
     }
     function crBindInputListeners() {
         const { reviewLink, ctaLabel, message } = crGetInputEls();
@@ -16273,99 +16791,273 @@ Thank you for shopping with {store_name}!</textarea>
                 crRenderPreview();
             });
         }
+        const search = document.getElementById('cr-filter-search');
+        if (search && !search.dataset.bound) {
+            search.dataset.bound = '1';
+            search.addEventListener('input', () => crRenderLogs());
+        }
     }
     function crSetChannel(channel) {
-        if (!['sms', 'email', 'webqr'].includes(channel)) return;
+        if (!CR_CHANNELS.includes(channel)) return;
         customerReviewsConfig.channel = channel;
         crSaveConfigToLocalStorageDebounced();
         crRenderPreview();
     }
     function crSetLanguage(lang) {
         if (!['en', 'ar'].includes(lang)) return;
-        const wasLang = customerReviewsConfig.lang;
+        const prevLang = customerReviewsConfig.lang;
         customerReviewsConfig.lang = lang;
-        if (!customerReviewsConfig.message || customerReviewsConfig.message === crGetDefaultsByLang(wasLang).message) {
-            customerReviewsConfig.message = crGetDefaultsByLang(lang).message;
-        }
-        if (!customerReviewsConfig.ctaLabel || customerReviewsConfig.ctaLabel === crGetDefaultsByLang(wasLang).ctaLabel) {
-            customerReviewsConfig.ctaLabel = crGetDefaultsByLang(lang).ctaLabel;
-        }
+        localStorage.setItem(CR_LANG_KEY, lang);
+        const oldDefaults = crGetDefaultsByLang(prevLang);
+        const newDefaults = crGetDefaultsByLang(lang);
+        if (!customerReviewsConfig.message || customerReviewsConfig.message === oldDefaults.message) customerReviewsConfig.message = newDefaults.message;
+        if (!customerReviewsConfig.ctaLabel || customerReviewsConfig.ctaLabel === oldDefaults.ctaLabel) customerReviewsConfig.ctaLabel = newDefaults.ctaLabel;
         crSaveConfigToLocalStorageDebounced();
+        crApplyI18n();
+        crApplyDir();
         crRenderPreview();
+        crRenderLogs();
+    }
+    function crStatusLabel(status) {
+        return crT(`status_${status}`) || status;
+    }
+    function crChannelLabel(channel) {
+        return crT(`channel_${channel}`) || channel;
     }
     function crRenderPreview() {
         const root = document.getElementById('cr-preview-root');
         if (!root) return;
+        crApplyDir();
         const isAr = customerReviewsConfig.lang === 'ar';
-        const dir = isAr ? 'rtl' : 'ltr';
-        const channelLabelMap = { sms: 'SMS', email: 'Email', webqr: 'Web/QR' };
-        const safeLink = customerReviewsConfig.reviewLink?.trim() || (isAr ? 'رابط المراجعة' : 'Review link');
-        const safeCta = customerReviewsConfig.ctaLabel?.trim() || (isAr ? 'إرسال المراجعة' : 'Submit Review');
-        const safeMsg = customerReviewsConfig.message?.trim() || (isAr ? 'اكتب رسالة طلب المراجعة...' : 'Write your review request...');
-        root.setAttribute('dir', dir);
-        root.style.textAlign = 'start';
-
+        const safeLink = customerReviewsConfig.reviewLink?.trim() || crT('ph_link');
+        const safeCta = customerReviewsConfig.ctaLabel?.trim() || crT('ph_cta');
+        const safeMsg = customerReviewsConfig.message?.trim() || crT('ph_message');
         const { reviewLink, ctaLabel, message } = crGetInputEls();
         if (reviewLink) reviewLink.value = customerReviewsConfig.reviewLink || '';
         if (ctaLabel) ctaLabel.value = customerReviewsConfig.ctaLabel || '';
-        if (message) {
-            message.value = customerReviewsConfig.message || '';
-            message.setAttribute('dir', dir);
-            message.style.textAlign = 'start';
-        }
+        if (message) message.value = customerReviewsConfig.message || '';
 
-        document.querySelectorAll('.cr-seg-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`cr-ch-${customerReviewsConfig.channel}`)?.classList.add('active');
+        ['sms', 'email', 'web'].forEach((k) => document.getElementById(`cr-ch-${k}`)?.classList.remove('active'));
+        document.getElementById(`cr-ch-${customerReviewsConfig.channel === 'webqr' ? 'web' : customerReviewsConfig.channel}`)?.classList.add('active');
+        ['en', 'ar'].forEach((k) => document.getElementById(`cr-lang-${k}`)?.classList.remove('active'));
         document.getElementById(`cr-lang-${customerReviewsConfig.lang}`)?.classList.add('active');
 
-        document.querySelectorAll('.cr-preview-view').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.cr-preview-view').forEach((el) => el.classList.remove('active'));
         document.getElementById(`cr-preview-${customerReviewsConfig.channel}`)?.classList.add('active');
-        const channelPill = document.getElementById('cr-preview-channel-pill');
-        if (channelPill) channelPill.textContent = channelLabelMap[customerReviewsConfig.channel];
 
+        const channelPill = document.getElementById('cr-preview-channel-pill');
+        if (channelPill) channelPill.textContent = crChannelLabel(customerReviewsConfig.channel);
         const smsMsg = document.getElementById('cr-preview-sms-message');
         const smsLink = document.getElementById('cr-preview-sms-link');
         if (smsMsg) smsMsg.textContent = safeMsg;
         if (smsLink) smsLink.textContent = safeLink;
-
         const emailSubject = document.getElementById('cr-preview-email-subject');
         const emailBody = document.getElementById('cr-preview-email-body');
         const emailCta = document.getElementById('cr-preview-email-cta');
         const emailLink = document.getElementById('cr-preview-email-link');
-        if (emailSubject) emailSubject.textContent = isAr ? 'الموضوع: نرحب بتقييمك على جوجل' : 'Subject: We would love your Google review';
+        if (emailSubject) emailSubject.textContent = crT('subject_line');
         if (emailBody) emailBody.textContent = safeMsg;
         if (emailCta) emailCta.textContent = safeCta;
         if (emailLink) emailLink.textContent = safeLink;
-
         const webMsg = document.getElementById('cr-preview-web-message');
         const webCta = document.getElementById('cr-preview-web-cta');
         const webLink = document.getElementById('cr-preview-web-link');
         if (webMsg) webMsg.textContent = safeMsg;
         if (webCta) webCta.textContent = safeCta;
         if (webLink) webLink.textContent = safeLink;
+        root.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+        root.style.textAlign = 'start';
+    }
+    function crGetFilters() {
+        return {
+            status: document.getElementById('cr-filter-status')?.value || 'all',
+            channel: document.getElementById('cr-filter-channel')?.value || 'all',
+            date: document.getElementById('cr-filter-date')?.value || 'all',
+            search: (document.getElementById('cr-filter-search')?.value || '').toLowerCase().trim()
+        };
+    }
+    function crFilterLogs(logs, filters) {
+        const now = Date.now();
+        const dayMs = 24 * 60 * 60 * 1000;
+        return logs.filter((log) => {
+            if (filters.status !== 'all' && log.status !== filters.status) return false;
+            if (filters.channel !== 'all' && log.channel !== filters.channel) return false;
+            if (filters.date !== 'all') {
+                const ts = new Date(log.timestamp).getTime();
+                if (Number.isNaN(ts)) return false;
+                if (filters.date === 'today' && ts < now - dayMs) return false;
+                if (filters.date === '7d' && ts < now - (7 * dayMs)) return false;
+                if (filters.date === '30d' && ts < now - (30 * dayMs)) return false;
+            }
+            if (filters.search) {
+                const hay = `${log.recipient || ''} ${log.message_snapshot || ''}`.toLowerCase();
+                if (!hay.includes(filters.search)) return false;
+            }
+            return true;
+        });
+    }
+    function crSummaryHTML(logs) {
+        const counts = {
+            total: logs.length,
+            sent: logs.filter((l) => l.status === 'sent').length,
+            failed: logs.filter((l) => l.status === 'failed').length,
+            not_sent: logs.filter((l) => l.status === 'not_sent').length,
+            queued: logs.filter((l) => l.status === 'queued').length
+        };
+        return `
+            <span class="cr-chip">${crT('summary_total')}: ${counts.total}</span>
+            <span class="cr-chip">${crT('summary_sent')}: ${counts.sent}</span>
+            <span class="cr-chip">${crT('summary_failed')}: ${counts.failed}</span>
+            <span class="cr-chip">${crT('summary_not_sent')}: ${counts.not_sent}</span>
+            <span class="cr-chip">${crT('summary_queued')}: ${counts.queued}</span>
+        `;
+    }
+    function crLogDetailsHTML(log) {
+        return `<div class="cr-row-details">
+            <strong>${crT('details_title')}</strong>
+            ${crT('detail_channel')}: ${crEscapeHtml(crChannelLabel(log.channel))}<br>
+            ${crT('detail_lang')}: ${crEscapeHtml(log.language || '-')}<br>
+            ${crT('detail_link')}: ${crEscapeHtml(log.review_link || '-')}<br>
+            ${crT('detail_cta')}: ${crEscapeHtml(log.cta_label_snapshot || '-')}<br>
+            ${crT('detail_message')}: ${crEscapeHtml(log.message_snapshot || '-')}
+            ${log.error ? `<br>${crT('detail_error')}: ${crEscapeHtml(log.error)}` : ''}
+        </div>`;
+    }
+    function crToggleLogDetails(id) {
+        crExpandedLogId = crExpandedLogId === id ? '' : id;
+        crRenderLogs();
+    }
+    function crDeleteLog(id) {
+        const logs = crLoadLogs().filter((l) => l.id !== id);
+        crSaveLogs(logs);
+        if (crExpandedLogId === id) crExpandedLogId = '';
+        crRenderLogs();
+        showToast(crT('toast_log_deleted'), 'success');
+    }
+    function crToggleClearConfirm() {
+        const panel = document.getElementById('cr-clear-confirm');
+        if (!panel) return;
+        panel.classList.toggle('active');
+    }
+    function crClearAllLogs(confirmed) {
+        const panel = document.getElementById('cr-clear-confirm');
+        if (!confirmed) {
+            panel?.classList.remove('active');
+            return;
+        }
+        crExpandedLogId = '';
+        crSaveLogs([]);
+        panel?.classList.remove('active');
+        crRenderLogs();
+        showToast(crT('toast_logs_cleared'), 'success');
+    }
+    function crRenderLogs() {
+        const allLogs = crLoadLogs().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const filters = crGetFilters();
+        const logs = crFilterLogs(allLogs, filters);
+        const summary = document.getElementById('cr-summary-chips');
+        if (summary) summary.innerHTML = crSummaryHTML(allLogs);
+        const tableBody = document.getElementById('cr-logs-table-body');
+        const mobileList = document.getElementById('cr-logs-mobile-list');
+        const empty = document.getElementById('cr-logs-empty');
+        if (!tableBody || !mobileList || !empty) return;
+        if (!logs.length) {
+            tableBody.innerHTML = '';
+            mobileList.innerHTML = '';
+            empty.style.display = 'block';
+            return;
+        }
+        empty.style.display = 'none';
+        tableBody.innerHTML = logs.map((log) => {
+            const preview = (log.message_snapshot || '').slice(0, 80);
+            const expanded = crExpandedLogId === log.id;
+            return `<tr>
+                <td>${new Date(log.timestamp).toLocaleString(customerReviewsConfig.lang === 'ar' ? 'ar-EG' : 'en-US')}</td>
+                <td><span class="cr-status ${crEscapeHtml(log.status)}">${crEscapeHtml(crStatusLabel(log.status))}</span></td>
+                <td>${crEscapeHtml(crChannelLabel(log.channel))}</td>
+                <td>${crEscapeHtml(log.recipient || '-')}</td>
+                <td>${crEscapeHtml(preview)}</td>
+                <td>
+                    <div class="cr-actions-inline">
+                        <button class="pill-btn" onclick="crToggleLogDetails('${log.id}')">${expanded ? crT('action_hide') : crT('action_view')}</button>
+                        <button class="pill-btn danger" onclick="crDeleteLog('${log.id}')">${crT('action_delete')}</button>
+                    </div>
+                    ${expanded ? crLogDetailsHTML(log) : ''}
+                </td>
+            </tr>`;
+        }).join('');
+        mobileList.innerHTML = logs.map((log) => {
+            const expanded = crExpandedLogId === log.id;
+            return `<div class="cr-log-card">
+                <div class="cr-log-row"><strong>${crT('col_time')}</strong><span>${new Date(log.timestamp).toLocaleString(customerReviewsConfig.lang === 'ar' ? 'ar-EG' : 'en-US')}</span></div>
+                <div class="cr-log-row"><strong>${crT('col_status')}</strong><span><span class="cr-status ${crEscapeHtml(log.status)}">${crEscapeHtml(crStatusLabel(log.status))}</span></span></div>
+                <div class="cr-log-row"><strong>${crT('col_channel')}</strong><span>${crEscapeHtml(crChannelLabel(log.channel))}</span></div>
+                <div class="cr-log-row"><strong>${crT('col_recipient')}</strong><span>${crEscapeHtml(log.recipient || '-')}</span></div>
+                <div class="cr-log-row"><strong>${crT('col_preview')}</strong><span>${crEscapeHtml((log.message_snapshot || '').slice(0, 96))}</span></div>
+                <div class="cr-actions-inline">
+                    <button class="pill-btn" onclick="crToggleLogDetails('${log.id}')">${expanded ? crT('action_hide') : crT('action_view')}</button>
+                    <button class="pill-btn danger" onclick="crDeleteLog('${log.id}')">${crT('action_delete')}</button>
+                </div>
+                ${expanded ? crLogDetailsHTML(log) : ''}
+            </div>`;
+        }).join('');
     }
     async function crCopyMessage() {
-        const text = customerReviewsConfig.message || '';
         try {
-            await navigator.clipboard.writeText(text);
-            showToast('Message copied', 'success');
+            await navigator.clipboard.writeText(customerReviewsConfig.message || '');
+            showToast(crT('toast_copied_message'), 'success');
         } catch (e) {
-            showToast('Copy failed', 'error');
+            showToast(crT('toast_copy_failed'), 'error');
         }
     }
     async function crCopyLink() {
-        const text = customerReviewsConfig.reviewLink || '';
         try {
-            await navigator.clipboard.writeText(text);
-            showToast('Review link copied', 'success');
+            await navigator.clipboard.writeText(customerReviewsConfig.reviewLink || '');
+            showToast(crT('toast_copied_link'), 'success');
         } catch (e) {
-            showToast('Copy failed', 'error');
+            showToast(crT('toast_copy_failed'), 'error');
         }
     }
     function crResetDefaults() {
-        customerReviewsConfig = crGetDefaultsByLang(customerReviewsConfig.lang || 'en');
+        const lang = customerReviewsConfig.lang === 'ar' ? 'ar' : 'en';
+        customerReviewsConfig = { ...crGetDefaultsByLang(lang), channel: customerReviewsConfig.channel };
         crSaveConfigToLocalStorageDebounced();
+        crApplyI18n();
+        crApplyDir();
         crRenderPreview();
+    }
+    function crSimulateSend() {
+        const reviewLink = (customerReviewsConfig.reviewLink || '').trim();
+        const message = (customerReviewsConfig.message || '').trim();
+        if (!reviewLink || !message) {
+            showToast(crT('toast_required'), 'error');
+            return;
+        }
+        const queuedLog = {
+            id: crUid(),
+            timestamp: new Date().toISOString(),
+            channel: customerReviewsConfig.channel,
+            status: 'queued',
+            recipient: customerReviewsConfig.lang === 'ar' ? 'عميل تجريبي' : 'Demo Recipient',
+            review_link: reviewLink,
+            message_snapshot: message,
+            cta_label_snapshot: (customerReviewsConfig.ctaLabel || '').trim(),
+            language: customerReviewsConfig.lang,
+            error: ''
+        };
+        crAddLog(queuedLog);
+        crRenderLogs();
+        showToast(crT('toast_simulated'), 'success');
+        setTimeout(() => {
+            const logs = crLoadLogs();
+            const idx = logs.findIndex((l) => l.id === queuedLog.id);
+            if (idx === -1) return;
+            logs[idx].status = 'sent';
+            logs[idx].timestamp = new Date().toISOString();
+            crSaveLogs(logs);
+            localStorage.setItem(CR_LAST_SENT_KEY, logs[idx].timestamp);
+            crRenderLogs();
+        }, 900);
     }
     function crInitCustomerReviews() {
         if (!document.getElementById('reviews')) return;
@@ -16376,7 +17068,11 @@ Thank you for shopping with {store_name}!</textarea>
         } else {
             crBindInputListeners();
         }
+        crApplyI18n();
+        crApplyDir();
         crRenderPreview();
+        crRenderLogs();
+        crSwitchSubtab(crActiveSubtab);
     }
 
     // ==========================================
