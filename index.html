@@ -2557,6 +2557,30 @@
             opacity: 0.95;
         }
 
+        .dashboard-partner-badges {
+            margin: 0 1rem 1rem;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .dashboard-partner-badges .partner-chip {
+            width: auto;
+            min-height: 34px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.14);
+            font-size: 0.95rem;
+            flex-wrap: nowrap;
+        }
+
+        [dir="rtl"] .dashboard-partner-badges {
+            justify-content: flex-end;
+        }
+
         @media (max-width: 640px) {
             .partner-strip {
                 margin: 0 0 1rem;
@@ -2571,6 +2595,18 @@
                 min-height: 38px;
                 border-radius: 14px;
                 padding: 8px 10px;
+            }
+
+            .dashboard-partner-badges {
+                margin: 0 1rem 0.8rem;
+                gap: 6px;
+            }
+
+            .dashboard-partner-badges .partner-chip {
+                min-height: 32px;
+                padding: 5px 10px;
+                font-size: 0.82rem;
+                max-width: 100%;
             }
 
             .login-title-meta {
@@ -8231,33 +8267,7 @@
 
     <div id="login-container">
         <div class="card glass login-card">
-            <div class="login-title-wrap">
-                <div class="login-title-main">
-                    <div class="login-title">DIGITIVIA AI AGENT</div>
-                    <div class="login-title-meta">
-                        <span>×</span>
-                        <img class="meta-icon-sm" src="https://i.ibb.co/xtLfZrL7/6033716.png" alt="Meta">
-                        <span>Meta</span>
-                    </div>
-                </div>
-            </div>
-            <div class="partner-strip login-partner-strip">
-                <div class="partner-brand-row">
-                    <img class="partner-brand-logo" src="https://i.ibb.co/93S0JT7Q/download.jpg" alt="WhatChimp x Meta">
-                </div>
-                <div class="partner-chips">
-                    <div class="partner-chip">
-                        <svg class="partner-chip-icon" viewBox="0 0 24 24" fill="#25D366">
-                            <path d="M12.04 2A9.94 9.94 0 0 0 2.1 11.92c0 1.75.46 3.45 1.33 4.95L2 22l5.24-1.38a9.92 9.92 0 0 0 4.8 1.23h.01A9.95 9.95 0 0 0 22 11.93 9.94 9.94 0 0 0 12.04 2zm5.79 14.2c-.24.67-1.39 1.29-1.92 1.37-.51.08-1.16.12-1.87-.11-.44-.14-1-.33-1.72-.64-3.03-1.31-5-4.52-5.15-4.73-.14-.2-1.23-1.65-1.23-3.15 0-1.5.78-2.23 1.05-2.54.27-.3.58-.38.78-.38h.56c.18 0 .42-.07.66.52.25.6.84 2.08.91 2.23.08.15.13.33.02.54-.1.21-.16.34-.31.52-.16.17-.33.38-.47.51-.16.16-.32.33-.14.64.17.31.77 1.27 1.65 2.05 1.15 1.03 2.12 1.35 2.42 1.5.3.14.48.13.65-.08.18-.2.75-.88.95-1.18.2-.3.4-.25.66-.15.28.1 1.73.81 2.03.96.3.15.5.22.57.35.08.13.08.74-.17 1.42z"/>
-                        </svg>
-                        <span><strong>Official WhatsApp Business API</strong></span>
-                    </div>
-                    <div class="partner-chip">
-                        <img class="partner-chip-icon" src="https://i.ibb.co/xtLfZrL7/6033716.png" alt="Meta">
-                        <span><strong>Meta Business Partners</strong></span>
-                    </div>
-                </div>
-            </div>
+            <div class="login-title">DIGITIVIA AI AGENT</div>
             <button class="social-btn google" onclick="performOAuthLogin('google')">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                     <path
@@ -9699,8 +9709,7 @@
             let html = `
             <!-- DASHBOARD TAB -->
             <div id="dashboard" class="tab-content active">
-                <div class="partner-strip">
-                    <div class="partner-chips">
+                <div class="dashboard-partner-badges">
                         <div class="partner-chip">
                             <svg class="partner-chip-icon" viewBox="0 0 24 24" fill="#25D366">
                                 <path d="M12.04 2A9.94 9.94 0 0 0 2.1 11.92c0 1.75.46 3.45 1.33 4.95L2 22l5.24-1.38a9.92 9.92 0 0 0 4.8 1.23h.01A9.95 9.95 0 0 0 22 11.93 9.94 9.94 0 0 0 12.04 2zm5.79 14.2c-.24.67-1.39 1.29-1.92 1.37-.51.08-1.16.12-1.87-.11-.44-.14-1-.33-1.72-.64-3.03-1.31-5-4.52-5.15-4.73-.14-.2-1.23-1.65-1.23-3.15 0-1.5.78-2.23 1.05-2.54.27-.3.58-.38.78-.38h.56c.18 0 .42-.07.66.52.25.6.84 2.08.91 2.23.08.15.13.33.02.54-.1.21-.16.34-.31.52-.16.17-.33.38-.47.51-.16.16-.32.33-.14.64.17.31.77 1.27 1.65 2.05 1.15 1.03 2.12 1.35 2.42 1.5.3.14.48.13.65-.08.18-.2.75-.88.95-1.18.2-.3.4-.25.66-.15.28.1 1.73.81 2.03.96.3.15.5.22.57.35.08.13.08.74-.17 1.42z"/>
@@ -9711,7 +9720,6 @@
                             <img class="partner-chip-icon" src="https://i.ibb.co/xtLfZrL7/6033716.png" alt="Meta">
                             <span><strong>Meta Business Partners Portal</strong></span>
                         </div>
-                    </div>
                 </div>
                 <div class="dashboard-header-new">
                     <div class="header-left">
