@@ -394,10 +394,12 @@
                 "toast_task_rescheduled": "Task rescheduled successfully.",
                 "toast_error_rescheduling": "Error rescheduling task.",
                 "toast_select_contact": "Please select a contact.",
+                "toast_select_channel": "Please select at least one channel.",
                 "toast_task_created": "Manual follow-up scheduled.",
                 "toast_error_creating": "Error creating follow-up task.",
                 "modal_create_no_contacts": "No recent contacts found.",
-                "modal_create_error_loading": "Error loading contacts."
+                "modal_create_error_loading": "Error loading contacts.",
+                "unknown_contact": "Unknown Contact"
             },
             "modals": {
                 "unlock": {
@@ -1044,10 +1046,12 @@
                 "toast_task_rescheduled": "تمت إعادة جدولة المهمة بنجاح.",
                 "toast_error_rescheduling": "خطأ في إعادة جدولة المهمة.",
                 "toast_select_contact": "يرجى اختيار جهة اتصال.",
+                "toast_select_channel": "يرجى اختيار قناة واحدة على الأقل.",
                 "toast_task_created": "تمت جدولة المتابعة اليدوية.",
                 "toast_error_creating": "خطأ في إنشاء مهمة المتابعة.",
                 "modal_create_no_contacts": "لم يتم العثور على جهات اتصال حديثة.",
-                "modal_create_error_loading": "خطأ في تحميل جهات الاتصال."
+                "modal_create_error_loading": "خطأ في تحميل جهات الاتصال.",
+                "unknown_contact": "جهة اتصال غير معروفة"
             },
             "modals": {
                 "pricing": {
@@ -1407,7 +1411,7 @@
         /* CONFIGURATION 2-COLUMN LAYOUT */
         .fu-config-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
             gap: 24px;
             align-items: start;
         }
@@ -1458,6 +1462,31 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 12px;
+        }
+
+        .fu-msg-channel-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .fu-msg-channel-tab {
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.72);
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .fu-msg-channel-tab.active {
+            color: #001414;
+            background: var(--theme-color);
+            border-color: var(--theme-color);
         }
 
         .fu-lang-tabs {
@@ -1565,6 +1594,8 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: sticky;
+            top: 16px;
         }
 
         .fu-preview-tabs {
@@ -1595,19 +1626,31 @@
         }
 
         .fu-preview-screen {
-            padding: 24px;
-            background: #0b141a;
-            min-height: 280px;
+            padding: 18px;
+            background: #06111c;
+            min-height: 320px;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Smartphone Frames (Abstracted) */
         .fu-phone-frame {
-            max-width: 320px;
+            width: min(100%, 360px);
             margin: 0 auto;
-            border-radius: 20px;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .fu-prev-platform {
+            display: none;
+        }
+
+        .fu-prev-platform.active {
+            display: block;
         }
 
         .fu-phone-header {
@@ -1648,11 +1691,14 @@
         }
 
         .fu-phone-body {
-            padding: 20px 14px;
+            padding: 18px 14px;
             background-color: #0b141a;
             background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
             background-repeat: repeat;
-            min-height: 180px;
+            min-height: 190px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
         }
 
         .fu-msg-bubble {
@@ -1662,20 +1708,21 @@
             border-radius: 0 12px 12px 12px;
             font-size: 0.95rem;
             line-height: 1.5;
-            max-width: 85%;
+            max-width: min(82%, 265px);
             position: relative;
             box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+            overflow-wrap: anywhere;
         }
 
         /* Platform variations */
         .fu-prev-ig .fu-phone-header {
-            background: #000;
+            background: #0f1720;
             border-bottom: 1px solid #262626;
         }
 
         .fu-prev-ig .fu-phone-body {
-            background: #000;
-            background-image: none;
+            background: linear-gradient(180deg, #0b1119 0%, #07080c 100%);
+            background-image: radial-gradient(circle at 80% -20%, rgba(220, 39, 67, 0.2), transparent 50%);
         }
 
         .fu-prev-ig .fu-phone-avatar {
@@ -1683,17 +1730,17 @@
         }
 
         .fu-prev-ig .fu-msg-bubble {
-            background: #262626;
-            border-radius: 20px;
+            background: #273545;
+            border-radius: 18px;
         }
 
         .fu-prev-fb .fu-phone-header {
-            background: #242526;
+            background: #17202a;
             border-bottom: 1px solid #3e4042;
         }
 
         .fu-prev-fb .fu-phone-body {
-            background: #18191a;
+            background: linear-gradient(180deg, #101820 0%, #0b131b 100%);
             background-image: none;
         }
 
@@ -1702,7 +1749,8 @@
         }
 
         .fu-prev-fb .fu-msg-bubble {
-            background: #3e4042;
+            background: #1f7aff;
+            color: #fff;
             border-radius: 18px;
         }
 
@@ -1891,7 +1939,7 @@
 
         [dir="rtl"] .fu-msg-bubble {
             border-radius: 12px 0 12px 12px;
-            margin-inline-start: 15%;
+            margin-inline-start: auto;
             align-self: flex-end;
         }
 
@@ -1929,6 +1977,109 @@
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .fu-preview-note {
+            padding: 10px 14px 14px;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.82rem;
+        }
+
+        .fu-inline-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 12000;
+            background: rgba(2, 8, 18, 0.72);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .fu-inline-modal {
+            width: min(96vw, 460px);
+            max-height: 92vh;
+            overflow: auto;
+            border-radius: 18px;
+            padding: 18px;
+            background: #162438;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 22px 58px rgba(0, 0, 0, 0.55);
+        }
+
+        .fu-inline-modal h4 {
+            margin: 0 0 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .fu-inline-modal label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .fu-inline-modal .fu-modal-help {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+        .fu-inline-modal .fu-modal-field {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(0, 0, 0, 0.34);
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .fu-inline-modal .fu-modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        [dir="rtl"] .fu-inline-modal .fu-modal-actions {
+            justify-content: flex-start;
+        }
+
+        body.followups-bg-active {
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 42%),
+                radial-gradient(circle at 88% 75%, rgba(20, 184, 166, 0.18) 0%, transparent 58%);
+        }
+
+        @media (max-width: 1100px) {
+            .fu-preview-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .fu-preview-screen {
+                min-height: 260px;
+                padding: 14px;
+            }
+
+            .fu-phone-frame {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .fu-msg-bubble {
+                max-width: 90%;
+            }
+
+            .fu-inline-modal {
+                width: 100%;
+                padding: 14px;
+            }
         }
 
         .fu-preview-meta {
@@ -11264,6 +11415,11 @@ Thank you for shopping with {store_name}!</textarea>
                                     <p class="fu-note" style="margin-bottom:12px;" data-i18n="followups.config_message_template_note">Customize what gets sent to consumers</p>
                                     
                                     <div class="fu-msg-editor">
+                                        <div class="fu-msg-channel-tabs">
+                                            <button class="fu-msg-channel-tab active" id="fu-ctab-whatsapp" onclick="fuSwitchMessageChannel('whatsapp')">WhatsApp</button>
+                                            <button class="fu-msg-channel-tab" id="fu-ctab-instagram" onclick="fuSwitchMessageChannel('instagram')">Instagram</button>
+                                            <button class="fu-msg-channel-tab" id="fu-ctab-page" onclick="fuSwitchMessageChannel('page')">Messenger</button>
+                                        </div>
                                         <div class="fu-lang-tabs">
                                             <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en">English</button>
                                             <button class="fu-lang-tab" id="fu-ltab-ar" onclick="fuSwitchMsgLang('ar')" data-i18n="followups.config_lang_ar">Arabic</button>
@@ -11286,21 +11442,21 @@ Thank you for shopping with {store_name}!</textarea>
                                     
                                     <div class="fu-channels-grid">
                                         <label class="fu-channel-check">
-                                            <input type="checkbox" id="fu-ch-whatsapp" checked>
+                                            <input type="checkbox" id="fu-ch-whatsapp" checked onchange="fuSyncPreviewTabAvailability()">
                                             <div class="fu-channel-pill whatsapp">
                                                 <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.069-.543c.961.527 1.91.806 3.22.806 3.181 0 5.767-2.586 5.768-5.767 0-3.18-2.586-5.765-5.769-5.765zm3.425 8.121c-.131.369-.747.671-1.029.715-.282.043-.564.07-.847-.013-.284-.083-.733-.243-1.631-.641-1.464-.648-2.42-2.147-2.493-2.245-.073-.098-.593-.787-.593-1.464 0-.678.354-1.012.479-1.144.125-.132.274-.165.365-.165s.182.001.26.002c.084.001.196-.032.307.236.111.268.384.939.418 1.006.035.068.058.147.012.239-.046.094-.069.151-.139.231-.07.081-.147.18-.21.24-.07.068-.142.141-.061.282.081.14.359.593.771.959.53.473.978.618 1.116.685.138.067.218.056.299-.037.081-.094.346-.402.438-.539.091-.137.183-.114.307-.069s.785.369.919.437c.134.067.224.101.258.157.034.056.034.323-.097.692z"/></svg>
                                                 <span>WhatsApp</span>
                                             </div>
                                         </label>
                                         <label class="fu-channel-check">
-                                            <input type="checkbox" id="fu-ch-instagram" checked>
+                                            <input type="checkbox" id="fu-ch-instagram" checked onchange="fuSyncPreviewTabAvailability()">
                                             <div class="fu-channel-pill instagram">
                                                 <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                                                 <span>Instagram</span>
                                             </div>
                                         </label>
                                         <label class="fu-channel-check">
-                                            <input type="checkbox" id="fu-ch-page" checked>
+                                            <input type="checkbox" id="fu-ch-page" checked onchange="fuSyncPreviewTabAvailability()">
                                             <div class="fu-channel-pill messenger">
                                                 <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2c5.523 0 10 4.105 10 9.168 0 2.87-1.439 5.432-3.692 7.135.244.75 1.052 2.6 1.052 2.6-.75-.052-2.316-.6-3.368-1.105C14.93 20.105 13.5 20.337 12 20.337c-5.523 0-10-4.105-10-9.169S6.477 2 12 2zm1.684 11.526l-2.053-2.21-4.105 2.21 4.526-4.842 2.105 2.21 4-2.21-4.473 4.842z"/></svg>
                                                 <span>Messenger</span>
@@ -11339,7 +11495,7 @@ Thank you for shopping with {store_name}!</textarea>
                                         </div>
                                     </div>
 
-                                    <div id="fu-prev-ig" class="fu-phone-frame fu-prev-platform" style="display:none;">
+                                    <div id="fu-prev-ig" class="fu-phone-frame fu-prev-platform">
                                         <div class="fu-phone-header">
                                             <div class="fu-phone-avatar">JD</div>
                                             <div class="fu-phone-meta">
@@ -11354,7 +11510,7 @@ Thank you for shopping with {store_name}!</textarea>
                                         </div>
                                     </div>
 
-                                    <div id="fu-prev-fb" class="fu-phone-frame fu-prev-platform" style="display:none;">
+                                    <div id="fu-prev-fb" class="fu-phone-frame fu-prev-platform">
                                         <div class="fu-phone-header">
                                             <div class="fu-phone-avatar">JD</div>
                                             <div class="fu-phone-meta">
@@ -11412,6 +11568,7 @@ Thank you for shopping with {store_name}!</textarea>
             const overlay = document.getElementById('sidebarOverlay');
             if (sidebar) sidebar.classList.remove('mobile-open');
             if (overlay) overlay.classList.remove('show');
+            document.body.classList.remove('followups-bg-active');
 
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -11440,7 +11597,8 @@ Thank you for shopping with {store_name}!</textarea>
             }
             if (tabId === 'reviews') color = '#FFD700'; // Gold for reviews
             if (tabId === 'followups') {
-                color = '#14b8a6'; // Balanced Teal for followups
+                color = '#1f8e87'; // Muted teal for better text contrast
+                document.body.classList.add('followups-bg-active');
                 if (typeof fuInit === 'function') fuInit();
             }
             if (tabId === 'create-post') {
@@ -16170,6 +16328,95 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     // 2) Configuration / Settings
+    const FU_CHANNELS = ['whatsapp', 'instagram', 'page'];
+    const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page' };
+    const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb' };
+    let fuCurrentMsgLang = 'en';
+    let fuCurrentMessageChannel = 'whatsapp';
+    let fuCurrentPreviewPlatform = 'wa';
+    let fuMessageByChannel = { whatsapp: '', instagram: '', page: '' };
+    let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '' };
+
+    function fuLooksLikePhone(value) {
+        if (!value) return false;
+        const normalized = String(value).trim().replace(/[^\d+]/g, '');
+        return /^\+?\d{6,18}$/.test(normalized);
+    }
+
+    function fuDisplayContact(details, fallbackIndex = null) {
+        const name = (details?.contact_name || '').trim();
+        if (name) return name;
+        const cid = (details?.contact_id || '').trim();
+        if (fuLooksLikePhone(cid)) return cid;
+        if (fallbackIndex !== null) return `${t('followups.unknown_contact')} #${fallbackIndex + 1}`;
+        return t('followups.unknown_contact');
+    }
+
+    function fuParsePerChannelMessage(raw, fallback = '') {
+        if (!raw || typeof raw !== 'string') {
+            return { whatsapp: fallback, instagram: fallback, page: fallback };
+        }
+        const trimmed = raw.trim();
+        if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+            try {
+                const parsed = JSON.parse(trimmed);
+                if (parsed && typeof parsed === 'object') {
+                    return {
+                        whatsapp: String(parsed.whatsapp || fallback || ''),
+                        instagram: String(parsed.instagram || parsed.whatsapp || fallback || ''),
+                        page: String(parsed.page || parsed.messenger || parsed.whatsapp || fallback || '')
+                    };
+                }
+            } catch (e) {
+                console.warn('fuParsePerChannelMessage parse warning:', e);
+            }
+        }
+        return { whatsapp: raw, instagram: raw, page: raw };
+    }
+
+    function fuSetEditorValuesFromState() {
+        const en = document.getElementById('fu-setting-message');
+        const ar = document.getElementById('fu-setting-message-ar');
+        if (en) en.value = fuMessageByChannel[fuCurrentMessageChannel] || '';
+        if (ar) ar.value = fuMessageByChannelAr[fuCurrentMessageChannel] || '';
+    }
+
+    function fuCaptureEditorToState() {
+        const en = document.getElementById('fu-setting-message');
+        const ar = document.getElementById('fu-setting-message-ar');
+        if (en) fuMessageByChannel[fuCurrentMessageChannel] = en.value || '';
+        if (ar) fuMessageByChannelAr[fuCurrentMessageChannel] = ar.value || '';
+    }
+
+    function fuSyncPreviewTabAvailability() {
+        const enabled = {
+            whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked,
+            instagram: !!document.getElementById('fu-ch-instagram')?.checked,
+            page: !!document.getElementById('fu-ch-page')?.checked
+        };
+
+        const previewTabs = [
+            { id: 'fu-ptab-wa', channel: 'whatsapp' },
+            { id: 'fu-ptab-ig', channel: 'instagram' },
+            { id: 'fu-ptab-fb', channel: 'page' }
+        ];
+
+        previewTabs.forEach(tab => {
+            const el = document.getElementById(tab.id);
+            if (!el) return;
+            const isEnabled = enabled[tab.channel];
+            el.disabled = !isEnabled;
+            el.style.opacity = isEnabled ? '1' : '0.45';
+            el.style.cursor = isEnabled ? 'pointer' : 'not-allowed';
+        });
+
+        const currentChannel = fuPreviewToChannelMap[fuCurrentPreviewPlatform];
+        if (!enabled[currentChannel]) {
+            const firstEnabled = FU_CHANNELS.find(ch => enabled[ch]);
+            if (firstEnabled) fuSwitchPreview(fuChannelToPreviewMap[firstEnabled]);
+        }
+    }
+
     async function fuLoadSettings() {
         try {
             if (!currentUserOrgId) return;
@@ -16187,24 +16434,26 @@ Thank you for shopping with {store_name}!</textarea>
             if (data) {
                 if (document.getElementById('fu-setting-enabled'))
                     document.getElementById('fu-setting-enabled').checked = !!data.enabled;
-                if (document.getElementById('fu-setting-delay'))
-                    document.getElementById('fu-setting-delay').value = Math.min(parseInt(data.default_delay_minutes || 60), 1440);
-                if (document.getElementById('fu-setting-max'))
-                    document.getElementById('fu-setting-max').value = data.max_per_conversation || 1;
 
-                if (data.followup_message && document.getElementById('fu-setting-message'))
-                    document.getElementById('fu-setting-message').value = data.followup_message;
-                if (data.followup_message_ar && document.getElementById('fu-setting-message-ar'))
-                    document.getElementById('fu-setting-message-ar').value = data.followup_message_ar;
+                fuMessageByChannel = fuParsePerChannelMessage(
+                    data.followup_message_by_channel ? JSON.stringify(data.followup_message_by_channel) : data.followup_message,
+                    ''
+                );
+                fuMessageByChannelAr = fuParsePerChannelMessage(
+                    data.followup_message_ar_by_channel ? JSON.stringify(data.followup_message_ar_by_channel) : data.followup_message_ar,
+                    ''
+                );
 
                 const channels = data.active_channels || ['whatsapp', 'instagram', 'page'];
-                ['whatsapp', 'instagram', 'page'].forEach(ch => {
+                FU_CHANNELS.forEach(ch => {
                     const el = document.getElementById(`fu-ch-${ch}`);
                     if (el) el.checked = channels.includes(ch);
                 });
-
-                fuUpdatePreview();
             }
+
+            fuSwitchMessageChannel('whatsapp');
+            fuSyncPreviewTabAvailability();
+            fuUpdatePreview();
         } catch (e) {
             console.warn('fuLoadSettings error:', e);
         }
@@ -16212,30 +16461,41 @@ Thank you for shopping with {store_name}!</textarea>
 
     async function fuSaveSettings() {
         if (!currentUserOrgId) return;
+        fuCaptureEditorToState();
 
-        let delayRaw = parseInt(document.getElementById('fu-setting-delay')?.value) || 60;
-        if (delayRaw > 1440) {
-            delayRaw = 1440;
-            document.getElementById('fu-setting-delay').value = 1440;
+        const activeChannels = FU_CHANNELS.filter(ch => document.getElementById(`fu-ch-${ch}`)?.checked);
+        if (activeChannels.length === 0) {
+            showToast(t('followups.toast_select_channel'), 'error');
+            return;
         }
 
-        const activeChannels = ['whatsapp', 'instagram', 'page'].filter(ch => document.getElementById(`fu-ch-${ch}`)?.checked);
-
-        const payload = {
+        const defaultChannel = activeChannels.includes('whatsapp') ? 'whatsapp' : activeChannels[0];
+        const basePayload = {
             org_id: currentUserOrgId,
             enabled: document.getElementById('fu-setting-enabled')?.checked,
-            default_delay_minutes: delayRaw,
-            max_per_conversation: parseInt(document.getElementById('fu-setting-max')?.value) || 1,
-            followup_message: document.getElementById('fu-setting-message')?.value || '',
-            followup_message_ar: document.getElementById('fu-setting-message-ar')?.value || '',
+            followup_message: fuMessageByChannel[defaultChannel] || '',
+            followup_message_ar: fuMessageByChannelAr[defaultChannel] || '',
             active_channels: activeChannels,
             updated_at: new Date().toISOString()
         };
 
+        const extendedPayload = {
+            ...basePayload,
+            followup_message_by_channel: fuMessageByChannel,
+            followup_message_ar_by_channel: fuMessageByChannelAr
+        };
+
         try {
-            const { error } = await supabaseClient
+            let { error } = await supabaseClient
                 .from('followup_settings')
-                .upsert(payload, { onConflict: 'org_id' });
+                .upsert(extendedPayload, { onConflict: 'org_id' });
+
+            if (error && error.message?.toLowerCase().includes('column')) {
+                const fallback = await supabaseClient
+                    .from('followup_settings')
+                    .upsert(basePayload, { onConflict: 'org_id' });
+                error = fallback.error;
+            }
 
             if (error && (error.code === '42P01' || error.message?.includes('does not exist'))) {
                 showToast(t('followups.config_save_ok'), 'success');
@@ -16268,11 +16528,8 @@ Thank you for shopping with {store_name}!</textarea>
         }
     }
 
-    // --- PREVIEW & TEMPLATE LOGIC ---
-    let fuCurrentMsgLang = 'en';
-    let fuCurrentPreviewPlatform = 'wa';
-
     function fuSwitchMsgLang(lang) {
+        fuCaptureEditorToState();
         fuCurrentMsgLang = lang;
         document.querySelectorAll('.fu-lang-tab').forEach(b => b.classList.remove('active'));
         document.getElementById(`fu-ltab-${lang}`)?.classList.add('active');
@@ -16284,16 +16541,37 @@ Thank you for shopping with {store_name}!</textarea>
             document.getElementById('fu-setting-message').style.display = 'none';
             document.getElementById('fu-setting-message-ar').style.display = 'block';
         }
+        fuSetEditorValuesFromState();
+        fuUpdatePreview();
+    }
+
+    function fuSwitchMessageChannel(channel) {
+        fuCaptureEditorToState();
+        fuCurrentMessageChannel = channel;
+        document.querySelectorAll('.fu-msg-channel-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ctab-${channel}`)?.classList.add('active');
+        fuSetEditorValuesFromState();
+        fuSwitchPreview(fuChannelToPreviewMap[channel] || 'wa');
         fuUpdatePreview();
     }
 
     function fuSwitchPreview(plt) {
+        const previewButton = document.getElementById(`fu-ptab-${plt}`);
+        if (previewButton?.disabled) return;
+        fuCaptureEditorToState();
         fuCurrentPreviewPlatform = plt;
         document.querySelectorAll('.fu-preview-tab').forEach(b => b.classList.remove('active'));
         document.getElementById(`fu-ptab-${plt}`)?.classList.add('active');
 
-        document.querySelectorAll('.fu-prev-platform').forEach(p => p.style.display = 'none');
-        document.getElementById(`fu-prev-${plt}`).style.display = 'block';
+        document.querySelectorAll('.fu-prev-platform').forEach(p => p.classList.remove('active'));
+        document.getElementById(`fu-prev-${plt}`)?.classList.add('active');
+        const mappedChannel = fuPreviewToChannelMap[plt];
+        if (mappedChannel) {
+            fuCurrentMessageChannel = mappedChannel;
+            document.querySelectorAll('.fu-msg-channel-tab').forEach(b => b.classList.remove('active'));
+            document.getElementById(`fu-ctab-${mappedChannel}`)?.classList.add('active');
+            fuSetEditorValuesFromState();
+        }
         fuUpdatePreview();
     }
 
@@ -16306,20 +16584,22 @@ Thank you for shopping with {store_name}!</textarea>
         textarea.value = text.substring(0, start) + v + text.substring(end);
         textarea.focus();
         textarea.selectionStart = textarea.selectionEnd = start + v.length;
+        fuCaptureEditorToState();
         fuUpdatePreview();
     }
 
     function fuUpdatePreview() {
-        const rawMsg = (fuCurrentMsgLang === 'en' ? document.getElementById('fu-setting-message')?.value : document.getElementById('fu-setting-message-ar')?.value) || '';
         const isAr = fuCurrentMsgLang === 'ar';
         const sampleName = isAr ? 'أحمد محمد' : 'John Doe';
-
-        const previewText = rawMsg.replace(/\{name\}/g, sampleName)
-            .replace(/\{customer_name\}/g, sampleName)
-            .replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent')
-            .replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
+        fuCaptureEditorToState();
 
         ['wa', 'ig', 'fb'].forEach(k => {
+            const channel = fuPreviewToChannelMap[k];
+            const rawMsg = isAr ? fuMessageByChannelAr[channel] : fuMessageByChannel[channel];
+            const previewText = (rawMsg || '').replace(/\{name\}/g, sampleName)
+                .replace(/\{customer_name\}/g, sampleName)
+                .replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent')
+                .replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
             const el = document.getElementById(`fu-prev-msg-${k}`);
             if (el) {
                 el.innerText = previewText || (isAr ? '[نص المعاينة]' : '[Preview Text]');
@@ -16382,7 +16662,8 @@ Thank you for shopping with {store_name}!</textarea>
                 const c = task.conversation_details || {};
                 const plat = c.platform || task.platform || '';
                 const pMatch = platformFilter === 'all' || plat.toLowerCase().includes(platformFilter);
-                const sMatch = !searchRaw || (c.contact_name || '').toLowerCase().includes(searchRaw) || (c.contact_id || '').toLowerCase().includes(searchRaw) || (task.conversation_id || '').includes(searchRaw);
+                const displayContact = fuDisplayContact(c).toLowerCase();
+                const sMatch = !searchRaw || displayContact.includes(searchRaw);
                 return pMatch && sMatch;
             });
 
@@ -16404,7 +16685,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             html += `<div class="fu-list">`;
             for (const t of filtered) {
-                const cName = t.conversation_details?.contact_name || t.conversation_details?.contact_id || t.conversation_id;
+                const cName = fuDisplayContact(t.conversation_details);
                 const plt = t.conversation_details?.platform || t.platform || 'unknown';
 
                 // Format Due At
@@ -16470,6 +16751,10 @@ Thank you for shopping with {store_name}!</textarea>
 
     // 5) Reschedule Flow
     let fuCurrentRescheduleId = null;
+    function fuCloseModal(modalId) {
+        document.getElementById(modalId)?.remove();
+    }
+
     function fuOpenReschedule(taskId) {
         fuCurrentRescheduleId = taskId;
         const existing = document.getElementById('fu-reschedule-modal');
@@ -16477,20 +16762,22 @@ Thank you for shopping with {store_name}!</textarea>
 
         const m = document.createElement('div');
         m.id = 'fu-reschedule-modal';
-        m.className = 'fu-inline-modal';
-        m.style.insetInlineStart = '50%';
-        m.style.top = '50%';
-        m.style.transform = 'translate(-50%, -50%)';
-        m.style.position = 'fixed';
+        m.className = 'fu-inline-modal-overlay';
+        m.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+        m.onclick = (evt) => {
+            if (evt.target === m) fuCloseModal('fu-reschedule-modal');
+        };
 
         m.innerHTML = `
-            <h4 style="margin:0 0 5px 0;" data-i18n="followups.modal_resch_title">Reschedule Task</h4>
-            <label style="font-size:12px;color:#aaa;" data-i18n="followups.modal_resch_delay">Delay from NOW (Minutes)</label>
-            <p style="font-size:11px; margin:0; color:#888;" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
-            <input type="number" id="fu-resch-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%;">
-            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
-                <button class="pill-btn" onclick="document.getElementById('fu-reschedule-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
-                <button class="pill-btn primary" onclick="fuCommitReschedule()" style="padding:6px 12px;" data-i18n="followups.modal_resch_save">Save</button>
+            <div class="fu-inline-modal">
+                <h4 data-i18n="followups.modal_resch_title">Reschedule Task</h4>
+                <label data-i18n="followups.modal_resch_delay">Delay from NOW (Minutes)</label>
+                <p class="fu-modal-help" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
+                <input class="fu-modal-field" type="number" id="fu-resch-mins" value="60" min="1" max="1440">
+                <div class="fu-modal-actions">
+                    <button class="pill-btn" onclick="fuCloseModal('fu-reschedule-modal')" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
+                    <button class="pill-btn primary" onclick="fuCommitReschedule()" style="padding:6px 12px;" data-i18n="followups.modal_resch_save">Save</button>
+                </div>
             </div>
         `;
         document.body.appendChild(m);
@@ -16521,7 +16808,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             if (error) throw error;
 
-            document.getElementById('fu-reschedule-modal').remove();
+            fuCloseModal('fu-reschedule-modal');
             showToast(t("followups.toast_task_rescheduled"), 'success');
             fuLoadQueue();
 
@@ -16538,37 +16825,32 @@ Thank you for shopping with {store_name}!</textarea>
 
         const m = document.createElement('div');
         m.id = 'fu-create-modal';
-        m.className = 'fu-inline-modal';
-        m.style.insetInlineStart = '50%';
-        m.style.top = '50%';
-        m.style.transform = 'translate(-50%, -50%)';
-        m.style.position = 'fixed';
-        m.style.width = '300px';
+        m.className = 'fu-inline-modal-overlay';
+        m.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+        m.onclick = (evt) => {
+            if (evt.target === m) fuCloseModal('fu-create-modal');
+        };
 
         m.innerHTML = `
-            <h4 style="margin:0 0 10px 0;" data-i18n="followups.modal_create_title">Create Manual Follow-up</h4>
-            <label style="font-size:12px;color:#aaa;" data-i18n="followups.modal_create_cid">Select Contact History</label>
-            <select id="fu-create-cid" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.8); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
-                <option value="">Loading contacts...</option>
-            </select>
+            <div class="fu-inline-modal">
+                <h4 data-i18n="followups.modal_create_title">Create Manual Follow-up</h4>
+                <label data-i18n="followups.modal_create_cid">Select Contact History</label>
+                <select id="fu-create-cid" class="fu-modal-field">
+                    <option value="">${currentLang === 'ar' ? 'جاري تحميل جهات الاتصال...' : 'Loading contacts...'}</option>
+                </select>
 
-            <label style="font-size:12px;color:#aaa;margin-top:10px;display:block;" data-i18n="followups.modal_create_delay">Delay from NOW (Minutes)*</label>
-            <p style="font-size:11px; margin:0; color:#888;" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
-            <input type="number" id="fu-create-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
+                <label data-i18n="followups.modal_create_delay">Delay from NOW (Minutes)*</label>
+                <p class="fu-modal-help" data-i18n="followups.modal_resch_max">Max: 1440 min (24h)</p>
+                <input class="fu-modal-field" type="number" id="fu-create-mins" value="60" min="1" max="1440">
 
-            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:15px;">
-                <button class="pill-btn" onclick="document.getElementById('fu-create-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
-                <button class="pill-btn primary" onclick="fuCommitCreate()" style="padding:6px 12px;" data-i18n="followups.modal_create_btn">Create Task</button>
+                <div class="fu-modal-actions">
+                    <button class="pill-btn" onclick="fuCloseModal('fu-create-modal')" style="padding:6px 12px; background:rgba(255,255,255,0.1);" data-i18n="followups.modal_resch_cancel">Cancel</button>
+                    <button class="pill-btn primary" onclick="fuCommitCreate()" style="padding:6px 12px;" data-i18n="followups.modal_create_btn">Create Task</button>
+                </div>
             </div>
         `;
         document.body.appendChild(m);
-        // Translate dynamically inserted elements using the global t() function
-        m.querySelectorAll('[data-i18n]').forEach(el => {
-            if (typeof t === 'function') {
-                const tr = t(el.getAttribute('data-i18n'));
-                if (tr) el.innerText = tr;
-            }
-        });
+        translateElement(m);
 
         // Fetch recent conversations for selection
         try {
@@ -16578,9 +16860,9 @@ Thank you for shopping with {store_name}!</textarea>
                 selectEl.innerHTML = `<option value="">${t('followups.modal_create_no_contacts')}</option>`;
                 return;
             }
-            selectEl.innerHTML = data.map(c => {
-                const text = c.contact_name || c.contact_id || c.id;
-                return `<option value="${c.id}" data-plat="${c.platform}">${text} (${c.platform})</option>`;
+            selectEl.innerHTML = data.map((c, idx) => {
+                const text = fuDisplayContact(c, idx);
+                return `<option value="${c.id}" data-plat="${c.platform || 'website'}">${text} (${c.platform || 'website'})</option>`;
             }).join('');
         } catch (e) {
             console.warn(e);
@@ -16621,13 +16903,13 @@ Thank you for shopping with {store_name}!</textarea>
             const { error } = await supabaseClient.from('followup_tasks').insert([payload]);
             if (error) throw error;
 
-            document.getElementById('fu-create-modal').remove();
+            fuCloseModal('fu-create-modal');
             showToast(t("followups.toast_task_created"), 'success');
             fuLoadQueue();
         } catch (e) {
             console.warn(e);
             showToast(t("followups.toast_error_creating"), 'error');
-            document.getElementById('fu-create-modal')?.remove();
+            fuCloseModal('fu-create-modal');
         }
     }
 
@@ -16672,7 +16954,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             const filtered = logsWithDetails.filter(l => {
                 const det = (l.details || '');
-                const convoName = l.conversation_details?.contact_name || l.conversation_details?.contact_id || l.conversation_id || '';
+                const convoName = fuDisplayContact(l.conversation_details);
                 if (!searchRaw) return true;
                 return (typeof det === 'string' ? det.toLowerCase().includes(searchRaw) : JSON.stringify(det).toLowerCase().includes(searchRaw)) ||
                     convoName.toLowerCase().includes(searchRaw);
@@ -16699,7 +16981,7 @@ Thank you for shopping with {store_name}!</textarea>
                     dt = dateObj.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                 }
                 const detStr = (typeof l.details === 'object') ? JSON.stringify(l.details) : String(l.details || '');
-                const convoName = l.conversation_details?.contact_name || l.conversation_details?.contact_id || l.conversation_id || 'Unknown';
+                const convoName = fuDisplayContact(l.conversation_details);
 
                 html += `
                     <div class="fu-row" style="grid-template-columns: 1fr 1fr 2fr 3fr;">
