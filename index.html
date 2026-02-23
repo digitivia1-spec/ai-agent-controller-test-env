@@ -3894,82 +3894,130 @@
         }
 
         /* --- LEADS GRID STYLES (NEW) --- */
-        .leads-controls {
+        #leads .leads-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        .leads-grid {
+        #leads .leads-toolbar {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .lead-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .lead-card:hover {
-            border-color: var(--theme-color);
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .lead-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: flex-start;
-        }
-
-        .lead-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .lead-platform {
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
-            text-transform: capitalize;
-        }
-
-        .lead-info-row {
-            display: flex;
-            align-items: center;
+            grid-template-columns: 2fr 1fr 1fr;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 14px;
+        }
+
+        #leads .leads-filter-input,
+        #leads .leads-filter-select {
+            width: 100%;
+            min-height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: #e5e7eb;
+            padding: 0 12px;
             font-size: 0.9rem;
-            color: #ddd;
         }
 
-        .lead-info-icon {
-            opacity: 0.6;
-            width: 16px;
-            text-align: center;
+        #leads .leads-filter-select option {
+            background: #151b23;
+            color: #fff;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        #leads .leads-grid {
+            display: block;
+        }
+
+        #leads .leads-sheet {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(7, 12, 20, 0.78);
+        }
+
+        #leads .leads-sheet-scroll {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        #leads .leads-sheet-table {
+            width: 100%;
+            min-width: 920px;
+            border-collapse: collapse;
+        }
+
+        #leads .leads-sheet-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: rgba(20, 27, 38, 0.96);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            text-align: start;
+            padding: 12px 10px;
+            font-size: 0.78rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+
+        #leads .leads-sheet-table tbody td {
+            padding: 11px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
+            font-size: 0.9rem;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        #leads .leads-sheet-table tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #leads .leads-sheet-table tbody tr:hover {
+            background: rgba(56, 189, 248, 0.07);
+        }
+
+        #leads .lead-col-name {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        #leads .lead-col-msg {
+            max-width: 320px;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.35;
+            color: #cbd5e1;
+        }
+
+        #leads .lead-platform-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: capitalize;
+            background: rgba(148, 163, 184, 0.16);
+            color: #dbeafe;
+            border: 1px solid rgba(148, 163, 184, 0.26);
+        }
+
+        #leads .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .status-qualified {
@@ -3990,11 +4038,38 @@
             border: 1px solid rgba(41, 182, 246, 0.3);
         }
 
-        .lead-footer {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 10px;
+        #leads .leads-mobile-list {
+            display: none;
+        }
+
+        #leads .lead-mobile-card {
+            background: rgba(17, 24, 39, 0.84);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        #leads .lead-mobile-top {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        #leads .lead-mobile-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        #leads .lead-mobile-row {
+            font-size: 0.84rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            line-height: 1.35;
+            word-break: break-word;
         }
 
         .export-group {
@@ -4015,6 +4090,25 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        @media (max-width: 920px) {
+            #leads .leads-toolbar {
+                grid-template-columns: 1fr;
+            }
+
+            #leads .leads-sheet {
+                display: none;
+            }
+
+            #leads .leads-mobile-list {
+                display: block;
+            }
+        }
+
+        [dir="rtl"] #leads .leads-sheet-table thead th,
+        [dir="rtl"] #leads .leads-sheet-table tbody td {
+            text-align: end;
         }
 
         .export-btn:hover {
@@ -10217,8 +10311,26 @@
                             </button>
                         </div>
                     </div>
+                    <div class="leads-toolbar">
+                        <input type="text" id="leads-search" class="leads-filter-input" placeholder="Search name, phone, message..." oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                        <select id="leads-filter-status" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                            <option value="all">All Statuses</option>
+                            <option value="new">New</option>
+                            <option value="pending">Pending</option>
+                            <option value="qualified">Qualified</option>
+                            <option value="contacted">Contacted</option>
+                        </select>
+                        <select id="leads-filter-platform" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                            <option value="all">All Platforms</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="messenger">Messenger</option>
+                            <option value="website">Website</option>
+                        </select>
+                    </div>
                     <div id="leads-grid" class="leads-grid">
-                         <div style="grid-column: 1/-1; text-align:center; padding: 60px; color:#888;">
+                         <div style="text-align:center; padding: 60px; color:#888;">
                             <div style="font-size: 3rem; margin-bottom: 20px;">👥</div>
                             <h3 data-i18n="leads.empty_title">No Leads Yet</h3>
                             <p data-i18n="leads.empty_text">Connect your channels to start capturing leads from conversations.</p>
@@ -11070,10 +11182,13 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
+        let cachedLeadContactsMap = {};
+        let cachedLeadMessagesMap = {};
+
         async function fetchLeads() {
             if (!currentUserOrgId) return;
             const grid = document.getElementById('leads-grid');
-            grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center;"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div><p style="margin-top:10px; color:#888;">${t('leads.fetching')}</p></div>`;
+            grid.innerHTML = `<div style="text-align:center;"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div><p style="margin-top:10px; color:#888;">${t('leads.fetching')}</p></div>`;
 
             try {
                 // 1. Fetch leads
@@ -11088,7 +11203,7 @@ Thank you for shopping with {store_name}!</textarea>
                 cachedLeads = leads || [];
 
                 if (cachedLeads.length === 0) {
-                    grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px;">${t('leads.no_leads_found')}</div>`;
+                    grid.innerHTML = `<div style="text-align:center; padding:30px;">${t('leads.empty_search')}</div>`;
                     return;
                 }
 
@@ -11109,6 +11224,7 @@ Thank you for shopping with {store_name}!</textarea>
                         });
                     }
                 }
+                cachedLeadContactsMap = contactsMap;
 
                 // 3. Build messages map for last_inbound fallback (batch query)
                 let messagesMap = {};
@@ -11131,18 +11247,32 @@ Thank you for shopping with {store_name}!</textarea>
                         });
                     }
                 }
+                cachedLeadMessagesMap = messagesMap;
 
                 renderLeads(cachedLeads, contactsMap, messagesMap);
 
             } catch (e) {
                 console.error(e);
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color: var(--error);">${t('leads.failed_load')}</div>`;
+                grid.innerHTML = `<div style="text-align:center; color: var(--error);">${t('leads.error_loading')}</div>`;
             }
+        }
+
+        function getLeadStatusClass(status) {
+            let statusClass = "status-new";
+            const statusLower = String(status || '').toLowerCase();
+            if (statusLower === 'qualified') statusClass = "status-qualified";
+            else if (statusLower === 'pending' || statusLower === 'contacted') statusClass = "status-pending";
+            return statusClass;
         }
 
         function renderLeads(leads, contactsMap = {}, messagesMap = {}) {
             const grid = document.getElementById('leads-grid');
             grid.innerHTML = '';
+
+            const searchRaw = (document.getElementById('leads-search')?.value || '').toLowerCase().trim();
+            const statusRaw = (document.getElementById('leads-filter-status')?.value || 'all').toLowerCase();
+            const platformRaw = (document.getElementById('leads-filter-platform')?.value || 'all').toLowerCase();
+            const rows = [];
 
             leads.forEach(lead => {
                 // Use REAL schema: full_name, phone, source, status, meta
@@ -11153,55 +11283,96 @@ Thank you for shopping with {store_name}!</textarea>
                 if (!name && leadPhone && contactsMap[leadPhone]) {
                     name = contactsMap[leadPhone];
                 }
-                name = name || t('leads.unknown_user');
+                name = name || 'Unknown';
 
                 // Phone
                 const phone = leadPhone || t('leads.no_phone');
 
                 // Platform: use source field
                 const platform = (lead.source || 'whatsapp').charAt(0).toUpperCase() + (lead.source || 'whatsapp').slice(1);
+                const platformLower = String(lead.source || 'whatsapp').toLowerCase();
 
                 // Status
                 const status = lead.status || 'New';
+                const statusLower = String(status).toLowerCase();
 
                 // Last message: prefer meta.last_inbound, fallback to inbox_messages
                 let lastMsg = lead.meta?.last_inbound;
                 if (!lastMsg && leadPhone && messagesMap[leadPhone]) {
                     lastMsg = messagesMap[leadPhone];
                 }
-                lastMsg = lastMsg || t('leads.no_message');
+                lastMsg = lastMsg || '-';
 
                 // Date: prefer meta.last_inbound_at, fallback to updated_at, then created_at
                 const dateValue = lead.meta?.last_inbound_at || lead.updated_at || lead.created_at;
                 const formattedDate = formatLeadDate(dateValue);
 
-                // Determine Status Badge Class
-                let statusClass = "status-new";
-                const statusLower = status.toLowerCase();
-                if (statusLower === 'qualified') statusClass = "status-qualified";
-                else if (statusLower === 'pending') statusClass = "status-pending";
-                else if (statusLower === 'contacted') statusClass = "status-pending";
+                const searchable = `${name} ${phone} ${platformLower} ${statusLower} ${lastMsg}`.toLowerCase();
+                const matchesSearch = !searchRaw || searchable.includes(searchRaw);
+                const matchesStatus = statusRaw === 'all' || statusLower === statusRaw;
+                const matchesPlatform = platformRaw === 'all' || platformLower === platformRaw;
+                if (!matchesSearch || !matchesStatus || !matchesPlatform) return;
 
-                const card = document.createElement('div');
-                card.className = 'lead-card';
-                card.innerHTML = `
-                    <div class="lead-header">
-                        <div class="lead-name">${name}</div>
-                        <div class="lead-platform">${platform}</div>
-                    </div>
-                    <div class="lead-info-row">
-                        <span class="lead-info-icon">📞</span> ${phone}
-                    </div>
-                    <div class="lead-info-row">
-                        <span class="lead-info-icon">💬</span> "${lastMsg.length > 30 ? lastMsg.substring(0, 30) + '...' : lastMsg}"
-                    </div>
-                    <div class="lead-info-row lead-footer">
-                        <span>${formattedDate}</span>
-                        <span class="status-badge ${statusClass}">${status}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
+                rows.push({
+                    name,
+                    phone,
+                    platform,
+                    status,
+                    lastMsg,
+                    formattedDate,
+                    statusClass: getLeadStatusClass(status)
+                });
             });
+
+            if (rows.length === 0) {
+                grid.innerHTML = `<div style="text-align:center; padding:24px; color:#9ca3af;">${t('leads.empty_search') || 'No leads found.'}</div>`;
+                return;
+            }
+
+            const desktopRows = rows.map(r => `
+                <tr>
+                    <td class="lead-col-name">${r.name}</td>
+                    <td>${r.phone}</td>
+                    <td><span class="lead-platform-chip">${r.platform}</span></td>
+                    <td class="lead-col-msg">${String(r.lastMsg || '')}</td>
+                    <td>${r.formattedDate}</td>
+                    <td><span class="status-badge ${r.statusClass}">${r.status}</span></td>
+                </tr>
+            `).join('');
+
+            const mobileRows = rows.map(r => `
+                <div class="lead-mobile-card">
+                    <div class="lead-mobile-top">
+                        <div class="lead-mobile-name">${r.name}</div>
+                        <span class="status-badge ${r.statusClass}">${r.status}</span>
+                    </div>
+                    <div class="lead-mobile-row"><strong>Phone:</strong> ${r.phone}</div>
+                    <div class="lead-mobile-row"><strong>Platform:</strong> ${r.platform}</div>
+                    <div class="lead-mobile-row"><strong>Message:</strong> ${String(r.lastMsg || '')}</div>
+                    <div class="lead-mobile-row"><strong>Date:</strong> ${r.formattedDate}</div>
+                </div>
+            `).join('');
+
+            grid.innerHTML = `
+                <div class="leads-sheet">
+                    <div class="leads-sheet-scroll">
+                        <table class="leads-sheet-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Platform</th>
+                                    <th>Last Message</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>${desktopRows}</tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="leads-mobile-list">${mobileRows}</div>
+            `;
         }
 
         function exportLeadsCSV() {
