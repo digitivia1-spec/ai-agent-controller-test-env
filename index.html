@@ -8490,6 +8490,191 @@
             .fu-platform-headtext strong { font-size:0.97rem; }
         }
 
+        /* Customer Reviews Configurator */
+        .cr-title-row { margin-block-end: 16px; }
+        .cr-title-row h2 { margin: 0; }
+        .cr-title-row p { margin: 6px 0 0; color: var(--text-muted); text-align: start; }
+        .cr-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+            gap: 16px;
+            align-items: start;
+        }
+        .cr-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            padding: 16px;
+        }
+        .cr-label {
+            display: block;
+            margin-block-end: 8px;
+            font-weight: 700;
+            color: #dbe6f6;
+            text-align: start;
+        }
+        .cr-segment {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            padding: 6px;
+            margin-block-end: 14px;
+        }
+        .cr-seg-btn {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding-block: 8px;
+            padding-inline: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #d1d5db;
+            cursor: pointer;
+        }
+        .cr-seg-btn.active {
+            background: var(--theme-color);
+            border-color: var(--theme-color);
+            color: #031317;
+            font-weight: 700;
+        }
+        .cr-field { display: block; margin-block-end: 12px; }
+        .cr-field input, .cr-field textarea {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.22);
+            color: #fff;
+            padding-block: 10px;
+            padding-inline: 12px;
+            text-align: start;
+            outline: none;
+        }
+        .cr-field textarea { resize: vertical; min-height: 130px; }
+        .cr-field input:focus, .cr-field textarea:focus { border-color: var(--theme-color); }
+        .cr-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 14px; }
+        .cr-actions .pill-btn { min-height: 42px; }
+
+        .cr-preview-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-block-end: 12px;
+        }
+        .cr-preview-head h3 { margin: 0; font-size: 1rem; }
+        #cr-preview-channel-pill {
+            background: rgba(20, 184, 166, 0.16);
+            border: 1px solid rgba(20, 184, 166, 0.35);
+            border-radius: 999px;
+            padding-block: 4px;
+            padding-inline: 10px;
+            font-size: 0.82rem;
+            color: #7fe7df;
+        }
+        .cr-preview {
+            background: linear-gradient(180deg, rgba(3, 14, 26, 0.95), rgba(5, 22, 34, 0.96));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            min-height: 360px;
+            padding: 14px;
+            overflow: hidden;
+        }
+        .cr-preview-view { display: none; }
+        .cr-preview-view.active { display: block; }
+        .cr-phone-shell {
+            max-width: 330px;
+            margin-inline: auto;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #0f2233;
+            padding: 12px;
+        }
+        .cr-sms-bubble {
+            border-radius: 14px;
+            background: #1f3d57;
+            color: #e9f4ff;
+            padding-block: 12px;
+            padding-inline: 12px;
+            text-align: start;
+            line-height: 1.5;
+        }
+        .cr-email-card, .cr-web-card {
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(20, 31, 45, 0.86);
+            padding: 14px;
+            text-align: start;
+        }
+        .cr-email-subject {
+            font-weight: 700;
+            margin-block-end: 10px;
+            color: #d6e5fb;
+        }
+        .cr-email-card p, .cr-web-card p {
+            color: #d2deef;
+            line-height: 1.6;
+            margin: 0 0 12px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+        .cr-cta-btn {
+            border: 1px solid rgba(20, 184, 166, 0.4);
+            background: linear-gradient(180deg, rgba(20, 184, 166, 0.32), rgba(20, 184, 166, 0.2));
+            color: #eafffe;
+            border-radius: 10px;
+            padding-block: 9px;
+            padding-inline: 12px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 132px;
+            font-weight: 700;
+        }
+        .cr-link-chip {
+            margin-block-start: 10px;
+            display: inline-block;
+            max-width: 100%;
+            border-radius: 999px;
+            border: 1px dashed rgba(255, 255, 255, 0.22);
+            color: #8fb2cf;
+            padding-block: 4px;
+            padding-inline: 10px;
+            font-size: 0.8rem;
+            overflow-wrap: anywhere;
+            text-align: start;
+        }
+        .cr-qr-placeholder {
+            margin-block-start: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px;
+            display: grid;
+            gap: 8px;
+            justify-items: center;
+        }
+        .cr-qr-grid {
+            inline-size: 120px;
+            block-size: 120px;
+            border-radius: 6px;
+            background:
+                linear-gradient(90deg, #dbeafe 50%, #111827 50%),
+                linear-gradient(0deg, #111827 50%, #dbeafe 50%);
+            background-size: 14px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 0 0 8px rgba(17, 24, 39, 0.1);
+        }
+        .cr-qr-placeholder span { color: #8aa0b8; font-size: 0.82rem; }
+        @media (max-width: 768px) {
+            .cr-layout { grid-template-columns: 1fr; }
+            .cr-preview { min-height: 300px; }
+            .cr-actions .pill-btn { width: 100%; }
+        }
+
         /* RTL Support */
         [dir="rtl"] .chat-search-bar {
             right: auto;
@@ -11003,31 +11188,84 @@ Thank you for shopping with {store_name}!</textarea>
             <!-- F. CUSTOMER REVIEWS TAB -->
             <div id="reviews" class="tab-content">
                 <div class="card glass">
-                    <div class="leads-controls">
-                        <h2 data-i18n="reviews.title">Customer Reviews</h2>
-                        <button class="export-btn" onclick="window.open(CALENDAR_URL, '_blank')" data-i18n="reviews.btn_connect">
-                            Connect Google Reviews
-                        </button>
+                    <div class="cr-title-row">
+                        <h2>Google Review Request</h2>
+                        <p>Configure request message and preview in real time.</p>
                     </div>
-                    <div class="stats-grid" id="reviews-stats">
-                        <div class="stat-card">
-                            <div style="color:var(--text-muted); font-size:0.8rem;" data-i18n="reviews.label_avg">Avg Rating</div>
-                            <div style="font-size:1.8rem; font-weight:700; color:var(--theme-color);">0.0</div>
-                        </div>
-                        <div class="stat-card">
-                            <div style="color:var(--text-muted); font-size:0.8rem;" data-i18n="reviews.label_total">Total Reviews</div>
-                            <div style="font-size:1.8rem; font-weight:700; color:var(--theme-color);">0</div>
-                        </div>
-                        <div class="stat-card">
-                            <div style="color:var(--text-muted); font-size:0.8rem;" data-i18n="reviews.label_positive">Positive (4-5★)</div>
-                            <div style="font-size:1.8rem; font-weight:700; color:var(--theme-color);">0%</div>
-                        </div>
-                    </div>
-                    <div style="text-align:center; padding: 60px; color:#888;">
-                        <div style="font-size: 3rem; margin-bottom: 20px;">⭐</div>
-                        <h3 data-i18n="reviews.empty_title">No Reviews Connected</h3>
-                        <p data-i18n="reviews.empty_text">Link your Google Business profile to monitor and reply to reviews here.</p>
-                        <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;" data-i18n="reviews.btn_connect">Connect Google Reviews</button>
+                    <div class="cr-layout">
+                        <section class="cr-card">
+                            <div class="cr-label">Channel</div>
+                            <div class="cr-segment" id="cr-channel-segment">
+                                <button type="button" class="cr-seg-btn active" id="cr-ch-sms" onclick="crSetChannel('sms')">SMS</button>
+                                <button type="button" class="cr-seg-btn" id="cr-ch-email" onclick="crSetChannel('email')">Email</button>
+                                <button type="button" class="cr-seg-btn" id="cr-ch-web" onclick="crSetChannel('webqr')">Web/QR</button>
+                            </div>
+
+                            <label class="cr-field">
+                                <span class="cr-label">Google Review Link</span>
+                                <input id="cr-review-link" type="text" placeholder="https://g.page/r/your-business/review">
+                            </label>
+
+                            <label class="cr-field">
+                                <span class="cr-label">CTA Button Label</span>
+                                <input id="cr-cta-label" type="text" placeholder="Leave a Review">
+                            </label>
+
+                            <label class="cr-field">
+                                <span class="cr-label">Message Template</span>
+                                <textarea id="cr-message" rows="6" placeholder="Type your review request..."></textarea>
+                            </label>
+
+                            <div class="cr-label">Language</div>
+                            <div class="cr-segment" id="cr-lang-segment">
+                                <button type="button" class="cr-seg-btn active" id="cr-lang-en" onclick="crSetLanguage('en')">English</button>
+                                <button type="button" class="cr-seg-btn" id="cr-lang-ar" onclick="crSetLanguage('ar')">العربية</button>
+                            </div>
+
+                            <div class="cr-actions">
+                                <button type="button" class="pill-btn" onclick="crResetDefaults()">Reset to Default</button>
+                                <button type="button" class="pill-btn" onclick="crCopyMessage()">Copy Message</button>
+                                <button type="button" class="pill-btn primary" onclick="crCopyLink()">Copy Review Link</button>
+                            </div>
+                        </section>
+
+                        <section class="cr-card">
+                            <div class="cr-preview-head">
+                                <h3>Live Preview</h3>
+                                <span id="cr-preview-channel-pill">SMS</span>
+                            </div>
+                            <div class="cr-preview" id="cr-preview-root">
+                                <div class="cr-preview-view active" id="cr-preview-sms">
+                                    <div class="cr-phone-shell">
+                                        <div class="cr-sms-bubble">
+                                            <div id="cr-preview-sms-message"></div>
+                                            <div class="cr-link-chip" id="cr-preview-sms-link"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="cr-preview-view" id="cr-preview-email">
+                                    <div class="cr-email-card">
+                                        <div class="cr-email-subject" id="cr-preview-email-subject"></div>
+                                        <p id="cr-preview-email-body"></p>
+                                        <button type="button" class="cr-cta-btn" id="cr-preview-email-cta"></button>
+                                        <div class="cr-link-chip" id="cr-preview-email-link"></div>
+                                    </div>
+                                </div>
+
+                                <div class="cr-preview-view" id="cr-preview-webqr">
+                                    <div class="cr-web-card">
+                                        <p id="cr-preview-web-message"></p>
+                                        <button type="button" class="cr-cta-btn" id="cr-preview-web-cta"></button>
+                                        <div class="cr-link-chip" id="cr-preview-web-link"></div>
+                                        <div class="cr-qr-placeholder">
+                                            <div class="cr-qr-grid"></div>
+                                            <span>QR Preview</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -11187,7 +11425,10 @@ Thank you for shopping with {store_name}!</textarea>
                     setInsightPlatform('facebook');
                 }
             }
-            if (tabId === 'reviews') color = '#FFD700'; // Gold for reviews
+            if (tabId === 'reviews') {
+                color = '#FFD700'; // Gold for reviews
+                if (typeof crInitCustomerReviews === 'function') crInitCustomerReviews();
+            }
             if (tabId === 'followups') {
                 color = '#2f9f9a'; // softer teal for followups readability
                 if (typeof fuInit === 'function') fuInit();
@@ -15911,6 +16152,194 @@ Thank you for shopping with {store_name}!</textarea>
 
         notificationSound.play().catch(e => console.error(e));
         updateNotificationUI();
+    }
+
+    // ==========================================
+    //     CUSTOMER REVIEWS (LOCAL CONFIG ONLY)
+    // ==========================================
+    const CR_STORAGE_KEY = 'customerReviewsConfig.v1';
+    const CR_DEFAULTS = {
+        channel: 'sms',
+        lang: 'en',
+        reviewLink: 'https://g.page/r/digitivia/review',
+        ctaLabel: 'Leave a Review',
+        message: 'Hi {name}, thank you for choosing us. Would you share your experience in a quick Google review?'
+    };
+    const CR_DEFAULTS_AR = {
+        channel: 'sms',
+        lang: 'ar',
+        reviewLink: 'https://g.page/r/digitivia/review',
+        ctaLabel: 'قيّمنا على جوجل',
+        message: 'مرحباً {name}، شكراً لاختيارك لنا. هل يمكنك مشاركة تجربتك بتقييم سريع على جوجل؟'
+    };
+    let customerReviewsConfig = { ...CR_DEFAULTS };
+    let crInitialized = false;
+    let crSaveTimer = null;
+
+    function crGetDefaultsByLang(lang) {
+        return lang === 'ar' ? { ...CR_DEFAULTS_AR } : { ...CR_DEFAULTS };
+    }
+    function crLoadConfigFromLocalStorage() {
+        try {
+            const raw = localStorage.getItem(CR_STORAGE_KEY);
+            if (!raw) {
+                customerReviewsConfig = { ...CR_DEFAULTS };
+                return;
+            }
+            const parsed = JSON.parse(raw);
+            customerReviewsConfig = {
+                ...CR_DEFAULTS,
+                ...parsed,
+                lang: parsed?.lang === 'ar' ? 'ar' : 'en',
+                channel: ['sms', 'email', 'webqr'].includes(parsed?.channel) ? parsed.channel : 'sms'
+            };
+        } catch (e) {
+            customerReviewsConfig = { ...CR_DEFAULTS };
+        }
+    }
+    function crSaveConfigToLocalStorageDebounced() {
+        clearTimeout(crSaveTimer);
+        crSaveTimer = setTimeout(() => {
+            try { localStorage.setItem(CR_STORAGE_KEY, JSON.stringify(customerReviewsConfig)); } catch (e) { /* ignore */ }
+        }, 220);
+    }
+    function crGetInputEls() {
+        return {
+            reviewLink: document.getElementById('cr-review-link'),
+            ctaLabel: document.getElementById('cr-cta-label'),
+            message: document.getElementById('cr-message')
+        };
+    }
+    function crBindInputListeners() {
+        const { reviewLink, ctaLabel, message } = crGetInputEls();
+        if (reviewLink && !reviewLink.dataset.bound) {
+            reviewLink.dataset.bound = '1';
+            reviewLink.addEventListener('input', (e) => {
+                customerReviewsConfig.reviewLink = e.target.value || '';
+                crSaveConfigToLocalStorageDebounced();
+                crRenderPreview();
+            });
+        }
+        if (ctaLabel && !ctaLabel.dataset.bound) {
+            ctaLabel.dataset.bound = '1';
+            ctaLabel.addEventListener('input', (e) => {
+                customerReviewsConfig.ctaLabel = e.target.value || '';
+                crSaveConfigToLocalStorageDebounced();
+                crRenderPreview();
+            });
+        }
+        if (message && !message.dataset.bound) {
+            message.dataset.bound = '1';
+            message.addEventListener('input', (e) => {
+                customerReviewsConfig.message = e.target.value || '';
+                crSaveConfigToLocalStorageDebounced();
+                crRenderPreview();
+            });
+        }
+    }
+    function crSetChannel(channel) {
+        if (!['sms', 'email', 'webqr'].includes(channel)) return;
+        customerReviewsConfig.channel = channel;
+        crSaveConfigToLocalStorageDebounced();
+        crRenderPreview();
+    }
+    function crSetLanguage(lang) {
+        if (!['en', 'ar'].includes(lang)) return;
+        const wasLang = customerReviewsConfig.lang;
+        customerReviewsConfig.lang = lang;
+        if (!customerReviewsConfig.message || customerReviewsConfig.message === crGetDefaultsByLang(wasLang).message) {
+            customerReviewsConfig.message = crGetDefaultsByLang(lang).message;
+        }
+        if (!customerReviewsConfig.ctaLabel || customerReviewsConfig.ctaLabel === crGetDefaultsByLang(wasLang).ctaLabel) {
+            customerReviewsConfig.ctaLabel = crGetDefaultsByLang(lang).ctaLabel;
+        }
+        crSaveConfigToLocalStorageDebounced();
+        crRenderPreview();
+    }
+    function crRenderPreview() {
+        const root = document.getElementById('cr-preview-root');
+        if (!root) return;
+        const isAr = customerReviewsConfig.lang === 'ar';
+        const dir = isAr ? 'rtl' : 'ltr';
+        const channelLabelMap = { sms: 'SMS', email: 'Email', webqr: 'Web/QR' };
+        const safeLink = customerReviewsConfig.reviewLink?.trim() || (isAr ? 'رابط المراجعة' : 'Review link');
+        const safeCta = customerReviewsConfig.ctaLabel?.trim() || (isAr ? 'إرسال المراجعة' : 'Submit Review');
+        const safeMsg = customerReviewsConfig.message?.trim() || (isAr ? 'اكتب رسالة طلب المراجعة...' : 'Write your review request...');
+        root.setAttribute('dir', dir);
+        root.style.textAlign = 'start';
+
+        const { reviewLink, ctaLabel, message } = crGetInputEls();
+        if (reviewLink) reviewLink.value = customerReviewsConfig.reviewLink || '';
+        if (ctaLabel) ctaLabel.value = customerReviewsConfig.ctaLabel || '';
+        if (message) {
+            message.value = customerReviewsConfig.message || '';
+            message.setAttribute('dir', dir);
+            message.style.textAlign = 'start';
+        }
+
+        document.querySelectorAll('.cr-seg-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`cr-ch-${customerReviewsConfig.channel}`)?.classList.add('active');
+        document.getElementById(`cr-lang-${customerReviewsConfig.lang}`)?.classList.add('active');
+
+        document.querySelectorAll('.cr-preview-view').forEach(el => el.classList.remove('active'));
+        document.getElementById(`cr-preview-${customerReviewsConfig.channel}`)?.classList.add('active');
+        const channelPill = document.getElementById('cr-preview-channel-pill');
+        if (channelPill) channelPill.textContent = channelLabelMap[customerReviewsConfig.channel];
+
+        const smsMsg = document.getElementById('cr-preview-sms-message');
+        const smsLink = document.getElementById('cr-preview-sms-link');
+        if (smsMsg) smsMsg.textContent = safeMsg;
+        if (smsLink) smsLink.textContent = safeLink;
+
+        const emailSubject = document.getElementById('cr-preview-email-subject');
+        const emailBody = document.getElementById('cr-preview-email-body');
+        const emailCta = document.getElementById('cr-preview-email-cta');
+        const emailLink = document.getElementById('cr-preview-email-link');
+        if (emailSubject) emailSubject.textContent = isAr ? 'الموضوع: نرحب بتقييمك على جوجل' : 'Subject: We would love your Google review';
+        if (emailBody) emailBody.textContent = safeMsg;
+        if (emailCta) emailCta.textContent = safeCta;
+        if (emailLink) emailLink.textContent = safeLink;
+
+        const webMsg = document.getElementById('cr-preview-web-message');
+        const webCta = document.getElementById('cr-preview-web-cta');
+        const webLink = document.getElementById('cr-preview-web-link');
+        if (webMsg) webMsg.textContent = safeMsg;
+        if (webCta) webCta.textContent = safeCta;
+        if (webLink) webLink.textContent = safeLink;
+    }
+    async function crCopyMessage() {
+        const text = customerReviewsConfig.message || '';
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast('Message copied', 'success');
+        } catch (e) {
+            showToast('Copy failed', 'error');
+        }
+    }
+    async function crCopyLink() {
+        const text = customerReviewsConfig.reviewLink || '';
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast('Review link copied', 'success');
+        } catch (e) {
+            showToast('Copy failed', 'error');
+        }
+    }
+    function crResetDefaults() {
+        customerReviewsConfig = crGetDefaultsByLang(customerReviewsConfig.lang || 'en');
+        crSaveConfigToLocalStorageDebounced();
+        crRenderPreview();
+    }
+    function crInitCustomerReviews() {
+        if (!document.getElementById('reviews')) return;
+        crLoadConfigFromLocalStorage();
+        if (!crInitialized) {
+            crBindInputListeners();
+            crInitialized = true;
+        } else {
+            crBindInputListeners();
+        }
+        crRenderPreview();
     }
 
     // ==========================================
