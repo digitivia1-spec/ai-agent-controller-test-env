@@ -8353,6 +8353,39 @@
             display: none !important;
         }
 
+        /* Followups v2 restore */
+        .fu-config-layout { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(320px,0.9fr); gap:16px; }
+        .fu-config-card, .fu-preview-card { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:16px; }
+        .fu-setting-group { margin-bottom:14px; }
+        .fu-label { display:block; font-weight:700; margin-bottom:8px; }
+        .fu-msg-channel-tabs, .fu-lang-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+        .fu-msg-channel-tab, .fu-lang-tab, .fu-preview-tab { border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#d1d5db; border-radius:999px; padding:6px 12px; cursor:pointer; }
+        .fu-msg-channel-tab.active, .fu-lang-tab.active, .fu-preview-tab.active { background: var(--theme-color); color:#001417; border-color:var(--theme-color); }
+        .fu-msg-textarea { width:100%; min-height:120px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; padding:10px; resize:vertical; }
+        .fu-channels-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:8px; }
+        .fu-channel-check input { display:none; }
+        .fu-channel-pill { border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:10px; text-align:center; opacity:.6; }
+        .fu-channel-check input:checked + .fu-channel-pill { opacity:1; border-color:var(--theme-color); background:rgba(20,184,166,0.12); }
+        .fu-preview-tabs { display:flex; gap:8px; margin-bottom:12px; }
+        .fu-preview-screen { background:#071325; border-radius:12px; min-height:280px; display:flex; align-items:center; justify-content:center; padding:14px; }
+        .fu-phone-frame { width:min(100%,360px); display:none; }
+        .fu-phone-frame.active { display:block; }
+        .fu-phone-body { min-height:210px; background:#0b141a; border-radius:14px; padding:14px; display:flex; justify-content:flex-end; align-items:flex-end; }
+        .fu-msg-bubble { max-width:85%; background:#005c4b; color:#e6fffb; border-radius:12px; padding:10px 12px; line-height:1.45; }
+        #fu-prev-ig .fu-phone-body { background:#0b0f17; }
+        #fu-prev-ig .fu-msg-bubble { background:#2a3342; }
+        #fu-prev-fb .fu-phone-body { background:#edf2f8; }
+        #fu-prev-fb .fu-msg-bubble { background:#1f7aff; color:#fff; }
+        .fu-toggle { position:relative; display:inline-block; width:48px; height:26px; }
+        .fu-toggle input { opacity:0; width:0; height:0; }
+        .fu-slider { position:absolute; inset:0; border-radius:20px; background:rgba(255,255,255,0.15); }
+        .fu-slider:before { content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; border-radius:50%; background:#fff; transition:.2s; }
+        .fu-toggle input:checked + .fu-slider { background:var(--theme-color); }
+        .fu-toggle input:checked + .fu-slider:before { transform:translateX(22px); }
+        .fu-inline-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.65); display:flex; align-items:center; justify-content:center; z-index:12000; padding:14px; }
+        .fu-inline-modal { width:min(96vw,440px); background:#132033; border:1px solid rgba(255,255,255,0.15); border-radius:14px; padding:14px; }
+        @media (max-width: 920px){ .fu-config-layout { grid-template-columns:1fr; } .fu-channels-grid{ grid-template-columns:1fr; } }
+
         /* RTL Support */
         [dir="rtl"] .chat-search-bar {
             right: auto;
@@ -10902,127 +10935,88 @@ Thank you for shopping with {store_name}!</textarea>
                         <h2 data-i18n="followups.title">Follow-ups</h2>
                         <p class="fu-subtitle" data-i18n="followups.subtitle">Schedule + control follow-ups for Live Inbox conversations</p>
                     </div>
-                    <button class="export-btn" onclick="fuLoadCurrentTab()" data-i18n="followups.refresh_btn">⟳ Refresh</button>
+                    <button class="pill-btn primary" onclick="fuLoadCurrentTab()"><span data-i18n="followups.refresh_btn">⟳ Refresh</span></button>
                 </div>
-
-                <!-- Sub-tabs -->
                 <div class="fu-subtabs">
                     <button class="fu-subtab active" onclick="fuSwitchSubtab('queue', this)" data-i18n="followups.tab_queue">Queue</button>
                     <button class="fu-subtab" onclick="fuSwitchSubtab('config', this)" data-i18n="followups.tab_config">Configuration</button>
                     <button class="fu-subtab" onclick="fuSwitchSubtab('logs', this)" data-i18n="followups.tab_logs">Logs</button>
                 </div>
-
-                <!-- 1) Queue Panel -->
                 <div id="fu-queue-panel" class="fu-panel active">
                     <div class="fu-filters">
-                        <select id="fu-queue-status">
+                        <select id="fu-queue-status" onchange="fuLoadQueue()">
                             <option value="all" data-i18n="followups.status_all">All Statuses</option>
                             <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
-                            <option value="paused" data-i18n="followups.status_paused">Paused</option>
+                            <option value="sent" data-i18n="followups.status_sent">Sent</option>
+                            <option value="failed" data-i18n="followups.status_failed">Failed</option>
                         </select>
-                        <select id="fu-queue-platform">
+                        <select id="fu-queue-platform" onchange="fuLoadQueue()">
                             <option value="all" data-i18n="followups.platform_all">All Platforms</option>
                             <option value="whatsapp">WhatsApp</option>
-                            <option value="page">Messenger</option>
                             <option value="instagram">Instagram</option>
+                            <option value="page">Messenger</option>
                         </select>
-                        <input type="text" id="fu-queue-search" placeholder="Search contact..." data-i18n="followups.search_contact">
-                        <button class="pill-btn primary" onclick="fuOpenCreateModal()" style="margin-inline-start: auto;" data-i18n="followups.create_btn">+ Create Follow-up</button>
+                        <input type="text" id="fu-queue-search" oninput="fuLoadQueue()" placeholder="Search contact..." data-i18n-placeholder="followups.search_contact">
+                        <button class="pill-btn primary" style="margin-inline-start:auto;" onclick="fuOpenCreateModal()" data-i18n="followups.create_btn">+ Create Follow-up</button>
                     </div>
-                    
-                    <div id="fu-queue-content">
-                        <!-- Desktop Table / Mobile Cards rendered here -->
-                        <div style="padding:40px; text-align:center; color:#888;" data-i18n="followups.loading_queue">Loading queue...</div>
-                    </div>
+                    <div id="fu-queue-content"><div style="padding:40px;text-align:center;color:#888;" data-i18n="followups.loading_queue">Loading queue...</div></div>
                 </div>
-
-                <!-- 2) Configuration Panel -->
                 <div id="fu-config-panel" class="fu-panel">
-                    <div class="card glass fu-card">
-                        <h3 data-i18n="followups.config_general">General Settings</h3>
-                        
-                        <div class="fu-setting-row">
-                            <label data-i18n="followups.config_enable">Enable Automations</label>
-                            <label class="switch">
-                                <input type="checkbox" id="fu-setting-enabled">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-
-                        <div class="fu-setting-row">
-                            <div style="flex:1;">
-                                <label data-i18n="followups.config_delay">Default Delay (Minutes)</label>
-                                <p class="fu-note" data-i18n="followups.config_delay_note">Maximum delay is 24 hours (1440 minutes).</p>
+                    <div class="fu-config-layout">
+                        <div class="fu-config-card">
+                            <div class="fu-setting-group">
+                                <span class="fu-label" data-i18n="followups.config_enable">Enable Automations</span>
+                                <label class="fu-toggle"><input type="checkbox" id="fu-setting-enabled"><span class="fu-slider"></span></label>
                             </div>
-                            <input type="number" id="fu-setting-delay" min="1" max="1440" value="60" style="width: 100px; padding:8px; border-radius:6px; border:1px solid #ddd;">
-                        </div>
-
-                        <div class="fu-setting-row">
-                            <label data-i18n="followups.config_max">Max Follow-ups per Conversation</label>
-                            <input type="number" id="fu-setting-max" min="1" max="10" value="1" style="width: 100px; padding:8px; border-radius:6px; border:1px solid #ddd;">
-                        </div>
-
-                        <div class="fu-setting-row">
-                            <div style="flex:1;">
-                                <label data-i18n="followups.config_trigger">Trigger Condition</label>
+                            <div class="fu-setting-group">
+                                <span class="fu-label" data-i18n="followups.config_message_template">Message Template</span>
+                                <div class="fu-msg-channel-tabs">
+                                    <button class="fu-msg-channel-tab active" id="fu-ctab-whatsapp" onclick="fuSwitchMessageChannel('whatsapp')">WhatsApp</button>
+                                    <button class="fu-msg-channel-tab" id="fu-ctab-instagram" onclick="fuSwitchMessageChannel('instagram')">Instagram</button>
+                                    <button class="fu-msg-channel-tab" id="fu-ctab-page" onclick="fuSwitchMessageChannel('page')">Messenger</button>
+                                </div>
+                                <div class="fu-lang-tabs">
+                                    <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en">English</button>
+                                    <button class="fu-lang-tab" id="fu-ltab-ar" onclick="fuSwitchMsgLang('ar')" data-i18n="followups.config_lang_ar">Arabic</button>
+                                </div>
+                                <textarea id="fu-setting-message" class="fu-msg-textarea" oninput="fuUpdatePreview()" placeholder="Enter message..."></textarea>
+                                <textarea id="fu-setting-message-ar" class="fu-msg-textarea" style="display:none;" oninput="fuUpdatePreview()" dir="rtl" placeholder="اكتب الرسالة هنا..."></textarea>
                             </div>
-                            <!-- Un-disabled, styled for glass UI -->
-                            <select id="fu-setting-trigger" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color: white;">
-                                <option data-i18n="followups.config_trigger_opt">No customer reply after agent message</option>
-                            </select>
-                        </div>
-                        
-                        <hr style="border:0; border-top:1px solid rgba(0,0,0,0.1); margin: 20px 0;">
-
-                        <h3><span data-i18n="followups.config_biz">Business Hours</span> <span class="fu-badge" data-i18n="followups.config_biz_opt">Optional</span></h3>
-                        <p class="fu-note" data-i18n="followups.config_biz_note">If enabled, follow-ups scheduled outside these hours will be shifted to the next open hour (but never exceeding the 24h absolute limit).</p>
-
-                        <div class="fu-setting-row" style="margin-top: 15px;">
-                            <label data-i18n="followups.config_biz_enable">Enable Business Hours</label>
-                            <label class="switch">
-                                <input type="checkbox" id="fu-setting-biz-enabled" onchange="document.getElementById('fu-biz-times').style.display=this.checked?'flex':'none'">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="fu-setting-row" id="fu-biz-times" style="display:none; justify-content: flex-start; gap: 20px;">
-                            <div>
-                                <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_from">From</label>
-                                <input type="time" id="fu-setting-biz-start" value="09:00" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
+                            <div class="fu-setting-group">
+                                <span class="fu-label" data-i18n="followups.config_channels_title">Channel Monitoring</span>
+                                <div class="fu-channels-grid">
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-whatsapp" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>WhatsApp</span></div></label>
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-instagram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Instagram</span></div></label>
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-page" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Messenger</span></div></label>
+                                </div>
                             </div>
-                            <div>
-                                <label style="display:block; font-size:12px; margin-bottom:4px;" data-i18n="followups.config_biz_to">To</label>
-                                <input type="time" id="fu-setting-biz-end" value="18:00" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
-                            </div>
+                            <button class="pill-btn primary" style="width:100%;height:46px;" onclick="fuSaveSettings()" data-i18n="followups.config_save">Save Configuration</button>
                         </div>
-
-                        <div style="margin-top: 30px; text-align: end;">
-                            <button class="pill-btn primary" onclick="fuSaveSettings()" data-i18n="followups.config_save">Save Configuration</button>
+                        <div class="fu-preview-card">
+                            <div class="fu-preview-tabs">
+                                <button class="fu-preview-tab active" id="fu-ptab-wa" onclick="fuSwitchPreview('wa')">WhatsApp</button>
+                                <button class="fu-preview-tab" id="fu-ptab-ig" onclick="fuSwitchPreview('ig')">Instagram</button>
+                                <button class="fu-preview-tab" id="fu-ptab-fb" onclick="fuSwitchPreview('fb')">Messenger</button>
+                            </div>
+                            <div class="fu-preview-screen">
+                                <div id="fu-prev-wa" class="fu-phone-frame fu-prev-platform active"><div class="fu-phone-body"><div class="fu-msg-bubble"><div id="fu-prev-msg-wa"></div></div></div></div>
+                                <div id="fu-prev-ig" class="fu-phone-frame fu-prev-platform"><div class="fu-phone-body"><div class="fu-msg-bubble"><div id="fu-prev-msg-ig"></div></div></div></div>
+                                <div id="fu-prev-fb" class="fu-phone-frame fu-prev-platform"><div class="fu-phone-body"><div class="fu-msg-bubble"><div id="fu-prev-msg-fb"></div></div></div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 3) Logs Panel -->
                 <div id="fu-logs-panel" class="fu-panel">
                     <div class="fu-filters">
-                        <select id="fu-logs-range">
-                            <option value="today" data-i18n="followups.logs_range_today">Today</option>
-                            <option value="7d" data-i18n="followups.logs_range_7d">Last 7 Days</option>
-                            <option value="all" data-i18n="followups.logs_range_all">All Time</option>
-                        </select>
-                        <select id="fu-logs-event">
+                        <select id="fu-logs-event" onchange="fuLoadLogs()">
                             <option value="all" data-i18n="followups.logs_event_all">All Events</option>
                             <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
                             <option value="sent" data-i18n="followups.status_sent">Sent</option>
                             <option value="failed" data-i18n="followups.status_failed">Failed</option>
-                            <option value="cancelled" data-i18n="followups.status_cancelled">Cancelled</option>
                         </select>
-                        <input type="text" id="fu-logs-search" placeholder="Search details..." data-i18n="followups.logs_search">
+                        <input type="text" id="fu-logs-search" oninput="fuLoadLogs()" placeholder="Search details..." data-i18n="followups.logs_search">
                     </div>
-                    
-                    <div id="fu-logs-content">
-                        <div style="padding:40px; text-align:center; color:#888;">Loading logs...</div>
-                    </div>
+                    <div id="fu-logs-content"><div style="padding:40px;text-align:center;color:#888;" data-i18n="followups.loading_logs">Loading logs...</div></div>
                 </div>
             </div>`;
 
@@ -15790,456 +15784,158 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     // ==========================================
-    //        FOLLOW-UPS LOGIC
+    //        FOLLOW-UPS LOGIC (RESTORED)
     // ==========================================
+    const FU_CHANNELS = ['whatsapp', 'instagram', 'page'];
+    const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page' };
+    const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb' };
+    const FU_MOCK_MESSAGES = {
+        en: {
+            whatsapp: "Hi {name}, just checking in on your request. I can share pricing or next steps.",
+            instagram: "Hey {name}! Quick follow-up on our chat. Want matching options?",
+            page: "Hello {name}, friendly follow-up from {business_name}. Reply and I'll help right away."
+        },
+        ar: {
+            whatsapp: "مرحباً {name}، متابعة سريعة على طلبك. أستطيع إرسال الأسعار أو الخطوة التالية.",
+            instagram: "أهلاً {name}! متابعة سريعة لمحادثتنا. هل ترغب بإرسال الخيارات المناسبة؟",
+            page: "مرحباً {name}، متابعة ودية من {business_name}. رد هنا وسأساعدك مباشرة."
+        }
+    };
     let fuCurrentSubtab = 'queue';
     let fuIsInitialized = false;
-
-    // 1) Initialize (Called when tab opens)
-    async function fuInit() {
-        if (!fuIsInitialized) {
-            fuIsInitialized = true;
-            // Add listeners for configuration dropdowns/inputs if needed
-        }
-        fuLoadCurrentTab();
-    }
+    let fuCurrentMsgLang = 'en';
+    let fuCurrentMessageChannel = 'whatsapp';
+    let fuCurrentPreviewPlatform = 'wa';
+    let fuMessageByChannel = { whatsapp: '', instagram: '', page: '' };
+    let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '' };
 
     function fuSwitchSubtab(tabName, btnElement) {
         fuCurrentSubtab = tabName;
-
-        // Update active button
         document.querySelectorAll('.fu-subtab').forEach(b => b.classList.remove('active'));
         if (btnElement) btnElement.classList.add('active');
-
-        // Update active panel
         document.querySelectorAll('.fu-panel').forEach(p => p.classList.remove('active'));
-        const panel = document.getElementById(`fu-${tabName}-panel`);
-        if (panel) panel.classList.add('active');
-
+        document.getElementById(`fu-${tabName}-panel`)?.classList.add('active');
         fuLoadCurrentTab();
     }
-
-    function fuLoadCurrentTab() {
-        if (fuCurrentSubtab === 'queue') fuLoadQueue();
-        else if (fuCurrentSubtab === 'config') fuLoadSettings();
-        else if (fuCurrentSubtab === 'logs') fuLoadLogs();
+    async function fuInit() { if (!fuIsInitialized) fuIsInitialized = true; fuLoadCurrentTab(); }
+    function fuLoadCurrentTab() { if (fuCurrentSubtab === 'queue') fuLoadQueue(); else if (fuCurrentSubtab === 'config') fuLoadSettings(); else fuLoadLogs(); }
+    function fuCaptureEditorToState() {
+        const en = document.getElementById('fu-setting-message'); const ar = document.getElementById('fu-setting-message-ar');
+        if (en) fuMessageByChannel[fuCurrentMessageChannel] = en.value || '';
+        if (ar) fuMessageByChannelAr[fuCurrentMessageChannel] = ar.value || '';
     }
-
-    // 2) Configuration / Settings
+    function fuSetEditorValuesFromState() {
+        const en = document.getElementById('fu-setting-message'); const ar = document.getElementById('fu-setting-message-ar');
+        if (en) en.value = fuMessageByChannel[fuCurrentMessageChannel] || '';
+        if (ar) ar.value = fuMessageByChannelAr[fuCurrentMessageChannel] || '';
+    }
+    function fuSwitchMsgLang(lang) {
+        fuCaptureEditorToState(); fuCurrentMsgLang = lang;
+        document.querySelectorAll('.fu-lang-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ltab-${lang}`)?.classList.add('active');
+        document.getElementById('fu-setting-message').style.display = lang === 'en' ? 'block' : 'none';
+        document.getElementById('fu-setting-message-ar').style.display = lang === 'ar' ? 'block' : 'none';
+        fuSetEditorValuesFromState(); fuUpdatePreview();
+    }
+    function fuSwitchMessageChannel(ch) {
+        fuCaptureEditorToState(); fuCurrentMessageChannel = ch;
+        document.querySelectorAll('.fu-msg-channel-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ctab-${ch}`)?.classList.add('active');
+        fuSetEditorValuesFromState(); fuSwitchPreview(fuChannelToPreviewMap[ch]); fuUpdatePreview();
+    }
+    function fuSwitchPreview(plt) {
+        const btn = document.getElementById(`fu-ptab-${plt}`); if (btn?.disabled) return;
+        fuCurrentPreviewPlatform = plt;
+        document.querySelectorAll('.fu-preview-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ptab-${plt}`)?.classList.add('active');
+        document.querySelectorAll('.fu-prev-platform').forEach(p => p.classList.remove('active'));
+        document.getElementById(`fu-prev-${plt}`)?.classList.add('active');
+        const mappedChannel = fuPreviewToChannelMap[plt]; if (mappedChannel) fuCurrentMessageChannel = mappedChannel;
+        document.querySelectorAll('.fu-msg-channel-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`fu-ctab-${fuCurrentMessageChannel}`)?.classList.add('active');
+        fuSetEditorValuesFromState(); fuUpdatePreview();
+    }
+    function fuSyncPreviewTabAvailability() {
+        const enabled = { whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked, instagram: !!document.getElementById('fu-ch-instagram')?.checked, page: !!document.getElementById('fu-ch-page')?.checked };
+        [['wa', 'whatsapp'], ['ig', 'instagram'], ['fb', 'page']].forEach(([k, ch]) => {
+            const el = document.getElementById(`fu-ptab-${k}`); if (!el) return;
+            el.disabled = !enabled[ch]; el.style.opacity = enabled[ch] ? '1' : '.45';
+        });
+    }
+    function fuUpdatePreview() {
+        fuCaptureEditorToState();
+        const isAr = fuCurrentMsgLang === 'ar'; const name = isAr ? 'أحمد محمد' : 'John Doe';
+        ['wa', 'ig', 'fb'].forEach(k => {
+            const ch = fuPreviewToChannelMap[k];
+            const raw = isAr ? (fuMessageByChannelAr[ch] || FU_MOCK_MESSAGES.ar[ch]) : (fuMessageByChannel[ch] || FU_MOCK_MESSAGES.en[ch]);
+            const txt = raw.replace(/\{name\}/g, name).replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent').replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
+            const el = document.getElementById(`fu-prev-msg-${k}`); if (el) { el.innerText = txt; el.dir = isAr ? 'rtl' : 'ltr'; }
+        });
+    }
     async function fuLoadSettings() {
+        if (!currentUserOrgId) return;
         try {
-            if (!currentUserOrgId) return;
-            const { data, error } = await supabaseClient
-                .from('followup_settings')
-                .select('*')
-                .eq('org_id', currentUserOrgId)
-                .maybeSingle();
-
-            if (error && error.code !== 'PGRST116' && error.code !== '42P01') {
-                console.warn("Follow-ups settings table likely missing or error:", error);
-                return;
-            }
-
+            const { data } = await supabaseClient.from('followup_settings').select('*').eq('org_id', currentUserOrgId).maybeSingle();
             if (data) {
                 document.getElementById('fu-setting-enabled').checked = !!data.enabled;
-                // clamp UI to max 1440
-                document.getElementById('fu-setting-delay').value = Math.min(parseInt(data.default_delay_minutes || 60), 1440);
-                document.getElementById('fu-setting-max').value = data.max_per_conversation || 1;
-
-                const bizEnabled = !!data.business_hours_enabled;
-                document.getElementById('fu-setting-biz-enabled').checked = bizEnabled;
-                document.getElementById('fu-biz-times').style.display = bizEnabled ? 'flex' : 'none';
-                if (data.business_start) document.getElementById('fu-setting-biz-start').value = data.business_start;
-                if (data.business_end) document.getElementById('fu-setting-biz-end').value = data.business_end;
+                const m = data.followup_message_by_channel || {};
+                const ma = data.followup_message_ar_by_channel || {};
+                fuMessageByChannel = { whatsapp: m.whatsapp || data.followup_message || '', instagram: m.instagram || m.whatsapp || data.followup_message || '', page: m.page || data.followup_message || '' };
+                fuMessageByChannelAr = { whatsapp: ma.whatsapp || data.followup_message_ar || '', instagram: ma.instagram || ma.whatsapp || data.followup_message_ar || '', page: ma.page || data.followup_message_ar || '' };
+                const channels = data.active_channels || FU_CHANNELS;
+                FU_CHANNELS.forEach(ch => { const el = document.getElementById(`fu-ch-${ch}`); if (el) el.checked = channels.includes(ch); });
             }
-        } catch (e) {
-            console.warn('fuLoadSettings error:', e);
-        }
+        } catch (e) { console.warn('fuLoadSettings', e); }
+        fuSwitchMessageChannel('whatsapp'); fuSwitchMsgLang(currentLang === 'ar' ? 'ar' : 'en'); fuSyncPreviewTabAvailability(); fuUpdatePreview();
     }
-
     async function fuSaveSettings() {
+        if (!currentUserOrgId) return;
+        fuCaptureEditorToState();
+        const activeChannels = FU_CHANNELS.filter(ch => document.getElementById(`fu-ch-${ch}`)?.checked);
+        if (!activeChannels.length) return showToast('Select at least one channel', 'error');
+        const payload = { org_id: currentUserOrgId, enabled: !!document.getElementById('fu-setting-enabled')?.checked, followup_message: fuMessageByChannel.whatsapp || '', followup_message_ar: fuMessageByChannelAr.whatsapp || '', followup_message_by_channel: fuMessageByChannel, followup_message_ar_by_channel: fuMessageByChannelAr, active_channels: activeChannels, updated_at: new Date().toISOString() };
         try {
-            if (!currentUserOrgId) {
-                showToast("No organization found. Cannot save.", 'error');
-                return;
-            }
-
-            let delayRaw = parseInt(document.getElementById('fu-setting-delay').value) || 60;
-            // Strict enforce 24h UI validation
-            if (delayRaw > 1440) {
-                delayRaw = 1440;
-                document.getElementById('fu-setting-delay').value = 1440;
-                showToast("Delay clamped to maximum of 24 hours (1440 minutes).", 'error');
-            }
-
-            const payload = {
-                org_id: currentUserOrgId,
-                enabled: document.getElementById('fu-setting-enabled').checked,
-                default_delay_minutes: delayRaw,
-                max_per_conversation: parseInt(document.getElementById('fu-setting-max').value) || 1,
-                business_hours_enabled: document.getElementById('fu-setting-biz-enabled').checked,
-                business_start: document.getElementById('fu-setting-biz-start').value,
-                business_end: document.getElementById('fu-setting-biz-end').value,
-                updated_at: new Date().toISOString()
-            };
-
-            const { error } = await supabaseClient
-                .from('followup_settings')
-                .upsert(payload, { onConflict: 'org_id' });
-
-            if (error) throw error;
-            showToast("Follow-up settings saved!", 'success');
-
-        } catch (e) {
-            console.warn('fuSaveSettings error / table likely missing:', e);
-            showToast(e.message?.includes('does not exist') ? "Missing followup_settings database table." : "Error saving settings.", 'error');
-        }
+            const { error } = await supabaseClient.from('followup_settings').upsert(payload, { onConflict: 'org_id' });
+            if (error) throw error; showToast(t('followups.config_save_ok') || 'Saved', 'success');
+        } catch (e) { console.warn(e); showToast('Error saving settings', 'error'); }
     }
-
-    // 3) Queue loading
     async function fuLoadQueue() {
-        const content = document.getElementById('fu-queue-content');
-        if (!content) return;
-        content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">Loading queue...</div>`;
-
+        const content = document.getElementById('fu-queue-content'); if (!content) return;
+        content.innerHTML = `<div style="padding:40px;text-align:center;color:#888;">${t('followups.loading_queue')}</div>`;
         try {
-            if (!currentUserOrgId) return;
-
-            const statusFilter = document.getElementById('fu-queue-status').value;
-            const platformFilter = document.getElementById('fu-queue-platform').value;
-            const searchRaw = (document.getElementById('fu-queue-search').value || '').toLowerCase();
-
-            let query = supabaseClient.from('followup_tasks').select(`
-                *,
-                inbox_conversations (
-                    platform,
-                    contact_id,
-                    contact_name
-                )
-            `).eq('org_id', currentUserOrgId);
-
-            if (statusFilter !== 'all') {
-                query = query.eq('status', statusFilter);
-            }
-
-            // order by due date ASC
-            query = query.order('due_at', { ascending: true }).limit(50);
-
-            const { data, error } = await query;
-            if (error) throw error;
-
-            if (!data || data.length === 0) {
-                content.innerHTML = `
-                    <div style="text-align:center; padding: 60px; color:#888;">
-                        <div style="font-size: 3rem; margin-bottom: 20px;">🗓️</div>
-                        <h3 data-i18n="followups.empty_title">No Scheduled Tasks</h3>
-                        <p data-i18n="followups.empty_text">When your agents schedule callbacks or follow-ups, they will appear here.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Apply platform/search filters
-            let filtered = data.filter(task => {
-                const c = task.inbox_conversations || {};
-                const plat = c.platform || task.platform || '';
-                const pMatch = platformFilter === 'all' || plat.toLowerCase().includes(platformFilter);
-                const sMatch = !searchRaw || (c.contact_name || '').toLowerCase().includes(searchRaw) || (c.contact_id || '').toLowerCase().includes(searchRaw) || (task.conversation_id || '').includes(searchRaw);
-                return pMatch && sMatch;
-            });
-
-            if (filtered.length === 0) {
-                content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">No tasks matching filters.</div>`;
-                return;
-            }
-
-            // Render Table Component / List
-            let html = `<div class="fu-list header">
-                <div class="fu-row">
-                    <div>Conversation</div>
-                    <div>Platform</div>
-                    <div>Due At</div>
-                    <div>Status</div>
-                    <div style="text-align:end;">Actions</div>
-                </div>
-            </div>`;
-
-            html += `<div class="fu-list">`;
-            for (const t of filtered) {
-                const cName = t.inbox_conversations?.contact_name || t.inbox_conversations?.contact_id || t.conversation_id;
-                const plt = t.inbox_conversations?.platform || t.platform || 'unknown';
-
-                // Format Due At
-                let dueStr = 'Unknown';
-                if (t.due_at) {
-                    const dueDt = new Date(t.due_at);
-                    dueStr = dueDt.toLocaleString(window.currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-                }
-
-                // Render specific actions based on status
-                let actionsHtml = '';
-                if (t.status === 'scheduled') {
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'paused')">Pause</button>`;
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'cancelled')">Cancel</button>`;
-                    actionsHtml += `<button onclick="fuOpenReschedule('${t.id}')">Reschedule</button>`;
-                } else if (t.status === 'paused') {
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'scheduled')">Resume</button>`;
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'cancelled')">Cancel</button>`;
-                } else if (t.status === 'failed') {
-                    actionsHtml += `<button onclick="fuUpdateTaskStatus('${t.id}', 'scheduled')">Retry</button>`;
-                } else {
-                    actionsHtml += `<button disabled style="opacity:0.5; cursor:default;">Reviewed</button>`;
-                }
-
-                html += `
-                    <div class="fu-row">
-                        <div style="font-weight:600;" class="truncate">${cName}</div>
-                        <div style="text-transform:capitalize;">${plt}</div>
-                        <div>${dueStr}</div>
-                        <div><span class="fu-status-pill fu-status-${t.status || 'unknown'}">${t.status || 'Unknown'}</span></div>
-                        <div class="fu-actions">
-                            ${actionsHtml}
-                        </div>
-                    </div>
-                `;
-            }
-            html += `</div>`;
-            content.innerHTML = html;
-
-        } catch (e) {
-            console.warn('fuLoadQueue error:', e);
-            content.innerHTML = `
-                <div style="padding:40px; text-align:center; color:#888;">
-                    <strong>Notice:</strong> Follow-up module requires database setup.
-                    <br><span style="font-size:0.8rem; opacity:0.7;">(Error: ${e.message || 'Table missing'})</span>
-                </div>
-            `;
-        }
+            let q = supabaseClient.from('followup_tasks').select('*').eq('org_id', currentUserOrgId).order('due_at', { ascending: true }).limit(50);
+            const st = document.getElementById('fu-queue-status')?.value; if (st && st !== 'all') q = q.eq('status', st);
+            const { data, error } = await q; if (error) throw error;
+            const pf = (document.getElementById('fu-queue-platform')?.value || 'all').toLowerCase(); const s = (document.getElementById('fu-queue-search')?.value || '').toLowerCase();
+            const rows = (data || []).filter(r => (pf === 'all' || String(r.platform || '').toLowerCase().includes(pf)) && (!s || String(r.conversation_id || '').toLowerCase().includes(s)));
+            if (!rows.length) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.empty_text')}</div>`; return; }
+            content.innerHTML = `<div class="fu-list">${rows.map(r => `<div class="fu-row"><div class="truncate">${r.conversation_id || '-'}</div><div>${r.platform || '-'}</div><div>${r.due_at ? new Date(r.due_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : '-'}</div><div><span class="fu-status-pill fu-status-${r.status || 'scheduled'}">${r.status || 'scheduled'}</span></div><div class="fu-actions"><button onclick="fuUpdateTaskStatus('${r.id}','cancelled')">${t('followups.action_cancel') || 'Cancel'}</button></div></div>`).join('')}</div>`;
+        } catch (e) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.empty_text')}</div>`; }
     }
-
-    // 4) Update status
-    async function fuUpdateTaskStatus(taskId, newStatus) {
-        try {
-            const { error } = await supabaseClient
-                .from('followup_tasks')
-                .update({ status: newStatus, updated_at: new Date().toISOString() })
-                .eq('id', taskId);
-
-            if (error) throw error;
-            showToast(`Task marked as ${newStatus}`, 'success');
-            fuLoadQueue();
-        } catch (e) {
-            console.warn(e);
-            showToast("Error updating task status", 'error');
-        }
-    }
-
-    // 5) Reschedule Flow
-    let fuCurrentRescheduleId = null;
-    function fuOpenReschedule(taskId) {
-        fuCurrentRescheduleId = taskId;
-        const existing = document.getElementById('fu-reschedule-modal');
-        if (existing) existing.remove();
-
-        const m = document.createElement('div');
-        m.id = 'fu-reschedule-modal';
-        m.className = 'fu-inline-modal';
-        m.style.insetInlineStart = '50%';
-        m.style.top = '50%';
-        m.style.transform = 'translate(-50%, -50%)';
-        m.style.position = 'fixed';
-
-        m.innerHTML = `
-            <h4 style="margin:0 0 5px 0;">Reschedule Task</h4>
-            <label style="font-size:12px;color:#aaa;">Delay from NOW (Minutes)</label>
-            <p style="font-size:11px; margin:0; color:#888;">Max: 1440 min (24h)</p>
-            <input type="number" id="fu-resch-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%;">
-            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
-                <button class="pill-btn" onclick="document.getElementById('fu-reschedule-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);">Cancel</button>
-                <button class="pill-btn primary" onclick="fuCommitReschedule()" style="padding:6px 12px;">Save</button>
-            </div>
-        `;
-        document.body.appendChild(m);
-    }
-
-    async function fuCommitReschedule() {
-        if (!fuCurrentRescheduleId) return;
-
-        let mins = parseInt(document.getElementById('fu-resch-mins').value) || 60;
-
-        // JS 24h MAX Validation
-        if (mins > 1440) {
-            mins = 1440;
-            showToast("Clamped to maximum allowed delay (24h).", 'error');
-        }
-
-        const dueAt = new Date(Date.now() + mins * 60000).toISOString();
-
-        try {
-            const { error } = await supabaseClient
-                .from('followup_tasks')
-                .update({
-                    due_at: dueAt,
-                    updated_at: new Date().toISOString()
-                })
-                .eq('id', fuCurrentRescheduleId);
-
-            if (error) throw error;
-
-            document.getElementById('fu-reschedule-modal').remove();
-            showToast("Task rescheduled.", 'success');
-            fuLoadQueue();
-
-        } catch (e) {
-            console.warn(e);
-            showToast("Error rescheduling task.", 'error');
-        }
-    }
-
-    // 6) Create stub modal in Queue view
+    async function fuUpdateTaskStatus(taskId, status) { try { await supabaseClient.from('followup_tasks').update({ status, updated_at: new Date().toISOString() }).eq('id', taskId); fuLoadQueue(); } catch (e) { console.warn(e); } }
     function fuOpenCreateModal() {
-        const existing = document.getElementById('fu-create-modal');
-        if (existing) existing.remove();
-
-        const m = document.createElement('div');
-        m.id = 'fu-create-modal';
-        m.className = 'fu-inline-modal';
-        m.style.insetInlineStart = '50%';
-        m.style.top = '50%';
-        m.style.transform = 'translate(-50%, -50%)';
-        m.style.position = 'fixed';
-        m.style.width = '300px';
-
-        // Pre-fill a hardcoded dropdown for UI demo or grab from cached data if preferred.
-        // Easiest is to prompt for Minutes and a test CID just for the UI hook.
-
-        m.innerHTML = `
-            <h4 style="margin:0 0 10px 0;">Create Manual Follow-up</h4>
-            <label style="font-size:12px;color:#aaa;">Conversation ID (or Contact ID)</label>
-            <input type="text" id="fu-create-cid" placeholder="Test_Conv_1" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
-            
-            <label style="font-size:12px;color:#aaa;margin-top:10px;display:block;">Delay from NOW (Minutes)*</label>
-            <p style="font-size:11px; margin:0; color:#888;">Max: 1440 min (24h)</p>
-            <input type="number" id="fu-create-mins" value="60" min="1" max="1440" style="padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; width:100%; box-sizing:border-box;">
-            
-            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:15px;">
-                <button class="pill-btn" onclick="document.getElementById('fu-create-modal').remove()" style="padding:6px 12px; background:rgba(255,255,255,0.1);">Cancel</button>
-                <button class="pill-btn primary" onclick="fuCommitCreate()" style="padding:6px 12px;">Create Task</button>
-            </div>
-        `;
+        document.getElementById('fu-create-modal')?.remove();
+        const m = document.createElement('div'); m.id = 'fu-create-modal'; m.className = 'fu-inline-modal-overlay';
+        m.innerHTML = `<div class="fu-inline-modal"><h4>${t('followups.modal_create_title') || 'Create Manual Follow-up'}</h4><label>${t('followups.modal_create_cid') || 'Conversation ID'}</label><input id="fu-create-cid" class="fu-modal-field" style="width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.25);color:#fff;"><label style="display:block;margin-top:10px;">${t('followups.modal_create_delay') || 'Delay (Minutes)'}</label><input id="fu-create-mins" type="number" value="60" min="1" max="1440" class="fu-modal-field" style="width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.25);color:#fff;"><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;"><button class="pill-btn" onclick="document.getElementById('fu-create-modal').remove()">${t('followups.modal_resch_cancel') || 'Cancel'}</button><button class="pill-btn primary" onclick="fuCommitCreate()">${t('followups.modal_create_btn') || 'Create'}</button></div></div>`;
         document.body.appendChild(m);
     }
-
     async function fuCommitCreate() {
-        let mins = parseInt(document.getElementById('fu-create-mins').value) || 60;
-        let cid = document.getElementById('fu-create-cid').value || 'Test_Conv_1';
-
-        // JS 24h MAX Validation
-        if (mins > 1440) {
-            mins = 1440;
-            showToast("Clamped to 1440 min (24h).", 'error');
-        }
-
-        const dueAt = new Date(Date.now() + mins * 60000).toISOString();
-
-        try {
-            const payload = {
-                org_id: currentUserOrgId,
-                conversation_id: cid,
-                platform: 'website',
-                triggered_at: new Date().toISOString(),
-                due_at: dueAt,
-                status: 'scheduled'
-            };
-
-            const { error } = await supabaseClient.from('followup_tasks').insert([payload]);
-            if (error) throw error;
-
-            document.getElementById('fu-create-modal').remove();
-            showToast("Follow-up created successfully.", 'success');
-            fuLoadQueue();
-        } catch (e) {
-            console.warn(e);
-            showToast(e.message?.includes('does not exist') ? "Table followup_tasks missing in DB" : "Error creating task", 'error');
-            document.getElementById('fu-create-modal').remove();
-        }
+        const cid = document.getElementById('fu-create-cid')?.value?.trim(); let mins = parseInt(document.getElementById('fu-create-mins')?.value || '60', 10);
+        if (!cid) return showToast(t('followups.toast_select_contact') || 'Select contact', 'error');
+        if (mins > 1440) mins = 1440;
+        try { await supabaseClient.from('followup_tasks').insert([{ org_id: currentUserOrgId, conversation_id: cid, platform: 'whatsapp', due_at: new Date(Date.now() + mins * 60000).toISOString(), status: 'scheduled', triggered_at: new Date().toISOString() }]); document.getElementById('fu-create-modal')?.remove(); fuLoadQueue(); showToast(t('followups.toast_task_created') || 'Created', 'success'); } catch (e) { console.warn(e); }
     }
-
-    // 7) Logs
     async function fuLoadLogs() {
-        const content = document.getElementById('fu-logs-content');
-        if (!content) return;
-        content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">Loading logs...</div>`;
-
+        const content = document.getElementById('fu-logs-content'); if (!content) return;
+        content.innerHTML = `<div style="padding:40px;text-align:center;color:#888;">${t('followups.loading_logs')}</div>`;
         try {
-            if (!currentUserOrgId) return;
-
-            const eventFilter = document.getElementById('fu-logs-event').value;
-            const searchRaw = (document.getElementById('fu-logs-search').value || '').toLowerCase();
-
-            let query = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
-
-            if (eventFilter !== 'all') {
-                query = query.eq('event_type', eventFilter);
-            }
-
-            const { data, error } = await query;
-            if (error) throw error;
-
-            if (!data || data.length === 0) {
-                content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">No logs found.</div>`;
-                return;
-            }
-
-            const filtered = data.filter(l => {
-                const det = (l.details || '');
-                if (!searchRaw) return true;
-                return typeof det === 'string' ? det.toLowerCase().includes(searchRaw) : JSON.stringify(det).toLowerCase().includes(searchRaw);
-            });
-
-            if (filtered.length === 0) {
-                content.innerHTML = `<div style="padding:40px; text-align:center; color:#888;">No logs match your search.</div>`;
-                return;
-            }
-
-            let html = `<div class="fu-list header">
-                <div class="fu-row" style="grid-template-columns: 1fr 1fr 2fr 3fr;">
-                    <div>Time</div>
-                    <div>Event</div>
-                    <div>Conversation ID</div>
-                    <div>Details</div>
-                </div>
-            </div><div class="fu-list">`;
-
-            for (const l of filtered) {
-                let dt = 'Unknown';
-                if (l.created_at) {
-                    const dateObj = new Date(l.created_at);
-                    dt = dateObj.toLocaleString(window.currentLang === 'ar' ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-                }
-                const detStr = (typeof l.details === 'object') ? JSON.stringify(l.details) : String(l.details || '');
-
-                html += `
-                    <div class="fu-row" style="grid-template-columns: 1fr 1fr 2fr 3fr;">
-                        <div style="font-size:0.85rem; color:var(--text-muted);">${dt}</div>
-                        <div style="text-transform:capitalize; font-weight:600;">${l.event_type}</div>
-                        <div style="font-size:0.85rem; word-break:break-all;">${l.conversation_id}</div>
-                        <div style="font-size:0.85rem; opacity:0.8;">${detStr}</div>
-                    </div>
-                `;
-            }
-            html += `</div>`;
-            content.innerHTML = html;
-
-        } catch (e) {
-            console.warn('fuLoadLogs error:', e);
-            content.innerHTML = `
-                <div style="padding:40px; text-align:center; color:#888;">
-                    <strong>Notice:</strong> Follow-up module requires database setup.
-                    <br><span style="font-size:0.8rem; opacity:0.7;">(Error: ${e.message || 'Table missing'})</span>
-                </div>
-            `;
-        }
+            let q = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
+            const ev = document.getElementById('fu-logs-event')?.value; if (ev && ev !== 'all') q = q.eq('event_type', ev);
+            const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
+            const rows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
+            if (!rows.length) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; return; }
+            content.innerHTML = `<div class="fu-list">${rows.map(l => `<div class="fu-row"><div>${new Date(l.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')}</div><div>${l.event_type || '-'}</div><div>${l.conversation_id || '-'}</div><div>${typeof l.details === 'object' ? JSON.stringify(l.details) : (l.details || '-')}</div></div>`).join('')}</div>`;
+        } catch (e) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; }
     }
 </script>
 
