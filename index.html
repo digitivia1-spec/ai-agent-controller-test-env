@@ -8599,11 +8599,20 @@
             --cr-muted: #9fb0c4;
             --cr-border: rgba(255, 255, 255, 0.12);
             --cr-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            background:
+                radial-gradient(58% 64% at 100% 100%, rgba(214, 190, 120, 0.09), transparent 74%),
+                radial-gradient(44% 52% at 0% 0%, rgba(214, 190, 120, 0.05), transparent 70%);
         }
         .cr-root[dir="rtl"], .cr-root[dir="ltr"] { text-align: start; }
         .cr-title-row { margin-block-end: 16px; }
         .cr-title-row h2 { margin: 0; }
         .cr-title-row p { margin: 6px 0 0; color: var(--text-muted); text-align: start; }
+        .cr-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+            gap: 14px;
+            align-items: start;
+        }
 
         .cr-subtabs {
             display: flex;
@@ -8623,9 +8632,9 @@
             cursor: pointer;
         }
         .cr-subtab.active {
-            background: rgba(20, 184, 166, 0.2);
-            border-color: rgba(20, 184, 166, 0.45);
-            color: #9ff2ec;
+            background: rgba(210, 181, 90, 0.18);
+            border-color: rgba(210, 181, 90, 0.42);
+            color: #f4deb0;
             font-weight: 700;
         }
         .cr-subpanel { display: none; }
@@ -8699,13 +8708,13 @@
         }
         .cr-preview-head h3 { margin: 0; font-size: 1rem; }
         #cr-preview-channel-pill {
-            background: rgba(20, 184, 166, 0.16);
-            border: 1px solid rgba(20, 184, 166, 0.35);
+            background: rgba(210, 181, 90, 0.16);
+            border: 1px solid rgba(210, 181, 90, 0.35);
             border-radius: 999px;
             padding-block: 4px;
             padding-inline: 10px;
             font-size: 0.82rem;
-            color: #7fe7df;
+            color: #f3dc9c;
         }
         .cr-preview {
             background: linear-gradient(180deg, rgba(3, 14, 26, 0.95), rgba(5, 22, 34, 0.96));
@@ -8924,6 +8933,7 @@
         .pill-btn.danger { border-color: rgba(239,68,68,0.45); color: #ffb4b4; }
 
         @media (max-width: 920px) {
+            .cr-layout { grid-template-columns: 1fr; }
             .cr-filter-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (max-width: 768px) {
@@ -11454,85 +11464,83 @@ Thank you for shopping with {store_name}!</textarea>
 
                     <div class="cr-subtabs">
                         <button type="button" class="cr-subtab active" id="cr-sub-config" onclick="crSwitchSubtab('config')" data-cr-i18n="subtab_config">Configuration</button>
-                        <button type="button" class="cr-subtab" id="cr-sub-preview" onclick="crSwitchSubtab('preview')" data-cr-i18n="subtab_preview">Preview</button>
                         <button type="button" class="cr-subtab" id="cr-sub-logs" onclick="crSwitchSubtab('logs')" data-cr-i18n="subtab_logs">Logs</button>
                     </div>
 
                     <div class="cr-subpanel active" id="cr-panel-config">
-                        <section class="cr-card">
-                            <label class="cr-label" for="cr-channel-segment" data-cr-i18n="label_channel">Channel</label>
-                            <div class="cr-segment" id="cr-channel-segment">
-                                <button type="button" class="cr-seg-btn active" id="cr-ch-sms" onclick="crSetChannel('sms')" data-cr-i18n="channel_sms">SMS</button>
-                                <button type="button" class="cr-seg-btn" id="cr-ch-email" onclick="crSetChannel('email')" data-cr-i18n="channel_email">Email</button>
-                                <button type="button" class="cr-seg-btn" id="cr-ch-web" onclick="crSetChannel('webqr')" data-cr-i18n="channel_webqr">Web/QR</button>
-                            </div>
+                        <div class="cr-layout">
+                            <section class="cr-card">
+                                <label class="cr-label" for="cr-channel-segment" data-cr-i18n="label_channel">Channel</label>
+                                <div class="cr-segment" id="cr-channel-segment">
+                                    <button type="button" class="cr-seg-btn active" id="cr-ch-sms" onclick="crSetChannel('sms')" data-cr-i18n="channel_sms">SMS</button>
+                                    <button type="button" class="cr-seg-btn" id="cr-ch-email" onclick="crSetChannel('email')" data-cr-i18n="channel_email">Email</button>
+                                    <button type="button" class="cr-seg-btn" id="cr-ch-web" onclick="crSetChannel('webqr')" data-cr-i18n="channel_webqr">Web/QR</button>
+                                </div>
 
-                            <label class="cr-field">
-                                <span class="cr-label" data-cr-i18n="label_review_link">Google Review Link</span>
-                                <input id="cr-review-link" type="text">
-                            </label>
+                                <label class="cr-field">
+                                    <span class="cr-label" data-cr-i18n="label_review_link">Google Review Link</span>
+                                    <input id="cr-review-link" type="text">
+                                </label>
 
-                            <label class="cr-field">
-                                <span class="cr-label" data-cr-i18n="label_cta">CTA Button Label</span>
-                                <input id="cr-cta-label" type="text">
-                            </label>
+                                <label class="cr-field">
+                                    <span class="cr-label" data-cr-i18n="label_cta">CTA Button Label</span>
+                                    <input id="cr-cta-label" type="text">
+                                </label>
 
-                            <label class="cr-field">
-                                <span class="cr-label" data-cr-i18n="label_message">Message Template</span>
-                                <textarea id="cr-message" rows="6"></textarea>
-                            </label>
+                                <label class="cr-field">
+                                    <span class="cr-label" data-cr-i18n="label_message">Message Template</span>
+                                    <textarea id="cr-message" rows="6"></textarea>
+                                </label>
 
-                            <label class="cr-label" for="cr-lang-segment" data-cr-i18n="label_language">Language</label>
-                            <div class="cr-segment" id="cr-lang-segment">
-                                <button type="button" class="cr-seg-btn active" id="cr-lang-en" onclick="crSetLanguage('en')">English</button>
-                                <button type="button" class="cr-seg-btn" id="cr-lang-ar" onclick="crSetLanguage('ar')">العربية</button>
-                            </div>
+                                <label class="cr-label" for="cr-lang-segment" data-cr-i18n="label_language">Language</label>
+                                <div class="cr-segment" id="cr-lang-segment">
+                                    <button type="button" class="cr-seg-btn active" id="cr-lang-en" onclick="crSetLanguage('en')" data-cr-i18n="lang_en">English</button>
+                                    <button type="button" class="cr-seg-btn" id="cr-lang-ar" onclick="crSetLanguage('ar')" data-cr-i18n="lang_ar">العربية</button>
+                                </div>
 
-                            <div class="cr-actions">
-                                <button type="button" class="pill-btn" onclick="crResetDefaults()" data-cr-i18n="btn_reset">Reset to Default</button>
-                                <button type="button" class="pill-btn" onclick="crCopyMessage()" data-cr-i18n="btn_copy_message">Copy Message</button>
-                                <button type="button" class="pill-btn" onclick="crCopyLink()" data-cr-i18n="btn_copy_link">Copy Review Link</button>
-                                <button type="button" class="pill-btn primary" onclick="crSimulateSend()" data-cr-i18n="btn_simulate_send">Simulate Send</button>
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="cr-subpanel" id="cr-panel-preview">
-                        <section class="cr-card">
-                            <div class="cr-preview-head">
-                                <h3 data-cr-i18n="preview_title">Live Preview</h3>
-                                <span id="cr-preview-channel-pill">SMS</span>
-                            </div>
-                            <div class="cr-preview" id="cr-preview-root" dir="ltr">
-                                <div class="cr-preview-view active" id="cr-preview-sms">
-                                    <div class="cr-phone-shell">
-                                        <div class="cr-sms-bubble">
-                                            <div id="cr-preview-sms-message"></div>
-                                            <div class="cr-link-chip" id="cr-preview-sms-link"></div>
+                                <div class="cr-actions">
+                                    <button type="button" class="pill-btn" onclick="crResetDefaults()" data-cr-i18n="btn_reset">Reset to Default</button>
+                                    <button type="button" class="pill-btn" onclick="crCopyMessage()" data-cr-i18n="btn_copy_message">Copy Message</button>
+                                    <button type="button" class="pill-btn" onclick="crCopyLink()" data-cr-i18n="btn_copy_link">Copy Review Link</button>
+                                    <button type="button" class="pill-btn primary" onclick="crSimulateSend()" data-cr-i18n="btn_simulate_send">Simulate Send</button>
+                                </div>
+                            </section>
+                            <section class="cr-card">
+                                <div class="cr-preview-head">
+                                    <h3 data-cr-i18n="preview_title">Live Preview</h3>
+                                    <span id="cr-preview-channel-pill">SMS</span>
+                                </div>
+                                <div class="cr-preview" id="cr-preview-root" dir="ltr">
+                                    <div class="cr-preview-view active" id="cr-preview-sms">
+                                        <div class="cr-phone-shell">
+                                            <div class="cr-sms-bubble">
+                                                <div id="cr-preview-sms-message"></div>
+                                                <div class="cr-link-chip" id="cr-preview-sms-link"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cr-preview-view" id="cr-preview-email">
+                                        <div class="cr-email-card">
+                                            <div class="cr-email-subject" id="cr-preview-email-subject"></div>
+                                            <p id="cr-preview-email-body"></p>
+                                            <button type="button" class="cr-cta-btn" id="cr-preview-email-cta"></button>
+                                            <div class="cr-link-chip" id="cr-preview-email-link"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cr-preview-view" id="cr-preview-webqr">
+                                        <div class="cr-web-card">
+                                            <p id="cr-preview-web-message"></p>
+                                            <button type="button" class="cr-cta-btn" id="cr-preview-web-cta"></button>
+                                            <div class="cr-link-chip" id="cr-preview-web-link"></div>
+                                            <div class="cr-qr-placeholder">
+                                                <div class="cr-qr-grid"></div>
+                                                <span data-cr-i18n="qr_preview_label">QR Preview</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="cr-preview-view" id="cr-preview-email">
-                                    <div class="cr-email-card">
-                                        <div class="cr-email-subject" id="cr-preview-email-subject"></div>
-                                        <p id="cr-preview-email-body"></p>
-                                        <button type="button" class="cr-cta-btn" id="cr-preview-email-cta"></button>
-                                        <div class="cr-link-chip" id="cr-preview-email-link"></div>
-                                    </div>
-                                </div>
-                                <div class="cr-preview-view" id="cr-preview-webqr">
-                                    <div class="cr-web-card">
-                                        <p id="cr-preview-web-message"></p>
-                                        <button type="button" class="cr-cta-btn" id="cr-preview-web-cta"></button>
-                                        <div class="cr-link-chip" id="cr-preview-web-link"></div>
-                                        <div class="cr-qr-placeholder">
-                                            <div class="cr-qr-grid"></div>
-                                            <span data-cr-i18n="qr_preview_label">QR Preview</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                            </section>
+                        </div>
                     </div>
 
                     <div class="cr-subpanel" id="cr-panel-logs">
@@ -11734,7 +11742,7 @@ Thank you for shopping with {store_name}!</textarea>
                 }
             }
             if (tabId === 'reviews') {
-                color = '#FFD700'; // Gold for reviews
+                color = '#c9ad5a'; // calmer lighter yellow for reviews
                 if (typeof crInitCustomerReviews === 'function') crInitCustomerReviews();
             }
             if (tabId === 'followups') {
@@ -16476,8 +16484,9 @@ Thank you for shopping with {store_name}!</textarea>
             title: 'Google Review Request',
             subtitle: 'Configure request message and preview in real time.',
             subtab_config: 'Configuration',
-            subtab_preview: 'Preview',
             subtab_logs: 'Logs',
+            lang_en: 'English',
+            lang_ar: 'Arabic',
             label_channel: 'Channel',
             label_review_link: 'Google Review Link',
             label_cta: 'CTA Button Label',
@@ -16545,8 +16554,9 @@ Thank you for shopping with {store_name}!</textarea>
             title: 'طلب مراجعة جوجل',
             subtitle: 'اضبط رسالة الطلب وشاهد المعاينة مباشرة.',
             subtab_config: 'الإعدادات',
-            subtab_preview: 'المعاينة',
             subtab_logs: 'السجل',
+            lang_en: 'الإنجليزية',
+            lang_ar: 'العربية',
             label_channel: 'القناة',
             label_review_link: 'رابط مراجعة جوجل',
             label_cta: 'نص زر الدعوة',
@@ -16757,13 +16767,13 @@ Thank you for shopping with {store_name}!</textarea>
         crBuildFilterSelectOptions();
     }
     function crSwitchSubtab(name) {
-        crActiveSubtab = ['config', 'preview', 'logs'].includes(name) ? name : 'config';
+        crActiveSubtab = ['config', 'logs'].includes(name) ? name : 'config';
         document.querySelectorAll('.cr-subtab').forEach((el) => el.classList.remove('active'));
         document.querySelectorAll('.cr-subpanel').forEach((el) => el.classList.remove('active'));
         document.getElementById(`cr-sub-${crActiveSubtab}`)?.classList.add('active');
         document.getElementById(`cr-panel-${crActiveSubtab}`)?.classList.add('active');
         if (crActiveSubtab === 'logs') crRenderLogs();
-        if (crActiveSubtab === 'preview') crRenderPreview();
+        if (crActiveSubtab === 'config') crRenderPreview();
     }
     function crBindInputListeners() {
         const { reviewLink, ctaLabel, message } = crGetInputEls();
