@@ -4130,26 +4130,6 @@
             overscroll-behavior: contain;
         }
 
-        body.inbox-viewport-lock main {
-            overflow: hidden !important;
-        }
-
-        body.inbox-viewport-lock #inbox.tab-content.active {
-            height: 100%;
-        }
-
-        body.inbox-viewport-lock #inbox.tab-content.active>.card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        body.inbox-viewport-lock #inbox .inbox-layout {
-            height: 100%;
-            min-height: 0;
-        }
-
         /* --- LEADS GRID STYLES (NEW) --- */
         #leads .leads-controls {
             display: flex;
@@ -5227,8 +5207,7 @@
 
             .inbox-layout {
                 flex-direction: column;
-                height: 100%;
-                min-height: 0;
+                height: auto;
                 position: relative;
                 /* Context for absolute positioning if needed */
             }
@@ -5259,11 +5238,10 @@
             /* On Mobile: Hide Main Chat by default (show list) */
             .inbox-main {
                 display: none;
-                height: 100%;
+                height: 80vh;
                 width: 100%;
                 position: relative;
                 padding-bottom: 0;
-                min-height: 0;
             }
 
             #inbox-messages {
@@ -5282,16 +5260,6 @@
 
             .inbox-human-send-btn {
                 min-width: 76px;
-            }
-
-            body.inbox-viewport-lock main {
-                padding-inline: 0;
-                padding-top: 60px;
-                height: calc(100dvh - 60px);
-            }
-
-            body.inbox-viewport-lock #inbox.tab-content.active>.card {
-                border-radius: 0;
             }
 
             /* When a class is toggled (we'll need JS for 'show-chat', but for now let's fix the layout first) 
@@ -11062,7 +11030,6 @@
                 // 3. Activate Dashboard Nav Item
                 const dashNav = document.querySelector('.nav-item[onclick*="switchTab(\'dashboard\'"]');
                 if (dashNav) dashNav.classList.add('active');
-                syncInboxViewportLock('dashboard');
             }, 50);
         }
 
@@ -12394,11 +12361,6 @@ Thank you for shopping with {store_name}!</textarea>
             document.getElementById('website').classList.add('active');
         }
 
-        function syncInboxViewportLock(tabId) {
-            const shouldLock = tabId === 'inbox';
-            document.body.classList.toggle('inbox-viewport-lock', shouldLock);
-        }
-
         // --- THEME & NAVIGATION ---
         function switchTab(tabId, element) {
             // Close mobile menu on switch
@@ -12411,7 +12373,6 @@ Thank you for shopping with {store_name}!</textarea>
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             if (element) element.classList.add('active');
-            syncInboxViewportLock(tabId);
 
             let color = '#5BAEB0';
             if (tabId === 'whatsapp') color = '#57B078';
