@@ -3909,6 +3909,7 @@
             display: flex;
             flex-direction: column;
             min-height: 0;
+            overflow: hidden;
         }
 
         .platform-selector {
@@ -4124,6 +4125,8 @@
             overflow-y: auto;
             padding-bottom: 10px;
             overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .contact-list {
@@ -11042,6 +11045,18 @@
             }, 10000);
         }
 
+        window.addEventListener('resize', () => {
+            updateInboxChatViewport();
+        });
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateInboxChatViewport, 120);
+        });
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                updateInboxChatViewport();
+            });
+        }
+
         // ==========================================
         //        MAIN APP LOGIC (UI BUILDER)
         // ==========================================
@@ -12380,6 +12395,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'instagram') color = '#C66B8D';
             if (tabId === 'website') color = '#5BAEB0';
             if (tabId === 'inbox') color = '#5BAEB0'; // Consistent Teal for inbox
+            if (tabId === 'inbox') document.body.style.overflow = '';
             if (tabId === 'leads') {
                 color = '#e6b72a'; // Gold for leads
                 fetchLeads(); // Fetch data when tab opens
@@ -13083,10 +13099,12 @@ Thank you for shopping with {store_name}!</textarea>
         // --- MOBILE CHAT NAVIGATION ---
         function showChatOnMobile() {
             if (window.innerWidth <= 768) {
+                document.body.style.overflow = '';
                 document.querySelector('.inbox-sidebar').style.display = 'none';
                 document.querySelector('.inbox-main').style.display = 'flex';
                 // Add back button if not exists
                 addMobileBackButton();
+                setTimeout(updateInboxChatViewport, 0);
             }
         }
 
@@ -13106,6 +13124,7 @@ Thank you for shopping with {store_name}!</textarea>
                 renderInboxComposerState();
                 // Remove active class from items
                 document.querySelectorAll('.contact-item').forEach(el => el.classList.remove('active'));
+                setTimeout(updateInboxChatViewport, 0);
             }
         }
 
@@ -13130,6 +13149,31 @@ Thank you for shopping with {store_name}!</textarea>
 
             backBtn.onclick = hideChatOnMobile;
             header.parentElement.insertBefore(backBtn, header);
+        }
+
+        function updateInboxChatViewport() {
+            const inboxMain = document.querySelector('.inbox-main');
+            const messages = document.getElementById('inbox-messages');
+            if (!inboxMain || !messages) return;
+
+            if (window.innerWidth > 768 || getComputedStyle(inboxMain).display === 'none') {
+                messages.style.height = '';
+                messages.style.maxHeight = '';
+                return;
+            }
+
+            const rect = inboxMain.getBoundingClientRect();
+            const header = inboxMain.querySelector('.inbox-header');
+            const composer = document.getElementById('inbox-human-composer');
+            const headerHeight = header ? header.offsetHeight : 0;
+            const composerVisible = composer && !composer.classList.contains('hidden');
+            const composerHeight = composerVisible ? composer.offsetHeight : 0;
+            const available = Math.max(140, Math.floor(rect.height - headerHeight - composerHeight));
+
+            messages.style.height = `${available}px`;
+            messages.style.maxHeight = `${available}px`;
+            messages.style.overflowY = 'auto';
+            messages.style.webkitOverflowScrolling = 'touch';
         }
 
         function canToggleConversationAi() {
@@ -13202,6 +13246,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!sendBtn.dataset.defaultText) sendBtn.dataset.defaultText = sendBtn.innerText || 'Send';
             sendBtn.innerText = isSendingHumanReply ? (currentLang === 'ar' ? 'جارٍ الإرسال...' : 'Sending...') : sendBtn.dataset.defaultText;
             autoResizeInboxComposerInput(input);
+            setTimeout(updateInboxChatViewport, 0);
         }
 
         function autoResizeInboxComposerInput(inputEl) {
@@ -13469,6 +13514,8 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 }
 
+                setTimeout(updateInboxChatViewport, 0);
+
                 // 3. Setup Realtime (Only once per selection)
                 if (!isAutoRefresh) {
                     realtimeSubscription = supabaseClient
@@ -13483,6 +13530,7 @@ Thank you for shopping with {store_name}!</textarea>
                             await upsertInboxMessage(container, payload.new);
                             handleMessageStatusToast(payload.new);
                             container.scrollTop = container.scrollHeight;
+                            updateInboxChatViewport();
                         })
                         .on('postgres_changes', {
                             event: 'UPDATE',
@@ -13493,6 +13541,7 @@ Thank you for shopping with {store_name}!</textarea>
                             console.log('Realtime UPDATE message received:', payload.new);
                             await upsertInboxMessage(container, payload.new);
                             handleMessageStatusToast(payload.new);
+                            updateInboxChatViewport();
                         })
                         .subscribe();
                 }
