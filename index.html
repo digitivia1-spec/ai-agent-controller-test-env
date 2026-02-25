@@ -13289,34 +13289,42 @@ Thank you for shopping with {store_name}!</textarea>
             container.scrollTop = container.scrollHeight;
 
             try {
-                const { data, error } = await supabaseClient
-                    .from('inbox_messages')
-                    .insert([{
-                        org_id: currentUserOrgId,
-                        conversation_id: currentConversationId,
-                        platform: currentInboxPlatform,
-                        direction: 'outbound',
-                        sender_type: 'human',
-                        sent_by_user_id: userId,
-                        content: text,
-                        meta: { send_status: 'queued' }
-                    }])
-                    .select('*')
-                    .single();
+                const { data, error } = await supabaseClient.rpc('send_human_message', {
+                    p_conversation_id: currentConversationId,
+                    p_content: text
+                });
 
                 if (error) throw error;
-                if (data && tempNode) {
-                    const existingRealNode = data.id ? container.querySelector(`[data-msg-id="${data.id}"]`) : null;
+
+                let createdMessage = null;
+                if (data && typeof data === 'object') {
+                    if (data.id) createdMessage = data;
+                    else if (data.message && typeof data.message === 'object') createdMessage = data.message;
+                    else if (data.data && typeof data.data === 'object') createdMessage = data.data;
+                }
+
+                if (createdMessage && tempNode) {
+                    const existingRealNode = createdMessage.id ? container.querySelector(`[data-msg-id="${createdMessage.id}"]`) : null;
                     if (existingRealNode && existingRealNode !== tempNode) {
                         tempNode.remove();
                     } else {
-                        tempNode.dataset.msgId = data.id || '';
-                        if (data.id) tempNode.id = `msg-${data.id}`;
+                        tempNode.dataset.msgId = createdMessage.id || '';
+                        if (createdMessage.id) tempNode.id = `msg-${createdMessage.id}`;
+                        await upsertInboxMessage(container, { ...optimisticMsg, ...createdMessage });
                     }
                 }
             } catch (e) {
                 console.error('Failed to queue human reply:', e);
                 if (tempNode) tempNode.remove();
+                const upperMsg = String(e?.message || '').toUpperCase();
+                if (upperMsg.includes('WINDOW_CLOSED_24H')) {
+                    showToast(t('inbox.window_closed_24h'), "error");
+                    return;
+                }
+                if (upperMsg.includes('AI_ACTIVE')) {
+                    showToast(t('inbox.stop_ai_to_reply'), "error");
+                    return;
+                }
                 showToast(e.message || 'Failed to queue message', "error");
             }
         }
