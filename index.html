@@ -3908,6 +3908,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-height: 0;
         }
 
         .platform-selector {
@@ -4061,6 +4062,7 @@
             padding-block: 10px;
             padding-inline: 12px;
             padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+            flex-shrink: 0;
         }
 
         .inbox-human-composer-hint {
@@ -4078,8 +4080,8 @@
         .inbox-human-reply-input {
             flex: 1;
             min-height: 42px;
-            max-height: 140px;
-            resize: vertical;
+            max-height: 120px;
+            resize: none;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.14);
             background: rgba(255, 255, 255, 0.05);
@@ -4104,14 +4106,23 @@
             border-radius: 12px;
             padding-block: 10px;
             padding-inline: 14px;
+            min-height: 46px;
             font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
+            min-width: 82px;
         }
 
         .inbox-human-send-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+        }
+
+        #inbox-messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-bottom: 10px;
         }
 
         /* --- LEADS GRID STYLES (NEW) --- */
@@ -5226,7 +5237,7 @@
                 /* Give it height when shown */
                 width: 100%;
                 position: relative;
-                padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+                padding-bottom: 0;
             }
 
             #inbox-messages {
@@ -5234,11 +5245,17 @@
             }
 
             .inbox-human-composer {
-                position: fixed;
-                inset-inline: 0;
-                bottom: 0;
-                z-index: 60;
+                position: static;
                 border-top: 1px solid rgba(255, 255, 255, 0.12);
+                padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .inbox-human-composer-row {
+                gap: 8px;
+            }
+
+            .inbox-human-send-btn {
+                min-width: 76px;
             }
 
             /* When a class is toggled (we'll need JS for 'show-chat', but for now let's fix the layout first) 
@@ -10101,6 +10118,7 @@
             ai_paused_at: null,
             last_inbound_at: null
         };
+        let isSendingHumanReply = false;
         let agentToUnlock = null;
         let currentUserOrgId = null;
         let currentUserProfile = null; // Stores user profile data for modals
@@ -11511,7 +11529,7 @@
                             <div id="inbox-human-composer" class="inbox-human-composer hidden">
                                 <div id="inbox-human-composer-hint" class="inbox-human-composer-hint"></div>
                                 <div class="inbox-human-composer-row">
-                                    <textarea id="inbox-human-reply-input" class="inbox-human-reply-input" rows="2" data-i18n-placeholder="agent_config.chat_placeholder" placeholder="Type a message..." onkeydown="handleInboxComposerKeydown(event)"></textarea>
+                                    <textarea id="inbox-human-reply-input" class="inbox-human-reply-input" rows="2" data-i18n-placeholder="agent_config.chat_placeholder" placeholder="Type a message..." oninput="autoResizeInboxComposerInput(this)" onkeydown="handleInboxComposerKeydown(event)"></textarea>
                                     <button id="inbox-human-send-btn" class="inbox-human-send-btn" onclick="sendHumanReply()">Send</button>
                                 </div>
                             </div>
@@ -13175,8 +13193,21 @@ Thank you for shopping with {store_name}!</textarea>
             const aiPaused = !!currentConversationState.ai_paused;
             hint.innerText = aiPaused ? '' : t('inbox.stop_ai_to_reply');
             hint.style.display = aiPaused ? 'none' : 'block';
-            input.disabled = !aiPaused;
-            sendBtn.disabled = !aiPaused;
+            input.disabled = !aiPaused || isSendingHumanReply;
+            sendBtn.disabled = !aiPaused || isSendingHumanReply;
+            if (!sendBtn.dataset.defaultText) sendBtn.dataset.defaultText = sendBtn.innerText || 'Send';
+            sendBtn.innerText = isSendingHumanReply ? (currentLang === 'ar' ? 'جارٍ الإرسال...' : 'Sending...') : sendBtn.dataset.defaultText;
+            autoResizeInboxComposerInput(input);
+        }
+
+        function autoResizeInboxComposerInput(inputEl) {
+            const el = inputEl || document.getElementById('inbox-human-reply-input');
+            if (!el) return;
+            const maxHeight = 120;
+            el.style.height = 'auto';
+            const target = Math.min(Math.max(el.scrollHeight, 42), maxHeight);
+            el.style.height = `${target}px`;
+            el.style.overflowY = el.scrollHeight > maxHeight ? 'auto' : 'hidden';
         }
 
         async function handleToggleConversationAi() {
@@ -13232,9 +13263,12 @@ Thank you for shopping with {store_name}!</textarea>
             const input = document.getElementById('inbox-human-reply-input');
             const container = document.getElementById('inbox-messages');
             if (!input || !container || !currentConversationId) return;
+            if (isSendingHumanReply) return;
 
             const text = (input.value || '').trim();
             if (!text) return;
+            isSendingHumanReply = true;
+            renderInboxComposerState();
 
             try {
                 const { data: convFresh, error: convError } = await supabaseClient
@@ -13285,6 +13319,7 @@ Thank you for shopping with {store_name}!</textarea>
             };
 
             input.value = '';
+            autoResizeInboxComposerInput(input);
             const tempNode = await appendInboxMessage(container, optimisticMsg, { allowScroll: true });
             container.scrollTop = container.scrollHeight;
 
@@ -13326,6 +13361,9 @@ Thank you for shopping with {store_name}!</textarea>
                     return;
                 }
                 showToast(e.message || 'Failed to queue message', "error");
+            } finally {
+                isSendingHumanReply = false;
+                renderInboxComposerState();
             }
         }
 
