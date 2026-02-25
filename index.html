@@ -5265,6 +5265,54 @@
                 min-width: 76px;
             }
 
+            body.inbox-mobile-mode main {
+                padding-top: 8px !important;
+                padding-inline: 0 !important;
+                padding-bottom: 0 !important;
+                max-width: none;
+            }
+
+            body.inbox-mobile-mode #inbox.tab-content.active {
+                height: calc(100dvh - 68px);
+            }
+
+            body.inbox-mobile-mode #inbox.tab-content.active>.card {
+                height: 100%;
+                border-radius: 0;
+                border-inline: none;
+            }
+
+            body.inbox-mobile-mode #inbox .inbox-layout {
+                height: 100%;
+                min-height: 0;
+            }
+
+            body.inbox-mobile-mode #inbox .inbox-sidebar {
+                height: 100%;
+                min-height: 0;
+            }
+
+            body.inbox-mobile-mode #inbox .contact-list {
+                flex: 1;
+                min-height: 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            body.inbox-mobile-mode #inbox .inbox-main {
+                height: 100%;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            body.inbox-mobile-mode #inbox #inbox-messages {
+                flex: 1;
+                min-height: 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 12px;
+            }
+
             /* When a class is toggled (we'll need JS for 'show-chat', but for now let's fix the layout first) 
                Actually, to fix the visual mess in the screenshot:
                The issue is likely flex-direction row-reverse making them side-by-side or weirdly stacked.
@@ -11033,6 +11081,7 @@
                 // 3. Activate Dashboard Nav Item
                 const dashNav = document.querySelector('.nav-item[onclick*="switchTab(\'dashboard\'"]');
                 if (dashNav) dashNav.classList.add('active');
+                syncInboxMobileMode('dashboard');
             }, 50);
         }
 
@@ -11043,18 +11092,6 @@
                     // Messages handle themselves via Realtime now
                 }
             }, 10000);
-        }
-
-        window.addEventListener('resize', () => {
-            updateInboxChatViewport();
-        });
-        window.addEventListener('orientationchange', () => {
-            setTimeout(updateInboxChatViewport, 120);
-        });
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', () => {
-                updateInboxChatViewport();
-            });
         }
 
         // ==========================================
@@ -12376,6 +12413,11 @@ Thank you for shopping with {store_name}!</textarea>
             document.getElementById('website').classList.add('active');
         }
 
+        function syncInboxMobileMode(tabId) {
+            const isInbox = tabId === 'inbox';
+            document.body.classList.toggle('inbox-mobile-mode', isInbox);
+        }
+
         // --- THEME & NAVIGATION ---
         function switchTab(tabId, element) {
             // Close mobile menu on switch
@@ -12388,6 +12430,7 @@ Thank you for shopping with {store_name}!</textarea>
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             if (element) element.classList.add('active');
+            syncInboxMobileMode(tabId);
 
             let color = '#5BAEB0';
             if (tabId === 'whatsapp') color = '#57B078';
@@ -13100,16 +13143,25 @@ Thank you for shopping with {store_name}!</textarea>
         function showChatOnMobile() {
             if (window.innerWidth <= 768) {
                 document.body.style.overflow = '';
+                const messages = document.getElementById('inbox-messages');
+                if (messages) {
+                    messages.style.height = '';
+                    messages.style.maxHeight = '';
+                }
                 document.querySelector('.inbox-sidebar').style.display = 'none';
                 document.querySelector('.inbox-main').style.display = 'flex';
                 // Add back button if not exists
                 addMobileBackButton();
-                setTimeout(updateInboxChatViewport, 0);
             }
         }
 
         function hideChatOnMobile() {
             if (window.innerWidth <= 768) {
+                const messages = document.getElementById('inbox-messages');
+                if (messages) {
+                    messages.style.height = '';
+                    messages.style.maxHeight = '';
+                }
                 document.querySelector('.inbox-sidebar').style.display = 'flex';
                 document.querySelector('.inbox-main').style.display = 'none';
                 currentChatUser = null; // Deselect
@@ -13124,7 +13176,6 @@ Thank you for shopping with {store_name}!</textarea>
                 renderInboxComposerState();
                 // Remove active class from items
                 document.querySelectorAll('.contact-item').forEach(el => el.classList.remove('active'));
-                setTimeout(updateInboxChatViewport, 0);
             }
         }
 
@@ -13149,31 +13200,6 @@ Thank you for shopping with {store_name}!</textarea>
 
             backBtn.onclick = hideChatOnMobile;
             header.parentElement.insertBefore(backBtn, header);
-        }
-
-        function updateInboxChatViewport() {
-            const inboxMain = document.querySelector('.inbox-main');
-            const messages = document.getElementById('inbox-messages');
-            if (!inboxMain || !messages) return;
-
-            if (window.innerWidth > 768 || getComputedStyle(inboxMain).display === 'none') {
-                messages.style.height = '';
-                messages.style.maxHeight = '';
-                return;
-            }
-
-            const rect = inboxMain.getBoundingClientRect();
-            const header = inboxMain.querySelector('.inbox-header');
-            const composer = document.getElementById('inbox-human-composer');
-            const headerHeight = header ? header.offsetHeight : 0;
-            const composerVisible = composer && !composer.classList.contains('hidden');
-            const composerHeight = composerVisible ? composer.offsetHeight : 0;
-            const available = Math.max(140, Math.floor(rect.height - headerHeight - composerHeight));
-
-            messages.style.height = `${available}px`;
-            messages.style.maxHeight = `${available}px`;
-            messages.style.overflowY = 'auto';
-            messages.style.webkitOverflowScrolling = 'touch';
         }
 
         function canToggleConversationAi() {
@@ -13246,7 +13272,6 @@ Thank you for shopping with {store_name}!</textarea>
             if (!sendBtn.dataset.defaultText) sendBtn.dataset.defaultText = sendBtn.innerText || 'Send';
             sendBtn.innerText = isSendingHumanReply ? (currentLang === 'ar' ? 'جارٍ الإرسال...' : 'Sending...') : sendBtn.dataset.defaultText;
             autoResizeInboxComposerInput(input);
-            setTimeout(updateInboxChatViewport, 0);
         }
 
         function autoResizeInboxComposerInput(inputEl) {
@@ -13514,8 +13539,6 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 }
 
-                setTimeout(updateInboxChatViewport, 0);
-
                 // 3. Setup Realtime (Only once per selection)
                 if (!isAutoRefresh) {
                     realtimeSubscription = supabaseClient
@@ -13530,7 +13553,6 @@ Thank you for shopping with {store_name}!</textarea>
                             await upsertInboxMessage(container, payload.new);
                             handleMessageStatusToast(payload.new);
                             container.scrollTop = container.scrollHeight;
-                            updateInboxChatViewport();
                         })
                         .on('postgres_changes', {
                             event: 'UPDATE',
@@ -13541,7 +13563,6 @@ Thank you for shopping with {store_name}!</textarea>
                             console.log('Realtime UPDATE message received:', payload.new);
                             await upsertInboxMessage(container, payload.new);
                             handleMessageStatusToast(payload.new);
-                            updateInboxChatViewport();
                         })
                         .subscribe();
                 }
