@@ -115,6 +115,12 @@
                 "btn_export": "Export Data",
                 "label_platform": "Select Platform",
                 "loading": "Loading...",
+                "ai_active": "AI Active",
+                "human_mode": "Human Mode",
+                "stop_ai": "Stop AI",
+                "resume_ai": "Resume AI",
+                "window_closed_24h": "Messaging window closed (24h). Customer must message again.",
+                "stop_ai_to_reply": "Stop AI to reply manually",
                 "chat_with": "Chat with {name}",
                 "sidebar_select_platform": "Select Platform",
                 "sidebar_loading": "Loading...",
@@ -716,6 +722,12 @@
                 "btn_export": "تصدير البيانات",
                 "label_platform": "اختر المنصة",
                 "loading": "جاري التحميل...",
+                "ai_active": "الذكاء الاصطناعي نشط",
+                "human_mode": "الوضع البشري",
+                "stop_ai": "إيقاف الذكاء الاصطناعي",
+                "resume_ai": "استئناف الذكاء الاصطناعي",
+                "window_closed_24h": "نافذة المراسلة مغلقة (24 ساعة). يجب أن يرسل العميل رسالة جديدة.",
+                "stop_ai_to_reply": "أوقف الذكاء الاصطناعي للرد يدويًا",
                 "chat_with": "محادثة مع {name}",
                 "sidebar_select_platform": "اختر المنصة",
                 "sidebar_loading": "جاري التحميل...",
@@ -2228,6 +2240,9 @@
             position: relative;
             display: flex;
             align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         #chat-search-bar {
@@ -3770,6 +3785,36 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        .msg-sender-row {
+            display: flex;
+            margin-block-end: 6px;
+        }
+
+        .msg-sender-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding-block: 2px;
+            padding-inline: 8px;
+            border-radius: 999px;
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .msg-sender-badge.badge-ai {
+            background: rgba(99, 102, 241, 0.22);
+            border: 1px solid rgba(129, 140, 248, 0.35);
+            color: #c7d2fe;
+        }
+
+        .msg-sender-badge.badge-human {
+            background: rgba(16, 185, 129, 0.22);
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            color: #d1fae5;
+        }
+
         /* --- Image Message Styles --- */
         .msg-media {
             display: flex;
@@ -3962,6 +4007,111 @@
             border-bottom: 1px solid var(--glass-border);
             font-weight: bold;
             background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inbox-ai-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding-block: 4px;
+            padding-inline: 10px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .inbox-ai-pill.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #c7d2fe;
+            border: 1px solid rgba(129, 140, 248, 0.4);
+        }
+
+        .inbox-ai-pill.paused {
+            background: rgba(16, 185, 129, 0.2);
+            color: #d1fae5;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+        }
+
+        .inbox-ai-toggle {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-radius: 10px;
+            padding-block: 7px;
+            padding-inline: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .inbox-ai-toggle:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .inbox-human-composer {
+            border-top: 1px solid var(--glass-border);
+            background: rgba(8, 10, 14, 0.95);
+            padding-block: 10px;
+            padding-inline: 12px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+        }
+
+        .inbox-human-composer-hint {
+            color: #9ca3af;
+            font-size: 0.78rem;
+            margin-block-end: 8px;
+        }
+
+        .inbox-human-composer-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .inbox-human-reply-input {
+            flex: 1;
+            min-height: 42px;
+            max-height: 140px;
+            resize: vertical;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            padding-block: 9px;
+            padding-inline: 12px;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            unicode-bidi: plaintext;
+            text-align: start;
+        }
+
+        .inbox-human-reply-input:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .inbox-human-send-btn {
+            border: none;
+            background: var(--theme-color);
+            color: #fff;
+            border-radius: 12px;
+            padding-block: 10px;
+            padding-inline: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .inbox-human-send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* --- LEADS GRID STYLES (NEW) --- */
@@ -5075,6 +5225,20 @@
                 height: 80vh;
                 /* Give it height when shown */
                 width: 100%;
+                position: relative;
+                padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+            }
+
+            #inbox-messages {
+                padding-bottom: 8px;
+            }
+
+            .inbox-human-composer {
+                position: fixed;
+                inset-inline: 0;
+                bottom: 0;
+                z-index: 60;
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
             }
 
             /* When a class is toggled (we'll need JS for 'show-chat', but for now let's fix the layout first) 
@@ -9930,6 +10094,13 @@
         let currentInboxPlatform = null;
         let currentChatUser = null;
         let currentChatUserName = null;
+        let currentConversationId = null;
+        let currentConversationState = {
+            ai_paused: false,
+            ai_paused_by: null,
+            ai_paused_at: null,
+            last_inbound_at: null
+        };
         let agentToUnlock = null;
         let currentUserOrgId = null;
         let currentUserProfile = null; // Stores user profile data for modals
@@ -10137,6 +10308,8 @@
             // Re-render dynamically generated elements that rely on language
             if (typeof renderWaButtonsList === 'function') renderWaButtonsList();
             if (typeof updateWaPreview === 'function') updateWaPreview();
+            if (typeof renderConversationAiControls === 'function') renderConversationAiControls();
+            if (typeof renderInboxComposerState === 'function') renderInboxComposerState();
         }
 
         // Toggle between English and Arabic
@@ -11307,6 +11480,8 @@
                             <div class="inbox-header">
                                 <span id="inbox-header-title" data-i18n="inbox.header_select">Select a conversation</span>
                                 <div class="chat-search-wrapper">
+                                    <span id="inbox-ai-state-pill" class="inbox-ai-pill hidden"></span>
+                                    <button id="inbox-ai-toggle-btn" class="inbox-ai-toggle hidden" onclick="handleToggleConversationAi()"></button>
                                      <div id="chat-search-bar" class="chat-search-bar hidden">
                                         <input type="text" id="chat-search-input" placeholder="Find..." data-i18n-placeholder="inbox.find_placeholder" oninput="handleChatSearch(this.value)" onkeydown="if(event.key==='Enter') findNextMsg()">
                                         <span id="chat-search-count" style="font-size:0.8rem; color:#888; min-width:40px; text-align:center;">0/0</span>
@@ -11331,6 +11506,13 @@
                                     <h3 data-i18n="inbox.empty_title">No Conversations Yet</h3>
                                     <p data-i18n="inbox.empty_text">Connect your social channels to start chatting with your customers in real-time.</p>
                                     <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;" data-i18n="inbox.btn_connect">Connect Channels</button>
+                                </div>
+                            </div>
+                            <div id="inbox-human-composer" class="inbox-human-composer hidden">
+                                <div id="inbox-human-composer-hint" class="inbox-human-composer-hint"></div>
+                                <div class="inbox-human-composer-row">
+                                    <textarea id="inbox-human-reply-input" class="inbox-human-reply-input" rows="2" data-i18n-placeholder="agent_config.chat_placeholder" placeholder="Type a message..." onkeydown="handleInboxComposerKeydown(event)"></textarea>
+                                    <button id="inbox-human-send-btn" class="inbox-human-send-btn" onclick="sendHumanReply()">Send</button>
                                 </div>
                             </div>
                         </div>
@@ -12791,6 +12973,15 @@ Thank you for shopping with {store_name}!</textarea>
         async function loadInbox(platform, isAutoRefresh = false) {
             if (!isAutoRefresh) {
                 currentInboxPlatform = platform;
+                currentConversationId = null;
+                currentConversationState = {
+                    ai_paused: false,
+                    ai_paused_by: null,
+                    ai_paused_at: null,
+                    last_inbound_at: null
+                };
+                renderConversationAiControls();
+                renderInboxComposerState();
             }
 
             const list = document.getElementById('contact-list');
@@ -12882,6 +13073,15 @@ Thank you for shopping with {store_name}!</textarea>
                 document.querySelector('.inbox-sidebar').style.display = 'flex';
                 document.querySelector('.inbox-main').style.display = 'none';
                 currentChatUser = null; // Deselect
+                currentConversationId = null;
+                currentConversationState = {
+                    ai_paused: false,
+                    ai_paused_by: null,
+                    ai_paused_at: null,
+                    last_inbound_at: null
+                };
+                renderConversationAiControls();
+                renderInboxComposerState();
                 // Remove active class from items
                 document.querySelectorAll('.contact-item').forEach(el => el.classList.remove('active'));
             }
@@ -12910,6 +13110,233 @@ Thank you for shopping with {store_name}!</textarea>
             header.parentElement.insertBefore(backBtn, header);
         }
 
+        function canToggleConversationAi() {
+            const role = (window.currentUserRole || '').toLowerCase();
+            return role === 'owner' || role === 'admin' || role === 'moderator';
+        }
+
+        function getSenderBadgeLabel(senderType) {
+            if (String(senderType || '').toLowerCase() === 'human') return currentLang === 'ar' ? 'بشري' : 'Human';
+            return 'AI';
+        }
+
+        function getOutboundSenderType(msg) {
+            const senderType = String(msg?.sender_type || '').toLowerCase();
+            if (senderType === 'human') return 'human';
+            return 'ai'; // backward-compatible fallback for older rows
+        }
+
+        function isHumanWindowOpen(lastInboundAt) {
+            if (!lastInboundAt) return false;
+            const ts = new Date(lastInboundAt).getTime();
+            if (Number.isNaN(ts)) return false;
+            return (Date.now() - ts) <= (24 * 60 * 60 * 1000);
+        }
+
+        function renderConversationAiControls() {
+            const pill = document.getElementById('inbox-ai-state-pill');
+            const btn = document.getElementById('inbox-ai-toggle-btn');
+            if (!pill || !btn) return;
+
+            if (!currentConversationId) {
+                pill.classList.add('hidden');
+                btn.classList.add('hidden');
+                return;
+            }
+
+            const isPaused = !!currentConversationState.ai_paused;
+            pill.classList.remove('hidden');
+            pill.classList.toggle('paused', isPaused);
+            pill.classList.toggle('active', !isPaused);
+            pill.innerText = isPaused ? t('inbox.human_mode') : t('inbox.ai_active');
+
+            if (canToggleConversationAi()) {
+                btn.classList.remove('hidden');
+                btn.innerText = isPaused ? t('inbox.resume_ai') : t('inbox.stop_ai');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+
+        function renderInboxComposerState() {
+            const composer = document.getElementById('inbox-human-composer');
+            const hint = document.getElementById('inbox-human-composer-hint');
+            const input = document.getElementById('inbox-human-reply-input');
+            const sendBtn = document.getElementById('inbox-human-send-btn');
+            if (!composer || !hint || !input || !sendBtn) return;
+
+            if (!currentConversationId) {
+                composer.classList.add('hidden');
+                input.value = '';
+                return;
+            }
+
+            composer.classList.remove('hidden');
+            const aiPaused = !!currentConversationState.ai_paused;
+            hint.innerText = aiPaused ? '' : t('inbox.stop_ai_to_reply');
+            hint.style.display = aiPaused ? 'none' : 'block';
+            input.disabled = !aiPaused;
+            sendBtn.disabled = !aiPaused;
+        }
+
+        async function handleToggleConversationAi() {
+            if (!currentConversationId) return;
+            const enableAi = !!currentConversationState.ai_paused;
+            await toggleConversationAiPause(currentConversationId, enableAi);
+        }
+
+        async function toggleConversationAiPause(conversationId, enabled) {
+            if (!canToggleConversationAi()) {
+                showToast(t('messages.access_denied'), "error");
+                return;
+            }
+            if (!currentUserOrgId || !conversationId) return;
+
+            const previous = { ...currentConversationState };
+            const userId = currentUserProfile?.user_id || null;
+            const nowIso = new Date().toISOString();
+
+            currentConversationState.ai_paused = !enabled;
+            currentConversationState.ai_paused_by = enabled ? null : userId;
+            currentConversationState.ai_paused_at = enabled ? null : nowIso;
+            renderConversationAiControls();
+            renderInboxComposerState();
+
+            try {
+                const payload = enabled
+                    ? { ai_paused: false, ai_paused_by: null, ai_paused_at: null }
+                    : { ai_paused: true, ai_paused_by: userId, ai_paused_at: nowIso };
+
+                const { data, error } = await supabaseClient
+                    .from('inbox_conversations')
+                    .update(payload)
+                    .eq('id', conversationId)
+                    .eq('org_id', currentUserOrgId)
+                    .select('ai_paused, ai_paused_by, ai_paused_at, last_inbound_at')
+                    .single();
+
+                if (error) throw error;
+                if (data) currentConversationState = { ...currentConversationState, ...data };
+                renderConversationAiControls();
+                renderInboxComposerState();
+            } catch (e) {
+                console.error('Failed to toggle ai_paused:', e);
+                currentConversationState = previous;
+                renderConversationAiControls();
+                renderInboxComposerState();
+                showToast(t('messages.error_status_update') || 'Failed to update status', "error");
+            }
+        }
+
+        async function sendHumanReply() {
+            const input = document.getElementById('inbox-human-reply-input');
+            const container = document.getElementById('inbox-messages');
+            if (!input || !container || !currentConversationId) return;
+
+            const text = (input.value || '').trim();
+            if (!text) return;
+
+            try {
+                const { data: convFresh, error: convError } = await supabaseClient
+                    .from('inbox_conversations')
+                    .select('ai_paused, ai_paused_by, ai_paused_at, last_inbound_at')
+                    .eq('id', currentConversationId)
+                    .eq('org_id', currentUserOrgId)
+                    .single();
+                if (convError) throw convError;
+                if (convFresh) {
+                    currentConversationState = {
+                        ...currentConversationState,
+                        ai_paused: !!convFresh.ai_paused,
+                        ai_paused_by: convFresh.ai_paused_by || null,
+                        ai_paused_at: convFresh.ai_paused_at || null,
+                        last_inbound_at: convFresh.last_inbound_at || null
+                    };
+                    renderConversationAiControls();
+                    renderInboxComposerState();
+                }
+            } catch (e) {
+                console.warn('Could not refresh conversation state before send:', e);
+            }
+
+            if (!currentConversationState.ai_paused) {
+                showToast(t('inbox.stop_ai_to_reply'), "error");
+                return;
+            }
+
+            if (!isHumanWindowOpen(currentConversationState.last_inbound_at)) {
+                showToast(t('inbox.window_closed_24h'), "error");
+                return;
+            }
+
+            const userId = currentUserProfile?.user_id || null;
+            const optimisticId = `optimistic-human-${Date.now()}`;
+            const optimisticMsg = {
+                id: optimisticId,
+                org_id: currentUserOrgId,
+                conversation_id: currentConversationId,
+                platform: currentInboxPlatform,
+                direction: 'outbound',
+                sender_type: 'human',
+                sent_by_user_id: userId,
+                content: text,
+                created_at: new Date().toISOString(),
+                meta: { send_status: 'queued' }
+            };
+
+            input.value = '';
+            const tempNode = await appendInboxMessage(container, optimisticMsg, { allowScroll: true });
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('inbox_messages')
+                    .insert([{
+                        org_id: currentUserOrgId,
+                        conversation_id: currentConversationId,
+                        platform: currentInboxPlatform,
+                        direction: 'outbound',
+                        sender_type: 'human',
+                        sent_by_user_id: userId,
+                        content: text,
+                        meta: { send_status: 'queued' }
+                    }])
+                    .select('*')
+                    .single();
+
+                if (error) throw error;
+                if (data && tempNode) {
+                    const existingRealNode = data.id ? container.querySelector(`[data-msg-id="${data.id}"]`) : null;
+                    if (existingRealNode && existingRealNode !== tempNode) {
+                        tempNode.remove();
+                    } else {
+                        tempNode.dataset.msgId = data.id || '';
+                        if (data.id) tempNode.id = `msg-${data.id}`;
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to queue human reply:', e);
+                if (tempNode) tempNode.remove();
+                showToast(e.message || 'Failed to queue message', "error");
+            }
+        }
+
+        function handleInboxComposerKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendHumanReply();
+            }
+        }
+
+        function handleMessageStatusToast(msg) {
+            if (!msg || !msg.meta || typeof msg.meta !== 'object') return;
+            const status = String(msg.meta.send_status || '').toLowerCase();
+            const errorCode = String(msg.meta.error_code || '').toUpperCase();
+            if (status === 'failed' && errorCode === 'WINDOW_CLOSED_24H') {
+                showToast(t('inbox.window_closed_24h'), "error");
+            }
+        }
+
         async function loadInboxMessages(platform, contactId, contactName, isAutoRefresh = false) {
             currentChatUser = contactId;
             currentChatUserName = contactName;
@@ -12933,17 +13360,35 @@ Thank you for shopping with {store_name}!</textarea>
                 // 1. Get Conversation ID for this Contact
                 const { data: conversation, error: convError } = await supabaseClient
                     .from('inbox_conversations')
-                    .select('id')
+                    .select('id, ai_paused, ai_paused_by, ai_paused_at, last_inbound_at')
                     .eq('org_id', currentUserOrgId)
                     .eq('contact_id', contactId)
                     .single();
 
                 if (convError || !conversation) {
+                    currentConversationId = null;
+                    currentConversationState = {
+                        ai_paused: false,
+                        ai_paused_by: null,
+                        ai_paused_at: null,
+                        last_inbound_at: null
+                    };
+                    renderConversationAiControls();
+                    renderInboxComposerState();
                     if (!isAutoRefresh) container.innerHTML = `<div style="padding:20px; text-align:center;">${t('inbox.no_messages')}</div>`;
                     return;
                 }
 
                 const conversationId = conversation.id;
+                currentConversationId = conversationId;
+                currentConversationState = {
+                    ai_paused: !!conversation.ai_paused,
+                    ai_paused_by: conversation.ai_paused_by || null,
+                    ai_paused_at: conversation.ai_paused_at || null,
+                    last_inbound_at: conversation.last_inbound_at || null
+                };
+                renderConversationAiControls();
+                renderInboxComposerState();
 
                 // 2. Fetch Messages
                 const { data: messages, error } = await supabaseClient
@@ -12986,6 +13431,7 @@ Thank you for shopping with {store_name}!</textarea>
                         }, async (payload) => {
                             console.log('Realtime INSERT message received:', payload.new);
                             await upsertInboxMessage(container, payload.new);
+                            handleMessageStatusToast(payload.new);
                             container.scrollTop = container.scrollHeight;
                         })
                         .on('postgres_changes', {
@@ -12996,6 +13442,7 @@ Thank you for shopping with {store_name}!</textarea>
                         }, async (payload) => {
                             console.log('Realtime UPDATE message received:', payload.new);
                             await upsertInboxMessage(container, payload.new);
+                            handleMessageStatusToast(payload.new);
                         })
                         .subscribe();
                 }
@@ -13093,6 +13540,14 @@ Thank you for shopping with {store_name}!</textarea>
             return `<div class="msg-content"><div class="msg-media">${mediaHTML}${captionHTML}</div></div>`;
         }
 
+        function buildSenderBadgeHTML(msg) {
+            if (msg.direction !== 'outbound') return '';
+            const senderType = getOutboundSenderType(msg);
+            const badgeClass = senderType === 'human' ? 'badge-human' : 'badge-ai';
+            const label = getSenderBadgeLabel(senderType);
+            return `<div class="msg-sender-row"><span class="msg-sender-badge ${badgeClass}">${label}</span></div>`;
+        }
+
         async function appendInboxMessage(container, msg, { allowScroll = true } = {}) {
             const div = document.createElement('div');
             // direction: 'inbound' (User) vs 'outbound' (Agent/AI)
@@ -13109,6 +13564,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const safeCaption = makeSafeText(msg.content);
                 const captionHTML = safeCaption ? `<div class="msg-caption">${safeCaption}</div>` : '';
                 div.innerHTML = `
+                    ${buildSenderBadgeHTML(msg)}
                     <div class="msg-content"><div class="msg-media"><div class="msg-image-placeholder">📷 Image…</div>${captionHTML}</div></div>
                     ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
                 `;
@@ -13135,6 +13591,7 @@ Thank you for shopping with {store_name}!</textarea>
                 // Plain text message
                 const safeText = makeSafeText(msg.content);
                 div.innerHTML = `
+                    ${buildSenderBadgeHTML(msg)}
                     <div class="msg-content">${safeText}</div>
                     ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
                 `;
@@ -13146,6 +13603,19 @@ Thank you for shopping with {store_name}!</textarea>
         async function upsertInboxMessage(container, msg) {
             const existing = container.querySelector(`[data-msg-id="${msg.id}"]`);
             if (existing) {
+                const typeClass = msg.direction === 'inbound' ? 'msg-ai' : 'msg-user';
+                existing.className = `message ${typeClass}`;
+
+                const senderRowEl = existing.querySelector('.msg-sender-row');
+                const senderRowHTML = buildSenderBadgeHTML(msg);
+                if (senderRowHTML && !senderRowEl) {
+                    existing.insertAdjacentHTML('afterbegin', senderRowHTML);
+                } else if (!senderRowHTML && senderRowEl) {
+                    senderRowEl.remove();
+                } else if (senderRowHTML && senderRowEl) {
+                    senderRowEl.outerHTML = senderRowHTML;
+                }
+
                 // Update in-place: re-render msg-content
                 const contentHTML = await renderMsgContentHTML(msg);
                 const contentEl = existing.querySelector('.msg-content');
@@ -13160,6 +13630,11 @@ Thank you for shopping with {store_name}!</textarea>
                         existing.insertAdjacentHTML('afterbegin', contentHTML);
                     }
                 }
+
+                const timeEl = existing.querySelector('.msg-time');
+                const timeStr = formatMsgTime(msg.created_at);
+                if (timeEl && timeStr) timeEl.innerText = timeStr;
+                if (!timeEl && timeStr) existing.insertAdjacentHTML('beforeend', `<div class="msg-time">${timeStr}</div>`);
             } else {
                 // New message - append
                 await appendInboxMessage(container, msg, { allowScroll: true });
