@@ -153,6 +153,15 @@
                 "empty_title": "No Leads Yet",
                 "empty_text": "Connect your channels to start capturing leads from conversations.",
                 "btn_connect": "Connect Your Channels",
+                "col_name": "Customer",
+                "col_phone": "Phone",
+                "col_platform": "Platform",
+                "col_message": "Last Message",
+                "col_date": "Date",
+                "col_status": "Status",
+                "search_placeholder": "Search name, phone, message...",
+                "filter_all_statuses": "All Statuses",
+                "filter_all_platforms": "All Platforms",
                 "status": {
                     "new": "New",
                     "contacted": "Contacted",
@@ -786,6 +795,15 @@
                 "empty_title": "لا يوجد عملاء محتملين",
                 "empty_text": "قم بربط قنواتك للبدء في تجميع بيانات العملاء من المحادثات.",
                 "btn_connect": "ربط القنوات",
+                "col_name": "العميل",
+                "col_phone": "الهاتف",
+                "col_platform": "المنصة",
+                "col_message": "آخر رسالة",
+                "col_date": "التاريخ",
+                "col_status": "الحالة",
+                "search_placeholder": "بحث بالاسم، الهاتف، الرسالة...",
+                "filter_all_statuses": "كل الحالات",
+                "filter_all_platforms": "كل المنصات",
                 "status": {
                     "new": "جديد",
                     "contacted": "تم التواصل",
@@ -6776,10 +6794,10 @@
         }
 
         .order-card-mobile {
-            padding: 15px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 14px;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .order-card-header {
@@ -6787,34 +6805,68 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .order-card-id {
             color: #94a3b8;
             font-size: 0.8rem;
             font-family: monospace;
+            flex-shrink: 0;
+        }
+
+        .order-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .order-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.88rem;
+            flex-wrap: wrap;
+            min-height: 32px;
         }
 
-        .order-row span:first-child {
+        .order-row>span:first-child {
             color: #94a3b8;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .order-row>span:last-child,
+        .order-row>strong,
+        .order-row>div {
+            min-width: 0;
+            word-break: break-word;
+            text-align: end;
+        }
+
+        .order-row .inline-status-select {
+            max-width: 140px;
+            width: auto;
+            flex-shrink: 0;
         }
 
         .total-row {
-            margin-top: 10px;
+            margin-top: 6px;
             padding-top: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-weight: bold;
             font-size: 1rem;
             color: var(--theme-color);
+        }
+
+        .order-card-actions {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         @media (max-width: 768px) {
@@ -10535,6 +10587,9 @@
             if (typeof updateWaPreview === 'function') updateWaPreview();
             if (typeof renderConversationAiControls === 'function') renderConversationAiControls();
             if (typeof renderInboxComposerState === 'function') renderInboxComposerState();
+            if (typeof buildLeadsToolbar === 'function') buildLeadsToolbar();
+            if (typeof renderLeads === 'function' && typeof cachedLeads !== 'undefined') renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap);
+            if (typeof renderOrders === 'function') renderOrders();
         }
 
         // Toggle between English and Arabic
@@ -11763,24 +11818,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="leads-toolbar">
-                        <input type="text" id="leads-search" class="leads-filter-input" placeholder="Search name, phone, message..." oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
-                        <select id="leads-filter-status" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
-                            <option value="all">All Statuses</option>
-                            <option value="new">New</option>
-                            <option value="pending">Pending</option>
-                            <option value="qualified">Qualified</option>
-                            <option value="contacted">Contacted</option>
-                        </select>
-                        <select id="leads-filter-platform" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
-                            <option value="all">All Platforms</option>
-                            <option value="whatsapp">WhatsApp</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="messenger">Messenger</option>
-                            <option value="website">Website</option>
-                        </select>
-                    </div>
+                    <div class="leads-toolbar" id="leads-toolbar-container"></div>
                     <div id="leads-grid" class="leads-grid">
                          <div style="text-align:center; padding: 60px; color:#888;">
                             <div style="font-size: 3rem; margin-bottom: 20px;">👥</div>
@@ -12798,6 +12836,7 @@ Thank you for shopping with {store_name}!</textarea>
                 }
                 cachedLeadMessagesMap = messagesMap;
 
+                buildLeadsToolbar();
                 renderLeads(cachedLeads, contactsMap, messagesMap);
 
             } catch (e) {
@@ -12807,6 +12846,28 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost'];
+        const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'messenger', 'website'];
+
+        function buildLeadsToolbar() {
+            const container = document.getElementById('leads-toolbar-container');
+            if (!container) return;
+            const curStatus = document.getElementById('leads-filter-status')?.value || 'all';
+            const curPlatform = document.getElementById('leads-filter-platform')?.value || 'all';
+
+            const statusOpts = [`<option value="all">${t('leads.filter_all_statuses')}</option>`]
+                .concat(LEAD_STATUSES.map(s => `<option value="${s}" ${s === curStatus ? 'selected' : ''}>${t('leads.status.' + s) || s}</option>`))
+                .join('');
+
+            const platOpts = [`<option value="all">${t('leads.filter_all_platforms')}</option>`]
+                .concat(LEAD_PLATFORMS.map(p => `<option value="${p}" ${p === curPlatform ? 'selected' : ''}>${p.charAt(0).toUpperCase() + p.slice(1)}</option>`))
+                .join('');
+
+            container.innerHTML = `
+                <input type="text" id="leads-search" class="leads-filter-input" placeholder="${t('leads.search_placeholder')}" oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                <select id="leads-filter-status" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${statusOpts}</select>
+                <select id="leads-filter-platform" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${platOpts}</select>
+            `;
+        }
 
         function getLeadStatusClass(status) {
             const statusLower = String(status || '').toLowerCase();
@@ -12881,7 +12942,7 @@ Thank you for shopping with {store_name}!</textarea>
                     name = contactsMap[leadPhone];
                 }
                 name = name || 'Unknown';
-                const phone = leadPhone || t('leads.no_phone');
+                const phone = leadPhone || t('leads.status.no_phone');
                 const platform = (lead.source || 'whatsapp').charAt(0).toUpperCase() + (lead.source || 'whatsapp').slice(1);
                 const platformLower = String(lead.source || 'whatsapp').toLowerCase();
                 const status = lead.status || 'new';
@@ -12929,10 +12990,10 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="lead-mobile-name">${r.name}</div>
                         ${buildLeadStatusSelect(r.id, r.status)}
                     </div>
-                    <div class="lead-mobile-row"><strong>${t('orders.col_phone') || 'Phone'}:</strong> ${r.phone}</div>
-                    <div class="lead-mobile-row"><strong>Platform:</strong> ${r.platform}</div>
-                    <div class="lead-mobile-row"><strong>${t('leads.col_message') || 'Message'}:</strong> ${String(r.lastMsg || '')}</div>
-                    <div class="lead-mobile-row"><strong>${t('orders.col_date') || 'Date'}:</strong> ${r.formattedDate}</div>
+                    <div class="lead-mobile-row"><strong>${t('leads.col_phone')}:</strong> ${r.phone}</div>
+                    <div class="lead-mobile-row"><strong>${t('leads.col_platform')}:</strong> ${r.platform}</div>
+                    <div class="lead-mobile-row"><strong>${t('leads.col_message')}:</strong> ${String(r.lastMsg || '')}</div>
+                    <div class="lead-mobile-row"><strong>${t('leads.col_date')}:</strong> ${r.formattedDate}</div>
                 </div>
             `).join('');
 
@@ -12942,12 +13003,12 @@ Thank you for shopping with {store_name}!</textarea>
                         <table class="leads-sheet-table">
                             <thead>
                                 <tr>
-                                    <th>${t('orders.col_customer') || 'Name'}</th>
-                                    <th>${t('orders.col_phone') || 'Phone'}</th>
-                                    <th>Platform</th>
-                                    <th>${t('leads.col_message') || 'Last Message'}</th>
-                                    <th>${t('orders.col_date') || 'Date'}</th>
-                                    <th>${t('orders.col_status') || 'Status'}</th>
+                                    <th>${t('leads.col_name')}</th>
+                                    <th>${t('leads.col_phone')}</th>
+                                    <th>${t('leads.col_platform')}</th>
+                                    <th>${t('leads.col_message')}</th>
+                                    <th>${t('leads.col_date')}</th>
+                                    <th>${t('leads.col_status')}</th>
                                 </tr>
                             </thead>
                             <tbody>${desktopRows}</tbody>
