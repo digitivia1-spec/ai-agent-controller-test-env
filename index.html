@@ -10027,15 +10027,43 @@
             inline-size: 52px;
             block-size: 52px;
             border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: color-mix(in srgb, var(--theme-color) 80%, #09121a 20%);
+            border: 1px solid color-mix(in srgb, var(--theme-color) 48%, rgba(255, 255, 255, 0.22));
+            background:
+                radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 45%),
+                linear-gradient(150deg,
+                    color-mix(in srgb, var(--theme-color) 84%, #0d1320 16%) 0%,
+                    color-mix(in srgb, var(--theme-color) 62%, #151f30 38%) 55%,
+                    #0b1220 100%);
             color: #fff;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            box-shadow:
+                0 12px 32px rgba(2, 8, 23, 0.48),
+                0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+                0 -8px 16px rgba(255, 255, 255, 0.08) inset;
             display: grid;
             place-items: center;
             cursor: pointer;
             pointer-events: auto;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.2s ease;
+        }
+
+        .aiw-launcher::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            pointer-events: none;
+        }
+
+        .aiw-launcher img {
+            inline-size: 24px;
+            block-size: 24px;
+            object-fit: contain;
+            display: block;
+            filter: brightness(0) invert(1) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+            position: relative;
+            z-index: 1;
         }
 
         [dir="rtl"] .aiw-launcher {
@@ -10044,8 +10072,11 @@
         }
 
         .aiw-launcher:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow:
+                0 16px 38px rgba(2, 8, 23, 0.52),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                0 -10px 18px rgba(255, 255, 255, 0.09) inset;
         }
 
         .aiw-launcher:focus-visible,
@@ -18483,10 +18514,7 @@ Thank you for shopping with {store_name}!</textarea>
 
     <div class="aiw-root" id="aiw-root">
         <button type="button" class="aiw-launcher" id="aiw-launcher" title="AI Help" aria-label="AI Help">
-            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                <path fill="currentColor"
-                    d="M12 2c-4.97 0-9 3.58-9 8 0 2.13.96 4.06 2.53 5.49-.16 1.36-.61 2.79-1.58 4.08-.2.26.07.62.38.5 2.15-.8 3.68-1.68 4.66-2.36.94.2 1.95.29 3.01.29 4.97 0 9-3.58 9-8s-4.03-8-9-8zm-3 7.5A1.5 1.5 0 1 1 9 12a1.5 1.5 0 0 1 0-2.5zm3 0A1.5 1.5 0 1 1 12 12a1.5 1.5 0 0 1 0-2.5zm3 0A1.5 1.5 0 1 1 15 12a1.5 1.5 0 0 1 0-2.5zM19.4 4.2l.42 1.08 1.08.42-1.08.42-.42 1.08-.42-1.08-1.08-.42 1.08-.42.42-1.08z" />
-            </svg>
+            <img src="https://img.icons8.com/ios/100/jasper-ai.png" alt="AI Assistant" loading="lazy" />
         </button>
         <section class="aiw-panel" id="aiw-panel" role="dialog" aria-modal="false" aria-labelledby="aiw-title">
             <div class="aiw-header">
