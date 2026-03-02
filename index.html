@@ -651,6 +651,26 @@
                     "error": "Error loading platform stats."
                 }
             },
+            "ai_helper": {
+                "title": "AI Helper",
+                "subtitle": "Ask anything about setup and behavior",
+                "launcher_title": "AI Help",
+                "placeholder": "Ask about prompts, tone, inbox, and testing...",
+                "send": "Send",
+                "close": "Close",
+                "minimize": "Minimize",
+                "typing": "Typing...",
+                "faq_label": "Quick Questions",
+                "error_retry": "I hit a temporary issue. Please try again.",
+                "faq": [
+                    "Where do I edit the System Prompt?",
+                    "How does the System Prompt change personality?",
+                    "What is Agent Tone?",
+                    "What are Knowledge Base (Links) and how do I use them?",
+                    "How do I test the agent?",
+                    "How do I use Live Inbox (AI Active vs Human Mode)?"
+                ]
+            },
             "notifications": {
                 "header": "Notifications",
                 "mark_read": "Mark all read",
@@ -1293,6 +1313,26 @@
                     "no_data": "لا توجد بيانات للمنصة بعد.",
                     "error": "خطأ في تحميل إحصائيات المنصة."
                 }
+            },
+            "ai_helper": {
+                "title": "مساعد الذكاء الاصطناعي",
+                "subtitle": "اسأل عن الإعدادات وسلوك الوكيل",
+                "launcher_title": "مساعدة AI",
+                "placeholder": "اسأل عن التوجيهات والنبرة وصندوق الوارد والاختبار...",
+                "send": "إرسال",
+                "close": "إغلاق",
+                "minimize": "تصغير",
+                "typing": "يكتب الآن...",
+                "faq_label": "أسئلة سريعة",
+                "error_retry": "حدث خطأ مؤقت. حاول مرة أخرى.",
+                "faq": [
+                    "أين أعدل System Prompt؟",
+                    "كيف يغير System Prompt شخصية الوكيل؟",
+                    "ما هو Agent Tone؟",
+                    "ما هي Knowledge Base (Links) وكيف أستخدمها؟",
+                    "كيف أختبر الوكيل؟",
+                    "كيف أستخدم Live Inbox (AI Active مقابل Human Mode)؟"
+                ]
             },
             "notifications": {
                 "header": "الإشعارات",
@@ -9962,6 +10002,400 @@
             }
         }
 
+        /* --- Floating AI Helper Widget --- */
+        .aiw-root {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 12500;
+            font-family: inherit;
+        }
+
+        .aiw-launcher {
+            position: fixed;
+            inset-inline-end: 18px;
+            inset-inline-start: auto;
+            inset-block-end: calc(18px + env(safe-area-inset-bottom, 0px));
+            inline-size: 52px;
+            block-size: 52px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: color-mix(in srgb, var(--theme-color) 80%, #09121a 20%);
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        [dir="rtl"] .aiw-launcher {
+            inset-inline-start: 18px;
+            inset-inline-end: auto;
+        }
+
+        .aiw-launcher:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+        }
+
+        .aiw-launcher:focus-visible,
+        .aiw-header-btn:focus-visible,
+        .aiw-send:focus-visible,
+        .aiw-chip:focus-visible {
+            outline: 2px solid var(--theme-color);
+            outline-offset: 2px;
+        }
+
+        .aiw-panel {
+            position: fixed;
+            inset-inline-end: 18px;
+            inset-inline-start: auto;
+            inset-block-end: calc(78px + env(safe-area-inset-bottom, 0px));
+            inline-size: clamp(320px, 28vw, 420px);
+            max-block-size: min(70vh, 720px);
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 16, 20, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 18px;
+            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            overflow: hidden;
+            pointer-events: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.985);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+        }
+
+        [dir="rtl"] .aiw-panel {
+            inset-inline-start: 18px;
+            inset-inline-end: auto;
+        }
+
+        .aiw-root.aiw-open .aiw-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .aiw-root.aiw-open .aiw-launcher {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+        .aiw-header {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 10px;
+            padding-block: 12px;
+            padding-inline: 14px;
+            border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .aiw-title-wrap {
+            min-inline-size: 0;
+        }
+
+        .aiw-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #fff;
+            text-align: start;
+        }
+
+        .aiw-subtitle {
+            margin: 2px 0 0;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: start;
+            line-height: 1.3;
+        }
+
+        .aiw-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .aiw-header-btn {
+            inline-size: 30px;
+            block-size: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: #f8fafc;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .aiw-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-block: 12px;
+            padding-inline: 12px;
+            min-block-size: 240px;
+            overflow: hidden;
+        }
+
+        .aiw-faq-wrap {
+            display: grid;
+            gap: 8px;
+            align-content: start;
+        }
+
+        .aiw-faq-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: start;
+        }
+
+        .aiw-faq {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .aiw-chip {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: #dbeafe;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            line-height: 1.2;
+            padding-block: 7px;
+            padding-inline: 10px;
+            text-align: start;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .aiw-chip:hover {
+            border-color: color-mix(in srgb, var(--theme-color) 60%, rgba(255, 255, 255, 0.2));
+            background: color-mix(in srgb, var(--theme-color) 16%, rgba(255, 255, 255, 0.08));
+        }
+
+        .aiw-messages {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-inline-end: 2px;
+            scrollbar-width: thin;
+        }
+
+        .aiw-message {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-inline-size: 92%;
+        }
+
+        .aiw-message.aiw-user {
+            align-self: end;
+        }
+
+        .aiw-message.aiw-assistant,
+        .aiw-message.aiw-typing {
+            align-self: start;
+        }
+
+        .aiw-bubble {
+            padding-block: 9px;
+            padding-inline: 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            text-align: start;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        .aiw-message.aiw-user .aiw-bubble {
+            background: color-mix(in srgb, var(--theme-color) 72%, #102027 28%);
+            color: #fff;
+            border-start-end-radius: 5px;
+        }
+
+        .aiw-message.aiw-assistant .aiw-bubble,
+        .aiw-message.aiw-typing .aiw-bubble {
+            background: rgba(255, 255, 255, 0.09);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-start-start-radius: 5px;
+        }
+
+        .aiw-typing-dots {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-inline-start: 6px;
+        }
+
+        .aiw-typing-dots span {
+            inline-size: 5px;
+            block-size: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.45;
+            animation: aiwTypingDot 1s infinite ease-in-out;
+        }
+
+        .aiw-typing-dots span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .aiw-typing-dots span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes aiwTypingDot {
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+
+            40% {
+                transform: translateY(-3px);
+                opacity: 1;
+            }
+        }
+
+        .aiw-quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-block-start: 2px;
+        }
+
+        .aiw-footer {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: end;
+            border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+            padding-block: 11px;
+            padding-inline: 12px;
+            background: rgba(15, 16, 20, 0.82);
+        }
+
+        .aiw-input {
+            min-block-size: 42px;
+            max-block-size: 108px;
+            resize: none;
+            border-radius: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            padding-block: 10px;
+            padding-inline: 12px;
+            font: inherit;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: start;
+        }
+
+        .aiw-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .aiw-input:focus {
+            border-color: color-mix(in srgb, var(--theme-color) 56%, rgba(255, 255, 255, 0.2));
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme-color) 26%, transparent);
+            outline: none;
+        }
+
+        .aiw-send {
+            min-inline-size: 78px;
+            block-size: 42px;
+            border-radius: 11px;
+            border: 1px solid color-mix(in srgb, var(--theme-color) 75%, rgba(255, 255, 255, 0.2));
+            background: var(--theme-color);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding-inline: 12px;
+        }
+
+        .aiw-send:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        .aiw-root.aiw-minimized .aiw-body,
+        .aiw-root.aiw-minimized .aiw-footer {
+            display: none;
+        }
+
+        .aiw-root.aiw-minimized .aiw-panel {
+            max-block-size: none;
+        }
+
+        @media (max-width: 900px) {
+            .aiw-panel {
+                inline-size: clamp(320px, 44vw, 420px);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .aiw-launcher {
+                inset-inline-end: 14px;
+                inset-block-end: calc(14px + env(safe-area-inset-bottom, 0px));
+            }
+
+            [dir="rtl"] .aiw-launcher {
+                inset-inline-start: 14px;
+                inset-inline-end: auto;
+            }
+
+            .aiw-panel {
+                inset-inline: 8px;
+                inset-block-end: calc(8px + env(safe-area-inset-bottom, 0px));
+                inline-size: auto;
+                block-size: min(92vh, 760px);
+                max-block-size: min(92vh, 760px);
+                border-radius: 20px 20px 0 0;
+                padding-block-end: env(safe-area-inset-bottom, 0px);
+            }
+
+            .aiw-header {
+                padding-block-start: max(12px, env(safe-area-inset-top, 0px));
+            }
+
+            .aiw-body {
+                min-block-size: 200px;
+                padding-inline: 10px;
+            }
+
+            .aiw-footer {
+                padding-inline: 10px;
+                grid-template-columns: 1fr;
+            }
+
+            .aiw-send {
+                inline-size: 100%;
+            }
+        }
+
         /* RTL Support */
         [dir="rtl"] .chat-search-bar {
             right: auto;
@@ -10805,6 +11239,7 @@
             if (typeof buildLeadsToolbar === 'function') buildLeadsToolbar();
             if (typeof renderLeads === 'function' && typeof cachedLeads !== 'undefined') renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap);
             if (typeof renderOrders === 'function') renderOrders();
+            if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
         }
 
         // Toggle between English and Arabic
@@ -11505,6 +11940,8 @@
                 if (dashNav) dashNav.classList.add('active');
                 syncInboxMobileMode('dashboard');
             }, 50);
+
+            if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
         }
 
         function startAutoRefresh() {
@@ -16713,8 +17150,436 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
+        const AI_HELPER_WEBHOOK = "https://n8n.srv1174105.hstgr.cloud/webhook/ai-helper";
+        let aiWidget = null;
+        let aiWidgetEscapeBound = false;
+
+        function detectLangDir() {
+            const html = document.documentElement;
+            const htmlLang = (html.getAttribute('lang') || currentLang || 'en').toLowerCase();
+            const lang = htmlLang.startsWith('ar') ? 'ar' : 'en';
+            const htmlDir = (html.getAttribute('dir') || (lang === 'ar' ? 'rtl' : 'ltr')).toLowerCase();
+            const dir = htmlDir === 'rtl' ? 'rtl' : 'ltr';
+            return { lang, dir };
+        }
+
+        function getAIHelperStrings() {
+            const { lang } = detectLangDir();
+            const source = lang === 'ar' ? window.LANG_AR : window.LANG_EN;
+            return source?.ai_helper || {};
+        }
+
+        function getAIWidgetStorageKey() {
+            const { lang } = detectLangDir();
+            const orgId = currentUserOrgId || 'guest';
+            const userId = (currentUserProfile?.email || currentUserProfile?.user_id || 'anon')
+                .toString()
+                .toLowerCase()
+                .replace(/[^a-z0-9_.-]/g, '_');
+            return `ai_widget_state_v1_${lang}_${orgId}_${userId}`;
+        }
+
+        function getAIWidgetActiveTab() {
+            return document.querySelector('.tab-content.active')?.id ||
+                document.querySelector('.nav-item.active .nav-label')?.textContent?.trim() ||
+                '';
+        }
+
+        function saveAIWidgetState() {
+            if (!aiWidget) return;
+            const payload = {
+                isOpen: !!aiWidget.isOpen,
+                minimized: !!aiWidget.minimized,
+                messages: (aiWidget.messages || []).slice(-60)
+            };
+            try {
+                localStorage.setItem(aiWidget.storageKey, JSON.stringify(payload));
+            } catch (e) {
+                console.warn('AI widget state save failed', e);
+            }
+        }
+
+        function scrollAIWidgetToBottom() {
+            if (!aiWidget?.messagesEl) return;
+            requestAnimationFrame(() => {
+                aiWidget.messagesEl.scrollTop = aiWidget.messagesEl.scrollHeight;
+            });
+        }
+
+        function aiWidgetAutoGrowInput() {
+            if (!aiWidget?.inputEl) return;
+            aiWidget.inputEl.style.height = 'auto';
+            aiWidget.inputEl.style.height = `${Math.min(aiWidget.inputEl.scrollHeight, 108)}px`;
+        }
+
+        function applyAIWidgetTexts() {
+            if (!aiWidget) return;
+            const i18n = getAIHelperStrings();
+            const launcherTitle = i18n.launcher_title || 'AI Help';
+            const closeText = i18n.close || 'Close';
+            const minimizeText = i18n.minimize || 'Minimize';
+
+            aiWidget.root?.setAttribute('dir', detectLangDir().dir);
+            aiWidget.launcherEl.title = launcherTitle;
+            aiWidget.launcherEl.setAttribute('aria-label', launcherTitle);
+            aiWidget.titleEl.textContent = i18n.title || 'AI Helper';
+            aiWidget.subtitleEl.textContent = i18n.subtitle || 'Ask anything about setup and behavior';
+            aiWidget.faqLabelEl.textContent = i18n.faq_label || 'Quick Questions';
+            aiWidget.inputEl.placeholder = i18n.placeholder || 'Ask a question...';
+            aiWidget.sendBtn.textContent = i18n.send || 'Send';
+            aiWidget.closeBtn.title = closeText;
+            aiWidget.closeBtn.setAttribute('aria-label', closeText);
+            aiWidget.minimizeBtn.title = minimizeText;
+            aiWidget.minimizeBtn.setAttribute('aria-label', minimizeText);
+            renderFaqChips();
+        }
+
+        function setAIWidgetBusy(isBusy) {
+            if (!aiWidget) return;
+            aiWidget.isSending = !!isBusy;
+            aiWidget.sendBtn.disabled = !!isBusy;
+            aiWidget.inputEl.disabled = !!isBusy;
+        }
+
+        function renderFaqChips(customChips) {
+            if (!aiWidget?.faqEl) return;
+            const i18n = getAIHelperStrings();
+            const faqItems = Array.isArray(customChips) && customChips.length ? customChips :
+                (Array.isArray(i18n.faq) ? i18n.faq : []);
+            aiWidget.faqEl.innerHTML = '';
+            faqItems.forEach((question) => {
+                const text = String(question || '').trim();
+                if (!text) return;
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'aiw-chip';
+                chip.textContent = text;
+                chip.addEventListener('click', () => sendMessage(text));
+                aiWidget.faqEl.appendChild(chip);
+            });
+        }
+
+        function renderMessage(role, text, options = {}) {
+            if (!aiWidget?.messagesEl) return null;
+            const roleClass = role === 'user' ? 'aiw-user' : (role === 'typing' ? 'aiw-typing' : 'aiw-assistant');
+            const messageEl = document.createElement('div');
+            messageEl.className = `aiw-message ${roleClass}`;
+
+            const bubbleEl = document.createElement('div');
+            bubbleEl.className = 'aiw-bubble';
+            bubbleEl.textContent = text || '';
+            messageEl.appendChild(bubbleEl);
+
+            const quickActions = Array.isArray(options.quickActions) ? options.quickActions : [];
+            if (role === 'assistant' && quickActions.length) {
+                const actionsEl = document.createElement('div');
+                actionsEl.className = 'aiw-quick-actions';
+                quickActions.slice(0, 6).forEach((actionText) => {
+                    const action = String(actionText || '').trim();
+                    if (!action) return;
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'aiw-chip';
+                    chip.textContent = action;
+                    chip.addEventListener('click', () => sendMessage(action));
+                    actionsEl.appendChild(chip);
+                });
+                if (actionsEl.children.length) messageEl.appendChild(actionsEl);
+            }
+
+            aiWidget.messagesEl.appendChild(messageEl);
+            scrollAIWidgetToBottom();
+
+            if (options.persist !== false && role !== 'typing') {
+                aiWidget.messages.push({
+                    role: role === 'user' ? 'user' : 'assistant',
+                    text: text || '',
+                    quickActions: quickActions.slice(0, 6)
+                });
+                saveAIWidgetState();
+            }
+
+            return messageEl;
+        }
+
+        function showAIWidgetTyping() {
+            if (!aiWidget || aiWidget.typingEl) return;
+            const i18n = getAIHelperStrings();
+            const msg = document.createElement('div');
+            msg.className = 'aiw-message aiw-typing';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'aiw-bubble';
+            const label = document.createElement('span');
+            label.textContent = i18n.typing || 'Typing...';
+            const dots = document.createElement('span');
+            dots.className = 'aiw-typing-dots';
+            dots.innerHTML = '<span></span><span></span><span></span>';
+            bubble.appendChild(label);
+            bubble.appendChild(dots);
+            msg.appendChild(bubble);
+
+            aiWidget.messagesEl.appendChild(msg);
+            aiWidget.typingEl = msg;
+            scrollAIWidgetToBottom();
+        }
+
+        function hideAIWidgetTyping() {
+            if (!aiWidget?.typingEl) return;
+            aiWidget.typingEl.remove();
+            aiWidget.typingEl = null;
+        }
+
+        function parseAIHelperResponse(rawText) {
+            let parsed = rawText;
+            try {
+                parsed = JSON.parse(rawText);
+            } catch (e) {
+                return { reply: String(rawText || '').trim(), quickActions: [] };
+            }
+
+            if (Array.isArray(parsed)) {
+                parsed = parsed.length ? parsed[0] : {};
+            }
+
+            if (typeof parsed === 'string') {
+                return { reply: parsed.trim(), quickActions: [] };
+            }
+
+            if (parsed && typeof parsed === 'object') {
+                const reply = (
+                    (typeof parsed.reply === 'string' && parsed.reply) ||
+                    (typeof parsed.message === 'string' && parsed.message) ||
+                    (typeof parsed.text === 'string' && parsed.text) ||
+                    String(rawText || '')
+                ).trim();
+                const qaRaw = parsed.quick_actions || parsed.quickActions;
+                const quickActions = Array.isArray(qaRaw)
+                    ? qaRaw.map((item) => String(item || '').trim()).filter(Boolean).slice(0, 6)
+                    : [];
+                return { reply, quickActions };
+            }
+
+            return { reply: String(rawText || '').trim(), quickActions: [] };
+        }
+
+        function ensureAIWidgetStorageContext() {
+            if (!aiWidget) return;
+            const nextKey = getAIWidgetStorageKey();
+            if (nextKey === aiWidget.storageKey) return;
+
+            aiWidget.storageKey = nextKey;
+            aiWidget.messages = [];
+            aiWidget.messagesEl.innerHTML = '';
+
+            const saved = localStorage.getItem(nextKey);
+            if (!saved) {
+                aiWidget.isOpen = false;
+                aiWidget.minimized = false;
+                aiWidget.root.classList.remove('aiw-open', 'aiw-minimized');
+                return;
+            }
+
+            try {
+                const data = JSON.parse(saved);
+                aiWidget.isOpen = !!data?.isOpen;
+                aiWidget.minimized = !!data?.minimized;
+                aiWidget.messages = Array.isArray(data?.messages) ? data.messages.slice(-60) : [];
+            } catch (e) {
+                aiWidget.isOpen = false;
+                aiWidget.minimized = false;
+                aiWidget.messages = [];
+            }
+
+            aiWidget.root.classList.toggle('aiw-open', aiWidget.isOpen);
+            aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
+            aiWidget.messagesEl.innerHTML = '';
+            aiWidget.messages.forEach((msg) => {
+                if (!msg || !msg.role || typeof msg.text !== 'string') return;
+                renderMessage(msg.role, msg.text, { persist: false, quickActions: msg.quickActions || [] });
+            });
+            scrollAIWidgetToBottom();
+        }
+
+        async function sendMessage(text) {
+            if (!aiWidget) return;
+            const message = String(text || '').trim();
+            if (!message || aiWidget.isSending) return;
+
+            ensureAIWidgetStorageContext();
+            openWidget();
+
+            const inputMessage = aiWidget.inputEl.value.trim();
+            const shouldRestoreInput = message === inputMessage;
+
+            renderMessage('user', message);
+            aiWidget.inputEl.value = '';
+            aiWidgetAutoGrowInput();
+            setAIWidgetBusy(true);
+            showAIWidgetTyping();
+
+            const { lang, dir } = detectLangDir();
+            const payload = {
+                message,
+                lang,
+                dir,
+                activeTab: getAIWidgetActiveTab(),
+                timestamp: new Date().toISOString()
+            };
+
+            if (currentUserOrgId) payload.orgId = currentUserOrgId;
+            if (currentOrgData?.name) payload.orgName = currentOrgData.name;
+            if (currentUserProfile?.email) payload.userEmail = currentUserProfile.email;
+            if (currentUserProfile?.user_id) payload.userId = currentUserProfile.user_id;
+
+            try {
+                const response = await fetch(AI_HELPER_WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const rawText = await response.text();
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${rawText || 'Request failed'}`);
+                }
+
+                const parsed = parseAIHelperResponse(rawText);
+                renderMessage('assistant', parsed.reply || '...', { quickActions: parsed.quickActions || [] });
+            } catch (error) {
+                console.error('AI helper webhook error:', error);
+                if (shouldRestoreInput) {
+                    aiWidget.inputEl.value = message;
+                    aiWidgetAutoGrowInput();
+                }
+                renderMessage('assistant', getAIHelperStrings().error_retry || 'I hit a temporary issue. Please try again.');
+            } finally {
+                hideAIWidgetTyping();
+                setAIWidgetBusy(false);
+                saveAIWidgetState();
+                aiWidget.inputEl.focus();
+            }
+        }
+
+        function openWidget() {
+            if (!aiWidget) return;
+            ensureAIWidgetStorageContext();
+            aiWidget.isOpen = true;
+            aiWidget.root.classList.add('aiw-open');
+            aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
+            saveAIWidgetState();
+            setTimeout(() => {
+                if (!aiWidget.minimized) aiWidget.inputEl.focus();
+                scrollAIWidgetToBottom();
+            }, 20);
+        }
+
+        function closeWidget() {
+            if (!aiWidget) return;
+            aiWidget.isOpen = false;
+            hideAIWidgetTyping();
+            aiWidget.root.classList.remove('aiw-open');
+            saveAIWidgetState();
+            aiWidget.launcherEl.focus();
+        }
+
+        function toggleMinimize() {
+            if (!aiWidget) return;
+            aiWidget.minimized = !aiWidget.minimized;
+            aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
+            saveAIWidgetState();
+            if (!aiWidget.minimized) {
+                setTimeout(() => aiWidget.inputEl.focus(), 20);
+            }
+        }
+
+        function initFloatingAIWidget() {
+            if (!document.getElementById('aiw-root')) {
+                document.addEventListener('DOMContentLoaded', initFloatingAIWidget, { once: true });
+                return;
+            }
+
+            if (aiWidget) {
+                applyAIWidgetTexts();
+                ensureAIWidgetStorageContext();
+                return;
+            }
+
+            aiWidget = {
+                root: document.getElementById('aiw-root'),
+                launcherEl: document.getElementById('aiw-launcher'),
+                panelEl: document.getElementById('aiw-panel'),
+                closeBtn: document.getElementById('aiw-close-btn'),
+                minimizeBtn: document.getElementById('aiw-minimize-btn'),
+                titleEl: document.getElementById('aiw-title'),
+                subtitleEl: document.getElementById('aiw-subtitle'),
+                faqLabelEl: document.getElementById('aiw-faq-label'),
+                faqEl: document.getElementById('aiw-faq'),
+                messagesEl: document.getElementById('aiw-messages'),
+                formEl: document.getElementById('aiw-form'),
+                inputEl: document.getElementById('aiw-input'),
+                sendBtn: document.getElementById('aiw-send-btn'),
+                storageKey: getAIWidgetStorageKey(),
+                isOpen: false,
+                minimized: false,
+                isSending: false,
+                typingEl: null,
+                messages: []
+            };
+
+            applyAIWidgetTexts();
+
+            try {
+                const saved = localStorage.getItem(aiWidget.storageKey);
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    aiWidget.isOpen = !!state?.isOpen;
+                    aiWidget.minimized = !!state?.minimized;
+                    aiWidget.messages = Array.isArray(state?.messages) ? state.messages.slice(-60) : [];
+                }
+            } catch (e) {
+                aiWidget.isOpen = false;
+                aiWidget.minimized = false;
+                aiWidget.messages = [];
+            }
+
+            aiWidget.root.classList.toggle('aiw-open', aiWidget.isOpen);
+            aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
+            aiWidget.messages.forEach((msg) => {
+                if (!msg || !msg.role || typeof msg.text !== 'string') return;
+                renderMessage(msg.role, msg.text, { persist: false, quickActions: msg.quickActions || [] });
+            });
+            aiWidgetAutoGrowInput();
+            scrollAIWidgetToBottom();
+
+            aiWidget.launcherEl.addEventListener('click', openWidget);
+            aiWidget.closeBtn.addEventListener('click', closeWidget);
+            aiWidget.minimizeBtn.addEventListener('click', toggleMinimize);
+
+            aiWidget.formEl.addEventListener('submit', (event) => {
+                event.preventDefault();
+                sendMessage(aiWidget.inputEl.value);
+            });
+
+            aiWidget.inputEl.addEventListener('input', aiWidgetAutoGrowInput);
+            aiWidget.inputEl.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage(aiWidget.inputEl.value);
+                }
+            });
+
+            if (!aiWidgetEscapeBound) {
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && aiWidget?.isOpen) closeWidget();
+                });
+                aiWidgetEscapeBound = true;
+            }
+        }
+
         // Initialize language on page load
         initLanguage();
+        initFloatingAIWidget();
     </script>
     <script>
         const STRIPE_PUBLIC_KEY = 'pk_test_placeholder'; // User to replace
@@ -17428,6 +18293,40 @@ Thank you for shopping with {store_name}!</textarea>
             </div>
 
         </div>
+    </div>
+
+    <div class="aiw-root" id="aiw-root">
+        <button type="button" class="aiw-launcher" id="aiw-launcher" title="AI Help" aria-label="AI Help">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                <path fill="currentColor"
+                    d="M12 2a10 10 0 0 0-3.2 19.48c.5.1.68-.22.68-.49v-1.72c-2.78.6-3.37-1.18-3.37-1.18-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.54 1.03 1.54 1.03.88 1.5 2.3 1.06 2.86.8.09-.64.35-1.06.63-1.3-2.22-.25-4.55-1.12-4.55-4.97 0-1.1.39-2 1.03-2.7-.11-.25-.45-1.28.09-2.67 0 0 .85-.27 2.78 1.03a9.73 9.73 0 0 1 5.06 0c1.92-1.3 2.77-1.03 2.77-1.03.55 1.39.21 2.42.11 2.67.64.7 1.03 1.6 1.03 2.7 0 3.87-2.34 4.72-4.57 4.96.36.31.69.92.69 1.86v2.76c0 .28.18.6.69.49A10 10 0 0 0 12 2z" />
+            </svg>
+        </button>
+        <section class="aiw-panel" id="aiw-panel" role="dialog" aria-modal="false" aria-labelledby="aiw-title">
+            <div class="aiw-header">
+                <div class="aiw-title-wrap">
+                    <h3 class="aiw-title" id="aiw-title">AI Helper</h3>
+                    <p class="aiw-subtitle" id="aiw-subtitle">Ask anything about setup and behavior</p>
+                </div>
+                <div class="aiw-header-actions">
+                    <button type="button" class="aiw-header-btn" id="aiw-minimize-btn" aria-label="Minimize"
+                        title="Minimize">−</button>
+                    <button type="button" class="aiw-header-btn" id="aiw-close-btn" aria-label="Close"
+                        title="Close">×</button>
+                </div>
+            </div>
+            <div class="aiw-body">
+                <div class="aiw-faq-wrap">
+                    <div class="aiw-faq-label" id="aiw-faq-label">Quick Questions</div>
+                    <div class="aiw-faq" id="aiw-faq"></div>
+                </div>
+                <div class="aiw-messages" id="aiw-messages" aria-live="polite" aria-atomic="false"></div>
+            </div>
+            <form class="aiw-footer" id="aiw-form">
+                <textarea class="aiw-input" id="aiw-input" rows="1" placeholder="Ask a question..."></textarea>
+                <button type="submit" class="aiw-send" id="aiw-send-btn">Send</button>
+            </form>
+        </section>
     </div>
 </body>
 
