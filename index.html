@@ -10016,7 +10016,7 @@
             inset: 0;
             pointer-events: none;
             z-index: 12500;
-            font-family: inherit;
+            font-family: "Inter", "Tajawal", "Cairo", "Segoe UI", Tahoma, sans-serif;
         }
 
         .aiw-launcher {
@@ -10177,6 +10177,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .aiw-faq-label {
@@ -10190,6 +10191,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            margin-inline-start: auto;
+            flex-wrap: wrap;
         }
 
         .aiw-faq-tool {
@@ -10276,7 +10279,9 @@
             line-height: 1.45;
             text-align: start;
             word-break: break-word;
+            overflow-wrap: anywhere;
             white-space: pre-wrap;
+            unicode-bidi: plaintext;
         }
 
         .aiw-message.aiw-user .aiw-bubble {
@@ -10363,6 +10368,7 @@
             font-size: 0.9rem;
             line-height: 1.4;
             text-align: start;
+            unicode-bidi: plaintext;
         }
 
         .aiw-input::placeholder {
@@ -10418,6 +10424,25 @@
             display: inline-flex;
         }
 
+        .aiw-root[dir="rtl"] .aiw-title,
+        .aiw-root[dir="rtl"] .aiw-subtitle,
+        .aiw-root[dir="rtl"] .aiw-faq-label,
+        .aiw-root[dir="rtl"] .aiw-chip,
+        .aiw-root[dir="rtl"] .aiw-bubble,
+        .aiw-root[dir="rtl"] .aiw-input {
+            letter-spacing: 0;
+            line-height: 1.5;
+        }
+
+        .aiw-root[dir="rtl"] .aiw-header {
+            gap: 12px;
+        }
+
+        .aiw-root[dir="rtl"] .aiw-faq-tools {
+            margin-inline-start: 0;
+            margin-inline-end: auto;
+        }
+
         .aiw-root.aiw-minimized .aiw-body,
         .aiw-root.aiw-minimized .aiw-footer {
             display: none;
@@ -10465,6 +10490,20 @@
 
             .aiw-faq {
                 max-block-size: 120px;
+            }
+
+            .aiw-faq-head {
+                gap: 6px;
+            }
+
+            .aiw-faq-label {
+                font-size: 0.74rem;
+            }
+
+            .aiw-faq-tool {
+                font-size: 0.68rem;
+                padding-block: 5px;
+                padding-inline: 7px;
             }
 
             .aiw-footer {
@@ -18446,7 +18485,7 @@ Thank you for shopping with {store_name}!</textarea>
         <button type="button" class="aiw-launcher" id="aiw-launcher" title="AI Help" aria-label="AI Help">
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
                 <path fill="currentColor"
-                    d="M12 2a6 6 0 0 0-6 6v2.2c-1.17.4-2 1.5-2 2.8v2a3 3 0 0 0 3 3h1v2h8v-2h1a3 3 0 0 0 3-3v-2c0-1.3-.83-2.4-2-2.8V8a6 6 0 0 0-6-6zm-4 6a4 4 0 1 1 8 0v2h-8V8zm1 5h2v2H9v-2zm4 0h2v2h-2v-2zM9.5 6.5A1.5 1.5 0 1 0 11 8a1.5 1.5 0 0 0-1.5-1.5zm5 0A1.5 1.5 0 1 0 16 8a1.5 1.5 0 0 0-1.5-1.5z" />
+                    d="M12 2c-4.97 0-9 3.58-9 8 0 2.13.96 4.06 2.53 5.49-.16 1.36-.61 2.79-1.58 4.08-.2.26.07.62.38.5 2.15-.8 3.68-1.68 4.66-2.36.94.2 1.95.29 3.01.29 4.97 0 9-3.58 9-8s-4.03-8-9-8zm-3 7.5A1.5 1.5 0 1 1 9 12a1.5 1.5 0 0 1 0-2.5zm3 0A1.5 1.5 0 1 1 12 12a1.5 1.5 0 0 1 0-2.5zm3 0A1.5 1.5 0 1 1 15 12a1.5 1.5 0 0 1 0-2.5zM19.4 4.2l.42 1.08 1.08.42-1.08.42-.42 1.08-.42-1.08-1.08-.42 1.08-.42.42-1.08z" />
             </svg>
         </button>
         <section class="aiw-panel" id="aiw-panel" role="dialog" aria-modal="false" aria-labelledby="aiw-title">
