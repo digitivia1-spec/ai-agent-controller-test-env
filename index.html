@@ -39,7 +39,11 @@
                 "nav_reviews": "Customer Reviews",
                 "nav_followups": "Follow-ups",
                 "nav_plans": "Plans",
-                "nav_logout": "Logout"
+                "nav_logout": "Logout",
+                "nav_group_agents": "AI Agents",
+                "nav_group_live": "Live Operations",
+                "nav_group_data": "Data & Sales",
+                "nav_group_content": "Content & Growth"
             },
             "top_bar": {
                 "btn_pricing": "Pricing",
@@ -681,7 +685,11 @@
                 "nav_reviews": "آراء العملاء",
                 "nav_followups": "المتابعات",
                 "nav_plans": "الخطط",
-                "nav_logout": "تسجيل خروج"
+                "nav_logout": "تسجيل خروج",
+                "nav_group_agents": "وكلاء AI",
+                "nav_group_live": "العمليات المباشرة",
+                "nav_group_data": "البيانات والمبيعات",
+                "nav_group_content": "المحتوى والنمو"
             },
             "top_bar": {
                 "btn_pricing": "الأسعار",
@@ -3026,6 +3034,118 @@
         .sidebar.mobile-open .nav-label {
             opacity: 1;
         }
+
+        /* =============================================
+           NAV GROUP ACCORDION STYLES
+           ============================================= */
+        .nav-group {
+            display: block;
+        }
+
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px 8px;
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            gap: 0;
+            position: relative;
+        }
+
+        .nav-group-icon {
+            min-width: 30px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .nav-group-label {
+            margin-left: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.35);
+            opacity: 0;
+            transition: opacity 0.2s, color 0.2s;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar:hover .nav-group-label,
+        .sidebar.mobile-open .nav-group-label {
+            opacity: 1;
+        }
+
+        .nav-group-header:hover .nav-group-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .nav-group-arrow {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.2s;
+            color: rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-group-arrow svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .sidebar:hover .nav-group-arrow,
+        .sidebar.mobile-open .nav-group-arrow {
+            opacity: 1;
+        }
+
+        .nav-group.collapsed .nav-group-arrow {
+            transform: rotate(-90deg);
+        }
+
+        .nav-group-items {
+            overflow: hidden;
+            max-height: 300px;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+            opacity: 1;
+        }
+
+        .nav-group.collapsed .nav-group-items {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .nav-group-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            margin: 6px 16px;
+        }
+
+        /* Active group header highlight */
+        .nav-group.has-active .nav-group-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* RTL: mirror margin and arrow rotation */
+        [dir="rtl"] .nav-group-label {
+            margin-left: 0;
+            margin-right: 15px;
+        }
+
+        [dir="rtl"] .nav-group.collapsed .nav-group-arrow {
+            transform: rotate(90deg);
+        }
+
 
         .sidebar-footer {
             padding: 0;
@@ -9950,89 +10070,162 @@
             </div>
         </div>
         <ul class="nav-list">
+            <!-- Dashboard (standalone) -->
             <li class="nav-item active" onclick="switchTab('dashboard', this); loadDashboard()">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
                         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
                     </svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_dashboard">Dashboard</span>
             </li>
-            <li class="nav-item" onclick="switchTab('website', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_website">Website Agent</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('whatsapp', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_whatsapp">WhatsApp Agent</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('page', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_page">Messenger Agent</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('instagram', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_instagram">Instagram Agent</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('insights', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_insights">Live Insights</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('inbox', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_inbox">Live Inbox</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('leads', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_leads">Leads Area</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('orders', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_orders">Orders Area</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('create-post', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_create_post">Content Studio</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('reviews', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_reviews">Customer Reviews</span>
-            </li>
-            <li class="nav-item" onclick="switchTab('followups', this)">
-                <div class="nav-icon"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
-                    </svg></div>
-                <span class="nav-label" data-i18n="sidebar.nav_followups">Follow-ups</span>
-            </li>
+
+            <div class="nav-group-divider"></div>
+
+            <!-- GROUP: AI Agents -->
+            <div class="nav-group" id="group-agents">
+                <div class="nav-group-header" onclick="toggleNavGroup('group-agents')">
+                    <div class="nav-group-icon">🤖</div>
+                    <span class="nav-group-label" data-i18n="sidebar.nav_group_agents">AI Agents</span>
+                    <div class="nav-group-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="nav-group-items">
+                    <li class="nav-item" onclick="switchTab('website', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_website">Website Agent</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('whatsapp', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_whatsapp">WhatsApp Agent</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('page', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_page">Messenger Agent</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('instagram', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_instagram">Instagram Agent</span>
+                    </li>
+                </div>
+            </div>
+
+            <div class="nav-group-divider"></div>
+
+            <!-- GROUP: Live Operations -->
+            <div class="nav-group" id="group-live">
+                <div class="nav-group-header" onclick="toggleNavGroup('group-live')">
+                    <div class="nav-group-icon">⚡</div>
+                    <span class="nav-group-label" data-i18n="sidebar.nav_group_live">Live Operations</span>
+                    <div class="nav-group-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="nav-group-items">
+                    <li class="nav-item" onclick="switchTab('insights', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_insights">Live Insights</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('inbox', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_inbox">Live Inbox</span>
+                    </li>
+                </div>
+            </div>
+
+            <div class="nav-group-divider"></div>
+
+            <!-- GROUP: Data & Sales -->
+            <div class="nav-group" id="group-data">
+                <div class="nav-group-header" onclick="toggleNavGroup('group-data')">
+                    <div class="nav-group-icon">📊</div>
+                    <span class="nav-group-label" data-i18n="sidebar.nav_group_data">Data &amp; Sales</span>
+                    <div class="nav-group-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="nav-group-items">
+                    <li class="nav-item" onclick="switchTab('leads', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_leads">Leads Area</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('orders', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_orders">Orders Area</span>
+                    </li>
+                </div>
+            </div>
+
+            <div class="nav-group-divider"></div>
+
+            <!-- GROUP: Content & Growth -->
+            <div class="nav-group" id="group-content">
+                <div class="nav-group-header" onclick="toggleNavGroup('group-content')">
+                    <div class="nav-group-icon">✨</div>
+                    <span class="nav-group-label" data-i18n="sidebar.nav_group_content">Content &amp; Growth</span>
+                    <div class="nav-group-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="nav-group-items">
+                    <li class="nav-item" onclick="switchTab('create-post', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_create_post">Content Studio</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('reviews', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_reviews">Customer Reviews</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('followups', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_followups">Follow-ups</span>
+                    </li>
+                </div>
+            </div>
+
+            <div class="nav-group-divider"></div>
+
+            <!-- Plans (standalone) -->
             <li class="nav-item" onclick="openPricingModal()">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
                         <path
@@ -10040,8 +10233,8 @@
                     </svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_plans">Plans</span>
             </li>
-            <!-- Mobile-only items (will appear on desktop too, but that's fine or we can hide them on desktop if needed. 
-                 Actually, Plans is already Pricing. Docs and Help are missing.) -->
+
+            <!-- Mobile-only items -->
             <li class="nav-item mobile-only-nav" onclick="openDocsModal()">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
                         <path
@@ -10057,6 +10250,8 @@
                 <span class="nav-label" data-i18n="top_bar.btn_help">Help</span>
             </li>
         </ul>
+
+
         <div class="sidebar-footer">
             <div class="nav-item" onclick="performLogout()">
                 <div class="nav-icon" style="color:var(--error);"><svg viewBox="0 0 24 24">
@@ -12608,6 +12803,35 @@ Thank you for shopping with {store_name}!</textarea>
             document.body.classList.toggle('inbox-mobile-mode', isInbox);
         }
 
+        // --- NAV GROUP ACCORDION ---
+        const TAB_TO_GROUP = {
+            website: 'group-agents', whatsapp: 'group-agents',
+            page: 'group-agents', instagram: 'group-agents',
+            insights: 'group-live', inbox: 'group-live',
+            leads: 'group-data', orders: 'group-data',
+            'create-post': 'group-content', reviews: 'group-content', followups: 'group-content'
+        };
+
+        function toggleNavGroup(groupId) {
+            const group = document.getElementById(groupId);
+            if (!group) return;
+            group.classList.toggle('collapsed');
+        }
+
+        function updateGroupActiveState(tabId) {
+            // Remove has-active from all groups
+            document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('has-active'));
+            const groupId = TAB_TO_GROUP[tabId];
+            if (groupId) {
+                const group = document.getElementById(groupId);
+                if (group) {
+                    group.classList.add('has-active');
+                    // Auto-expand if collapsed
+                    group.classList.remove('collapsed');
+                }
+            }
+        }
+
         // --- THEME & NAVIGATION ---
         function switchTab(tabId, element) {
             // Close mobile menu on switch
@@ -12621,6 +12845,9 @@ Thank you for shopping with {store_name}!</textarea>
             document.getElementById(tabId).classList.add('active');
             if (element) element.classList.add('active');
             syncInboxMobileMode(tabId);
+
+            // Auto-expand the correct nav group
+            updateGroupActiveState(tabId);
 
             let color = '#5BAEB0';
             if (tabId === 'whatsapp') color = '#57B078';
@@ -12658,6 +12885,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             document.documentElement.style.setProperty('--theme-color', color);
         }
+
 
         function switchOrdersSubtab(subtabId, element) {
             currentOrdersSubtab = subtabId;
