@@ -661,6 +661,10 @@
                 "minimize": "Minimize",
                 "typing": "Typing...",
                 "faq_label": "Quick Questions",
+                "faq_expand": "Show questions",
+                "faq_collapse": "Hide questions",
+                "faq_close": "Close questions",
+                "faq_reopen": "Quick Questions",
                 "error_retry": "I hit a temporary issue. Please try again.",
                 "faq": [
                     "Where do I edit the System Prompt?",
@@ -1324,6 +1328,10 @@
                 "minimize": "تصغير",
                 "typing": "يكتب الآن...",
                 "faq_label": "أسئلة سريعة",
+                "faq_expand": "إظهار الأسئلة",
+                "faq_collapse": "إخفاء الأسئلة",
+                "faq_close": "إغلاق الأسئلة",
+                "faq_reopen": "أسئلة سريعة",
                 "error_retry": "حدث خطأ مؤقت. حاول مرة أخرى.",
                 "faq": [
                     "أين أعدل System Prompt؟",
@@ -10043,7 +10051,9 @@
         .aiw-launcher:focus-visible,
         .aiw-header-btn:focus-visible,
         .aiw-send:focus-visible,
-        .aiw-chip:focus-visible {
+        .aiw-chip:focus-visible,
+        .aiw-faq-tool:focus-visible,
+        .aiw-faq-reopen:focus-visible {
             outline: 2px solid var(--theme-color);
             outline-offset: 2px;
         }
@@ -10053,8 +10063,8 @@
             inset-inline-end: 18px;
             inset-inline-start: auto;
             inset-block-end: calc(78px + env(safe-area-inset-bottom, 0px));
-            inline-size: clamp(320px, 28vw, 420px);
-            max-block-size: min(70vh, 720px);
+            inline-size: clamp(330px, 30vw, 430px);
+            max-block-size: min(74vh, 760px);
             display: flex;
             flex-direction: column;
             background: rgba(15, 16, 20, 0.9);
@@ -10145,10 +10155,10 @@
         .aiw-body {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             padding-block: 12px;
             padding-inline: 12px;
-            min-block-size: 240px;
+            min-block-size: 260px;
             overflow: hidden;
         }
 
@@ -10156,6 +10166,17 @@
             display: grid;
             gap: 8px;
             align-content: start;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .aiw-faq-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
         }
 
         .aiw-faq-label {
@@ -10165,10 +10186,40 @@
             text-align: start;
         }
 
+        .aiw-faq-tools {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .aiw-faq-tool {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            line-height: 1;
+            padding-block: 6px;
+            padding-inline: 8px;
+            cursor: pointer;
+        }
+
+        .aiw-faq-tool.aiw-faq-close {
+            inline-size: 26px;
+            block-size: 26px;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+
         .aiw-faq {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
+            max-block-size: 136px;
+            overflow: auto;
+            padding-inline-end: 2px;
         }
 
         .aiw-chip {
@@ -10195,8 +10246,9 @@
             overflow: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             padding-inline-end: 2px;
+            padding-block-end: 4px;
             scrollbar-width: thin;
         }
 
@@ -10204,7 +10256,7 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            max-inline-size: 92%;
+            max-inline-size: 95%;
         }
 
         .aiw-message.aiw-user {
@@ -10341,6 +10393,31 @@
             cursor: wait;
         }
 
+        .aiw-faq-reopen {
+            align-self: start;
+            display: none;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            border-radius: 999px;
+            padding-block: 6px;
+            padding-inline: 10px;
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+
+        .aiw-root.aiw-faq-collapsed .aiw-faq {
+            display: none;
+        }
+
+        .aiw-root.aiw-faq-closed .aiw-faq-wrap {
+            display: none;
+        }
+
+        .aiw-root.aiw-faq-closed .aiw-faq-reopen {
+            display: inline-flex;
+        }
+
         .aiw-root.aiw-minimized .aiw-body,
         .aiw-root.aiw-minimized .aiw-footer {
             display: none;
@@ -10368,11 +10445,11 @@
             }
 
             .aiw-panel {
-                inset-inline: 8px;
-                inset-block-end: calc(8px + env(safe-area-inset-bottom, 0px));
+                inset-inline: max(4px, env(safe-area-inset-left, 0px)) max(4px, env(safe-area-inset-right, 0px));
+                inset-block-end: 0;
                 inline-size: auto;
-                block-size: min(92vh, 760px);
-                max-block-size: min(92vh, 760px);
+                block-size: min(91vh, 760px);
+                max-block-size: min(91vh, 760px);
                 border-radius: 20px 20px 0 0;
                 padding-block-end: env(safe-area-inset-bottom, 0px);
             }
@@ -10382,12 +10459,17 @@
             }
 
             .aiw-body {
-                min-block-size: 200px;
+                min-block-size: 180px;
                 padding-inline: 10px;
+            }
+
+            .aiw-faq {
+                max-block-size: 120px;
             }
 
             .aiw-footer {
                 padding-inline: 10px;
+                padding-block-end: calc(10px + env(safe-area-inset-bottom, 0px));
                 grid-template-columns: 1fr;
             }
 
@@ -17190,6 +17272,8 @@ Thank you for shopping with {store_name}!</textarea>
             const payload = {
                 isOpen: !!aiWidget.isOpen,
                 minimized: !!aiWidget.minimized,
+                faqCollapsed: !!aiWidget.faqCollapsed,
+                faqClosed: !!aiWidget.faqClosed,
                 messages: (aiWidget.messages || []).slice(-60)
             };
             try {
@@ -17212,6 +17296,45 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.inputEl.style.height = `${Math.min(aiWidget.inputEl.scrollHeight, 108)}px`;
         }
 
+        function applyFaqUiState() {
+            if (!aiWidget) return;
+            aiWidget.root.classList.toggle('aiw-faq-collapsed', !!aiWidget.faqCollapsed);
+            aiWidget.root.classList.toggle('aiw-faq-closed', !!aiWidget.faqClosed);
+            const i18n = getAIHelperStrings();
+            if (aiWidget.faqToggleBtn) {
+                aiWidget.faqToggleBtn.textContent = aiWidget.faqCollapsed ?
+                    (i18n.faq_expand || 'Show questions') :
+                    (i18n.faq_collapse || 'Hide questions');
+            }
+            if (aiWidget.faqReopenBtn) {
+                aiWidget.faqReopenBtn.textContent = i18n.faq_reopen || i18n.faq_label || 'Quick Questions';
+            }
+        }
+
+        function toggleFaqCollapsed() {
+            if (!aiWidget) return;
+            aiWidget.faqClosed = false;
+            aiWidget.faqCollapsed = !aiWidget.faqCollapsed;
+            applyFaqUiState();
+            saveAIWidgetState();
+        }
+
+        function closeFaqChips() {
+            if (!aiWidget) return;
+            aiWidget.faqClosed = true;
+            aiWidget.faqCollapsed = false;
+            applyFaqUiState();
+            saveAIWidgetState();
+        }
+
+        function reopenFaqChips() {
+            if (!aiWidget) return;
+            aiWidget.faqClosed = false;
+            aiWidget.faqCollapsed = false;
+            applyFaqUiState();
+            saveAIWidgetState();
+        }
+
         function applyAIWidgetTexts() {
             if (!aiWidget) return;
             const i18n = getAIHelperStrings();
@@ -17231,7 +17354,10 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.closeBtn.setAttribute('aria-label', closeText);
             aiWidget.minimizeBtn.title = minimizeText;
             aiWidget.minimizeBtn.setAttribute('aria-label', minimizeText);
+            aiWidget.faqCloseBtn.title = i18n.faq_close || 'Close questions';
+            aiWidget.faqCloseBtn.setAttribute('aria-label', i18n.faq_close || 'Close questions');
             renderFaqChips();
+            applyFaqUiState();
         }
 
         function setAIWidgetBusy(isBusy) {
@@ -17376,7 +17502,10 @@ Thank you for shopping with {store_name}!</textarea>
             if (!saved) {
                 aiWidget.isOpen = false;
                 aiWidget.minimized = false;
+                aiWidget.faqClosed = false;
+                aiWidget.faqCollapsed = window.matchMedia('(max-width: 520px)').matches;
                 aiWidget.root.classList.remove('aiw-open', 'aiw-minimized');
+                applyFaqUiState();
                 return;
             }
 
@@ -17384,15 +17513,20 @@ Thank you for shopping with {store_name}!</textarea>
                 const data = JSON.parse(saved);
                 aiWidget.isOpen = !!data?.isOpen;
                 aiWidget.minimized = !!data?.minimized;
+                aiWidget.faqCollapsed = !!data?.faqCollapsed;
+                aiWidget.faqClosed = !!data?.faqClosed;
                 aiWidget.messages = Array.isArray(data?.messages) ? data.messages.slice(-60) : [];
             } catch (e) {
                 aiWidget.isOpen = false;
                 aiWidget.minimized = false;
+                aiWidget.faqClosed = false;
+                aiWidget.faqCollapsed = window.matchMedia('(max-width: 520px)').matches;
                 aiWidget.messages = [];
             }
 
             aiWidget.root.classList.toggle('aiw-open', aiWidget.isOpen);
             aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
+            applyFaqUiState();
             aiWidget.messagesEl.innerHTML = '';
             aiWidget.messages.forEach((msg) => {
                 if (!msg || !msg.role || typeof msg.text !== 'string') return;
@@ -17514,6 +17648,9 @@ Thank you for shopping with {store_name}!</textarea>
                 titleEl: document.getElementById('aiw-title'),
                 subtitleEl: document.getElementById('aiw-subtitle'),
                 faqLabelEl: document.getElementById('aiw-faq-label'),
+                faqToggleBtn: document.getElementById('aiw-faq-toggle-btn'),
+                faqCloseBtn: document.getElementById('aiw-faq-close-btn'),
+                faqReopenBtn: document.getElementById('aiw-faq-reopen-btn'),
                 faqEl: document.getElementById('aiw-faq'),
                 messagesEl: document.getElementById('aiw-messages'),
                 formEl: document.getElementById('aiw-form'),
@@ -17522,6 +17659,8 @@ Thank you for shopping with {store_name}!</textarea>
                 storageKey: getAIWidgetStorageKey(),
                 isOpen: false,
                 minimized: false,
+                faqCollapsed: window.matchMedia('(max-width: 520px)').matches,
+                faqClosed: false,
                 isSending: false,
                 typingEl: null,
                 messages: []
@@ -17535,16 +17674,21 @@ Thank you for shopping with {store_name}!</textarea>
                     const state = JSON.parse(saved);
                     aiWidget.isOpen = !!state?.isOpen;
                     aiWidget.minimized = !!state?.minimized;
+                    aiWidget.faqCollapsed = !!state?.faqCollapsed;
+                    aiWidget.faqClosed = !!state?.faqClosed;
                     aiWidget.messages = Array.isArray(state?.messages) ? state.messages.slice(-60) : [];
                 }
             } catch (e) {
                 aiWidget.isOpen = false;
                 aiWidget.minimized = false;
+                aiWidget.faqCollapsed = window.matchMedia('(max-width: 520px)').matches;
+                aiWidget.faqClosed = false;
                 aiWidget.messages = [];
             }
 
             aiWidget.root.classList.toggle('aiw-open', aiWidget.isOpen);
             aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
+            applyFaqUiState();
             aiWidget.messages.forEach((msg) => {
                 if (!msg || !msg.role || typeof msg.text !== 'string') return;
                 renderMessage(msg.role, msg.text, { persist: false, quickActions: msg.quickActions || [] });
@@ -17555,6 +17699,9 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.launcherEl.addEventListener('click', openWidget);
             aiWidget.closeBtn.addEventListener('click', closeWidget);
             aiWidget.minimizeBtn.addEventListener('click', toggleMinimize);
+            aiWidget.faqToggleBtn.addEventListener('click', toggleFaqCollapsed);
+            aiWidget.faqCloseBtn.addEventListener('click', closeFaqChips);
+            aiWidget.faqReopenBtn.addEventListener('click', reopenFaqChips);
 
             aiWidget.formEl.addEventListener('submit', (event) => {
                 event.preventDefault();
@@ -18299,7 +18446,7 @@ Thank you for shopping with {store_name}!</textarea>
         <button type="button" class="aiw-launcher" id="aiw-launcher" title="AI Help" aria-label="AI Help">
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
                 <path fill="currentColor"
-                    d="M12 2a10 10 0 0 0-3.2 19.48c.5.1.68-.22.68-.49v-1.72c-2.78.6-3.37-1.18-3.37-1.18-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.54 1.03 1.54 1.03.88 1.5 2.3 1.06 2.86.8.09-.64.35-1.06.63-1.3-2.22-.25-4.55-1.12-4.55-4.97 0-1.1.39-2 1.03-2.7-.11-.25-.45-1.28.09-2.67 0 0 .85-.27 2.78 1.03a9.73 9.73 0 0 1 5.06 0c1.92-1.3 2.77-1.03 2.77-1.03.55 1.39.21 2.42.11 2.67.64.7 1.03 1.6 1.03 2.7 0 3.87-2.34 4.72-4.57 4.96.36.31.69.92.69 1.86v2.76c0 .28.18.6.69.49A10 10 0 0 0 12 2z" />
+                    d="M12 2a6 6 0 0 0-6 6v2.2c-1.17.4-2 1.5-2 2.8v2a3 3 0 0 0 3 3h1v2h8v-2h1a3 3 0 0 0 3-3v-2c0-1.3-.83-2.4-2-2.8V8a6 6 0 0 0-6-6zm-4 6a4 4 0 1 1 8 0v2h-8V8zm1 5h2v2H9v-2zm4 0h2v2h-2v-2zM9.5 6.5A1.5 1.5 0 1 0 11 8a1.5 1.5 0 0 0-1.5-1.5zm5 0A1.5 1.5 0 1 0 16 8a1.5 1.5 0 0 0-1.5-1.5z" />
             </svg>
         </button>
         <section class="aiw-panel" id="aiw-panel" role="dialog" aria-modal="false" aria-labelledby="aiw-title">
@@ -18317,9 +18464,17 @@ Thank you for shopping with {store_name}!</textarea>
             </div>
             <div class="aiw-body">
                 <div class="aiw-faq-wrap">
-                    <div class="aiw-faq-label" id="aiw-faq-label">Quick Questions</div>
+                    <div class="aiw-faq-head">
+                        <div class="aiw-faq-label" id="aiw-faq-label">Quick Questions</div>
+                        <div class="aiw-faq-tools">
+                            <button type="button" class="aiw-faq-tool" id="aiw-faq-toggle-btn">Hide</button>
+                            <button type="button" class="aiw-faq-tool aiw-faq-close" id="aiw-faq-close-btn"
+                                aria-label="Close questions" title="Close questions">×</button>
+                        </div>
+                    </div>
                     <div class="aiw-faq" id="aiw-faq"></div>
                 </div>
+                <button type="button" class="aiw-faq-reopen" id="aiw-faq-reopen-btn">Quick Questions</button>
                 <div class="aiw-messages" id="aiw-messages" aria-live="polite" aria-atomic="false"></div>
             </div>
             <form class="aiw-footer" id="aiw-form">
