@@ -10017,6 +10017,7 @@
             pointer-events: none;
             z-index: 12500;
             font-family: "Inter", "Tajawal", "Cairo", "Segoe UI", Tahoma, sans-serif;
+            --aiw-keyboard-offset: 0px;
         }
 
         .aiw-launcher {
@@ -10383,6 +10384,9 @@
             padding-block: 11px;
             padding-inline: 12px;
             background: rgba(15, 16, 20, 0.82);
+            position: sticky;
+            inset-block-end: 0;
+            z-index: 2;
         }
 
         .aiw-input {
@@ -10492,7 +10496,7 @@
         @media (max-width: 520px) {
             .aiw-launcher {
                 inset-inline-end: 14px;
-                inset-block-end: calc(14px + env(safe-area-inset-bottom, 0px));
+                inset-block-end: calc(14px + env(safe-area-inset-bottom, 0px) + var(--aiw-keyboard-offset));
             }
 
             [dir="rtl"] .aiw-launcher {
@@ -10502,12 +10506,14 @@
 
             .aiw-panel {
                 inset-inline: max(4px, env(safe-area-inset-left, 0px)) max(4px, env(safe-area-inset-right, 0px));
-                inset-block-end: 0;
+                inset-block-end: var(--aiw-keyboard-offset);
                 inline-size: auto;
-                block-size: min(91vh, 760px);
-                max-block-size: min(91vh, 760px);
+                block-size: min(calc(100dvh - var(--aiw-keyboard-offset)), 760px);
+                max-block-size: min(calc(100dvh - var(--aiw-keyboard-offset)), 760px);
                 border-radius: 20px 20px 0 0;
                 padding-block-end: env(safe-area-inset-bottom, 0px);
+                display: grid;
+                grid-template-rows: auto 1fr auto;
             }
 
             .aiw-header {
@@ -10515,8 +10521,10 @@
             }
 
             .aiw-body {
-                min-block-size: 180px;
+                min-block-size: 0;
+                block-size: 100%;
                 padding-inline: 10px;
+                padding-block-end: 8px;
             }
 
             .aiw-faq {
@@ -17366,6 +17374,26 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.inputEl.style.height = `${Math.min(aiWidget.inputEl.scrollHeight, 108)}px`;
         }
 
+        function updateAIWidgetViewportOffset() {
+            if (!aiWidget?.root) return;
+
+            const isMobile = window.matchMedia('(max-width: 520px)').matches;
+            if (!isMobile) {
+                aiWidget.root.style.setProperty('--aiw-keyboard-offset', '0px');
+                return;
+            }
+
+            const vv = window.visualViewport;
+            if (!vv) {
+                aiWidget.root.style.setProperty('--aiw-keyboard-offset', '0px');
+                return;
+            }
+
+            const rawOffset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+            const keyboardOffset = rawOffset > 80 ? rawOffset : 0;
+            aiWidget.root.style.setProperty('--aiw-keyboard-offset', `${Math.round(keyboardOffset)}px`);
+        }
+
         function applyFaqUiState() {
             if (!aiWidget) return;
             aiWidget.root.classList.toggle('aiw-faq-collapsed', !!aiWidget.faqCollapsed);
@@ -17673,6 +17701,7 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.root.classList.toggle('aiw-minimized', aiWidget.minimized);
             saveAIWidgetState();
             setTimeout(() => {
+                updateAIWidgetViewportOffset();
                 if (!aiWidget.minimized) aiWidget.inputEl.focus();
                 scrollAIWidgetToBottom();
             }, 20);
@@ -17683,6 +17712,7 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.isOpen = false;
             hideAIWidgetTyping();
             aiWidget.root.classList.remove('aiw-open');
+            aiWidget.root.style.setProperty('--aiw-keyboard-offset', '0px');
             saveAIWidgetState();
             aiWidget.launcherEl.focus();
         }
@@ -17706,6 +17736,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (aiWidget) {
                 applyAIWidgetTexts();
                 ensureAIWidgetStorageContext();
+                updateAIWidgetViewportOffset();
                 return;
             }
 
@@ -17765,6 +17796,7 @@ Thank you for shopping with {store_name}!</textarea>
             });
             aiWidgetAutoGrowInput();
             scrollAIWidgetToBottom();
+            updateAIWidgetViewportOffset();
 
             aiWidget.launcherEl.addEventListener('click', openWidget);
             aiWidget.closeBtn.addEventListener('click', closeWidget);
@@ -17779,12 +17811,21 @@ Thank you for shopping with {store_name}!</textarea>
             });
 
             aiWidget.inputEl.addEventListener('input', aiWidgetAutoGrowInput);
+            aiWidget.inputEl.addEventListener('focus', () => setTimeout(updateAIWidgetViewportOffset, 40));
+            aiWidget.inputEl.addEventListener('blur', () => setTimeout(updateAIWidgetViewportOffset, 120));
             aiWidget.inputEl.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter' && !event.shiftKey) {
                     event.preventDefault();
                     sendMessage(aiWidget.inputEl.value);
                 }
             });
+
+            window.addEventListener('resize', updateAIWidgetViewportOffset, { passive: true });
+            window.addEventListener('orientationchange', updateAIWidgetViewportOffset, { passive: true });
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', updateAIWidgetViewportOffset, { passive: true });
+                window.visualViewport.addEventListener('scroll', updateAIWidgetViewportOffset, { passive: true });
+            }
 
             if (!aiWidgetEscapeBound) {
                 document.addEventListener('keydown', (event) => {
