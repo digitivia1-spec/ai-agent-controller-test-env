@@ -11202,6 +11202,9 @@
         const ORDERS_BASE_COLOR = '#78d199';
         const WHATSAPP_SOLID_GREEN = '#78d199';
         let currentOrdersSubtab = 'incoming';
+        const MOBILE_BACK_MEDIA_QUERY = '(max-width: 900px)';
+        let mobileBackNavInitialized = false;
+        let isHandlingAppPopState = false;
 
         function applyOrdersSubtabTheme() {
             if (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') {
@@ -12102,6 +12105,7 @@
             }, 50);
 
             if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
+            initMobileBackNavigation();
         }
 
         function startAutoRefresh() {
@@ -13429,6 +13433,163 @@ Thank you for shopping with {store_name}!</textarea>
             'create-post': 'group-content', reviews: 'group-content', followups: 'group-content'
         };
 
+        function isMobileBackNavMode() {
+            return window.matchMedia(MOBILE_BACK_MEDIA_QUERY).matches;
+        }
+
+        function getActiveTabId() {
+            return document.querySelector('.tab-content.active')?.id || 'dashboard';
+        }
+
+        function resolveNavElementForTab(tabId) {
+            return document.querySelector(`.nav-item[onclick*="switchTab('${tabId}'"]`);
+        }
+
+        function pushAppNavState(tabId = getActiveTabId(), replace = false) {
+            if (!isMobileBackNavMode()) return;
+            const state = { appNav: true, tab: tabId, ts: Date.now() };
+            if (replace) window.history.replaceState(state, document.title);
+            else window.history.pushState(state, document.title);
+        }
+
+        function closeTopInAppLayer() {
+            const fuCreateModal = document.getElementById('fu-create-modal');
+            if (fuCreateModal) {
+                fuCreateModal.remove();
+                return true;
+            }
+
+            const paymentSuccess = document.getElementById('payment-success-modal');
+            if (paymentSuccess) {
+                paymentSuccess.remove();
+                return true;
+            }
+
+            const paymentProcessing = document.getElementById('payment-processing-modal');
+            if (paymentProcessing) {
+                paymentProcessing.remove();
+                return true;
+            }
+
+            const sidebar = document.getElementById('mainSidebar');
+            if (sidebar?.classList.contains('mobile-open')) {
+                toggleMobileMenu();
+                return true;
+            }
+
+            const openNotif = document.querySelector('.notification-dropdown.show');
+            if (openNotif) {
+                openNotif.classList.remove('show');
+                document.removeEventListener('click', closeNotificationsOnClickOutside);
+                return true;
+            }
+
+            if (typeof aiWidget !== 'undefined' && aiWidget?.isOpen && typeof closeWidget === 'function') {
+                closeWidget();
+                return true;
+            }
+
+            const pricingModal = document.getElementById('pricing-modal');
+            if (pricingModal && (pricingModal.classList.contains('active') || pricingModal.style.display === 'flex')) {
+                closePricingModal();
+                return true;
+            }
+
+            const exportModal = document.getElementById('export-modal');
+            if (exportModal?.classList.contains('active')) {
+                closeExportModal();
+                return true;
+            }
+
+            const docsModal = document.getElementById('docs-modal');
+            if (docsModal?.classList.contains('show')) {
+                closeDocsModal();
+                return true;
+            }
+
+            const profileModal = document.getElementById('profile-modal');
+            if (profileModal?.classList.contains('show')) {
+                closeProfileModal();
+                return true;
+            }
+
+            const helpModal = document.getElementById('help-modal');
+            if (helpModal?.classList.contains('show')) {
+                closeHelpModal();
+                return true;
+            }
+
+            const postModal = document.getElementById('post-modal');
+            if (postModal?.style.display === 'flex') {
+                closeModal();
+                return true;
+            }
+
+            const unlockModal = document.getElementById('unlock-modal');
+            if (unlockModal?.style.display === 'flex') {
+                closeUnlockModal();
+                return true;
+            }
+
+            return false;
+        }
+
+        function handleMobileAppPopState(event) {
+            if (!isMobileBackNavMode()) return;
+            if (isHandlingAppPopState) return;
+
+            const appVisible = document.getElementById('app-container')?.style.display === 'flex';
+            if (!appVisible) return;
+
+            isHandlingAppPopState = true;
+            try {
+                if (closeTopInAppLayer()) {
+                    pushAppNavState(getActiveTabId(), false);
+                    return;
+                }
+
+                const state = event.state;
+                if (state?.appNav && state.tab) {
+                    const currentTab = getActiveTabId();
+                    if (state.tab !== currentTab) {
+                        const navEl = resolveNavElementForTab(state.tab);
+                        switchTab(state.tab, navEl, { skipHistory: true });
+                    } else if (state.tab === 'dashboard') {
+                        pushAppNavState('dashboard', false);
+                    }
+                    return;
+                }
+
+                const fallbackTab = getActiveTabId() || 'dashboard';
+                const navEl = resolveNavElementForTab(fallbackTab);
+                switchTab(fallbackTab, navEl, { skipHistory: true });
+                pushAppNavState(fallbackTab, true);
+                pushAppNavState(fallbackTab, false);
+            } finally {
+                setTimeout(() => {
+                    isHandlingAppPopState = false;
+                }, 0);
+            }
+        }
+
+        function initMobileBackNavigation() {
+            if (mobileBackNavInitialized) return;
+            mobileBackNavInitialized = true;
+
+            window.addEventListener('popstate', handleMobileAppPopState);
+            window.addEventListener('resize', () => {
+                if (!isMobileBackNavMode()) return;
+                if (!window.history.state || !window.history.state.appNav) {
+                    pushAppNavState(getActiveTabId(), true);
+                }
+            }, { passive: true });
+
+            if (!isMobileBackNavMode()) return;
+            const currentTab = getActiveTabId() || 'dashboard';
+            pushAppNavState(currentTab, true);
+            pushAppNavState(currentTab, false);
+        }
+
         function toggleNavGroup(groupId) {
             const group = document.getElementById(groupId);
             if (!group) return;
@@ -13450,7 +13611,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         // --- THEME & NAVIGATION ---
-        function switchTab(tabId, element) {
+        function switchTab(tabId, element, options = {}) {
             // Close mobile menu on switch
             const sidebar = document.getElementById('mainSidebar');
             const overlay = document.getElementById('sidebarOverlay');
@@ -13501,6 +13662,10 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             document.documentElement.style.setProperty('--theme-color', color);
+
+            if (isMobileBackNavMode() && !options.skipHistory && !isHandlingAppPopState) {
+                pushAppNavState(tabId, false);
+            }
         }
 
 
