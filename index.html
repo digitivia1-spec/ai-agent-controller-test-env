@@ -9,6 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script>
+        (function initSavedTheme() {
+            try {
+                const savedTheme = localStorage.getItem('app_theme');
+                const theme = savedTheme === 'light' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.style.colorScheme = theme;
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.style.colorScheme = 'dark';
+            }
+        })();
+    </script>
+    <script>
         // ==========================================
         //        LANGUAGE & I18N (EMBEDDED)
         // ==========================================
@@ -10622,6 +10635,189 @@
             }
         }
 
+        .theme-float-btn {
+            position: fixed;
+            inset-inline-end: -8px;
+            inset-block-start: 50%;
+            inline-size: 46px;
+            block-size: 46px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            background: rgba(15, 16, 20, 0.92);
+            color: #f8fafc;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 4200;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            --theme-float-shift: -6px;
+            --theme-float-x: 0px;
+            transform: translateY(-50%) translateX(var(--theme-float-x));
+        }
+
+        [dir="rtl"] .theme-float-btn {
+            --theme-float-shift: 6px;
+        }
+
+        .theme-float-btn:hover {
+            --theme-float-x: var(--theme-float-shift);
+            background: var(--theme-color);
+            border-color: var(--theme-color);
+            color: #ffffff;
+        }
+
+        .theme-float-btn:focus-visible {
+            outline: 2px solid var(--theme-color);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .theme-float-btn {
+                inline-size: 44px;
+                block-size: 44px;
+                inset-inline-end: 10px;
+                inset-block-start: auto;
+                inset-block-end: calc(82px + env(safe-area-inset-bottom, 0px));
+                transform: translateX(var(--theme-float-x));
+            }
+        }
+
+        :root[data-theme="light"] {
+            --theme-color: #2f8f91;
+            --glass-bg: rgba(255, 255, 255, 0.84);
+            --glass-border: rgba(15, 23, 42, 0.14);
+            --bg-dark: #eef3f8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --warning-bg: rgba(217, 119, 6, 0.16);
+            --warning-border: rgba(217, 119, 6, 0.32);
+            --warning-text: #92400e;
+        }
+
+        :root[data-theme="light"] body {
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 12% 18%, rgba(47, 143, 145, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 88% 85%, rgba(14, 165, 233, 0.13) 0%, transparent 56%);
+            color: var(--text-main);
+        }
+
+        :root[data-theme="light"] .theme-float-btn {
+            background: rgba(255, 255, 255, 0.94);
+            color: #0f172a;
+            border-color: rgba(15, 23, 42, 0.16);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+        }
+
+        :root[data-theme="light"] .sidebar,
+        :root[data-theme="light"] .top-bar,
+        :root[data-theme="light"] .mobile-top-bar {
+            background: rgba(255, 255, 255, 0.88) !important;
+            border-color: rgba(15, 23, 42, 0.12);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        :root[data-theme="light"] .sidebar {
+            background: rgba(248, 250, 252, 0.92) !important;
+        }
+
+        :root[data-theme="light"] .nav-item,
+        :root[data-theme="light"] .nav-group-label,
+        :root[data-theme="light"] .nav-group-icon,
+        :root[data-theme="light"] .top-bar-btn,
+        :root[data-theme="light"] .mobile-hamburger-btn,
+        :root[data-theme="light"] .logo-text,
+        :root[data-theme="light"] .profile-info-value,
+        :root[data-theme="light"] .pc-title,
+        :root[data-theme="light"] .pc-price,
+        :root[data-theme="light"] .global-result-content,
+        :root[data-theme="light"] .search-input-wrapper input,
+        :root[data-theme="light"] .docs-cta h4,
+        :root[data-theme="light"] .help-modal h3,
+        :root[data-theme="light"] .confirm-title {
+            color: var(--text-main) !important;
+        }
+
+        :root[data-theme="light"] .nav-item:hover,
+        :root[data-theme="light"] .nav-item.active {
+            color: #0f172a;
+            background: linear-gradient(90deg, rgba(47, 143, 145, 0.14) 0%, rgba(47, 143, 145, 0.03) 100%);
+        }
+
+        :root[data-theme="light"] .nav-group-header:hover .nav-group-label,
+        :root[data-theme="light"] .nav-group.has-active .nav-group-label {
+            color: #1e293b;
+        }
+
+        :root[data-theme="light"] .nav-group-icon {
+            color: rgba(15, 23, 42, 0.5);
+        }
+
+        :root[data-theme="light"] .nav-group-header:hover .nav-group-icon {
+            color: rgba(15, 23, 42, 0.85);
+        }
+
+        :root[data-theme="light"] .glass,
+        :root[data-theme="light"] .card,
+        :root[data-theme="light"] .modal-content,
+        :root[data-theme="light"] .confirm-modal,
+        :root[data-theme="light"] .docs-modal,
+        :root[data-theme="light"] .help-modal,
+        :root[data-theme="light"] .pricing-card,
+        :root[data-theme="light"] .inbox-search-container,
+        :root[data-theme="light"] #global-search-results,
+        :root[data-theme="light"] #chat-search-bar {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.1);
+            color: var(--text-main);
+        }
+
+        :root[data-theme="light"] #pricing-modal,
+        :root[data-theme="light"] .docs-modal-overlay,
+        :root[data-theme="light"] .help-modal-overlay,
+        :root[data-theme="light"] .confirm-modal-overlay,
+        :root[data-theme="light"] .modal-overlay {
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        :root[data-theme="light"] .search-input-wrapper,
+        :root[data-theme="light"] .social-btn,
+        :root[data-theme="light"] .login-btn.secondary,
+        :root[data-theme="light"] .top-bar-btn {
+            background: rgba(241, 245, 249, 0.88) !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+            color: #0f172a;
+        }
+
+        :root[data-theme="light"] .search-input-wrapper input::placeholder,
+        :root[data-theme="light"] input::placeholder,
+        :root[data-theme="light"] textarea::placeholder {
+            color: #64748b;
+        }
+
+        :root[data-theme="light"] .pricing-header h2,
+        :root[data-theme="light"] .docs-header h2,
+        :root[data-theme="light"] .leads-controls h2 {
+            background: linear-gradient(90deg, #0f172a, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        :root[data-theme="light"] .pricing-close,
+        :root[data-theme="light"] .login-title-meta,
+        :root[data-theme="light"] .partner-chip,
+        :root[data-theme="light"] .dashboard-partner-badges .partner-chip,
+        :root[data-theme="light"] .pc-btn {
+            color: var(--text-main);
+        }
+
         /* RTL Support */
         [dir="rtl"] .chat-search-bar {
             right: auto;
@@ -10631,6 +10827,9 @@
 </head>
 
 <body>
+
+    <button id="theme-float-btn" class="theme-float-btn" type="button" onclick="toggleTheme()"
+        aria-label="Switch to light theme" title="Switch to light theme">☀</button>
 
     <div id="login-container">
         <div class="card glass login-card">
@@ -11408,6 +11607,49 @@
         // --- INTERNATIONALIZATION (i18n) SYSTEM ---
 
         let currentLang = localStorage.getItem('app_language') || 'en';
+        let currentTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+
+        function updateThemeToggleUI() {
+            const btn = document.getElementById('theme-float-btn');
+            if (!btn) return;
+
+            const switchToLight = currentTheme !== 'light';
+            const nextThemeLabel = switchToLight ? 'Switch to light theme' : 'Switch to dark theme';
+            btn.innerText = switchToLight ? '☀' : '☾';
+            btn.setAttribute('aria-label', nextThemeLabel);
+            btn.setAttribute('title', nextThemeLabel);
+        }
+
+        function setTheme(theme, persist = true) {
+            currentTheme = theme === 'light' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.documentElement.style.colorScheme = currentTheme;
+
+            if (persist) {
+                try {
+                    localStorage.setItem('app_theme', currentTheme);
+                } catch (e) {
+                    console.warn('Could not persist theme preference:', e);
+                }
+            }
+
+            updateThemeToggleUI();
+        }
+
+        function toggleTheme() {
+            const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(nextTheme);
+        }
+
+        function initTheme() {
+            let savedTheme = null;
+            try {
+                savedTheme = localStorage.getItem('app_theme');
+            } catch (e) {
+                console.warn('Could not read saved theme preference:', e);
+            }
+            setTheme(savedTheme === 'light' ? 'light' : 'dark', false);
+        }
 
         function getLangStrings() {
             return currentLang === 'ar' ? window.LANG_AR : window.LANG_EN;
@@ -18068,6 +18310,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         // Initialize language on page load
+        initTheme();
         initLanguage();
         initFloatingAIWidget();
     </script>
