@@ -11121,6 +11121,24 @@
             color: #0f172a !important;
         }
 
+        :root[data-theme="light"] .inbox-ai-pill {
+            background: #e2e8f0 !important;
+            color: #334155 !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        :root[data-theme="light"] .inbox-ai-pill.active {
+            background: #e0e7ff !important;
+            color: #3730a3 !important;
+            border-color: #a5b4fc !important;
+        }
+
+        :root[data-theme="light"] .inbox-ai-pill.paused {
+            background: #dcfce7 !important;
+            color: #166534 !important;
+            border-color: #86efac !important;
+        }
+
         :root[data-theme="light"] .contact-id,
         :root[data-theme="light"] .inbox-human-composer-hint {
             color: #64748b !important;
@@ -11128,7 +11146,12 @@
 
         :root[data-theme="light"] .inbox-ai-toggle {
             border-color: rgba(15, 23, 42, 0.2) !important;
-            background: rgba(15, 23, 42, 0.04) !important;
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .inbox-ai-toggle:hover {
+            background: #f1f5f9 !important;
         }
 
         :root[data-theme="light"] .inbox-human-reply-input,
@@ -11156,7 +11179,16 @@
         }
 
         :root[data-theme="light"] .mode-btn.active {
+            background: var(--theme-color, #2b8a86) !important;
+            border-color: var(--theme-color, #2b8a86) !important;
             color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(43, 138, 134, 0.22) !important;
+        }
+
+        :root[data-theme="light"] .mode-btn:hover:not(.active) {
+            background: #f1f5f9 !important;
+            border-color: rgba(15, 23, 42, 0.22) !important;
+            color: #334155 !important;
         }
 
         :root[data-theme="light"] #leads .leads-filter-input,
@@ -11378,10 +11410,37 @@
             opacity: 1 !important;
         }
 
+        :root[data-theme="light"] .fu-msg-channel-tab:hover:not(.active),
+        :root[data-theme="light"] .fu-lang-tab:hover:not(.active),
+        :root[data-theme="light"] .fu-preview-tab:hover:not(.active) {
+            background: #eef2f7 !important;
+            border-color: rgba(15, 23, 42, 0.24) !important;
+            color: #1e293b !important;
+        }
+
+        :root[data-theme="light"] .fu-preview-tab:disabled {
+            background: #f1f5f9 !important;
+            border-color: rgba(148, 163, 184, 0.45) !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+        }
+
         :root[data-theme="light"] .fu-msg-channel-tab.active,
         :root[data-theme="light"] .fu-lang-tab.active,
         :root[data-theme="light"] .fu-preview-tab.active {
+            background: var(--theme-color, #2b8a86) !important;
+            border-color: var(--theme-color, #2b8a86) !important;
             color: #ffffff !important;
+            box-shadow: 0 6px 14px rgba(43, 138, 134, 0.24) !important;
+        }
+
+        :root[data-theme="light"] .fu-preview-screen {
+            background: linear-gradient(180deg, #0b2238, #0c2945) !important;
+            border: 1px solid rgba(148, 163, 184, 0.35) !important;
+        }
+
+        :root[data-theme="light"] .fu-ig-shell .fu-msg-bubble {
+            background: linear-gradient(135deg, #5266f2, #7c4df0 50%, #c53987) !important;
         }
 
         :root[data-theme="light"] .fu-msg-textarea,
@@ -21091,7 +21150,7 @@ Thank you for shopping with {store_name}!</textarea>
         const enabled = { whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked, instagram: !!document.getElementById('fu-ch-instagram')?.checked, page: !!document.getElementById('fu-ch-page')?.checked };
         [['wa', 'whatsapp'], ['ig', 'instagram'], ['fb', 'page']].forEach(([k, ch]) => {
             const el = document.getElementById(`fu-ptab-${k}`); if (!el) return;
-            el.disabled = !enabled[ch]; el.style.opacity = enabled[ch] ? '1' : '.45';
+            el.disabled = !enabled[ch]; el.style.opacity = enabled[ch] ? '1' : '.65';
         });
     }
     function fuUpdatePreview() {
