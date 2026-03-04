@@ -10661,6 +10661,61 @@
             transform: translateY(-50%) translateX(var(--theme-float-x));
         }
 
+        .theme-float-icon {
+            inline-size: 21px;
+            block-size: 21px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-float-icon svg {
+            position: absolute;
+            inline-size: 100%;
+            block-size: 100%;
+            fill: currentColor;
+            transition: opacity 0.2s ease, transform 0.25s ease;
+            transform-origin: center;
+        }
+
+        .theme-float-btn .icon-sun,
+        .theme-float-btn .icon-moon {
+            opacity: 0;
+            transform: scale(0.72) rotate(-20deg);
+        }
+
+        .theme-float-btn[data-theme-next="light"] .icon-sun,
+        .theme-float-btn[data-theme-next="dark"] .icon-moon {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        .theme-float-btn::after {
+            content: attr(data-theme-next-label);
+            position: absolute;
+            inset-inline-end: calc(100% + 8px);
+            inset-block-start: 50%;
+            transform: translateY(-50%) translateX(6px);
+            background: rgba(15, 16, 20, 0.94);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+
+        [dir="rtl"] .theme-float-btn::after {
+            inset-inline-end: auto;
+            inset-inline-start: calc(100% + 8px);
+            transform: translateY(-50%) translateX(-6px);
+        }
+
         [dir="rtl"] .theme-float-btn {
             --theme-float-shift: 6px;
         }
@@ -10670,6 +10725,20 @@
             background: var(--theme-color);
             border-color: var(--theme-color);
             color: #ffffff;
+        }
+
+        .theme-float-btn:hover::after,
+        .theme-float-btn:focus-visible::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .theme-float-btn[data-theme-next="light"] {
+            color: #fbbf24;
+        }
+
+        .theme-float-btn[data-theme-next="dark"] {
+            color: #cbd5e1;
         }
 
         .theme-float-btn:focus-visible {
@@ -10685,6 +10754,10 @@
                 inset-block-start: auto;
                 inset-block-end: calc(82px + env(safe-area-inset-bottom, 0px));
                 transform: translateX(var(--theme-float-x));
+            }
+
+            .theme-float-btn::after {
+                display: none;
             }
         }
 
@@ -10710,9 +10783,22 @@
 
         :root[data-theme="light"] .theme-float-btn {
             background: rgba(255, 255, 255, 0.94);
-            color: #0f172a;
             border-color: rgba(15, 23, 42, 0.16);
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+        }
+
+        :root[data-theme="light"] .theme-float-btn::after {
+            background: rgba(255, 255, 255, 0.98);
+            color: #0f172a;
+            border-color: rgba(15, 23, 42, 0.16);
+        }
+
+        :root[data-theme="light"] .theme-float-btn[data-theme-next="dark"] {
+            color: #334155;
+        }
+
+        :root[data-theme="light"] .theme-float-btn[data-theme-next="light"] {
+            color: #d97706;
         }
 
         :root[data-theme="light"] .sidebar,
@@ -10937,7 +11023,19 @@
 <body>
 
     <button id="theme-float-btn" class="theme-float-btn" type="button" onclick="toggleTheme()"
-        aria-label="Switch to light theme" title="Switch to light theme">☀</button>
+        aria-label="Switch to light theme" title="Switch to light theme" data-theme-next="light"
+        data-theme-next-label="Light mode">
+        <span class="theme-float-icon" aria-hidden="true">
+            <svg class="icon-sun" viewBox="0 0 24 24">
+                <path
+                    d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.42 1.42 1.79-1.8-1.41-1.41-1.8 1.79zM12 5a7 7 0 100 14 7 7 0 000-14zm0-5h-1v3h1V0zm0 21h-1v3h1v-3zm12-10h-3v1h3v-1zM3 11H0v1h3v-1zm15.24 7.16l1.8 1.79 1.41-1.41-1.79-1.8-1.42 1.42zM4.96 19.95l1.8-1.79-1.42-1.42-1.79 1.8 1.41 1.41z" />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24">
+                <path
+                    d="M21.64 13.01A9 9 0 0110.99 2.36a1 1 0 00-1.24-1.24A11 11 0 1022.88 14.25a1 1 0 00-1.24-1.24z" />
+            </svg>
+        </span>
+    </button>
 
     <div id="login-container">
         <div class="card glass login-card">
@@ -11723,9 +11821,16 @@
 
             const switchToLight = currentTheme !== 'light';
             const nextThemeLabel = switchToLight ? 'Switch to light theme' : 'Switch to dark theme';
-            btn.innerText = switchToLight ? '☀' : '☾';
-            btn.setAttribute('aria-label', nextThemeLabel);
-            btn.setAttribute('title', nextThemeLabel);
+            const nextThemeLabelAr = switchToLight ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن';
+            const nextThemeShort = switchToLight ? 'Light mode' : 'Dark mode';
+            const nextThemeShortAr = switchToLight ? 'الوضع الفاتح' : 'الوضع الداكن';
+            const label = currentLang === 'ar' ? nextThemeShortAr : nextThemeShort;
+            const ariaLabel = currentLang === 'ar' ? nextThemeLabelAr : nextThemeLabel;
+
+            btn.setAttribute('data-theme-next', switchToLight ? 'light' : 'dark');
+            btn.setAttribute('data-theme-next-label', label);
+            btn.setAttribute('aria-label', ariaLabel);
+            btn.setAttribute('title', ariaLabel);
         }
 
         function setTheme(theme, persist = true) {
@@ -11819,6 +11924,7 @@
             if (typeof renderLeads === 'function' && typeof cachedLeads !== 'undefined') renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap);
             if (typeof renderOrders === 'function') renderOrders();
             if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
+            updateThemeToggleUI();
         }
 
         // Toggle between English and Arabic
