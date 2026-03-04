@@ -16016,7 +16016,7 @@ Thank you for shopping with {store_name}!</textarea>
                     .update(payload)
                     .eq('id', conversationId)
                     .eq('org_id', currentUserOrgId)
-                    .select('ai_paused, ai_paused_by, ai_paused_at, last_inbound_at')
+                    .select('id, ai_paused, ai_paused_by, ai_paused_at, last_inbound_at')
                     .single();
 
                 if (error) throw error;
