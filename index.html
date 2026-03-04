@@ -44,6 +44,7 @@
                 "nav_whatsapp": "WhatsApp Agent",
                 "nav_page": "Messenger Agent",
                 "nav_instagram": "Instagram Agent",
+                "nav_telegram": "Telegram Agent",
                 "nav_insights": "Live Insights",
                 "nav_inbox": "Live Inbox",
                 "nav_leads": "Leads Area",
@@ -98,7 +99,7 @@
                 "title": "Live Insights",
                 "platform_facebook": "Facebook",
                 "platform_instagram": "Instagram",
-                "platform_page": "page",
+                "platform_page": "Messenger",
                 "period_daily": "Daily",
                 "period_weekly": "Weekly",
                 "period_28days": "28 Days",
@@ -526,7 +527,8 @@
                 "website": "Website Agent",
                 "whatsapp": "WhatsApp Agent",
                 "page": "Messenger Agent",
-                "instagram": "Instagram Agent"
+                "instagram": "Instagram Agent",
+                "telegram": "Telegram Agent"
             },
             "roles": {
                 "sales": "Sales Agent 🚀",
@@ -714,6 +716,7 @@
                 "nav_whatsapp": "وكيل واتساب",
                 "nav_page": "وكيل ماسنجر",
                 "nav_instagram": "وكيل انستغرام",
+                "nav_telegram": "وكيل تيليجرام",
                 "nav_insights": "رؤى مباشرة",
                 "nav_inbox": "صندوق الوارد المباشر",
                 "nav_leads": "العملاء المحتملين",
@@ -1203,7 +1206,8 @@
                 "website": "الموقع",
                 "whatsapp": "واتساب",
                 "page": "ماسنجر",
-                "instagram": "انستغرام"
+                "instagram": "انستغرام",
+                "telegram": "تيليجرام"
             },
             "roles": {
                 "sales": "مبيعات",
@@ -3083,6 +3087,14 @@
             fill: currentColor;
         }
 
+        .nav-icon .nav-icon-img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
         .nav-label {
             margin-left: 15px;
             font-size: 0.95rem;
@@ -4176,6 +4188,8 @@
         .platform-selector {
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
             padding: 15px;
             border-bottom: 1px solid var(--glass-border);
         }
@@ -4204,6 +4218,19 @@
         .platform-btn svg {
             width: 24px;
             height: 24px;
+        }
+
+        .platform-btn .platform-icon-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .platform-btn.social-platform-btn {
+            background: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .contact-list {
@@ -11116,6 +11143,11 @@
             border-bottom-color: rgba(15, 23, 42, 0.12) !important;
         }
 
+        :root[data-theme="light"] .platform-btn.social-platform-btn {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.2) !important;
+        }
+
         :root[data-theme="light"] .mode-btn,
         :root[data-theme="light"] .export-btn-sidebar {
             background: #ffffff !important;
@@ -11617,25 +11649,20 @@
                         <span class="nav-label" data-i18n="sidebar.nav_website">Website Agent</span>
                     </li>
                     <li class="nav-item" onclick="switchTab('whatsapp', this)">
-                        <div class="nav-icon"><svg viewBox="0 0 24 24">
-                                <path
-                                    d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z" />
-                            </svg></div>
+                        <div class="nav-icon"><img class="nav-icon-img" src="https://i.ibb.co/WpzjB4CJ/Whats-App.jpg" alt="WhatsApp"></div>
                         <span class="nav-label" data-i18n="sidebar.nav_whatsapp">WhatsApp Agent</span>
                     </li>
                     <li class="nav-item" onclick="switchTab('page', this)">
-                        <div class="nav-icon"><svg viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z" />
-                            </svg></div>
+                        <div class="nav-icon"><img class="nav-icon-img" src="https://i.ibb.co/9HTpfZh2/Facebook-Messenger-logo-2013.jpg" alt="Messenger"></div>
                         <span class="nav-label" data-i18n="sidebar.nav_page">Messenger Agent</span>
                     </li>
                     <li class="nav-item" onclick="switchTab('instagram', this)">
-                        <div class="nav-icon"><svg viewBox="0 0 24 24">
-                                <path
-                                    d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z" />
-                            </svg></div>
+                        <div class="nav-icon"><img class="nav-icon-img" src="https://i.ibb.co/0yfsFkk4/Instagram-logo-2022.jpg" alt="Instagram"></div>
                         <span class="nav-label" data-i18n="sidebar.nav_instagram">Instagram Agent</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('telegram', this)">
+                        <div class="nav-icon"><img class="nav-icon-img" src="https://i.ibb.co/3YMS4879/Telegram-blue-icon.png" alt="Telegram"></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_telegram">Telegram Agent</span>
                     </li>
                 </div>
             </div>
@@ -12077,8 +12104,16 @@
             { id: 'website', nameKey: 'agents.website', color: '#5BAEB0' },
             { id: 'whatsapp', nameKey: 'agents.whatsapp', color: '#57B078' },
             { id: 'page', nameKey: 'agents.page', color: '#5B89CE' },
-            { id: 'instagram', nameKey: 'agents.instagram', color: '#C66B8D' }
+            { id: 'instagram', nameKey: 'agents.instagram', color: '#C66B8D' },
+            { id: 'telegram', nameKey: 'agents.telegram', color: '#2AABEE' }
         ];
+
+        const SOCIAL_ICON_URLS = Object.freeze({
+            telegram: 'https://i.ibb.co/3YMS4879/Telegram-blue-icon.png',
+            whatsapp: 'https://i.ibb.co/WpzjB4CJ/Whats-App.jpg',
+            page: 'https://i.ibb.co/9HTpfZh2/Facebook-Messenger-logo-2013.jpg',
+            instagram: 'https://i.ibb.co/0yfsFkk4/Instagram-logo-2022.jpg'
+        });
 
         const TONE_OPTIONS = ["Professional & Formal", "Friendly & Casual", "Empathetic & Helpful", "Sales-Oriented & Persuasive", "Witty & Humorous"];
         const PROMPT_TEMPLATES = {
@@ -13467,7 +13502,7 @@
                                 ${iconInsta} Instagram
                             </div>
                             <div class="platform-chip" id="chip-page" onclick="setInsightPlatform('page')">
-                                ${iconMsg} page
+                                ${iconMsg} ${t('insights.platform_page')}
                             </div>
                         </div>
                         <select class="period-select" id="insight-period" onchange="setInsightPeriod(this.value)">
@@ -13494,9 +13529,10 @@
 
             // C. LIVE INBOX TAB
             const iconWebsite = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
-            const iconWhatsapp = `<svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c1.024.558 1.815.842 2.802.842h.002c3.178 0 5.769-2.587 5.769-5.766 0-1.545-.601-2.997-1.692-4.088-1.09-1.091-2.539-1.691-4.085-1.691zm0-2c2.083 0 4.041.812 5.513 2.285 1.472 1.474 2.282 3.432 2.281 5.515 0 4.296-3.499 7.794-7.796 7.794-1.312 0-2.551-.33-3.666-.921l-4.093 1.073 1.092-3.987c-.672-1.163-1.025-2.478-1.025-3.959.001-4.301 3.502-7.8 7.802-7.8"/></svg>`;
-            const iconpage = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z"/></svg>`;
-            const iconInstagram = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z" fill-rule="evenodd"/></svg>`;
+            const iconWhatsapp = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.whatsapp}" alt="WhatsApp">`;
+            const iconMessenger = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.page}" alt="Messenger">`;
+            const iconInstagram = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.instagram}" alt="Instagram">`;
+            const iconTelegram = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.telegram}" alt="Telegram">`;
 
             html += `
             <div id="inbox" class="tab-content">
@@ -13504,10 +13540,11 @@
                     <div class="inbox-layout">
                         <div class="inbox-sidebar" style="background: rgba(255,255,255,0.03); border-right: 1px solid var(--glass-border);">
                             <div class="platform-selector">
-                                <button class="platform-btn" style="background:#5BAEB0" onclick="loadInbox('website', false)">${iconWebsite}</button>
-                                <button class="platform-btn" style="background:#57B078" onclick="loadInbox('whatsapp', false)">${iconWhatsapp}</button>
-                                <button class="platform-btn" style="background:#5B89CE" onclick="loadInbox('page', false)">${iconpage}</button>
-                                <button class="platform-btn" style="background:#C66B8D" onclick="loadInbox('instagram', false)">${iconInstagram}</button>
+                                <button class="platform-btn" style="background:#5BAEB0" onclick="loadInbox('website', false)" aria-label="Website">${iconWebsite}</button>
+                                <button class="platform-btn social-platform-btn" onclick="loadInbox('whatsapp', false)" aria-label="WhatsApp">${iconWhatsapp}</button>
+                                <button class="platform-btn social-platform-btn" onclick="loadInbox('page', false)" aria-label="Messenger">${iconMessenger}</button>
+                                <button class="platform-btn social-platform-btn" onclick="loadInbox('instagram', false)" aria-label="Instagram">${iconInstagram}</button>
+                                <button class="platform-btn social-platform-btn" onclick="loadInbox('telegram', false)" aria-label="Telegram">${iconTelegram}</button>
                             </div>
                             <div style="padding:10px; font-size:0.8rem; text-align:center; color:#888;" data-i18n="inbox.label_platform">Select Platform</div>
                              <button class="export-btn-sidebar" onclick="openExportModal()">
@@ -14286,6 +14323,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <option value="whatsapp">WhatsApp</option>
                             <option value="instagram">Instagram</option>
                             <option value="page">Messenger</option>
+                            <option value="telegram">Telegram</option>
                         </select>
                         <input type="text" id="fu-queue-search" oninput="fuLoadQueue()" placeholder="Search contact..." data-i18n-placeholder="followups.search_contact">
                         <button class="pill-btn primary" style="margin-inline-start:auto;" onclick="fuOpenCreateModal()" data-i18n="followups.create_btn">+ Create Follow-up</button>
@@ -14389,7 +14427,7 @@ Thank you for shopping with {store_name}!</textarea>
         // --- NAV GROUP ACCORDION ---
         const TAB_TO_GROUP = {
             website: 'group-agents', whatsapp: 'group-agents',
-            page: 'group-agents', instagram: 'group-agents',
+            page: 'group-agents', instagram: 'group-agents', telegram: 'group-agents',
             insights: 'group-live', inbox: 'group-live',
             leads: 'group-data', orders: 'group-data',
             'create-post': 'group-content', reviews: 'group-content', followups: 'group-content'
@@ -14593,6 +14631,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'whatsapp') color = '#57B078';
             if (tabId === 'page' || tabId === 'page') color = '#5B89CE';
             if (tabId === 'instagram') color = '#C66B8D';
+            if (tabId === 'telegram') color = '#2AABEE';
             if (tabId === 'website') color = '#5BAEB0';
             if (tabId === 'inbox') color = '#5BAEB0'; // Consistent Teal for inbox
             if (tabId === 'inbox') document.body.style.overflow = '';
@@ -16654,7 +16693,9 @@ Thank you for shopping with {store_name}!</textarea>
                     'whatsapp': '#25D366',
                     'whatsapp_outbound': '#128C7E',
                     'facebook': '#1877F2',
+                    'page': '#1877F2',
                     'instagram': '#E1306C',
+                    'telegram': '#2AABEE',
                     'website': '#5BAEB0'
                 };
 
@@ -16664,6 +16705,8 @@ Thank you for shopping with {store_name}!</textarea>
                     const color = colors[platform] || '#888';
                     let label = platform.charAt(0).toUpperCase() + platform.slice(1);
                     if (platform === 'whatsapp_outbound') label = 'WhatsApp Outbound';
+                    if (platform === 'page') label = 'Messenger';
+                    if (platform === 'telegram') label = 'Telegram';
 
                     html += `
                         <div style="margin-bottom:12px;">
@@ -19599,8 +19642,9 @@ Thank you for shopping with {store_name}!</textarea>
                     style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
                     <option value="all" data-i18n="export.platform_all">All Platforms</option>
                     <option value="whatsapp">WhatsApp</option>
-                    <option value="page">page</option>
+                    <option value="page">Messenger</option>
                     <option value="instagram">Instagram</option>
+                    <option value="telegram">Telegram</option>
                     <option value="website">Website</option>
                 </select>
             </div>
