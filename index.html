@@ -10205,11 +10205,10 @@
         }
 
         .aiw-faq-head {
-            display: flex;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
             align-items: center;
-            justify-content: space-between;
             gap: 8px;
-            flex-wrap: wrap;
         }
 
         .aiw-faq-label {
@@ -10217,6 +10216,7 @@
             font-weight: 600;
             color: var(--text-muted);
             text-align: start;
+            min-inline-size: 0;
         }
 
         .aiw-faq-tools {
@@ -10225,6 +10225,7 @@
             gap: 6px;
             margin-inline-start: auto;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .aiw-faq-tool {
@@ -10476,6 +10477,11 @@
         .aiw-root[dir="rtl"] .aiw-faq-tools {
             margin-inline-start: 0;
             margin-inline-end: auto;
+            justify-content: flex-start;
+        }
+
+        .aiw-root[dir="rtl"] .aiw-header-actions {
+            order: -1;
         }
 
         .aiw-root.aiw-minimized .aiw-body,
@@ -10493,7 +10499,8 @@
             }
         }
 
-        @media (max-width: 520px) {
+        @media (max-width: 900px),
+        (hover: none) and (pointer: coarse) {
             .aiw-launcher {
                 inset-inline-end: 14px;
                 inset-block-end: calc(14px + env(safe-area-inset-bottom, 0px) + var(--aiw-keyboard-offset));
@@ -10508,8 +10515,8 @@
                 inset-inline: max(4px, env(safe-area-inset-left, 0px)) max(4px, env(safe-area-inset-right, 0px));
                 inset-block-end: var(--aiw-keyboard-offset);
                 inline-size: auto;
-                block-size: min(calc(100dvh - var(--aiw-keyboard-offset)), 760px);
-                max-block-size: min(calc(100dvh - var(--aiw-keyboard-offset)), 760px);
+                block-size: min(calc(100dvh - var(--aiw-keyboard-offset)), 860px);
+                max-block-size: min(calc(100dvh - var(--aiw-keyboard-offset)), 860px);
                 border-radius: 20px 20px 0 0;
                 padding-block-end: env(safe-area-inset-bottom, 0px);
                 display: grid;
@@ -10532,11 +10539,21 @@
             }
 
             .aiw-faq-head {
+                grid-template-columns: 1fr;
                 gap: 6px;
             }
 
             .aiw-faq-label {
                 font-size: 0.74rem;
+            }
+
+            .aiw-faq-tools {
+                inline-size: 100%;
+                justify-content: flex-start;
+            }
+
+            .aiw-root[dir="rtl"] .aiw-faq-tools {
+                justify-content: flex-end;
             }
 
             .aiw-faq-tool {
@@ -17476,6 +17493,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         const AI_HELPER_WEBHOOK = "https://n8n.srv1174105.hstgr.cloud/webhook/ai-helper";
+        const AIW_MOBILE_MEDIA_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
         let aiWidget = null;
         let aiWidgetEscapeBound = false;
 
@@ -17542,7 +17560,7 @@ Thank you for shopping with {store_name}!</textarea>
         function updateAIWidgetViewportOffset() {
             if (!aiWidget?.root) return;
 
-            const isMobile = window.matchMedia('(max-width: 520px)').matches;
+            const isMobile = window.matchMedia(AIW_MOBILE_MEDIA_QUERY).matches;
             if (!isMobile) {
                 aiWidget.root.style.setProperty('--aiw-keyboard-offset', '0px');
                 return;
@@ -17766,7 +17784,7 @@ Thank you for shopping with {store_name}!</textarea>
                 aiWidget.isOpen = false;
                 aiWidget.minimized = false;
                 aiWidget.faqClosed = false;
-                aiWidget.faqCollapsed = window.matchMedia('(max-width: 520px)').matches;
+                aiWidget.faqCollapsed = window.matchMedia(AIW_MOBILE_MEDIA_QUERY).matches;
                 aiWidget.root.classList.remove('aiw-open', 'aiw-minimized');
                 applyFaqUiState();
                 return;
@@ -17783,7 +17801,7 @@ Thank you for shopping with {store_name}!</textarea>
                 aiWidget.isOpen = false;
                 aiWidget.minimized = false;
                 aiWidget.faqClosed = false;
-                aiWidget.faqCollapsed = window.matchMedia('(max-width: 520px)').matches;
+                aiWidget.faqCollapsed = window.matchMedia(AIW_MOBILE_MEDIA_QUERY).matches;
                 aiWidget.messages = [];
             }
 
@@ -17925,7 +17943,7 @@ Thank you for shopping with {store_name}!</textarea>
                 storageKey: getAIWidgetStorageKey(),
                 isOpen: false,
                 minimized: false,
-                faqCollapsed: window.matchMedia('(max-width: 520px)').matches,
+                faqCollapsed: window.matchMedia(AIW_MOBILE_MEDIA_QUERY).matches,
                 faqClosed: false,
                 isSending: false,
                 typingEl: null,
@@ -17947,7 +17965,7 @@ Thank you for shopping with {store_name}!</textarea>
             } catch (e) {
                 aiWidget.isOpen = false;
                 aiWidget.minimized = false;
-                aiWidget.faqCollapsed = window.matchMedia('(max-width: 520px)').matches;
+                aiWidget.faqCollapsed = window.matchMedia(AIW_MOBILE_MEDIA_QUERY).matches;
                 aiWidget.faqClosed = false;
                 aiWidget.messages = [];
             }
