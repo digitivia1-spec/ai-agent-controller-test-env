@@ -10832,10 +10832,6 @@
         :root[data-theme="light"] .tab-content h4,
         :root[data-theme="light"] .tab-content h5,
         :root[data-theme="light"] .tab-content h6,
-        :root[data-theme="light"] .tab-content p,
-        :root[data-theme="light"] .tab-content label,
-        :root[data-theme="light"] .tab-content td,
-        :root[data-theme="light"] .tab-content th,
         :root[data-theme="light"] .card-header h3,
         :root[data-theme="light"] .kpi-value,
         :root[data-theme="light"] .stat-value,
@@ -10853,11 +10849,7 @@
             color: var(--text-main) !important;
         }
 
-        :root[data-theme="light"] .tab-content div,
-        :root[data-theme="light"] .tab-content span,
-        :root[data-theme="light"] .tab-content small,
-        :root[data-theme="light"] .tab-content strong,
-        :root[data-theme="light"] .tab-content li {
+        :root[data-theme="light"] .tab-content {
             color: var(--text-main);
         }
 
@@ -11044,6 +11036,412 @@
         :root[data-theme="light"] .pc-btn:hover,
         :root[data-theme="light"] .connect-btn:hover {
             color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] .chat-container,
+        :root[data-theme="light"] .chat-history,
+        :root[data-theme="light"] .inbox-sidebar,
+        :root[data-theme="light"] .inbox-main,
+        :root[data-theme="light"] #inbox-messages,
+        :root[data-theme="light"] .inbox-header,
+        :root[data-theme="light"] .inbox-human-composer,
+        :root[data-theme="light"] .platform-selector,
+        :root[data-theme="light"] .contact-list {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] .chat-input-area {
+            background: #ffffff !important;
+            border-top-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] .msg-ai {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+        }
+
+        :root[data-theme="light"] .msg-ai .msg-time {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .msg-user {
+            color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] .msg-user .msg-time {
+            color: rgba(255, 255, 255, 0.86) !important;
+        }
+
+        :root[data-theme="light"] .contact-item {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] .contact-item:hover,
+        :root[data-theme="light"] .contact-item.active {
+            background: rgba(47, 143, 145, 0.1) !important;
+        }
+
+        :root[data-theme="light"] .contact-avatar {
+            background: #dbe4ef !important;
+            color: #1e293b !important;
+        }
+
+        :root[data-theme="light"] .contact-name,
+        :root[data-theme="light"] .inbox-header,
+        :root[data-theme="light"] .inbox-ai-toggle {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .contact-id,
+        :root[data-theme="light"] .inbox-human-composer-hint {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .inbox-ai-toggle {
+            border-color: rgba(15, 23, 42, 0.2) !important;
+            background: rgba(15, 23, 42, 0.04) !important;
+        }
+
+        :root[data-theme="light"] .inbox-human-reply-input,
+        :root[data-theme="light"] #inbox-search-input {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-color: rgba(15, 23, 42, 0.2) !important;
+        }
+
+        :root[data-theme="light"] .inbox-search-container {
+            background: #f8fafc !important;
+            border-bottom-color: rgba(15, 23, 42, 0.12) !important;
+        }
+
+        :root[data-theme="light"] .mode-btn,
+        :root[data-theme="light"] .export-btn-sidebar {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.16) !important;
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .mode-btn.active {
+            color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] #leads .leads-filter-input,
+        :root[data-theme="light"] #leads .leads-filter-select {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-color: rgba(15, 23, 42, 0.2) !important;
+        }
+
+        :root[data-theme="light"] #leads .leads-filter-select option {
+            background: #ffffff;
+            color: #0f172a;
+        }
+
+        :root[data-theme="light"] #leads .leads-sheet {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] #leads .leads-sheet-table thead th {
+            background: #eef2f7 !important;
+            color: #475569 !important;
+            border-bottom-color: rgba(15, 23, 42, 0.16) !important;
+        }
+
+        :root[data-theme="light"] #leads .leads-sheet-table tbody td {
+            color: #0f172a !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] #leads .leads-sheet-table tbody tr:nth-child(even) {
+            background: #f8fafc !important;
+        }
+
+        :root[data-theme="light"] #leads .leads-sheet-table tbody tr:hover {
+            background: rgba(47, 143, 145, 0.12) !important;
+        }
+
+        :root[data-theme="light"] #leads .lead-col-name {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] #leads .lead-col-msg {
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] #leads .lead-platform-chip {
+            background: #e2e8f0 !important;
+            color: #334155 !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        :root[data-theme="light"] .inline-status-select {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: rgba(15, 23, 42, 0.22) !important;
+        }
+
+        :root[data-theme="light"] .inline-status-select option {
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] #leads .lead-mobile-card,
+        :root[data-theme="light"] .order-card-mobile,
+        :root[data-theme="light"] .log-card-mobile {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] #leads .lead-mobile-name,
+        :root[data-theme="light"] .order-row,
+        :root[data-theme="light"] .log-card-header .log-card-id {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] #leads .lead-mobile-row,
+        :root[data-theme="light"] .order-card-id,
+        :root[data-theme="light"] .order-row>span:first-child,
+        :root[data-theme="light"] .log-card-body .log-row,
+        :root[data-theme="light"] .log-card-body .log-row span:first-child {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .orders-table th {
+            background: #eef2f7 !important;
+            color: #475569 !important;
+            border-bottom-color: rgba(15, 23, 42, 0.16) !important;
+        }
+
+        :root[data-theme="light"] .orders-table td {
+            color: #0f172a !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] .orders-table tr:hover {
+            background: #f8fafc !important;
+        }
+
+        :root[data-theme="light"] .orders-subtabs,
+        :root[data-theme="light"] .orders-segmented-control {
+            background: #e2e8f0 !important;
+        }
+
+        :root[data-theme="light"] .orders-subtab,
+        :root[data-theme="light"] .orders-seg-btn {
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .orders-subtab:hover:not(.active),
+        :root[data-theme="light"] .orders-seg-btn:hover:not(.active) {
+            background: #cfd8e3 !important;
+            color: #1e293b !important;
+        }
+
+        :root[data-theme="light"] .wa-settings-panel,
+        :root[data-theme="light"] .wa-settings-section {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] .wa-section-title,
+        :root[data-theme="light"] .wa-trigger-name,
+        :root[data-theme="light"] .wa-toggle-label {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .wa-section-subtitle,
+        :root[data-theme="light"] .wa-trigger-desc,
+        :root[data-theme="light"] .wa-char-counter {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .wa-lang-option,
+        :root[data-theme="light"] .wa-trigger-row,
+        :root[data-theme="light"] .wa-template-tab,
+        :root[data-theme="light"] .wa-chip,
+        :root[data-theme="light"] .wa-preview-toggle-btn {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.16) !important;
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .wa-trigger-row.checked .wa-trigger-check {
+            color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] .wa-template-textarea,
+        :root[data-theme="light"] .wa-additional-textarea,
+        :root[data-theme="light"] .wa-phone-input {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-color: rgba(15, 23, 42, 0.2) !important;
+        }
+
+        :root[data-theme="light"] .wa-toggle-slider {
+            background: #cbd5e1 !important;
+        }
+
+        :root[data-theme="light"] .wa-reset-btn {
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .logs-filters input[type="text"],
+        :root[data-theme="light"] .logs-filters select {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.2) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .logs-filters select option {
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .logs-table th {
+            color: #475569 !important;
+            border-bottom-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] .logs-table td {
+            color: #0f172a !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] .logs-table tbody tr:hover {
+            background: #f1f5f9 !important;
+        }
+
+        :root[data-theme="light"] .fu-config-card,
+        :root[data-theme="light"] .fu-preview-card {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
+        }
+
+        :root[data-theme="light"] .fu-subtab {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .fu-subtab.active {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .fu-label,
+        :root[data-theme="light"] .fu-platform-headtext strong,
+        :root[data-theme="light"] .fu-contact-main b {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .fu-msg-channel-tab,
+        :root[data-theme="light"] .fu-lang-tab,
+        :root[data-theme="light"] .fu-preview-tab,
+        :root[data-theme="light"] .fu-channel-pill {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.16) !important;
+            color: #475569 !important;
+            opacity: 1 !important;
+        }
+
+        :root[data-theme="light"] .fu-msg-channel-tab.active,
+        :root[data-theme="light"] .fu-lang-tab.active,
+        :root[data-theme="light"] .fu-preview-tab.active {
+            color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] .fu-msg-textarea,
+        :root[data-theme="light"] .fu-modal-field {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-color: rgba(15, 23, 42, 0.2) !important;
+        }
+
+        :root[data-theme="light"] .fu-slider {
+            background: #cbd5e1 !important;
+        }
+
+        :root[data-theme="light"] .fu-inline-modal {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.16) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .fu-contact-hint,
+        :root[data-theme="light"] .fu-contact-main small {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .cr-root {
+            --cr-muted: #64748b;
+            --cr-border: rgba(15, 23, 42, 0.14);
+            --cr-glass: linear-gradient(145deg, #ffffff, #f8fafc);
+        }
+
+        :root[data-theme="light"] .cr-card,
+        :root[data-theme="light"] .cr-logs-table-wrap,
+        :root[data-theme="light"] .cr-log-card {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
+        }
+
+        :root[data-theme="light"] .cr-title-row h2,
+        :root[data-theme="light"] .cr-label,
+        :root[data-theme="light"] .cr-preview-head h3,
+        :root[data-theme="light"] .cr-email-subject {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .cr-title-row p,
+        :root[data-theme="light"] .cr-log-row strong {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .cr-subtab,
+        :root[data-theme="light"] .cr-seg-btn,
+        :root[data-theme="light"] .cr-chip,
+        :root[data-theme="light"] .cr-field input,
+        :root[data-theme="light"] .cr-field textarea,
+        :root[data-theme="light"] .cr-filter-select,
+        :root[data-theme="light"] .cr-filter-input {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .cr-subtab.active,
+        :root[data-theme="light"] .cr-seg-btn.active {
+            background: var(--theme-color) !important;
+            border-color: var(--theme-color) !important;
+            color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] .cr-preview {
+            background: linear-gradient(180deg, #071a2d, #0b2238) !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+
+        :root[data-theme="light"] .cr-sms-bubble,
+        :root[data-theme="light"] .cr-email-card,
+        :root[data-theme="light"] .cr-web-card,
+        :root[data-theme="light"] .cr-email-card p,
+        :root[data-theme="light"] .cr-web-card p,
+        :root[data-theme="light"] .cr-link-chip,
+        :root[data-theme="light"] .cr-row-details {
+            color: #dbeafe !important;
+        }
+
+        :root[data-theme="light"] .cr-logs-table th {
+            color: #475569 !important;
+            border-block-end-color: rgba(15, 23, 42, 0.14) !important;
+        }
+
+        :root[data-theme="light"] .cr-logs-table td {
+            color: #0f172a !important;
+            border-block-end-color: rgba(15, 23, 42, 0.08) !important;
         }
 
         :root[data-theme="light"] #usage-conversations-used,
