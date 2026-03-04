@@ -10690,21 +10690,21 @@
 
         :root[data-theme="light"] {
             --theme-color: #2f8f91;
-            --glass-bg: rgba(255, 255, 255, 0.84);
-            --glass-border: rgba(15, 23, 42, 0.14);
-            --bg-dark: #eef3f8;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(15, 23, 42, 0.12);
+            --bg-dark: #f4f7fb;
             --text-main: #0f172a;
-            --text-muted: #475569;
-            --warning-bg: rgba(217, 119, 6, 0.16);
-            --warning-border: rgba(217, 119, 6, 0.32);
+            --text-muted: #55657d;
+            --warning-bg: rgba(217, 119, 6, 0.14);
+            --warning-border: rgba(217, 119, 6, 0.3);
             --warning-text: #92400e;
         }
 
         :root[data-theme="light"] body {
             background-color: var(--bg-dark);
             background-image:
-                radial-gradient(circle at 12% 18%, rgba(47, 143, 145, 0.14) 0%, transparent 45%),
-                radial-gradient(circle at 88% 85%, rgba(14, 165, 233, 0.13) 0%, transparent 56%);
+                radial-gradient(circle at 12% 18%, rgba(47, 143, 145, 0.14) 0%, transparent 42%),
+                radial-gradient(circle at 88% 85%, rgba(14, 165, 233, 0.12) 0%, transparent 54%);
             color: var(--text-main);
         }
 
@@ -10718,13 +10718,17 @@
         :root[data-theme="light"] .sidebar,
         :root[data-theme="light"] .top-bar,
         :root[data-theme="light"] .mobile-top-bar {
-            background: rgba(255, 255, 255, 0.88) !important;
+            background: rgba(255, 255, 255, 0.95) !important;
             border-color: rgba(15, 23, 42, 0.12);
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
         }
 
         :root[data-theme="light"] .sidebar {
-            background: rgba(248, 250, 252, 0.92) !important;
+            background: rgba(248, 250, 252, 0.97) !important;
+        }
+
+        :root[data-theme="light"] .nav-group-divider {
+            background: rgba(15, 23, 42, 0.08);
         }
 
         :root[data-theme="light"] .nav-item,
@@ -10732,16 +10736,69 @@
         :root[data-theme="light"] .nav-group-icon,
         :root[data-theme="light"] .top-bar-btn,
         :root[data-theme="light"] .mobile-hamburger-btn,
-        :root[data-theme="light"] .logo-text,
-        :root[data-theme="light"] .profile-info-value,
+        :root[data-theme="light"] .logo-text {
+            color: var(--text-main) !important;
+        }
+
+        :root[data-theme="light"] .tab-content h1,
+        :root[data-theme="light"] .tab-content h2,
+        :root[data-theme="light"] .tab-content h3,
+        :root[data-theme="light"] .tab-content h4,
+        :root[data-theme="light"] .tab-content h5,
+        :root[data-theme="light"] .tab-content h6,
+        :root[data-theme="light"] .tab-content p,
+        :root[data-theme="light"] .tab-content label,
+        :root[data-theme="light"] .tab-content td,
+        :root[data-theme="light"] .tab-content th,
+        :root[data-theme="light"] .card-header h3,
+        :root[data-theme="light"] .kpi-value,
+        :root[data-theme="light"] .stat-value,
         :root[data-theme="light"] .pc-title,
         :root[data-theme="light"] .pc-price,
+        :root[data-theme="light"] .platform-count,
+        :root[data-theme="light"] .activity-text,
+        :root[data-theme="light"] .activity-text strong,
         :root[data-theme="light"] .global-result-content,
-        :root[data-theme="light"] .search-input-wrapper input,
+        :root[data-theme="light"] .profile-info-value,
         :root[data-theme="light"] .docs-cta h4,
         :root[data-theme="light"] .help-modal h3,
-        :root[data-theme="light"] .confirm-title {
+        :root[data-theme="light"] .confirm-title,
+        :root[data-theme="light"] .pricing-close {
             color: var(--text-main) !important;
+        }
+
+        :root[data-theme="light"] .tab-content div,
+        :root[data-theme="light"] .tab-content span,
+        :root[data-theme="light"] .tab-content small,
+        :root[data-theme="light"] .tab-content strong,
+        :root[data-theme="light"] .tab-content li {
+            color: var(--text-main);
+        }
+
+        :root[data-theme="light"] .tab-content .kpi-label,
+        :root[data-theme="light"] .tab-content .kpi-subtext,
+        :root[data-theme="light"] .tab-content .stat-title,
+        :root[data-theme="light"] .tab-content .activity-meta,
+        :root[data-theme="light"] .tab-content .post-date,
+        :root[data-theme="light"] .tab-content .p-stat-label,
+        :root[data-theme="light"] .profile-info-label,
+        :root[data-theme="light"] .help-modal p,
+        :root[data-theme="light"] .docs-section p,
+        :root[data-theme="light"] .docs-section li {
+            color: var(--text-muted) !important;
+        }
+
+        :root[data-theme="light"] .tab-content .kpi-trend.positive,
+        :root[data-theme="light"] .tab-content .stat-trend {
+            color: var(--success) !important;
+        }
+
+        :root[data-theme="light"] .tab-content .kpi-trend.negative {
+            color: var(--error) !important;
+        }
+
+        :root[data-theme="light"] .tab-content .kpi-trend.neutral {
+            color: var(--text-muted) !important;
         }
 
         :root[data-theme="light"] .nav-item:hover,
@@ -10765,11 +10822,22 @@
 
         :root[data-theme="light"] .glass,
         :root[data-theme="light"] .card,
+        :root[data-theme="light"] .dashboard-card,
+        :root[data-theme="light"] .kpi-card,
+        :root[data-theme="light"] .stat-card,
+        :root[data-theme="light"] .post-row,
+        :root[data-theme="light"] .activity-item,
+        :root[data-theme="light"] .platform-chip,
         :root[data-theme="light"] .modal-content,
+        :root[data-theme="light"] .modal-info,
         :root[data-theme="light"] .confirm-modal,
         :root[data-theme="light"] .docs-modal,
         :root[data-theme="light"] .help-modal,
         :root[data-theme="light"] .pricing-card,
+        :root[data-theme="light"] #dashboard .kpi-card,
+        :root[data-theme="light"] #dashboard .dashboard-panel.large-panel,
+        :root[data-theme="light"] #dashboard .usage-widget,
+        :root[data-theme="light"] #dashboard .dashboard-panel:not(.large-panel),
         :root[data-theme="light"] .inbox-search-container,
         :root[data-theme="light"] #global-search-results,
         :root[data-theme="light"] #chat-search-bar {
@@ -10777,6 +10845,15 @@
             border-color: rgba(15, 23, 42, 0.12) !important;
             box-shadow: 0 10px 26px rgba(15, 23, 42, 0.1);
             color: var(--text-main);
+        }
+
+        :root[data-theme="light"] .kpi-card::after {
+            background: radial-gradient(circle at top right, rgba(47, 143, 145, 0.1), transparent 60%);
+        }
+
+        :root[data-theme="light"] .activity-item:hover,
+        :root[data-theme="light"] .post-row:hover {
+            background: rgba(47, 143, 145, 0.07) !important;
         }
 
         :root[data-theme="light"] #pricing-modal,
@@ -10793,7 +10870,26 @@
         :root[data-theme="light"] .top-bar-btn {
             background: rgba(241, 245, 249, 0.88) !important;
             border-color: rgba(15, 23, 42, 0.14) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] input,
+        :root[data-theme="light"] textarea,
+        :root[data-theme="light"] select,
+        :root[data-theme="light"] .period-select,
+        :root[data-theme="light"] .date-filter-select {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] select option {
+            background: #ffffff;
             color: #0f172a;
+        }
+
+        :root[data-theme="light"] .textarea-locked {
+            opacity: 0.92;
         }
 
         :root[data-theme="light"] .search-input-wrapper input::placeholder,
@@ -10804,18 +10900,30 @@
 
         :root[data-theme="light"] .pricing-header h2,
         :root[data-theme="light"] .docs-header h2,
-        :root[data-theme="light"] .leads-controls h2 {
-            background: linear-gradient(90deg, #0f172a, #334155);
+        :root[data-theme="light"] .leads-controls h2,
+        :root[data-theme="light"] .dashboard-welcome h1,
+        :root[data-theme="light"] .welcome-text {
+            background: linear-gradient(90deg, #0f172a, #334155) !important;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        :root[data-theme="light"] .pricing-close,
         :root[data-theme="light"] .login-title-meta,
         :root[data-theme="light"] .partner-chip,
         :root[data-theme="light"] .dashboard-partner-badges .partner-chip,
         :root[data-theme="light"] .pc-btn {
-            color: var(--text-main);
+            color: var(--text-main) !important;
+        }
+
+        :root[data-theme="light"] .login-btn,
+        :root[data-theme="light"] .help-btn,
+        :root[data-theme="light"] .docs-cta button,
+        :root[data-theme="light"] .top-bar-btn:hover,
+        :root[data-theme="light"] .platform-chip.active,
+        :root[data-theme="light"] .platform-chip:hover,
+        :root[data-theme="light"] .pc-btn:hover,
+        :root[data-theme="light"] .connect-btn:hover {
+            color: #ffffff !important;
         }
 
         /* RTL Support */
