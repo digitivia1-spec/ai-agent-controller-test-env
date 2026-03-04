@@ -10933,8 +10933,41 @@
             color: var(--text-main);
         }
 
+        :root[data-theme="light"] #dashboard {
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --dash-bg: linear-gradient(145deg, #ffffff, #f8fbff);
+            --dash-border: rgba(15, 23, 42, 0.12);
+            --dash-shadow: 0 14px 28px -14px rgba(15, 23, 42, 0.22);
+        }
+
+        :root[data-theme="light"] #dashboard .kpi-card::before {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.04), transparent);
+        }
+
+        :root[data-theme="light"] #dashboard .kpi-icon-wrapper {
+            background: rgba(15, 23, 42, 0.04);
+            border-color: rgba(15, 23, 42, 0.08);
+        }
+
         :root[data-theme="light"] .kpi-card::after {
             background: radial-gradient(circle at top right, rgba(47, 143, 145, 0.1), transparent 60%);
+        }
+
+        :root[data-theme="light"] #dashboard .kpi-label,
+        :root[data-theme="light"] #dashboard .kpi-value,
+        :root[data-theme="light"] #dashboard .kpi-subtext,
+        :root[data-theme="light"] #dashboard .dashboard-panel h3,
+        :root[data-theme="light"] #dashboard .header-subtitle,
+        :root[data-theme="light"] #dashboard .dashboard-partner-badges .partner-chip,
+        :root[data-theme="light"] #dashboard .dashboard-partner-badges .partner-chip strong {
+            color: var(--text-main) !important;
+        }
+
+        :root[data-theme="light"] #dashboard .kpi-label,
+        :root[data-theme="light"] #dashboard .kpi-subtext,
+        :root[data-theme="light"] #dashboard .header-subtitle {
+            color: var(--text-muted) !important;
         }
 
         :root[data-theme="light"] .activity-item:hover,
@@ -10989,9 +11022,10 @@
         :root[data-theme="light"] .leads-controls h2,
         :root[data-theme="light"] .dashboard-welcome h1,
         :root[data-theme="light"] .welcome-text {
-            background: linear-gradient(90deg, #0f172a, #334155) !important;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            -webkit-text-fill-color: #0f172a !important;
+            color: #0f172a !important;
         }
 
         :root[data-theme="light"] .login-title-meta,
@@ -11010,6 +11044,14 @@
         :root[data-theme="light"] .pc-btn:hover,
         :root[data-theme="light"] .connect-btn:hover {
             color: #ffffff !important;
+        }
+
+        :root[data-theme="light"] #usage-conversations-used,
+        :root[data-theme="light"] #usage-wa-outbound-used,
+        :root[data-theme="light"] #usage-period-end,
+        :root[data-theme="light"] #usage-plan-name,
+        :root[data-theme="light"] #usage-end-label {
+            color: #0f172a !important;
         }
 
         /* RTL Support */
