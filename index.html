@@ -10491,6 +10491,15 @@
 
         .aiw-root.aiw-minimized .aiw-panel {
             max-block-size: none;
+            block-size: auto;
+        }
+
+        .aiw-root.aiw-minimized .aiw-subtitle {
+            display: none;
+        }
+
+        .aiw-root.aiw-minimized .aiw-header {
+            padding-block: 10px;
         }
 
         @media (max-width: 900px) {
@@ -10570,6 +10579,46 @@
 
             .aiw-send {
                 inline-size: 100%;
+            }
+
+            .aiw-root.aiw-minimized .aiw-panel {
+                display: block;
+                grid-template-rows: none;
+                inline-size: min(94vw, 430px);
+                block-size: auto;
+                max-block-size: none;
+                min-block-size: 0;
+                inset-block-end: calc(10px + env(safe-area-inset-bottom, 0px) + var(--aiw-keyboard-offset));
+                inset-inline-end: max(6px, env(safe-area-inset-right, 0px));
+                inset-inline-start: auto;
+                border-radius: 14px;
+                overflow: hidden;
+            }
+
+            [dir="rtl"] .aiw-root.aiw-minimized .aiw-panel {
+                inset-inline-start: max(6px, env(safe-area-inset-left, 0px));
+                inset-inline-end: auto;
+            }
+
+            .aiw-root.aiw-minimized .aiw-title {
+                font-size: 0.94rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .aiw-root.aiw-minimized .aiw-header {
+                padding-block: 8px;
+                padding-inline: 10px;
+            }
+
+            .aiw-root.aiw-minimized .aiw-header-actions {
+                gap: 5px;
+            }
+
+            .aiw-root.aiw-minimized .aiw-header-btn {
+                inline-size: 28px;
+                block-size: 28px;
             }
         }
 
