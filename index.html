@@ -3282,6 +3282,153 @@
             margin: 0 auto;
         }
 
+        .app-legal-footer {
+            width: 100%;
+            border-top: 1px solid var(--glass-border);
+            padding: 14px 18px 16px;
+            background: color-mix(in srgb, var(--bg-dark) 90%, transparent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .app-legal-footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .legal-footer-link {
+            background: transparent;
+            border: 1px solid color-mix(in srgb, var(--glass-border) 90%, transparent);
+            color: var(--text-muted);
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 0.84rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .legal-footer-link:hover,
+        .legal-footer-link.active {
+            color: #fff;
+            border-color: var(--theme-color);
+            background: color-mix(in srgb, var(--theme-color) 16%, transparent);
+        }
+
+        .legal-tab-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .legal-page {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            line-height: 1.7;
+        }
+
+        .legal-updated {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: -8px;
+        }
+
+        .legal-quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .legal-quick-link {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 0.84rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .legal-quick-link:hover,
+        .legal-quick-link.active {
+            color: #fff;
+            border-color: var(--theme-color);
+            background: color-mix(in srgb, var(--theme-color) 16%, transparent);
+        }
+
+        .legal-retention-banner,
+        .legal-provider-note {
+            border: 1px solid color-mix(in srgb, var(--theme-color) 42%, var(--glass-border));
+            background: color-mix(in srgb, var(--theme-color) 12%, rgba(255, 255, 255, 0.02));
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .legal-provider-note {
+            font-size: 0.88rem;
+        }
+
+        .legal-section {
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .legal-section h3 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .legal-section p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        .legal-page-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .app-legal-footer {
+                padding: 12px 10px 14px;
+            }
+
+            .app-legal-footer-inner {
+                justify-content: stretch;
+            }
+
+            .legal-footer-link,
+            .legal-quick-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .legal-page {
+                gap: 14px;
+            }
+
+            .legal-section {
+                padding: 14px;
+            }
+
+            .insights-empty-state {
+                padding: 36px 12px;
+            }
+        }
+
         .tab-content {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -3471,6 +3618,34 @@
             margin-top: 20px;
         }
 
+        .insights-loading-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 28px 0;
+        }
+
+        .insights-inline-state {
+            text-align: center;
+            padding: 22px 12px;
+            color: var(--text-muted);
+        }
+
+        .insights-inline-state.is-error {
+            color: var(--error);
+        }
+
+        .insights-empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+        }
+
+        .insights-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
         .stat-card {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
             border: 1px solid var(--glass-border);
@@ -3517,7 +3692,7 @@
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: white;
+            color: var(--text-main);
             border-left: 4px solid var(--theme-color);
             padding-left: 15px;
         }
@@ -3565,7 +3740,7 @@
         .post-text {
             font-size: 0.95rem;
             line-height: 1.4;
-            color: #eee;
+            color: var(--text-main);
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -3590,7 +3765,7 @@
         .p-stat-val {
             font-size: 1.1rem;
             font-weight: 700;
-            color: white;
+            color: var(--text-main);
         }
 
         .p-stat-label {
@@ -3634,7 +3809,7 @@
             top: 15px;
             right: 20px;
             font-size: 1.5rem;
-            color: white;
+            color: var(--text-main);
             cursor: pointer;
             z-index: 10;
             background: rgba(0, 0, 0, 0.5);
@@ -3702,13 +3877,47 @@
             align-items: center;
             gap: 8px;
             font-size: 0.9rem;
-            color: #ddd;
+            color: var(--text-main);
         }
 
         .comments-section {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
+        }
+
+        .insight-comment-row {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .insight-comment-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+            gap: 8px;
+        }
+
+        .insight-comment-author {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .insight-comment-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .insight-comment-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .insight-comments-empty {
+            padding: 10px;
+            color: var(--text-muted);
+            text-align: center;
         }
 
         .comment-row {
@@ -11526,6 +11735,83 @@
             color: #ffffff !important;
         }
 
+        :root[data-theme="light"] .insights-empty-state,
+        :root[data-theme="light"] .insights-inline-state,
+        :root[data-theme="light"] .insight-comments-empty,
+        :root[data-theme="light"] .post-date,
+        :root[data-theme="light"] .insight-comment-date,
+        :root[data-theme="light"] .insight-comment-text {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .posts-header,
+        :root[data-theme="light"] .post-text,
+        :root[data-theme="light"] .p-stat-val,
+        :root[data-theme="light"] .m-stat,
+        :root[data-theme="light"] .insight-comment-author {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .post-stats {
+            border-left-color: rgba(15, 23, 42, 0.12) !important;
+        }
+
+        :root[data-theme="light"] .modal-close {
+            color: #0f172a !important;
+            background: rgba(241, 245, 249, 0.95) !important;
+            border: 1px solid rgba(15, 23, 42, 0.18);
+        }
+
+        :root[data-theme="light"] .modal-close:hover {
+            background: #e2e8f0 !important;
+        }
+
+        :root[data-theme="light"] .insight-comment-row {
+            border-bottom-color: rgba(15, 23, 42, 0.1);
+        }
+
+        :root[data-theme="light"] .app-legal-footer {
+            background: rgba(255, 255, 255, 0.9);
+            border-top-color: rgba(15, 23, 42, 0.12);
+        }
+
+        :root[data-theme="light"] .legal-footer-link,
+        :root[data-theme="light"] .legal-quick-link {
+            background: #ffffff;
+            color: #475569;
+            border-color: rgba(15, 23, 42, 0.18);
+        }
+
+        :root[data-theme="light"] .legal-footer-link:hover,
+        :root[data-theme="light"] .legal-footer-link.active,
+        :root[data-theme="light"] .legal-quick-link:hover,
+        :root[data-theme="light"] .legal-quick-link.active {
+            color: #ffffff;
+            background: #0f766e;
+            border-color: #0f766e;
+        }
+
+        :root[data-theme="light"] .legal-retention-banner,
+        :root[data-theme="light"] .legal-provider-note {
+            background: #f8fafc;
+            border-color: rgba(15, 118, 110, 0.26);
+            color: #0f172a;
+        }
+
+        :root[data-theme="light"] .legal-section {
+            background: #ffffff;
+            border-color: rgba(15, 23, 42, 0.12);
+        }
+
+        :root[data-theme="light"] .legal-section h3 {
+            color: #0f172a;
+        }
+
+        :root[data-theme="light"] .legal-section p,
+        :root[data-theme="light"] .legal-updated {
+            color: #475569;
+        }
+
         :root[data-theme="light"] .export-btn {
             background: #ffffff !important;
             border-color: rgba(15, 23, 42, 0.18) !important;
@@ -12784,6 +13070,19 @@
         <main>
             <div id="dynamic-content-area"></div>
         </main>
+
+        <footer class="app-legal-footer">
+            <div class="app-legal-footer-inner">
+                <button type="button" class="legal-footer-link" data-legal-link="legal-privacy"
+                    onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                <button type="button" class="legal-footer-link" data-legal-link="legal-terms"
+                    onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                <button type="button" class="legal-footer-link" data-legal-link="legal-cookies"
+                    onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                <button type="button" class="legal-footer-link" data-legal-link="legal-security"
+                    onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+            </div>
+        </footer>
     </div>
 
     <div id="unlock-modal" class="confirm-modal-overlay">
@@ -14409,7 +14708,6 @@
             // B. LIVE INSIGHTS TAB (Same as Phase 3)
             const iconFacebook = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.41 9.88V14.9h-2.53v-2.9h2.53V9.79c0-2.5 1.47-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v6.98C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg>`;
             const iconInsta = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>`;
-            const iconMsg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.02-.06.71-.24 2.53-.54 3.79 1.43-.37 3.39-1.01 4.58-1.55.67.19 1.39.3 2.1.3 5.52 0 10-4.03 10-9S17.52 2 12 2zm1.2 12.39l-2.67-2.85-5.23 2.85 5.76-6.11 2.64 2.85 5.26-2.85-5.76 6.11z"/></svg>`;
 
             html += `
             <div id="insights" class="tab-content">
@@ -14423,9 +14721,6 @@
                             <div class="platform-chip" id="chip-instagram" onclick="setInsightPlatform('instagram')">
                                 ${iconInsta} Instagram
                             </div>
-                            <div class="platform-chip" id="chip-page" onclick="setInsightPlatform('page')">
-                                ${iconMsg} ${t('insights.platform_page')}
-                            </div>
                         </div>
                         <select class="period-select" id="insight-period" onchange="setInsightPeriod(this.value)">
                             <option value="day">Daily</option>
@@ -14435,15 +14730,15 @@
                         </select>
                     </div>
                     <div id="insights-grid" class="stats-grid">
-                        <div style="grid-column: 1/-1; text-align:center; padding: 60px; color:#888;">
-                            <div style="font-size: 3rem; margin-bottom: 20px;">📊</div>
+                        <div class="insights-empty-state">
+                            <div class="insights-empty-icon">📊</div>
                             <h3 data-i18n="insights.empty_title">No Data Available</h3>
                             <p data-i18n="insights.empty_text">Connect your platform accounts to see live performance insights and post engagement.</p>
                             <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;" data-i18n="insights.btn_connect">Connect Insights</button>
                         </div>
                     </div>
                     <div class="posts-container" id="posts-section" style="display:none;">
-                        <div class="posts-header">Recent Posts Performance</div>
+                        <div class="posts-header" data-i18n="insights.section_posts_header">Recent Posts Performance</div>
                         <div id="posts-list"></div>
                     </div>
                 </div>
@@ -15337,6 +15632,121 @@ Thank you for shopping with {store_name}!</textarea>
                 </div>
             </div>`;
 
+            html += `
+            <div id="legal-privacy" class="tab-content legal-tab-content">
+                <article class="card glass legal-page">
+                    <div class="legal-quick-links">
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                    </div>
+                    <div class="legal-retention-banner" data-i18n="legal.retention_notice">We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.</div>
+                    <h2 data-i18n="legal.privacy.title">Privacy Policy</h2>
+                    <div class="legal-updated" data-i18n="legal.last_updated">Last updated: March 5, 2026</div>
+                    <section class="legal-section"><h3 data-i18n="legal.privacy.intro_title">Overview</h3><p data-i18n="legal.privacy.intro_text">This policy explains how Digitivia AI Agent collects, uses, stores, and protects personal and operational data processed through the platform.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.privacy.collect_title">Data We Collect</h3><p data-i18n="legal.privacy.collect_text">We may process profile data, organization settings, contact details, message content, usage logs, and integration metadata required to operate AI agents and communication channels.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.privacy.use_title">How We Use Data</h3><p data-i18n="legal.privacy.use_text">Data is used to deliver services, maintain account security, generate analytics, support automations, troubleshoot issues, and comply with applicable legal obligations.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.privacy.retention_title">Retention and Deletion</h3><p data-i18n="legal.privacy.retention_text">Customer-related data is retained for a maximum of one year, then removed permanently under scheduled deletion policies, unless longer retention is required by law.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.privacy.rights_title">Access and Contact</h3><p data-i18n="legal.privacy.rights_text">You can request data correction or deletion, and ask privacy questions through official support channels listed by your organization administrator.</p></section>
+                    <div class="legal-page-bottom">
+                        <div class="legal-provider-note" data-i18n="legal.providers_notice">Core infrastructure and integrations include Supabase, OpenAI, GitHub, Meta Developer Platform, and WhatsApp Business Platform.</div>
+                        <div class="legal-quick-links">
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div id="legal-terms" class="tab-content legal-tab-content">
+                <article class="card glass legal-page">
+                    <div class="legal-quick-links">
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                    </div>
+                    <div class="legal-retention-banner" data-i18n="legal.retention_notice">We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.</div>
+                    <h2 data-i18n="legal.terms.title">Terms of Service</h2>
+                    <div class="legal-updated" data-i18n="legal.last_updated">Last updated: March 5, 2026</div>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.intro_title">Service Scope</h3><p data-i18n="legal.terms.intro_text">These terms govern access to and use of Digitivia AI Agent, including connected channels, dashboards, analytics, and automation features.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.accept_title">Acceptance</h3><p data-i18n="legal.terms.accept_text">By using the service, you agree to these terms and confirm that you have authority to act on behalf of your organization.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.use_title">Permitted Use</h3><p data-i18n="legal.terms.use_text">You must use the platform lawfully, avoid abusive or harmful content, and follow channel-provider requirements and local regulations.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.account_title">Account Responsibility</h3><p data-i18n="legal.terms.account_text">You are responsible for account credentials, workspace access, connected integrations, and activity performed by authorized users.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.liability_title">Availability and Liability</h3><p data-i18n="legal.terms.liability_text">The service is provided on a commercially reasonable basis. We continuously improve reliability but cannot guarantee uninterrupted availability in all cases.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.changes_title">Updates to Terms</h3><p data-i18n="legal.terms.changes_text">We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance.</p></section>
+                    <div class="legal-page-bottom">
+                        <div class="legal-provider-note" data-i18n="legal.providers_notice">Core infrastructure and integrations include Supabase, OpenAI, GitHub, Meta Developer Platform, and WhatsApp Business Platform.</div>
+                        <div class="legal-quick-links">
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div id="legal-cookies" class="tab-content legal-tab-content">
+                <article class="card glass legal-page">
+                    <div class="legal-quick-links">
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                    </div>
+                    <div class="legal-retention-banner" data-i18n="legal.retention_notice">We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.</div>
+                    <h2 data-i18n="legal.cookies.title">Cookie Policy</h2>
+                    <div class="legal-updated" data-i18n="legal.last_updated">Last updated: March 5, 2026</div>
+                    <section class="legal-section"><h3 data-i18n="legal.cookies.intro_title">Overview</h3><p data-i18n="legal.cookies.intro_text">This policy explains how cookies and similar technologies are used to keep the platform secure, functional, and measurable.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.cookies.what_title">What Cookies Are</h3><p data-i18n="legal.cookies.what_text">Cookies are small browser files used to remember preferences, maintain sessions, and improve user experience across visits.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.cookies.types_title">Types We Use</h3><p data-i18n="legal.cookies.types_text">We use essential cookies for authentication and security, preference cookies for language/theme settings, and performance cookies for usage insights.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.cookies.manage_title">Managing Cookies</h3><p data-i18n="legal.cookies.manage_text">You can manage cookie settings through your browser. Disabling essential cookies may affect login, session continuity, and core platform features.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.cookies.third_party_title">Third-Party Cookies</h3><p data-i18n="legal.cookies.third_party_text">Integrated providers may set technical cookies required for connected services and security controls under their own published policies.</p></section>
+                    <div class="legal-page-bottom">
+                        <div class="legal-provider-note" data-i18n="legal.providers_notice">Core infrastructure and integrations include Supabase, OpenAI, GitHub, Meta Developer Platform, and WhatsApp Business Platform.</div>
+                        <div class="legal-quick-links">
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div id="legal-security" class="tab-content legal-tab-content">
+                <article class="card glass legal-page">
+                    <div class="legal-quick-links">
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                        <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                    </div>
+                    <div class="legal-retention-banner" data-i18n="legal.retention_notice">We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.</div>
+                    <h2 data-i18n="legal.security.title">Security & Compliance</h2>
+                    <div class="legal-updated" data-i18n="legal.last_updated">Last updated: March 5, 2026</div>
+                    <section class="legal-section"><h3 data-i18n="legal.security.intro_title">Security Program</h3><p data-i18n="legal.security.intro_text">Digitivia AI Agent applies layered security controls to protect data confidentiality, integrity, and service availability.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.security.controls_title">Access and Monitoring Controls</h3><p data-i18n="legal.security.controls_text">We enforce role-based access, audit logging, credential safeguards, and monitoring to detect unauthorized actions and service anomalies.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.security.encryption_title">Encryption and Data Protection</h3><p data-i18n="legal.security.encryption_text">Data is protected in transit and at rest through provider-supported encryption controls and secure operational practices.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.security.incidents_title">Incident Response</h3><p data-i18n="legal.security.incidents_text">Security events are triaged, investigated, and remediated using incident-response procedures with documented corrective actions.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.security.compliance_title">Compliance Alignment</h3><p data-i18n="legal.security.compliance_text">Our controls are aligned with industry best practices and contractual commitments, including data minimization, retention limits, and access accountability.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.security.disclosure_title">Responsible Disclosure</h3><p data-i18n="legal.security.disclosure_text">If you identify a potential vulnerability, report it through official support channels for coordinated validation and remediation.</p></section>
+                    <div class="legal-page-bottom">
+                        <div class="legal-provider-note" data-i18n="legal.providers_notice">Core infrastructure and integrations include Supabase, OpenAI, GitHub, Meta Developer Platform, and WhatsApp Business Platform.</div>
+                        <div class="legal-quick-links">
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-privacy" onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-terms" onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-cookies" onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                            <button type="button" class="legal-quick-link" data-legal-link="legal-security" onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                        </div>
+                    </div>
+                </article>
+            </div>`;
+
             container.innerHTML = html;
             document.getElementById('website').classList.add('active');
         }
@@ -15365,6 +15775,18 @@ Thank you for shopping with {store_name}!</textarea>
 
         function resolveNavElementForTab(tabId) {
             return document.querySelector(`.nav-item[onclick*="switchTab('${tabId}'"]`);
+        }
+
+        function updateLegalLinkState(tabId) {
+            document.querySelectorAll('[data-legal-link]').forEach((el) => {
+                el.classList.toggle('active', el.getAttribute('data-legal-link') === tabId);
+            });
+        }
+
+        function openLegalTab(tabId) {
+            if (!document.getElementById(tabId)) return;
+            switchTab(tabId, null);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function pushAppNavState(tabId = getActiveTabId(), replace = false) {
@@ -15548,6 +15970,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             // Auto-expand the correct nav group
             updateGroupActiveState(tabId);
+            updateLegalLinkState(tabId);
 
             let color = '#5BAEB0';
             if (tabId === 'whatsapp') color = '#57B078';
@@ -15582,6 +16005,9 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'create-post') {
                 color = '#9C27B0'; // Purple for Content Studio
                 loadScheduledQueue(); // Refresh queue on tab open
+            }
+            if (tabId === 'legal-privacy' || tabId === 'legal-terms' || tabId === 'legal-cookies' || tabId === 'legal-security') {
+                color = '#2b8a86';
             }
 
             document.documentElement.style.setProperty('--theme-color', color);
@@ -16140,7 +16566,7 @@ Thank you for shopping with {store_name}!</textarea>
         /**
          * Call the insights-proxy Edge Function which forwards to the n8n webhook server-side.
          * This avoids CORS/network issues from calling external webhooks directly from the browser.
-         * @param {string} platform  - 'facebook' | 'instagram' | 'messenger' | 'facebook_posts' | 'instagram_posts'
+         * @param {string} platform  - 'facebook' | 'instagram' | 'facebook_posts' | 'instagram_posts'
          * @param {string} period    - 'day' | 'week' | 'days_28' | 'month'
          */
         async function callInsightsWebhook(platform, period) {
@@ -16169,13 +16595,15 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function setInsightPlatform(platform) {
-            insightPlatform = platform;
+            const allowedPlatforms = ['facebook', 'instagram'];
+            insightPlatform = allowedPlatforms.includes(platform) ? platform : 'facebook';
 
             document.querySelectorAll('.platform-chip').forEach(c => c.classList.remove('active'));
-            document.getElementById(`chip-${platform}`).classList.add('active');
+            const activeChip = document.getElementById(`chip-${insightPlatform}`);
+            if (activeChip) activeChip.classList.add('active');
 
             const periodSelect = document.getElementById('insight-period');
-            if (platform === 'instagram') {
+            if (insightPlatform === 'instagram') {
                 periodSelect.value = 'day';
                 periodSelect.disabled = true;
             } else {
@@ -16183,9 +16611,9 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             const postsSec = document.getElementById('posts-section');
-            if (platform === 'facebook' || platform === 'instagram') {
+            if (insightPlatform === 'facebook' || insightPlatform === 'instagram') {
                 postsSec.style.display = 'block';
-                fetchPosts(platform);
+                fetchPosts(insightPlatform);
             } else {
                 postsSec.style.display = 'none';
             }
@@ -16201,7 +16629,7 @@ Thank you for shopping with {store_name}!</textarea>
         async function fetchInsights() {
             if (!currentUserOrgId) return;
             const grid = document.getElementById('insights-grid');
-            grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center;"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div></div>';
+            grid.innerHTML = '<div class="insights-loading-state"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div></div>';
 
             try {
                 // 1. Check for webhook config
@@ -16211,9 +16639,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (config && config.webhook_url) {
                     // --- WEBHOOK PATH: Call n8n webhook ---
-                    // Map UI platform names to webhook platform values
-                    const webhookPlatform = insightPlatform === 'page' ? 'messenger' : insightPlatform;
-                    const result = await callInsightsWebhook(webhookPlatform, insightPeriod);
+                    const result = await callInsightsWebhook(insightPlatform, insightPeriod);
                     console.log('[Insights] Webhook response:', result);
 
                     // The n8n "Code in JavaScript" node returns cleaned { metric_name: value } objects
@@ -16252,8 +16678,8 @@ Thank you for shopping with {store_name}!</textarea>
             } catch (e) {
                 console.warn("Insights fetch failed or empty:", e);
                 grid.innerHTML = `
-                <div style="grid-column: 1/-1; text-align:center; padding: 60px; color:#888;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">📊</div>
+                <div class="insights-empty-state">
+                    <div class="insights-empty-icon">📊</div>
                     <h3>${t('insights.empty_title')}</h3>
                     <p>${t('insights.empty_text')}</p>
                     <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;">${t('insights.btn_connect')}</button>
@@ -16265,7 +16691,7 @@ Thank you for shopping with {store_name}!</textarea>
         async function fetchPosts(platform) {
             if (!currentUserOrgId) return;
             const list = document.getElementById('posts-list');
-            list.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">${t('insights.loading_posts')}</div>`;
+            list.innerHTML = `<div class="insights-inline-state">${t('insights.loading_posts')}</div>`;
 
             try {
                 // 1. Check for webhook config
@@ -16305,8 +16731,8 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (cachedPosts.length === 0) {
                     list.innerHTML = `
-                    <div style="padding: 60px 20px; text-align:center; color:#888;">
-                        <div style="font-size: 3rem; margin-bottom: 20px;">📸</div>
+                    <div class="insights-empty-state">
+                        <div class="insights-empty-icon">📸</div>
                         <h3 data-i18n="insights.empty_posts_title">${t('insights.empty_posts_title')}</h3>
                         <p>${t('insights.empty_posts_text', { platform: platform.charAt(0).toUpperCase() + platform.slice(1) })}</p>
                         <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;" data-i18n="insights.btn_connect_posts">${t('insights.btn_connect_posts')}</button>
@@ -16380,7 +16806,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             } catch (e) {
                 console.error('[Insights] Posts fetch error:', e);
-                list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--error);">${t('insights.error_posts_load')}</div>`;
+                list.innerHTML = `<div class="insights-inline-state is-error">${t('insights.error_posts_load')}</div>`;
             }
         }
 
@@ -16440,16 +16866,16 @@ Thank you for shopping with {store_name}!</textarea>
                     const commentDate = c.created_time || c.timestamp || '';
                     const formattedDate = commentDate ? new Date(commentDate).toLocaleDateString() : '';
                     return `
-                    <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
-                            <strong style="font-size: 0.85rem;">${commenter}</strong>
-                            <span style="font-size: 0.75rem; opacity: 0.5;">${formattedDate}</span>
+                    <div class="insight-comment-row">
+                        <div class="insight-comment-head">
+                            <strong class="insight-comment-author">${commenter}</strong>
+                            <span class="insight-comment-date">${formattedDate}</span>
                         </div>
-                        <div style="font-size: 0.85rem; opacity: 0.8;">${commentText}</div>
+                        <div class="insight-comment-text">${commentText}</div>
                     </div>`;
                 }).join('');
             } else {
-                commentsList.innerHTML = `<div style="padding:10px; color:#555; text-align:center;">${t('modals.post_detail.comments_not_loaded')}</div>`;
+                commentsList.innerHTML = `<div class="insight-comments-empty">${t('modals.post_detail.comments_not_loaded')}</div>`;
             }
 
             document.getElementById('post-modal').style.display = 'flex';
@@ -16481,11 +16907,6 @@ Thank you for shopping with {store_name}!</textarea>
                     { label: t('insights.stats.profile_views'), value: data.profile_views || 0, icon: '👤' },
                     { label: t('insights.stats.website_clicks'), value: data.website_clicks || 0, icon: '🖱️' },
                     { label: t('insights.stats.total_interactions'), value: data.total_interactions || 0, icon: '❤️' }
-                ];
-            } else if (insightPlatform === 'page') {
-                cardsData = [
-                    { label: t('insights.stats.total_connections'), value: data.page_messages_total_messaging_connections || 0, icon: '💬' },
-                    { label: t('insights.stats.new_conversations'), value: data.page_messages_new_conversations_unique || 0, icon: '✨' }
                 ];
             }
 
@@ -22514,6 +22935,148 @@ Thank you for shopping with {store_name}!</textarea>
                 pass_updating: "جاري التحديث..."
             });
         }
+
+        if (window.LANG_EN) {
+            window.LANG_EN.legal = {
+                links: {
+                    privacy: "Privacy Policy",
+                    terms: "Terms of Service",
+                    cookies: "Cookie Policy",
+                    security: "Security & Compliance"
+                },
+                last_updated: "Last updated: March 5, 2026",
+                retention_notice: "We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.",
+                providers_notice: "Core infrastructure and integrations include Supabase, OpenAI, GitHub, Meta Developer Platform, and WhatsApp Business Platform.",
+                privacy: {
+                    title: "Privacy Policy",
+                    intro_title: "Overview",
+                    intro_text: "This policy explains how Digitivia AI Agent collects, uses, stores, and protects personal and operational data processed through the platform.",
+                    collect_title: "Data We Collect",
+                    collect_text: "We may process profile data, organization settings, contact details, message content, usage logs, and integration metadata required to operate AI agents and communication channels.",
+                    use_title: "How We Use Data",
+                    use_text: "Data is used to deliver services, maintain account security, generate analytics, support automations, troubleshoot issues, and comply with applicable legal obligations.",
+                    retention_title: "Retention and Deletion",
+                    retention_text: "Customer-related data is retained for a maximum of one year, then removed permanently under scheduled deletion policies, unless longer retention is required by law.",
+                    rights_title: "Access and Contact",
+                    rights_text: "You can request data correction or deletion, and ask privacy questions through official support channels listed by your organization administrator."
+                },
+                terms: {
+                    title: "Terms of Service",
+                    intro_title: "Service Scope",
+                    intro_text: "These terms govern access to and use of Digitivia AI Agent, including connected channels, dashboards, analytics, and automation features.",
+                    accept_title: "Acceptance",
+                    accept_text: "By using the service, you agree to these terms and confirm that you have authority to act on behalf of your organization.",
+                    use_title: "Permitted Use",
+                    use_text: "You must use the platform lawfully, avoid abusive or harmful content, and follow channel-provider requirements and local regulations.",
+                    account_title: "Account Responsibility",
+                    account_text: "You are responsible for account credentials, workspace access, connected integrations, and activity performed by authorized users.",
+                    liability_title: "Availability and Liability",
+                    liability_text: "The service is provided on a commercially reasonable basis. We continuously improve reliability but cannot guarantee uninterrupted availability in all cases.",
+                    changes_title: "Updates to Terms",
+                    changes_text: "We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance."
+                },
+                cookies: {
+                    title: "Cookie Policy",
+                    intro_title: "Overview",
+                    intro_text: "This policy explains how cookies and similar technologies are used to keep the platform secure, functional, and measurable.",
+                    what_title: "What Cookies Are",
+                    what_text: "Cookies are small browser files used to remember preferences, maintain sessions, and improve user experience across visits.",
+                    types_title: "Types We Use",
+                    types_text: "We use essential cookies for authentication and security, preference cookies for language/theme settings, and performance cookies for usage insights.",
+                    manage_title: "Managing Cookies",
+                    manage_text: "You can manage cookie settings through your browser. Disabling essential cookies may affect login, session continuity, and core platform features.",
+                    third_party_title: "Third-Party Cookies",
+                    third_party_text: "Integrated providers may set technical cookies required for connected services and security controls under their own published policies."
+                },
+                security: {
+                    title: "Security & Compliance",
+                    intro_title: "Security Program",
+                    intro_text: "Digitivia AI Agent applies layered security controls to protect data confidentiality, integrity, and service availability.",
+                    controls_title: "Access and Monitoring Controls",
+                    controls_text: "We enforce role-based access, audit logging, credential safeguards, and monitoring to detect unauthorized actions and service anomalies.",
+                    encryption_title: "Encryption and Data Protection",
+                    encryption_text: "Data is protected in transit and at rest through provider-supported encryption controls and secure operational practices.",
+                    incidents_title: "Incident Response",
+                    incidents_text: "Security events are triaged, investigated, and remediated using incident-response procedures with documented corrective actions.",
+                    compliance_title: "Compliance Alignment",
+                    compliance_text: "Our controls are aligned with industry best practices and contractual commitments, including data minimization, retention limits, and access accountability.",
+                    disclosure_title: "Responsible Disclosure",
+                    disclosure_text: "If you identify a potential vulnerability, report it through official support channels for coordinated validation and remediation."
+                }
+            };
+        }
+
+        if (window.LANG_AR) {
+            window.LANG_AR.legal = {
+                links: {
+                    privacy: "سياسة الخصوصية",
+                    terms: "شروط الخدمة",
+                    cookies: "سياسة ملفات تعريف الارتباط",
+                    security: "الأمن والامتثال"
+                },
+                last_updated: "آخر تحديث: 5 مارس 2026",
+                retention_notice: "نحتفظ ببيانات العملاء لمدة سنة واحدة فقط. بعد مرور سنة يتم حذف البيانات نهائياً من الأنظمة النشطة والنسخ الاحتياطية وفق ضوابط الاحتفاظ.",
+                providers_notice: "تشمل البنية الأساسية والتكاملات: Supabase و OpenAI و GitHub ومنصة Meta Developer ومنصة WhatsApp Business.",
+                privacy: {
+                    title: "سياسة الخصوصية",
+                    intro_title: "نظرة عامة",
+                    intro_text: "توضح هذه السياسة كيفية جمع Digitivia AI Agent للبيانات الشخصية والتشغيلية واستخدامها وتخزينها وحمايتها داخل المنصة.",
+                    collect_title: "البيانات التي نجمعها",
+                    collect_text: "قد نعالج بيانات الملف الشخصي وإعدادات المؤسسة وبيانات التواصل ومحتوى الرسائل وسجلات الاستخدام وبيانات التكامل اللازمة لتشغيل الوكلاء وقنوات التواصل.",
+                    use_title: "كيف نستخدم البيانات",
+                    use_text: "تُستخدم البيانات لتقديم الخدمة وحماية الحسابات وإنشاء التحليلات وتشغيل الأتمتة ومعالجة المشكلات والالتزام بالمتطلبات القانونية.",
+                    retention_title: "الاحتفاظ والحذف",
+                    retention_text: "تُحفظ بيانات العملاء لمدة أقصاها سنة واحدة، ثم يتم حذفها نهائياً وفق سياسات حذف مجدولة ما لم يفرض القانون مدة أطول.",
+                    rights_title: "الوصول والتواصل",
+                    rights_text: "يمكنك طلب تصحيح البيانات أو حذفها وطرح استفسارات الخصوصية عبر قنوات الدعم الرسمية لدى مسؤول المؤسسة."
+                },
+                terms: {
+                    title: "شروط الخدمة",
+                    intro_title: "نطاق الخدمة",
+                    intro_text: "تنظم هذه الشروط استخدام Digitivia AI Agent بما يشمل القنوات المرتبطة ولوحات التحكم والتحليلات وميزات الأتمتة.",
+                    accept_title: "القبول",
+                    accept_text: "باستخدامك للخدمة فإنك توافق على هذه الشروط وتؤكد أن لديك صلاحية التمثيل عن مؤسستك.",
+                    use_title: "الاستخدام المسموح",
+                    use_text: "يجب استخدام المنصة بشكل قانوني وتجنب المحتوى الضار أو المسيء والالتزام بمتطلبات مزودي القنوات واللوائح المحلية.",
+                    account_title: "مسؤولية الحساب",
+                    account_text: "أنت مسؤول عن بيانات الدخول وصلاحيات المستخدمين والتكاملات المتصلة والأنشطة المنفذة من الحسابات المصرح بها.",
+                    liability_title: "التوفر والمسؤولية",
+                    liability_text: "يتم تقديم الخدمة على أساس تجاري معقول. نعمل باستمرار على تحسين الاعتمادية لكن لا يمكن ضمان التوفر دون انقطاع في جميع الحالات.",
+                    changes_title: "تحديث الشروط",
+                    changes_text: "قد نقوم بتحديث هذه الشروط عند تغير الميزات أو المتطلبات القانونية أو سياسات المزودين. الاستمرار في الاستخدام يعني قبول التحديثات."
+                },
+                cookies: {
+                    title: "سياسة ملفات تعريف الارتباط",
+                    intro_title: "نظرة عامة",
+                    intro_text: "توضح هذه السياسة كيفية استخدام ملفات تعريف الارتباط والتقنيات المشابهة للحفاظ على أمان المنصة ووظائفها وقياس الأداء.",
+                    what_title: "ما هي ملفات تعريف الارتباط",
+                    what_text: "هي ملفات صغيرة في المتصفح تُستخدم لتذكر التفضيلات والحفاظ على الجلسات وتحسين تجربة الاستخدام بين الزيارات.",
+                    types_title: "الأنواع التي نستخدمها",
+                    types_text: "نستخدم ملفات أساسية للمصادقة والأمان، وملفات تفضيل للغة والمظهر، وملفات أداء لقياس استخدام المنصة.",
+                    manage_title: "إدارة الملفات",
+                    manage_text: "يمكنك إدارة إعدادات ملفات تعريف الارتباط من المتصفح. تعطيل الملفات الأساسية قد يؤثر على تسجيل الدخول واستمرارية الجلسة والميزات الرئيسية.",
+                    third_party_title: "ملفات الطرف الثالث",
+                    third_party_text: "قد يضع مزودو التكامل ملفات تقنية مطلوبة للتشغيل الآمن للخدمات المتصلة وفق سياساتهم المنشورة."
+                },
+                security: {
+                    title: "الأمن والامتثال",
+                    intro_title: "برنامج الأمان",
+                    intro_text: "تطبق Digitivia AI Agent ضوابط أمنية متعددة الطبقات لحماية سرية البيانات وسلامتها وتوفر الخدمة.",
+                    controls_title: "ضوابط الوصول والمراقبة",
+                    controls_text: "نطبق صلاحيات مبنية على الأدوار وسجلات تدقيق وحماية للاعتمادات ومراقبة لاكتشاف أي نشاط غير مصرح به أو أعطال تشغيلية.",
+                    encryption_title: "التشفير وحماية البيانات",
+                    encryption_text: "تتم حماية البيانات أثناء النقل والتخزين عبر إمكانات التشفير لدى المزودين وممارسات تشغيلية آمنة.",
+                    incidents_title: "الاستجابة للحوادث",
+                    incidents_text: "يتم فرز الأحداث الأمنية والتحقيق فيها ومعالجتها وفق إجراءات استجابة موثقة مع إجراءات تصحيحية.",
+                    compliance_title: "مواءمة الامتثال",
+                    compliance_text: "ضوابطنا متوافقة مع أفضل الممارسات الصناعية والالتزامات التعاقدية، بما يشمل تقليل البيانات وحدود الاحتفاظ ومساءلة الوصول.",
+                    disclosure_title: "الإفصاح المسؤول",
+                    disclosure_text: "إذا اكتشفت ثغرة محتملة، يرجى الإبلاغ عبر قنوات الدعم الرسمية لتأكيدها ومعالجتها بشكل منظم."
+                }
+            };
+        }
+
+        if (typeof applyTranslations === 'function') applyTranslations();
     })();
 </script>
 
