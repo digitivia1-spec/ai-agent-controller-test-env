@@ -16101,6 +16101,62 @@ Thank you for shopping with {store_name}!</textarea>
         //        LIVE INSIGHTS LOGIC
         // ==========================================
 
+        // Cached webhook config for the current org (loaded once per session)
+        let _insightsWebhookConfig = null;
+        let _insightsConfigLoaded = false;
+
+        /**
+         * Load the provider_insights_config for the current org.
+         * Returns { webhook_url, meta } or null if no config exists.
+         */
+        async function getInsightsWebhookConfig() {
+            if (_insightsConfigLoaded) return _insightsWebhookConfig;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('provider_insights_config')
+                    .select('webhook_url, is_active, meta')
+                    .eq('org_id', currentUserOrgId)
+                    .maybeSingle();
+
+                if (error) {
+                    console.warn('Could not load insights webhook config:', error);
+                    _insightsWebhookConfig = null;
+                } else if (data && data.is_active && data.webhook_url) {
+                    _insightsWebhookConfig = data;
+                    console.log('[Insights] Webhook config loaded:', data.webhook_url);
+                } else {
+                    _insightsWebhookConfig = null;
+                }
+            } catch (e) {
+                console.warn('Error loading insights webhook config:', e);
+                _insightsWebhookConfig = null;
+            }
+
+            _insightsConfigLoaded = true;
+            return _insightsWebhookConfig;
+        }
+
+        /**
+         * Call the n8n webhook and return the parsed JSON response.
+         * @param {string} webhookUrl - The webhook URL to POST to
+         * @param {string} platform  - 'facebook' | 'instagram' | 'messenger' | 'facebook_posts' | 'instagram_posts'
+         * @param {string} period    - 'day' | 'week' | 'days_28' | 'month'
+         */
+        async function callInsightsWebhook(webhookUrl, platform, period) {
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ platform, period })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Webhook error: ${response.status} ${response.statusText}`);
+            }
+
+            return response.json();
+        }
+
         function setInsightPlatform(platform) {
             insightPlatform = platform;
 
@@ -16137,35 +16193,59 @@ Thank you for shopping with {store_name}!</textarea>
             grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center;"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div></div>';
 
             try {
-                // PHASE 3: Direct Supabase Query for Metrics
-                const queryPlatform = insightPlatform === 'facebook' ? 'page' : insightPlatform;
+                // 1. Check for webhook config
+                const config = await getInsightsWebhookConfig();
 
-                const { data, error } = await supabaseClient
-                    .from('platform_metrics')
-                    .select('*')
-                    .eq('org_id', currentUserOrgId)
-                    .eq('platform', queryPlatform)
-                    .order('created_at', { ascending: false })
-                    .limit(1)
-                    .single();
+                let metricsData = null;
 
-                if (error && error.code !== 'PGRST116') throw error;
+                if (config && config.webhook_url) {
+                    // --- WEBHOOK PATH: Call n8n webhook ---
+                    // Map UI platform names to webhook platform values
+                    const webhookPlatform = insightPlatform === 'page' ? 'messenger' : insightPlatform;
+                    const result = await callInsightsWebhook(config.webhook_url, webhookPlatform, insightPeriod);
+                    console.log('[Insights] Webhook response:', result);
 
-                // If no data, show empty state
-                if (!data) {
+                    // The n8n "Code in JavaScript" node returns cleaned { metric_name: value } objects
+                    if (result && typeof result === 'object' && Object.keys(result).length > 0) {
+                        metricsData = result;
+                    }
+                } else {
+                    // --- FALLBACK: Direct Supabase query for platform_metrics ---
+                    const queryPlatform = insightPlatform === 'facebook' ? 'page' : insightPlatform;
+
+                    const { data, error } = await supabaseClient
+                        .from('platform_metrics')
+                        .select('*')
+                        .eq('org_id', currentUserOrgId)
+                        .eq('platform', queryPlatform)
+                        .order('created_at', { ascending: false })
+                        .limit(1)
+                        .single();
+
+                    if (error && error.code !== 'PGRST116') throw error;
+
+                    if (data && data.metrics) {
+                        metricsData = data.metrics;
+                    } else if (data) {
+                        metricsData = data;
+                    }
+                }
+
+                // If no data from either source, show empty state
+                if (!metricsData || (typeof metricsData === 'object' && Object.keys(metricsData).length === 0)) {
                     throw new Error("No Data");
                 }
 
-                renderInsightCards(data);
+                renderInsightCards(metricsData);
 
             } catch (e) {
                 console.warn("Insights fetch failed or empty:", e);
                 grid.innerHTML = `
                 <div style="grid-column: 1/-1; text-align:center; padding: 60px; color:#888;">
                     <div style="font-size: 3rem; margin-bottom: 20px;">📊</div>
-                    <h3>No Data Available</h3>
-                    <p>Connect your ${insightPlatform.charAt(0).toUpperCase() + insightPlatform.slice(1)} account to see live performance insights.</p>
-                    <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;">Connect Insights</button>
+                    <h3>${t('insights.empty_title')}</h3>
+                    <p>${t('insights.empty_text')}</p>
+                    <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;">${t('insights.btn_connect')}</button>
                 </div>`;
             }
         }
@@ -16174,34 +16254,50 @@ Thank you for shopping with {store_name}!</textarea>
         async function fetchPosts(platform) {
             if (!currentUserOrgId) return;
             const list = document.getElementById('posts-list');
-            list.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">${t('posts.loading')}</div>`;
+            list.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">${t('insights.loading_posts')}</div>`;
 
             try {
-                // PHASE 3: Fetch Posts directly
-                // platform argument comes in as 'facebook' or 'instagram' usually, 
-                // but the UI passed 'facebook_posts' before. We need to clean it.
-                // Assuming DB platform column stores 'facebook', 'instagram'
+                // 1. Check for webhook config
+                const config = await getInsightsWebhookConfig();
 
-                const dbPlatform = platform === 'facebook' ? 'facebook' : 'instagram';
+                let postsArray = [];
 
-                const { data: posts, error } = await supabaseClient
-                    .from('social_posts')
-                    .select('*') // Simplified to avoid 400 error if metrics relation is missing
-                    .eq('org_id', currentUserOrgId)
-                    .eq('platform', dbPlatform)
-                    .order('created_at', { ascending: false })
-                    .limit(10);
+                if (config && config.webhook_url) {
+                    // --- WEBHOOK PATH: Call n8n webhook for posts ---
+                    const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
+                    const result = await callInsightsWebhook(config.webhook_url, webhookPlatform, insightPeriod);
+                    console.log('[Insights] Posts webhook response:', result);
 
-                if (error) throw error;
+                    // The n8n "Code in JavaScript1" node returns { posts: [...] }
+                    if (result && result.posts && Array.isArray(result.posts)) {
+                        postsArray = result.posts;
+                    } else if (Array.isArray(result)) {
+                        postsArray = result;
+                    }
+                } else {
+                    // --- FALLBACK: Direct Supabase query for social_posts ---
+                    const dbPlatform = platform === 'facebook' ? 'facebook' : 'instagram';
 
-                cachedPosts = posts || [];
+                    const { data: posts, error } = await supabaseClient
+                        .from('social_posts')
+                        .select('*')
+                        .eq('org_id', currentUserOrgId)
+                        .eq('platform', dbPlatform)
+                        .order('created_at', { ascending: false })
+                        .limit(10);
+
+                    if (error) throw error;
+                    postsArray = posts || [];
+                }
+
+                cachedPosts = postsArray;
 
                 if (cachedPosts.length === 0) {
                     list.innerHTML = `
                     <div style="padding: 60px 20px; text-align:center; color:#888;">
                         <div style="font-size: 3rem; margin-bottom: 20px;">📸</div>
                         <h3 data-i18n="insights.empty_posts_title">${t('insights.empty_posts_title')}</h3>
-                        <p>${t('insights.empty_text')}</p>
+                        <p>${t('insights.empty_posts_text', { platform: platform.charAt(0).toUpperCase() + platform.slice(1) })}</p>
                         <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;" data-i18n="insights.btn_connect_posts">${t('insights.btn_connect_posts')}</button>
                     </div>`;
                     return;
@@ -16209,17 +16305,47 @@ Thank you for shopping with {store_name}!</textarea>
 
                 list.innerHTML = '';
                 cachedPosts.forEach((post, index) => {
-                    const date = new Date(post.created_at || post.timestamp).toLocaleDateString();
+                    // Handle both Supabase and webhook data structures
+                    const date = new Date(post.created_time || post.timestamp || post.created_at || post.posted_at).toLocaleDateString();
 
-                    // Metrics usually joined or separate. 
-                    // If social_post_metrics is joined (1:1), access via array or object
+                    // Extract reach from various formats
                     let reach = 0;
+                    // Webhook: Facebook posts have insights.data with metric objects
+                    if (post.insights && post.insights.data) {
+                        const reachMetric = post.insights.data.find(m => m.name === 'post_impressions_unique' || m.name === 'reach');
+                        if (reachMetric && reachMetric.values && reachMetric.values.length > 0) {
+                            reach = reachMetric.values[0].value || 0;
+                        } else if (reachMetric && reachMetric.total_value) {
+                            reach = reachMetric.total_value.value || 0;
+                        }
+                    }
+                    // Supabase: social_post_metrics joined
                     if (post.social_post_metrics && post.social_post_metrics.length > 0) {
-                        reach = post.social_post_metrics[0].reach || 0;
+                        reach = post.social_post_metrics[0].reach || reach;
                     }
 
-                    const img = post.media_url || post.thumbnail_url || post.full_picture || '';
-                    const text = post.caption || post.message || t('posts.no_caption');
+                    // Image: handle both webhook & DB field names
+                    const img = post.full_picture || post.media_url || post.thumbnail_url || '';
+                    // Caption: handle both webhook & DB field names
+                    const text = post.message || post.caption || t('insights.no_caption');
+
+                    // Likes: handle webhook Facebook (likes.summary.total_count) & Instagram (like_count)
+                    let likes = post.like_count || 0;
+                    if (post.likes && post.likes.summary) {
+                        likes = post.likes.summary.total_count || likes;
+                    }
+
+                    // Comments count
+                    let commentsCount = post.comments_count || 0;
+                    if (post.comments && post.comments.data) {
+                        commentsCount = post.comments.data.length || commentsCount;
+                    }
+
+                    // Shares
+                    let shares = 0;
+                    if (post.shares) {
+                        shares = post.shares.count || 0;
+                    }
 
                     const html = `
                     <div class="post-row" onclick="openModal(${index})">
@@ -16231,10 +16357,10 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="post-stats">
                             <div class="p-stat">
                                 <div class="p-stat-val">${reach}</div>
-                                <div class="p-stat-label">${t('posts.reach')}</div>
+                                <div class="p-stat-label">${t('insights.post_card_reach')}</div>
                             </div>
                             <div class="p-stat" style="opacity:0.5; font-size:0.8rem">
-                                ${t('posts.view_details')}
+                                ${t('insights.post_card_view')}
                             </div>
                         </div>
                     </div>`;
@@ -16242,40 +16368,78 @@ Thank you for shopping with {store_name}!</textarea>
                 });
 
             } catch (e) {
-                console.error(e);
-                list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--error);">${t('posts.failed_load')}</div>`;
+                console.error('[Insights] Posts fetch error:', e);
+                list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--error);">${t('insights.error_posts_load')}</div>`;
             }
         }
 
-        // --- NEW MODAL FUNCTIONS ---
+        // --- POST DETAIL MODAL ---
         function openModal(index) {
             const post = cachedPosts[index];
             if (!post) return;
 
-            document.getElementById('m-img').src = post.media_url || post.thumbnail_url || '';
-            document.getElementById('m-date').innerText = new Date(post.created_at).toDateString();
-            document.getElementById('m-caption').innerText = post.caption || post.message || t('posts.no_caption');
+            // Image: handle both webhook & DB field names
+            const imgSrc = post.full_picture || post.media_url || post.thumbnail_url || '';
+            document.getElementById('m-img').src = imgSrc;
 
-            let likes = 0;
-            let commentsCount = 0;
+            // Date
+            const dateStr = post.created_time || post.timestamp || post.created_at || post.posted_at;
+            document.getElementById('m-date').innerText = dateStr ? new Date(dateStr).toDateString() : '';
+
+            // Caption
+            document.getElementById('m-caption').innerText = post.message || post.caption || t('insights.no_caption');
+
+            // Extract stats
+            let likes = post.like_count || 0;
+            if (post.likes && post.likes.summary) {
+                likes = post.likes.summary.total_count || likes;
+            }
+
+            let commentsCount = post.comments_count || 0;
+            if (post.comments && post.comments.data) {
+                commentsCount = post.comments.data.length || commentsCount;
+            }
+
             let reach = 0;
-
+            if (post.insights && post.insights.data) {
+                const reachMetric = post.insights.data.find(m => m.name === 'post_impressions_unique' || m.name === 'reach');
+                if (reachMetric && reachMetric.values && reachMetric.values.length > 0) {
+                    reach = reachMetric.values[0].value || 0;
+                } else if (reachMetric && reachMetric.total_value) {
+                    reach = reachMetric.total_value.value || 0;
+                }
+            }
             if (post.social_post_metrics && post.social_post_metrics.length > 0) {
                 const m = post.social_post_metrics[0];
-                likes = m.likes || 0;
-                commentsCount = m.comments || 0;
-                reach = m.reach || 0;
+                likes = m.likes || likes;
+                commentsCount = m.comments || commentsCount;
+                reach = m.reach || reach;
             }
 
             document.getElementById('m-likes').innerText = likes;
             document.getElementById('m-comments').innerText = commentsCount;
             document.getElementById('m-reach').innerText = reach;
 
-            // Comments list logic implies we fetch comments. 
-            // If comments are in a separate table 'social_comments', we'd need another fetch here.
-            // For now, placeholder or empty unless data is eager loaded.
+            // Render comments if available from webhook
             const commentsList = document.getElementById('m-comments-list');
-            commentsList.innerHTML = `<div style="padding:10px; color:#555; text-align:center;">${t('posts.comments_not_loaded')}</div>`;
+            if (post.comments && post.comments.data && post.comments.data.length > 0) {
+                commentsList.innerHTML = post.comments.data.map(c => {
+                    const commenter = c.from?.name || c.username || 'User';
+                    const commentText = c.message || c.text || '';
+                    const commentDate = c.created_time || c.timestamp || '';
+                    const formattedDate = commentDate ? new Date(commentDate).toLocaleDateString() : '';
+                    return `
+                    <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
+                            <strong style="font-size: 0.85rem;">${commenter}</strong>
+                            <span style="font-size: 0.75rem; opacity: 0.5;">${formattedDate}</span>
+                        </div>
+                        <div style="font-size: 0.85rem; opacity: 0.8;">${commentText}</div>
+                    </div>`;
+                }).join('');
+            } else {
+                commentsList.innerHTML = `<div style="padding:10px; color:#555; text-align:center;">${t('modals.post_detail.comments_not_loaded')}</div>`;
+            }
 
             document.getElementById('post-modal').style.display = 'flex';
         }
@@ -16291,25 +16455,26 @@ Thank you for shopping with {store_name}!</textarea>
 
             let cardsData = [];
 
-            // Fallback to 0 if data keys missing
+            // Data comes as flat key:value from webhook's "Code in JavaScript" node
+            // or from platform_metrics.metrics jsonb column
             if (insightPlatform === 'facebook') {
                 cardsData = [
-                    { label: t('metrics.video_views'), value: data.page_video_views || 0, icon: '👁️' },
-                    { label: t('metrics.video_view_time'), value: formatDuration(data.page_video_view_time), icon: '⏱️' },
-                    { label: t('metrics.post_engagements'), value: data.page_post_engagements || 0, icon: '🔥' },
-                    { label: t('metrics.unique_reach'), value: data.page_impressions_unique || 0, icon: '👥' },
-                    { label: t('metrics.total_impressions'), value: data.page_posts_impressions || 0, icon: '📊' }
+                    { label: t('insights.stats.video_views'), value: data.page_video_views || 0, icon: '👁️' },
+                    { label: t('insights.stats.video_view_time'), value: formatDuration(data.page_video_view_time), icon: '⏱️' },
+                    { label: t('insights.stats.post_engagements'), value: data.page_post_engagements || 0, icon: '🔥' },
+                    { label: t('insights.stats.unique_reach'), value: data.page_impressions_unique || 0, icon: '👥' },
+                    { label: t('insights.stats.total_impressions'), value: data.page_posts_impressions || 0, icon: '📊' }
                 ];
             } else if (insightPlatform === 'instagram') {
                 cardsData = [
-                    { label: t('metrics.profile_views'), value: data.profile_views || 0, icon: '👤' },
-                    { label: t('metrics.website_clicks'), value: data.website_clicks || 0, icon: '🖱️' },
-                    { label: t('metrics.total_interactions'), value: data.total_interactions || 0, icon: '❤️' }
+                    { label: t('insights.stats.profile_views'), value: data.profile_views || 0, icon: '👤' },
+                    { label: t('insights.stats.website_clicks'), value: data.website_clicks || 0, icon: '🖱️' },
+                    { label: t('insights.stats.total_interactions'), value: data.total_interactions || 0, icon: '❤️' }
                 ];
             } else if (insightPlatform === 'page') {
                 cardsData = [
-                    { label: t('metrics.total_connections'), value: data.page_messages_total_messaging_connections || 0, icon: '💬' },
-                    { label: t('metrics.new_conversations'), value: data.page_messages_new_conversations_unique || 0, icon: '✨' }
+                    { label: t('insights.stats.total_connections'), value: data.page_messages_total_messaging_connections || 0, icon: '💬' },
+                    { label: t('insights.stats.new_conversations'), value: data.page_messages_new_conversations_unique || 0, icon: '✨' }
                 ];
             }
 
@@ -16318,7 +16483,7 @@ Thank you for shopping with {store_name}!</textarea>
                 div.className = 'stat-card';
                 div.innerHTML = `
                     <div class="stat-title">${card.label}</div>
-                    <div class="stat-value">${card.value}</div>
+                    <div class="stat-value">${typeof card.value === 'number' ? card.value.toLocaleString() : card.value}</div>
                     <div class="stat-trend">${card.icon}</div>
                 `;
                 grid.appendChild(div);
