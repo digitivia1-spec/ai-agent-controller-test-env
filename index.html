@@ -16124,7 +16124,7 @@ Thank you for shopping with {store_name}!</textarea>
                     _insightsWebhookConfig = null;
                 } else if (data && data.is_active && data.webhook_url) {
                     _insightsWebhookConfig = data;
-                    console.log('[Insights] Webhook config loaded:', data.webhook_url);
+                    console.log('[Insights] Webhook config loaded (via Edge Function proxy)');
                 } else {
                     _insightsWebhookConfig = null;
                 }
@@ -16138,20 +16138,31 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         /**
-         * Call the n8n webhook and return the parsed JSON response.
-         * @param {string} webhookUrl - The webhook URL to POST to
+         * Call the insights-proxy Edge Function which forwards to the n8n webhook server-side.
+         * This avoids CORS/network issues from calling external webhooks directly from the browser.
          * @param {string} platform  - 'facebook' | 'instagram' | 'messenger' | 'facebook_posts' | 'instagram_posts'
          * @param {string} period    - 'day' | 'week' | 'days_28' | 'month'
          */
-        async function callInsightsWebhook(webhookUrl, platform, period) {
-            const response = await fetch(webhookUrl, {
+        async function callInsightsWebhook(platform, period) {
+            // Get the user's session token for authentication
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) throw new Error('Not authenticated');
+
+            const edgeFnUrl = `${SUPABASE_URL}/functions/v1/insights-proxy`;
+
+            const response = await fetch(edgeFnUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ platform, period })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`,
+                    'apikey': SUPABASE_KEY
+                },
+                body: JSON.stringify({ platform, period, org_id: currentUserOrgId })
             });
 
             if (!response.ok) {
-                throw new Error(`Webhook error: ${response.status} ${response.statusText}`);
+                const errBody = await response.json().catch(() => ({}));
+                throw new Error(errBody.error || `Edge Function error: ${response.status}`);
             }
 
             return response.json();
@@ -16202,7 +16213,7 @@ Thank you for shopping with {store_name}!</textarea>
                     // --- WEBHOOK PATH: Call n8n webhook ---
                     // Map UI platform names to webhook platform values
                     const webhookPlatform = insightPlatform === 'page' ? 'messenger' : insightPlatform;
-                    const result = await callInsightsWebhook(config.webhook_url, webhookPlatform, insightPeriod);
+                    const result = await callInsightsWebhook(webhookPlatform, insightPeriod);
                     console.log('[Insights] Webhook response:', result);
 
                     // The n8n "Code in JavaScript" node returns cleaned { metric_name: value } objects
@@ -16265,7 +16276,7 @@ Thank you for shopping with {store_name}!</textarea>
                 if (config && config.webhook_url) {
                     // --- WEBHOOK PATH: Call n8n webhook for posts ---
                     const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
-                    const result = await callInsightsWebhook(config.webhook_url, webhookPlatform, insightPeriod);
+                    const result = await callInsightsWebhook(webhookPlatform, insightPeriod);
                     console.log('[Insights] Posts webhook response:', result);
 
                     // The n8n "Code in JavaScript1" node returns { posts: [...] }
