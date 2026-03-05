@@ -64,6 +64,14 @@
                 "btn_docs": "Docs",
                 "btn_help": "Help"
             },
+            "legal": {
+                "links": {
+                    "privacy": "Privacy Policy",
+                    "terms": "Terms of Service",
+                    "cookies": "Cookie Policy",
+                    "security": "Security & Compliance"
+                }
+            },
             "agent_config": {
                 "btn_connect_channel": "🔗 Connect Channel",
                 "label_live": "LIVE",
@@ -744,6 +752,14 @@
                 "btn_pricing": "الأسعار",
                 "btn_docs": "الوثائق",
                 "btn_help": "مساعدة"
+            },
+            "legal": {
+                "links": {
+                    "privacy": "سياسة الخصوصية",
+                    "terms": "شروط الخدمة",
+                    "cookies": "سياسة ملفات تعريف الارتباط",
+                    "security": "الأمن والامتثال"
+                }
             },
             "agent_config": {
                 "btn_connect_channel": "🔗 ربط القناة",
@@ -3285,10 +3301,12 @@
         .app-legal-footer {
             width: 100%;
             border-top: 1px solid var(--glass-border);
-            padding: 14px 18px 16px;
+            padding: 14px 0 0;
+            margin-top: 18px;
             background: color-mix(in srgb, var(--bg-dark) 90%, transparent);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
         }
 
         .app-legal-footer-inner {
@@ -3403,7 +3421,8 @@
 
         @media (max-width: 768px) {
             .app-legal-footer {
-                padding: 12px 10px 14px;
+                padding: 12px 8px 2px;
+                margin-top: 14px;
             }
 
             .app-legal-footer-inner {
@@ -13069,20 +13088,19 @@
 
         <main>
             <div id="dynamic-content-area"></div>
+            <footer class="app-legal-footer">
+                <div class="app-legal-footer-inner">
+                    <button type="button" class="legal-footer-link" data-legal-link="legal-privacy"
+                        onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
+                    <button type="button" class="legal-footer-link" data-legal-link="legal-terms"
+                        onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
+                    <button type="button" class="legal-footer-link" data-legal-link="legal-cookies"
+                        onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
+                    <button type="button" class="legal-footer-link" data-legal-link="legal-security"
+                        onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                </div>
+            </footer>
         </main>
-
-        <footer class="app-legal-footer">
-            <div class="app-legal-footer-inner">
-                <button type="button" class="legal-footer-link" data-legal-link="legal-privacy"
-                    onclick="openLegalTab('legal-privacy')" data-i18n="legal.links.privacy">Privacy Policy</button>
-                <button type="button" class="legal-footer-link" data-legal-link="legal-terms"
-                    onclick="openLegalTab('legal-terms')" data-i18n="legal.links.terms">Terms of Service</button>
-                <button type="button" class="legal-footer-link" data-legal-link="legal-cookies"
-                    onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
-                <button type="button" class="legal-footer-link" data-legal-link="legal-security"
-                    onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
-            </div>
-        </footer>
     </div>
 
     <div id="unlock-modal" class="confirm-modal-overlay">
