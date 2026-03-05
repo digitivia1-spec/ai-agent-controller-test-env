@@ -4993,9 +4993,7 @@
             }
 
             #leads .leads-view-switch {
-                grid-column: 1 / -1;
-                justify-self: start;
-                flex-wrap: wrap;
+                display: none !important;
             }
 
             #leads .leads-sheet {
@@ -11528,6 +11526,71 @@
             color: #ffffff !important;
         }
 
+        :root[data-theme="light"] .export-btn {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+            opacity: 1 !important;
+        }
+
+        :root[data-theme="light"] .export-btn:hover {
+            background: #0f766e !important;
+            border-color: #0f766e !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 20px rgba(15, 118, 110, 0.22);
+        }
+
+        :root[data-theme="light"] #dashboard .act-title,
+        :root[data-theme="light"] #dashboard .act-desc {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] #dashboard .act-title span,
+        :root[data-theme="light"] #dashboard .act-time {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] #dashboard .act-icon {
+            background: #e2e8f0 !important;
+        }
+
+        :root[data-theme="light"] #usage-plan-description,
+        :root[data-theme="light"] #usage-days-label,
+        :root[data-theme="light"] #usage-conversations-label,
+        :root[data-theme="light"] #usage-wa-outbound-label,
+        :root[data-theme="light"] #usage-conversations-limit,
+        :root[data-theme="light"] #usage-wa-outbound-limit,
+        :root[data-theme="light"] #usage-features,
+        :root[data-theme="light"] #usage-features span {
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] #usage-conversations-label span,
+        :root[data-theme="light"] #usage-wa-outbound-label span {
+            color: #64748b !important;
+            opacity: 0.85 !important;
+        }
+
+        :root[data-theme="light"] #usage-days-remaining {
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            -webkit-text-fill-color: #1e293b !important;
+            color: #1e293b !important;
+        }
+
+        :root[data-theme="light"] #plan-usage-widget [style*="color:#888"],
+        :root[data-theme="light"] #plan-usage-widget [style*="color: #888"],
+        :root[data-theme="light"] #dashboard-platform-stats [style*="color:#888"],
+        :root[data-theme="light"] #dashboard-platform-stats [style*="color: #888"] {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .tab-content [style*="color:#888"],
+        :root[data-theme="light"] .tab-content [style*="color: #888"] {
+            color: #64748b !important;
+        }
+
         :root[data-theme="light"] .sidebar-logo-img,
         :root[data-theme="light"] .mobile-logo-img {
             filter: brightness(0) saturate(100%);
@@ -15747,6 +15810,7 @@ Thank you for shopping with {store_name}!</textarea>
             const container = document.getElementById('leads-toolbar-container');
             if (!container) return;
             currentLeadsView = normalizeLeadsView(currentLeadsView);
+            const showViewSwitch = !window.matchMedia('(max-width: 920px)').matches;
             const curSearch = document.getElementById('leads-search')?.value || '';
             const curStatus = document.getElementById('leads-filter-status')?.value || 'all';
             const curPlatform = document.getElementById('leads-filter-platform')?.value || 'all';
@@ -15759,15 +15823,19 @@ Thank you for shopping with {store_name}!</textarea>
                 .concat(LEAD_PLATFORMS.map(p => `<option value="${p}" ${p === curPlatform ? 'selected' : ''}>${p.charAt(0).toUpperCase() + p.slice(1)}</option>`))
                 .join('');
 
-            container.innerHTML = `
-                <input type="text" id="leads-search" class="leads-filter-input" placeholder="${t('leads.search_placeholder')}" value="${String(curSearch).replace(/"/g, '&quot;')}" oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
-                <select id="leads-filter-status" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${statusOpts}</select>
-                <select id="leads-filter-platform" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${platOpts}</select>
+            const viewSwitchHtml = showViewSwitch ? `
                 <div class="leads-view-switch" role="tablist" aria-label="${t('leads.title')}">
                     <button type="button" class="leads-view-btn ${currentLeadsView === 'table' ? 'active' : ''}" data-view="table" onclick="setLeadsView('table')">${t('leads.view_table')}</button>
                     <button type="button" class="leads-view-btn ${currentLeadsView === 'grid' ? 'active' : ''}" data-view="grid" onclick="setLeadsView('grid')">${t('leads.view_grid')}</button>
                     <button type="button" class="leads-view-btn ${currentLeadsView === 'pipeline' ? 'active' : ''}" data-view="pipeline" onclick="setLeadsView('pipeline')">${t('leads.view_pipeline')}</button>
                 </div>
+            ` : '';
+
+            container.innerHTML = `
+                <input type="text" id="leads-search" class="leads-filter-input" placeholder="${t('leads.search_placeholder')}" value="${String(curSearch).replace(/"/g, '&quot;')}" oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                <select id="leads-filter-status" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${statusOpts}</select>
+                <select id="leads-filter-platform" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${platOpts}</select>
+                ${viewSwitchHtml}
             `;
         }
 
@@ -15854,6 +15922,8 @@ Thank you for shopping with {store_name}!</textarea>
             if (!grid) return;
             grid.innerHTML = '';
             currentLeadsView = normalizeLeadsView(currentLeadsView);
+            const isMobileLeads = window.matchMedia('(max-width: 920px)').matches;
+            const activeLeadsView = isMobileLeads ? 'table' : currentLeadsView;
 
             const searchRaw = (document.getElementById('leads-search')?.value || '').toLowerCase().trim();
             const statusRaw = (document.getElementById('leads-filter-status')?.value || 'all').toLowerCase();
@@ -15924,7 +15994,7 @@ Thank you for shopping with {store_name}!</textarea>
                 </div>
             `).join('');
 
-            if (currentLeadsView === 'grid') {
+            if (activeLeadsView === 'grid') {
                 grid.innerHTML = `
                     <div class="leads-cards-grid">
                         ${rows.map(r => buildLeadViewCard(r)).join('')}
@@ -15933,7 +16003,7 @@ Thank you for shopping with {store_name}!</textarea>
                 return;
             }
 
-            if (currentLeadsView === 'pipeline') {
+            if (activeLeadsView === 'pipeline') {
                 const cols = LEAD_STATUSES.map(status => {
                     const label = t(`leads.status.${status}`) || status;
                     const colRows = rows.filter(r => String(r.status || '').toLowerCase() === status);
@@ -15976,6 +16046,17 @@ Thank you for shopping with {store_name}!</textarea>
                 <div class="leads-mobile-list">${mobileRows}</div>
             `;
         }
+
+        let leadsResizeTimer = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(leadsResizeTimer);
+            leadsResizeTimer = setTimeout(() => {
+                const leadsTab = document.getElementById('leads');
+                if (!leadsTab || !leadsTab.classList.contains('active')) return;
+                buildLeadsToolbar();
+                renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap);
+            }, 120);
+        });
 
         function exportLeadsCSV() {
             if (cachedLeads.length === 0) { showToast("No leads to export", "error"); return; }
