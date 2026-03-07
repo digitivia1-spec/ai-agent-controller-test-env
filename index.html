@@ -3430,6 +3430,7 @@
         }
 
         @media (max-width: 1120px) {
+
             .app-legal-footer-inner,
             .legal-quick-links {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -13122,7 +13123,8 @@
                     <button type="button" class="legal-footer-link" data-legal-link="legal-cookies"
                         onclick="openLegalTab('legal-cookies')" data-i18n="legal.links.cookies">Cookie Policy</button>
                     <button type="button" class="legal-footer-link" data-legal-link="legal-security"
-                        onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security & Compliance</button>
+                        onclick="openLegalTab('legal-security')" data-i18n="legal.links.security">Security &
+                        Compliance</button>
                 </div>
             </footer>
         </main>
@@ -17543,12 +17545,21 @@ Thank you for shopping with {store_name}!</textarea>
             if (msg.media_bucket && msg.media_path) {
                 // Normalize bucket name: data may use hyphens but actual bucket uses underscores
                 const bucket = msg.media_bucket.replace(/-/g, '_');
+
+                // Prevent duplicate bucket in path
+                let path = msg.media_path;
+                if (path.startsWith(bucket + '/')) {
+                    path = path.substring(bucket.length + 1);
+                } else if (path.startsWith(msg.media_bucket + '/')) {
+                    path = path.substring(msg.media_bucket.length + 1);
+                }
+
                 try {
-                    const { data } = await supabaseClient.storage.from(bucket).createSignedUrl(msg.media_path, 60 * 60);
+                    const { data } = await supabaseClient.storage.from(bucket).createSignedUrl(path, 60 * 60);
                     if (data && data.signedUrl) return data.signedUrl;
                 } catch (e) { console.warn('Signed URL failed, trying public URL', e); }
                 try {
-                    const { data: pubData } = supabaseClient.storage.from(bucket).getPublicUrl(msg.media_path);
+                    const { data: pubData } = supabaseClient.storage.from(bucket).getPublicUrl(path);
                     const publicUrl = pubData && pubData.publicUrl;
                     if (publicUrl) return publicUrl;
                 } catch (e) { /* all URL methods failed */ }
