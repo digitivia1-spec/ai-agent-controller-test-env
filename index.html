@@ -3936,11 +3936,31 @@
         .kb-link-input-group input {
             flex: 1;
             min-width: 0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
             margin-bottom: 0;
+        }
+
+        .kb-link-input-group input:focus {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .kb-link-input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .kb-link-input-group button {
             white-space: nowrap;
+            padding: 0 24px;
+            border-radius: 12px;
+            font-weight: 500;
         }
 
         @media (max-width: 600px) {
@@ -15556,7 +15576,7 @@
                 const { data, error } = await window.supabaseClient
                     .from('agent_kb_links')
                     .select('*')
-                    .eq('org_id', window.currentOrgId)
+                    .eq('org_id', currentUserOrgId)
                     .eq('agent', agentId)
                     .order('created_at', { ascending: false });
 
@@ -15604,7 +15624,7 @@
                 const { data: existing } = await window.supabaseClient
                     .from('agent_kb_links')
                     .select('id')
-                    .eq('org_id', window.currentOrgId)
+                    .eq('org_id', currentUserOrgId)
                     .eq('agent', agentId)
                     .eq('url', url)
                     .maybeSingle();
@@ -15617,7 +15637,7 @@
                 const { error } = await window.supabaseClient
                     .from('agent_kb_links')
                     .insert({
-                        org_id: window.currentOrgId,
+                        org_id: currentUserOrgId,
                         agent: agentId,
                         url: url
                     });
@@ -15644,7 +15664,7 @@
                     .from('agent_kb_links')
                     .delete()
                     .eq('id', linkId)
-                    .eq('org_id', window.currentOrgId);
+                    .eq('org_id', currentUserOrgId);
 
                 if (error) throw error;
                 showToast(t('kb.toast_link_removed'), 'success');
@@ -15664,7 +15684,7 @@
                 const { data, error } = await window.supabaseClient
                     .from('agent_kb_files')
                     .select('*')
-                    .eq('org_id', window.currentOrgId)
+                    .eq('org_id', currentUserOrgId)
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
@@ -15673,10 +15693,10 @@
                 const uniqueFilesMap = new Map();
                 data.forEach(file => {
                     // Prefer the 'website' row if multiple exist for the same path
-                    if (!uniqueFilesMap.has(file.storage_path)) {
-                        uniqueFilesMap.set(file.storage_path, file);
+                    if (!uniqueFilesMap.has(file.path)) {
+                        uniqueFilesMap.set(file.path, file);
                     } else if (file.agent === 'website') {
-                        uniqueFilesMap.set(file.storage_path, file);
+                        uniqueFilesMap.set(file.path, file);
                     }
                 });
 
@@ -15693,15 +15713,15 @@
                 listEl.innerHTML = uniqueFiles.map(file => `
                     <div class="kb-item-card">
                         <div class="kb-item-info">
-                            <div class="kb-item-title" title="${file.file_name}">${file.file_name}</div>
+                            <div class="kb-item-title" title="${file.filename}">${file.filename}</div>
                             <div class="kb-item-meta">
                                 <span class="kb-badge">${t('kb.badge_onboarding')}</span>
-                                <span>${(file.file_size / 1024).toFixed(1)} KB</span>
+                                <span>${(file.size_bytes / 1024).toFixed(1)} KB</span>
                                 <span>${new Date(file.created_at).toLocaleDateString()}</span>
                             </div>
                         </div>
                         <div class="kb-item-actions" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">
-                            <button onclick="deleteSharedKbFile('${file.storage_path}', '${file.id}', '${agentId}')" title="${t('kb.btn_delete_global')}">
+                            <button onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${agentId}')" title="${t('kb.btn_delete_global')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
                         </div>
@@ -15719,12 +15739,12 @@
             if (!confirm(t('kb.delete_confirm'))) return;
 
             try {
-                // Delete from DB completely (this cleans up all duplicate DB rows because we delete by storage_path and org_id broadly)
+                // Delete from DB completely (this cleans up all duplicate DB rows because we delete by path and org_id broadly)
                 const { error: dbError } = await window.supabaseClient
                     .from('agent_kb_files')
                     .delete()
-                    .eq('org_id', window.currentOrgId)
-                    .eq('storage_path', storagePath);
+                    .eq('org_id', currentUserOrgId)
+                    .eq('path', storagePath);
 
                 if (dbError) throw dbError;
 
@@ -24633,6 +24653,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         let onbStep = 0;
         let onbData = null;
+        window.onbData = null;
         let onbFiles = [];
         let onbSaveTimer = null;
         let onbFinishing = false;
@@ -24714,6 +24735,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!isOwner()) return;
             const saved = (typeof currentOrgData !== 'undefined' && currentOrgData) ? currentOrgData.external_onboarding_data : null;
             onbData = mergeOnbData(saved);
+            window.onbData = onbData;
 
             // Pre-fill from live data
             if (typeof currentUserProfile !== 'undefined' && currentUserProfile) {
@@ -25103,10 +25125,10 @@ Thank you for shopping with {store_name}!</textarea>
                         org_id: currentUserOrgId,
                         agent: 'website',
                         bucket: 'knowledge_base',
-                        storage_path: storagePath,
-                        file_name: entry.file.name,
+                        path: storagePath,
+                        filename: entry.file.name,
                         mime_type: entry.file.type || 'application/octet-stream',
-                        file_size: entry.file.size,
+                        size_bytes: entry.file.size,
                         created_by: user.id
                     });
 
