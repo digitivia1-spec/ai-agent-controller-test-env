@@ -16250,7 +16250,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost'];
-        const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'messenger', 'website'];
+        const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'page', 'website'];
 
         function normalizeLeadsView(view) {
             const allowed = ['table', 'grid', 'pipeline'];
@@ -16290,8 +16290,9 @@ Thank you for shopping with {store_name}!</textarea>
                 .concat(LEAD_STATUSES.map(s => `<option value="${s}" ${s === curStatus ? 'selected' : ''}>${t('leads.status.' + s) || s}</option>`))
                 .join('');
 
+            const LEAD_PLATFORM_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', page: 'Messenger', website: 'Website' };
             const platOpts = [`<option value="all">${t('leads.filter_all_platforms')}</option>`]
-                .concat(LEAD_PLATFORMS.map(p => `<option value="${p}" ${p === curPlatform ? 'selected' : ''}>${p.charAt(0).toUpperCase() + p.slice(1)}</option>`))
+                .concat(LEAD_PLATFORMS.map(p => `<option value="${p}" ${p === curPlatform ? 'selected' : ''}>${LEAD_PLATFORM_LABELS[p] || p.charAt(0).toUpperCase() + p.slice(1)}</option>`))
                 .join('');
 
             const viewSwitchHtml = showViewSwitch ? `
@@ -16399,6 +16400,7 @@ Thank you for shopping with {store_name}!</textarea>
             const searchRaw = (document.getElementById('leads-search')?.value || '').toLowerCase().trim();
             const statusRaw = (document.getElementById('leads-filter-status')?.value || 'all').toLowerCase();
             const platformRaw = (document.getElementById('leads-filter-platform')?.value || 'all').toLowerCase();
+            const LEAD_DISPLAY_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', page: 'Messenger', website: 'Website' };
             const rows = [];
 
             leads.forEach(lead => {
@@ -16409,8 +16411,8 @@ Thank you for shopping with {store_name}!</textarea>
                 }
                 name = name || 'Unknown';
                 const phone = leadPhone || t('leads.status.no_phone');
-                const platform = (lead.source || 'whatsapp').charAt(0).toUpperCase() + (lead.source || 'whatsapp').slice(1);
                 const platformLower = String(lead.source || 'whatsapp').toLowerCase();
+                const platform = LEAD_DISPLAY_LABELS[platformLower] || platformLower.charAt(0).toUpperCase() + platformLower.slice(1);
                 const status = lead.status || 'new';
                 const statusLower = String(status).toLowerCase();
                 let lastMsg = lead.meta?.last_inbound;
