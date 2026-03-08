@@ -422,6 +422,28 @@
                 "empty_text": "When your agents schedule callbacks or followups, they will appear here.",
                 "btn_setup": "Set Up Automations"
             },
+            "kb": {
+                "title": "Knowledge Base",
+                "org_resources": "Organization Resources",
+                "agent_links": "Agent Links",
+                "shared_files": "Shared Files",
+                "btn_add_link": "Add Link",
+                "placeholder_url": "Enter URL (e.g. https://example.com)",
+                "err_invalid_url": "Please enter a valid URL.",
+                "err_duplicate_url": "This link is already added.",
+                "empty_links": "No links added yet.",
+                "empty_files": "No shared files yet.",
+                "badge_shared": "Organization KB",
+                "badge_onboarding": "Onboarding File",
+                "btn_delete": "Delete",
+                "btn_delete_global": "Delete for all agents",
+                "delete_confirm": "CRITICAL: This will remove the file from the shared organization knowledge base for ALL agents. Are you sure?",
+                "toast_file_deleted": "File removed from shared knowledge base.",
+                "toast_file_failed": "Failed to delete file.",
+                "toast_link_added": "Link added successfully.",
+                "toast_link_removed": "Link removed.",
+                "toast_link_failed": "Failed to save link."
+            },
             "modals": {
                 "unlock": {
                     "title": "⚠️ Critical Warning",
@@ -1166,6 +1188,28 @@
                     "empty_cta": "إرسال تأكيد تجريبي",
                     "coming_soon": "قريباً!"
                 }
+            },
+            "kb": {
+                "title": "قاعدة المعرفة",
+                "org_resources": "موارد المؤسسة",
+                "agent_links": "روابط الوكيل",
+                "shared_files": "الملفات المشتركة",
+                "btn_add_link": "إضافة رابط",
+                "placeholder_url": "أدخل الرابط (مثال: https://example.com)",
+                "err_invalid_url": "يرجى إدخال رابط صحيح.",
+                "err_duplicate_url": "هذا الرابط مضاف مسبقاً.",
+                "empty_links": "لا توجد روابط مضافة بعد.",
+                "empty_files": "لا توجد ملفات مشتركة بعد.",
+                "badge_shared": "قاعدة المعرفة للمؤسسة",
+                "badge_onboarding": "ملف إعداد",
+                "btn_delete": "حذف",
+                "btn_delete_global": "حذف لجميع الوكلاء",
+                "delete_confirm": "هام جداً: سيؤدي هذا إلى إزالة الملف من قاعدة المعرفة المشتركة للمؤسسة لجميع الوكلاء. هل أنت متأكد؟",
+                "toast_file_deleted": "تمت إزالة الملف من قاعدة المعرفة المشتركة.",
+                "toast_file_failed": "فشل في حذف الملف.",
+                "toast_link_added": "تمت إضافة الرابط بنجاح.",
+                "toast_link_removed": "تمت إزالة الرابط.",
+                "toast_link_failed": "فشل في حفظ الرابط."
             },
             "reviews": {
                 "title": "آراء العملاء",
@@ -3858,7 +3902,161 @@
             background: var(--theme-color);
             color: white;
             border-color: var(--theme-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- KNOWLEDGE BASE EXTENSIONS --- */
+        .kb-subsection {
+            margin-bottom: 24px;
+        }
+
+        .kb-subsection:last-child {
+            margin-bottom: 0;
+        }
+
+        .kb-subsection-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kb-link-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .kb-link-input-group input {
+            flex: 1;
+            min-width: 0;
+            margin-bottom: 0;
+        }
+
+        .kb-link-input-group button {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 600px) {
+            .kb-link-input-group {
+                flex-direction: column;
+            }
+
+            .kb-link-input-group button {
+                width: 100%;
+            }
+        }
+
+        .kb-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .kb-item-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(var(--border-color-rgb), 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            transition: all 0.2s;
+            gap: 12px;
+        }
+
+        .kb-item-card:hover {
+            background: rgba(var(--border-color-rgb), 0.5);
+        }
+
+        .kb-item-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .kb-item-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            direction: ltr;
+            /* keep URLs LTR mostly */
+            text-align: left;
+        }
+
+        html[dir="rtl"] .kb-item-title.is-arabic-title {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .kb-item-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .kb-badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .kb-item-actions button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .kb-item-actions button:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .kb-empty-state {
+            text-align: center;
+            padding: 24px 16px;
+            background: rgba(var(--border-color-rgb), 0.2);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kb-empty-state svg {
+            width: 24px;
+            height: 24px;
+            opacity: 0.5;
         }
 
         .period-select {
@@ -15344,6 +15542,215 @@
             container.innerHTML = html;
         }
 
+        // --- NEW KNOWLEDGE BASE EXTENSIONS ---
+        function isArabic(text) {
+            if (!text) return false;
+            const arabicPattern = /[\u0600-\u06FF]/;
+            return arabicPattern.test(text);
+        }
+
+        async function loadAgentKbLinks(agentId) {
+            const listEl = document.getElementById(`kb-links-list-${agentId}`);
+            if (!listEl) return;
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('agent_kb_links')
+                    .select('*')
+                    .eq('org_id', window.currentOrgId)
+                    .eq('agent', agentId)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    listEl.innerHTML = `<div class="kb-empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        ${t('kb.empty_links')}
+                    </div>`;
+                    return;
+                }
+
+                listEl.innerHTML = data.map(link => `
+                    <div class="kb-item-card">
+                        <div class="kb-item-info">
+                            <div class="kb-item-title ${isArabic(link.url) ? 'is-arabic-title' : ''}" title="${link.url}">${link.url}</div>
+                            <div class="kb-item-meta">
+                                <span>${new Date(link.created_at).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                        <div class="kb-item-actions">
+                            <button onclick="removeAgentKbLink('${link.id}', '${agentId}')" title="${t('kb.btn_delete')}">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading agent kb links:', err);
+                showToast(t('kb.toast_link_failed'), 'error');
+            }
+        }
+
+        async function addAgentKbLink(agentId) {
+            const input = document.getElementById(`kb-link-input-${agentId}`);
+            if (!input) return;
+            const url = input.value.trim();
+            if (!url || !/^https?:\/\/.+/.test(url)) {
+                showToast(t('kb.err_invalid_url'), 'error');
+                return;
+            }
+            try {
+                // Check if already exists
+                const { data: existing } = await window.supabaseClient
+                    .from('agent_kb_links')
+                    .select('id')
+                    .eq('org_id', window.currentOrgId)
+                    .eq('agent', agentId)
+                    .eq('url', url)
+                    .maybeSingle();
+
+                if (existing) {
+                    showToast(t('kb.err_duplicate_url'), 'error');
+                    return;
+                }
+
+                const { error } = await window.supabaseClient
+                    .from('agent_kb_links')
+                    .insert({
+                        org_id: window.currentOrgId,
+                        agent: agentId,
+                        url: url
+                    });
+
+                if (error) throw error;
+                input.value = '';
+                showToast(t('kb.toast_link_added'), 'success');
+                loadAgentKbLinks(agentId);
+            } catch (err) {
+                console.error('Error adding kb link:', err);
+                showToast(t('kb.toast_link_failed'), 'error');
+            }
+        }
+
+        async function removeAgentKbLink(linkId, agentId) {
+            if (!confirm('Remove this link?')) return;
+            // Prevent non-owners from doing this (although UI won't show it for moderators either, add safety layer)
+            if (window.currentUserRole === 'moderator') {
+                showToast(t('kb.toast_file_failed'), 'error');
+                return;
+            }
+            try {
+                const { error } = await window.supabaseClient
+                    .from('agent_kb_links')
+                    .delete()
+                    .eq('id', linkId)
+                    .eq('org_id', window.currentOrgId);
+
+                if (error) throw error;
+                showToast(t('kb.toast_link_removed'), 'success');
+                loadAgentKbLinks(agentId);
+            } catch (err) {
+                console.error('Error removing kb link:', err);
+                showToast(t('kb.toast_link_failed'), 'error');
+            }
+        }
+
+        async function loadSharedKbFiles(agentId) {
+            const listEl = document.getElementById(`kb-shared-files-list-${agentId}`);
+            if (!listEl) return;
+
+            try {
+                // We load all kb files for the org, bypassing agent filtering because they are "shared" from onboarding
+                const { data, error } = await window.supabaseClient
+                    .from('agent_kb_files')
+                    .select('*')
+                    .eq('org_id', window.currentOrgId)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                // Deduplicate by path (since previous logic blindly inserted 4 rows per file)
+                const uniqueFilesMap = new Map();
+                data.forEach(file => {
+                    // Prefer the 'website' row if multiple exist for the same path
+                    if (!uniqueFilesMap.has(file.storage_path)) {
+                        uniqueFilesMap.set(file.storage_path, file);
+                    } else if (file.agent === 'website') {
+                        uniqueFilesMap.set(file.storage_path, file);
+                    }
+                });
+
+                const uniqueFiles = Array.from(uniqueFilesMap.values());
+
+                if (uniqueFiles.length === 0) {
+                    listEl.innerHTML = `<div class="kb-empty-state">
+                        <span style="font-size: 1.5rem; opacity: 0.5;">📄</span>
+                        ${t('kb.empty_files')}
+                    </div>`;
+                    return;
+                }
+
+                listEl.innerHTML = uniqueFiles.map(file => `
+                    <div class="kb-item-card">
+                        <div class="kb-item-info">
+                            <div class="kb-item-title" title="${file.file_name}">${file.file_name}</div>
+                            <div class="kb-item-meta">
+                                <span class="kb-badge">${t('kb.badge_onboarding')}</span>
+                                <span>${(file.file_size / 1024).toFixed(1)} KB</span>
+                                <span>${new Date(file.created_at).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                        <div class="kb-item-actions" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">
+                            <button onclick="deleteSharedKbFile('${file.storage_path}', '${file.id}', '${agentId}')" title="${t('kb.btn_delete_global')}">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Error loading shared kb files:', err);
+                listEl.innerHTML = `<div style="color:red; font-size: 0.8rem;">Failed to load files.</div>`;
+            }
+        }
+
+        async function deleteSharedKbFile(storagePath, recordId, currentAgentId) {
+            if (window.currentUserRole === 'moderator') return;
+            // Strict confirm per prompt requirements
+            if (!confirm(t('kb.delete_confirm'))) return;
+
+            try {
+                // Delete from DB completely (this cleans up all duplicate DB rows because we delete by storage_path and org_id broadly)
+                const { error: dbError } = await window.supabaseClient
+                    .from('agent_kb_files')
+                    .delete()
+                    .eq('org_id', window.currentOrgId)
+                    .eq('storage_path', storagePath);
+
+                if (dbError) throw dbError;
+
+                // Delete from Storage
+                const { error: storageError } = await window.supabaseClient.storage
+                    .from('knowledge_base')
+                    .remove([storagePath]);
+
+                if (storageError) {
+                    console.error("Storage delete fail, but DB deleted:", storageError);
+                }
+
+                showToast(t('kb.toast_file_deleted'), 'success');
+
+                // Reload on all open instances that might be visible
+                AGENTS.forEach(ag => {
+                    if (document.getElementById(`kb-shared-files-list-${ag.id}`)) {
+                        loadSharedKbFiles(ag.id);
+                    }
+                });
+            } catch (err) {
+                console.error('Error deleting shared file:', err);
+                showToast(t('kb.toast_file_failed'), 'error');
+            }
+        }
+
         function setLoadingState(isLoading, text, isSecondary = false) {
             const btns = document.querySelectorAll('.login-btn');
             btns.forEach(b => {
@@ -15762,12 +16169,39 @@
                             </div>
                         </div>
                         <div class="section-wrapper">
-                            <div class="section-header" onclick="toggleSection('${agent.id}-links-sec')" data-i18n="agent_config.header_kb">Knowledge Base (Links)</div>
+                            <div class="section-header" onclick="toggleSection('${agent.id}-links-sec')" data-i18n="kb.title">Knowledge Base</div>
                             <div id="${agent.id}-links-sec" class="section-content">
-                                <!-- Organization Resources (Read-only, from DB) -->
-                                <div id="org-resources-${agent.id}" class="org-resources-container">
-                                    <div class="loading-spinner" style="padding: 20px;"></div>
+                                
+                                <!-- Agent Links (Editable, tied to Agent ID) -->
+                                <div class="kb-subsection">
+                                    <h4 class="kb-subsection-title" data-i18n="kb.agent_links">Agent Links</h4>
+                                    <div class="kb-link-input-group">
+                                        <input type="url" id="kb-link-input-${agent.id}" placeholder="${t('kb.placeholder_url')}" data-i18n-placeholder="kb.placeholder_url" onkeypress="if(event.key==='Enter') addAgentKbLink('${agent.id}')">
+                                        <button class="pill-btn primary" onclick="addAgentKbLink('${agent.id}')" data-i18n="kb.btn_add_link">Add Link</button>
+                                    </div>
+                                    <div id="kb-links-list-${agent.id}" class="kb-items-list">
+                                        <!-- Loaded dynamically -->
+                                        <div class="loading-spinner" style="padding: 10px;"></div>
+                                    </div>
                                 </div>
+
+                                <!-- Shared Files (From Onboarding, tied generically to org, visible to all agents) -->
+                                <div class="kb-subsection">
+                                    <h4 class="kb-subsection-title" data-i18n="kb.shared_files">Shared Files</h4>
+                                    <div id="kb-shared-files-list-${agent.id}" class="kb-items-list">
+                                        <!-- Loaded dynamically -->
+                                        <div class="loading-spinner" style="padding: 10px;"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Organization Resources (Read-only, from old system) -->
+                                <div class="kb-subsection" style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px;">
+                                    <h4 class="kb-subsection-title" data-i18n="kb.org_resources">Organization Resources</h4>
+                                    <div id="org-resources-${agent.id}" class="org-resources-container">
+                                        <div class="loading-spinner" style="padding: 20px;"></div>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="section-wrapper">
@@ -17096,6 +17530,12 @@ Thank you for shopping with {store_name}!</textarea>
             }
             if (tabId === 'legal-privacy' || tabId === 'legal-terms' || tabId === 'legal-cookies' || tabId === 'legal-security') {
                 color = '#2b8a86';
+            }
+
+            // Load KB Extensions if an AI Agent tab was chosen
+            if (['website', 'whatsapp', 'page', 'instagram', 'telegram'].includes(tabId)) {
+                if (typeof loadAgentKbLinks === 'function') loadAgentKbLinks(tabId);
+                if (typeof loadSharedKbFiles === 'function') loadSharedKbFiles(tabId);
             }
 
             document.documentElement.style.setProperty('--theme-color', color);
@@ -24658,21 +25098,17 @@ Thank you for shopping with {store_name}!</textarea>
 
                     if (uploadError) throw uploadError;
 
-                    // Insert into agent_kb_files for each platform since 'all' is not in the agent_type ENUM
-                    const platforms = ['website', 'whatsapp', 'page', 'instagram'];
-                    const insertPayloads = platforms.map(plat => ({
+                    // Insert single canonical entry into agent_kb_files bound to 'website' acting as the cross-agent org sentinel
+                    const { error: insertError } = await window.supabaseClient.from('agent_kb_files').insert({
                         org_id: currentUserOrgId,
-                        agent: plat,
+                        agent: 'website',
                         bucket: 'knowledge_base',
-                        path: storagePath,
-                        filename: entry.file.name,
+                        storage_path: storagePath,
+                        file_name: entry.file.name,
                         mime_type: entry.file.type || 'application/octet-stream',
-                        size_bytes: entry.file.size,
-                        content_text: null,
+                        file_size: entry.file.size,
                         created_by: user.id
-                    }));
-
-                    const { error: insertError } = await supabaseClient.from('agent_kb_files').insert(insertPayloads);
+                    });
 
                     if (insertError) throw insertError;
 
