@@ -15437,6 +15437,48 @@
                         }
                     }
 
+                    // Apply dynamic UI labels based on DB profile: offer_type 'product' vs 'service'
+                    const offerType = currentOrgData?.external_onboarding_data?.business?.offer_type;
+                    if (offerType === 'product') {
+                        if (window.LANG_EN) {
+                            if (window.LANG_EN.sidebar) window.LANG_EN.sidebar.nav_orders = "Orders Area";
+                            if (window.LANG_EN.orders) {
+                                window.LANG_EN.orders.title = "Orders Area";
+                                window.LANG_EN.orders.empty_title = "No Orders Yet";
+                                window.LANG_EN.orders.empty_text = "Orders captured by AI agents will appear here.";
+                                window.LANG_EN.orders.btn_add_order = "Add Order";
+                            }
+                        }
+                        if (window.LANG_AR) {
+                            if (window.LANG_AR.sidebar) window.LANG_AR.sidebar.nav_orders = "منطقة الطلبات";
+                            if (window.LANG_AR.orders) {
+                                window.LANG_AR.orders.title = "منطقة الطلبات";
+                                window.LANG_AR.orders.empty_title = "لا توجد طلبات بعد";
+                                window.LANG_AR.orders.empty_text = "الطلبات التي يلتقطها وكلاء الذكاء الاصطناعي ستظهر هنا.";
+                                window.LANG_AR.orders.btn_add_order = "إضافة طلب";
+                            }
+                        }
+                    } else {
+                        if (window.LANG_EN) {
+                            if (window.LANG_EN.sidebar) window.LANG_EN.sidebar.nav_orders = "Customers Area";
+                            if (window.LANG_EN.orders) {
+                                window.LANG_EN.orders.title = "Customers Area";
+                                window.LANG_EN.orders.empty_title = "No Customers Yet";
+                                window.LANG_EN.orders.empty_text = "Customers captured by AI agents will appear here.";
+                                window.LANG_EN.orders.btn_add_order = "Add Customer";
+                            }
+                        }
+                        if (window.LANG_AR) {
+                            if (window.LANG_AR.sidebar) window.LANG_AR.sidebar.nav_orders = "منطقة العملاء";
+                            if (window.LANG_AR.orders) {
+                                window.LANG_AR.orders.title = "منطقة العملاء";
+                                window.LANG_AR.orders.empty_title = "لا يوجد عملاء بعد";
+                                window.LANG_AR.orders.empty_text = "العملاء الذين تم التقاطهم بواسطة وكلاء الذكاء الاصطناعي سيظهرون هنا.";
+                                window.LANG_AR.orders.btn_add_order = "إضافة عميل";
+                            }
+                        }
+                    }
+
                     // Update Top Bar avatar with user initial
                     const name = profile.full_name || profile.email || 'U';
                     const avatarEl = document.getElementById('top-bar-avatar');
