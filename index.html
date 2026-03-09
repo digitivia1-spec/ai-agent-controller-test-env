@@ -26321,9 +26321,13 @@ Thank you for shopping with {store_name}!</textarea>
                     body: JSON.stringify({ query })
                 });
 
+                if (parsed.status === 401) {
+                    throw { code: 'permission', detail: 'The integration proxy is unauthorized. Ensure you are logged in.' };
+                }
+
                 if (!parsed.ok) {
                     const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
-                    throw { code: parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network', detail };
+                    throw { code: (parsed.status === 401 || parsed.status === 403) ? 'permission' : 'network', detail };
                 }
 
                 if (Array.isArray(parsed.data?.errors) && parsed.data.errors.length) {
