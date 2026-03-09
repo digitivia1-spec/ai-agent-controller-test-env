@@ -14624,6 +14624,7 @@
         }
 
         @media (max-width: 480px) {
+
             .onb-modal-header,
             .onb-progress-panel,
             .onb-body,
@@ -15345,9 +15346,12 @@
                 <div class="onb-header-actions">
                     <div class="onb-language">
                         <span class="onb-language-label" id="onb-language-label"></span>
-                        <div class="onb-language-switch" id="onb-language-switch" role="group" aria-label="Form language">
-                            <button type="button" class="onb-lang-btn" id="onb-lang-en" onclick="switchOnboardingLanguage('en')"></button>
-                            <button type="button" class="onb-lang-btn" id="onb-lang-ar" onclick="switchOnboardingLanguage('ar')"></button>
+                        <div class="onb-language-switch" id="onb-language-switch" role="group"
+                            aria-label="Form language">
+                            <button type="button" class="onb-lang-btn" id="onb-lang-en"
+                                onclick="switchOnboardingLanguage('en')"></button>
+                            <button type="button" class="onb-lang-btn" id="onb-lang-ar"
+                                onclick="switchOnboardingLanguage('ar')"></button>
                         </div>
                     </div>
                     <button class="onb-modal-close" onclick="closeOnboardingWizard()">&times;</button>
@@ -26188,6 +26192,10 @@ Thank you for shopping with {store_name}!</textarea>
         async function requestViaProxy({ targetUrl, method = 'GET', headers = {}, body }) {
             const reqHeaders = Object.assign({ 'Target-Url': targetUrl }, headers);
             try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session?.access_token) {
+                    reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
+                }
                 const response = await fetch(INTEGRATION_PROXY_URL, {
                     method,
                     headers: reqHeaders,
