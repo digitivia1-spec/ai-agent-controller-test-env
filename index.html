@@ -26301,6 +26301,24 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
+        async function directShopifyCheck(handle, token) {
+            const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+            const query = `query WizardConnectionTest { shop { name primaryDomain { host url } } }`;
+            try {
+                const resp = await fetch(targetUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Shopify-Storefront-Access-Token': token
+                    },
+                    body: JSON.stringify({ query })
+                });
+                return readProxyResponse(resp);
+            } catch (e) {
+                return { ok: false, status: 0, data: null, text: e?.message || 'network error' };
+            }
+        }
+
         window.testShopifyConnection = async function () {
             const s = onbData.integrations.shopify;
             if (onbConnectionState.shopify.testing) return;
@@ -26315,21 +26333,23 @@ Thank you for shopping with {store_name}!</textarea>
                 const handle = normalizeShopifyHandle(s.shop_domain);
                 if (!handle) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
 
-                const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
-                const query = `query WizardConnectionTest { shop { name primaryDomain { host url } } }`;
+                // 1) Try direct Storefront call (no proxy, no CORS issues for Storefront token)
+                let parsed = await directShopifyCheck(handle, s.storefront_token);
 
-                const parsed = await requestViaProxy({
-                    targetUrl,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // Storefront Public Token:
-                        'X-Shopify-Storefront-Access-Token': s.storefront_token,
-                        // Storefront Private Token (Custom Apps):
-                        'Shopify-Storefront-Private-Token': s.storefront_token
-                    },
-                    body: JSON.stringify({ query })
-                });
+                // 2) If direct fails (CORS/auth), retry via integration proxy with allowed header
+                if (!parsed.ok) {
+                    const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+                    const query = `query WizardConnectionTest { shop { name primaryDomain { host url } } }`;
+                    parsed = await requestViaProxy({
+                        targetUrl,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Shopify-Storefront-Access-Token': s.storefront_token
+                        },
+                        body: JSON.stringify({ query })
+                    });
+                }
 
                 if (!parsed.ok) {
                     const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
