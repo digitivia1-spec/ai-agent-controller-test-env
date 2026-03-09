@@ -25118,7 +25118,7 @@ Thank you for shopping with {store_name}!</textarea>
         <div class="onb-field"><label>${t('onboarding.label_woo_ck')}</label><input type="text" id="woo-ck" value="${esc(w.consumer_key)}" placeholder="${t('onboarding.placeholder_woo_ck')}" oninput="onbData.integrations.woocommerce.consumer_key=this.value;debounceSaveOnb()"></div>
         <div class="onb-field"><label>${t('onboarding.label_woo_cs')}</label><input type="password" id="woo-cs" value="${esc(w.consumer_secret)}" placeholder="${t('onboarding.placeholder_woo_cs')}" oninput="onbData.integrations.woocommerce.consumer_secret=this.value;debounceSaveOnb()"></div>
         <button class="onb-test-btn" style="margin-top:12px;" onclick="window.testWooConnection()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
             ${t('onboarding.btn_test_connection')}
         </button>
         <div id="woo-test-result" style="margin-top:8px; font-size:14px; font-weight:500;"></div>
@@ -25134,7 +25134,7 @@ Thank you for shopping with {store_name}!</textarea>
         <small style="color:var(--text-secondary); display:block; margin-top:4px;">${t('onboarding.integrations_shopify_hint')}</small>
         </div>
         <button class="onb-test-btn" style="margin-top:12px;" onclick="window.testShopifyConnection()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
             ${t('onboarding.btn_test_connection')}
         </button>
         <div id="shopify-test-result" style="margin-top:8px; font-size:14px; font-weight:500;"></div>
@@ -25154,11 +25154,12 @@ Thank you for shopping with {store_name}!</textarea>
             try {
                 let domain = w.website_url.replace(/^(https?:\\\/\\\/)?/, '').replace(/\\\/$/, '');
                 if (!domain) throw new Error("Invalid domain");
-                const url = `https://${domain}/wp-json/wc/v3/`;
+                const targetUrl = `https://${domain}/wp-json/wc/v3/`;
                 const headers = new Headers();
                 headers.set('Authorization', 'Basic ' + btoa(w.consumer_key + ":" + w.consumer_secret));
+                headers.set('Target-Url', targetUrl);
 
-                const response = await fetch(url, { method: 'GET', headers: headers });
+                const response = await fetch('https://xrycghxaxqzvkmzqzzkx.supabase.co/functions/v1/integration-proxy', { method: 'GET', headers: headers });
                 if (!response.ok) throw new Error("WooCommerce API Error");
 
                 if (resEl) { resEl.style.color = '#27ae60'; resEl.innerText = t('onboarding.test_success'); }
@@ -25180,15 +25181,16 @@ Thank you for shopping with {store_name}!</textarea>
             try {
                 let domain = s.shop_domain.replace(/\\.myshopify\\.com.*$/, '').replace(/^(https?:\\\/\\\/)?/, '').replace(/\\\/$/, '');
                 if (!domain) throw new Error("Invalid domain");
-                const url = `https://${domain}.myshopify.com/api/2024-01/graphql.json`;
+                const targetUrl = `https://${domain}.myshopify.com/api/2024-01/graphql.json`;
 
                 const query = `{ shop { name } }`;
 
-                const response = await fetch(url, {
+                const response = await fetch('https://xrycghxaxqzvkmzqzzkx.supabase.co/functions/v1/integration-proxy', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Shopify-Storefront-Access-Token': s.storefront_token
+                        'X-Shopify-Storefront-Access-Token': s.storefront_token,
+                        'Target-Url': targetUrl
                     },
                     body: JSON.stringify({ query })
                 });
