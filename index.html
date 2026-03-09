@@ -26190,12 +26190,14 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function requestViaProxy({ targetUrl, method = 'GET', headers = {}, body }) {
-            const reqHeaders = Object.assign({ 'Target-Url': targetUrl }, headers);
+            const reqHeaders = Object.assign({ 'Target-Url': targetUrl, apikey: SUPABASE_KEY }, headers);
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session?.access_token) {
-                    reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
-                }
+                if (session?.access_token) reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
+            } catch (e) {
+                console.warn('proxy auth session fetch failed', e);
+            }
+            try {
                 const response = await fetch(INTEGRATION_PROXY_URL, {
                     method,
                     headers: reqHeaders,
