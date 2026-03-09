@@ -26315,15 +26315,13 @@ Thank you for shopping with {store_name}!</textarea>
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        // The current proxy CORS policy allows this header and forwards it upstream.
-                        'X-Shopify-Storefront-Access-Token': s.storefront_token
+                        // Storefront Public Token:
+                        'X-Shopify-Storefront-Access-Token': s.storefront_token,
+                        // Storefront Private Token (Custom Apps):
+                        'Shopify-Storefront-Private-Token': s.storefront_token
                     },
                     body: JSON.stringify({ query })
                 });
-
-                if (parsed.status === 401) {
-                    throw { code: 'permission', detail: 'The integration proxy is unauthorized. Ensure you are logged in.' };
-                }
 
                 if (!parsed.ok) {
                     const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
