@@ -49,6 +49,7 @@
                 "nav_inbox": "AI Inbox",
                 "nav_leads": "Sales Leads",
                 "nav_orders": "Customers Area",
+                "nav_integrations": "Integrations",
                 "nav_create_post": "Content Studio",
                 "nav_reviews": "Customer Reviews",
                 "nav_followups": "Automation Rules",
@@ -814,9 +815,9 @@
                 "label_woo_cs": "Consumer Secret",
                 "integrations_shopify_title": "Shopify",
                 "label_shopify_domain": "Shop Domain",
-                "label_shopify_token": "Private Storefront API Token",
-                "integrations_shopify_hint": "Use a private Storefront API token. The test sends a server-side Storefront GraphQL request through the integration proxy using your provided token.",
-                "integrations_shopify_private_note": "Private token required",
+                "label_shopify_token": "Storefront Access Token",
+                "integrations_shopify_hint": "Use your Storefront Access Token. The test verifies a live Shopify Storefront GraphQL request directly, then retries via the secure proxy if needed.",
+                "integrations_shopify_private_note": "Storefront token",
                 "btn_test_connection": "Test Connection",
                 "test_loading": "Testing connection...",
                 "test_success": "Connection successful!",
@@ -831,6 +832,12 @@
                 "test_detail_woo": "Verified against the live WooCommerce REST API.",
                 "test_detail_woo_fallback": "Verified against the live WooCommerce REST API using query authentication because the server did not accept the Authorization header.",
                 "test_detail_shopify": "Verified with the Shopify Storefront GraphQL API using your provided Storefront token.",
+                "test_detail_shopify_proxy": "Direct Shopify test was blocked by the browser, then verified via the secure integration proxy.",
+                "proof_store": "Store",
+                "proof_method": "Method",
+                "proof_verified_at": "Verified at",
+                "proof_sample": "Sample",
+                "proof_source": "Source",
                 "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
@@ -880,6 +887,20 @@
                     "Non-Profit & NGO",
                     "Other"
                 ]
+            },
+            "integrations_hub": {
+                "title": "Store Integrations",
+                "subtitle": "Manage and verify WooCommerce and Shopify credentials used by your workspace.",
+                "owner_only": "Only organization owners can edit, test, save, or disconnect integrations.",
+                "read_only": "Read-only mode: ask an owner to update credentials.",
+                "btn_save": "Save Credentials",
+                "btn_disconnect": "Disconnect",
+                "save_success": "Integration credentials saved.",
+                "save_error": "Could not save integration credentials.",
+                "disconnect_success": "{provider} was disconnected.",
+                "disconnect_error": "Could not disconnect {provider}.",
+                "proof_title": "Verification proof",
+                "status_not_connected": "Not connected yet."
             }
         };
 
@@ -907,6 +928,7 @@
                 "nav_inbox": "صندوق AI",
                 "nav_leads": "عملاء المبيعات",
                 "nav_orders": "منطقة العملاء",
+                "nav_integrations": "التكاملات",
                 "nav_create_post": "استوديو المحتوى",
                 "nav_reviews": "آراء العملاء",
                 "nav_followups": "قواعد الأتمتة",
@@ -1669,9 +1691,9 @@
                 "label_woo_cs": "Consumer Secret",
                 "integrations_shopify_title": "Shopify",
                 "label_shopify_domain": "نطاق المتجر",
-                "label_shopify_token": "رمز Private Storefront API",
-                "integrations_shopify_hint": "استخدم private Storefront API token. يقوم الاختبار بإرسال طلب Storefront GraphQL من جهة الخادم عبر integration proxy باستخدام الرمز الذي أدخلته.",
-                "integrations_shopify_private_note": "يتطلب private token",
+                "label_shopify_token": "Storefront Access Token",
+                "integrations_shopify_hint": "استخدم Storefront Access Token. الاختبار يتحقق من طلب Shopify Storefront GraphQL الحقيقي مباشرة، ثم يعيد المحاولة عبر integration proxy عند الحاجة.",
+                "integrations_shopify_private_note": "رمز Storefront",
                 "btn_test_connection": "اختبار الاتصال",
                 "test_loading": "جاري اختبار الاتصال...",
                 "test_success": "تم الاتصال بنجاح!",
@@ -1686,6 +1708,12 @@
                 "test_detail_woo": "تم التحقق عبر WooCommerce REST API الحقيقي.",
                 "test_detail_woo_fallback": "تم التحقق عبر WooCommerce REST API الحقيقي باستخدام query authentication لأن الخادم لم يقبل Authorization header.",
                 "test_detail_shopify": "تم التحقق عبر Shopify Storefront GraphQL API باستخدام رمز Storefront الذي أدخلته.",
+                "test_detail_shopify_proxy": "تم حظر الاختبار المباشر من المتصفح، ثم تم التحقق بنجاح عبر integration proxy الآمن.",
+                "proof_store": "المتجر",
+                "proof_method": "طريقة التحقق",
+                "proof_verified_at": "وقت التحقق",
+                "proof_sample": "عينة",
+                "proof_source": "المصدر",
                 "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
@@ -1735,6 +1763,20 @@
                     "المنظمات غير الربحية",
                     "أخرى"
                 ]
+            },
+            "integrations_hub": {
+                "title": "تكاملات المتجر",
+                "subtitle": "إدارة والتحقق من بيانات WooCommerce و Shopify المستخدمة في مساحة العمل.",
+                "owner_only": "فقط مالك المؤسسة يمكنه تعديل أو اختبار أو حفظ أو فصل التكاملات.",
+                "read_only": "وضع القراءة فقط: اطلب من المالك تحديث بيانات الدخول.",
+                "btn_save": "حفظ بيانات الدخول",
+                "btn_disconnect": "فصل التكامل",
+                "save_success": "تم حفظ بيانات التكامل.",
+                "save_error": "تعذر حفظ بيانات التكامل.",
+                "disconnect_success": "تم فصل {provider}.",
+                "disconnect_error": "تعذر فصل {provider}.",
+                "proof_title": "دليل التحقق",
+                "status_not_connected": "لا يوجد اتصال بعد."
             }
         };
     </script>
@@ -13517,8 +13559,8 @@
 
         .onb-stepper {
             display: grid;
-            grid-template-columns: repeat(6, minmax(0, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+            gap: 10px;
             margin-top: 14px;
         }
 
@@ -13526,10 +13568,10 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.03);
-            padding: 12px;
+            padding: 10px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-align: start;
             cursor: pointer;
             transition: all .2s ease;
@@ -13576,9 +13618,9 @@
             font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-main, #edf2f7);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.25;
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
 
         .onb-step.active {
@@ -13619,6 +13661,7 @@
             overflow-y: auto;
             padding: 20px 28px 24px;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
 
         .onb-step-content {
@@ -13962,8 +14005,94 @@
 
         .onb-int-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 16px;
+        }
+
+        .onb-int-accordions {
+            display: none;
+        }
+
+        .onb-int-accordion {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.015);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .onb-int-accordion summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-weight: 700;
+            color: var(--text-main, #fff);
+        }
+
+        .onb-int-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .onb-int-accordion summary::after {
+            content: "▾";
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        .onb-int-accordion[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .onb-int-accordion-body {
+            padding: 0 14px 14px;
+        }
+
+        .onb-conn-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .onb-disconnect-btn {
+            min-height: 44px;
+            padding: 10px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(248, 113, 113, 0.36);
+            background: rgba(248, 113, 113, 0.1);
+            color: #fda4af;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .onb-disconnect-btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .onb-proof-list {
+            margin-top: 8px;
+            display: grid;
+            gap: 4px;
+            font-size: 0.8rem;
+            color: var(--text-muted, #9ba8b7);
+        }
+
+        .onb-proof-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .onb-proof-label {
+            font-weight: 700;
+            color: var(--text-main, #dce5f2);
+            min-width: 95px;
         }
 
         .onb-int-card {
@@ -14433,6 +14562,15 @@
                 padding: 16px;
             }
 
+            .onb-int-card {
+                display: none;
+            }
+
+            .onb-int-accordions,
+            .onb-int-accordion {
+                display: block;
+            }
+
             .onb-body {
                 padding: 14px 20px 16px;
             }
@@ -14594,6 +14732,10 @@
                 border-radius: 18px;
             }
 
+            .onb-proof-label {
+                min-width: 78px;
+            }
+
             .onb-platform-subtitle {
                 font-size: 0.76rem;
             }
@@ -14612,6 +14754,10 @@
 
             .onb-btn,
             .onb-test-btn {
+                width: 100%;
+            }
+
+            .onb-disconnect-btn {
                 width: 100%;
             }
 
@@ -14654,6 +14800,15 @@
                 min-height: 60px;
             }
 
+            .onb-proof-row {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .onb-proof-label {
+                min-width: 0;
+            }
+
             .onb-field input,
             .onb-field textarea,
             .onb-field select,
@@ -14675,6 +14830,253 @@
                 max-width: 100%;
                 text-align: start;
             }
+        }
+
+        .ih-shell {
+            padding: 18px;
+        }
+
+        .ih-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .ih-title {
+            margin: 0;
+        }
+
+        .ih-subtitle {
+            margin: 8px 0 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 72ch;
+            line-height: 1.5;
+        }
+
+        .ih-note {
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 10px 12px;
+            color: var(--text-muted);
+            font-size: 0.86rem;
+        }
+
+        .ih-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .ih-card {
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .ih-card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .ih-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .ih-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            object-fit: contain;
+            padding: 7px;
+            flex-shrink: 0;
+        }
+
+        .ih-card-title {
+            margin: 0 0 4px;
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .ih-card-subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+
+        .ih-badge {
+            white-space: nowrap;
+            font-size: 0.72rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+        }
+
+        .ih-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .ih-form-grid .full {
+            grid-column: 1 / -1;
+        }
+
+        .ih-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .ih-field input {
+            width: 100%;
+            min-height: 42px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            padding: 10px 12px;
+        }
+
+        .ih-field input:focus {
+            outline: none;
+            border-color: rgba(91, 174, 176, 0.72);
+            box-shadow: 0 0 0 3px rgba(91, 174, 176, 0.12);
+        }
+
+        .ih-inline-domain {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 0 10px;
+        }
+
+        .ih-inline-domain input {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            min-height: 42px;
+        }
+
+        .ih-inline-domain input:focus {
+            box-shadow: none;
+        }
+
+        .ih-domain-suffix {
+            white-space: nowrap;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            direction: ltr;
+        }
+
+        .ih-actions {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .ih-save-all {
+            margin-top: 14px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .ih-btn {
+            min-height: 42px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(91, 174, 176, 0.35);
+            background: rgba(91, 174, 176, 0.12);
+            color: var(--theme-color);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .ih-btn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .ih-btn-danger {
+            border-color: rgba(248, 113, 113, 0.4);
+            background: rgba(248, 113, 113, 0.08);
+            color: #fca5a5;
+        }
+
+        .ih-proof {
+            margin-top: 10px;
+            border: 1px dashed rgba(255, 255, 255, 0.16);
+            border-radius: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .ih-proof-title {
+            margin: 0 0 6px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .ih-proof-empty {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        @media (max-width: 1040px) {
+            .ih-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .ih-shell {
+                padding: 14px;
+            }
+
+            .ih-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ih-actions,
+            .ih-save-all {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .ih-btn {
+                width: 100%;
+            }
+        }
+
+        [dir="rtl"] .ih-save-all {
+            justify-content: flex-start;
         }
 
         @media (max-height: 900px) {
@@ -14847,6 +15249,12 @@
                         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
                     </svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_dashboard">Dashboard</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('integrations', this)">
+                <div class="nav-icon"><svg viewBox="0 0 24 24">
+                        <path d="M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8-7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM4 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8-3.5h6v3h-6zm-6 0h6v3H6zm5-2h2V6h-2zm0 9h2v-2h-2z"/>
+                    </svg></div>
+                <span class="nav-label" data-i18n="sidebar.nav_integrations">Integrations</span>
             </li>
 
             <div class="nav-group-divider"></div>
@@ -15706,6 +16114,7 @@
             if (typeof buildLeadsToolbar === 'function') buildLeadsToolbar();
             if (typeof renderLeads === 'function' && typeof cachedLeads !== 'undefined') renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap);
             if (typeof renderOrders === 'function') renderOrders();
+            if (typeof renderIntegrationsHub === 'function' && document.getElementById('integrations')?.classList.contains('active')) renderIntegrationsHub();
             if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
             if (typeof refreshOnboardingWizard === 'function') refreshOnboardingWizard();
             updateThemeToggleUI();
@@ -17082,6 +17491,19 @@
                              </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div id="integrations" class="tab-content">
+                <div class="card glass ih-shell">
+                    <div class="ih-header">
+                        <div>
+                            <h2 class="ih-title" data-i18n="integrations_hub.title">Store Integrations</h2>
+                            <p class="ih-subtitle" data-i18n="integrations_hub.subtitle">Manage and verify WooCommerce and Shopify credentials used by your workspace.</p>
+                        </div>
+                    </div>
+                    <div id="ih-readonly-note" class="ih-note" style="display:none;"></div>
+                    <div id="integrations-root"></div>
                 </div>
             </div>`;
 
@@ -18467,6 +18889,10 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'website') color = '#5BAEB0';
             if (tabId === 'inbox') color = '#5BAEB0'; // Consistent Teal for inbox
             if (tabId === 'inbox') document.body.style.overflow = '';
+            if (tabId === 'integrations') {
+                color = '#5BAEB0';
+                if (typeof renderIntegrationsHub === 'function') renderIntegrationsHub();
+            }
             if (tabId === 'leads') {
                 color = '#e6b72a'; // Gold for leads
                 fetchLeads(); // Fetch data when tab opens
@@ -25598,8 +26024,29 @@ Thank you for shopping with {store_name}!</textarea>
         const SHOPIFY_STOREFRONT_API_VERSION = '2026-01';
         const INTEGRATION_PROXY_URL = `${SUPABASE_URL}/functions/v1/integration-proxy`;
         const PLATFORM_LOGOS = Object.freeze({
-            wordpress: 'https://cdn.simpleicons.org/wordpress/21759B',
-            shopify: 'https://cdn.simpleicons.org/shopify/7AB55C'
+            wordpress: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Wordpress-Logo.svg',
+            shopify: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg'
+        });
+        const SHOPIFY_TEST_QUERY = `query WizardConnectionTest { shop { name primaryDomain { host url } } products(first: 1) { edges { node { title handle } } } }`;
+        const DEFAULT_WOO_INTEGRATION = Object.freeze({
+            website_url: '',
+            consumer_key: '',
+            consumer_secret: '',
+            verified_at: '',
+            verified_store: '',
+            verification_method: '',
+            verification_snapshot: null,
+            last_test_status: ''
+        });
+        const DEFAULT_SHOPIFY_INTEGRATION = Object.freeze({
+            shop_domain: '',
+            storefront_token: '',
+            token_type: 'storefront_access_token',
+            verified_at: '',
+            verified_store: '',
+            verification_method: '',
+            verification_snapshot: null,
+            last_test_status: ''
         });
 
         let onbStep = 0;
@@ -25628,11 +26075,55 @@ Thank you for shopping with {store_name}!</textarea>
                 business: { industry: '', offer_type: '', description: '' },
                 channels: { whatsapp_number: '', skipped: false },
                 knowledge_base: { uploaded_files: [] },
-                integrations: {
-                    woocommerce: { website_url: '', consumer_key: '', consumer_secret: '', verified_at: '', verified_store: '', verification_method: '', last_test_status: '' },
-                    shopify: { shop_domain: '', storefront_token: '', token_type: 'private', verified_at: '', verified_store: '', verification_method: '', last_test_status: '' }
-                },
+                integrations: normalizeIntegrationsBlock(null),
                 ui: { last_step: 0, dismissed_at: null, last_saved_at: null }
+            };
+        }
+
+        function normalizeVerificationSnapshot(snapshot) {
+            if (!snapshot || typeof snapshot !== 'object') return null;
+            return {
+                source: String(snapshot.source || '').slice(0, 100),
+                method: String(snapshot.method || '').slice(0, 100),
+                store: String(snapshot.store || '').slice(0, 180),
+                sample: String(snapshot.sample || '').slice(0, 180),
+                verified_at: String(snapshot.verified_at || '').slice(0, 100)
+            };
+        }
+
+        function normalizeWooIntegration(raw) {
+            const merged = Object.assign({}, DEFAULT_WOO_INTEGRATION, raw || {});
+            merged.website_url = String(merged.website_url || '').trim();
+            merged.consumer_key = String(merged.consumer_key || '').trim();
+            merged.consumer_secret = String(merged.consumer_secret || '').trim();
+            merged.verified_at = String(merged.verified_at || '').trim();
+            merged.verified_store = String(merged.verified_store || '').trim();
+            merged.verification_method = String(merged.verification_method || '').trim();
+            merged.last_test_status = String(merged.last_test_status || '').trim();
+            merged.verification_snapshot = normalizeVerificationSnapshot(merged.verification_snapshot);
+            return merged;
+        }
+
+        function normalizeShopifyIntegration(raw) {
+            const merged = Object.assign({}, DEFAULT_SHOPIFY_INTEGRATION, raw || {});
+            const migratedToken = (merged.storefront_token || merged.client_secret || '').trim();
+            merged.shop_domain = String(merged.shop_domain || '').trim();
+            merged.storefront_token = migratedToken;
+            merged.token_type = 'storefront_access_token';
+            merged.verified_at = String(merged.verified_at || '').trim();
+            merged.verified_store = String(merged.verified_store || '').trim();
+            merged.verification_method = String(merged.verification_method || '').trim();
+            merged.last_test_status = String(merged.last_test_status || '').trim();
+            merged.verification_snapshot = normalizeVerificationSnapshot(merged.verification_snapshot);
+            delete merged.client_id;
+            delete merged.client_secret;
+            return merged;
+        }
+
+        function normalizeIntegrationsBlock(raw) {
+            return {
+                woocommerce: normalizeWooIntegration(raw?.woocommerce),
+                shopify: normalizeShopifyIntegration(raw?.shopify)
             };
         }
 
@@ -25644,10 +26135,7 @@ Thank you for shopping with {store_name}!</textarea>
                 if (saved.business) Object.assign(d.business, saved.business);
                 if (saved.channels) Object.assign(d.channels, saved.channels);
                 if (saved.knowledge_base) Object.assign(d.knowledge_base, saved.knowledge_base);
-                if (saved.integrations) {
-                    if (saved.integrations.woocommerce) Object.assign(d.integrations.woocommerce, saved.integrations.woocommerce);
-                    if (saved.integrations.shopify) Object.assign(d.integrations.shopify, saved.integrations.shopify);
-                }
+                d.integrations = normalizeIntegrationsBlock(saved.integrations);
                 if (saved.ui) Object.assign(d.ui, saved.ui);
             } catch (e) { console.warn('onb merge error', e); }
             return d;
@@ -25693,7 +26181,7 @@ Thank you for shopping with {store_name}!</textarea>
                 onbConnectionState.shopify = {
                     status: 'success',
                     titleKey: 'onboarding.test_success_shopify',
-                    detailKey: 'onboarding.test_detail_shopify',
+                    detailKey: shop.verification_method === 'storefront_access_token_proxy' ? 'onboarding.test_detail_shopify_proxy' : 'onboarding.test_detail_shopify',
                     detailText: '',
                     testing: false
                 };
@@ -25776,6 +26264,13 @@ Thank you for shopping with {store_name}!</textarea>
             const overlay = document.getElementById('onb-overlay');
             if (overlay && overlay.classList.contains('show') && onbData) renderWizard();
         };
+
+        window.addEventListener('resize', () => {
+            const overlay = document.getElementById('onb-overlay');
+            if (overlay && overlay.classList.contains('show') && onbData && onbStep === 4) {
+                renderWizard();
+            }
+        });
 
         window.switchOnboardingLanguage = function (lang) {
             if (!lang || lang === currentLang) {
@@ -25996,84 +26491,137 @@ Thank you for shopping with {store_name}!</textarea>
             const s = onbData.integrations.shopify;
             const wooTesting = !!onbConnectionState.woocommerce.testing;
             const shopTesting = !!onbConnectionState.shopify.testing;
+            const wooBody = renderOnbIntegrationFields('woocommerce', w, wooTesting);
+            const shopBody = renderOnbIntegrationFields('shopify', s, shopTesting);
+            const useAccordionLayout = window.matchMedia('(max-width: 980px)').matches;
             return `<div class="onb-step-card">
                 <h3 class="onb-step-title">${tOnb('onboarding.integrations_title')}</h3>
                 <p class="onb-step-subtitle">${tOnb('onboarding.integrations_subtitle')}</p>
-                <div class="onb-int-cards">
-                    <div class="onb-int-card">
-                        <div class="onb-platform-head">
-                            <div class="onb-platform-brand">
-                                <img class="onb-platform-logo" src="${PLATFORM_LOGOS.wordpress}" alt="WordPress">
-                                <div>
-                                    <h4 class="onb-platform-title">${tOnb('onboarding.integrations_woo_title')}</h4>
-                                    <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_woo_hint')}</p>
-                                </div>
-                            </div>
-                            <span class="onb-badge">${tOnb('onboarding.integrations_https_recommended')}</span>
-                        </div>
-                        <div class="onb-form-grid">
-                            <div class="onb-field onb-field-full">
-                                <label>${tOnb('onboarding.label_woo_url')}</label>
-                                <input type="text" id="woo-domain" value="${esc(w.website_url)}" placeholder="${tOnb('onboarding.placeholder_woo_url')}" oninput="updateOnbIntegrationField('woocommerce','website_url',this.value)">
-                            </div>
-                            <div class="onb-field">
-                                <label>${tOnb('onboarding.label_woo_ck')}</label>
-                                <input type="text" id="woo-ck" value="${esc(w.consumer_key)}" placeholder="${tOnb('onboarding.placeholder_woo_ck')}" oninput="updateOnbIntegrationField('woocommerce','consumer_key',this.value)">
-                            </div>
-                            <div class="onb-field">
-                                <label>${tOnb('onboarding.label_woo_cs')}</label>
-                                <input type="password" id="woo-cs" value="${esc(w.consumer_secret)}" placeholder="${tOnb('onboarding.placeholder_woo_cs')}" oninput="updateOnbIntegrationField('woocommerce','consumer_secret',this.value)">
-                            </div>
-                        </div>
-                        <button class="onb-test-btn" id="woo-test-btn" onclick="window.testWooConnection()" ${wooTesting ? 'disabled' : ''}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            ${wooTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
-                        </button>
-                        <div id="woo-test-result">${renderConnectionStatusHtml('woocommerce')}</div>
-                    </div>
-                    <div class="onb-int-card">
-                        <div class="onb-platform-head">
-                            <div class="onb-platform-brand">
-                                <img class="onb-platform-logo" src="${PLATFORM_LOGOS.shopify}" alt="Shopify">
-                                <div>
-                                    <h4 class="onb-platform-title">${tOnb('onboarding.integrations_shopify_title')}</h4>
-                                    <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_shopify_hint')}</p>
-                                </div>
-                            </div>
-                            <span class="onb-badge">${tOnb('onboarding.integrations_shopify_private_note')}</span>
-                        </div>
-                        <div class="onb-form-grid">
-                            <div class="onb-field onb-field-full">
-                                <label>${tOnb('onboarding.label_shopify_domain')}</label>
-                                <div class="onb-inline-domain">
-                                    <input type="text" id="shop-domain" value="${esc(s.shop_domain)}" placeholder="${tOnb('onboarding.placeholder_shopify_domain')}" oninput="updateOnbIntegrationField('shopify','shop_domain',this.value)">
-                                    <span class="onb-domain-suffix">.myshopify.com</span>
-                                </div>
-                            </div>
-                            <div class="onb-field onb-field-full">
-                                <label>${tOnb('onboarding.label_shopify_token')}</label>
-                                <input type="password" id="shop-token" value="${esc(s.storefront_token || '')}" placeholder="${tOnb('onboarding.placeholder_shopify_token')}" oninput="updateOnbIntegrationField('shopify','storefront_token',this.value)">
-                            </div>
-                        </div>
-                        <button class="onb-test-btn" id="shopify-test-btn" onclick="window.testShopifyConnection()" ${shopTesting ? 'disabled' : ''}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            ${shopTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
-                        </button>
-                        <div id="shopify-test-result">${renderConnectionStatusHtml('shopify')}</div>
-                    </div>
-                </div>
+                ${useAccordionLayout
+                    ? `<div class="onb-int-accordions">
+                        <details class="onb-int-accordion" open>
+                            <summary>${tOnb('onboarding.integrations_woo_title')}</summary>
+                            <div class="onb-int-accordion-body">${wooBody}</div>
+                        </details>
+                        <details class="onb-int-accordion" open>
+                            <summary>${tOnb('onboarding.integrations_shopify_title')}</summary>
+                            <div class="onb-int-accordion-body">${shopBody}</div>
+                        </details>
+                    </div>`
+                    : `<div class="onb-int-cards">
+                        <div class="onb-int-card">${wooBody}</div>
+                        <div class="onb-int-card">${shopBody}</div>
+                    </div>`
+                }
                 <div class="onb-hint">${tOnb('onboarding.integrations_skip_note')}</div>
             </div>`;
+        }
+
+        function renderOnbIntegrationFields(provider, config, isTesting) {
+            const canDisconnect = provider === 'woocommerce'
+                ? !!(config.website_url || config.consumer_key || config.consumer_secret || config.verified_at)
+                : !!(config.shop_domain || config.storefront_token || config.verified_at);
+            if (provider === 'woocommerce') {
+                return `<div class="onb-platform-head">
+                    <div class="onb-platform-brand">
+                        <img class="onb-platform-logo" src="${PLATFORM_LOGOS.wordpress}" alt="WordPress">
+                        <div>
+                            <h4 class="onb-platform-title">${tOnb('onboarding.integrations_woo_title')}</h4>
+                            <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_woo_hint')}</p>
+                        </div>
+                    </div>
+                    <span class="onb-badge">${tOnb('onboarding.integrations_https_recommended')}</span>
+                </div>
+                <div class="onb-form-grid">
+                    <div class="onb-field onb-field-full">
+                        <label>${tOnb('onboarding.label_woo_url')}</label>
+                        <input type="text" id="woo-domain" value="${esc(config.website_url)}" placeholder="${tOnb('onboarding.placeholder_woo_url')}" oninput="updateOnbIntegrationField('woocommerce','website_url',this.value)">
+                    </div>
+                    <div class="onb-field">
+                        <label>${tOnb('onboarding.label_woo_ck')}</label>
+                        <input type="text" id="woo-ck" value="${esc(config.consumer_key)}" placeholder="${tOnb('onboarding.placeholder_woo_ck')}" oninput="updateOnbIntegrationField('woocommerce','consumer_key',this.value)">
+                    </div>
+                    <div class="onb-field">
+                        <label>${tOnb('onboarding.label_woo_cs')}</label>
+                        <input type="password" id="woo-cs" value="${esc(config.consumer_secret)}" placeholder="${tOnb('onboarding.placeholder_woo_cs')}" oninput="updateOnbIntegrationField('woocommerce','consumer_secret',this.value)">
+                    </div>
+                </div>
+                <div class="onb-conn-actions">
+                    <button class="onb-test-btn" id="woo-test-btn" onclick="window.testWooConnection()" ${isTesting ? 'disabled' : ''}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        ${isTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
+                    </button>
+                    <button class="onb-disconnect-btn" onclick="disconnectOnbIntegration('woocommerce')" ${canDisconnect ? '' : 'disabled'}>${t('integrations_hub.btn_disconnect')}</button>
+                </div>
+                <div id="woo-test-result">${renderConnectionStatusHtml('woocommerce')}</div>`;
+            }
+            return `<div class="onb-platform-head">
+                <div class="onb-platform-brand">
+                    <img class="onb-platform-logo" src="${PLATFORM_LOGOS.shopify}" alt="Shopify">
+                    <div>
+                        <h4 class="onb-platform-title">${tOnb('onboarding.integrations_shopify_title')}</h4>
+                        <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_shopify_hint')}</p>
+                    </div>
+                </div>
+                <span class="onb-badge">${tOnb('onboarding.integrations_shopify_private_note')}</span>
+            </div>
+            <div class="onb-form-grid">
+                <div class="onb-field onb-field-full">
+                    <label>${tOnb('onboarding.label_shopify_domain')}</label>
+                    <div class="onb-inline-domain">
+                        <input type="text" id="shop-domain" value="${esc(config.shop_domain)}" placeholder="${tOnb('onboarding.placeholder_shopify_domain')}" oninput="updateOnbIntegrationField('shopify','shop_domain',this.value)">
+                        <span class="onb-domain-suffix">.myshopify.com</span>
+                    </div>
+                </div>
+                <div class="onb-field onb-field-full">
+                    <label>${tOnb('onboarding.label_shopify_token')}</label>
+                    <input type="password" id="shop-token" value="${esc(config.storefront_token || '')}" placeholder="${tOnb('onboarding.placeholder_shopify_token')}" oninput="updateOnbIntegrationField('shopify','storefront_token',this.value)">
+                </div>
+            </div>
+            <div class="onb-conn-actions">
+                <button class="onb-test-btn" id="shopify-test-btn" onclick="window.testShopifyConnection()" ${isTesting ? 'disabled' : ''}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    ${isTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
+                </button>
+                <button class="onb-disconnect-btn" onclick="disconnectOnbIntegration('shopify')" ${canDisconnect ? '' : 'disabled'}>${t('integrations_hub.btn_disconnect')}</button>
+            </div>
+            <div id="shopify-test-result">${renderConnectionStatusHtml('shopify')}</div>`;
+        }
+
+        function formatVerificationDate(isoText) {
+            if (!isoText) return '';
+            try {
+                return new Date(isoText).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
+            } catch (e) {
+                return isoText;
+            }
+        }
+
+        function renderProofRows(snapshot) {
+            if (!snapshot) return '';
+            const rows = [];
+            if (snapshot.store) rows.push({ label: tOnb('onboarding.proof_store'), value: snapshot.store });
+            if (snapshot.method) rows.push({ label: tOnb('onboarding.proof_method'), value: snapshot.method });
+            if (snapshot.source) rows.push({ label: tOnb('onboarding.proof_source'), value: snapshot.source });
+            if (snapshot.verified_at) rows.push({ label: tOnb('onboarding.proof_verified_at'), value: formatVerificationDate(snapshot.verified_at) });
+            if (snapshot.sample) rows.push({ label: tOnb('onboarding.proof_sample'), value: snapshot.sample });
+            if (!rows.length) return '';
+            return `<div class="onb-proof-list">${rows.map((row) => `<div class="onb-proof-row"><span class="onb-proof-label">${esc(row.label)}:</span><span>${esc(row.value)}</span></div>`).join('')}</div>`;
         }
 
         function renderConnectionStatusHtml(provider) {
             const state = onbConnectionState[provider];
             if (!state || state.status === 'idle') return '';
             const title = state.titleKey ? tOnb(state.titleKey) : '';
-            const detail = state.detailKey ? tOnb(state.detailKey) : state.detailText;
+            const detailParts = [];
+            if (state.detailKey) detailParts.push(tOnb(state.detailKey));
+            if (state.detailText) detailParts.push(state.detailText);
+            const detail = detailParts.join(' ').trim();
+            const proofHtml = renderProofRows(onbData?.integrations?.[provider]?.verification_snapshot);
             return `<div class="onb-test-result ${state.status}">
                 <div class="onb-test-result-title">${esc(title || tOnb('onboarding.test_error_unknown'))}</div>
                 ${detail ? `<div class="onb-test-result-detail">${esc(detail)}</div>` : ''}
+                ${proofHtml}
             </div>`;
         }
 
@@ -26104,17 +26652,42 @@ Thank you for shopping with {store_name}!</textarea>
             target.verified_at = '';
             target.verified_store = '';
             target.verification_method = '';
+            target.verification_snapshot = null;
             target.last_test_status = '';
         }
 
         window.updateOnbIntegrationField = function (provider, field, value) {
             if (!onbData?.integrations?.[provider]) return;
             onbData.integrations[provider][field] = value;
-            if (provider === 'shopify') onbData.integrations.shopify.token_type = 'private';
+            if (provider === 'shopify') {
+                onbData.integrations.shopify.token_type = 'storefront_access_token';
+                delete onbData.integrations.shopify.client_id;
+                delete onbData.integrations.shopify.client_secret;
+            }
             clearIntegrationVerification(provider);
             onbConnectionState[provider] = createConnectionState();
             updateConnectionStatusDom(provider);
             debounceSaveOnb();
+        };
+
+        window.disconnectOnbIntegration = function (provider) {
+            if (!onbData?.integrations?.[provider]) return;
+            if (provider === 'woocommerce') {
+                onbData.integrations.woocommerce.website_url = '';
+                onbData.integrations.woocommerce.consumer_key = '';
+                onbData.integrations.woocommerce.consumer_secret = '';
+            } else {
+                onbData.integrations.shopify.shop_domain = '';
+                onbData.integrations.shopify.storefront_token = '';
+                onbData.integrations.shopify.token_type = 'storefront_access_token';
+                delete onbData.integrations.shopify.client_id;
+                delete onbData.integrations.shopify.client_secret;
+            }
+            clearIntegrationVerification(provider);
+            onbConnectionState[provider] = createConnectionState();
+            debounceSaveOnb();
+            if (onbStep === 4) renderStepContent();
+            else updateConnectionStatusDom(provider);
         };
 
         function normalizeWooOrigin(input) {
@@ -26191,17 +26764,21 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function requestViaProxy({ targetUrl, method = 'GET', headers = {}, body }) {
             const reqHeaders = Object.assign({ 'Target-Url': targetUrl, apikey: SUPABASE_KEY }, headers);
+            const hasAuthorizationHeader = Object.keys(reqHeaders).some((key) => String(key).toLowerCase() === 'authorization');
             try {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session?.access_token) {
-                    reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
-                } else {
-                    // fallback to anon key so the edge function always receives an Authorization header
-                    reqHeaders['Authorization'] = `Bearer ${SUPABASE_KEY}`;
+                if (!hasAuthorizationHeader) {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (session?.access_token) {
+                        reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
+                    } else {
+                        reqHeaders['Authorization'] = `Bearer ${SUPABASE_KEY}`;
+                    }
                 }
             } catch (e) {
-                console.warn('proxy auth session fetch failed', e);
-                reqHeaders['Authorization'] = `Bearer ${SUPABASE_KEY}`;
+                if (!hasAuthorizationHeader) {
+                    console.warn('proxy auth session fetch failed', e);
+                    reqHeaders['Authorization'] = `Bearer ${SUPABASE_KEY}`;
+                }
             }
             try {
                 const response = await fetch(INTEGRATION_PROXY_URL, {
@@ -26225,14 +26802,13 @@ Thank you for shopping with {store_name}!</textarea>
             });
         }
 
-        async function requestWooCredentials(origin, mode = 'basic') {
-            const w = onbData.integrations.woocommerce;
+        async function requestWooCredentials(origin, consumerKey, consumerSecret, mode = 'basic') {
             let targetUrl = `${origin}/wp-json/wc/v3/products?per_page=1&_fields=id,name,status`;
             const headers = {};
             if (mode === 'basic') {
-                headers['Authorization'] = 'Basic ' + btoa(`${w.consumer_key}:${w.consumer_secret}`);
+                headers['Authorization'] = 'Basic ' + btoa(`${consumerKey}:${consumerSecret}`);
             } else {
-                targetUrl += `&consumer_key=${encodeURIComponent(w.consumer_key)}&consumer_secret=${encodeURIComponent(w.consumer_secret)}`;
+                targetUrl += `&consumer_key=${encodeURIComponent(consumerKey)}&consumer_secret=${encodeURIComponent(consumerSecret)}`;
             }
             return requestViaProxy({ targetUrl, method: 'GET', headers });
         }
@@ -26240,6 +26816,44 @@ Thank you for shopping with {store_name}!</textarea>
         function shouldRetryWooWithQuery(parsed) {
             const detail = extractErrorDetail(parsed).toLowerCase();
             return parsed.status === 401 || parsed.status === 403 || detail.includes('consumer key') || detail.includes('signature') || detail.includes('authorization') || detail.includes('oauth');
+        }
+
+        async function runWooConnectionTest(config) {
+            const origin = normalizeWooOrigin(config.website_url);
+            if (!origin) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
+            const probe = await requestWooSiteProbe(origin);
+            if (!probe.ok) throw { code: 'network', detail: extractErrorDetail(probe) || `HTTP ${probe.status}` };
+
+            let parsed = await requestWooCredentials(origin, config.consumer_key, config.consumer_secret, 'basic');
+            let verificationMethod = 'basic_auth';
+            if ((!parsed.ok || !Array.isArray(parsed.data)) && shouldRetryWooWithQuery(parsed)) {
+                parsed = await requestWooCredentials(origin, config.consumer_key, config.consumer_secret, 'query');
+                verificationMethod = 'query_auth';
+            }
+            if (!parsed.ok) {
+                const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
+                throw { code: parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network', detail };
+            }
+            if (!Array.isArray(parsed.data)) {
+                throw { code: 'permission', detail: extractErrorDetail(parsed) || 'Unexpected WooCommerce response.' };
+            }
+
+            const sampleProduct = parsed.data[0];
+            const sampleText = sampleProduct?.name ? `${sampleProduct.name}${sampleProduct?.id ? ` (#${sampleProduct.id})` : ''}` : '';
+            const verifiedAt = new Date().toISOString();
+            return {
+                verified_at: verifiedAt,
+                verified_store: new URL(origin).hostname,
+                verification_method: verificationMethod,
+                detailKey: verificationMethod === 'query_auth' ? 'onboarding.test_detail_woo_fallback' : 'onboarding.test_detail_woo',
+                verification_snapshot: {
+                    source: 'integration-proxy',
+                    method: verificationMethod,
+                    store: new URL(origin).hostname,
+                    sample: sampleText,
+                    verified_at: verifiedAt
+                }
+            };
         }
 
         window.testWooConnection = async function () {
@@ -26253,41 +26867,18 @@ Thank you for shopping with {store_name}!</textarea>
             setConnectionState('woocommerce', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
-                const origin = normalizeWooOrigin(w.website_url);
-                if (!origin) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
-
-                const probe = await requestWooSiteProbe(origin);
-                if (!probe.ok) {
-                    throw { code: 'network', detail: extractErrorDetail(probe) || `HTTP ${probe.status}` };
-                }
-
-                let parsed = await requestWooCredentials(origin, 'basic');
-                let verificationMethod = 'basic_auth';
-
-                if ((!parsed.ok || !Array.isArray(parsed.data)) && shouldRetryWooWithQuery(parsed)) {
-                    parsed = await requestWooCredentials(origin, 'query');
-                    verificationMethod = 'query_auth';
-                }
-
-                if (!parsed.ok) {
-                    const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
-                    throw { code: parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network', detail };
-                }
-
-                if (!Array.isArray(parsed.data)) {
-                    throw { code: 'permission', detail: extractErrorDetail(parsed) || 'Unexpected WooCommerce response.' };
-                }
-
-                w.verified_at = new Date().toISOString();
-                w.verified_store = new URL(origin).hostname;
-                w.verification_method = verificationMethod;
+                const result = await runWooConnectionTest(w);
+                w.verified_at = result.verified_at;
+                w.verified_store = result.verified_store;
+                w.verification_method = result.verification_method;
+                w.verification_snapshot = result.verification_snapshot;
                 w.last_test_status = 'success';
                 debounceSaveOnb();
 
                 setConnectionState('woocommerce', {
                     status: 'success',
                     titleKey: 'onboarding.test_success_woo',
-                    detailKey: verificationMethod === 'query_auth' ? 'onboarding.test_detail_woo_fallback' : 'onboarding.test_detail_woo',
+                    detailKey: result.detailKey,
                     detailText: '',
                     testing: false
                 });
@@ -26303,7 +26894,6 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function directShopifyCheck(handle, token) {
             const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
-            const query = `query WizardConnectionTest { shop { name primaryDomain { host url } } }`;
             try {
                 const resp = await fetch(targetUrl, {
                     method: 'POST',
@@ -26311,12 +26901,76 @@ Thank you for shopping with {store_name}!</textarea>
                         'Content-Type': 'application/json',
                         'X-Shopify-Storefront-Access-Token': token
                     },
-                    body: JSON.stringify({ query })
+                    body: JSON.stringify({ query: SHOPIFY_TEST_QUERY })
                 });
                 return readProxyResponse(resp);
             } catch (e) {
                 return { ok: false, status: 0, data: null, text: e?.message || 'network error' };
             }
+        }
+
+        async function proxyShopifyCheck(handle, token) {
+            const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+            return requestViaProxy({
+                targetUrl,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Shopify-Storefront-Access-Token': token
+                },
+                body: JSON.stringify({ query: SHOPIFY_TEST_QUERY })
+            });
+        }
+
+        async function runShopifyConnectionTest(config) {
+            const handle = normalizeShopifyHandle(config.shop_domain);
+            if (!handle) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
+
+            let parsed = await directShopifyCheck(handle, config.storefront_token);
+            let verificationMethod = 'storefront_access_token_direct';
+            let detailKey = 'onboarding.test_detail_shopify';
+            let proofSource = 'direct_storefront';
+
+            const directDetail = extractErrorDetail(parsed).toLowerCase();
+            const shouldFallbackToProxy = !parsed.ok && (!parsed.status || parsed.status === 0 || directDetail.includes('cors') || directDetail.includes('failed to fetch'));
+            if (shouldFallbackToProxy) {
+                parsed = await proxyShopifyCheck(handle, config.storefront_token);
+                verificationMethod = 'storefront_access_token_proxy';
+                detailKey = 'onboarding.test_detail_shopify_proxy';
+                proofSource = 'integration-proxy';
+            }
+
+            if (!parsed.ok) {
+                const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status || '0'}`;
+                throw {
+                    code: (!parsed.status || parsed.status === 0) ? 'network' : (parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network'),
+                    detail
+                };
+            }
+            if (Array.isArray(parsed.data?.errors) && parsed.data.errors.length) {
+                throw { code: 'permission', detail: parsed.data.errors.map(err => err?.message || '').filter(Boolean).join(' ') };
+            }
+
+            const shop = parsed.data?.data?.shop;
+            if (!shop?.name) {
+                throw { code: 'permission', detail: extractErrorDetail(parsed) || 'Shopify did not return shop details.' };
+            }
+            const firstProduct = parsed.data?.data?.products?.edges?.[0]?.node;
+            const sampleText = firstProduct?.title ? `${firstProduct.title}${firstProduct?.handle ? ` (${firstProduct.handle})` : ''}` : shop.name;
+            const verifiedAt = new Date().toISOString();
+            return {
+                verified_at: verifiedAt,
+                verified_store: shop.primaryDomain?.host || `${handle}.myshopify.com`,
+                verification_method: verificationMethod,
+                detailKey,
+                verification_snapshot: {
+                    source: proofSource,
+                    method: 'storefront_access_token',
+                    store: shop.primaryDomain?.host || `${handle}.myshopify.com`,
+                    sample: sampleText,
+                    verified_at: verifiedAt
+                }
+            };
         }
 
         window.testShopifyConnection = async function () {
@@ -26330,40 +26984,21 @@ Thank you for shopping with {store_name}!</textarea>
             setConnectionState('shopify', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
-                const handle = normalizeShopifyHandle(s.shop_domain);
-                if (!handle) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
-
-                // Try direct Storefront call first (best path for private tokens; avoids proxy auth/CORS)
-                const parsed = await directShopifyCheck(handle, s.storefront_token);
-
-                if (!parsed.ok) {
-                    const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status || '0'}`;
-                    throw {
-                        code: (!parsed.status || parsed.status === 0) ? 'network' : (parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network'),
-                        detail
-                    };
-                }
-
-                if (Array.isArray(parsed.data?.errors) && parsed.data.errors.length) {
-                    throw { code: 'permission', detail: parsed.data.errors.map(err => err?.message || '').filter(Boolean).join(' ') };
-                }
-
-                const shop = parsed.data?.data?.shop;
-                if (!shop?.name) {
-                    throw { code: 'permission', detail: extractErrorDetail(parsed) || 'Shopify did not return shop details.' };
-                }
-
-                s.token_type = 'private';
-                s.verified_at = new Date().toISOString();
-                s.verified_store = shop.primaryDomain?.host || `${handle}.myshopify.com`;
-                s.verification_method = 'private_storefront_token';
+                const result = await runShopifyConnectionTest(s);
+                s.token_type = 'storefront_access_token';
+                s.verified_at = result.verified_at;
+                s.verified_store = result.verified_store;
+                s.verification_method = result.verification_method;
+                s.verification_snapshot = result.verification_snapshot;
                 s.last_test_status = 'success';
+                delete s.client_id;
+                delete s.client_secret;
                 debounceSaveOnb();
 
                 setConnectionState('shopify', {
                     status: 'success',
                     titleKey: 'onboarding.test_success_shopify',
-                    detailKey: 'onboarding.test_detail_shopify',
+                    detailKey: result.detailKey,
                     detailText: '',
                     testing: false
                 });
@@ -26664,6 +27299,7 @@ Thank you for shopping with {store_name}!</textarea>
                     merged.ui.last_step = onbStep;
                     merged.ui.last_saved_at = onbData.ui.last_saved_at;
                 }
+                merged.integrations = normalizeIntegrationsBlock(merged.integrations);
 
                 await supabaseClient.from('organizations').update({
                     external_onboarding_data: merged
@@ -26698,6 +27334,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             onbData.ui.last_step = 5;
             onbData.ui.last_saved_at = new Date().toISOString();
+            onbData.integrations = normalizeIntegrationsBlock(onbData.integrations);
 
             try {
                 const { error } = await supabaseClient.from('organizations').update({
@@ -26728,6 +27365,301 @@ Thank you for shopping with {store_name}!</textarea>
                 showToast(tOnb('onboarding.finish_error'), 'error');
                 onbFinishing = false;
                 if (btn) { btn.disabled = false; btn.textContent = tOnb('onboarding.btn_finish'); }
+            }
+        };
+
+        // --- INTEGRATIONS HUB TAB ---
+        let ihData = normalizeIntegrationsBlock(null);
+        let ihConnectionState = defaultConnectionState();
+        let ihCanEdit = false;
+        let ihSaving = false;
+
+        function syncHubConnectionStateFromData() {
+            ihConnectionState = defaultConnectionState();
+            if (ihData.woocommerce?.verified_at) {
+                ihConnectionState.woocommerce = {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_woo',
+                    detailKey: ihData.woocommerce.verification_method === 'query_auth' ? 'onboarding.test_detail_woo_fallback' : 'onboarding.test_detail_woo',
+                    detailText: '',
+                    testing: false
+                };
+            }
+            if (ihData.shopify?.verified_at) {
+                ihConnectionState.shopify = {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_shopify',
+                    detailKey: ihData.shopify.verification_method === 'storefront_access_token_proxy' ? 'onboarding.test_detail_shopify_proxy' : 'onboarding.test_detail_shopify',
+                    detailText: '',
+                    testing: false
+                };
+            }
+        }
+
+        function getIntegrationProviderTitle(provider) {
+            return provider === 'woocommerce' ? tOnb('onboarding.integrations_woo_title') : tOnb('onboarding.integrations_shopify_title');
+        }
+
+        function clearHubVerification(provider) {
+            const target = ihData?.[provider];
+            if (!target) return;
+            target.verified_at = '';
+            target.verified_store = '';
+            target.verification_method = '';
+            target.verification_snapshot = null;
+            target.last_test_status = '';
+        }
+
+        function renderHubStatus(provider) {
+            const state = ihConnectionState[provider];
+            if (!state || state.status === 'idle') return '';
+            const title = state.titleKey ? tOnb(state.titleKey) : '';
+            const detailParts = [];
+            if (state.detailKey) detailParts.push(tOnb(state.detailKey));
+            if (state.detailText) detailParts.push(state.detailText);
+            const detail = detailParts.join(' ').trim();
+            const proofHtml = renderProofRows(ihData?.[provider]?.verification_snapshot);
+            return `<div class="onb-test-result ${state.status}">
+                <div class="onb-test-result-title">${esc(title || tOnb('onboarding.test_error_unknown'))}</div>
+                ${detail ? `<div class="onb-test-result-detail">${esc(detail)}</div>` : ''}
+                ${proofHtml}
+            </div>`;
+        }
+
+        function renderHubProviderCard(provider) {
+            const cfg = provider === 'woocommerce' ? ihData.woocommerce : ihData.shopify;
+            const testing = !!ihConnectionState[provider]?.testing;
+            const disabled = ihCanEdit ? '' : 'disabled';
+            const testFn = provider === 'woocommerce' ? 'testHubWooConnection' : 'testHubShopifyConnection';
+            const disconnectFn = provider === 'woocommerce' ? "disconnectHubIntegration('woocommerce')" : "disconnectHubIntegration('shopify')";
+            const logo = provider === 'woocommerce' ? PLATFORM_LOGOS.wordpress : PLATFORM_LOGOS.shopify;
+            const badge = provider === 'woocommerce' ? tOnb('onboarding.integrations_https_recommended') : tOnb('onboarding.integrations_shopify_private_note');
+            const subtitle = provider === 'woocommerce' ? tOnb('onboarding.integrations_woo_hint') : tOnb('onboarding.integrations_shopify_hint');
+            const fields = provider === 'woocommerce'
+                ? `<div class="ih-form-grid">
+                        <div class="ih-field full">
+                            <label>${tOnb('onboarding.label_woo_url')}</label>
+                            <input type="text" value="${esc(cfg.website_url)}" placeholder="${tOnb('onboarding.placeholder_woo_url')}" oninput="updateHubIntegrationField('woocommerce','website_url',this.value)" ${disabled}>
+                        </div>
+                        <div class="ih-field">
+                            <label>${tOnb('onboarding.label_woo_ck')}</label>
+                            <input type="text" value="${esc(cfg.consumer_key)}" placeholder="${tOnb('onboarding.placeholder_woo_ck')}" oninput="updateHubIntegrationField('woocommerce','consumer_key',this.value)" ${disabled}>
+                        </div>
+                        <div class="ih-field">
+                            <label>${tOnb('onboarding.label_woo_cs')}</label>
+                            <input type="password" value="${esc(cfg.consumer_secret)}" placeholder="${tOnb('onboarding.placeholder_woo_cs')}" oninput="updateHubIntegrationField('woocommerce','consumer_secret',this.value)" ${disabled}>
+                        </div>
+                    </div>`
+                : `<div class="ih-form-grid">
+                        <div class="ih-field full">
+                            <label>${tOnb('onboarding.label_shopify_domain')}</label>
+                            <div class="ih-inline-domain">
+                                <input type="text" value="${esc(cfg.shop_domain)}" placeholder="${tOnb('onboarding.placeholder_shopify_domain')}" oninput="updateHubIntegrationField('shopify','shop_domain',this.value)" ${disabled}>
+                                <span class="ih-domain-suffix">.myshopify.com</span>
+                            </div>
+                        </div>
+                        <div class="ih-field full">
+                            <label>${tOnb('onboarding.label_shopify_token')}</label>
+                            <input type="password" value="${esc(cfg.storefront_token)}" placeholder="${tOnb('onboarding.placeholder_shopify_token')}" oninput="updateHubIntegrationField('shopify','storefront_token',this.value)" ${disabled}>
+                        </div>
+                    </div>`;
+
+            return `<div class="ih-card">
+                <div class="ih-card-head">
+                    <div class="ih-brand">
+                        <img class="ih-logo" src="${logo}" alt="${esc(getIntegrationProviderTitle(provider))}">
+                        <div>
+                            <h3 class="ih-card-title">${getIntegrationProviderTitle(provider)}</h3>
+                            <p class="ih-card-subtitle">${subtitle}</p>
+                        </div>
+                    </div>
+                    <span class="ih-badge">${badge}</span>
+                </div>
+                ${fields}
+                <div class="ih-actions">
+                    <button class="ih-btn" onclick="${testFn}()" ${testing || !ihCanEdit ? 'disabled' : ''}>${testing ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}</button>
+                    <button class="ih-btn ih-btn-danger" onclick="${disconnectFn}" ${!ihCanEdit ? 'disabled' : ''}>${t('integrations_hub.btn_disconnect')}</button>
+                </div>
+                ${renderHubStatus(provider)}
+            </div>`;
+        }
+
+        function renderIntegrationsHubFromState() {
+            const root = document.getElementById('integrations-root');
+            const note = document.getElementById('ih-readonly-note');
+            if (!root || !note) return;
+            note.style.display = 'block';
+            note.textContent = ihCanEdit ? t('integrations_hub.owner_only') : t('integrations_hub.read_only');
+            root.innerHTML = `<div class="ih-grid">
+                    ${renderHubProviderCard('woocommerce')}
+                    ${renderHubProviderCard('shopify')}
+                </div>
+                <div class="ih-save-all">
+                    <button class="ih-btn" onclick="saveIntegrationsHub()" ${!ihCanEdit || ihSaving ? 'disabled' : ''}>${t('integrations_hub.btn_save')}</button>
+                </div>`;
+        }
+
+        async function loadLatestOnboardingForHub() {
+            if (!currentUserOrgId) return mergeOnbData(currentOrgData?.external_onboarding_data || null);
+            try {
+                const { data, error } = await supabaseClient
+                    .from('organizations')
+                    .select('external_onboarding_data')
+                    .eq('id', currentUserOrgId)
+                    .single();
+                if (!error && data?.external_onboarding_data) {
+                    if (currentOrgData) currentOrgData.external_onboarding_data = data.external_onboarding_data;
+                    return mergeOnbData(data.external_onboarding_data);
+                }
+            } catch (e) {
+                console.warn('loadLatestOnboardingForHub failed', e);
+            }
+            return mergeOnbData(currentOrgData?.external_onboarding_data || null);
+        }
+
+        async function persistHubIntegrations() {
+            if (!currentUserOrgId) throw new Error('Missing organization context');
+            const latest = await loadLatestOnboardingForHub();
+            latest.integrations = normalizeIntegrationsBlock(ihData);
+            latest.ui.last_saved_at = new Date().toISOString();
+            const { error } = await supabaseClient
+                .from('organizations')
+                .update({ external_onboarding_data: latest })
+                .eq('id', currentUserOrgId);
+            if (error) throw error;
+            if (currentOrgData) currentOrgData.external_onboarding_data = latest;
+            if (onbData) onbData.integrations = normalizeIntegrationsBlock(latest.integrations);
+        }
+
+        window.renderIntegrationsHub = async function () {
+            const tab = document.getElementById('integrations');
+            if (!tab) return;
+            ihCanEdit = isOwner();
+            const merged = await loadLatestOnboardingForHub();
+            ihData = normalizeIntegrationsBlock(merged.integrations);
+            syncHubConnectionStateFromData();
+            renderIntegrationsHubFromState();
+        };
+
+        window.updateHubIntegrationField = function (provider, field, value) {
+            if (!ihCanEdit || !ihData?.[provider]) return;
+            ihData[provider][field] = value;
+            if (provider === 'shopify') {
+                ihData.shopify.token_type = 'storefront_access_token';
+                delete ihData.shopify.client_id;
+                delete ihData.shopify.client_secret;
+            }
+            clearHubVerification(provider);
+            ihConnectionState[provider] = createConnectionState();
+            renderIntegrationsHubFromState();
+        };
+
+        window.saveIntegrationsHub = async function () {
+            if (!ihCanEdit || ihSaving) return;
+            ihSaving = true;
+            renderIntegrationsHubFromState();
+            try {
+                ihData = normalizeIntegrationsBlock(ihData);
+                await persistHubIntegrations();
+                showToast(t('integrations_hub.save_success'), 'success');
+            } catch (e) {
+                console.error('saveIntegrationsHub error', e);
+                showToast(t('integrations_hub.save_error'), 'error');
+            } finally {
+                ihSaving = false;
+                renderIntegrationsHubFromState();
+            }
+        };
+
+        window.disconnectHubIntegration = async function (provider) {
+            if (!ihCanEdit || !ihData?.[provider]) return;
+            if (provider === 'woocommerce') {
+                ihData.woocommerce.website_url = '';
+                ihData.woocommerce.consumer_key = '';
+                ihData.woocommerce.consumer_secret = '';
+            } else {
+                ihData.shopify.shop_domain = '';
+                ihData.shopify.storefront_token = '';
+                ihData.shopify.token_type = 'storefront_access_token';
+                delete ihData.shopify.client_id;
+                delete ihData.shopify.client_secret;
+            }
+            clearHubVerification(provider);
+            ihConnectionState[provider] = createConnectionState();
+            renderIntegrationsHubFromState();
+            try {
+                await persistHubIntegrations();
+                showToast(t('integrations_hub.disconnect_success', { provider: getIntegrationProviderTitle(provider) }), 'success');
+            } catch (e) {
+                console.error('disconnectHubIntegration error', e);
+                showToast(t('integrations_hub.disconnect_error', { provider: getIntegrationProviderTitle(provider) }), 'error');
+            }
+        };
+
+        window.testHubWooConnection = async function () {
+            if (!ihCanEdit) return;
+            const w = ihData.woocommerce;
+            if (ihConnectionState.woocommerce.testing) return;
+            if (!w.website_url || !w.consumer_key || !w.consumer_secret) {
+                ihConnectionState.woocommerce = { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false };
+                renderIntegrationsHubFromState();
+                return;
+            }
+            ihConnectionState.woocommerce = { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true };
+            renderIntegrationsHubFromState();
+            try {
+                const result = await runWooConnectionTest(w);
+                Object.assign(ihData.woocommerce, {
+                    verified_at: result.verified_at,
+                    verified_store: result.verified_store,
+                    verification_method: result.verification_method,
+                    verification_snapshot: result.verification_snapshot,
+                    last_test_status: 'success'
+                });
+                ihConnectionState.woocommerce = { status: 'success', titleKey: 'onboarding.test_success_woo', detailKey: result.detailKey, detailText: '', testing: false };
+                renderIntegrationsHubFromState();
+                await persistHubIntegrations();
+            } catch (err) {
+                clearHubVerification('woocommerce');
+                ihData.woocommerce.last_test_status = 'failed';
+                const mapped = mapConnectionError(err);
+                ihConnectionState.woocommerce = Object.assign({ status: 'error', detailKey: '', testing: false }, mapped);
+                renderIntegrationsHubFromState();
+            }
+        };
+
+        window.testHubShopifyConnection = async function () {
+            if (!ihCanEdit) return;
+            const s = ihData.shopify;
+            if (ihConnectionState.shopify.testing) return;
+            if (!s.shop_domain || !s.storefront_token) {
+                ihConnectionState.shopify = { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false };
+                renderIntegrationsHubFromState();
+                return;
+            }
+            ihConnectionState.shopify = { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true };
+            renderIntegrationsHubFromState();
+            try {
+                const result = await runShopifyConnectionTest(s);
+                Object.assign(ihData.shopify, {
+                    token_type: 'storefront_access_token',
+                    verified_at: result.verified_at,
+                    verified_store: result.verified_store,
+                    verification_method: result.verification_method,
+                    verification_snapshot: result.verification_snapshot,
+                    last_test_status: 'success'
+                });
+                delete ihData.shopify.client_id;
+                delete ihData.shopify.client_secret;
+                ihConnectionState.shopify = { status: 'success', titleKey: 'onboarding.test_success_shopify', detailKey: result.detailKey, detailText: '', testing: false };
+                renderIntegrationsHubFromState();
+                await persistHubIntegrations();
+            } catch (err) {
+                clearHubVerification('shopify');
+                ihData.shopify.last_test_status = 'failed';
+                const mapped = mapConnectionError(err);
+                ihConnectionState.shopify = Object.assign({ status: 'error', detailKey: '', testing: false }, mapped);
+                renderIntegrationsHubFromState();
             }
         };
 
