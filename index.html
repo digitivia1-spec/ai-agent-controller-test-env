@@ -442,7 +442,10 @@
                 "toast_file_failed": "Failed to delete file.",
                 "toast_link_added": "Link added successfully.",
                 "toast_link_removed": "Link removed.",
-                "toast_link_failed": "Failed to save link."
+                "toast_link_failed": "Failed to save link.",
+                "files_title": "Knowledge Base Files",
+                "btn_upload_file": "Upload File",
+                "toast_file_uploaded": "File uploaded successfully."
             },
             "modals": {
                 "unlock": {
@@ -1209,7 +1212,10 @@
                 "toast_file_failed": "فشل في حذف الملف.",
                 "toast_link_added": "تمت إضافة الرابط بنجاح.",
                 "toast_link_removed": "تمت إزالة الرابط.",
-                "toast_link_failed": "فشل في حفظ الرابط."
+                "toast_link_failed": "فشل في حفظ الرابط.",
+                "files_title": "ملفات قاعدة المعرفة",
+                "btn_upload_file": "رفع ملف",
+                "toast_file_uploaded": "تم رفع الملف بنجاح."
             },
             "reviews": {
                 "title": "آراء العملاء",
@@ -15689,7 +15695,8 @@
             const file = fileInput.files[0];
             const MAX_FILE_SIZE = 3 * 1024 * 1024;
             if (file.size > MAX_FILE_SIZE) {
-                showToast(t('onboarding.kb.err_file_size') || "File exceeds 3MB limit.", "error");
+                const errMsg = t('onboarding.kb_error_size') ? t('onboarding.kb_error_size').replace('{name}', file.name) : "File exceeds 3MB limit.";
+                showToast(errMsg, "error");
                 return;
             }
 
