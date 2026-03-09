@@ -815,7 +815,7 @@
                 "integrations_shopify_title": "Shopify",
                 "label_shopify_domain": "Shop Domain",
                 "label_shopify_token": "Private Storefront API Token",
-                "integrations_shopify_hint": "Use a private Storefront API token. The test sends a server-side Storefront GraphQL request with the private-token header.",
+                "integrations_shopify_hint": "Use a private Storefront API token. The test sends a server-side Storefront GraphQL request through the integration proxy using your provided token.",
                 "integrations_shopify_private_note": "Private token required",
                 "btn_test_connection": "Test Connection",
                 "test_loading": "Testing connection...",
@@ -830,7 +830,7 @@
                 "test_success_shopify": "Shopify Storefront connection verified.",
                 "test_detail_woo": "Verified against the live WooCommerce REST API.",
                 "test_detail_woo_fallback": "Verified against the live WooCommerce REST API using query authentication because the server did not accept the Authorization header.",
-                "test_detail_shopify": "Verified with the Shopify Storefront GraphQL API using a private Storefront token.",
+                "test_detail_shopify": "Verified with the Shopify Storefront GraphQL API using your provided Storefront token.",
                 "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
@@ -1670,7 +1670,7 @@
                 "integrations_shopify_title": "Shopify",
                 "label_shopify_domain": "نطاق المتجر",
                 "label_shopify_token": "رمز Private Storefront API",
-                "integrations_shopify_hint": "استخدم private Storefront API token. يقوم الاختبار بإرسال طلب Storefront GraphQL من جهة الخادم باستخدام private-token header.",
+                "integrations_shopify_hint": "استخدم private Storefront API token. يقوم الاختبار بإرسال طلب Storefront GraphQL من جهة الخادم عبر integration proxy باستخدام الرمز الذي أدخلته.",
                 "integrations_shopify_private_note": "يتطلب private token",
                 "btn_test_connection": "اختبار الاتصال",
                 "test_loading": "جاري اختبار الاتصال...",
@@ -1685,7 +1685,7 @@
                 "test_success_shopify": "تم التحقق من اتصال Shopify Storefront.",
                 "test_detail_woo": "تم التحقق عبر WooCommerce REST API الحقيقي.",
                 "test_detail_woo_fallback": "تم التحقق عبر WooCommerce REST API الحقيقي باستخدام query authentication لأن الخادم لم يقبل Authorization header.",
-                "test_detail_shopify": "تم التحقق عبر Shopify Storefront GraphQL API باستخدام private Storefront token.",
+                "test_detail_shopify": "تم التحقق عبر Shopify Storefront GraphQL API باستخدام رمز Storefront الذي أدخلته.",
                 "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
@@ -14356,19 +14356,95 @@
         }
 
         @media (max-width: 980px) {
+            .onb-overlay {
+                padding: 10px;
+            }
+
+            .onb-modal {
+                width: min(100%, 940px);
+                max-height: 96vh;
+            }
+
+            .onb-modal-header {
+                padding: 18px 20px 0;
+                gap: 14px;
+            }
+
+            .onb-modal-subtitle {
+                font-size: 0.88rem;
+                line-height: 1.45;
+            }
+
+            .onb-progress-panel {
+                padding: 12px 20px 0;
+            }
+
+            .onb-progress-shell {
+                padding: 12px 14px;
+                border-radius: 18px;
+            }
+
             .onb-stepper {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 4px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+                margin-top: 10px;
             }
 
             .onb-step {
-                min-width: 170px;
+                min-width: 0;
+                padding: 10px 8px;
+                border-radius: 14px;
+                gap: 8px;
+            }
+
+            .onb-step-circle {
+                width: 32px;
+                height: 32px;
+                border-radius: 12px;
+                font-size: 0.74rem;
+            }
+
+            .onb-step-copy {
+                align-items: center;
+                text-align: center;
+            }
+
+            .onb-step-order {
+                display: none;
+            }
+
+            .onb-step-label {
+                font-size: 0.75rem;
+                line-height: 1.2;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
             }
 
             .onb-form-grid,
             .onb-review-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .onb-overview-card,
+            .onb-step-card,
+            .onb-int-card,
+            .onb-review-section {
+                padding: 16px;
+            }
+
+            .onb-body {
+                padding: 14px 20px 16px;
+            }
+
+            .onb-field input,
+            .onb-field textarea,
+            .onb-field select {
+                min-height: 44px;
+            }
+
+            .onb-field textarea {
+                min-height: 96px;
             }
         }
 
@@ -14396,6 +14472,16 @@
                 align-items: stretch;
             }
 
+            .onb-modal-header h2 {
+                font-size: 1.35rem;
+            }
+
+            .onb-modal-subtitle,
+            .onb-step-hint,
+            .onb-overview-card {
+                display: none;
+            }
+
             .onb-header-actions {
                 justify-content: space-between;
             }
@@ -14419,13 +14505,13 @@
             }
 
             .onb-progress-shell {
-                padding: 14px;
+                padding: 10px 12px;
                 border-radius: 18px;
             }
 
             .onb-body {
-                padding-top: 16px;
-                padding-bottom: 16px;
+                padding-top: 10px;
+                padding-bottom: 12px;
             }
 
             .onb-overview-card,
@@ -14442,15 +14528,81 @@
                 grid-template-columns: 1fr;
             }
 
+            .onb-stepper {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 6px;
+                margin-top: 8px;
+            }
+
+            .onb-step {
+                padding: 8px 6px;
+                min-height: 66px;
+                justify-content: center;
+            }
+
+            .onb-step-circle {
+                width: 28px;
+                height: 28px;
+                border-radius: 10px;
+                font-size: 0.7rem;
+            }
+
+            .onb-step-label {
+                font-size: 0.69rem;
+            }
+
             .onb-file-item {
                 grid-template-columns: minmax(0, 1fr) auto auto;
+            }
+
+            .onb-step-card {
+                padding: 14px;
+                border-radius: 18px;
+            }
+
+            .onb-step-title {
+                font-size: 1.02rem;
+            }
+
+            .onb-step-subtitle {
+                margin-bottom: 14px;
+                font-size: 0.84rem;
+            }
+
+            .onb-form-grid,
+            .onb-review-grid {
+                gap: 12px;
+            }
+
+            .onb-offer-btn {
+                min-height: 84px;
+                padding: 14px;
+                font-size: 0.9rem;
+            }
+
+            .onb-offer-icon {
+                font-size: 1.5rem;
+            }
+
+            .onb-drop-zone {
+                padding: 22px 16px;
+                border-radius: 18px;
+            }
+
+            .onb-int-card {
+                padding: 14px;
+                border-radius: 18px;
+            }
+
+            .onb-platform-subtitle {
+                font-size: 0.76rem;
             }
 
             .onb-actions {
                 position: sticky;
                 bottom: 0;
-                padding-top: 14px;
-                padding-bottom: 18px;
+                padding-top: 12px;
+                padding-bottom: 14px;
                 flex-wrap: wrap;
             }
 
@@ -14468,6 +14620,97 @@
                 gap: 8px;
                 font-size: 0.84rem;
                 padding: 10px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .onb-modal-header,
+            .onb-progress-panel,
+            .onb-body,
+            .onb-actions {
+                padding-inline: 12px;
+            }
+
+            .onb-stepper {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .onb-header-actions {
+                gap: 8px;
+            }
+
+            .onb-language-label {
+                display: none;
+            }
+
+            .onb-lang-btn {
+                min-width: 0;
+                height: 36px;
+                font-size: 0.82rem;
+            }
+
+            .onb-step {
+                min-height: 60px;
+            }
+
+            .onb-field input,
+            .onb-field textarea,
+            .onb-field select,
+            .onb-inline-domain {
+                min-height: 42px;
+                border-radius: 14px;
+            }
+
+            .onb-field textarea {
+                min-height: 84px;
+            }
+
+            .onb-review-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .onb-review-row .value {
+                max-width: 100%;
+                text-align: start;
+            }
+        }
+
+        @media (max-height: 900px) {
+            .onb-modal {
+                max-height: 98vh;
+            }
+
+            .onb-modal-subtitle,
+            .onb-step-hint {
+                display: none;
+            }
+
+            .onb-progress-panel {
+                padding-top: 10px;
+            }
+
+            .onb-progress-shell {
+                padding: 10px 12px;
+            }
+
+            .onb-overview-card {
+                display: none;
+            }
+
+            .onb-body {
+                padding-top: 10px;
+                padding-bottom: 12px;
+            }
+
+            .onb-step-card,
+            .onb-int-card,
+            .onb-review-section {
+                padding: 16px;
+            }
+
+            .onb-field textarea {
+                min-height: 90px;
             }
         }
     </style>
@@ -25944,17 +26187,31 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function requestViaProxy({ targetUrl, method = 'GET', headers = {}, body }) {
             const reqHeaders = Object.assign({ 'Target-Url': targetUrl }, headers);
-            const response = await fetch(INTEGRATION_PROXY_URL, {
-                method,
-                headers: reqHeaders,
-                body
+            try {
+                const response = await fetch(INTEGRATION_PROXY_URL, {
+                    method,
+                    headers: reqHeaders,
+                    body
+                });
+                return readProxyResponse(response);
+            } catch (err) {
+                throw {
+                    code: 'network',
+                    detail: sanitizeErrorDetail(err?.message || 'Could not reach the integration proxy.')
+                };
+            }
+        }
+
+        async function requestWooSiteProbe(origin) {
+            return requestViaProxy({
+                targetUrl: `${origin}/wp-json/`,
+                method: 'GET'
             });
-            return readProxyResponse(response);
         }
 
         async function requestWooCredentials(origin, mode = 'basic') {
             const w = onbData.integrations.woocommerce;
-            let targetUrl = `${origin}/wp-json/wc/v3/orders?per_page=1&_fields=id,status,date_created`;
+            let targetUrl = `${origin}/wp-json/wc/v3/products?per_page=1&_fields=id,name,status`;
             const headers = {};
             if (mode === 'basic') {
                 headers['Authorization'] = 'Basic ' + btoa(`${w.consumer_key}:${w.consumer_secret}`);
@@ -25982,6 +26239,11 @@ Thank you for shopping with {store_name}!</textarea>
             try {
                 const origin = normalizeWooOrigin(w.website_url);
                 if (!origin) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
+
+                const probe = await requestWooSiteProbe(origin);
+                if (!probe.ok) {
+                    throw { code: 'network', detail: extractErrorDetail(probe) || `HTTP ${probe.status}` };
+                }
 
                 let parsed = await requestWooCredentials(origin, 'basic');
                 let verificationMethod = 'basic_auth';
@@ -26045,7 +26307,8 @@ Thank you for shopping with {store_name}!</textarea>
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Shopify-Storefront-Private-Token': s.storefront_token
+                        // The current proxy CORS policy allows this header and forwards it upstream.
+                        'X-Shopify-Storefront-Access-Token': s.storefront_token
                     },
                     body: JSON.stringify({ query })
                 });
