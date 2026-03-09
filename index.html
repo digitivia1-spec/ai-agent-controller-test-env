@@ -26193,9 +26193,15 @@ Thank you for shopping with {store_name}!</textarea>
             const reqHeaders = Object.assign({ 'Target-Url': targetUrl, apikey: SUPABASE_KEY }, headers);
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session?.access_token) reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
+                if (session?.access_token) {
+                    reqHeaders['Authorization'] = `Bearer ${session.access_token}`;
+                } else {
+                    // fallback to anon key so the edge function always receives an Authorization header
+                    reqHeaders['Authorization'] = `Bearer ${SUPABASE_KEY}`;
+                }
             } catch (e) {
                 console.warn('proxy auth session fetch failed', e);
+                reqHeaders['Authorization'] = `Bearer ${SUPABASE_KEY}`;
             }
             try {
                 const response = await fetch(INTEGRATION_PROXY_URL, {
