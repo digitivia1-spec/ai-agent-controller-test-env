@@ -738,10 +738,23 @@
                 "empty": "No notifications yet"
             },
             "onboarding": {
-                "banner_text": "Your setup is not complete yet.",
-                "btn_continue": "Continue Setup",
-                "btn_open_setup": "⚙️ Setup Wizard",
-                "wizard_title": "Setup Wizard",
+                "banner_text": "Your workspace setup is still missing a few important details.",
+                "btn_continue": "Resume Guided Setup",
+                "btn_open_setup": "Open Guided Setup",
+                "wizard_badge": "Onboarding",
+                "wizard_title": "Guided Workspace Setup",
+                "wizard_subtitle": "Complete this flow to teach Digitivia about your business, channels, knowledge base, and store connections before launch.",
+                "wizard_progress_label": "Step {current} of {total}",
+                "wizard_progress_done": "{percent}% complete",
+                "wizard_step_hint": "Click any step to jump directly to it.",
+                "language_label": "Form language",
+                "lang_english": "English",
+                "lang_arabic": "العربية",
+                "overview_title": "What this setup controls",
+                "overview_text": "These answers shape your AI agent context, channel behavior, uploaded knowledge, and integration readiness.",
+                "overview_chip_business": "Business context",
+                "overview_chip_channels": "Channel readiness",
+                "overview_chip_integrations": "Store validation",
                 "step_profile": "Profile",
                 "step_business": "Business",
                 "step_channels": "Channels",
@@ -791,19 +804,33 @@
                 "kb_upload_partial": "{success} of {total} files uploaded. {failed} failed.",
                 "kb_upload_all_failed": "All file uploads failed. Please try again.",
                 "integrations_title": "Connect your store",
-                "integrations_subtitle": "Optionally connect your e-commerce platform for order automation.",
+                "integrations_subtitle": "Link your live store to validate credentials now and prepare future order automation.",
                 "integrations_skip_note": "You can configure integrations later from Settings.",
-                "integrations_woo_title": "🛒 WordPress (WooCommerce)",
+                "integrations_woo_title": "WordPress / WooCommerce",
+                "integrations_woo_hint": "Use your WordPress site URL and WooCommerce REST API keys. The test verifies the live WooCommerce API and retries with query authentication when a server blocks the Authorization header.",
+                "integrations_https_recommended": "HTTPS recommended",
                 "label_woo_url": "Website Domain",
                 "label_woo_ck": "Consumer Key",
                 "label_woo_cs": "Consumer Secret",
+                "integrations_shopify_title": "Shopify",
                 "label_shopify_domain": "Shop Domain",
-                "label_shopify_token": "Storefront API Token",
-                "integrations_shopify_hint": "Please ensure to grant this token all Storefront API permissions for the best integration.",
+                "label_shopify_token": "Private Storefront API Token",
+                "integrations_shopify_hint": "Use a private Storefront API token. The test sends a server-side Storefront GraphQL request with the private-token header.",
+                "integrations_shopify_private_note": "Private token required",
                 "btn_test_connection": "Test Connection",
                 "test_loading": "Testing connection...",
                 "test_success": "Connection successful!",
                 "test_error": "Connection failed. Please check your credentials.",
+                "test_error_missing": "Complete the required credentials first.",
+                "test_error_domain": "The store address looks invalid.",
+                "test_error_permission": "The credentials were rejected. Check the keys, token, and granted scopes.",
+                "test_error_network": "The store could not be reached. Check the domain, SSL, and connectivity.",
+                "test_error_unknown": "Connection test failed.",
+                "test_success_woo": "WooCommerce connection verified.",
+                "test_success_shopify": "Shopify Storefront connection verified.",
+                "test_detail_woo": "Verified against the live WooCommerce REST API.",
+                "test_detail_woo_fallback": "Verified against the live WooCommerce REST API using query authentication because the server did not accept the Authorization header.",
+                "test_detail_shopify": "Verified with the Shopify Storefront GraphQL API using a private Storefront token.",
                 "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
@@ -823,6 +850,8 @@
                 "review_woo_connected": "WooCommerce configured",
                 "review_shopify_connected": "Shopify configured",
                 "review_no_integrations": "No integrations configured",
+                "review_verified_suffix": "verified",
+                "review_not_tested_suffix": "not tested yet",
                 "finish_success": "🎉 Setup complete! Your organization is ready.",
                 "finish_error": "Could not save setup. Please try again.",
                 "validation_name_required": "Full name is required.",
@@ -1564,10 +1593,23 @@
                 "empty": "لا توجد إشعارات بعد"
             },
             "onboarding": {
-                "banner_text": "لم يكتمل إعداد حسابك بعد.",
-                "btn_continue": "متابعة الإعداد",
-                "btn_open_setup": "⚙️ معالج الإعداد",
-                "wizard_title": "معالج الإعداد",
+                "banner_text": "إعداد مساحة العمل ما زال ينقصه بعض التفاصيل المهمة.",
+                "btn_continue": "استكمال الإعداد الموجّه",
+                "btn_open_setup": "فتح الإعداد الموجّه",
+                "wizard_badge": "التهيئة",
+                "wizard_title": "الإعداد الموجّه لمساحة العمل",
+                "wizard_subtitle": "أكمل هذه الخطوات لتعريف Digitivia على نشاطك التجاري وقنواتك وقاعدة المعرفة وروابط متجرك قبل الإطلاق.",
+                "wizard_progress_label": "الخطوة {current} من {total}",
+                "wizard_progress_done": "اكتمل {percent}%",
+                "wizard_step_hint": "يمكنك الضغط على أي خطوة للانتقال إليها مباشرة.",
+                "language_label": "لغة النموذج",
+                "lang_english": "English",
+                "lang_arabic": "العربية",
+                "overview_title": "ما الذي يتحكم به هذا الإعداد",
+                "overview_text": "هذه البيانات تحدد سياق وكلاء الذكاء الاصطناعي، وسلوك القنوات، والملفات المرفوعة، وجاهزية التكاملات.",
+                "overview_chip_business": "سياق النشاط",
+                "overview_chip_channels": "جاهزية القنوات",
+                "overview_chip_integrations": "التحقق من المتجر",
                 "step_profile": "الملف الشخصي",
                 "step_business": "النشاط التجاري",
                 "step_channels": "القنوات",
@@ -1617,19 +1659,33 @@
                 "kb_upload_partial": "تم رفع {success} من {total} ملفات. فشل {failed}.",
                 "kb_upload_all_failed": "فشل رفع جميع الملفات. حاول مرة أخرى.",
                 "integrations_title": "ربط متجرك",
-                "integrations_subtitle": "اربط منصة التجارة الإلكترونية لأتمتة الطلبات اختيارياً.",
+                "integrations_subtitle": "اربط متجرك الحقيقي للتحقق من بيانات الدخول الآن وتجهيز أتمتة الطلبات لاحقاً.",
                 "integrations_skip_note": "يمكنك إعداد التكاملات لاحقاً من الإعدادات.",
-                "integrations_woo_title": "🛒 ووردبريس (ووكومرس)",
+                "integrations_woo_title": "ووردبريس / ووكومرس",
+                "integrations_woo_hint": "استخدم رابط موقع ووردبريس ومفاتيح WooCommerce REST API. الاختبار يتحقق من واجهة WooCommerce الحقيقية ويعيد المحاولة عبر query authentication إذا كان الخادم يمنع Authorization header.",
+                "integrations_https_recommended": "يُفضّل استخدام HTTPS",
                 "label_woo_url": "نطاق الموقع",
                 "label_woo_ck": "Consumer Key",
                 "label_woo_cs": "Consumer Secret",
+                "integrations_shopify_title": "Shopify",
                 "label_shopify_domain": "نطاق المتجر",
-                "label_shopify_token": "رمز الوصول Storefront API",
-                "integrations_shopify_hint": "يُرجى التأكد من منح هذا الرمز جميع أذونات Storefront API للحصول على تكامل مثالي.",
+                "label_shopify_token": "رمز Private Storefront API",
+                "integrations_shopify_hint": "استخدم private Storefront API token. يقوم الاختبار بإرسال طلب Storefront GraphQL من جهة الخادم باستخدام private-token header.",
+                "integrations_shopify_private_note": "يتطلب private token",
                 "btn_test_connection": "اختبار الاتصال",
                 "test_loading": "جاري اختبار الاتصال...",
                 "test_success": "تم الاتصال بنجاح!",
                 "test_error": "فشل الاتصال. يرجى التحقق من بيانات الدخول.",
+                "test_error_missing": "أكمل بيانات الدخول المطلوبة أولاً.",
+                "test_error_domain": "عنوان المتجر يبدو غير صالح.",
+                "test_error_permission": "تم رفض بيانات الدخول. تحقق من المفاتيح أو الرمز والصلاحيات الممنوحة.",
+                "test_error_network": "تعذر الوصول إلى المتجر. تحقق من النطاق وSSL والاتصال.",
+                "test_error_unknown": "فشل اختبار الاتصال.",
+                "test_success_woo": "تم التحقق من اتصال WooCommerce.",
+                "test_success_shopify": "تم التحقق من اتصال Shopify Storefront.",
+                "test_detail_woo": "تم التحقق عبر WooCommerce REST API الحقيقي.",
+                "test_detail_woo_fallback": "تم التحقق عبر WooCommerce REST API الحقيقي باستخدام query authentication لأن الخادم لم يقبل Authorization header.",
+                "test_detail_shopify": "تم التحقق عبر Shopify Storefront GraphQL API باستخدام private Storefront token.",
                 "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
@@ -1649,6 +1705,8 @@
                 "review_woo_connected": "تم إعداد WooCommerce",
                 "review_shopify_connected": "تم إعداد Shopify",
                 "review_no_integrations": "لا توجد تكاملات",
+                "review_verified_suffix": "تم التحقق",
+                "review_not_tested_suffix": "لم يتم اختباره بعد",
                 "finish_success": "🎉 اكتمل الإعداد! مؤسستك جاهزة.",
                 "finish_error": "تعذر حفظ الإعداد. حاول مرة أخرى.",
                 "validation_name_required": "الاسم الكامل مطلوب.",
@@ -13181,635 +13239,855 @@
         /* ====== ONBOARDING WIZARD ====== */
         .onb-banner {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            inset: 0 0 auto;
             z-index: 3500;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(91, 174, 176, 0.95), rgba(72, 140, 142, 0.95));
+            padding: 12px 20px;
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 34%),
+                linear-gradient(135deg, rgba(50, 127, 162, 0.97), rgba(91, 174, 176, 0.96) 52%, rgba(33, 94, 117, 0.95));
             color: #fff;
             font-size: 0.92rem;
             font-weight: 500;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-            animation: onbSlideDown .4s ease
+            backdrop-filter: blur(18px);
+            box-shadow: 0 12px 32px rgba(13, 26, 37, 0.28);
+            animation: onbSlideDown .4s ease;
         }
 
         @keyframes onbSlideDown {
             from {
-                transform: translateY(-100%)
+                transform: translateY(-100%);
             }
 
             to {
-                transform: translateY(0)
+                transform: translateY(0);
             }
         }
 
         .onb-banner button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.28);
             color: #fff;
-            padding: 6px 18px;
-            border-radius: 8px;
+            padding: 7px 18px;
+            border-radius: 999px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.85rem;
-            transition: all .2s
+            transition: all .2s ease;
         }
 
         .onb-banner button:hover {
-            background: rgba(255, 255, 255, 0.35)
+            background: rgba(255, 255, 255, 0.28);
         }
 
         .onb-banner-close {
-            background: none !important;
+            background: transparent !important;
             border: none !important;
-            font-size: 1.3rem;
-            padding: 4px 8px !important;
+            font-size: 1.25rem;
+            padding: 2px 6px !important;
             min-width: auto;
-            opacity: .8
+            opacity: .82;
         }
 
         .onb-banner-close:hover {
-            opacity: 1
+            opacity: 1;
         }
 
         .onb-banner~#app-container {
-            margin-top: 46px
+            margin-top: 52px;
         }
 
         .onb-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.82);
-            backdrop-filter: blur(12px);
+            inset: 0;
+            background:
+                radial-gradient(circle at top, rgba(91, 174, 176, 0.14), transparent 28%),
+                rgba(7, 12, 17, 0.84);
+            backdrop-filter: blur(14px);
             z-index: 5000;
             justify-content: center;
             align-items: center;
-            padding: 16px;
-            animation: fadeIn .3s ease
+            padding: 18px;
+            animation: fadeIn .28s ease;
         }
 
         .onb-overlay.show {
-            display: flex
+            display: flex;
         }
 
         .onb-modal {
-            background: var(--card-bg, #1a1b20);
-            width: 100%;
-            max-width: 720px;
-            max-height: 90vh;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            width: min(1040px, 100%);
+            max-height: min(92vh, 980px);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
+                var(--card-bg, #171b22);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 28px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.42);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            position: relative
+            position: relative;
+        }
+
+        .onb-modal::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 220px;
+            background:
+                radial-gradient(circle at top left, rgba(91, 174, 176, 0.22), transparent 46%),
+                radial-gradient(circle at top right, rgba(46, 102, 146, 0.24), transparent 38%);
+            pointer-events: none;
+        }
+
+        .onb-modal-header,
+        .onb-progress-panel,
+        .onb-body,
+        .onb-actions {
+            position: relative;
+            z-index: 1;
         }
 
         .onb-modal-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            padding: 20px 24px 0;
-            flex-shrink: 0
+            gap: 18px;
+            padding: 26px 28px 0;
+            flex-shrink: 0;
+        }
+
+        .onb-modal-intro {
+            max-width: 720px;
+        }
+
+        .onb-modal-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            margin-bottom: 12px;
+            border-radius: 999px;
+            background: rgba(91, 174, 176, 0.12);
+            border: 1px solid rgba(91, 174, 176, 0.24);
+            color: var(--theme-color, #5BAEB0);
+            font-size: 0.77rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
         }
 
         .onb-modal-header h2 {
+            margin: 0 0 8px;
+            font-size: clamp(1.35rem, 1.1rem + 1vw, 2rem);
+            line-height: 1.15;
+            font-weight: 800;
+            color: var(--text-main, #fff);
+        }
+
+        .onb-modal-subtitle {
             margin: 0;
-            font-size: 1.3rem;
+            max-width: 62ch;
+            color: var(--text-muted, #9ba4b5);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .onb-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .onb-language {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .onb-language-label {
+            font-size: 0.74rem;
             font-weight: 700;
-            color: var(--text-main, #fff)
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--text-muted, #93a1b2);
+        }
+
+        .onb-language-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .onb-lang-btn {
+            min-width: 92px;
+            height: 38px;
+            border: none;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-muted, #9ba4b5);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .onb-lang-btn.active {
+            background: linear-gradient(135deg, rgba(91, 174, 176, 0.96), rgba(56, 130, 164, 0.96));
+            color: #fff;
+            box-shadow: 0 12px 28px rgba(44, 113, 138, 0.28);
         }
 
         .onb-modal-close {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-main, #fff);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            display: flex;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main, #fff);
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-size: 1.2rem;
-            transition: all .2s;
-            flex-shrink: 0
+            transition: all .2s ease;
         }
 
         .onb-modal-close:hover {
-            background: rgba(255, 255, 255, 0.12)
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
         }
 
-        /* Stepper */
-        .onb-stepper {
+        .onb-progress-panel {
+            padding: 18px 28px 0;
+            flex-shrink: 0;
+        }
+
+        .onb-progress-shell {
+            padding: 16px 18px;
+            border-radius: 22px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+                rgba(8, 12, 17, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .onb-progress-meta {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px 24px 16px;
-            gap: 0;
-            flex-shrink: 0;
-            overflow-x: auto
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.86rem;
+            color: var(--text-muted, #9ba4b5);
+        }
+
+        .onb-progress-percent {
+            color: var(--theme-color, #5BAEB0);
+            font-weight: 700;
+        }
+
+        .onb-progress-bar {
+            width: 100%;
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .onb-progress-fill {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #5BAEB0, #5d8ec7 72%, #74d7bb);
+            transition: width .28s ease;
+        }
+
+        .onb-stepper {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 14px;
         }
 
         .onb-step {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
             display: flex;
             align-items: center;
-            gap: 0;
-            flex-shrink: 0
+            gap: 12px;
+            text-align: start;
+            cursor: pointer;
+            transition: all .2s ease;
+            min-width: 0;
+        }
+
+        .onb-step:hover {
+            transform: translateY(-1px);
+            border-color: rgba(91, 174, 176, 0.28);
+            background: rgba(91, 174, 176, 0.08);
         }
 
         .onb-step-circle {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
+            width: 38px;
+            height: 38px;
+            border-radius: 14px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted, #94a3b8);
+            flex-shrink: 0;
+        }
+
+        .onb-step-copy {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .onb-step-order {
+            font-size: 0.68rem;
             font-weight: 700;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-muted, #888);
-            background: transparent;
-            transition: all .3s;
-            flex-shrink: 0
-        }
-
-        .onb-step.active .onb-step-circle {
-            border-color: var(--theme-color, #5BAEB0);
-            color: #fff;
-            background: var(--theme-color, #5BAEB0);
-            box-shadow: 0 0 12px rgba(91, 174, 176, 0.4)
-        }
-
-        .onb-step.done .onb-step-circle {
-            border-color: var(--theme-color, #5BAEB0);
-            color: var(--theme-color, #5BAEB0);
-            background: rgba(91, 174, 176, 0.15)
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--text-muted, #7f8ba0);
         }
 
         .onb-step-label {
-            font-size: 0.7rem;
-            text-align: center;
-            margin-top: 4px;
-            color: var(--text-muted, #888);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main, #edf2f7);
             white-space: nowrap;
-            display: none
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .onb-step.active .onb-step-label {
+        .onb-step.active {
+            border-color: rgba(91, 174, 176, 0.42);
+            background: rgba(91, 174, 176, 0.12);
+            box-shadow: 0 16px 36px rgba(34, 96, 125, 0.18);
+        }
+
+        .onb-step.active .onb-step-circle {
+            background: linear-gradient(135deg, #5BAEB0, #4b88b8);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .onb-step.active .onb-step-order,
+        .onb-step.done .onb-step-order {
+            color: rgba(91, 174, 176, 0.96);
+        }
+
+        .onb-step.done {
+            border-color: rgba(91, 174, 176, 0.18);
+        }
+
+        .onb-step.done .onb-step-circle {
+            background: rgba(91, 174, 176, 0.14);
             color: var(--theme-color, #5BAEB0);
-            font-weight: 600
+            border-color: rgba(91, 174, 176, 0.26);
         }
 
-        .onb-step-line {
-            width: 28px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 0 4px;
-            flex-shrink: 0
+        .onb-step-hint {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted, #8c98aa);
         }
 
-        .onb-step.done+.onb-step .onb-step-line,
-        .onb-step.done .onb-step-line {
-            background: var(--theme-color, #5BAEB0)
-        }
-
-        @media(min-width:600px) {
-            .onb-step-label {
-                display: block
-            }
-        }
-
-        /* Step Content */
         .onb-body {
             flex: 1;
             overflow-y: auto;
-            padding: 0 24px 20px;
-            -webkit-overflow-scrolling: touch
+            padding: 20px 28px 24px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .onb-step-content {
-            display: none;
-            animation: fadeIn .3s ease
+            display: block;
+            animation: fadeIn .25s ease;
         }
 
-        .onb-step-content.active {
-            display: block
+        .onb-overview-card {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            border-radius: 22px;
+            background:
+                linear-gradient(135deg, rgba(31, 66, 89, 0.45), rgba(19, 39, 53, 0.35)),
+                rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .onb-overview-title {
+            margin: 0 0 6px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-main, #fff);
+        }
+
+        .onb-overview-text {
+            margin: 0;
+            color: var(--text-muted, #95a1b1);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            max-width: 58ch;
+        }
+
+        .onb-overview-chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .onb-overview-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-main, #eef4ff);
+            font-size: 0.82rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .onb-step-card {
+            padding: 22px;
+            border-radius: 24px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+                rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .onb-step-title {
-            font-size: 1.15rem;
-            font-weight: 700;
+            margin: 0 0 6px;
+            font-size: 1.24rem;
+            font-weight: 800;
             color: var(--text-main, #fff);
-            margin: 0 0 4px
         }
 
         .onb-step-subtitle {
-            font-size: 0.88rem;
-            color: var(--text-muted, #888);
-            margin: 0 0 20px
+            margin: 0 0 22px;
+            font-size: 0.93rem;
+            line-height: 1.6;
+            color: var(--text-muted, #97a4b4);
         }
 
-        /* Form Controls */
+        .onb-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .onb-form-grid .onb-field-full {
+            grid-column: 1 / -1;
+        }
+
         .onb-field {
-            margin-bottom: 18px
+            margin-bottom: 0;
         }
 
         .onb-field label {
             display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.86rem;
+            font-weight: 700;
             color: var(--text-main, #fff);
-            margin-bottom: 6px
         }
 
         .onb-field input,
         .onb-field textarea,
         .onb-field select {
             width: 100%;
-            padding: 11px 14px;
-            border-radius: 12px;
+            min-height: 48px;
+            padding: 12px 14px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.04);
             color: var(--text-main, #fff);
-            font-size: 0.92rem;
+            font-size: 0.94rem;
             font-family: inherit;
-            transition: border-color .2s;
-            box-sizing: border-box
+            transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+            box-sizing: border-box;
         }
 
         .onb-field input:focus,
         .onb-field textarea:focus,
         .onb-field select:focus {
             outline: none;
-            border-color: var(--theme-color, #5BAEB0)
+            border-color: rgba(91, 174, 176, 0.72);
+            box-shadow: 0 0 0 4px rgba(91, 174, 176, 0.12);
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .onb-field textarea {
             resize: vertical;
-            min-height: 80px
-        }
-
-        .onb-field .onb-error {
-            color: #f87171;
-            font-size: 0.8rem;
-            margin-top: 4px;
-            display: none
+            min-height: 118px;
         }
 
         .onb-field.has-error input,
-        .onb-field.has-error select,
-        .onb-field.has-error textarea {
-            border-color: #f87171
+        .onb-field.has-error textarea,
+        .onb-field.has-error select {
+            border-color: rgba(248, 113, 113, 0.75);
+            box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.12);
+        }
+
+        .onb-error {
+            display: none;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: #f87171;
         }
 
         .onb-field.has-error .onb-error {
-            display: block
+            display: block;
         }
 
-        .onb-field .onb-hint {
-            font-size: 0.78rem;
-            color: var(--text-muted, #888);
-            margin-top: 4px
+        .onb-hint {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            color: var(--text-muted, #96a2b2);
         }
 
-        /* Offer Type Selector */
         .onb-offer-group {
-            display: flex;
-            gap: 12px
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
         }
 
         .onb-offer-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            min-height: 112px;
+            padding: 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.03);
             color: var(--text-main, #fff);
             cursor: pointer;
             text-align: center;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all .2s;
+            font-weight: 700;
+            font-size: 0.97rem;
+            transition: all .18s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px
+            justify-content: center;
+            gap: 10px;
         }
 
         .onb-offer-btn:hover {
-            border-color: rgba(91, 174, 176, 0.4);
-            background: rgba(91, 174, 176, 0.05)
+            border-color: rgba(91, 174, 176, 0.34);
+            background: rgba(91, 174, 176, 0.06);
+            transform: translateY(-1px);
         }
 
         .onb-offer-btn.selected {
-            border-color: var(--theme-color, #5BAEB0);
-            background: rgba(91, 174, 176, 0.12);
-            box-shadow: 0 0 12px rgba(91, 174, 176, 0.15)
+            border-color: rgba(91, 174, 176, 0.64);
+            background: linear-gradient(135deg, rgba(91, 174, 176, 0.18), rgba(66, 130, 170, 0.15));
+            box-shadow: 0 18px 36px rgba(31, 82, 108, 0.18);
         }
 
-        .onb-offer-btn .onb-offer-icon {
-            font-size: 1.8rem
+        .onb-offer-icon {
+            font-size: 1.95rem;
         }
 
-        /* Industry Dropdown */
         .onb-industry-wrap {
-            position: relative
+            position: relative;
         }
 
         .onb-industry-list {
             position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--card-bg, #1e1f25);
+            inset: calc(100% + 6px) 0 auto;
+            background: rgba(20, 24, 32, 0.98);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            max-height: 200px;
+            border-radius: 16px;
+            max-height: 220px;
             overflow-y: auto;
-            z-index: 10;
+            z-index: 20;
             display: none;
-            margin-top: 4px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4)
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32);
         }
 
         .onb-industry-list.open {
-            display: block
+            display: block;
         }
 
         .onb-industry-item {
-            padding: 10px 14px;
+            padding: 12px 14px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.91rem;
             color: var(--text-main, #fff);
-            transition: background .15s
+            transition: background .14s ease;
         }
 
         .onb-industry-item:hover,
         .onb-industry-item.highlighted {
-            background: rgba(91, 174, 176, 0.15)
+            background: rgba(91, 174, 176, 0.14);
         }
 
         .onb-industry-item.selected {
             color: var(--theme-color, #5BAEB0);
-            font-weight: 600
+            font-weight: 700;
         }
 
-        /* File Upload */
         .onb-drop-zone {
-            border: 2px dashed rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 30px 20px;
+            border: 1.5px dashed rgba(255, 255, 255, 0.16);
+            border-radius: 22px;
+            padding: 34px 24px;
             text-align: center;
             cursor: pointer;
-            transition: all .2s;
-            background: rgba(255, 255, 255, 0.02)
+            transition: all .2s ease;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+                rgba(255, 255, 255, 0.015);
         }
 
         .onb-drop-zone:hover,
         .onb-drop-zone.dragover {
-            border-color: var(--theme-color, #5BAEB0);
-            background: rgba(91, 174, 176, 0.06)
+            border-color: rgba(91, 174, 176, 0.58);
+            background: rgba(91, 174, 176, 0.08);
         }
 
-        .onb-drop-zone .onb-drop-icon {
+        .onb-drop-icon {
             font-size: 2rem;
-            margin-bottom: 8px
+            margin-bottom: 10px;
         }
 
         .onb-drop-zone p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-main, #fff)
+            margin: 0 0 6px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            color: var(--text-main, #fff);
         }
 
         .onb-drop-zone small {
-            color: var(--text-muted, #888);
-            font-size: 0.78rem
+            color: var(--text-muted, #9aa6b7);
+            font-size: 0.8rem;
         }
 
         .onb-file-list {
             margin-top: 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px
+            gap: 10px;
         }
 
         .onb-file-item {
-            display: flex;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto auto;
             align-items: center;
             gap: 10px;
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 11px 14px;
+            border-radius: 16px;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06)
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .onb-file-item .onb-file-name {
-            flex: 1;
+        .onb-file-name {
             min-width: 0;
-            font-size: 0.88rem;
+            font-size: 0.89rem;
             color: var(--text-main, #fff);
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap
+            white-space: nowrap;
         }
 
-        .onb-file-item .onb-file-size {
+        .onb-file-size,
+        .onb-file-status {
             font-size: 0.78rem;
-            color: var(--text-muted, #888);
-            flex-shrink: 0
+            white-space: nowrap;
         }
 
-        .onb-file-item .onb-file-status {
-            font-size: 0.78rem;
-            font-weight: 600;
-            flex-shrink: 0
+        .onb-file-size {
+            color: var(--text-muted, #8e99aa);
         }
 
-        .onb-file-item .onb-file-status.uploading {
-            color: #fbbf24
+        .onb-file-status {
+            font-weight: 700;
         }
 
-        .onb-file-item .onb-file-status.uploaded {
-            color: #4ade80
+        .onb-file-status.uploading {
+            color: #facc15;
         }
 
-        .onb-file-item .onb-file-status.failed {
-            color: #f87171
+        .onb-file-status.uploaded {
+            color: #4ade80;
         }
 
-        .onb-file-item .onb-file-remove {
-            background: none;
-            border: none;
-            color: var(--text-muted, #888);
-            cursor: pointer;
-            font-size: 1.1rem;
-            padding: 2px 6px;
-            border-radius: 6px;
-            transition: all .15s
-        }
-
-        .onb-file-item .onb-file-remove:hover {
+        .onb-file-status.failed {
             color: #f87171;
-            background: rgba(248, 113, 113, 0.1)
         }
 
-        /* Integration Cards */
+        .onb-file-remove {
+            border: none;
+            background: transparent;
+            color: var(--text-muted, #96a2b2);
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 2px 6px;
+            transition: all .15s ease;
+        }
+
+        .onb-file-remove:hover {
+            color: #f87171;
+            background: rgba(248, 113, 113, 0.12);
+        }
+
         .onb-int-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
         }
 
         .onb-int-card {
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.02)
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+                rgba(255, 255, 255, 0.015);
         }
 
-        .onb-int-card h4 {
-            margin: 0 0 14px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main, #fff);
+        .onb-platform-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .onb-platform-brand {
             display: flex;
             align-items: center;
-            gap: 8px
+            gap: 12px;
+            min-width: 0;
         }
 
-        /* Review */
-        .onb-review-section {
-            margin-bottom: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+        .onb-platform-logo {
+            width: 42px;
+            height: 42px;
             border-radius: 14px;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.02)
-        }
-
-        .onb-review-section h4 {
-            margin: 0 0 10px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--theme-color, #5BAEB0)
-        }
-
-        .onb-review-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 0.88rem
-        }
-
-        .onb-review-row .label {
-            color: var(--text-muted, #888)
-        }
-
-        .onb-review-row .value {
-            color: var(--text-main, #fff);
-            font-weight: 500;
-            text-align: end;
-            max-width: 60%;
-            word-break: break-word
-        }
-
-        /* Actions Bar */
-        .onb-actions {
-            display: flex;
-            gap: 10px;
-            padding: 16px 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             flex-shrink: 0;
-            background: var(--card-bg, #1a1b20)
         }
 
-        .onb-actions .onb-spacer {
-            flex: 1
+        .onb-platform-title {
+            margin: 0 0 4px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-main, #fff);
         }
 
-        .onb-btn {
-            padding: 11px 24px;
-            border-radius: 12px;
-            font-size: 0.92rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all .2s;
-            font-family: inherit;
-            min-height: 44px;
+        .onb-platform-subtitle {
+            margin: 0;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: var(--text-muted, #96a2b2);
+        }
+
+        .onb-badge {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted, #a0acbc);
+            font-size: 0.74rem;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
-        .onb-btn:disabled {
-            opacity: .5;
-            cursor: not-allowed
+        .onb-inline-domain {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 48px;
+            padding: 0 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        .onb-btn-primary {
-            background: var(--theme-color, #5BAEB0);
-            color: #fff
+        .onb-inline-domain input {
+            border: none;
+            background: transparent;
+            min-height: 46px;
+            padding: 0;
+            box-shadow: none;
         }
 
-        .onb-btn-primary:hover:not(:disabled) {
-            background: #4a9a9c;
-            box-shadow: 0 4px 15px rgba(91, 174, 176, 0.3)
+        .onb-inline-domain input:focus {
+            box-shadow: none;
+            background: transparent;
         }
 
-        .onb-btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--text-main, #fff);
-            border: 1px solid rgba(255, 255, 255, 0.1)
-        }
-
-        .onb-btn-secondary:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.1)
-        }
-
-        .onb-btn-ghost {
-            background: none;
-            color: var(--text-muted, #888);
-            padding: 11px 16px
+        .onb-domain-suffix {
+            color: var(--text-muted, #95a1b1);
+            font-size: 0.84rem;
+            white-space: nowrap;
+            direction: ltr;
         }
 
         .onb-test-btn {
-            background: linear-gradient(145deg, rgba(91, 174, 176, 0.15), rgba(91, 174, 176, 0.05));
-            color: var(--primary-color, #5baeb0);
+            min-height: 44px;
+            padding: 10px 16px;
+            margin-top: 4px;
+            border-radius: 14px;
             border: 1px solid rgba(91, 174, 176, 0.3);
-            border-radius: 10px;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 500;
+            background: linear-gradient(145deg, rgba(91, 174, 176, 0.16), rgba(91, 174, 176, 0.05));
+            color: var(--theme-color, #5BAEB0);
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all .2s ease;
         }
 
         .onb-test-btn:hover:not(:disabled) {
-            background: rgba(91, 174, 176, 0.2);
-            border-color: rgba(91, 174, 176, 0.5);
-            box-shadow: 0 4px 12px rgba(91, 174, 176, 0.15);
+            background: rgba(91, 174, 176, 0.24);
+            border-color: rgba(91, 174, 176, 0.46);
+            box-shadow: 0 12px 26px rgba(54, 117, 136, 0.14);
             transform: translateY(-1px);
         }
 
-        .onb-test-btn:active:not(:disabled) {
-            transform: translateY(0);
+        .onb-test-btn:disabled {
+            opacity: .68;
+            cursor: wait;
         }
 
         .onb-test-btn svg {
@@ -13817,189 +14095,379 @@
             height: 16px;
         }
 
-        .onb-btn-ghost:hover {
-            color: var(--text-main, #fff)
+        .onb-test-result {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .onb-test-result.loading {
+            border-color: rgba(91, 174, 176, 0.2);
+            background: rgba(91, 174, 176, 0.08);
+        }
+
+        .onb-test-result.success {
+            border-color: rgba(34, 197, 94, 0.24);
+            background: rgba(34, 197, 94, 0.08);
+        }
+
+        .onb-test-result.error {
+            border-color: rgba(248, 113, 113, 0.24);
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        .onb-test-result-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-main, #fff);
+        }
+
+        .onb-test-result.loading .onb-test-result-title {
+            color: var(--theme-color, #5BAEB0);
+        }
+
+        .onb-test-result.success .onb-test-result-title {
+            color: #4ade80;
+        }
+
+        .onb-test-result.error .onb-test-result-title {
+            color: #f87171;
+        }
+
+        .onb-test-result-detail {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-muted, #9ba8b7);
+            word-break: break-word;
+        }
+
+        .onb-review-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .onb-review-section {
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .onb-review-section h4 {
+            margin: 0 0 12px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--theme-color, #5BAEB0);
+        }
+
+        .onb-review-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 5px 0;
+            font-size: 0.88rem;
+        }
+
+        .onb-review-row .label {
+            color: var(--text-muted, #94a3b8);
+        }
+
+        .onb-review-row .value {
+            color: var(--text-main, #fff);
+            font-weight: 600;
+            text-align: end;
+            max-width: 62%;
+            word-break: break-word;
+        }
+
+        .onb-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 28px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.03));
+        }
+
+        .onb-spacer {
+            flex: 1;
+        }
+
+        .onb-btn {
+            min-height: 46px;
+            padding: 11px 22px;
+            border-radius: 14px;
+            border: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .onb-btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .onb-btn-primary {
+            background: linear-gradient(135deg, #5BAEB0, #4d8dbd);
+            color: #fff;
+            box-shadow: 0 16px 32px rgba(45, 102, 132, 0.2);
+        }
+
+        .onb-btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px rgba(45, 102, 132, 0.26);
+        }
+
+        .onb-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main, #fff);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .onb-btn-secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .onb-btn-ghost {
+            background: transparent;
+            color: var(--text-muted, #97a4b4);
+            padding-inline: 14px;
+        }
+
+        .onb-btn-ghost:hover:not(:disabled) {
+            color: var(--text-main, #fff);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .onb-btn-finish {
             background: linear-gradient(135deg, #4ade80, #22c55e);
-            color: #000;
-            font-weight: 700
+            color: #06200d;
+            font-weight: 800;
+            box-shadow: 0 16px 34px rgba(34, 197, 94, 0.22);
         }
 
         .onb-btn-finish:hover:not(:disabled) {
-            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.35)
+            transform: translateY(-1px);
         }
 
-        /* Light Mode */
         [data-theme="light"] .onb-modal {
-            background: #fff;
-            border-color: rgba(0, 0, 0, 0.1)
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(250, 252, 255, 0.98)),
+                #fff;
+            border-color: rgba(15, 23, 42, 0.08);
+            box-shadow: 0 32px 80px rgba(15, 23, 42, 0.18);
+        }
+
+        [data-theme="light"] .onb-modal-subtitle,
+        [data-theme="light"] .onb-progress-meta,
+        [data-theme="light"] .onb-step-hint,
+        [data-theme="light"] .onb-overview-text,
+        [data-theme="light"] .onb-hint,
+        [data-theme="light"] .onb-platform-subtitle,
+        [data-theme="light"] .onb-test-result-detail,
+        [data-theme="light"] .onb-review-row .label,
+        [data-theme="light"] .onb-domain-suffix,
+        [data-theme="light"] .onb-language-label {
+            color: #66758a;
         }
 
         [data-theme="light"] .onb-modal-header h2,
-        [data-theme="light"] .onb-step-title {
-            color: #1e293b
+        [data-theme="light"] .onb-step-title,
+        [data-theme="light"] .onb-overview-title,
+        [data-theme="light"] .onb-field label,
+        [data-theme="light"] .onb-platform-title,
+        [data-theme="light"] .onb-step-label,
+        [data-theme="light"] .onb-review-row .value,
+        [data-theme="light"] .onb-test-result-title,
+        [data-theme="light"] .onb-file-name {
+            color: #172233;
         }
 
-        [data-theme="light"] .onb-step-subtitle,
-        [data-theme="light"] .onb-field .onb-hint {
-            color: #64748b
-        }
-
-        [data-theme="light"] .onb-modal-close {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: rgba(0, 0, 0, 0.1);
-            color: #1e293b
-        }
-
-        [data-theme="light"] .onb-step-circle {
-            border-color: rgba(0, 0, 0, 0.15);
-            color: #94a3b8
-        }
-
-        [data-theme="light"] .onb-step-line {
-            background: rgba(0, 0, 0, 0.1)
+        [data-theme="light"] .onb-progress-shell,
+        [data-theme="light"] .onb-step-card,
+        [data-theme="light"] .onb-overview-card,
+        [data-theme="light"] .onb-int-card,
+        [data-theme="light"] .onb-review-section,
+        [data-theme="light"] .onb-test-result,
+        [data-theme="light"] .onb-step,
+        [data-theme="light"] .onb-language-switch,
+        [data-theme="light"] .onb-badge,
+        [data-theme="light"] .onb-platform-logo,
+        [data-theme="light"] .onb-file-item,
+        [data-theme="light"] .onb-inline-domain {
+            background: rgba(15, 23, 42, 0.03);
+            border-color: rgba(15, 23, 42, 0.08);
         }
 
         [data-theme="light"] .onb-field input,
         [data-theme="light"] .onb-field textarea,
-        [data-theme="light"] .onb-field select {
-            background: rgba(0, 0, 0, 0.03);
-            border-color: rgba(0, 0, 0, 0.12);
-            color: #1e293b
-        }
-
-        [data-theme="light"] .onb-field label {
-            color: #334155
-        }
-
-        [data-theme="light"] .onb-offer-btn {
-            border-color: rgba(0, 0, 0, 0.1);
-            background: rgba(0, 0, 0, 0.02);
-            color: #1e293b
+        [data-theme="light"] .onb-field select,
+        [data-theme="light"] .onb-inline-domain {
+            background: rgba(15, 23, 42, 0.03);
+            border-color: rgba(15, 23, 42, 0.09);
+            color: #172233;
         }
 
         [data-theme="light"] .onb-industry-list {
             background: #fff;
-            border-color: rgba(0, 0, 0, 0.1)
+            border-color: rgba(15, 23, 42, 0.1);
         }
 
         [data-theme="light"] .onb-industry-item {
-            color: #1e293b
+            color: #172233;
         }
 
         [data-theme="light"] .onb-drop-zone {
-            border-color: rgba(0, 0, 0, 0.15);
-            background: rgba(0, 0, 0, 0.02)
+            background: rgba(15, 23, 42, 0.02);
+            border-color: rgba(15, 23, 42, 0.12);
         }
 
         [data-theme="light"] .onb-drop-zone p {
-            color: #1e293b
-        }
-
-        [data-theme="light"] .onb-file-item {
-            background: rgba(0, 0, 0, 0.02);
-            border-color: rgba(0, 0, 0, 0.06)
-        }
-
-        [data-theme="light"] .onb-file-item .onb-file-name {
-            color: #1e293b
-        }
-
-        [data-theme="light"] .onb-int-card {
-            border-color: rgba(0, 0, 0, 0.08);
-            background: rgba(0, 0, 0, 0.02)
-        }
-
-        [data-theme="light"] .onb-int-card h4 {
-            color: #1e293b
-        }
-
-        [data-theme="light"] .onb-review-section {
-            border-color: rgba(0, 0, 0, 0.06);
-            background: rgba(0, 0, 0, 0.02)
-        }
-
-        [data-theme="light"] .onb-review-row .value {
-            color: #1e293b
+            color: #172233;
         }
 
         [data-theme="light"] .onb-actions {
-            background: #fff;
-            border-color: rgba(0, 0, 0, 0.06)
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(248, 250, 252, 0.96));
+            border-color: rgba(15, 23, 42, 0.08);
         }
 
-        [data-theme="light"] .onb-btn-secondary {
-            background: rgba(0, 0, 0, 0.04);
-            color: #334155;
-            border-color: rgba(0, 0, 0, 0.1)
+        [dir="rtl"] .onb-language {
+            align-items: flex-start;
         }
 
-        /* RTL */
-        [dir="rtl"] .onb-stepper {
-            flex-direction: row-reverse
+        [dir="rtl"] .onb-overview-chips {
+            justify-content: flex-start;
         }
 
         [dir="rtl"] .onb-review-row .value {
-            text-align: start
+            text-align: start;
         }
 
-        [dir="rtl"] .onb-review-row {
-            flex-direction: row-reverse
+        @media (max-width: 980px) {
+            .onb-stepper {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 4px;
+            }
+
+            .onb-step {
+                min-width: 170px;
+            }
+
+            .onb-form-grid,
+            .onb-review-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        /* Mobile */
-        @media(max-width:600px) {
+        @media (max-width: 720px) {
             .onb-modal {
                 max-height: 100vh;
                 height: 100%;
                 border-radius: 0;
-                max-width: 100%
             }
 
             .onb-overlay {
-                padding: 0
+                padding: 0;
             }
 
-            .onb-stepper {
-                padding: 14px 12px 10px;
-                gap: 0
-            }
-
-            .onb-step-circle {
-                width: 30px;
-                height: 30px;
-                font-size: 0.72rem
-            }
-
-            .onb-step-line {
-                width: 16px
-            }
-
-            .onb-body {
-                padding: 0 16px 16px
-            }
-
+            .onb-modal-header,
+            .onb-progress-panel,
+            .onb-body,
             .onb-actions {
-                padding: 12px 16px;
-                position: sticky;
-                bottom: 0
+                padding-inline: 16px;
             }
 
             .onb-modal-header {
-                padding: 16px 16px 0
+                padding-top: 18px;
+                flex-direction: column;
+                align-items: stretch;
             }
 
+            .onb-header-actions {
+                justify-content: space-between;
+            }
+
+            .onb-language {
+                align-items: stretch;
+                flex: 1;
+            }
+
+            .onb-language-switch {
+                width: 100%;
+            }
+
+            .onb-lang-btn {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .onb-progress-panel {
+                padding-top: 14px;
+            }
+
+            .onb-progress-shell {
+                padding: 14px;
+                border-radius: 18px;
+            }
+
+            .onb-body {
+                padding-top: 16px;
+                padding-bottom: 16px;
+            }
+
+            .onb-overview-card,
+            .onb-platform-head {
+                flex-direction: column;
+            }
+
+            .onb-overview-chips {
+                justify-content: flex-start;
+            }
+
+            .onb-int-cards,
             .onb-offer-group {
-                flex-direction: column
+                grid-template-columns: 1fr;
+            }
+
+            .onb-file-item {
+                grid-template-columns: minmax(0, 1fr) auto auto;
+            }
+
+            .onb-actions {
+                position: sticky;
+                bottom: 0;
+                padding-top: 14px;
+                padding-bottom: 18px;
+                flex-wrap: wrap;
+            }
+
+            .onb-spacer {
+                display: none;
+            }
+
+            .onb-btn,
+            .onb-test-btn {
+                width: 100%;
             }
 
             .onb-banner {
                 flex-wrap: wrap;
                 gap: 8px;
-                font-size: 0.82rem;
-                padding: 8px 14px
+                font-size: 0.84rem;
+                padding: 10px 14px;
             }
         }
     </style>
@@ -14626,10 +15094,35 @@
     <div id="onb-overlay" class="onb-overlay" onclick="if(event.target===this)closeOnboardingWizard()">
         <div class="onb-modal" onclick="event.stopPropagation()">
             <div class="onb-modal-header">
-                <h2 id="onb-wizard-title"></h2>
-                <button class="onb-modal-close" onclick="closeOnboardingWizard()">&times;</button>
+                <div class="onb-modal-intro">
+                    <span class="onb-modal-kicker" id="onb-wizard-kicker"></span>
+                    <h2 id="onb-wizard-title"></h2>
+                    <p class="onb-modal-subtitle" id="onb-wizard-subtitle"></p>
+                </div>
+                <div class="onb-header-actions">
+                    <div class="onb-language">
+                        <span class="onb-language-label" id="onb-language-label"></span>
+                        <div class="onb-language-switch" id="onb-language-switch" role="group" aria-label="Form language">
+                            <button type="button" class="onb-lang-btn" id="onb-lang-en" onclick="switchOnboardingLanguage('en')"></button>
+                            <button type="button" class="onb-lang-btn" id="onb-lang-ar" onclick="switchOnboardingLanguage('ar')"></button>
+                        </div>
+                    </div>
+                    <button class="onb-modal-close" onclick="closeOnboardingWizard()">&times;</button>
+                </div>
             </div>
-            <div class="onb-stepper" id="onb-stepper"></div>
+            <div class="onb-progress-panel">
+                <div class="onb-progress-shell">
+                    <div class="onb-progress-meta">
+                        <span id="onb-progress-step-label"></span>
+                        <span class="onb-progress-percent" id="onb-progress-percent"></span>
+                    </div>
+                    <div class="onb-progress-bar">
+                        <span class="onb-progress-fill" id="onb-progress-fill"></span>
+                    </div>
+                    <div class="onb-stepper" id="onb-stepper"></div>
+                    <div class="onb-step-hint" id="onb-step-hint"></div>
+                </div>
+            </div>
             <div class="onb-body" id="onb-body"></div>
             <div class="onb-actions" id="onb-actions"></div>
         </div>
@@ -14967,6 +15460,7 @@
             if (typeof renderLeads === 'function' && typeof cachedLeads !== 'undefined') renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap);
             if (typeof renderOrders === 'function') renderOrders();
             if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
+            if (typeof refreshOnboardingWizard === 'function') refreshOnboardingWizard();
             updateThemeToggleUI();
         }
 
@@ -24854,6 +25348,12 @@ Thank you for shopping with {store_name}!</textarea>
         const ALLOWED_KB_EXT = ['pdf', 'docx', 'txt', 'csv', 'xls', 'xlsx'];
         const MAX_FILE_SIZE = 3 * 1024 * 1024;
         const MAX_TOTAL_SIZE = 10 * 1024 * 1024;
+        const SHOPIFY_STOREFRONT_API_VERSION = '2026-01';
+        const INTEGRATION_PROXY_URL = `${SUPABASE_URL}/functions/v1/integration-proxy`;
+        const PLATFORM_LOGOS = Object.freeze({
+            wordpress: 'https://cdn.simpleicons.org/wordpress/21759B',
+            shopify: 'https://cdn.simpleicons.org/shopify/7AB55C'
+        });
 
         let onbStep = 0;
         let onbData = null;
@@ -24862,6 +25362,18 @@ Thank you for shopping with {store_name}!</textarea>
         let onbSaveTimer = null;
         let onbFinishing = false;
         let onbIndustryOpen = false;
+        let onbConnectionState = defaultConnectionState();
+
+        function createConnectionState() {
+            return { status: 'idle', titleKey: '', detailKey: '', detailText: '', testing: false };
+        }
+
+        function defaultConnectionState() {
+            return {
+                woocommerce: createConnectionState(),
+                shopify: createConnectionState()
+            };
+        }
 
         function defaultOnbData() {
             return {
@@ -24870,8 +25382,8 @@ Thank you for shopping with {store_name}!</textarea>
                 channels: { whatsapp_number: '', skipped: false },
                 knowledge_base: { uploaded_files: [] },
                 integrations: {
-                    woocommerce: { website_url: '', consumer_key: '', consumer_secret: '' },
-                    shopify: { shop_domain: '', storefront_token: '' }
+                    woocommerce: { website_url: '', consumer_key: '', consumer_secret: '', verified_at: '', verified_store: '', verification_method: '', last_test_status: '' },
+                    shopify: { shop_domain: '', storefront_token: '', token_type: 'private', verified_at: '', verified_store: '', verification_method: '', last_test_status: '' }
                 },
                 ui: { last_step: 0, dismissed_at: null, last_saved_at: null }
             };
@@ -24907,6 +25419,38 @@ Thank you for shopping with {store_name}!</textarea>
 
         function isOwner() {
             return window.currentUserRole === 'owner';
+        }
+
+        function tOnb(key, replacements) {
+            return t(key, replacements || {});
+        }
+
+        function getOnbStepPercent() {
+            return Math.round(((onbStep + 1) / ONB_STEPS.length) * 100);
+        }
+
+        function syncConnectionStateFromData() {
+            onbConnectionState = defaultConnectionState();
+            const woo = onbData?.integrations?.woocommerce;
+            const shop = onbData?.integrations?.shopify;
+            if (woo?.verified_at) {
+                onbConnectionState.woocommerce = {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_woo',
+                    detailKey: woo.verification_method === 'query_auth' ? 'onboarding.test_detail_woo_fallback' : 'onboarding.test_detail_woo',
+                    detailText: '',
+                    testing: false
+                };
+            }
+            if (shop?.verified_at) {
+                onbConnectionState.shopify = {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_shopify',
+                    detailKey: 'onboarding.test_detail_shopify',
+                    detailText: '',
+                    testing: false
+                };
+            }
         }
 
         // --- CHECK ONBOARDING STATUS ---
@@ -24952,6 +25496,7 @@ Thank you for shopping with {store_name}!</textarea>
             onbStep = getResumeStep(onbData);
             onbFiles = [];
             onbFinishing = false;
+            syncConnectionStateFromData();
             renderWizard();
             document.getElementById('onb-overlay').classList.add('show');
             document.body.style.overflow = 'hidden';
@@ -24980,12 +25525,46 @@ Thank you for shopping with {store_name}!</textarea>
             }
         });
 
+        window.refreshOnboardingWizard = function () {
+            const overlay = document.getElementById('onb-overlay');
+            if (overlay && overlay.classList.contains('show') && onbData) renderWizard();
+        };
+
+        window.switchOnboardingLanguage = function (lang) {
+            if (!lang || lang === currentLang) {
+                renderWizard();
+                return;
+            }
+            setLanguage(lang);
+        };
+
         // --- RENDER ---
         function renderWizard() {
-            document.getElementById('onb-wizard-title').textContent = t('onboarding.wizard_title');
+            document.getElementById('onb-wizard-kicker').textContent = tOnb('onboarding.wizard_badge');
+            document.getElementById('onb-wizard-title').textContent = tOnb('onboarding.wizard_title');
+            document.getElementById('onb-wizard-subtitle').textContent = tOnb('onboarding.wizard_subtitle');
+            document.getElementById('onb-language-label').textContent = tOnb('onboarding.language_label');
+            document.getElementById('onb-language-switch')?.setAttribute('aria-label', tOnb('onboarding.language_label'));
+            document.getElementById('onb-step-hint').textContent = tOnb('onboarding.wizard_step_hint');
+            document.getElementById('onb-progress-step-label').textContent = tOnb('onboarding.wizard_progress_label', { current: onbStep + 1, total: ONB_STEPS.length });
+            document.getElementById('onb-progress-percent').textContent = tOnb('onboarding.wizard_progress_done', { percent: getOnbStepPercent() });
+            document.getElementById('onb-progress-fill').style.width = `${getOnbStepPercent()}%`;
+            renderLanguageSwitch();
             renderStepper();
             renderStepContent();
             renderActions();
+        }
+
+        function renderLanguageSwitch() {
+            const enBtn = document.getElementById('onb-lang-en');
+            const arBtn = document.getElementById('onb-lang-ar');
+            if (!enBtn || !arBtn) return;
+            enBtn.textContent = tOnb('onboarding.lang_english');
+            arBtn.textContent = tOnb('onboarding.lang_arabic');
+            enBtn.classList.toggle('active', currentLang === 'en');
+            arBtn.classList.toggle('active', currentLang === 'ar');
+            enBtn.setAttribute('aria-pressed', String(currentLang === 'en'));
+            arBtn.setAttribute('aria-pressed', String(currentLang === 'ar'));
         }
 
         function renderStepper() {
@@ -24993,12 +25572,26 @@ Thank you for shopping with {store_name}!</textarea>
             let html = '';
             ONB_STEPS.forEach((s, i) => {
                 const cls = i < onbStep ? 'done' : (i === onbStep ? 'active' : '');
-                const icon = i < onbStep ? '✓' : (i + 1);
-                if (i > 0) html += `<div class="onb-step-line"></div>`;
-                html += `<div class="onb-step ${cls}"><div class="onb-step-circle">${icon}</div><div class="onb-step-label">${t('onboarding.' + ONB_STEP_KEYS[i])}</div></div>`;
+                const icon = i < onbStep ? '&#10003;' : String(i + 1).padStart(2, '0');
+                html += `<button type="button" class="onb-step ${cls}" onclick="goToOnboardingStep(${i})">
+                    <span class="onb-step-circle">${icon}</span>
+                    <span class="onb-step-copy">
+                        <span class="onb-step-order">${String(i + 1).padStart(2, '0')}</span>
+                        <span class="onb-step-label">${tOnb('onboarding.' + ONB_STEP_KEYS[i])}</span>
+                    </span>
+                </button>`;
             });
             el.innerHTML = html;
         }
+
+        window.goToOnboardingStep = function (targetStep) {
+            const nextStep = Number(targetStep);
+            if (!Number.isInteger(nextStep) || nextStep < 0 || nextStep >= ONB_STEPS.length || !onbData) return;
+            onbData.ui.last_step = Math.max(onbData.ui.last_step || 0, onbStep);
+            saveOnbProgress();
+            onbStep = nextStep;
+            renderWizard();
+        };
 
         function renderStepContent() {
             const body = document.getElementById('onb-body');
@@ -25006,10 +25599,24 @@ Thank you for shopping with {store_name}!</textarea>
             body.innerHTML = '';
             const div = document.createElement('div');
             div.className = 'onb-step-content active';
-            div.innerHTML = renderers[onbStep]();
+            div.innerHTML = renderWizardOverview() + renderers[onbStep]();
             body.appendChild(div);
             body.scrollTop = 0;
             afterStepRender();
+        }
+
+        function renderWizardOverview() {
+            return `<div class="onb-overview-card">
+                <div>
+                    <h3 class="onb-overview-title">${tOnb('onboarding.overview_title')}</h3>
+                    <p class="onb-overview-text">${tOnb('onboarding.overview_text')}</p>
+                </div>
+                <div class="onb-overview-chips">
+                    <span class="onb-overview-chip">${tOnb('onboarding.overview_chip_business')}</span>
+                    <span class="onb-overview-chip">${tOnb('onboarding.overview_chip_channels')}</span>
+                    <span class="onb-overview-chip">${tOnb('onboarding.overview_chip_integrations')}</span>
+                </div>
+            </div>`;
         }
 
         function renderActions() {
@@ -25019,231 +25626,525 @@ Thank you for shopping with {store_name}!</textarea>
             const isSkippable = onbStep === 2 || onbStep === 4; // channels, integrations
 
             let html = '';
-            if (!isFirst) html += `<button class="onb-btn onb-btn-secondary" onclick="prevOnboardingStep()">` + (currentLang === 'ar' ? '→' : '←') + ` ${t('onboarding.btn_back')}</button>`;
+            if (!isFirst) html += `<button class="onb-btn onb-btn-secondary" onclick="prevOnboardingStep()">` + (currentLang === 'ar' ? '→' : '←') + ` ${tOnb('onboarding.btn_back')}</button>`;
             html += `<div class="onb-spacer"></div>`;
-            if (isSkippable && !isLast) html += `<button class="onb-btn onb-btn-ghost" onclick="skipOnboardingStep()">${t('onboarding.btn_skip')}</button>`;
+            if (isSkippable && !isLast) html += `<button class="onb-btn onb-btn-ghost" onclick="skipOnboardingStep()">${tOnb('onboarding.btn_skip')}</button>`;
             if (isLast) {
-                html += `<button class="onb-btn onb-btn-finish" id="onb-finish-btn" onclick="finishOnboarding()">${t('onboarding.btn_finish')}</button>`;
+                html += `<button class="onb-btn onb-btn-finish" id="onb-finish-btn" onclick="finishOnboarding()">${tOnb('onboarding.btn_finish')}</button>`;
             } else {
-                html += `<button class="onb-btn onb-btn-primary" onclick="nextOnboardingStep()">${t('onboarding.btn_next')} ` + (currentLang === 'ar' ? '←' : '→') + `</button>`;
+                html += `<button class="onb-btn onb-btn-primary" onclick="nextOnboardingStep()">${tOnb('onboarding.btn_next')} ` + (currentLang === 'ar' ? '←' : '→') + `</button>`;
             }
             el.innerHTML = html;
         }
 
         // --- STEP RENDERERS ---
         function renderStepProfile() {
-            return `<h3 class="onb-step-title">${t('onboarding.profile_title')}</h3>
-        <p class="onb-step-subtitle">${t('onboarding.profile_subtitle')}</p>
-        <div class="onb-field" id="onb-f-name"><label>${t('onboarding.label_full_name')}</label>
-        <input type="text" id="onb-full-name" value="${esc(onbData.profile.full_name)}" placeholder="${t('onboarding.placeholder_full_name')}" oninput="onbData.profile.full_name=this.value;debounceSaveOnb()">
-        <div class="onb-error">${t('onboarding.validation_name_required')}</div></div>
-        <div class="onb-field" id="onb-f-company"><label>${t('onboarding.label_company_name')}</label>
-        <input type="text" id="onb-company" value="${esc(onbData.profile.company_name)}" placeholder="${t('onboarding.placeholder_company_name')}" oninput="onbData.profile.company_name=this.value;debounceSaveOnb()">
-        <div class="onb-error">${t('onboarding.validation_company_required')}</div></div>`;
+            return `<div class="onb-step-card">
+                <h3 class="onb-step-title">${tOnb('onboarding.profile_title')}</h3>
+                <p class="onb-step-subtitle">${tOnb('onboarding.profile_subtitle')}</p>
+                <div class="onb-form-grid">
+                    <div class="onb-field" id="onb-f-name">
+                        <label>${tOnb('onboarding.label_full_name')}</label>
+                        <input type="text" id="onb-full-name" value="${esc(onbData.profile.full_name)}" placeholder="${tOnb('onboarding.placeholder_full_name')}" oninput="onbData.profile.full_name=this.value;debounceSaveOnb()">
+                        <div class="onb-error">${tOnb('onboarding.validation_name_required')}</div>
+                    </div>
+                    <div class="onb-field" id="onb-f-company">
+                        <label>${tOnb('onboarding.label_company_name')}</label>
+                        <input type="text" id="onb-company" value="${esc(onbData.profile.company_name)}" placeholder="${tOnb('onboarding.placeholder_company_name')}" oninput="onbData.profile.company_name=this.value;debounceSaveOnb()">
+                        <div class="onb-error">${tOnb('onboarding.validation_company_required')}</div>
+                    </div>
+                </div>
+            </div>`;
         }
 
         function renderStepBusiness() {
-            const industries = t('onboarding.industries');
-            const descLabel = onbData.business.offer_type === 'product' ? t('onboarding.label_description_product') :
-                onbData.business.offer_type === 'service' ? t('onboarding.label_description_service') :
-                    t('onboarding.label_description');
-            return `<h3 class="onb-step-title">${t('onboarding.business_title')}</h3>
-        <p class="onb-step-subtitle">${t('onboarding.business_subtitle')}</p>
-        <div class="onb-field" id="onb-f-industry"><label>${t('onboarding.label_industry')}</label>
-        <div class="onb-industry-wrap">
-        <input type="text" id="onb-industry-input" value="${esc(onbData.business.industry)}" placeholder="${t('onboarding.placeholder_industry')}" autocomplete="off"
-            onfocus="openOnbIndustryList()" oninput="filterOnbIndustry(this.value)">
-        <div class="onb-industry-list" id="onb-industry-list"></div></div>
-        <div class="onb-error">${t('onboarding.validation_industry_required')}</div></div>
-        <div class="onb-field" id="onb-f-offer"><label>${t('onboarding.label_offer_type')}</label>
-        <div class="onb-offer-group">
-        <div class="onb-offer-btn ${onbData.business.offer_type === 'product' ? 'selected' : ''}" onclick="selectOfferType('product')"><span class="onb-offer-icon">📦</span>${t('onboarding.offer_product')}</div>
-        <div class="onb-offer-btn ${onbData.business.offer_type === 'service' ? 'selected' : ''}" onclick="selectOfferType('service')"><span class="onb-offer-icon">🤝</span>${t('onboarding.offer_service')}</div></div>
-        <div class="onb-error">${t('onboarding.validation_offer_required')}</div></div>
-        <div class="onb-field"><label id="onb-desc-label">${descLabel}</label>
-        <textarea id="onb-description" placeholder="${t('onboarding.placeholder_description')}" oninput="onbData.business.description=this.value;debounceSaveOnb()">${esc(onbData.business.description)}</textarea></div>`;
+            const descLabel = onbData.business.offer_type === 'product' ? tOnb('onboarding.label_description_product') :
+                onbData.business.offer_type === 'service' ? tOnb('onboarding.label_description_service') :
+                    tOnb('onboarding.label_description');
+            return `<div class="onb-step-card">
+                <h3 class="onb-step-title">${tOnb('onboarding.business_title')}</h3>
+                <p class="onb-step-subtitle">${tOnb('onboarding.business_subtitle')}</p>
+                <div class="onb-form-grid">
+                    <div class="onb-field" id="onb-f-industry">
+                        <label>${tOnb('onboarding.label_industry')}</label>
+                        <div class="onb-industry-wrap">
+                            <input type="text" id="onb-industry-input" value="${esc(onbData.business.industry)}" placeholder="${tOnb('onboarding.placeholder_industry')}" autocomplete="off" onfocus="openOnbIndustryList()" oninput="filterOnbIndustry(this.value)">
+                            <div class="onb-industry-list" id="onb-industry-list"></div>
+                        </div>
+                        <div class="onb-error">${tOnb('onboarding.validation_industry_required')}</div>
+                    </div>
+                    <div class="onb-field" id="onb-f-offer">
+                        <label>${tOnb('onboarding.label_offer_type')}</label>
+                        <div class="onb-offer-group">
+                            <button type="button" class="onb-offer-btn ${onbData.business.offer_type === 'product' ? 'selected' : ''}" onclick="selectOfferType('product', event)">
+                                <span class="onb-offer-icon">📦</span>${tOnb('onboarding.offer_product')}
+                            </button>
+                            <button type="button" class="onb-offer-btn ${onbData.business.offer_type === 'service' ? 'selected' : ''}" onclick="selectOfferType('service', event)">
+                                <span class="onb-offer-icon">🤝</span>${tOnb('onboarding.offer_service')}
+                            </button>
+                        </div>
+                        <div class="onb-error">${tOnb('onboarding.validation_offer_required')}</div>
+                    </div>
+                    <div class="onb-field onb-field-full">
+                        <label id="onb-desc-label">${descLabel}</label>
+                        <textarea id="onb-description" placeholder="${tOnb('onboarding.placeholder_description')}" oninput="onbData.business.description=this.value;debounceSaveOnb()">${esc(onbData.business.description)}</textarea>
+                    </div>
+                </div>
+            </div>`;
         }
 
         function renderStepChannels() {
-            return `<h3 class="onb-step-title">${t('onboarding.channels_title')}</h3>
-        <p class="onb-step-subtitle">${t('onboarding.channels_subtitle')}</p>
-        <div class="onb-field"><label>${t('onboarding.label_whatsapp')}</label>
-        <input type="tel" id="onb-whatsapp" value="${esc(onbData.channels.whatsapp_number)}" placeholder="${t('onboarding.placeholder_whatsapp')}" oninput="onbData.channels.whatsapp_number=this.value;onbData.channels.skipped=false;debounceSaveOnb()">
-        <div class="onb-hint">${t('onboarding.channels_skip_note')}</div></div>`;
+            return `<div class="onb-step-card">
+                <h3 class="onb-step-title">${tOnb('onboarding.channels_title')}</h3>
+                <p class="onb-step-subtitle">${tOnb('onboarding.channels_subtitle')}</p>
+                <div class="onb-form-grid">
+                    <div class="onb-field onb-field-full">
+                        <label>${tOnb('onboarding.label_whatsapp')}</label>
+                        <input type="tel" id="onb-whatsapp" value="${esc(onbData.channels.whatsapp_number)}" placeholder="${tOnb('onboarding.placeholder_whatsapp')}" oninput="onbData.channels.whatsapp_number=this.value;onbData.channels.skipped=false;debounceSaveOnb()">
+                        <div class="onb-hint">${tOnb('onboarding.channels_skip_note')}</div>
+                    </div>
+                </div>
+            </div>`;
         }
 
         function renderStepKB() {
             let filesHtml = '';
             if (onbFiles.length === 0 && (!onbData.knowledge_base.uploaded_files || onbData.knowledge_base.uploaded_files.length === 0)) {
-                filesHtml = `<p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:10px 0;">${t('onboarding.kb_no_files')}</p>`;
+                filesHtml = `<p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:10px 0;">${tOnb('onboarding.kb_no_files')}</p>`;
             } else {
                 onbFiles.forEach((f, i) => {
                     const sizeStr = (f.file.size / 1024).toFixed(1) + ' KB';
                     let statusCls = '', statusTxt = '';
-                    if (f.status === 'uploading') { statusCls = 'uploading'; statusTxt = t('onboarding.kb_uploading'); }
-                    else if (f.status === 'uploaded') { statusCls = 'uploaded'; statusTxt = t('onboarding.kb_uploaded'); }
-                    else if (f.status === 'failed') { statusCls = 'failed'; statusTxt = t('onboarding.kb_failed'); }
+                    if (f.status === 'uploading') { statusCls = 'uploading'; statusTxt = tOnb('onboarding.kb_uploading'); }
+                    else if (f.status === 'uploaded') { statusCls = 'uploaded'; statusTxt = tOnb('onboarding.kb_uploaded'); }
+                    else if (f.status === 'failed') { statusCls = 'failed'; statusTxt = tOnb('onboarding.kb_failed'); }
                     filesHtml += `<div class="onb-file-item"><span class="onb-file-name">${esc(f.file.name)}</span><span class="onb-file-size">${sizeStr}</span>`;
                     if (statusTxt) filesHtml += `<span class="onb-file-status ${statusCls}">${statusTxt}</span>`;
-                    if (f.status !== 'uploading' && f.status !== 'uploaded') filesHtml += `<button class="onb-file-remove" onclick="removeOnbFile(${i})" title="${t('onboarding.kb_remove')}">&times;</button>`;
+                    if (f.status !== 'uploading' && f.status !== 'uploaded') filesHtml += `<button class="onb-file-remove" onclick="removeOnbFile(${i})" title="${tOnb('onboarding.kb_remove')}">&times;</button>`;
                     filesHtml += `</div>`;
                 });
                 // Show previously uploaded files from saved data
                 if (onbData.knowledge_base.uploaded_files) {
                     onbData.knowledge_base.uploaded_files.forEach(f => {
                         const sizeStr = f.size_bytes ? (f.size_bytes / 1024).toFixed(1) + ' KB' : '';
-                        filesHtml += `<div class="onb-file-item"><span class="onb-file-name">${esc(f.filename || '')}</span><span class="onb-file-size">${sizeStr}</span><span class="onb-file-status uploaded">${t('onboarding.kb_uploaded')}</span></div>`;
+                        filesHtml += `<div class="onb-file-item"><span class="onb-file-name">${esc(f.filename || '')}</span><span class="onb-file-size">${sizeStr}</span><span class="onb-file-status uploaded">${tOnb('onboarding.kb_uploaded')}</span></div>`;
                     });
                 }
             }
-            return `<h3 class="onb-step-title">${t('onboarding.kb_title')}</h3>
-        <p class="onb-step-subtitle">${t('onboarding.kb_subtitle')}</p>
-        <div class="onb-drop-zone" id="onb-drop-zone" onclick="document.getElementById('onb-file-input').click()">
-        <div class="onb-drop-icon">📄</div>
-        <p>${t('onboarding.kb_drop_text')}</p>
-        <small>${t('onboarding.kb_drop_hint')}</small>
-        </div>
-        <input type="file" id="onb-file-input" multiple accept=".pdf,.docx,.txt,.csv,.xls,.xlsx" style="display:none" onchange="handleOnbFileSelect(this.files)">
-        <div class="onb-file-list" id="onb-file-list">${filesHtml}</div>`;
+            return `<div class="onb-step-card">
+                <h3 class="onb-step-title">${tOnb('onboarding.kb_title')}</h3>
+                <p class="onb-step-subtitle">${tOnb('onboarding.kb_subtitle')}</p>
+                <div class="onb-drop-zone" id="onb-drop-zone" onclick="document.getElementById('onb-file-input').click()">
+                    <div class="onb-drop-icon">📄</div>
+                    <p>${tOnb('onboarding.kb_drop_text')}</p>
+                    <small>${tOnb('onboarding.kb_drop_hint')}</small>
+                </div>
+                <input type="file" id="onb-file-input" multiple accept=".pdf,.docx,.txt,.csv,.xls,.xlsx" style="display:none" onchange="handleOnbFileSelect(this.files)">
+                <div class="onb-file-list" id="onb-file-list">${filesHtml}</div>
+            </div>`;
         }
 
         function renderStepIntegrations() {
             const w = onbData.integrations.woocommerce;
             const s = onbData.integrations.shopify;
-            return `<h3 class="onb-step-title">${t('onboarding.integrations_title')}</h3>
-        <p class="onb-step-subtitle">${t('onboarding.integrations_subtitle')}</p>
-        <div class="onb-int-cards">
-        <div class="onb-int-card"><h4>${t('onboarding.integrations_woo_title')}</h4>
-        <div class="onb-field"><label>${t('onboarding.label_woo_url')}</label><input type="text" id="woo-domain" value="${esc(w.website_url)}" placeholder="${t('onboarding.placeholder_woo_url')}" oninput="onbData.integrations.woocommerce.website_url=this.value;debounceSaveOnb()"></div>
-        <div class="onb-field"><label>${t('onboarding.label_woo_ck')}</label><input type="text" id="woo-ck" value="${esc(w.consumer_key)}" placeholder="${t('onboarding.placeholder_woo_ck')}" oninput="onbData.integrations.woocommerce.consumer_key=this.value;debounceSaveOnb()"></div>
-        <div class="onb-field"><label>${t('onboarding.label_woo_cs')}</label><input type="password" id="woo-cs" value="${esc(w.consumer_secret)}" placeholder="${t('onboarding.placeholder_woo_cs')}" oninput="onbData.integrations.woocommerce.consumer_secret=this.value;debounceSaveOnb()"></div>
-        <button class="onb-test-btn" style="margin-top:12px;" onclick="window.testWooConnection()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            ${t('onboarding.btn_test_connection')}
-        </button>
-        <div id="woo-test-result" style="margin-top:8px; font-size:14px; font-weight:500;"></div>
-        </div>
-        <div class="onb-int-card"><h4>🟢 Shopify</h4>
-        <div class="onb-field"><label>${t('onboarding.label_shopify_domain')}</label>
-            <div style="display:flex; align-items:center; gap:4px; background:var(--bg-content); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:0 12px; height:44px; overflow:hidden;">
-                <input type="text" id="shop-domain" value="${esc(s.shop_domain)}" placeholder="${t('onboarding.placeholder_shopify_domain')}" style="border:none; background:transparent; height:100%; width:100%; box-shadow:none; padding:0; outline:none;" oninput="onbData.integrations.shopify.shop_domain=this.value;debounceSaveOnb()">
-                <span dir="ltr" style="color:var(--text-secondary); white-space:nowrap; font-size:14px;">.myshopify.com</span>
-            </div>
-        </div>
-        <div class="onb-field"><label>${t('onboarding.label_shopify_token')}</label><input type="password" id="shop-token" value="${esc(s.storefront_token || '')}" placeholder="${t('onboarding.placeholder_shopify_token')}" oninput="onbData.integrations.shopify.storefront_token=this.value;debounceSaveOnb()">
-        <small style="color:var(--text-secondary); display:block; margin-top:4px;">${t('onboarding.integrations_shopify_hint')}</small>
-        </div>
-        <button class="onb-test-btn" style="margin-top:12px;" onclick="window.testShopifyConnection()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            ${t('onboarding.btn_test_connection')}
-        </button>
-        <div id="shopify-test-result" style="margin-top:8px; font-size:14px; font-weight:500;"></div>
-        </div></div>
-        <div class="onb-hint" style="margin-top:12px;">${t('onboarding.integrations_skip_note')}</div>`;
+            const wooTesting = !!onbConnectionState.woocommerce.testing;
+            const shopTesting = !!onbConnectionState.shopify.testing;
+            return `<div class="onb-step-card">
+                <h3 class="onb-step-title">${tOnb('onboarding.integrations_title')}</h3>
+                <p class="onb-step-subtitle">${tOnb('onboarding.integrations_subtitle')}</p>
+                <div class="onb-int-cards">
+                    <div class="onb-int-card">
+                        <div class="onb-platform-head">
+                            <div class="onb-platform-brand">
+                                <img class="onb-platform-logo" src="${PLATFORM_LOGOS.wordpress}" alt="WordPress">
+                                <div>
+                                    <h4 class="onb-platform-title">${tOnb('onboarding.integrations_woo_title')}</h4>
+                                    <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_woo_hint')}</p>
+                                </div>
+                            </div>
+                            <span class="onb-badge">${tOnb('onboarding.integrations_https_recommended')}</span>
+                        </div>
+                        <div class="onb-form-grid">
+                            <div class="onb-field onb-field-full">
+                                <label>${tOnb('onboarding.label_woo_url')}</label>
+                                <input type="text" id="woo-domain" value="${esc(w.website_url)}" placeholder="${tOnb('onboarding.placeholder_woo_url')}" oninput="updateOnbIntegrationField('woocommerce','website_url',this.value)">
+                            </div>
+                            <div class="onb-field">
+                                <label>${tOnb('onboarding.label_woo_ck')}</label>
+                                <input type="text" id="woo-ck" value="${esc(w.consumer_key)}" placeholder="${tOnb('onboarding.placeholder_woo_ck')}" oninput="updateOnbIntegrationField('woocommerce','consumer_key',this.value)">
+                            </div>
+                            <div class="onb-field">
+                                <label>${tOnb('onboarding.label_woo_cs')}</label>
+                                <input type="password" id="woo-cs" value="${esc(w.consumer_secret)}" placeholder="${tOnb('onboarding.placeholder_woo_cs')}" oninput="updateOnbIntegrationField('woocommerce','consumer_secret',this.value)">
+                            </div>
+                        </div>
+                        <button class="onb-test-btn" id="woo-test-btn" onclick="window.testWooConnection()" ${wooTesting ? 'disabled' : ''}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            ${wooTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
+                        </button>
+                        <div id="woo-test-result">${renderConnectionStatusHtml('woocommerce')}</div>
+                    </div>
+                    <div class="onb-int-card">
+                        <div class="onb-platform-head">
+                            <div class="onb-platform-brand">
+                                <img class="onb-platform-logo" src="${PLATFORM_LOGOS.shopify}" alt="Shopify">
+                                <div>
+                                    <h4 class="onb-platform-title">${tOnb('onboarding.integrations_shopify_title')}</h4>
+                                    <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_shopify_hint')}</p>
+                                </div>
+                            </div>
+                            <span class="onb-badge">${tOnb('onboarding.integrations_shopify_private_note')}</span>
+                        </div>
+                        <div class="onb-form-grid">
+                            <div class="onb-field onb-field-full">
+                                <label>${tOnb('onboarding.label_shopify_domain')}</label>
+                                <div class="onb-inline-domain">
+                                    <input type="text" id="shop-domain" value="${esc(s.shop_domain)}" placeholder="${tOnb('onboarding.placeholder_shopify_domain')}" oninput="updateOnbIntegrationField('shopify','shop_domain',this.value)">
+                                    <span class="onb-domain-suffix">.myshopify.com</span>
+                                </div>
+                            </div>
+                            <div class="onb-field onb-field-full">
+                                <label>${tOnb('onboarding.label_shopify_token')}</label>
+                                <input type="password" id="shop-token" value="${esc(s.storefront_token || '')}" placeholder="${tOnb('onboarding.placeholder_shopify_token')}" oninput="updateOnbIntegrationField('shopify','storefront_token',this.value)">
+                            </div>
+                        </div>
+                        <button class="onb-test-btn" id="shopify-test-btn" onclick="window.testShopifyConnection()" ${shopTesting ? 'disabled' : ''}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            ${shopTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
+                        </button>
+                        <div id="shopify-test-result">${renderConnectionStatusHtml('shopify')}</div>
+                    </div>
+                </div>
+                <div class="onb-hint">${tOnb('onboarding.integrations_skip_note')}</div>
+            </div>`;
+        }
+
+        function renderConnectionStatusHtml(provider) {
+            const state = onbConnectionState[provider];
+            if (!state || state.status === 'idle') return '';
+            const title = state.titleKey ? tOnb(state.titleKey) : '';
+            const detail = state.detailKey ? tOnb(state.detailKey) : state.detailText;
+            return `<div class="onb-test-result ${state.status}">
+                <div class="onb-test-result-title">${esc(title || tOnb('onboarding.test_error_unknown'))}</div>
+                ${detail ? `<div class="onb-test-result-detail">${esc(detail)}</div>` : ''}
+            </div>`;
+        }
+
+        function updateConnectionStatusDom(provider) {
+            const containerId = provider === 'woocommerce' ? 'woo-test-result' : 'shopify-test-result';
+            const el = document.getElementById(containerId);
+            if (el) el.innerHTML = renderConnectionStatusHtml(provider);
+            updateConnectionButtonDom(provider);
+        }
+
+        function updateConnectionButtonDom(provider) {
+            const btnId = provider === 'woocommerce' ? 'woo-test-btn' : 'shopify-test-btn';
+            const btn = document.getElementById(btnId);
+            const state = onbConnectionState[provider];
+            if (!btn || !state) return;
+            btn.disabled = !!state.testing;
+            btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>${state.testing ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}`;
+        }
+
+        function setConnectionState(provider, nextState) {
+            onbConnectionState[provider] = Object.assign(createConnectionState(), onbConnectionState[provider], nextState);
+            updateConnectionStatusDom(provider);
+        }
+
+        function clearIntegrationVerification(provider) {
+            const target = onbData?.integrations?.[provider];
+            if (!target) return;
+            target.verified_at = '';
+            target.verified_store = '';
+            target.verification_method = '';
+            target.last_test_status = '';
+        }
+
+        window.updateOnbIntegrationField = function (provider, field, value) {
+            if (!onbData?.integrations?.[provider]) return;
+            onbData.integrations[provider][field] = value;
+            if (provider === 'shopify') onbData.integrations.shopify.token_type = 'private';
+            clearIntegrationVerification(provider);
+            onbConnectionState[provider] = createConnectionState();
+            updateConnectionStatusDom(provider);
+            debounceSaveOnb();
+        };
+
+        function normalizeWooOrigin(input) {
+            const raw = String(input || '').trim();
+            if (!raw) return '';
+            const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+            try {
+                const url = new URL(withProtocol);
+                return url.origin;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function normalizeShopifyHandle(input) {
+            const raw = String(input || '').trim().toLowerCase();
+            if (!raw) return '';
+            const cleaned = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            if (cleaned.endsWith('.myshopify.com')) {
+                return cleaned.replace(/\.myshopify\.com$/, '');
+            }
+            if (/^[a-z0-9][a-z0-9-]*$/i.test(cleaned)) {
+                return cleaned;
+            }
+            return '';
+        }
+
+        async function readProxyResponse(response) {
+            const text = await response.text();
+            let data = null;
+            if (text) {
+                try { data = JSON.parse(text); } catch (e) { }
+            }
+            return { ok: response.ok, status: response.status, data, text };
+        }
+
+        function extractErrorDetail(payload) {
+            if (!payload) return '';
+            if (payload.data) {
+                if (typeof payload.data === 'string') return payload.data;
+                if (Array.isArray(payload.data?.errors)) {
+                    return payload.data.errors.map(err => err?.message || '').filter(Boolean).join(' ');
+                }
+                if (payload.data?.error?.message) return payload.data.error.message;
+                if (payload.data?.message) return payload.data.message;
+            }
+            return payload.text || '';
+        }
+
+        function sanitizeErrorDetail(detail) {
+            return String(detail || '').replace(/\s+/g, ' ').trim().slice(0, 240);
+        }
+
+        function mapConnectionError(err) {
+            const detail = sanitizeErrorDetail(err?.detail || err?.message || '');
+            if (err?.code === 'domain') return { titleKey: 'onboarding.test_error_domain', detailText: detail };
+            if (err?.code === 'missing') return { titleKey: 'onboarding.test_error_missing', detailText: '' };
+            if (err?.code === 'permission') return { titleKey: 'onboarding.test_error_permission', detailText: detail };
+            if (err?.code === 'network') return { titleKey: 'onboarding.test_error_network', detailText: detail };
+
+            const lower = detail.toLowerCase();
+            if (!detail) return { titleKey: 'onboarding.test_error_unknown', detailText: '' };
+            if (lower.includes('invalid') && (lower.includes('domain') || lower.includes('shop'))) {
+                return { titleKey: 'onboarding.test_error_domain', detailText: detail };
+            }
+            if (lower.includes('unauthorized') || lower.includes('forbidden') || lower.includes('scope') || lower.includes('consumer key') || lower.includes('credential') || lower.includes('access denied') || lower.includes('signature') || lower.includes('token')) {
+                return { titleKey: 'onboarding.test_error_permission', detailText: detail };
+            }
+            if (lower.includes('ssl') || lower.includes('certificate') || lower.includes('network') || lower.includes('timed out') || lower.includes('failed to fetch') || lower.includes('not found') || lower.includes('resolve')) {
+                return { titleKey: 'onboarding.test_error_network', detailText: detail };
+            }
+            return { titleKey: 'onboarding.test_error_unknown', detailText: detail };
+        }
+
+        async function requestViaProxy({ targetUrl, method = 'GET', headers = {}, body }) {
+            const reqHeaders = Object.assign({ 'Target-Url': targetUrl }, headers);
+            const response = await fetch(INTEGRATION_PROXY_URL, {
+                method,
+                headers: reqHeaders,
+                body
+            });
+            return readProxyResponse(response);
+        }
+
+        async function requestWooCredentials(origin, mode = 'basic') {
+            const w = onbData.integrations.woocommerce;
+            let targetUrl = `${origin}/wp-json/wc/v3/orders?per_page=1&_fields=id,status,date_created`;
+            const headers = {};
+            if (mode === 'basic') {
+                headers['Authorization'] = 'Basic ' + btoa(`${w.consumer_key}:${w.consumer_secret}`);
+            } else {
+                targetUrl += `&consumer_key=${encodeURIComponent(w.consumer_key)}&consumer_secret=${encodeURIComponent(w.consumer_secret)}`;
+            }
+            return requestViaProxy({ targetUrl, method: 'GET', headers });
+        }
+
+        function shouldRetryWooWithQuery(parsed) {
+            const detail = extractErrorDetail(parsed).toLowerCase();
+            return parsed.status === 401 || parsed.status === 403 || detail.includes('consumer key') || detail.includes('signature') || detail.includes('authorization') || detail.includes('oauth');
         }
 
         window.testWooConnection = async function () {
             const w = onbData.integrations.woocommerce;
-            const resEl = document.getElementById('woo-test-result');
+            if (onbConnectionState.woocommerce.testing) return;
             if (!w.website_url || !w.consumer_key || !w.consumer_secret) {
-                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+                setConnectionState('woocommerce', { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false });
                 return;
             }
-            if (resEl) { resEl.style.color = 'var(--text-secondary)'; resEl.innerText = t('onboarding.test_loading'); }
+
+            setConnectionState('woocommerce', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
-                let domain = w.website_url.replace(/^(https?:\\\/\\\/)?/, '').replace(/\\\/$/, '');
-                if (!domain) throw new Error("Invalid domain");
-                const targetUrl = `https://${domain}/wp-json/wc/v3/`;
-                const headers = new Headers();
-                headers.set('Authorization', 'Basic ' + btoa(w.consumer_key + ":" + w.consumer_secret));
-                headers.set('Target-Url', targetUrl);
+                const origin = normalizeWooOrigin(w.website_url);
+                if (!origin) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
 
-                const response = await fetch('https://xrycghxaxqzvkmzqzzkx.supabase.co/functions/v1/integration-proxy', { method: 'GET', headers: headers });
-                if (!response.ok) throw new Error("WooCommerce API Error");
+                let parsed = await requestWooCredentials(origin, 'basic');
+                let verificationMethod = 'basic_auth';
 
-                if (resEl) { resEl.style.color = '#27ae60'; resEl.innerText = t('onboarding.test_success'); }
+                if ((!parsed.ok || !Array.isArray(parsed.data)) && shouldRetryWooWithQuery(parsed)) {
+                    parsed = await requestWooCredentials(origin, 'query');
+                    verificationMethod = 'query_auth';
+                }
+
+                if (!parsed.ok) {
+                    const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
+                    throw { code: parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network', detail };
+                }
+
+                if (!Array.isArray(parsed.data)) {
+                    throw { code: 'permission', detail: extractErrorDetail(parsed) || 'Unexpected WooCommerce response.' };
+                }
+
+                w.verified_at = new Date().toISOString();
+                w.verified_store = new URL(origin).hostname;
+                w.verification_method = verificationMethod;
+                w.last_test_status = 'success';
+                debounceSaveOnb();
+
+                setConnectionState('woocommerce', {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_woo',
+                    detailKey: verificationMethod === 'query_auth' ? 'onboarding.test_detail_woo_fallback' : 'onboarding.test_detail_woo',
+                    detailText: '',
+                    testing: false
+                });
             } catch (err) {
                 console.warn('Woo test failed:', err);
-                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+                clearIntegrationVerification('woocommerce');
+                onbData.integrations.woocommerce.last_test_status = 'failed';
+                debounceSaveOnb();
+                const errorState = mapConnectionError(err);
+                setConnectionState('woocommerce', Object.assign({ status: 'error', detailKey: '', testing: false }, errorState));
             }
-        }
+        };
 
         window.testShopifyConnection = async function () {
             const s = onbData.integrations.shopify;
-            const resEl = document.getElementById('shopify-test-result');
+            if (onbConnectionState.shopify.testing) return;
             if (!s.shop_domain || !s.storefront_token) {
-                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+                setConnectionState('shopify', { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false });
                 return;
             }
-            if (resEl) { resEl.style.color = 'var(--text-secondary)'; resEl.innerText = t('onboarding.test_loading'); }
+
+            setConnectionState('shopify', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
-                let domain = s.shop_domain.replace(/\\.myshopify\\.com.*$/, '').replace(/^(https?:\\\/\\\/)?/, '').replace(/\\\/$/, '');
-                if (!domain) throw new Error("Invalid domain");
-                const targetUrl = `https://${domain}.myshopify.com/api/2024-01/graphql.json`;
+                const handle = normalizeShopifyHandle(s.shop_domain);
+                if (!handle) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
 
-                const query = `{ shop { name } }`;
+                const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+                const query = `query WizardConnectionTest { shop { name primaryDomain { host url } } }`;
 
-                const response = await fetch('https://xrycghxaxqzvkmzqzzkx.supabase.co/functions/v1/integration-proxy', {
+                const parsed = await requestViaProxy({
+                    targetUrl,
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Shopify-Storefront-Access-Token': s.storefront_token,
-                        'Target-Url': targetUrl
+                        'Shopify-Storefront-Private-Token': s.storefront_token
                     },
                     body: JSON.stringify({ query })
                 });
 
-                if (!response.ok) throw new Error("Shopify API Error");
-                const rb = await response.json();
-                if (rb.errors) throw new Error("Shopify GraphQL Error");
+                if (!parsed.ok) {
+                    const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
+                    throw { code: parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network', detail };
+                }
 
-                if (resEl) { resEl.style.color = '#27ae60'; resEl.innerText = t('onboarding.test_success'); }
+                if (Array.isArray(parsed.data?.errors) && parsed.data.errors.length) {
+                    throw { code: 'permission', detail: parsed.data.errors.map(err => err?.message || '').filter(Boolean).join(' ') };
+                }
+
+                const shop = parsed.data?.data?.shop;
+                if (!shop?.name) {
+                    throw { code: 'permission', detail: extractErrorDetail(parsed) || 'Shopify did not return shop details.' };
+                }
+
+                s.token_type = 'private';
+                s.verified_at = new Date().toISOString();
+                s.verified_store = shop.primaryDomain?.host || `${handle}.myshopify.com`;
+                s.verification_method = 'private_storefront_token';
+                s.last_test_status = 'success';
+                debounceSaveOnb();
+
+                setConnectionState('shopify', {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_shopify',
+                    detailKey: 'onboarding.test_detail_shopify',
+                    detailText: '',
+                    testing: false
+                });
             } catch (err) {
                 console.warn('Shopify test failed:', err);
-                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+                clearIntegrationVerification('shopify');
+                onbData.integrations.shopify.last_test_status = 'failed';
+                debounceSaveOnb();
+                const errorState = mapConnectionError(err);
+                setConnectionState('shopify', Object.assign({ status: 'error', detailKey: '', testing: false }, errorState));
             }
         }
 
         function renderStepReview() {
             const d = onbData;
-            const ns = t('onboarding.review_not_set');
-            const sk = t('onboarding.review_skipped');
-            const offerStr = d.business.offer_type === 'product' ? t('onboarding.offer_product') : d.business.offer_type === 'service' ? t('onboarding.offer_service') : ns;
+            const ns = tOnb('onboarding.review_not_set');
+            const sk = tOnb('onboarding.review_skipped');
+            const offerStr = d.business.offer_type === 'product' ? tOnb('onboarding.offer_product') : d.business.offer_type === 'service' ? tOnb('onboarding.offer_service') : ns;
             const waStr = d.channels.whatsapp_number || (d.channels.skipped ? sk : ns);
             const kbCount = (d.knowledge_base.uploaded_files ? d.knowledge_base.uploaded_files.length : 0) + onbFiles.filter(f => f.status === 'uploaded').length;
-            const kbStr = kbCount > 0 ? t('onboarding.review_files_uploaded', { count: kbCount }) : t('onboarding.review_no_files');
+            const kbStr = kbCount > 0 ? tOnb('onboarding.review_files_uploaded', { count: kbCount }) : tOnb('onboarding.review_no_files');
             const woo = d.integrations.woocommerce;
             const shop = d.integrations.shopify;
             const hasWoo = woo.website_url && woo.consumer_key;
             const hasShop = shop.shop_domain && shop.storefront_token;
             let intStr = '';
-            if (hasWoo) intStr += t('onboarding.review_woo_connected');
-            if (hasShop) intStr += (intStr ? ', ' : '') + t('onboarding.review_shopify_connected');
-            if (!intStr) intStr = t('onboarding.review_no_integrations');
+            if (hasWoo) intStr += buildIntegrationReviewLabel(tOnb('onboarding.review_woo_connected'), woo);
+            if (hasShop) intStr += (intStr ? ', ' : '') + buildIntegrationReviewLabel(tOnb('onboarding.review_shopify_connected'), shop);
+            if (!intStr) intStr = tOnb('onboarding.review_no_integrations');
 
-            return `<h3 class="onb-step-title">${t('onboarding.review_title')}</h3>
-        <p class="onb-step-subtitle">${t('onboarding.review_subtitle')}</p>
-        <div class="onb-review-section"><h4>${t('onboarding.review_profile')}</h4>
-        <div class="onb-review-row"><span class="label">${t('onboarding.label_full_name')}</span><span class="value">${esc(d.profile.full_name || ns)}</span></div>
-        <div class="onb-review-row"><span class="label">${t('onboarding.label_company_name')}</span><span class="value">${esc(d.profile.company_name || ns)}</span></div></div>
-        <div class="onb-review-section"><h4>${t('onboarding.review_business')}</h4>
-        <div class="onb-review-row"><span class="label">${t('onboarding.label_industry')}</span><span class="value">${esc(d.business.industry || ns)}</span></div>
-        <div class="onb-review-row"><span class="label">${t('onboarding.label_offer_type')}</span><span class="value">${offerStr}</span></div>
-        ${d.business.description ? `<div class="onb-review-row"><span class="label">${t('onboarding.label_description')}</span><span class="value">${esc(d.business.description)}</span></div>` : ''}</div>
-        <div class="onb-review-section"><h4>${t('onboarding.review_channels')}</h4>
-        <div class="onb-review-row"><span class="label">${t('onboarding.label_whatsapp')}</span><span class="value">${esc(waStr)}</span></div></div>
-        <div class="onb-review-section"><h4>${t('onboarding.review_kb')}</h4>
-        <div class="onb-review-row"><span class="label">${t('onboarding.step_kb')}</span><span class="value">${kbStr}</span></div></div>
-        <div class="onb-review-section"><h4>${t('onboarding.review_integrations')}</h4>
-        <div class="onb-review-row"><span class="label">${t('onboarding.step_integrations')}</span><span class="value">${intStr}</span></div></div>`;
+            return `<div class="onb-step-card">
+                <h3 class="onb-step-title">${tOnb('onboarding.review_title')}</h3>
+                <p class="onb-step-subtitle">${tOnb('onboarding.review_subtitle')}</p>
+                <div class="onb-review-grid">
+                    <div class="onb-review-section">
+                        <h4>${tOnb('onboarding.review_profile')}</h4>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.label_full_name')}</span><span class="value">${esc(d.profile.full_name || ns)}</span></div>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.label_company_name')}</span><span class="value">${esc(d.profile.company_name || ns)}</span></div>
+                    </div>
+                    <div class="onb-review-section">
+                        <h4>${tOnb('onboarding.review_business')}</h4>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.label_industry')}</span><span class="value">${esc(d.business.industry || ns)}</span></div>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.label_offer_type')}</span><span class="value">${offerStr}</span></div>
+                        ${d.business.description ? `<div class="onb-review-row"><span class="label">${tOnb('onboarding.label_description')}</span><span class="value">${esc(d.business.description)}</span></div>` : ''}
+                    </div>
+                    <div class="onb-review-section">
+                        <h4>${tOnb('onboarding.review_channels')}</h4>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.label_whatsapp')}</span><span class="value">${esc(waStr)}</span></div>
+                    </div>
+                    <div class="onb-review-section">
+                        <h4>${tOnb('onboarding.review_kb')}</h4>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.step_kb')}</span><span class="value">${kbStr}</span></div>
+                    </div>
+                    <div class="onb-review-section">
+                        <h4>${tOnb('onboarding.review_integrations')}</h4>
+                        <div class="onb-review-row"><span class="label">${tOnb('onboarding.step_integrations')}</span><span class="value">${intStr}</span></div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function buildIntegrationReviewLabel(label, config) {
+            const suffix = config?.verified_at ? tOnb('onboarding.review_verified_suffix') : tOnb('onboarding.review_not_tested_suffix');
+            return `${label} (${suffix})`;
         }
 
         // --- STEP NAVIGATION ---
         window.nextOnboardingStep = function () {
             if (!validateStep()) return;
-            onbData.ui.last_step = onbStep;
+            onbData.ui.last_step = Math.max(onbData.ui.last_step || 0, onbStep);
             saveOnbProgress();
             onbStep = Math.min(onbStep + 1, ONB_STEPS.length - 1);
             renderWizard();
@@ -25256,7 +26157,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         window.skipOnboardingStep = function () {
             if (onbStep === 2) { onbData.channels.skipped = true; }
-            onbData.ui.last_step = onbStep;
+            onbData.ui.last_step = Math.max(onbData.ui.last_step || 0, onbStep);
             saveOnbProgress();
             onbStep = Math.min(onbStep + 1, ONB_STEPS.length - 1);
             renderWizard();
@@ -25294,7 +26195,7 @@ Thank you for shopping with {store_name}!</textarea>
         };
 
         window.filterOnbIndustry = function (search) {
-            const industries = t('onboarding.industries');
+            const industries = tOnb('onboarding.industries');
             if (!Array.isArray(industries)) return;
             const list = document.getElementById('onb-industry-list');
             if (!list) return;
@@ -25325,13 +26226,13 @@ Thank you for shopping with {store_name}!</textarea>
         });
 
         // --- OFFER TYPE ---
-        window.selectOfferType = function (type) {
+        window.selectOfferType = function (type, evt) {
             onbData.business.offer_type = type;
             document.querySelectorAll('.onb-offer-btn').forEach(b => b.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
+            if (evt?.currentTarget) evt.currentTarget.classList.add('selected');
             // Update description label
             const lbl = document.getElementById('onb-desc-label');
-            if (lbl) lbl.textContent = type === 'product' ? t('onboarding.label_description_product') : type === 'service' ? t('onboarding.label_description_service') : t('onboarding.label_description');
+            if (lbl) lbl.textContent = type === 'product' ? tOnb('onboarding.label_description_product') : type === 'service' ? tOnb('onboarding.label_description_service') : tOnb('onboarding.label_description');
             debounceSaveOnb();
         };
 
@@ -25360,15 +26261,15 @@ Thank you for shopping with {store_name}!</textarea>
                 const file = fileList[i];
                 const ext = file.name.split('.').pop().toLowerCase();
                 if (!ALLOWED_KB_EXT.includes(ext)) {
-                    errors.push(t('onboarding.kb_error_type', { name: file.name }));
+                    errors.push(tOnb('onboarding.kb_error_type', { name: file.name }));
                     continue;
                 }
                 if (file.size > MAX_FILE_SIZE) {
-                    errors.push(t('onboarding.kb_error_size', { name: file.name }));
+                    errors.push(tOnb('onboarding.kb_error_size', { name: file.name }));
                     continue;
                 }
                 if (totalSize + file.size > MAX_TOTAL_SIZE) {
-                    errors.push(t('onboarding.kb_error_total'));
+                    errors.push(tOnb('onboarding.kb_error_total'));
                     break;
                 }
                 totalSize += file.size;
@@ -25434,11 +26335,11 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             if (successCount > 0 && failCount === 0) {
-                showToast(t('onboarding.kb_upload_success', { count: successCount }), 'success');
+                showToast(tOnb('onboarding.kb_upload_success', { count: successCount }), 'success');
             } else if (successCount > 0 && failCount > 0) {
-                showToast(t('onboarding.kb_upload_partial', { success: successCount, total: successCount + failCount, failed: failCount }), 'info');
+                showToast(tOnb('onboarding.kb_upload_partial', { success: successCount, total: successCount + failCount, failed: failCount }), 'info');
             } else if (failCount > 0) {
-                showToast(t('onboarding.kb_upload_all_failed'), 'error');
+                showToast(tOnb('onboarding.kb_upload_all_failed'), 'error');
             }
         }
 
@@ -25526,7 +26427,7 @@ Thank you for shopping with {store_name}!</textarea>
                 document.getElementById('onb-overlay').classList.remove('show');
                 document.body.style.overflow = '';
                 dismissOnboardingBanner();
-                showToast(t('onboarding.finish_success'), 'success');
+                showToast(tOnb('onboarding.finish_success'), 'success');
 
                 // Refresh profile modal data
                 if (typeof updateProfileModalData === 'function') updateProfileModalData();
@@ -25535,9 +26436,9 @@ Thank you for shopping with {store_name}!</textarea>
                 if (avatarEl && onbData.profile.full_name) avatarEl.innerText = onbData.profile.full_name.charAt(0).toUpperCase();
             } catch (e) {
                 console.error('Finish onboarding error:', e);
-                showToast(t('onboarding.finish_error'), 'error');
+                showToast(tOnb('onboarding.finish_error'), 'error');
                 onbFinishing = false;
-                if (btn) { btn.disabled = false; btn.textContent = t('onboarding.btn_finish'); }
+                if (btn) { btn.disabled = false; btn.textContent = tOnb('onboarding.btn_finish'); }
             }
         };
 
