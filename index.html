@@ -793,18 +793,22 @@
                 "integrations_title": "Connect your store",
                 "integrations_subtitle": "Optionally connect your e-commerce platform for order automation.",
                 "integrations_skip_note": "You can configure integrations later from Settings.",
-                "label_woo_url": "Website URL",
+                "integrations_woo_title": "🛒 WordPress (WooCommerce)",
+                "label_woo_url": "Website Domain",
                 "label_woo_ck": "Consumer Key",
                 "label_woo_cs": "Consumer Secret",
                 "label_shopify_domain": "Shop Domain",
-                "label_shopify_client_id": "Client ID",
-                "label_shopify_client_secret": "Client Secret",
-                "placeholder_woo_url": "https://yourstore.com",
+                "label_shopify_token": "Storefront API Token",
+                "integrations_shopify_hint": "Please ensure to grant this token all Storefront API permissions for the best integration.",
+                "btn_test_connection": "Test Connection",
+                "test_loading": "Testing connection...",
+                "test_success": "Connection successful!",
+                "test_error": "Connection failed. Please check your credentials.",
+                "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
-                "placeholder_shopify_domain": "yourstore.myshopify.com",
-                "placeholder_shopify_id": "Your Client ID",
-                "placeholder_shopify_secret": "Your Client Secret",
+                "placeholder_shopify_domain": "yourstore",
+                "placeholder_shopify_token": "xxxx_xxxxxxxxxxx",
                 "review_title": "Review your setup",
                 "review_subtitle": "Make sure everything looks good before finishing.",
                 "review_profile": "Profile",
@@ -1615,18 +1619,22 @@
                 "integrations_title": "ربط متجرك",
                 "integrations_subtitle": "اربط منصة التجارة الإلكترونية لأتمتة الطلبات اختيارياً.",
                 "integrations_skip_note": "يمكنك إعداد التكاملات لاحقاً من الإعدادات.",
-                "label_woo_url": "رابط الموقع",
+                "integrations_woo_title": "🛒 ووردبريس (ووكومرس)",
+                "label_woo_url": "نطاق الموقع",
                 "label_woo_ck": "Consumer Key",
                 "label_woo_cs": "Consumer Secret",
                 "label_shopify_domain": "نطاق المتجر",
-                "label_shopify_client_id": "Client ID",
-                "label_shopify_client_secret": "Client Secret",
-                "placeholder_woo_url": "https://yourstore.com",
+                "label_shopify_token": "رمز الوصول Storefront API",
+                "integrations_shopify_hint": "يُرجى التأكد من منح هذا الرمز جميع أذونات Storefront API للحصول على تكامل مثالي.",
+                "btn_test_connection": "اختبار الاتصال",
+                "test_loading": "جاري اختبار الاتصال...",
+                "test_success": "تم الاتصال بنجاح!",
+                "test_error": "فشل الاتصال. يرجى التحقق من بيانات الدخول.",
+                "placeholder_woo_url": "yourstore.com",
                 "placeholder_woo_ck": "ck_xxxxxxxxxxxxxxxx",
                 "placeholder_woo_cs": "cs_xxxxxxxxxxxxxxxx",
-                "placeholder_shopify_domain": "yourstore.myshopify.com",
-                "placeholder_shopify_id": "Client ID",
-                "placeholder_shopify_secret": "Client Secret",
+                "placeholder_shopify_domain": "yourstore",
+                "placeholder_shopify_token": "xxxx_xxxxxxxxxxx",
                 "review_title": "مراجعة الإعداد",
                 "review_subtitle": "تأكد من صحة البيانات قبل الإنهاء.",
                 "review_profile": "الملف الشخصي",
@@ -24832,7 +24840,7 @@ Thank you for shopping with {store_name}!</textarea>
                 knowledge_base: { uploaded_files: [] },
                 integrations: {
                     woocommerce: { website_url: '', consumer_key: '', consumer_secret: '' },
-                    shopify: { shop_domain: '', client_id: '', client_secret: '' }
+                    shopify: { shop_domain: '', storefront_token: '' }
                 },
                 ui: { last_step: 0, dismissed_at: null, last_saved_at: null }
             };
@@ -25074,15 +25082,89 @@ Thank you for shopping with {store_name}!</textarea>
             return `<h3 class="onb-step-title">${t('onboarding.integrations_title')}</h3>
         <p class="onb-step-subtitle">${t('onboarding.integrations_subtitle')}</p>
         <div class="onb-int-cards">
-        <div class="onb-int-card"><h4>🛒 WooCommerce</h4>
-        <div class="onb-field"><label>${t('onboarding.label_woo_url')}</label><input type="url" value="${esc(w.website_url)}" placeholder="${t('onboarding.placeholder_woo_url')}" oninput="onbData.integrations.woocommerce.website_url=this.value;debounceSaveOnb()"></div>
-        <div class="onb-field"><label>${t('onboarding.label_woo_ck')}</label><input type="text" value="${esc(w.consumer_key)}" placeholder="${t('onboarding.placeholder_woo_ck')}" oninput="onbData.integrations.woocommerce.consumer_key=this.value;debounceSaveOnb()"></div>
-        <div class="onb-field"><label>${t('onboarding.label_woo_cs')}</label><input type="password" value="${esc(w.consumer_secret)}" placeholder="${t('onboarding.placeholder_woo_cs')}" oninput="onbData.integrations.woocommerce.consumer_secret=this.value;debounceSaveOnb()"></div></div>
+        <div class="onb-int-card"><h4>${t('onboarding.integrations_woo_title')}</h4>
+        <div class="onb-field"><label>${t('onboarding.label_woo_url')}</label><input type="text" id="woo-domain" value="${esc(w.website_url)}" placeholder="${t('onboarding.placeholder_woo_url')}" oninput="onbData.integrations.woocommerce.website_url=this.value;debounceSaveOnb()"></div>
+        <div class="onb-field"><label>${t('onboarding.label_woo_ck')}</label><input type="text" id="woo-ck" value="${esc(w.consumer_key)}" placeholder="${t('onboarding.placeholder_woo_ck')}" oninput="onbData.integrations.woocommerce.consumer_key=this.value;debounceSaveOnb()"></div>
+        <div class="onb-field"><label>${t('onboarding.label_woo_cs')}</label><input type="password" id="woo-cs" value="${esc(w.consumer_secret)}" placeholder="${t('onboarding.placeholder_woo_cs')}" oninput="onbData.integrations.woocommerce.consumer_secret=this.value;debounceSaveOnb()"></div>
+        <button class="onb-btn-secondary" style="margin-top:10px;" onclick="testWooConnection()">${t('onboarding.btn_test_connection')}</button>
+        <div id="woo-test-result" style="margin-top:8px; font-size:14px; font-weight:500;"></div>
+        </div>
         <div class="onb-int-card"><h4>🟢 Shopify</h4>
-        <div class="onb-field"><label>${t('onboarding.label_shopify_domain')}</label><input type="text" value="${esc(s.shop_domain)}" placeholder="${t('onboarding.placeholder_shopify_domain')}" oninput="onbData.integrations.shopify.shop_domain=this.value;debounceSaveOnb()"></div>
-        <div class="onb-field"><label>${t('onboarding.label_shopify_client_id')}</label><input type="text" value="${esc(s.client_id)}" placeholder="${t('onboarding.placeholder_shopify_id')}" oninput="onbData.integrations.shopify.client_id=this.value;debounceSaveOnb()"></div>
-        <div class="onb-field"><label>${t('onboarding.label_shopify_client_secret')}</label><input type="password" value="${esc(s.client_secret)}" placeholder="${t('onboarding.placeholder_shopify_secret')}" oninput="onbData.integrations.shopify.client_secret=this.value;debounceSaveOnb()"></div></div></div>
+        <div class="onb-field"><label>${t('onboarding.label_shopify_domain')}</label>
+            <div style="display:flex; align-items:center; gap:4px; background:var(--bg-content); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:0 12px; height:44px; overflow:hidden;">
+                <input type="text" id="shop-domain" value="${esc(s.shop_domain)}" placeholder="${t('onboarding.placeholder_shopify_domain')}" style="border:none; background:transparent; height:100%; width:100%; box-shadow:none; padding:0; outline:none;" oninput="onbData.integrations.shopify.shop_domain=this.value;debounceSaveOnb()">
+                <span dir="ltr" style="color:var(--text-secondary); white-space:nowrap; font-size:14px;">.myshopify.com</span>
+            </div>
+        </div>
+        <div class="onb-field"><label>${t('onboarding.label_shopify_token')}</label><input type="password" id="shop-token" value="${esc(s.storefront_token || '')}" placeholder="${t('onboarding.placeholder_shopify_token')}" oninput="onbData.integrations.shopify.storefront_token=this.value;debounceSaveOnb()">
+        <small style="color:var(--text-secondary); display:block; margin-top:4px;">${t('onboarding.integrations_shopify_hint')}</small>
+        </div>
+        <button class="onb-btn-secondary" style="margin-top:10px;" onclick="testShopifyConnection()">${t('onboarding.btn_test_connection')}</button>
+        <div id="shopify-test-result" style="margin-top:8px; font-size:14px; font-weight:500;"></div>
+        </div></div>
         <div class="onb-hint" style="margin-top:12px;">${t('onboarding.integrations_skip_note')}</div>`;
+        }
+
+        async function testWooConnection() {
+            const w = onbData.integrations.woocommerce;
+            const resEl = document.getElementById('woo-test-result');
+            if (!w.website_url || !w.consumer_key || !w.consumer_secret) {
+                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+                return;
+            }
+            if (resEl) { resEl.style.color = 'var(--text-secondary)'; resEl.innerText = t('onboarding.test_loading'); }
+
+            try {
+                let domain = w.website_url.replace(/^(https?:\\\/\\\/)?/, '').replace(/\\\/$/, '');
+                if (!domain) throw new Error("Invalid domain");
+                const url = `https://${domain}/wp-json/wc/v3/`;
+                const headers = new Headers();
+                headers.set('Authorization', 'Basic ' + btoa(w.consumer_key + ":" + w.consumer_secret));
+
+                const response = await fetch(url, { method: 'GET', headers: headers });
+                if (!response.ok) throw new Error("WooCommerce API Error");
+
+                if (resEl) { resEl.style.color = '#27ae60'; resEl.innerText = t('onboarding.test_success'); }
+            } catch (err) {
+                console.warn('Woo test failed:', err);
+                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+            }
+        }
+
+        async function testShopifyConnection() {
+            const s = onbData.integrations.shopify;
+            const resEl = document.getElementById('shopify-test-result');
+            if (!s.shop_domain || !s.storefront_token) {
+                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+                return;
+            }
+            if (resEl) { resEl.style.color = 'var(--text-secondary)'; resEl.innerText = t('onboarding.test_loading'); }
+
+            try {
+                let domain = s.shop_domain.replace(/\\.myshopify\\.com.*$/, '').replace(/^(https?:\\\/\\\/)?/, '').replace(/\\\/$/, '');
+                if (!domain) throw new Error("Invalid domain");
+                const url = `https://${domain}.myshopify.com/api/2024-01/graphql.json`;
+
+                const query = `{ shop { name } }`;
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Shopify-Storefront-Access-Token': s.storefront_token
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                if (!response.ok) throw new Error("Shopify API Error");
+                const rb = await response.json();
+                if (rb.errors) throw new Error("Shopify GraphQL Error");
+
+                if (resEl) { resEl.style.color = '#27ae60'; resEl.innerText = t('onboarding.test_success'); }
+            } catch (err) {
+                console.warn('Shopify test failed:', err);
+                if (resEl) { resEl.style.color = '#e74c3c'; resEl.innerText = t('onboarding.test_error'); }
+            }
         }
 
         function renderStepReview() {
@@ -25096,7 +25178,7 @@ Thank you for shopping with {store_name}!</textarea>
             const woo = d.integrations.woocommerce;
             const shop = d.integrations.shopify;
             const hasWoo = woo.website_url && woo.consumer_key;
-            const hasShop = shop.shop_domain && shop.client_id;
+            const hasShop = shop.shop_domain && shop.storefront_token;
             let intStr = '';
             if (hasWoo) intStr += t('onboarding.review_woo_connected');
             if (hasShop) intStr += (intStr ? ', ' : '') + t('onboarding.review_shopify_connected');
