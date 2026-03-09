@@ -15675,34 +15675,139 @@
             }
         }
 
+        async function uploadKbFileDirectly(agentId) {
+            if (window.currentUserRole === 'moderator') {
+                showToast(t('kb.toast_file_failed') || "Unauthorized", 'error');
+                return;
+            }
+            const fileInput = document.getElementById(`kb-file-upload-${agentId}`);
+            if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                showToast("Please select a file to upload.", "warning");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const MAX_FILE_SIZE = 3 * 1024 * 1024;
+            if (file.size > MAX_FILE_SIZE) {
+                showToast(t('onboarding.kb.err_file_size') || "File exceeds 3MB limit.", "error");
+                return;
+            }
+
+            const ts = Date.now();
+            const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+            const storagePath = `${currentUserOrgId}/direct/${ts}_${safeName}`;
+
+            const uploadBtn = document.getElementById(`upload-btn-${agentId}`);
+            if (uploadBtn) {
+                uploadBtn.disabled = true;
+                uploadBtn.textContent = "Uploading...";
+            }
+
+            try {
+                const { error: uploadError } = await window.supabaseClient.storage
+                    .from('knowledge_base')
+                    .upload(storagePath, file, { upsert: false });
+
+                if (uploadError) throw uploadError;
+
+                const { error: insertError } = await window.supabaseClient.from('agent_kb_files').insert({
+                    org_id: currentUserOrgId,
+                    agent: 'website',
+                    bucket: 'knowledge_base',
+                    path: storagePath,
+                    filename: file.name,
+                    mime_type: file.type || 'application/octet-stream',
+                    size_bytes: file.size,
+                    created_by: window.currentUserObj?.id || null
+                });
+
+                if (insertError) throw insertError;
+
+                showToast(t('kb.toast_file_uploaded') || "File uploaded successfully", "success");
+                fileInput.value = "";
+
+                // Refresh all showing lists
+                AGENTS.forEach(ag => {
+                    if (document.getElementById(`kb-shared-files-list-${ag.id}`)) {
+                        loadSharedKbFiles(ag.id);
+                    }
+                });
+            } catch (err) {
+                console.error("Direct upload error:", err);
+                showToast(t('kb.toast_file_failed') || "File upload failed", "error");
+            } finally {
+                if (uploadBtn) {
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = t('kb.btn_upload_file') || "Upload File";
+                }
+            }
+        }
+
         async function loadSharedKbFiles(agentId) {
             const listEl = document.getElementById(`kb-shared-files-list-${agentId}`);
             if (!listEl) return;
 
             try {
-                // We load all kb files for the org, bypassing agent filtering because they are "shared" from onboarding
-                const { data, error } = await window.supabaseClient
-                    .from('agent_kb_files')
-                    .select('*')
-                    .eq('org_id', currentUserOrgId)
-                    .order('created_at', { ascending: false });
+                const [orgRes, agentFiles] = await Promise.all([
+                    window.supabaseClient
+                        .from('organization_resources')
+                        .select('*')
+                        .eq('org_id', currentUserOrgId)
+                        .order('created_at', { ascending: false }),
+                    window.supabaseClient
+                        .from('agent_kb_files')
+                        .select('*')
+                        .eq('org_id', currentUserOrgId)
+                        .order('created_at', { ascending: false })
+                ]);
 
-                if (error) throw error;
+                if (orgRes.error) console.error("Error fetching org resources:", orgRes.error);
+                if (agentFiles.error) console.error("Error fetching agent files:", agentFiles.error);
 
-                // Deduplicate by path (since previous logic blindly inserted 4 rows per file)
-                const uniqueFilesMap = new Map();
-                data.forEach(file => {
-                    // Prefer the 'website' row if multiple exist for the same path
-                    if (!uniqueFilesMap.has(file.path)) {
-                        uniqueFilesMap.set(file.path, file);
-                    } else if (file.agent === 'website') {
-                        uniqueFilesMap.set(file.path, file);
-                    }
-                });
+                let mergedFiles = [];
 
-                const uniqueFiles = Array.from(uniqueFilesMap.values());
+                if (orgRes.data) {
+                    orgRes.data.forEach(item => {
+                        mergedFiles.push({
+                            id: item.id,
+                            filename: item.label || 'Unknown File',
+                            path: item.storage_path,
+                            created_at: item.created_at,
+                            source_table: 'organization_resources',
+                            size_bytes: 0,
+                            url: item.url,
+                            file_type: item.file_type || 'default'
+                        });
+                    });
+                }
 
-                if (uniqueFiles.length === 0) {
+                if (agentFiles.data) {
+                    const uniqueFilesMap = new Map();
+                    agentFiles.data.forEach(file => {
+                        if (!uniqueFilesMap.has(file.path)) {
+                            uniqueFilesMap.set(file.path, file);
+                        } else if (file.agent === 'website') {
+                            uniqueFilesMap.set(file.path, file);
+                        }
+                    });
+
+                    Array.from(uniqueFilesMap.values()).forEach(file => {
+                        mergedFiles.push({
+                            id: file.id,
+                            filename: file.filename,
+                            path: file.path,
+                            created_at: file.created_at,
+                            source_table: 'agent_kb_files',
+                            size_bytes: file.size_bytes,
+                            url: null,
+                            file_type: (file.filename.split('.').pop() || 'default').toLowerCase()
+                        });
+                    });
+                }
+
+                mergedFiles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+                if (mergedFiles.length === 0) {
                     listEl.innerHTML = `<div class="kb-empty-state">
                         <span style="font-size: 1.5rem; opacity: 0.5;">📄</span>
                         ${t('kb.empty_files')}
@@ -15710,18 +15815,22 @@
                     return;
                 }
 
-                listEl.innerHTML = uniqueFiles.map(file => `
+                listEl.innerHTML = mergedFiles.map(file => `
                     <div class="kb-item-card">
                         <div class="kb-item-info">
-                            <div class="kb-item-title" title="${file.filename}">${file.filename}</div>
-                            <div class="kb-item-meta">
-                                <span class="kb-badge">${t('kb.badge_onboarding')}</span>
-                                <span>${(file.size_bytes / 1024).toFixed(1)} KB</span>
-                                <span>${new Date(file.created_at).toLocaleDateString()}</span>
+                            <span style="font-size: 1.25rem; opacity: 0.8; margin-right: 8px;">${getFileTypeIcon(file.file_type)}</span>
+                            <div>
+                                <div class="kb-item-title" title="${file.filename}">${file.filename}</div>
+                                <div class="kb-item-meta">
+                                    <span class="kb-badge" style="${file.source_table === 'organization_resources' ? 'background: rgba(43, 138, 134, 0.2); color: #2b8a86;' : ''}">${file.source_table === 'organization_resources' ? 'Legacy' : t('kb.badge_onboarding') || 'Shared'}</span>
+                                    ${file.size_bytes > 0 ? `<span>${(file.size_bytes / 1024).toFixed(1)} KB</span>` : ''}
+                                    <span>${new Date(file.created_at).toLocaleDateString()}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="kb-item-actions" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">
-                            <button onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${agentId}')" title="${t('kb.btn_delete_global')}">
+                        <div class="kb-item-actions">
+                            ${file.url ? `<a href="${file.url}" target="_blank" style="color: inherit; margin-right: 8px;" title="Open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
+                            <button style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}" onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${file.source_table}', '${agentId}')" title="${t('kb.btn_delete_global')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
                         </div>
@@ -15733,31 +15842,40 @@
             }
         }
 
-        async function deleteSharedKbFile(storagePath, recordId, currentAgentId) {
+        async function deleteSharedKbFile(storagePath, recordId, sourceTable, currentAgentId) {
             if (window.currentUserRole === 'moderator') return;
             // Strict confirm per prompt requirements
-            if (!confirm(t('kb.delete_confirm'))) return;
+            if (!confirm(t('kb.delete_confirm') || 'Delete for all agents?')) return;
 
             try {
-                // Delete from DB completely (this cleans up all duplicate DB rows because we delete by path and org_id broadly)
-                const { error: dbError } = await window.supabaseClient
-                    .from('agent_kb_files')
-                    .delete()
-                    .eq('org_id', currentUserOrgId)
-                    .eq('path', storagePath);
+                if (sourceTable === 'organization_resources') {
+                    const { error: dbError } = await window.supabaseClient
+                        .from('organization_resources')
+                        .delete()
+                        .eq('id', recordId);
+                    if (dbError) throw dbError;
 
-                if (dbError) throw dbError;
+                    if (storagePath) {
+                        const { error: storageError } = await window.supabaseClient.storage
+                            .from('organization_assets')
+                            .remove([storagePath]);
+                    }
+                } else {
+                    const { error: dbError } = await window.supabaseClient
+                        .from('agent_kb_files')
+                        .delete()
+                        .eq('org_id', currentUserOrgId)
+                        .eq('path', storagePath);
+                    if (dbError) throw dbError;
 
-                // Delete from Storage
-                const { error: storageError } = await window.supabaseClient.storage
-                    .from('knowledge_base')
-                    .remove([storagePath]);
-
-                if (storageError) {
-                    console.error("Storage delete fail, but DB deleted:", storageError);
+                    if (storagePath) {
+                        const { error: storageError } = await window.supabaseClient.storage
+                            .from('knowledge_base')
+                            .remove([storagePath]);
+                    }
                 }
 
-                showToast(t('kb.toast_file_deleted'), 'success');
+                showToast(t('kb.toast_file_deleted') || 'Deleted', 'success');
 
                 // Reload on all open instances that might be visible
                 AGENTS.forEach(ag => {
@@ -15767,7 +15885,7 @@
                 });
             } catch (err) {
                 console.error('Error deleting shared file:', err);
-                showToast(t('kb.toast_file_failed'), 'error');
+                showToast(t('kb.toast_file_failed') || 'Deletion failed', 'error');
             }
         }
 
@@ -16205,20 +16323,18 @@
                                     </div>
                                 </div>
 
-                                <!-- Shared Files (From Onboarding, tied generically to org, visible to all agents) -->
-                                <div class="kb-subsection">
-                                    <h4 class="kb-subsection-title" data-i18n="kb.shared_files">Shared Files</h4>
-                                    <div id="kb-shared-files-list-${agent.id}" class="kb-items-list">
-                                        <!-- Loaded dynamically -->
-                                        <div class="loading-spinner" style="padding: 10px;"></div>
+                                <!-- Unified Knowledge Base Files (Legacy Resources + New Uploads) -->
+                                <div class="kb-subsection" style="margin-top: 32px;">
+                                    <h4 class="kb-subsection-title" data-i18n="kb.files_title">Knowledge Base Files</h4>
+                                    
+                                    <div class="kb-link-input-group" style="align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); margin-bottom: 20px;">
+                                        <input type="file" id="kb-file-upload-${agent.id}" accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx" style="flex: 1; min-width: 0; padding: 0; border: none; background: transparent;" />
+                                        <button id="upload-btn-${agent.id}" class="pill-btn secondary" onclick="uploadKbFileDirectly('${agent.id}')" data-i18n="kb.btn_upload_file">Upload File</button>
                                     </div>
-                                </div>
 
-                                <!-- Organization Resources (Read-only, from old system) -->
-                                <div class="kb-subsection" style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px;">
-                                    <h4 class="kb-subsection-title" data-i18n="kb.org_resources">Organization Resources</h4>
-                                    <div id="org-resources-${agent.id}" class="org-resources-container">
-                                        <div class="loading-spinner" style="padding: 20px;"></div>
+                                    <div id="kb-shared-files-list-${agent.id}" class="kb-items-list">
+                                        <!-- Loaded dynamically via loadSharedKbFiles() -->
+                                        <div class="loading-spinner" style="padding: 10px;"></div>
                                     </div>
                                 </div>
                                 
