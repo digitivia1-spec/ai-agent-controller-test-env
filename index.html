@@ -26333,27 +26333,15 @@ Thank you for shopping with {store_name}!</textarea>
                 const handle = normalizeShopifyHandle(s.shop_domain);
                 if (!handle) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
 
-                // 1) Try direct Storefront call (no proxy, no CORS issues for Storefront token)
-                let parsed = await directShopifyCheck(handle, s.storefront_token);
-
-                // 2) If direct fails (CORS/auth), retry via integration proxy with allowed header
-                if (!parsed.ok) {
-                    const targetUrl = `https://${handle}.myshopify.com/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
-                    const query = `query WizardConnectionTest { shop { name primaryDomain { host url } } }`;
-                    parsed = await requestViaProxy({
-                        targetUrl,
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Shopify-Storefront-Access-Token': s.storefront_token
-                        },
-                        body: JSON.stringify({ query })
-                    });
-                }
+                // Try direct Storefront call first (best path for private tokens; avoids proxy auth/CORS)
+                const parsed = await directShopifyCheck(handle, s.storefront_token);
 
                 if (!parsed.ok) {
-                    const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status}`;
-                    throw { code: (parsed.status === 401 || parsed.status === 403) ? 'permission' : 'network', detail };
+                    const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status || '0'}`;
+                    throw {
+                        code: (!parsed.status || parsed.status === 0) ? 'network' : (parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network'),
+                        detail
+                    };
                 }
 
                 if (Array.isArray(parsed.data?.errors) && parsed.data.errors.length) {
