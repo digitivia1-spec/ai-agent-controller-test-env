@@ -15252,6 +15252,130 @@
             }
         }
 
+        @media (max-width: 768px) {
+            #integrations {
+                overflow-x: clip;
+            }
+
+            #integrations .ih-shell,
+            #integrations .ih-header,
+            #integrations .ih-title,
+            #integrations .ih-grid,
+            #integrations .ih-card,
+            #integrations .ih-card-head,
+            #integrations .ih-brand,
+            #integrations .ih-form-grid,
+            #integrations .ih-field,
+            #integrations .ih-note,
+            #integrations .ih-subtitle {
+                min-width: 0;
+            }
+
+            #integrations .ih-subtitle,
+            #integrations .ih-note,
+            #integrations .ih-card-subtitle,
+            #integrations .ih-card-title,
+            #integrations .ih-badge {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+
+            #integrations .ih-shell {
+                padding: 12px;
+                border-radius: 14px;
+            }
+
+            #integrations .ih-header {
+                display: block;
+            }
+
+            #integrations .ih-card {
+                padding: 12px;
+                border-radius: 14px;
+            }
+
+            #integrations .ih-card-head {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                align-items: start;
+                gap: 8px;
+            }
+
+            #integrations .ih-brand {
+                display: grid;
+                grid-template-columns: auto minmax(0, 1fr);
+                align-items: start;
+                gap: 10px;
+            }
+
+            #integrations .ih-badge {
+                white-space: normal;
+                justify-self: start;
+                max-width: 100%;
+                text-align: start;
+            }
+
+            [dir="rtl"] #integrations .ih-badge {
+                justify-self: end;
+                text-align: start;
+            }
+
+            #integrations .ih-inline-domain,
+            #integrations .ih-inline-domain input {
+                min-width: 0;
+            }
+
+            #integrations .ih-actions,
+            #integrations .ih-save-all {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            #integrations .ih-btn {
+                width: 100%;
+            }
+
+            body.mobile-integrations-active main {
+                padding-inline: 12px !important;
+                padding-bottom: calc(138px + env(safe-area-inset-bottom, 0px)) !important;
+            }
+
+            body.mobile-integrations-active .theme-float-btn {
+                inline-size: 40px;
+                block-size: 40px;
+                inset-inline-end: 8px;
+                inset-block-end: calc(66px + env(safe-area-inset-bottom, 0px));
+                box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+                border-color: rgba(255, 255, 255, 0.14);
+            }
+
+            [dir="rtl"] body.mobile-integrations-active .theme-float-btn {
+                inset-inline-start: 8px;
+                inset-inline-end: auto;
+            }
+
+            body.mobile-integrations-active .aiw-launcher {
+                inline-size: 42px;
+                block-size: 42px;
+                inset-inline-end: 8px;
+                inset-block-end: calc(14px + env(safe-area-inset-bottom, 0px) + var(--aiw-keyboard-offset));
+                box-shadow:
+                    0 10px 24px rgba(2, 8, 23, 0.35),
+                    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            }
+
+            [dir="rtl"] body.mobile-integrations-active .aiw-launcher {
+                inset-inline-start: 8px;
+                inset-inline-end: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body.mobile-integrations-active main {
+                padding-inline: 10px !important;
+            }
+        }
+
         [dir="rtl"] .ih-save-all {
             justify-content: flex-start;
         }
@@ -19078,6 +19202,7 @@ Thank you for shopping with {store_name}!</textarea>
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             if (element) element.classList.add('active');
+            document.body.classList.toggle('mobile-integrations-active', tabId === 'integrations');
             syncInboxMobileMode(tabId);
 
             // Auto-expand the correct nav group
