@@ -18785,6 +18785,7 @@ Thank you for shopping with {store_name}!</textarea>
                                     <button class="fu-msg-channel-tab active" id="fu-ctab-whatsapp" onclick="fuSwitchMessageChannel('whatsapp')">WhatsApp</button>
                                     <button class="fu-msg-channel-tab" id="fu-ctab-instagram" onclick="fuSwitchMessageChannel('instagram')">Instagram</button>
                                     <button class="fu-msg-channel-tab" id="fu-ctab-page" onclick="fuSwitchMessageChannel('page')">Messenger</button>
+                                    <button class="fu-msg-channel-tab" id="fu-ctab-telegram" onclick="fuSwitchMessageChannel('telegram')">Telegram</button>
                                 </div>
                                 <div class="fu-lang-tabs">
                                     <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en">English</button>
@@ -18799,6 +18800,7 @@ Thank you for shopping with {store_name}!</textarea>
                                     <label class="fu-channel-check"><input type="checkbox" id="fu-ch-whatsapp" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>WhatsApp</span></div></label>
                                     <label class="fu-channel-check"><input type="checkbox" id="fu-ch-instagram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Instagram</span></div></label>
                                     <label class="fu-channel-check"><input type="checkbox" id="fu-ch-page" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Messenger</span></div></label>
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-telegram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Telegram</span></div></label>
                                 </div>
                             </div>
                             <button class="pill-btn primary" style="width:100%;height:46px;" onclick="fuSaveSettings()" data-i18n="followups.config_save">Save Configuration</button>
@@ -18808,6 +18810,7 @@ Thank you for shopping with {store_name}!</textarea>
                                 <button class="fu-preview-tab active" id="fu-ptab-wa" onclick="fuSwitchPreview('wa')">WhatsApp</button>
                                 <button class="fu-preview-tab" id="fu-ptab-ig" onclick="fuSwitchPreview('ig')">Instagram</button>
                                 <button class="fu-preview-tab" id="fu-ptab-fb" onclick="fuSwitchPreview('fb')">Messenger</button>
+                                <button class="fu-preview-tab" id="fu-ptab-tg" onclick="fuSwitchPreview('tg')">Telegram</button>
                             </div>
                             <div class="fu-preview-screen">
                                 <div id="fu-prev-wa" class="fu-phone-frame fu-prev-platform active">
@@ -18837,6 +18840,15 @@ Thank you for shopping with {store_name}!</textarea>
                                         </div>
                                         <div class="fu-platform-chat"><div class="fu-msg-bubble"><div id="fu-prev-msg-fb"></div><small id="fu-fb-time">Just now</small></div></div>
                                         <div class="fu-platform-footer"><span>👍 GIF</span><span>+</span></div>
+                                    </div>
+                                </div>
+                                <div id="fu-prev-tg" class="fu-phone-frame fu-prev-platform">
+                                    <div class="fu-platform-shell fu-wa-shell">
+                                        <div class="fu-platform-head">
+                                            <div class="fu-platform-avatar">JD</div>
+                                            <div class="fu-platform-headtext"><strong>John Doe</strong><span class="fu-platform-status" id="fu-tg-status">online</span></div>
+                                        </div>
+                                        <div class="fu-platform-chat"><div class="fu-msg-bubble"><div id="fu-prev-msg-tg"></div><small id="fu-tg-time">Just now</small></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -19453,7 +19465,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost'];
-        const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'page', 'website'];
+        const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'page', 'telegram', 'website'];
 
         function normalizeLeadsView(view) {
             const allowed = ['table', 'grid', 'pipeline'];
@@ -19493,7 +19505,7 @@ Thank you for shopping with {store_name}!</textarea>
                 .concat(LEAD_STATUSES.map(s => `<option value="${s}" ${s === curStatus ? 'selected' : ''}>${t('leads.status.' + s) || s}</option>`))
                 .join('');
 
-            const LEAD_PLATFORM_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', page: 'Messenger', website: 'Website' };
+            const LEAD_PLATFORM_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', page: 'Messenger', telegram: 'Telegram', website: 'Website' };
             const platOpts = [`<option value="all">${t('leads.filter_all_platforms')}</option>`]
                 .concat(LEAD_PLATFORMS.map(p => `<option value="${p}" ${p === curPlatform ? 'selected' : ''}>${LEAD_PLATFORM_LABELS[p] || p.charAt(0).toUpperCase() + p.slice(1)}</option>`))
                 .join('');
@@ -19603,7 +19615,7 @@ Thank you for shopping with {store_name}!</textarea>
             const searchRaw = (document.getElementById('leads-search')?.value || '').toLowerCase().trim();
             const statusRaw = (document.getElementById('leads-filter-status')?.value || 'all').toLowerCase();
             const platformRaw = (document.getElementById('leads-filter-platform')?.value || 'all').toLowerCase();
-            const LEAD_DISPLAY_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', page: 'Messenger', website: 'Website' };
+            const LEAD_DISPLAY_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', page: 'Messenger', telegram: 'Telegram', website: 'Website' };
             const rows = [];
 
             leads.forEach(lead => {
@@ -21043,26 +21055,28 @@ Thank you for shopping with {store_name}!</textarea>
         async function toggleAgentStatus(agentId) {
             if (window.currentUserRole === 'moderator') {
                 // Revert visual state
-                const cb = document.getElementById(`status - ${agentId} `);
+                const cb = document.getElementById(`status-${agentId}`);
                 if (cb) cb.checked = !cb.checked;
                 showToast(t('messages.access_denied'), "error");
                 return;
             }
             if (!currentUserOrgId) return;
 
-            const isChecked = document.getElementById(`status - ${agentId} `).checked;
-            const label = document.querySelector(`#${agentId} .toggle - label`);
-            label.style.opacity = "0.5";
+            const statusCheckbox = document.getElementById(`status-${agentId}`);
+            if (!statusCheckbox) return;
+            const isChecked = statusCheckbox.checked;
+            const label = document.querySelector(`#${agentId} .toggle-label`);
+            if (label) label.style.opacity = "0.5";
 
             try {
                 const { error } = await supabaseClient
                     .from('agent_configs')
                     .upsert({
                         org_id: currentUserOrgId,
-                        agent_type: agentId,
+                        agent: agentId,
                         is_active: isChecked,
                         updated_at: new Date().toISOString()
-                    }, { onConflict: 'org_id, agent_type' });
+                    }, { onConflict: 'org_id, agent' });
 
                 if (error) throw error;
 
@@ -21071,9 +21085,9 @@ Thank you for shopping with {store_name}!</textarea>
             } catch (e) {
                 console.error(e);
                 showToast(t('messages.error_status_update'), "error");
-                document.getElementById(`status-${agentId}`).checked = !isChecked;
+                statusCheckbox.checked = !isChecked;
             } finally {
-                label.style.opacity = "1";
+                if (label) label.style.opacity = "1";
             }
         }
 
@@ -25908,19 +25922,21 @@ Thank you for shopping with {store_name}!</textarea>
     // ==========================================
     //        FOLLOW-UPS LOGIC (RESTORED)
     // ==========================================
-    const FU_CHANNELS = ['whatsapp', 'instagram', 'page'];
-    const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page' };
-    const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb' };
+    const FU_CHANNELS = ['whatsapp', 'instagram', 'page', 'telegram'];
+    const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page', tg: 'telegram' };
+    const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb', telegram: 'tg' };
     const FU_MOCK_MESSAGES = {
         en: {
             whatsapp: "Hi {name}, just checking in on your request. I can share pricing or next steps.",
             instagram: "Hey {name}! Quick follow-up on our chat. Want matching options?",
-            page: "Hello {name}, friendly follow-up from {business_name}. Reply and I'll help right away."
+            page: "Hello {name}, friendly follow-up from {business_name}. Reply and I'll help right away.",
+            telegram: "Hi {name}, quick Telegram follow-up from {business_name}. Reply and I will help immediately."
         },
         ar: {
             whatsapp: "مرحباً {name}، متابعة سريعة على طلبك. أستطيع إرسال الأسعار أو الخطوة التالية.",
             instagram: "أهلاً {name}! متابعة سريعة لمحادثتنا. هل ترغب بإرسال الخيارات المناسبة؟",
-            page: "مرحباً {name}، متابعة ودية من {business_name}. رد هنا وسأساعدك مباشرة."
+            page: "مرحباً {name}، متابعة ودية من {business_name}. رد هنا وسأساعدك مباشرة.",
+            telegram: "مرحباً {name}، متابعة سريعة عبر تيليجرام من {business_name}. رد هنا وسأساعدك مباشرة."
         }
     };
     let fuCurrentSubtab = 'queue';
@@ -25928,8 +25944,8 @@ Thank you for shopping with {store_name}!</textarea>
     let fuCurrentMsgLang = 'en';
     let fuCurrentMessageChannel = 'whatsapp';
     let fuCurrentPreviewPlatform = 'wa';
-    let fuMessageByChannel = { whatsapp: '', instagram: '', page: '' };
-    let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '' };
+    let fuMessageByChannel = { whatsapp: '', instagram: '', page: '', telegram: '' };
+    let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '', telegram: '' };
     let fuConversationDisplayMap = new Map();
 
     function fuEscapeHtml(value) {
@@ -25995,8 +26011,8 @@ Thank you for shopping with {store_name}!</textarea>
         fuSetEditorValuesFromState(); fuUpdatePreview();
     }
     function fuSyncPreviewTabAvailability() {
-        const enabled = { whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked, instagram: !!document.getElementById('fu-ch-instagram')?.checked, page: !!document.getElementById('fu-ch-page')?.checked };
-        [['wa', 'whatsapp'], ['ig', 'instagram'], ['fb', 'page']].forEach(([k, ch]) => {
+        const enabled = { whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked, instagram: !!document.getElementById('fu-ch-instagram')?.checked, page: !!document.getElementById('fu-ch-page')?.checked, telegram: !!document.getElementById('fu-ch-telegram')?.checked };
+        [['wa', 'whatsapp'], ['ig', 'instagram'], ['fb', 'page'], ['tg', 'telegram']].forEach(([k, ch]) => {
             const el = document.getElementById(`fu-ptab-${k}`); if (!el) return;
             el.disabled = !enabled[ch]; el.style.opacity = enabled[ch] ? '1' : '.65';
         });
@@ -26007,13 +26023,14 @@ Thank you for shopping with {store_name}!</textarea>
         const statusText = {
             wa: isAr ? 'متصل الآن' : 'online',
             ig: isAr ? 'نشط الآن' : 'Active now',
-            fb: isAr ? 'نشط' : 'Active'
+            fb: isAr ? 'نشط' : 'Active',
+            tg: isAr ? 'متصل الآن' : 'online'
         };
-        [['wa', 'fu-wa-status'], ['ig', 'fu-ig-status'], ['fb', 'fu-fb-status']].forEach(([k, id]) => {
+        [['wa', 'fu-wa-status'], ['ig', 'fu-ig-status'], ['fb', 'fu-fb-status'], ['tg', 'fu-tg-status']].forEach(([k, id]) => {
             const el = document.getElementById(id);
             if (el) el.textContent = statusText[k];
         });
-        ['wa', 'ig', 'fb'].forEach(k => {
+        ['wa', 'ig', 'fb', 'tg'].forEach(k => {
             const ch = fuPreviewToChannelMap[k];
             const raw = isAr ? (fuMessageByChannelAr[ch] || FU_MOCK_MESSAGES.ar[ch]) : (fuMessageByChannel[ch] || FU_MOCK_MESSAGES.en[ch]);
             const txt = raw.replace(/\{name\}/g, name).replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent').replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
@@ -26060,8 +26077,8 @@ Thank you for shopping with {store_name}!</textarea>
                 document.getElementById('fu-setting-enabled').checked = !!data.enabled;
                 const m = data.followup_message_by_channel || {};
                 const ma = data.followup_message_ar_by_channel || {};
-                fuMessageByChannel = { whatsapp: m.whatsapp || data.followup_message || '', instagram: m.instagram || m.whatsapp || data.followup_message || '', page: m.page || data.followup_message || '' };
-                fuMessageByChannelAr = { whatsapp: ma.whatsapp || data.followup_message_ar || '', instagram: ma.instagram || ma.whatsapp || data.followup_message_ar || '', page: ma.page || data.followup_message_ar || '' };
+                fuMessageByChannel = { whatsapp: m.whatsapp || data.followup_message || '', instagram: m.instagram || m.whatsapp || data.followup_message || '', page: m.page || data.followup_message || '', telegram: m.telegram || m.whatsapp || data.followup_message || '' };
+                fuMessageByChannelAr = { whatsapp: ma.whatsapp || data.followup_message_ar || '', instagram: ma.instagram || ma.whatsapp || data.followup_message_ar || '', page: ma.page || data.followup_message_ar || '', telegram: ma.telegram || ma.whatsapp || data.followup_message_ar || '' };
                 const channels = data.active_channels || FU_CHANNELS;
                 FU_CHANNELS.forEach(ch => { const el = document.getElementById(`fu-ch-${ch}`); if (el) el.checked = channels.includes(ch); });
             }
