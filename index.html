@@ -24685,6 +24685,52 @@ Thank you for shopping with {store_name}!</textarea>
             </form>
         </section>
     </div>
+<button 
+    id="wa-test-btn" 
+    onclick="launchWhatsAppSignup()" 
+    style="position: fixed; bottom: 10px; right: 10px; z-index: 9999; opacity: 0.05; background: #25D366; color: black; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
+    WA
+</button>
+
+<script>
+    // 1. Load the Facebook SDK asynchronously
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // 2. Initialize SDK with your specific App ID
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '875686618745863', 
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v20.0'
+        });
+    };
+
+    // 3. Trigger the Meta Popup
+    function launchWhatsAppSignup() {
+        console.log("Launching WhatsApp Signup...");
+        FB.login(function(response) {
+            if (response.authResponse) {
+                console.log('WA Login successful!', response.authResponse);
+                // Alerting the code so you can visually confirm it worked during testing
+                alert('Success! Check the browser console for your exchangeable code.');
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+                alert('Login cancelled or failed.');
+            }
+        }, {
+            config_id: '1239600244448047', 
+            response_type: 'code',
+            override_default_response_type: true 
+        });
+    }
+</script>
 </body>
 
 <script>

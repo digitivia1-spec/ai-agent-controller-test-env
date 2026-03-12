@@ -2,3 +2,4 @@ ai-agent.digitivia.com-1771618572243.log
 *.log
 .github/agents/newa.agent.md
 supabase/migrations/20260311095000_telegram_parity.sql
+supabase/migrations/20260311100500_org_channel_accounts_add_telegram.sql
