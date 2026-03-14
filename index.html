@@ -25581,6 +25581,15 @@ Thank you for shopping with {store_name}!</textarea>
         return JSON.stringify(state, null, 2);
     }
 
+    function escapeWhatsAppHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function renderWhatsAppAgentHeaderActionsMarkup() {
         const state = getWhatsAppConnectionState();
         if (state.connected) {
@@ -25652,19 +25661,19 @@ Thank you for shopping with {store_name}!</textarea>
                         <button type="button" class="wa-connect-secondary" onclick="copyWhatsAppConnectionJson()">${t('whatsapp_connect.btn_copy_json')}</button>
                         <button type="button" class="wa-connect-ghost" onclick="clearSavedWhatsAppConnectionState()" ${busy ? 'disabled' : ''}>${t('whatsapp_connect.btn_clear_state')}</button>
                     </div>
-                    ${state.last_error ? `<div class="wa-connect-result-item" style="margin-bottom:14px;"><span class="wa-connect-result-label">${t('whatsapp_connect.last_error')}</span><span class="wa-connect-result-value">${esc(state.last_error)}</span></div>` : ''}
+                    ${state.last_error ? `<div class="wa-connect-result-item" style="margin-bottom:14px;"><span class="wa-connect-result-label">${t('whatsapp_connect.last_error')}</span><span class="wa-connect-result-value">${escapeWhatsAppHtml(state.last_error)}</span></div>` : ''}
                     <h3>${t('whatsapp_connect.results_title')}</h3>
                     <div class="wa-connect-results-grid">
                         ${resultRows.map(([key, value]) => `
                             <div class="wa-connect-result-item">
                                 <span class="wa-connect-result-label">${t('whatsapp_connect.' + key)}</span>
-                                <span class="wa-connect-result-value">${esc(String(value || ''))}</span>
+                                <span class="wa-connect-result-value">${escapeWhatsAppHtml(String(value || ''))}</span>
                             </div>
                         `).join('')}
                     </div>
                     <details class="wa-connect-accordion">
                         <summary>${t('whatsapp_connect.raw_payload_title')}</summary>
-                        <pre class="wa-connect-json">${esc(buildWhatsAppJsonForDisplay())}</pre>
+                        <pre class="wa-connect-json">${escapeWhatsAppHtml(buildWhatsAppJsonForDisplay())}</pre>
                     </details>
                 </div>
                 <div class="wa-connect-panel">
@@ -25673,11 +25682,11 @@ Thank you for shopping with {store_name}!</textarea>
                         ${logs.length ? logs.slice().reverse().map((entry) => `
                             <div class="wa-connect-log-item">
                                 <div class="wa-connect-log-head">
-                                    <span class="wa-connect-log-type">${esc(entry.type || t('whatsapp_connect.event_default_type'))}</span>
-                                    <span>${esc(formatWhatsAppDateTime(entry.at))}</span>
+                                    <span class="wa-connect-log-type">${escapeWhatsAppHtml(entry.type || t('whatsapp_connect.event_default_type'))}</span>
+                                    <span>${escapeWhatsAppHtml(formatWhatsAppDateTime(entry.at))}</span>
                                 </div>
-                                <div class="wa-connect-log-message">${esc(entry.message || '')}</div>
-                                ${entry.payload ? `<pre class="wa-connect-log-payload">${esc(JSON.stringify(entry.payload, null, 2))}</pre>` : ''}
+                                <div class="wa-connect-log-message">${escapeWhatsAppHtml(entry.message || '')}</div>
+                                ${entry.payload ? `<pre class="wa-connect-log-payload">${escapeWhatsAppHtml(JSON.stringify(entry.payload, null, 2))}</pre>` : ''}
                             </div>
                         `).join('') : `<div class="wa-connect-empty">${t('whatsapp_connect.timeline_empty')}</div>`}
                     </div>
