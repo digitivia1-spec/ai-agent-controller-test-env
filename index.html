@@ -26294,58 +26294,150 @@ Thank you for shopping with {store_name}!</textarea>
         return '';
     }
 
+    function extractGraphErrorMessage(payload) {
+        const message = payload?.error?.message || payload?.message || payload?.error_message || '';
+        return String(message || '').trim();
+    }
+
+    async function callGraphApiWithSdk(path, params = {}) {
+        if (!window.FB?.api) {
+            return {
+                ok: false,
+                status: 'pending',
+                reason: 'sdk_unavailable'
+            };
+        }
+        return new Promise((resolve) => {
+            try {
+                window.FB.api(path, 'get', params, (response) => {
+                    if (!response || response.error) {
+                        resolve({
+                            ok: false,
+                            status: 'error',
+                            reason: 'sdk_graph_failed',
+                            payload: sanitizeWhatsAppPayload(response || {})
+                        });
+                        return;
+                    }
+                    resolve({
+                        ok: true,
+                        status: 'success',
+                        payload: sanitizeWhatsAppPayload(response)
+                    });
+                });
+            } catch (error) {
+                resolve({
+                    ok: false,
+                    status: 'error',
+                    reason: 'sdk_graph_exception',
+                    payload: sanitizeWhatsAppPayload({ message: error?.message || String(error) })
+                });
+            }
+        });
+    }
+
+    function findMatchedPhoneNumberRecord(records, phoneNumberId) {
+        if (!Array.isArray(records) || !records.length) return null;
+        return records.find((record) => String(record?.id || '') === String(phoneNumberId || '')) || records[0] || null;
+    }
+
+    function normalizePhonePreviewRecord(record) {
+        if (!record || typeof record !== 'object') return null;
+        return {
+            id: String(record.id || '').trim(),
+            display_phone_number: String(record.display_phone_number || '').trim(),
+            verified_name: String(record.verified_name || '').trim(),
+            quality_rating: String(record.quality_rating || '').trim()
+        };
+    }
+
     async function fetchWhatsAppPhoneDetailsClientSide({ wabaId, phoneNumberId, accessToken }) {
-        if (!wabaId || !accessToken) {
+        if (!wabaId || !phoneNumberId) {
             return { ok: false, status: 'pending', reason: 'missing_prerequisites' };
         }
-        const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-        const timeoutId = controller ? window.setTimeout(() => controller.abort(), 12000) : null;
-        try {
-            const url = `https://graph.facebook.com/${WHATSAPP_GRAPH_API_VERSION}/${encodeURIComponent(wabaId)}/phone_numbers`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: { Authorization: `Bearer ${accessToken}` },
-                signal: controller?.signal
-            });
-            const json = await response.json().catch(() => ({}));
-            if (!response.ok) {
+        const fields = 'id,display_phone_number,verified_name,quality_rating';
+        const attempts = [];
+        const tryFetch = async (url) => {
+            if (!accessToken) {
+                return { ok: false, status: 'pending', reason: 'missing_browser_access_token' };
+            }
+            const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            const timeoutId = controller ? window.setTimeout(() => controller.abort(), 12000) : null;
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    signal: controller?.signal
+                });
+                const json = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    return {
+                        ok: false,
+                        status: 'error',
+                        reason: 'graph_fetch_failed',
+                        payload: sanitizeWhatsAppPayload(json)
+                    };
+                }
+                return {
+                    ok: true,
+                    status: 'success',
+                    payload: sanitizeWhatsAppPayload(json)
+                };
+            } catch (error) {
                 return {
                     ok: false,
                     status: 'error',
-                    reason: 'graph_fetch_failed',
-                    payload: sanitizeWhatsAppPayload(json)
+                    reason: error?.name === 'AbortError' ? 'timeout' : 'network_error',
+                    payload: sanitizeWhatsAppPayload({ message: error?.message || String(error) })
                 };
+            } finally {
+                if (timeoutId) clearTimeout(timeoutId);
             }
-            const records = Array.isArray(json?.data) ? json.data : [];
-            const matched = records.find((record) => String(record?.id || '') === String(phoneNumberId || '')) || records[0] || null;
-            if (!matched) {
-                return {
-                    ok: false,
-                    status: 'pending',
-                    reason: 'phone_number_not_found',
-                    payload: sanitizeWhatsAppPayload(json)
-                };
+        };
+
+        const wabaFetch = await tryFetch(`https://graph.facebook.com/${WHATSAPP_GRAPH_API_VERSION}/${encodeURIComponent(wabaId)}/phone_numbers?fields=${encodeURIComponent(fields)}`);
+        attempts.push({ method: 'fetch_waba_phone_numbers', result: wabaFetch.payload || { reason: wabaFetch.reason } });
+        if (wabaFetch.ok) {
+            const matched = findMatchedPhoneNumberRecord(wabaFetch.payload?.data, phoneNumberId);
+            const phoneDetails = normalizePhonePreviewRecord(matched);
+            if (phoneDetails) {
+                return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
             }
-            return {
-                ok: true,
-                status: 'success',
-                payload: sanitizeWhatsAppPayload(json),
-                phone_details: {
-                    id: String(matched.id || '').trim(),
-                    display_phone_number: String(matched.display_phone_number || '').trim(),
-                    verified_name: String(matched.verified_name || '').trim(),
-                    quality_rating: String(matched.quality_rating || '').trim()
-                }
-            };
-        } catch (error) {
-            return {
-                ok: false,
-                status: error?.name === 'AbortError' ? 'error' : 'error',
-                reason: error?.name === 'AbortError' ? 'timeout' : 'network_error',
-                payload: sanitizeWhatsAppPayload({ message: error?.message || String(error) })
-            };
-        } finally {
-            if (timeoutId) clearTimeout(timeoutId);
+        }
+
+        const sdkWaba = await callGraphApiWithSdk(`/${wabaId}/phone_numbers`, { fields });
+        attempts.push({ method: 'sdk_waba_phone_numbers', result: sdkWaba.payload || { reason: sdkWaba.reason } });
+        if (sdkWaba.ok) {
+            const matched = findMatchedPhoneNumberRecord(sdkWaba.payload?.data, phoneNumberId);
+            const phoneDetails = normalizePhonePreviewRecord(matched);
+            if (phoneDetails) {
+                return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
+            }
+        }
+
+        const directFetch = await tryFetch(`https://graph.facebook.com/${WHATSAPP_GRAPH_API_VERSION}/${encodeURIComponent(phoneNumberId)}?fields=${encodeURIComponent(fields)}`);
+        attempts.push({ method: 'fetch_phone_number_node', result: directFetch.payload || { reason: directFetch.reason } });
+        if (directFetch.ok) {
+            const phoneDetails = normalizePhonePreviewRecord(directFetch.payload);
+            if (phoneDetails) {
+                return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
+            }
+        }
+
+        const sdkDirect = await callGraphApiWithSdk(`/${phoneNumberId}`, { fields });
+        attempts.push({ method: 'sdk_phone_number_node', result: sdkDirect.payload || { reason: sdkDirect.reason } });
+        if (sdkDirect.ok) {
+            const phoneDetails = normalizePhonePreviewRecord(sdkDirect.payload);
+            if (phoneDetails) {
+                return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
+            }
+        }
+
+        return {
+            ok: false,
+            status: 'error',
+            reason: extractGraphErrorMessage(directFetch.payload) || extractGraphErrorMessage(wabaFetch.payload) || extractGraphErrorMessage(sdkDirect.payload) || extractGraphErrorMessage(sdkWaba.payload) || 'phone_preview_unavailable',
+            payload: sanitizeWhatsAppPayload({ attempts })
         }
     }
 
@@ -27158,8 +27250,13 @@ Thank you for shopping with {store_name}!</textarea>
                 });
             }, {
                 config_id: WHATSAPP_EMBEDDED_SIGNUP_CONFIG_ID,
+                scope: 'business_management,whatsapp_business_management,whatsapp_business_messaging',
                 response_type: 'code',
-                override_default_response_type: true
+                override_default_response_type: true,
+                extras: {
+                    feature: 'whatsapp_embedded_signup',
+                    sessionInfoVersion: 3
+                }
             });
         } catch (error) {
             console.error('startWhatsAppEmbeddedSignup error', error);
