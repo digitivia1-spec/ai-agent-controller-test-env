@@ -27250,13 +27250,8 @@ Thank you for shopping with {store_name}!</textarea>
                 });
             }, {
                 config_id: WHATSAPP_EMBEDDED_SIGNUP_CONFIG_ID,
-                scope: 'business_management,whatsapp_business_management,whatsapp_business_messaging',
                 response_type: 'code',
-                override_default_response_type: true,
-                extras: {
-                    feature: 'whatsapp_embedded_signup',
-                    sessionInfoVersion: 3
-                }
+                override_default_response_type: true
             });
         } catch (error) {
             console.error('startWhatsAppEmbeddedSignup error', error);
