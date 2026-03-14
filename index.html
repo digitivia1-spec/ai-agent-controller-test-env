@@ -7799,6 +7799,12 @@
             border-color: rgba(96, 165, 250, 0.28);
         }
 
+        .wa-header-status.cancelled {
+            color: #fde68a;
+            background: linear-gradient(135deg, rgba(146, 64, 14, 0.75), rgba(113, 63, 18, 0.8));
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
         .wa-header-status.error {
             color: #fecaca;
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.86), rgba(153, 27, 27, 0.82));
@@ -8034,6 +8040,15 @@
             text-transform: uppercase;
         }
 
+        .wa-connect-proof-meta {
+            display: block;
+            margin-top: 8px;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
         .wa-connect-cta,
         .wa-connect-secondary,
         .wa-connect-ghost {
@@ -8215,6 +8230,64 @@
             color: var(--text-muted);
             font-size: 0.85rem;
             line-height: 1.6;
+        }
+
+        .wa-connect-card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .wa-connect-card-head h3 {
+            margin-bottom: 0;
+        }
+
+        .wa-connect-inline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+            flex-shrink: 0;
+        }
+
+        .wa-connect-inline-badge.connected {
+            background: rgba(34, 197, 94, 0.14);
+            color: #bbf7d0;
+            border-color: rgba(34, 197, 94, 0.24);
+        }
+
+        .wa-connect-inline-badge.onboarding_complete,
+        .wa-connect-inline-badge.cancelled {
+            background: rgba(245, 158, 11, 0.16);
+            color: #fde68a;
+            border-color: rgba(245, 158, 11, 0.26);
+        }
+
+        .wa-connect-inline-badge.onboarding_in_progress {
+            background: rgba(96, 165, 250, 0.14);
+            color: #bfdbfe;
+            border-color: rgba(96, 165, 250, 0.22);
+        }
+
+        .wa-connect-inline-badge.error {
+            background: rgba(248, 113, 113, 0.16);
+            color: #fecaca;
+            border-color: rgba(248, 113, 113, 0.24);
+        }
+
+        .wa-connect-actions-bar {
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .wa-connect-status-badge.onboarding_complete {
@@ -16871,7 +16944,7 @@
                 modal_title: "WhatsApp Channel Connection",
                 modal_subtitle: "Connect your WhatsApp Business account using Meta Embedded Signup. This flow will let you connect a WABA and phone number to your Digitivia WhatsApp Agent. On success, your WhatsApp connection details will appear below.",
                 helper_line_1: "Use this popup flow to authorize your Meta Business assets and connect them to the WhatsApp Agent tab.",
-                helper_line_2: "Detailed onboarding results stay inside this modal for review and screencast recording.",
+                helper_line_2: "Saved connection details stay in this modal and can be reopened later from Settings.",
                 btn_connect: "🔗 Connect Channel",
                 btn_connected: "✅ Connected",
                 btn_settings: "⚙️ Settings",
@@ -16891,19 +16964,28 @@
                 yes: "Yes",
                 no: "No",
                 not_available: "Not available",
-                meta_review_title: "Meta Review Proof",
-                meta_review_body: "Digitivia captured the WhatsApp business assets returned by Meta and uses them to configure the customer's WhatsApp Agent.",
+                header_badge_onboarding_complete: "Onboarding Complete",
+                header_badge_connected: "Connected",
+                header_badge_in_progress: "In Progress",
+                header_badge_cancelled: "Cancelled",
+                header_badge_error: "Connection Error",
+                connection_summary_title: "Connection Summary",
+                connection_summary_body_partial: "Meta Embedded Signup finished and Digitivia saved the returned WhatsApp business assets. Additional backend completion steps are still pending.",
+                connection_summary_body_connected: "Meta Embedded Signup finished and Digitivia saved the returned WhatsApp business assets. The WhatsApp channel is fully configured and ready for use inside Digitivia.",
+                connection_summary_body_disconnected: "Start Meta Embedded Signup to connect WhatsApp business assets to the WhatsApp Agent.",
+                connection_summary_body_in_progress: "Meta onboarding is in progress. Digitivia is waiting for the WhatsApp business assets returned by Meta.",
+                connection_summary_body_error: "Meta onboarding returned data, but Digitivia could not complete the final connection step.",
+                business_assets_title: "WhatsApp Business Assets",
+                business_assets_subtitle: "Digitivia saved these core WhatsApp business assets from Meta onboarding.",
+                business_assets_auth_preview: "Masked code preview",
                 how_it_helps_title: "How this connection improves Digitivia",
                 how_it_helps_body: "This connection lets Digitivia use the customer's WhatsApp Business assets returned by Meta to configure the WhatsApp Agent, identify the connected number, and prepare the channel for inbox, AI, lead capture, and messaging workflows.",
                 connected_number_title: "Connected WhatsApp Number",
                 connected_number_subtitle: "This section shows the WhatsApp business number details Digitivia can currently identify from the Meta onboarding result.",
-                results_title: "Connection Results",
                 timeline_title: "Activity Timeline",
                 timeline_empty: "No activity yet. Open the flow to start capturing events.",
-                raw_payload_title: "Raw Payload JSON",
-                proof_title: "Meta Review Proof",
-                proof_subtitle: "This section highlights the WhatsApp Business assets returned by the onboarding flow.",
-                proof_auth: "Auth Code",
+                raw_connection_data_title: "Raw Connection Data",
+                proof_auth: "Auth Code Received",
                 proof_waba: "WABA ID",
                 proof_phone: "Phone Number ID",
                 proof_business: "Business ID",
@@ -16916,20 +16998,21 @@
                 hero_title_disconnected: "WhatsApp Channel Connection",
                 hero_title_cancelled: "WhatsApp Onboarding Cancelled",
                 hero_title_error: "WhatsApp Connection Error",
-                hero_subtitle_connected: "Meta Embedded Signup finished successfully and the saved connection details can be reopened later from Settings.",
+                hero_subtitle_connected: "Meta onboarding and backend channel setup completed successfully.",
                 hero_subtitle_partial: "Meta onboarding completed. Final backend connection steps are still pending.",
                 hero_subtitle_in_progress: "The Meta popup flow is active. Digitivia is waiting for the Embedded Signup result from Meta.",
                 hero_subtitle_disconnected: "Connect your WhatsApp Business account using Meta Embedded Signup and capture the returned Meta business assets in Digitivia.",
                 hero_subtitle_cancelled: "The Meta popup was closed before onboarding finished.",
                 hero_subtitle_error: "Meta onboarding returned data, but Digitivia could not complete the final connection step.",
-                hero_summary_connected: "Meta Embedded Signup finished successfully and Digitivia captured the WhatsApp business assets returned by Meta.",
-                hero_summary_partial: "Meta Embedded Signup finished and Digitivia saved the returned assets. Additional backend completion steps are still pending.",
-                hero_summary_in_progress: "The reviewer can continue the Meta popup flow. Returned business assets will appear here as soon as Meta completes onboarding.",
+                hero_summary_connected: "The WhatsApp channel is ready for use inside Digitivia.",
+                hero_summary_partial: "The channel is ready for follow-up WhatsApp configuration steps.",
+                hero_summary_in_progress: "Returned business assets will appear here as soon as Meta completes onboarding.",
                 hero_summary_disconnected: "Start the Meta popup flow to connect a WABA, phone number, and related business assets to the WhatsApp Agent.",
-                hero_summary_error: "Review the checklist and debug sections below to see which finalization steps still need attention.",
+                hero_summary_error: "Review the readiness checklist and connection data below to see which finalization steps still need attention.",
                 pending_fetch: "Pending fetch",
                 checklist_title: "Connection Readiness",
                 checklist_backend_hint: "These steps require backend exchange and follow-up API calls after Embedded Signup.",
+                checklist_backend_requires_api: "Requires backend API completion after Embedded Signup.",
                 checklist_meta_popup: "Meta popup launched",
                 checklist_finish_event: "Meta FINISH event received",
                 checklist_auth_code: "Auth code received",
@@ -16941,10 +17024,8 @@
                 check_success: "Success",
                 check_pending: "Pending",
                 check_error: "Error",
-                advanced_assets_title: "Additional Meta Business Assets (Debug)",
+                advanced_assets_title: "Additional Meta Business Assets",
                 advanced_assets_empty: "No extra Meta business assets were returned beyond the core WhatsApp connection fields.",
-                debug_notes_title: "Developer Debug Notes",
-                debug_notes_body: "If phone labels, verified name, or subscription states are still pending, they require backend exchange and follow-up API calls after Embedded Signup.",
                 last_error: "Last Error",
                 result_status: "Connection Status",
                 result_app_id: "App ID",
@@ -17003,7 +17084,7 @@
                 modal_title: "ربط قناة واتساب",
                 modal_subtitle: "قم بربط حساب WhatsApp Business الخاص بك باستخدام Meta Embedded Signup. هذا التدفق يربط WABA ورقم الهاتف مع وكيل واتساب في Digitivia. عند النجاح ستظهر تفاصيل الاتصال بالأسفل.",
                 helper_line_1: "استخدم هذه النافذة المنبثقة لتفويض أصول Meta Business وربطها مع تبويب وكيل واتساب.",
-                helper_line_2: "تفاصيل نتيجة الربط تظهر داخل هذه النافذة فقط لتسهيل المراجعة والتسجيل.",
+                helper_line_2: "تبقى تفاصيل الاتصال المحفوظة داخل هذه النافذة ويمكن فتحها لاحقًا من الإعدادات.",
                 btn_connect: "🔗 ربط القناة",
                 btn_connected: "✅ متصل",
                 btn_settings: "⚙️ الإعدادات",
@@ -17023,19 +17104,28 @@
                 yes: "نعم",
                 no: "لا",
                 not_available: "غير متوفر",
-                meta_review_title: "إثبات مراجعة Meta",
-                meta_review_body: "قامت Digitivia بالتقاط أصول واتساب التجارية التي أعادها Meta وتستخدمها لإعداد وكيل واتساب الخاص بالعميل.",
+                header_badge_onboarding_complete: "اكتمل الربط",
+                header_badge_connected: "متصل",
+                header_badge_in_progress: "قيد التنفيذ",
+                header_badge_cancelled: "تم الإلغاء",
+                header_badge_error: "خطأ في الاتصال",
+                connection_summary_title: "ملخص الاتصال",
+                connection_summary_body_partial: "اكتمل Meta Embedded Signup وقامت Digitivia بحفظ أصول واتساب التجارية التي أعادها Meta. ما زالت بعض خطوات الإنهاء الخلفية قيد الانتظار.",
+                connection_summary_body_connected: "اكتمل Meta Embedded Signup وقامت Digitivia بحفظ أصول واتساب التجارية التي أعادها Meta. قناة واتساب الآن مهيأة بالكامل وجاهزة للاستخدام داخل Digitivia.",
+                connection_summary_body_disconnected: "ابدأ Meta Embedded Signup لربط أصول واتساب التجارية مع وكيل واتساب.",
+                connection_summary_body_in_progress: "الربط عبر Meta قيد التنفيذ وDigitivia ينتظر أصول واتساب التجارية التي سيعيدها Meta.",
+                connection_summary_body_error: "أعاد Meta بيانات الربط لكن Digitivia لم يستطع إكمال خطوة الاتصال النهائية.",
+                business_assets_title: "أصول واتساب للأعمال",
+                business_assets_subtitle: "قامت Digitivia بحفظ أصول واتساب الأساسية التي أعادها Meta أثناء الربط.",
+                business_assets_auth_preview: "معاينة الرمز المقنّعة",
                 how_it_helps_title: "كيف يحسن هذا الاتصال Digitivia",
                 how_it_helps_body: "يتيح هذا الاتصال لـ Digitivia استخدام أصول WhatsApp Business التي أعادها Meta لإعداد وكيل واتساب، وتحديد الرقم المتصل، وتجهيز القناة لصندوق الوارد والذكاء الاصطناعي والتقاط العملاء المحتملين وعمليات المراسلة.",
                 connected_number_title: "رقم واتساب المتصل",
                 connected_number_subtitle: "يعرض هذا القسم تفاصيل رقم واتساب التجاري التي يمكن لـ Digitivia تحديدها حاليًا من نتيجة الربط عبر Meta.",
-                results_title: "نتائج الاتصال",
                 timeline_title: "سجل النشاط",
                 timeline_empty: "لا يوجد نشاط بعد. افتح التدفق لبدء تسجيل الأحداث.",
-                raw_payload_title: "بيانات JSON الخام",
-                proof_title: "بيانات إثبات المراجعة",
-                proof_subtitle: "هذا القسم يعرض أصول WhatsApp Business التي أعادها تدفق الربط بشكل واضح للمراجعة.",
-                proof_auth: "رمز التفويض",
+                raw_connection_data_title: "بيانات الاتصال الخام",
+                proof_auth: "تم استلام رمز التفويض",
                 proof_waba: "معرف WABA",
                 proof_phone: "معرف رقم الهاتف",
                 proof_business: "معرف النشاط التجاري",
@@ -17048,20 +17138,21 @@
                 hero_title_disconnected: "ربط قناة واتساب",
                 hero_title_cancelled: "تم إلغاء ربط واتساب",
                 hero_title_error: "خطأ في ربط واتساب",
-                hero_subtitle_connected: "تم إنهاء Meta Embedded Signup بنجاح ويمكن فتح تفاصيل الاتصال المحفوظة لاحقًا من الإعدادات.",
+                hero_subtitle_connected: "اكتمل الربط عبر Meta وإعداد القناة الخلفي بنجاح.",
                 hero_subtitle_partial: "اكتمل الربط عبر Meta لكن بعض خطوات الإنهاء الخلفية ما زالت قيد الانتظار.",
                 hero_subtitle_in_progress: "تدفق نافذة Meta المنبثقة ما زال نشطًا وDigitivia ينتظر نتيجة Embedded Signup من Meta.",
                 hero_subtitle_disconnected: "قم بربط حساب WhatsApp Business باستخدام Meta Embedded Signup واحفظ الأصول التجارية التي يعيدها Meta داخل Digitivia.",
                 hero_subtitle_cancelled: "تم إغلاق نافذة Meta قبل اكتمال الربط.",
                 hero_subtitle_error: "أعاد Meta بيانات الربط لكن Digitivia لم يكمل الخطوة النهائية للاتصال.",
-                hero_summary_connected: "تم إنهاء Meta Embedded Signup بنجاح وتم حفظ أصول WhatsApp Business التي أعادها Meta داخل Digitivia.",
-                hero_summary_partial: "اكتمل Meta Embedded Signup وتم حفظ الأصول العائدة من Meta، لكن بعض خطوات الإنهاء الخلفية ما زالت قيد الانتظار.",
-                hero_summary_in_progress: "يمكن للمراجع متابعة تدفق نافذة Meta المنبثقة، وستظهر الأصول التجارية العائدة هنا فور اكتمال الربط من Meta.",
+                hero_summary_connected: "أصبحت قناة واتساب جاهزة للاستخدام داخل Digitivia.",
+                hero_summary_partial: "أصبحت القناة جاهزة لخطوات إعداد واتساب التالية داخل Digitivia.",
+                hero_summary_in_progress: "ستظهر الأصول التجارية هنا فور اكتمال الربط من Meta.",
                 hero_summary_disconnected: "ابدأ تدفق نافذة Meta المنبثقة لربط WABA ورقم الهاتف والأصول التجارية المرتبطة مع وكيل واتساب.",
-                hero_summary_error: "راجع قائمة التحقق وأقسام التصحيح أدناه لمعرفة الخطوة النهائية التي تحتاج متابعة.",
+                hero_summary_error: "راجع قائمة الجاهزية وبيانات الاتصال أدناه لمعرفة خطوة الإنهاء التي ما زالت تحتاج متابعة.",
                 pending_fetch: "بانتظار الجلب",
                 checklist_title: "جاهزية الاتصال",
                 checklist_backend_hint: "تتطلب هذه الخطوات تبادلًا عبر الخلفية واستدعاءات API لاحقة بعد Embedded Signup.",
+                checklist_backend_requires_api: "يتطلب هذا إكمال API عبر الخلفية بعد Embedded Signup.",
                 checklist_meta_popup: "تم تشغيل نافذة Meta",
                 checklist_finish_event: "تم استلام حدث FINISH من Meta",
                 checklist_auth_code: "تم استلام رمز التفويض",
@@ -17073,10 +17164,8 @@
                 check_success: "ناجح",
                 check_pending: "قيد الانتظار",
                 check_error: "خطأ",
-                advanced_assets_title: "أصول Meta الإضافية (تصحيح)",
+                advanced_assets_title: "أصول Meta الإضافية",
                 advanced_assets_empty: "لم يُعد Meta أصولًا إضافية تتجاوز حقول اتصال واتساب الأساسية.",
-                debug_notes_title: "ملاحظات المطور",
-                debug_notes_body: "إذا كانت أسماء الأرقام أو الاسم الموثق أو حالات الاشتراك ما زالت قيد الانتظار، فهذا يتطلب تبادل رمز عبر الخلفية واستدعاءات API لاحقة بعد Embedded Signup.",
                 last_error: "آخر خطأ",
                 result_status: "حالة الاتصال",
                 result_app_id: "معرف التطبيق",
@@ -25845,6 +25934,7 @@ Thank you for shopping with {store_name}!</textarea>
         const inProgress = ['launching', 'in_progress'].includes(normalized.status) || normalized.meta_onboarding_status === 'launched' || normalized.channel_connection_status === 'saving';
 
         if (hasMetaFinish && hasReviewProof && isWhatsAppBackendFullyReady(normalized) && normalized.channel_connection_status === 'connected') return 'connected';
+        if ((normalized.status === 'cancelled' || normalized.meta_onboarding_status === 'cancelled') && !hasReviewProof) return 'cancelled';
         if (hasMetaFinish && hasReviewProof && backendAnyError) return 'error';
         if ((normalized.status === 'error' || normalized.meta_onboarding_status === 'error' || normalized.channel_connection_status === 'error' || normalized.last_error) && !hasReviewProof) return 'error';
         if (inProgress) return 'onboarding_in_progress';
@@ -26141,15 +26231,27 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     function getWhatsAppStatusDescriptor(status) {
-        const normalized = ['disconnected', 'onboarding_in_progress', 'onboarding_complete', 'connected', 'error'].includes(status) ? status : getWhatsAppVisibleConnectionState({ status });
+        const normalized = ['disconnected', 'onboarding_in_progress', 'onboarding_complete', 'connected', 'cancelled', 'error'].includes(status) ? status : getWhatsAppVisibleConnectionState({ status });
         const map = {
             disconnected: { key: 'status_disconnected', icon: '○' },
             onboarding_in_progress: { key: 'status_in_progress', icon: '…' },
             onboarding_complete: { key: 'status_onboarding_complete', icon: '✓' },
             connected: { key: 'status_connected', icon: '✓' },
+            cancelled: { key: 'status_cancelled', icon: '!' },
             error: { key: 'status_error', icon: '×' }
         };
         return map[normalized] || map.disconnected;
+    }
+
+    function getWhatsAppHeaderBadgeLabel(visibleState) {
+        const keyMap = {
+            onboarding_complete: 'header_badge_onboarding_complete',
+            connected: 'header_badge_connected',
+            onboarding_in_progress: 'header_badge_in_progress',
+            cancelled: 'header_badge_cancelled',
+            error: 'header_badge_error'
+        };
+        return t('whatsapp_connect.' + (keyMap[visibleState] || 'status_disconnected'));
     }
 
     function getWhatsAppHeroCopy(state, visibleStatus) {
@@ -26170,6 +26272,11 @@ Thank you for shopping with {store_name}!</textarea>
                 subtitle: t('whatsapp_connect.hero_subtitle_partial'),
                 summary: t('whatsapp_connect.hero_summary_partial')
             },
+            cancelled: {
+                title: t('whatsapp_connect.hero_title_cancelled'),
+                subtitle: t('whatsapp_connect.hero_subtitle_cancelled'),
+                summary: t('whatsapp_connect.hero_summary_disconnected')
+            },
             error: {
                 title: t('whatsapp_connect.hero_title_error'),
                 subtitle: t('whatsapp_connect.hero_subtitle_error'),
@@ -26184,10 +26291,27 @@ Thank you for shopping with {store_name}!</textarea>
         return map[status] || map.disconnected;
     }
 
+    function getWhatsAppConnectionSummaryText(visibleState) {
+        const keyMap = {
+            connected: 'connection_summary_body_connected',
+            onboarding_complete: 'connection_summary_body_partial',
+            onboarding_in_progress: 'connection_summary_body_in_progress',
+            error: 'connection_summary_body_error',
+            cancelled: 'connection_summary_body_partial',
+            disconnected: 'connection_summary_body_disconnected'
+        };
+        return t('whatsapp_connect.' + (keyMap[visibleState] || 'connection_summary_body_disconnected'));
+    }
+
+    function getWhatsAppNumberSectionTitle(state) {
+        const hasHumanDetails = !!(state.display_phone_number || state.verified_name || state.quality_rating);
+        return hasHumanDetails ? t('whatsapp_connect.connected_number_title') : t('whatsapp_connect.business_assets_title');
+    }
+
     function buildWhatsAppChecklist(state) {
         const backendStatus = Object.assign(createDefaultBackendStatus(), state.backend_status || {});
         const checklistStatus = (value) => value === 'success' ? 'success' : value === 'error' ? 'error' : 'pending';
-        const backendHint = t('whatsapp_connect.checklist_backend_hint');
+        const backendHint = t('whatsapp_connect.checklist_backend_requires_api');
         const finishSummary = [state.business_id, state.waba_id, state.phone_number_id].filter(Boolean).join(' • ');
         const humanPhoneSummary = [state.display_phone_number, state.verified_name, state.quality_rating].filter(Boolean).join(' • ');
         return [
@@ -26298,11 +26422,10 @@ Thank you for shopping with {store_name}!</textarea>
     function renderWhatsAppAgentHeaderActionsMarkup() {
         const state = getWhatsAppConnectionState();
         const visibleState = getWhatsAppVisibleConnectionState(state);
-        const descriptor = getWhatsAppStatusDescriptor(visibleState);
         if (visibleState !== 'disconnected') {
             return `
                 <div class="wa-connect-actions">
-                    <div class="wa-header-status ${visibleState}">${t('whatsapp_connect.' + descriptor.key)}</div>
+                    <div class="wa-header-status ${visibleState}">${getWhatsAppHeaderBadgeLabel(visibleState)}</div>
                     <button type="button" class="wa-header-btn wa-header-btn-secondary" onclick="openWhatsAppConnectModal('settings')">${t('whatsapp_connect.btn_settings')}</button>
                 </div>
             `;
@@ -26334,6 +26457,8 @@ Thank you for shopping with {store_name}!</textarea>
         const logs = getWhatsAppActivityLog(state);
         const busy = visibleState === 'onboarding_in_progress';
         const joinArray = (items) => Array.isArray(items) && items.length ? items.join(', ') : '';
+        const summaryText = getWhatsAppConnectionSummaryText(visibleState);
+        const numberSectionTitle = getWhatsAppNumberSectionTitle(state);
         const assetRows = [
             ['result_page_ids', joinArray(state.page_ids)],
             ['result_instagram_account_ids', joinArray(state.instagram_account_ids)],
@@ -26349,7 +26474,7 @@ Thank you for shopping with {store_name}!</textarea>
         ].filter(([, value]) => !!String(value || '').trim());
         const checklist = buildWhatsAppChecklist(state);
         const metaProofCards = [
-            { label: 'proof_auth', value: state.auth_code_received ? t('whatsapp_connect.yes') : t('whatsapp_connect.no'), mono: false, pending: !state.auth_code_received },
+            { label: 'proof_auth', value: state.auth_code_received ? t('whatsapp_connect.yes') : t('whatsapp_connect.no'), mono: false, pending: !state.auth_code_received, meta: state.auth_code_preview || '' },
             { label: 'proof_waba', value: state.waba_id || t('whatsapp_connect.pending_fetch'), mono: !!state.waba_id, pending: !state.waba_id },
             { label: 'proof_phone', value: state.phone_number_id || t('whatsapp_connect.pending_fetch'), mono: !!state.phone_number_id, pending: !state.phone_number_id },
             { label: 'proof_business', value: state.business_id || t('whatsapp_connect.pending_fetch'), mono: !!state.business_id, pending: !state.business_id }
@@ -26387,52 +26512,43 @@ Thank you for shopping with {store_name}!</textarea>
                             <p class="wa-connect-hero-summary">${hero.summary}</p>
                         </div>
                         <div class="wa-connect-story-card">
-                            <h3>${t('whatsapp_connect.meta_review_title')}</h3>
-                            <p>${t('whatsapp_connect.meta_review_body')}</p>
+                            <div class="wa-connect-card-head">
+                                <h3>${t('whatsapp_connect.connection_summary_title')}</h3>
+                                <div class="wa-connect-inline-badge ${visibleState}">${getWhatsAppHeaderBadgeLabel(visibleState)}</div>
+                            </div>
+                            <p>${summaryText}</p>
                         </div>
                         <div class="wa-connect-story-card">
                             <h3>${t('whatsapp_connect.how_it_helps_title')}</h3>
                             <p>${t('whatsapp_connect.how_it_helps_body')}</p>
                         </div>
-                        <div class="wa-connect-actions-row">
-                            <button type="button" class="wa-connect-cta" onclick="startWhatsAppEmbeddedSignup()" ${busy ? 'disabled' : ''}>${['connected', 'onboarding_complete'].includes(visibleState) ? t('whatsapp_connect.btn_reconnect') : t('whatsapp_connect.btn_continue_facebook')}</button>
+                        <div class="wa-connect-actions-bar">
+                            <div class="wa-connect-actions-row" style="margin-bottom:0;">
+                            <button type="button" class="wa-connect-cta" onclick="startWhatsAppEmbeddedSignup()" ${busy ? 'disabled' : ''}>${visibleState === 'disconnected' ? t('whatsapp_connect.btn_continue_facebook') : t('whatsapp_connect.btn_reconnect')}</button>
                             <button type="button" class="wa-connect-secondary" onclick="closeWhatsAppConnectModal()">${t('whatsapp_connect.btn_close')}</button>
-                            <button type="button" class="wa-connect-secondary" onclick="copyWhatsAppConnectionJson()">${t('whatsapp_connect.btn_copy_json')}</button>
+                            <button type="button" class="wa-connect-ghost" onclick="copyWhatsAppConnectionJson()">${t('whatsapp_connect.btn_copy_json')}</button>
                             <button type="button" class="wa-connect-ghost" onclick="clearSavedWhatsAppConnectionState()" ${busy ? 'disabled' : ''}>${t('whatsapp_connect.btn_clear_state')}</button>
+                            </div>
                         </div>
                         ${state.last_error && visibleState === 'error' ? `<div class="wa-connect-result-item"><span class="wa-connect-result-label">${t('whatsapp_connect.last_error')}</span><span class="wa-connect-result-value">${escapeWhatsAppHtml(state.last_error)}</span></div>` : ''}
-                    </div>
-                    <div class="wa-connect-panel">
-                        <h3>${t('whatsapp_connect.checklist_title')}</h3>
-                        <p class="wa-connect-section-note">${t('whatsapp_connect.checklist_backend_hint')}</p>
-                        <div class="wa-connect-checklist">
-                            ${checklist.map((item) => `
-                                <div class="wa-connect-check-item">
-                                    <div class="wa-connect-check-copy">
-                                        <div class="wa-connect-check-label">${escapeWhatsAppHtml(item.label)}</div>
-                                        <div class="wa-connect-check-note">${escapeWhatsAppHtml(item.note)}</div>
-                                    </div>
-                                    <div class="wa-connect-check-status ${item.status}">${t('whatsapp_connect.check_' + item.status)}</div>
-                                </div>
-                            `).join('')}
-                        </div>
                     </div>
                 </div>
                 <div class="wa-connect-stack">
                     <div class="wa-connect-panel wa-connect-proof">
-                        <div class="wa-connect-proof-title">${t('whatsapp_connect.proof_title')}</div>
-                        <p class="wa-connect-proof-subtitle">${t('whatsapp_connect.proof_subtitle')}</p>
+                        <div class="wa-connect-proof-title">${t('whatsapp_connect.business_assets_title')}</div>
+                        <p class="wa-connect-proof-subtitle">${t('whatsapp_connect.business_assets_subtitle')}</p>
                         <div class="wa-connect-proof-grid">
                             ${metaProofCards.map((card) => `
                                 <div class="wa-connect-proof-card">
                                     <strong class="${card.mono ? 'mono' : ''} ${card.pending ? 'pending' : ''}">${escapeWhatsAppHtml(card.value)}</strong>
                                     <span>${t('whatsapp_connect.' + card.label)}</span>
+                                    ${card.meta ? `<small class="wa-connect-proof-meta">${t('whatsapp_connect.business_assets_auth_preview')}: ${escapeWhatsAppHtml(card.meta)}</small>` : ''}
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                     <div class="wa-connect-panel wa-connect-number-card">
-                        <h3>${t('whatsapp_connect.connected_number_title')}</h3>
+                        <h3>${numberSectionTitle}</h3>
                         <p>${t('whatsapp_connect.connected_number_subtitle')}</p>
                         <div class="wa-connect-number-grid">
                             ${connectedNumberRows.map(([key, value, mono, pending]) => `
@@ -26443,6 +26559,21 @@ Thank you for shopping with {store_name}!</textarea>
                             `).join('')}
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="wa-connect-panel" style="margin-top:18px;">
+                <h3>${t('whatsapp_connect.checklist_title')}</h3>
+                <p class="wa-connect-section-note">${t('whatsapp_connect.checklist_backend_hint')}</p>
+                <div class="wa-connect-checklist">
+                    ${checklist.map((item) => `
+                        <div class="wa-connect-check-item">
+                            <div class="wa-connect-check-copy">
+                                <div class="wa-connect-check-label">${escapeWhatsAppHtml(item.label)}</div>
+                                <div class="wa-connect-check-note">${escapeWhatsAppHtml(item.note)}</div>
+                            </div>
+                            <div class="wa-connect-check-status ${item.status}">${t('whatsapp_connect.check_' + item.status)}</div>
+                        </div>
+                    `).join('')}
                 </div>
             </div>
             <details class="wa-connect-accordion">
@@ -26472,30 +26603,8 @@ Thank you for shopping with {store_name}!</textarea>
                 </div>
             </details>
             <details class="wa-connect-accordion">
-                <summary>${t('whatsapp_connect.raw_payload_title')}</summary>
+                <summary>${t('whatsapp_connect.raw_connection_data_title')}</summary>
                 <pre class="wa-connect-json">${escapeWhatsAppHtml(buildWhatsAppRawPayloadJsonForDisplay())}</pre>
-            </details>
-            <details class="wa-connect-accordion">
-                <summary>${t('whatsapp_connect.debug_notes_title')}</summary>
-                <div class="wa-connect-debug-note" style="padding: 0 16px 16px;">${t('whatsapp_connect.debug_notes_body')}</div>
-                <div class="wa-connect-results-grid" style="padding: 0 16px 16px;">
-                    <div class="wa-connect-result-item">
-                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_status')}</span>
-                        <span class="wa-connect-result-value">${escapeWhatsAppHtml(t('whatsapp_connect.' + descriptor.key))}</span>
-                    </div>
-                    <div class="wa-connect-result-item">
-                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_app_id')}</span>
-                        <span class="wa-connect-result-value mono">${escapeWhatsAppHtml(state.app_id || t('whatsapp_connect.not_available'))}</span>
-                    </div>
-                    <div class="wa-connect-result-item">
-                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_config_id')}</span>
-                        <span class="wa-connect-result-value mono">${escapeWhatsAppHtml(state.config_id || t('whatsapp_connect.not_available'))}</span>
-                    </div>
-                    <div class="wa-connect-result-item">
-                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_auth_code_preview')}</span>
-                        <span class="wa-connect-result-value mono">${escapeWhatsAppHtml(state.auth_code_preview || t('whatsapp_connect.not_available'))}</span>
-                    </div>
-                </div>
             </details>
         `;
     }
