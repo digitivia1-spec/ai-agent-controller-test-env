@@ -7957,6 +7957,60 @@
             margin-bottom: 16px;
         }
 
+        .wa-connect-proof {
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(37, 211, 102, 0.14), rgba(18, 140, 126, 0.08));
+            border: 1px solid rgba(37, 211, 102, 0.22);
+        }
+
+        .wa-connect-proof-title {
+            margin: 0 0 6px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .wa-connect-proof-subtitle {
+            margin: 0 0 14px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .wa-connect-proof-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .wa-connect-proof-card {
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-width: 0;
+        }
+
+        .wa-connect-proof-card strong {
+            display: block;
+            color: var(--text-main);
+            font-size: 1rem;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .wa-connect-proof-card span {
+            display: block;
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
         .wa-connect-cta,
         .wa-connect-secondary,
         .wa-connect-ghost {
@@ -8153,7 +8207,8 @@
             }
 
             .wa-connect-layout,
-            .wa-connect-results-grid {
+            .wa-connect-results-grid,
+            .wa-connect-proof-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -16607,6 +16662,12 @@
                 timeline_title: "Activity Timeline",
                 timeline_empty: "No activity yet. Open the flow to start capturing events.",
                 raw_payload_title: "Raw Payload JSON",
+                proof_title: "Meta Review Proof",
+                proof_subtitle: "This section highlights the WhatsApp Business assets returned by the onboarding flow.",
+                proof_auth: "Auth Code",
+                proof_waba: "WABA ID",
+                proof_phone: "Phone Number ID",
+                proof_business: "Business ID",
                 last_error: "Last Error",
                 result_status: "Connection Status",
                 result_app_id: "App ID",
@@ -16670,6 +16731,12 @@
                 timeline_title: "سجل النشاط",
                 timeline_empty: "لا يوجد نشاط بعد. افتح التدفق لبدء تسجيل الأحداث.",
                 raw_payload_title: "بيانات JSON الخام",
+                proof_title: "بيانات إثبات المراجعة",
+                proof_subtitle: "هذا القسم يعرض أصول WhatsApp Business التي أعادها تدفق الربط بشكل واضح للمراجعة.",
+                proof_auth: "رمز التفويض",
+                proof_waba: "معرف WABA",
+                proof_phone: "معرف رقم الهاتف",
+                proof_business: "معرف النشاط التجاري",
                 last_error: "آخر خطأ",
                 result_status: "حالة الاتصال",
                 result_app_id: "معرف التطبيق",
@@ -25358,7 +25425,10 @@ Thank you for shopping with {store_name}!</textarea>
     function sanitizeWhatsAppPayload(payload, depth = 0) {
         if (payload == null) return null;
         if (depth > 4) return '[truncated]';
-        if (typeof payload === 'string') return payload.length > 1600 ? payload.slice(0, 1600) + '…' : payload;
+        if (typeof payload === 'string') {
+            const scrubbed = scrubSensitiveWhatsAppString(payload);
+            return scrubbed.length > 1600 ? scrubbed.slice(0, 1600) + '…' : scrubbed;
+        }
         if (typeof payload === 'number' || typeof payload === 'boolean') return payload;
         if (Array.isArray(payload)) return payload.slice(0, 25).map((item) => sanitizeWhatsAppPayload(item, depth + 1));
         if (typeof payload === 'object') {
@@ -25403,6 +25473,11 @@ Thank you for shopping with {store_name}!</textarea>
         return value.slice(0, 6) + '…' + value.slice(-4);
     }
 
+    function scrubSensitiveWhatsAppString(value) {
+        const str = String(value || '');
+        return str.replace(/([?&]code=)([^&]+)/gi, (_, prefix, code) => `${prefix}${maskAuthCodePreview(code)}`);
+    }
+
     function isTrustedMetaOrigin(origin) {
         try {
             const url = new URL(origin);
@@ -25423,7 +25498,21 @@ Thank you for shopping with {store_name}!</textarea>
         try {
             return JSON.parse(trimmed);
         } catch (error) {
-            return { raw_message: trimmed };
+            try {
+                const params = new URLSearchParams(trimmed);
+                if ([...params.keys()].length) {
+                    const parsed = { raw_message_type: 'querystring' };
+                    const code = params.get('code') || '';
+                    if (code) parsed.auth_code_preview = maskAuthCodePreview(code);
+                    ['cb', 'domain', 'origin', 'relation', 'frame', 'base_domain'].forEach((key) => {
+                        const value = params.get(key);
+                        if (value) parsed[key] = value;
+                    });
+                    parsed.raw_message = scrubSensitiveWhatsAppString(trimmed);
+                    return parsed;
+                }
+            } catch (parseError) { }
+            return { raw_message: scrubSensitiveWhatsAppString(trimmed) };
         }
     }
 
@@ -25476,10 +25565,27 @@ Thank you for shopping with {store_name}!</textarea>
             phone_number_id: findNestedValue(payload, ['phone_number_id', 'phonenumberid', 'phoneid']),
             display_phone_number: findNestedValue(payload, ['display_phone_number', 'displayphonenumber', 'phone_number', 'phonenumber']),
             verified_name: findNestedValue(payload, ['verified_name', 'verifiedname', 'business_name', 'display_name']),
+            auth_code_preview: findNestedValue(payload, ['auth_code_preview']),
             event_type: findNestedValue(payload, ['event', 'event_type', 'type']),
             status: findNestedValue(payload, ['status'])
         };
         return { extracted, sanitized, inferredStatus: inferWhatsAppStatusFromPayload(payload, extracted) };
+    }
+
+    function getWhatsAppPayloadRichness(payload) {
+        if (!payload || typeof payload !== 'object') return 0;
+        let score = 0;
+        if (findNestedValue(payload, ['business_id'])) score += 3;
+        if (findNestedValue(payload, ['waba_id'])) score += 3;
+        if (findNestedValue(payload, ['phone_number_id'])) score += 3;
+        if (findNestedValue(payload, ['display_phone_number'])) score += 2;
+        if (findNestedValue(payload, ['verified_name'])) score += 2;
+        if (findNestedValue(payload, ['auth_code_preview'])) score += 1;
+        return score;
+    }
+
+    function chooseBestWhatsAppRawPayload(currentPayload, nextPayload) {
+        return getWhatsAppPayloadRichness(nextPayload) >= getWhatsAppPayloadRichness(currentPayload) ? nextPayload : currentPayload;
     }
 
     function formatWhatsAppDateTime(value) {
@@ -25655,6 +25761,28 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="wa-connect-meta-note">${t('whatsapp_connect.helper_line_2')}</div>
                     </div>
                     <p class="wa-connect-meta-note" style="margin:0 0 16px;">${t('whatsapp_connect.helper_line_1')}</p>
+                    <div class="wa-connect-proof">
+                        <div class="wa-connect-proof-title">${t('whatsapp_connect.proof_title')}</div>
+                        <p class="wa-connect-proof-subtitle">${t('whatsapp_connect.proof_subtitle')}</p>
+                        <div class="wa-connect-proof-grid">
+                            <div class="wa-connect-proof-card">
+                                <strong>${escapeWhatsAppHtml(state.auth_code_received ? t('whatsapp_connect.yes') : t('whatsapp_connect.no'))}</strong>
+                                <span>${t('whatsapp_connect.proof_auth')}</span>
+                            </div>
+                            <div class="wa-connect-proof-card">
+                                <strong>${escapeWhatsAppHtml(state.waba_id || t('whatsapp_connect.not_available'))}</strong>
+                                <span>${t('whatsapp_connect.proof_waba')}</span>
+                            </div>
+                            <div class="wa-connect-proof-card">
+                                <strong>${escapeWhatsAppHtml(state.phone_number_id || t('whatsapp_connect.not_available'))}</strong>
+                                <span>${t('whatsapp_connect.proof_phone')}</span>
+                            </div>
+                            <div class="wa-connect-proof-card">
+                                <strong>${escapeWhatsAppHtml(state.business_id || t('whatsapp_connect.not_available'))}</strong>
+                                <span>${t('whatsapp_connect.proof_business')}</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="wa-connect-actions-row">
                         <button type="button" class="wa-connect-cta" onclick="startWhatsAppEmbeddedSignup()" ${busy ? 'disabled' : ''}>${state.connected ? t('whatsapp_connect.btn_reconnect') : t('whatsapp_connect.btn_continue_facebook')}</button>
                         <button type="button" class="wa-connect-secondary" onclick="closeWhatsAppConnectModal()">${t('whatsapp_connect.btn_close')}</button>
@@ -25937,7 +26065,8 @@ Thank you for shopping with {store_name}!</textarea>
             phone_number_id: extracted.phone_number_id || current.phone_number_id,
             display_phone_number: extracted.display_phone_number || current.display_phone_number,
             verified_name: extracted.verified_name || current.verified_name,
-            raw_session_payload: sanitized,
+            auth_code_preview: extracted.auth_code_preview || current.auth_code_preview,
+            raw_session_payload: chooseBestWhatsAppRawPayload(current.raw_session_payload, sanitized),
             updated_at: new Date().toISOString()
         };
         if (inferredStatus === 'connected') {
