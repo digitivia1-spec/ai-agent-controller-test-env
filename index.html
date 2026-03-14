@@ -7775,10 +7775,34 @@
         }
 
         .wa-header-status {
+            color: #e5eef7;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .wa-header-status.connected {
             color: #ddfff0;
             background: linear-gradient(135deg, rgba(17, 102, 73, 0.88), rgba(15, 71, 58, 0.9));
             border-color: rgba(74, 222, 128, 0.34);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .wa-header-status.onboarding_complete {
+            color: #fde68a;
+            background: linear-gradient(135deg, rgba(146, 64, 14, 0.75), rgba(113, 63, 18, 0.8));
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .wa-header-status.onboarding_in_progress {
+            color: #dbeafe;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.8), rgba(29, 78, 216, 0.7));
+            border-color: rgba(96, 165, 250, 0.28);
+        }
+
+        .wa-header-status.error {
+            color: #fecaca;
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.86), rgba(153, 27, 27, 0.82));
+            border-color: rgba(248, 113, 113, 0.3);
         }
 
         .wa-connect-overlay {
@@ -7920,8 +7944,7 @@
             border-color: rgba(148, 163, 184, 0.18);
         }
 
-        .wa-connect-status-badge.launching,
-        .wa-connect-status-badge.in_progress {
+        .wa-connect-status-badge.onboarding_in_progress {
             background: rgba(96, 165, 250, 0.14);
             color: #bfdbfe;
             border-color: rgba(96, 165, 250, 0.22);
@@ -7981,7 +8004,7 @@
 
         .wa-connect-proof-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
         }
 
@@ -8114,8 +8137,87 @@
             color: #d8fbe5 !important;
         }
 
-        .wa-connect-status-badge.onboarding_complete,
-        .wa-connect-status-badge.finalizing {
+        .wa-connect-story-card,
+        .wa-connect-number-card {
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .wa-connect-story-card h3,
+        .wa-connect-number-card h3 {
+            margin: 0 0 8px;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .wa-connect-story-card p,
+        .wa-connect-number-card p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .wa-connect-number-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .wa-connect-number-item {
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            min-width: 0;
+        }
+
+        .wa-connect-number-item strong {
+            display: block;
+            color: var(--text-main);
+            font-size: 1rem;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .wa-connect-number-item strong.pending {
+            color: #fcd34d;
+        }
+
+        .wa-connect-number-item strong.mono {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.84rem;
+        }
+
+        .wa-connect-number-item span {
+            display: block;
+            margin-top: 6px;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .wa-connect-stack {
+            display: grid;
+            gap: 18px;
+            align-content: start;
+            min-width: 0;
+        }
+
+        .wa-connect-section-note {
+            margin: 0 0 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .wa-connect-status-badge.onboarding_complete {
             background: rgba(245, 158, 11, 0.16);
             color: #fde68a;
             border-color: rgba(245, 158, 11, 0.26);
@@ -8336,7 +8438,8 @@
 
             .wa-connect-layout,
             .wa-connect-results-grid,
-            .wa-connect-proof-grid {
+            .wa-connect-proof-grid,
+            .wa-connect-number-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -16778,16 +16881,22 @@
                 btn_copy_json: "Copy JSON",
                 btn_clear_state: "Clear Saved State",
                 status_disconnected: "Not connected",
-                status_onboarding_complete: "Onboarding Complete",
-                status_finalizing: "Onboarding Complete - Finalizing",
-                status_launching: "Launching",
-                status_waiting: "Waiting for completion",
-                status_connected: "Connected",
+                status_in_progress: "Onboarding in progress",
+                status_onboarding_complete: "WhatsApp onboarding complete",
+                status_launching: "Onboarding in progress",
+                status_waiting: "Onboarding in progress",
+                status_connected: "WhatsApp channel connected",
                 status_cancelled: "Cancelled",
-                status_error: "Error",
+                status_error: "Connection error",
                 yes: "Yes",
                 no: "No",
                 not_available: "Not available",
+                meta_review_title: "Meta Review Proof",
+                meta_review_body: "Digitivia captured the WhatsApp business assets returned by Meta and uses them to configure the customer's WhatsApp Agent.",
+                how_it_helps_title: "How this connection improves Digitivia",
+                how_it_helps_body: "This connection lets Digitivia use the customer's WhatsApp Business assets returned by Meta to configure the WhatsApp Agent, identify the connected number, and prepare the channel for inbox, AI, lead capture, and messaging workflows.",
+                connected_number_title: "Connected WhatsApp Number",
+                connected_number_subtitle: "This section shows the WhatsApp business number details Digitivia can currently identify from the Meta onboarding result.",
                 results_title: "Connection Results",
                 timeline_title: "Activity Timeline",
                 timeline_empty: "No activity yet. Open the flow to start capturing events.",
@@ -16803,21 +16912,24 @@
                 proof_quality: "Quality Rating",
                 hero_title_connected: "WhatsApp Channel Connected",
                 hero_title_onboarding_complete: "WhatsApp Onboarding Complete",
-                hero_title_finalizing: "WhatsApp Onboarding Complete",
+                hero_title_in_progress: "WhatsApp Onboarding In Progress",
                 hero_title_disconnected: "WhatsApp Channel Connection",
                 hero_title_cancelled: "WhatsApp Onboarding Cancelled",
                 hero_title_error: "WhatsApp Connection Error",
                 hero_subtitle_connected: "Meta Embedded Signup finished successfully and the saved connection details can be reopened later from Settings.",
                 hero_subtitle_partial: "Meta onboarding completed. Final backend connection steps are still pending.",
+                hero_subtitle_in_progress: "The Meta popup flow is active. Digitivia is waiting for the Embedded Signup result from Meta.",
                 hero_subtitle_disconnected: "Connect your WhatsApp Business account using Meta Embedded Signup and capture the returned Meta business assets in Digitivia.",
                 hero_subtitle_cancelled: "The Meta popup was closed before onboarding finished.",
                 hero_subtitle_error: "Meta onboarding returned data, but Digitivia could not complete the final connection step.",
                 hero_summary_connected: "Meta Embedded Signup finished successfully and Digitivia captured the WhatsApp business assets returned by Meta.",
                 hero_summary_partial: "Meta Embedded Signup finished and Digitivia saved the returned assets. Additional backend completion steps are still pending.",
+                hero_summary_in_progress: "The reviewer can continue the Meta popup flow. Returned business assets will appear here as soon as Meta completes onboarding.",
                 hero_summary_disconnected: "Start the Meta popup flow to connect a WABA, phone number, and related business assets to the WhatsApp Agent.",
                 hero_summary_error: "Review the checklist and debug sections below to see which finalization steps still need attention.",
                 pending_fetch: "Pending fetch",
-                checklist_title: "Integration Checklist",
+                checklist_title: "Connection Readiness",
+                checklist_backend_hint: "These steps require backend exchange and follow-up API calls after Embedded Signup.",
                 checklist_meta_popup: "Meta popup launched",
                 checklist_finish_event: "Meta FINISH event received",
                 checklist_auth_code: "Auth code received",
@@ -16851,7 +16963,9 @@
                 result_dataset_ids: "Dataset IDs",
                 result_page_name: "Facebook Page Name",
                 result_page_username: "Facebook Page Username",
+                result_page_picture_url: "Facebook Page Image URL",
                 result_instagram_username: "Instagram Username",
+                result_instagram_picture_url: "Instagram Image URL",
                 result_whatsapp_username: "WhatsApp Username",
                 result_quality_rating: "Quality Rating",
                 result_connected_at: "Connected at",
@@ -16860,6 +16974,7 @@
                 cancel_message: "Embedded Signup was cancelled before completion.",
                 error_generic: "WhatsApp onboarding failed.",
                 toast_connected: "WhatsApp channel connected.",
+                toast_onboarding_complete: "WhatsApp onboarding completed. Final setup steps are still pending.",
                 toast_error: "WhatsApp onboarding failed.",
                 toast_copied: "Connection JSON copied.",
                 toast_copy_failed: "Could not copy JSON.",
@@ -16873,6 +16988,8 @@
                 log_connection_saved: "Connection state saved.",
                 log_backend_exchange_succeeded: "Backend exchange completed.",
                 log_phone_details_fetched: "Human-readable phone details were fetched after onboarding.",
+                log_app_subscription_succeeded: "App subscription to the WhatsApp Business Account was confirmed.",
+                log_webhook_ready_verified: "Webhook readiness was confirmed.",
                 log_backend_failed: "Backend handoff failed, but the Meta connection remained successful.",
                 log_cancelled: "Embedded Signup was cancelled.",
                 log_error: "Embedded Signup returned an error.",
@@ -16896,16 +17013,22 @@
                 btn_copy_json: "نسخ JSON",
                 btn_clear_state: "مسح الحالة المحفوظة",
                 status_disconnected: "غير متصل",
-                status_onboarding_complete: "اكتمل الربط",
-                status_finalizing: "اكتمل الربط - جارِ الإنهاء",
-                status_launching: "جاري الإطلاق",
-                status_waiting: "بانتظار الإكمال",
-                status_connected: "متصل",
+                status_in_progress: "الربط قيد التنفيذ",
+                status_onboarding_complete: "اكتمل ربط واتساب",
+                status_launching: "الربط قيد التنفيذ",
+                status_waiting: "الربط قيد التنفيذ",
+                status_connected: "تم ربط قناة واتساب",
                 status_cancelled: "تم الإلغاء",
-                status_error: "خطأ",
+                status_error: "خطأ في الاتصال",
                 yes: "نعم",
                 no: "لا",
                 not_available: "غير متوفر",
+                meta_review_title: "إثبات مراجعة Meta",
+                meta_review_body: "قامت Digitivia بالتقاط أصول واتساب التجارية التي أعادها Meta وتستخدمها لإعداد وكيل واتساب الخاص بالعميل.",
+                how_it_helps_title: "كيف يحسن هذا الاتصال Digitivia",
+                how_it_helps_body: "يتيح هذا الاتصال لـ Digitivia استخدام أصول WhatsApp Business التي أعادها Meta لإعداد وكيل واتساب، وتحديد الرقم المتصل، وتجهيز القناة لصندوق الوارد والذكاء الاصطناعي والتقاط العملاء المحتملين وعمليات المراسلة.",
+                connected_number_title: "رقم واتساب المتصل",
+                connected_number_subtitle: "يعرض هذا القسم تفاصيل رقم واتساب التجاري التي يمكن لـ Digitivia تحديدها حاليًا من نتيجة الربط عبر Meta.",
                 results_title: "نتائج الاتصال",
                 timeline_title: "سجل النشاط",
                 timeline_empty: "لا يوجد نشاط بعد. افتح التدفق لبدء تسجيل الأحداث.",
@@ -16921,21 +17044,24 @@
                 proof_quality: "تقييم الجودة",
                 hero_title_connected: "تم ربط قناة واتساب",
                 hero_title_onboarding_complete: "اكتمل ربط واتساب",
-                hero_title_finalizing: "اكتمل ربط واتساب",
+                hero_title_in_progress: "ربط واتساب قيد التنفيذ",
                 hero_title_disconnected: "ربط قناة واتساب",
                 hero_title_cancelled: "تم إلغاء ربط واتساب",
                 hero_title_error: "خطأ في ربط واتساب",
                 hero_subtitle_connected: "تم إنهاء Meta Embedded Signup بنجاح ويمكن فتح تفاصيل الاتصال المحفوظة لاحقًا من الإعدادات.",
                 hero_subtitle_partial: "اكتمل الربط عبر Meta لكن بعض خطوات الإنهاء الخلفية ما زالت قيد الانتظار.",
+                hero_subtitle_in_progress: "تدفق نافذة Meta المنبثقة ما زال نشطًا وDigitivia ينتظر نتيجة Embedded Signup من Meta.",
                 hero_subtitle_disconnected: "قم بربط حساب WhatsApp Business باستخدام Meta Embedded Signup واحفظ الأصول التجارية التي يعيدها Meta داخل Digitivia.",
                 hero_subtitle_cancelled: "تم إغلاق نافذة Meta قبل اكتمال الربط.",
                 hero_subtitle_error: "أعاد Meta بيانات الربط لكن Digitivia لم يكمل الخطوة النهائية للاتصال.",
                 hero_summary_connected: "تم إنهاء Meta Embedded Signup بنجاح وتم حفظ أصول WhatsApp Business التي أعادها Meta داخل Digitivia.",
                 hero_summary_partial: "اكتمل Meta Embedded Signup وتم حفظ الأصول العائدة من Meta، لكن بعض خطوات الإنهاء الخلفية ما زالت قيد الانتظار.",
+                hero_summary_in_progress: "يمكن للمراجع متابعة تدفق نافذة Meta المنبثقة، وستظهر الأصول التجارية العائدة هنا فور اكتمال الربط من Meta.",
                 hero_summary_disconnected: "ابدأ تدفق نافذة Meta المنبثقة لربط WABA ورقم الهاتف والأصول التجارية المرتبطة مع وكيل واتساب.",
                 hero_summary_error: "راجع قائمة التحقق وأقسام التصحيح أدناه لمعرفة الخطوة النهائية التي تحتاج متابعة.",
                 pending_fetch: "بانتظار الجلب",
-                checklist_title: "قائمة تحقق التكامل",
+                checklist_title: "جاهزية الاتصال",
+                checklist_backend_hint: "تتطلب هذه الخطوات تبادلًا عبر الخلفية واستدعاءات API لاحقة بعد Embedded Signup.",
                 checklist_meta_popup: "تم تشغيل نافذة Meta",
                 checklist_finish_event: "تم استلام حدث FINISH من Meta",
                 checklist_auth_code: "تم استلام رمز التفويض",
@@ -16969,7 +17095,9 @@
                 result_dataset_ids: "معرفات مجموعات البيانات",
                 result_page_name: "اسم صفحة فيسبوك",
                 result_page_username: "اسم مستخدم صفحة فيسبوك",
+                result_page_picture_url: "رابط صورة صفحة فيسبوك",
                 result_instagram_username: "اسم مستخدم إنستغرام",
+                result_instagram_picture_url: "رابط صورة إنستغرام",
                 result_whatsapp_username: "اسم مستخدم واتساب",
                 result_quality_rating: "تقييم الجودة",
                 result_connected_at: "تاريخ الاتصال",
@@ -16978,6 +17106,7 @@
                 cancel_message: "تم إلغاء Embedded Signup قبل الاكتمال.",
                 error_generic: "فشل ربط واتساب.",
                 toast_connected: "تم ربط قناة واتساب.",
+                toast_onboarding_complete: "اكتمل ربط واتساب وما زالت بعض خطوات الإعداد النهائية قيد الانتظار.",
                 toast_error: "فشل ربط واتساب.",
                 toast_copied: "تم نسخ JSON الخاص بالاتصال.",
                 toast_copy_failed: "تعذر نسخ JSON.",
@@ -16991,6 +17120,8 @@
                 log_connection_saved: "تم حفظ حالة الاتصال.",
                 log_backend_exchange_succeeded: "اكتمل تبادل الرمز عبر الخلفية.",
                 log_phone_details_fetched: "تم جلب تفاصيل رقم الهاتف المقروءة بعد الربط.",
+                log_app_subscription_succeeded: "تم تأكيد اشتراك التطبيق في حساب واتساب للأعمال.",
+                log_webhook_ready_verified: "تم تأكيد جاهزية الويب هوك.",
                 log_backend_failed: "فشل إرسال البيانات للخلفية لكن اتصال Meta بقي ناجحًا.",
                 log_cancelled: "تم إلغاء Embedded Signup.",
                 log_error: "أعاد Embedded Signup خطأ.",
@@ -25694,16 +25825,30 @@ Thank you for shopping with {store_name}!</textarea>
         return merged;
     }
 
+    function hasWhatsAppCoreProof(state) {
+        const normalized = normalizeWhatsAppConnection(state);
+        return !!(normalized.business_id || normalized.waba_id || normalized.phone_number_id);
+    }
+
+    function isWhatsAppBackendFullyReady(state) {
+        const normalized = normalizeWhatsAppConnection(state);
+        const backendStatus = Object.assign(createDefaultBackendStatus(), normalized.backend_status || {});
+        return Object.values(backendStatus).every((value) => value === 'success');
+    }
+
     function getWhatsAppVisibleConnectionState(state) {
         const normalized = normalizeWhatsAppConnection(state);
-        if (normalized.last_error || normalized.status === 'error' || normalized.meta_onboarding_status === 'error' || normalized.channel_connection_status === 'error') return 'error';
-        if (normalized.status === 'cancelled' || normalized.meta_onboarding_status === 'cancelled') return 'cancelled';
-        if (normalized.connected || normalized.status === 'connected' || normalized.channel_connection_status === 'connected') return 'connected';
-        const hasMetaFinish = normalized.meta_onboarding_status === 'finished' || !!(normalized.waba_id || normalized.phone_number_id || normalized.business_id);
-        const hasAuth = normalized.auth_code_received;
-        const hasPendingBackend = Object.values(normalized.backend_status || {}).some((value) => value === 'pending');
-        if (hasMetaFinish && hasAuth && hasPendingBackend) return 'finalizing';
-        if (hasMetaFinish || hasAuth) return 'onboarding_complete';
+        const backendStatus = Object.assign(createDefaultBackendStatus(), normalized.backend_status || {});
+        const hasMetaFinish = normalized.meta_onboarding_status === 'finished' || hasWhatsAppCoreProof(normalized);
+        const hasReviewProof = normalized.auth_code_received && hasWhatsAppCoreProof(normalized);
+        const backendAnyError = Object.values(backendStatus).some((value) => value === 'error');
+        const inProgress = ['launching', 'in_progress'].includes(normalized.status) || normalized.meta_onboarding_status === 'launched' || normalized.channel_connection_status === 'saving';
+
+        if (hasMetaFinish && hasReviewProof && isWhatsAppBackendFullyReady(normalized) && normalized.channel_connection_status === 'connected') return 'connected';
+        if (hasMetaFinish && hasReviewProof && backendAnyError) return 'error';
+        if ((normalized.status === 'error' || normalized.meta_onboarding_status === 'error' || normalized.channel_connection_status === 'error' || normalized.last_error) && !hasReviewProof) return 'error';
+        if (inProgress) return 'onboarding_in_progress';
+        if (hasMetaFinish || normalized.auth_code_received || hasWhatsAppCoreProof(normalized)) return 'onboarding_complete';
         return 'disconnected';
     }
 
@@ -25906,14 +26051,37 @@ Thank you for shopping with {store_name}!</textarea>
         };
     }
 
+    async function subscribeAppToWabaOnBackend(payload) {
+        return {
+            ok: false,
+            status: 'pending',
+            reason: 'backend_not_configured',
+            payload: sanitizeWhatsAppPayload(payload)
+        };
+    }
+
+    async function verifyWebhookReadyOnBackend(payload) {
+        return {
+            ok: false,
+            status: 'pending',
+            reason: 'backend_not_configured',
+            payload: sanitizeWhatsAppPayload(payload)
+        };
+    }
+
     async function finalizeWhatsAppConnection() {
         const current = getWhatsAppConnectionState();
         const backendStatus = Object.assign(createDefaultBackendStatus(), current.backend_status || {});
+        const nextPatch = {
+            backend_status: backendStatus,
+            updated_at: new Date().toISOString()
+        };
         if (current.auth_code_received) {
             const exchangeResult = await exchangeWhatsAppSignupCodeOnBackend({
                 app_id: current.app_id,
                 config_id: current.config_id,
-                auth_code_preview: current.auth_code_preview
+                auth_code_preview: current.auth_code_preview,
+                auth_code: whatsappRuntimeAuthCode || undefined
             });
             backendStatus.code_exchange = exchangeResult.ok ? 'success' : (exchangeResult.status === 'error' ? 'error' : 'pending');
             if (exchangeResult.ok) {
@@ -25927,14 +26095,40 @@ Thank you for shopping with {store_name}!</textarea>
             });
             backendStatus.phone_details_fetch = phoneDetailsResult.ok ? 'success' : (phoneDetailsResult.status === 'error' ? 'error' : 'pending');
             if (phoneDetailsResult.ok) {
+                nextPatch.display_phone_number = phoneDetailsResult.display_phone_number || current.display_phone_number;
+                nextPatch.verified_name = phoneDetailsResult.verified_name || current.verified_name;
+                nextPatch.quality_rating = phoneDetailsResult.quality_rating || current.quality_rating;
                 appendWhatsAppReviewLog('backend', t('whatsapp_connect.log_phone_details_fetched'));
             }
         }
-        const next = updateWhatsAppConnectionState({
+        if (current.waba_id) {
+            const subscribeResult = await subscribeAppToWabaOnBackend({
+                waba_id: current.waba_id,
+                business_id: current.business_id
+            });
+            backendStatus.subscribe_app = subscribeResult.ok ? 'success' : (subscribeResult.status === 'error' ? 'error' : 'pending');
+            if (subscribeResult.ok) {
+                appendWhatsAppReviewLog('backend', t('whatsapp_connect.log_app_subscription_succeeded'));
+            }
+        }
+        if (current.waba_id || current.phone_number_id) {
+            const webhookResult = await verifyWebhookReadyOnBackend({
+                waba_id: current.waba_id,
+                phone_number_id: current.phone_number_id
+            });
+            backendStatus.webhook_ready = webhookResult.ok ? 'success' : (webhookResult.status === 'error' ? 'error' : 'pending');
+            if (webhookResult.ok) {
+                appendWhatsAppReviewLog('backend', t('whatsapp_connect.log_webhook_ready_verified'));
+            }
+        }
+        const backendAnyError = Object.values(backendStatus).some((value) => value === 'error');
+        const next = updateWhatsAppConnectionState(Object.assign(nextPatch, {
             backend_status: backendStatus,
-            channel_connection_status: Object.values(backendStatus).every((value) => value === 'success') ? 'connected' : 'partial',
+            channel_connection_status: isWhatsAppBackendFullyReady({ backend_status: backendStatus }) ? 'connected' : (backendAnyError ? 'error' : 'partial'),
+            status: 'connected',
+            last_error: backendAnyError && !current.last_error ? t('whatsapp_connect.hero_subtitle_error') : current.last_error,
             updated_at: new Date().toISOString()
-        });
+        }));
         await persistWhatsAppConnectionState(next);
         return next;
     }
@@ -25947,15 +26141,12 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     function getWhatsAppStatusDescriptor(status) {
-        const normalized = ['disconnected', 'onboarding_complete', 'finalizing', 'launching', 'in_progress', 'connected', 'cancelled', 'error'].includes(status) ? status : getWhatsAppVisibleConnectionState({ status });
+        const normalized = ['disconnected', 'onboarding_in_progress', 'onboarding_complete', 'connected', 'error'].includes(status) ? status : getWhatsAppVisibleConnectionState({ status });
         const map = {
             disconnected: { key: 'status_disconnected', icon: '○' },
+            onboarding_in_progress: { key: 'status_in_progress', icon: '…' },
             onboarding_complete: { key: 'status_onboarding_complete', icon: '✓' },
-            finalizing: { key: 'status_finalizing', icon: '…' },
-            launching: { key: 'status_launching', icon: '↗' },
-            in_progress: { key: 'status_waiting', icon: '…' },
             connected: { key: 'status_connected', icon: '✓' },
-            cancelled: { key: 'status_cancelled', icon: '!' },
             error: { key: 'status_error', icon: '×' }
         };
         return map[normalized] || map.disconnected;
@@ -25969,20 +26160,15 @@ Thank you for shopping with {store_name}!</textarea>
                 subtitle: t('whatsapp_connect.hero_subtitle_connected'),
                 summary: t('whatsapp_connect.hero_summary_connected')
             },
+            onboarding_in_progress: {
+                title: t('whatsapp_connect.hero_title_in_progress'),
+                subtitle: t('whatsapp_connect.hero_subtitle_in_progress'),
+                summary: t('whatsapp_connect.hero_summary_in_progress')
+            },
             onboarding_complete: {
                 title: t('whatsapp_connect.hero_title_onboarding_complete'),
                 subtitle: t('whatsapp_connect.hero_subtitle_partial'),
                 summary: t('whatsapp_connect.hero_summary_partial')
-            },
-            finalizing: {
-                title: t('whatsapp_connect.hero_title_finalizing'),
-                subtitle: t('whatsapp_connect.hero_subtitle_partial'),
-                summary: t('whatsapp_connect.hero_summary_partial')
-            },
-            cancelled: {
-                title: t('whatsapp_connect.hero_title_cancelled'),
-                subtitle: t('whatsapp_connect.hero_subtitle_cancelled'),
-                summary: t('whatsapp_connect.hero_summary_disconnected')
             },
             error: {
                 title: t('whatsapp_connect.hero_title_error'),
@@ -26001,15 +26187,18 @@ Thank you for shopping with {store_name}!</textarea>
     function buildWhatsAppChecklist(state) {
         const backendStatus = Object.assign(createDefaultBackendStatus(), state.backend_status || {});
         const checklistStatus = (value) => value === 'success' ? 'success' : value === 'error' ? 'error' : 'pending';
+        const backendHint = t('whatsapp_connect.checklist_backend_hint');
+        const finishSummary = [state.business_id, state.waba_id, state.phone_number_id].filter(Boolean).join(' • ');
+        const humanPhoneSummary = [state.display_phone_number, state.verified_name, state.quality_rating].filter(Boolean).join(' • ');
         return [
             { label: t('whatsapp_connect.checklist_meta_popup'), note: t('whatsapp_connect.helper_line_1'), status: state.meta_onboarding_status === 'launched' || state.meta_onboarding_status === 'finished' ? 'success' : 'pending' },
-            { label: t('whatsapp_connect.checklist_finish_event'), note: state.waba_id || state.phone_number_id ? t('whatsapp_connect.hero_summary_connected') : t('whatsapp_connect.hero_subtitle_partial'), status: state.meta_onboarding_status === 'finished' ? 'success' : 'pending' },
+            { label: t('whatsapp_connect.checklist_finish_event'), note: finishSummary || t('whatsapp_connect.pending_fetch'), status: state.meta_onboarding_status === 'finished' || hasWhatsAppCoreProof(state) ? 'success' : 'pending' },
             { label: t('whatsapp_connect.checklist_auth_code'), note: state.auth_code_preview || t('whatsapp_connect.pending_fetch'), status: state.auth_code_received ? 'success' : 'pending' },
             { label: t('whatsapp_connect.checklist_saved'), note: state.updated_at ? formatWhatsAppDateTime(state.updated_at) : t('whatsapp_connect.pending_fetch'), status: state.updated_at ? 'success' : 'pending' },
-            { label: t('whatsapp_connect.checklist_code_exchange'), note: t('whatsapp_connect.debug_notes_body'), status: checklistStatus(backendStatus.code_exchange) },
-            { label: t('whatsapp_connect.checklist_phone_details'), note: state.display_phone_number || state.verified_name || t('whatsapp_connect.pending_fetch'), status: (state.display_phone_number || state.verified_name || state.quality_rating) ? 'success' : checklistStatus(backendStatus.phone_details_fetch) },
-            { label: t('whatsapp_connect.checklist_subscribe_app'), note: state.waba_id || t('whatsapp_connect.pending_fetch'), status: checklistStatus(backendStatus.subscribe_app) },
-            { label: t('whatsapp_connect.checklist_webhook_ready'), note: state.phone_number_id || t('whatsapp_connect.pending_fetch'), status: checklistStatus(backendStatus.webhook_ready) }
+            { label: t('whatsapp_connect.checklist_code_exchange'), note: backendStatus.code_exchange === 'success' ? t('whatsapp_connect.log_backend_exchange_succeeded') : backendHint, status: checklistStatus(backendStatus.code_exchange) },
+            { label: t('whatsapp_connect.checklist_phone_details'), note: (state.display_phone_number || state.verified_name || state.quality_rating) ? humanPhoneSummary : backendHint, status: (state.display_phone_number || state.verified_name || state.quality_rating) ? 'success' : checklistStatus(backendStatus.phone_details_fetch) },
+            { label: t('whatsapp_connect.checklist_subscribe_app'), note: backendStatus.subscribe_app === 'success' ? (state.waba_id || t('whatsapp_connect.pending_fetch')) : backendHint, status: checklistStatus(backendStatus.subscribe_app) },
+            { label: t('whatsapp_connect.checklist_webhook_ready'), note: backendStatus.webhook_ready === 'success' ? (state.phone_number_id || t('whatsapp_connect.pending_fetch')) : backendHint, status: checklistStatus(backendStatus.webhook_ready) }
         ];
     }
 
@@ -26092,6 +26281,11 @@ Thank you for shopping with {store_name}!</textarea>
         return JSON.stringify(state, null, 2);
     }
 
+    function buildWhatsAppRawPayloadJsonForDisplay() {
+        const state = getWhatsAppConnectionState();
+        return JSON.stringify(state.raw_session_payload || {}, null, 2);
+    }
+
     function escapeWhatsAppHtml(value) {
         return String(value ?? '')
             .replace(/&/g, '&amp;')
@@ -26103,10 +26297,12 @@ Thank you for shopping with {store_name}!</textarea>
 
     function renderWhatsAppAgentHeaderActionsMarkup() {
         const state = getWhatsAppConnectionState();
-        if (state.connected) {
+        const visibleState = getWhatsAppVisibleConnectionState(state);
+        const descriptor = getWhatsAppStatusDescriptor(visibleState);
+        if (visibleState !== 'disconnected') {
             return `
                 <div class="wa-connect-actions">
-                    <div class="wa-header-status">${t('whatsapp_connect.btn_connected')}</div>
+                    <div class="wa-header-status ${visibleState}">${t('whatsapp_connect.' + descriptor.key)}</div>
                     <button type="button" class="wa-header-btn wa-header-btn-secondary" onclick="openWhatsAppConnectModal('settings')">${t('whatsapp_connect.btn_settings')}</button>
                 </div>
             `;
@@ -26136,39 +26332,38 @@ Thank you for shopping with {store_name}!</textarea>
         const descriptor = getWhatsAppStatusDescriptor(visibleState);
         const hero = getWhatsAppHeroCopy(state, visibleState);
         const logs = getWhatsAppActivityLog(state);
-        const busy = visibleState === 'launching' || visibleState === 'in_progress';
-        const joinArray = (items) => Array.isArray(items) && items.length ? items.join(', ') : t('whatsapp_connect.not_available');
-        const primaryRows = [
-            ['result_status', t('whatsapp_connect.' + descriptor.key)],
-            ['result_app_id', state.app_id || t('whatsapp_connect.not_available')],
-            ['result_config_id', state.config_id || t('whatsapp_connect.not_available')],
-            ['result_auth_code', state.auth_code_received ? t('whatsapp_connect.yes') : t('whatsapp_connect.no')],
-            ['result_waba_id', state.waba_id || t('whatsapp_connect.not_available')],
-            ['result_phone_number_id', state.phone_number_id || t('whatsapp_connect.not_available')],
-            ['result_business_id', state.business_id || t('whatsapp_connect.not_available')],
-            ['result_display_phone_number', getWhatsAppHumanValue(state.display_phone_number)],
-            ['result_verified_name', getWhatsAppHumanValue(state.verified_name)],
-            ['result_quality_rating', getWhatsAppHumanValue(state.quality_rating)],
-            ['result_page_name', getWhatsAppHumanValue(state.page_name)],
-            ['result_page_username', getWhatsAppHumanValue(state.page_username)],
-            ['result_instagram_username', getWhatsAppHumanValue(state.instagram_username)],
-            ['result_whatsapp_username', getWhatsAppHumanValue(state.whatsapp_username)],
-            ['result_connected_at', formatWhatsAppDateTime(state.connected_at)],
-            ['result_updated_at', formatWhatsAppDateTime(state.updated_at)],
-            ['result_auth_code_preview', state.auth_code_preview || t('whatsapp_connect.not_available')]
-        ];
+        const busy = visibleState === 'onboarding_in_progress';
+        const joinArray = (items) => Array.isArray(items) && items.length ? items.join(', ') : '';
         const assetRows = [
             ['result_page_ids', joinArray(state.page_ids)],
             ['result_instagram_account_ids', joinArray(state.instagram_account_ids)],
             ['result_ad_account_ids', joinArray(state.ad_account_ids)],
             ['result_catalog_ids', joinArray(state.catalog_ids)],
             ['result_dataset_ids', joinArray(state.dataset_ids)],
-            ['result_page_name', getWhatsAppHumanValue(state.page_name)],
-            ['result_page_username', getWhatsAppHumanValue(state.page_username)],
-            ['result_instagram_username', getWhatsAppHumanValue(state.instagram_username)],
-            ['result_whatsapp_username', getWhatsAppHumanValue(state.whatsapp_username)]
-        ];
+            ['result_page_name', state.page_name],
+            ['result_page_username', state.page_username],
+            ['result_page_picture_url', state.page_picture_url],
+            ['result_instagram_username', state.instagram_username],
+            ['result_instagram_picture_url', state.instagram_picture_url],
+            ['result_whatsapp_username', state.whatsapp_username]
+        ].filter(([, value]) => !!String(value || '').trim());
         const checklist = buildWhatsAppChecklist(state);
+        const metaProofCards = [
+            { label: 'proof_auth', value: state.auth_code_received ? t('whatsapp_connect.yes') : t('whatsapp_connect.no'), mono: false, pending: !state.auth_code_received },
+            { label: 'proof_waba', value: state.waba_id || t('whatsapp_connect.pending_fetch'), mono: !!state.waba_id, pending: !state.waba_id },
+            { label: 'proof_phone', value: state.phone_number_id || t('whatsapp_connect.pending_fetch'), mono: !!state.phone_number_id, pending: !state.phone_number_id },
+            { label: 'proof_business', value: state.business_id || t('whatsapp_connect.pending_fetch'), mono: !!state.business_id, pending: !state.business_id }
+        ];
+        const connectedNumberRows = [
+            ['result_display_phone_number', getWhatsAppHumanValue(state.display_phone_number), false, !state.display_phone_number],
+            ['result_verified_name', getWhatsAppHumanValue(state.verified_name), false, !state.verified_name],
+            ['result_quality_rating', getWhatsAppHumanValue(state.quality_rating), false, !state.quality_rating],
+            ['result_waba_id', state.waba_id || t('whatsapp_connect.pending_fetch'), true, !state.waba_id],
+            ['result_phone_number_id', state.phone_number_id || t('whatsapp_connect.pending_fetch'), true, !state.phone_number_id],
+            ['result_business_id', state.business_id || t('whatsapp_connect.pending_fetch'), true, !state.business_id],
+            ['result_connected_at', formatWhatsAppDateTime(state.connected_at), false, !state.connected_at],
+            ['result_updated_at', formatWhatsAppDateTime(state.updated_at), false, !state.updated_at]
+        ];
 
         overlay.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
         kicker.textContent = t('whatsapp_connect.kicker');
@@ -26177,117 +26372,131 @@ Thank you for shopping with {store_name}!</textarea>
 
         body.innerHTML = `
             <div class="wa-connect-layout">
-                <div class="wa-connect-panel">
-                    <div class="wa-connect-status-row">
-                        <div class="wa-connect-status-badge ${visibleState}">
-                            <span>${descriptor.icon}</span>
-                            <span>${t('whatsapp_connect.' + descriptor.key)}</span>
+                <div class="wa-connect-stack">
+                    <div class="wa-connect-panel">
+                        <div class="wa-connect-status-row">
+                            <div class="wa-connect-status-badge ${visibleState}">
+                                <span>${descriptor.icon}</span>
+                                <span>${t('whatsapp_connect.' + descriptor.key)}</span>
+                            </div>
+                            <div class="wa-connect-meta-note">${hero.summary}</div>
                         </div>
-                        <div class="wa-connect-meta-note">${t('whatsapp_connect.helper_line_2')}</div>
+                        <div class="wa-connect-hero">
+                            <h3>${hero.title}</h3>
+                            <p>${hero.subtitle}</p>
+                            <p class="wa-connect-hero-summary">${hero.summary}</p>
+                        </div>
+                        <div class="wa-connect-story-card">
+                            <h3>${t('whatsapp_connect.meta_review_title')}</h3>
+                            <p>${t('whatsapp_connect.meta_review_body')}</p>
+                        </div>
+                        <div class="wa-connect-story-card">
+                            <h3>${t('whatsapp_connect.how_it_helps_title')}</h3>
+                            <p>${t('whatsapp_connect.how_it_helps_body')}</p>
+                        </div>
+                        <div class="wa-connect-actions-row">
+                            <button type="button" class="wa-connect-cta" onclick="startWhatsAppEmbeddedSignup()" ${busy ? 'disabled' : ''}>${['connected', 'onboarding_complete'].includes(visibleState) ? t('whatsapp_connect.btn_reconnect') : t('whatsapp_connect.btn_continue_facebook')}</button>
+                            <button type="button" class="wa-connect-secondary" onclick="closeWhatsAppConnectModal()">${t('whatsapp_connect.btn_close')}</button>
+                            <button type="button" class="wa-connect-secondary" onclick="copyWhatsAppConnectionJson()">${t('whatsapp_connect.btn_copy_json')}</button>
+                            <button type="button" class="wa-connect-ghost" onclick="clearSavedWhatsAppConnectionState()" ${busy ? 'disabled' : ''}>${t('whatsapp_connect.btn_clear_state')}</button>
+                        </div>
+                        ${state.last_error && visibleState === 'error' ? `<div class="wa-connect-result-item"><span class="wa-connect-result-label">${t('whatsapp_connect.last_error')}</span><span class="wa-connect-result-value">${escapeWhatsAppHtml(state.last_error)}</span></div>` : ''}
                     </div>
-                    <div class="wa-connect-hero">
-                        <h3>${hero.title}</h3>
-                        <p>${hero.subtitle}</p>
-                        <p class="wa-connect-hero-summary">${hero.summary}</p>
+                    <div class="wa-connect-panel">
+                        <h3>${t('whatsapp_connect.checklist_title')}</h3>
+                        <p class="wa-connect-section-note">${t('whatsapp_connect.checklist_backend_hint')}</p>
+                        <div class="wa-connect-checklist">
+                            ${checklist.map((item) => `
+                                <div class="wa-connect-check-item">
+                                    <div class="wa-connect-check-copy">
+                                        <div class="wa-connect-check-label">${escapeWhatsAppHtml(item.label)}</div>
+                                        <div class="wa-connect-check-note">${escapeWhatsAppHtml(item.note)}</div>
+                                    </div>
+                                    <div class="wa-connect-check-status ${item.status}">${t('whatsapp_connect.check_' + item.status)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
-                    <div class="wa-connect-proof">
+                </div>
+                <div class="wa-connect-stack">
+                    <div class="wa-connect-panel wa-connect-proof">
                         <div class="wa-connect-proof-title">${t('whatsapp_connect.proof_title')}</div>
                         <p class="wa-connect-proof-subtitle">${t('whatsapp_connect.proof_subtitle')}</p>
                         <div class="wa-connect-proof-grid">
-                            <div class="wa-connect-proof-card">
-                                <strong>${escapeWhatsAppHtml(state.auth_code_received ? t('whatsapp_connect.yes') : t('whatsapp_connect.no'))}</strong>
-                                <span>${t('whatsapp_connect.proof_auth')}</span>
-                            </div>
-                            <div class="wa-connect-proof-card">
-                                <strong class="mono">${escapeWhatsAppHtml(state.waba_id || t('whatsapp_connect.not_available'))}</strong>
-                                <span>${t('whatsapp_connect.proof_waba')}</span>
-                            </div>
-                            <div class="wa-connect-proof-card">
-                                <strong class="mono">${escapeWhatsAppHtml(state.phone_number_id || t('whatsapp_connect.not_available'))}</strong>
-                                <span>${t('whatsapp_connect.proof_phone')}</span>
-                            </div>
-                            <div class="wa-connect-proof-card">
-                                <strong class="mono">${escapeWhatsAppHtml(state.business_id || t('whatsapp_connect.not_available'))}</strong>
-                                <span>${t('whatsapp_connect.proof_business')}</span>
-                            </div>
-                            <div class="wa-connect-proof-card">
-                                <strong class="${state.display_phone_number ? '' : 'pending'}">${escapeWhatsAppHtml(getWhatsAppHumanValue(state.display_phone_number))}</strong>
-                                <span>${t('whatsapp_connect.proof_display_phone')}</span>
-                            </div>
-                            <div class="wa-connect-proof-card">
-                                <strong class="${state.verified_name ? '' : 'pending'}">${escapeWhatsAppHtml(getWhatsAppHumanValue(state.verified_name))}</strong>
-                                <span>${t('whatsapp_connect.proof_verified_name')}</span>
-                            </div>
-                            <div class="wa-connect-proof-card">
-                                <strong class="${state.quality_rating ? '' : 'pending'}">${escapeWhatsAppHtml(getWhatsAppHumanValue(state.quality_rating))}</strong>
-                                <span>${t('whatsapp_connect.proof_quality')}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wa-connect-actions-row">
-                        <button type="button" class="wa-connect-cta" onclick="startWhatsAppEmbeddedSignup()" ${busy ? 'disabled' : ''}>${['connected', 'onboarding_complete', 'finalizing'].includes(visibleState) ? t('whatsapp_connect.btn_reconnect') : t('whatsapp_connect.btn_continue_facebook')}</button>
-                        <button type="button" class="wa-connect-secondary" onclick="closeWhatsAppConnectModal()">${t('whatsapp_connect.btn_close')}</button>
-                        <button type="button" class="wa-connect-secondary" onclick="copyWhatsAppConnectionJson()">${t('whatsapp_connect.btn_copy_json')}</button>
-                        <button type="button" class="wa-connect-ghost" onclick="clearSavedWhatsAppConnectionState()" ${busy ? 'disabled' : ''}>${t('whatsapp_connect.btn_clear_state')}</button>
-                    </div>
-                    ${state.last_error ? `<div class="wa-connect-result-item" style="margin-bottom:14px;"><span class="wa-connect-result-label">${t('whatsapp_connect.last_error')}</span><span class="wa-connect-result-value">${escapeWhatsAppHtml(state.last_error)}</span></div>` : ''}
-                    <h3 class="wa-connect-section-title">${t('whatsapp_connect.results_title')}</h3>
-                    <div class="wa-connect-results-grid">
-                        ${primaryRows.map(([key, value]) => `
-                            <div class="wa-connect-result-item">
-                                <span class="wa-connect-result-label">${t('whatsapp_connect.' + key)}</span>
-                                <span class="wa-connect-result-value ${key.includes('id') || key.includes('preview') ? 'mono' : ''}">${escapeWhatsAppHtml(String(value || ''))}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <h3 class="wa-connect-section-title">${t('whatsapp_connect.checklist_title')}</h3>
-                    <div class="wa-connect-checklist">
-                        ${checklist.map((item) => `
-                            <div class="wa-connect-check-item">
-                                <div class="wa-connect-check-copy">
-                                    <div class="wa-connect-check-label">${escapeWhatsAppHtml(item.label)}</div>
-                                    <div class="wa-connect-check-note">${escapeWhatsAppHtml(item.note)}</div>
-                                </div>
-                                <div class="wa-connect-check-status ${item.status}">${t('whatsapp_connect.check_' + item.status)}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <details class="wa-connect-accordion">
-                        <summary>${t('whatsapp_connect.advanced_assets_title')}</summary>
-                        ${assetRows.length ? `<div class="wa-connect-results-grid">
-                            ${assetRows.map(([key, value]) => `
-                                <div class="wa-connect-result-item">
-                                    <span class="wa-connect-result-label">${t('whatsapp_connect.' + key)}</span>
-                                    <span class="wa-connect-result-value ${key.includes('ids') ? 'mono' : ''}">${escapeWhatsAppHtml(String(value || ''))}</span>
+                            ${metaProofCards.map((card) => `
+                                <div class="wa-connect-proof-card">
+                                    <strong class="${card.mono ? 'mono' : ''} ${card.pending ? 'pending' : ''}">${escapeWhatsAppHtml(card.value)}</strong>
+                                    <span>${t('whatsapp_connect.' + card.label)}</span>
                                 </div>
                             `).join('')}
-                        </div>` : `<div class="wa-connect-empty">${t('whatsapp_connect.advanced_assets_empty')}</div>`}
-                    </details>
-                    <details class="wa-connect-accordion">
-                        <summary>${t('whatsapp_connect.debug_notes_title')}</summary>
-                        <div class="wa-connect-debug-note">${t('whatsapp_connect.debug_notes_body')}</div>
-                    </details>
-                    <details class="wa-connect-accordion">
-                        <summary>${t('whatsapp_connect.raw_payload_title')}</summary>
-                        <pre class="wa-connect-json">${escapeWhatsAppHtml(buildWhatsAppJsonForDisplay())}</pre>
-                    </details>
-                </div>
-                <div class="wa-connect-panel">
-                    <h3>${t('whatsapp_connect.timeline_title')}</h3>
-                    <div class="wa-connect-log">
-                        ${logs.length ? logs.slice().reverse().map((entry) => `
-                            <details class="wa-connect-log-item">
-                                <summary class="wa-connect-log-head">
-                                    <span class="wa-connect-log-type">${escapeWhatsAppHtml(entry.type || t('whatsapp_connect.event_default_type'))}</span>
-                                    <span>${escapeWhatsAppHtml(formatWhatsAppDateTime(entry.at))}</span>
-                                </summary>
-                                <div class="wa-connect-log-message">${escapeWhatsAppHtml(entry.message || '')}</div>
-                                ${entry.payload ? `<pre class="wa-connect-log-payload">${escapeWhatsAppHtml(JSON.stringify(entry.payload, null, 2))}</pre>` : ''}
-                            </details>
-                        `).join('') : `<div class="wa-connect-empty">${t('whatsapp_connect.timeline_empty')}</div>`}
+                        </div>
+                    </div>
+                    <div class="wa-connect-panel wa-connect-number-card">
+                        <h3>${t('whatsapp_connect.connected_number_title')}</h3>
+                        <p>${t('whatsapp_connect.connected_number_subtitle')}</p>
+                        <div class="wa-connect-number-grid">
+                            ${connectedNumberRows.map(([key, value, mono, pending]) => `
+                                <div class="wa-connect-number-item">
+                                    <strong class="${mono ? 'mono' : ''} ${pending ? 'pending' : ''}">${escapeWhatsAppHtml(String(value || ''))}</strong>
+                                    <span>${t('whatsapp_connect.' + key)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                 </div>
             </div>
+            <details class="wa-connect-accordion">
+                <summary>${t('whatsapp_connect.advanced_assets_title')}</summary>
+                ${assetRows.length ? `<div class="wa-connect-results-grid" style="padding: 0 16px 16px;">
+                    ${assetRows.map(([key, value]) => `
+                        <div class="wa-connect-result-item">
+                            <span class="wa-connect-result-label">${t('whatsapp_connect.' + key)}</span>
+                            <span class="wa-connect-result-value ${key.includes('ids') ? 'mono' : ''}">${escapeWhatsAppHtml(String(value || ''))}</span>
+                        </div>
+                    `).join('')}
+                </div>` : `<div class="wa-connect-empty" style="padding: 0 16px 16px;">${t('whatsapp_connect.advanced_assets_empty')}</div>`}
+            </details>
+            <details class="wa-connect-accordion">
+                <summary>${t('whatsapp_connect.timeline_title')}</summary>
+                <div class="wa-connect-log" style="padding: 0 16px 16px;">
+                    ${logs.length ? logs.slice().reverse().map((entry) => `
+                        <details class="wa-connect-log-item">
+                            <summary class="wa-connect-log-head">
+                                <span class="wa-connect-log-type">${escapeWhatsAppHtml(entry.type || t('whatsapp_connect.event_default_type'))}</span>
+                                <span>${escapeWhatsAppHtml(formatWhatsAppDateTime(entry.at))}</span>
+                            </summary>
+                            <div class="wa-connect-log-message">${escapeWhatsAppHtml(entry.message || '')}</div>
+                            ${entry.payload ? `<pre class="wa-connect-log-payload">${escapeWhatsAppHtml(JSON.stringify(entry.payload, null, 2))}</pre>` : ''}
+                        </details>
+                    `).join('') : `<div class="wa-connect-empty">${t('whatsapp_connect.timeline_empty')}</div>`}
+                </div>
+            </details>
+            <details class="wa-connect-accordion">
+                <summary>${t('whatsapp_connect.raw_payload_title')}</summary>
+                <pre class="wa-connect-json">${escapeWhatsAppHtml(buildWhatsAppRawPayloadJsonForDisplay())}</pre>
+            </details>
+            <details class="wa-connect-accordion">
+                <summary>${t('whatsapp_connect.debug_notes_title')}</summary>
+                <div class="wa-connect-debug-note" style="padding: 0 16px 16px;">${t('whatsapp_connect.debug_notes_body')}</div>
+                <div class="wa-connect-results-grid" style="padding: 0 16px 16px;">
+                    <div class="wa-connect-result-item">
+                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_status')}</span>
+                        <span class="wa-connect-result-value">${escapeWhatsAppHtml(t('whatsapp_connect.' + descriptor.key))}</span>
+                    </div>
+                    <div class="wa-connect-result-item">
+                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_app_id')}</span>
+                        <span class="wa-connect-result-value mono">${escapeWhatsAppHtml(state.app_id || t('whatsapp_connect.not_available'))}</span>
+                    </div>
+                    <div class="wa-connect-result-item">
+                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_config_id')}</span>
+                        <span class="wa-connect-result-value mono">${escapeWhatsAppHtml(state.config_id || t('whatsapp_connect.not_available'))}</span>
+                    </div>
+                    <div class="wa-connect-result-item">
+                        <span class="wa-connect-result-label">${t('whatsapp_connect.result_auth_code_preview')}</span>
+                        <span class="wa-connect-result-value mono">${escapeWhatsAppHtml(state.auth_code_preview || t('whatsapp_connect.not_available'))}</span>
+                    </div>
+                </div>
+            </details>
         `;
     }
 
@@ -26437,18 +26646,25 @@ Thank you for shopping with {store_name}!</textarea>
             appendWhatsAppReviewLog('backend', t('whatsapp_connect.log_backend_failed'), { error: backendError?.message || String(backendError) });
             await persistWhatsAppConnectionState(getWhatsAppConnectionState());
         }
-        showToast?.(t('whatsapp_connect.toast_connected'), 'success');
+        const finalVisibleState = getWhatsAppVisibleConnectionState(getWhatsAppConnectionState());
+        const toastKey = finalVisibleState === 'connected'
+            ? 'whatsapp_connect.toast_connected'
+            : (finalVisibleState === 'error' ? 'whatsapp_connect.toast_error' : 'whatsapp_connect.toast_onboarding_complete');
+        showToast?.(t(toastKey), finalVisibleState === 'error' ? 'error' : 'success');
     }
 
     async function handleWhatsAppEmbeddedSignupCancel(payload) {
         const fallback = whatsappReconnectBaseline?.connected ? cloneWhatsAppConnectionState(whatsappReconnectBaseline) : getWhatsAppConnectionState();
-        const next = normalizeWhatsAppConnection(Object.assign({}, fallback, {
-            connected: !!fallback.connected,
-            status: fallback.connected ? 'connected' : 'cancelled',
+        const preserveExistingState = hasWhatsAppCoreProof(fallback) || fallback.auth_code_received;
+        const next = normalizeWhatsAppConnection(Object.assign({}, fallback, preserveExistingState ? {
+            updated_at: new Date().toISOString()
+        } : {
+            connected: false,
+            status: 'cancelled',
             meta_onboarding_status: 'cancelled',
-            channel_connection_status: fallback.connected ? fallback.channel_connection_status : 'disconnected',
+            channel_connection_status: 'disconnected',
             updated_at: new Date().toISOString(),
-            last_error: fallback.connected ? fallback.last_error : t('whatsapp_connect.cancel_message')
+            last_error: t('whatsapp_connect.cancel_message')
         }));
         whatsappConnectionState = next;
         appendWhatsAppReviewLog('cancelled', t('whatsapp_connect.log_cancelled'), payload);
@@ -26461,11 +26677,14 @@ Thank you for shopping with {store_name}!</textarea>
     async function handleWhatsAppEmbeddedSignupError(errorLike) {
         const fallback = whatsappReconnectBaseline?.connected ? cloneWhatsAppConnectionState(whatsappReconnectBaseline) : getWhatsAppConnectionState();
         const message = typeof errorLike === 'string' ? errorLike : (errorLike?.message || t('whatsapp_connect.error_generic'));
-        const next = normalizeWhatsAppConnection(Object.assign({}, fallback, {
-            connected: !!fallback.connected,
-            status: fallback.connected ? 'connected' : 'error',
+        const preserveExistingState = hasWhatsAppCoreProof(fallback) || fallback.auth_code_received;
+        const next = normalizeWhatsAppConnection(Object.assign({}, fallback, preserveExistingState ? {
+            updated_at: new Date().toISOString()
+        } : {
+            connected: false,
+            status: 'error',
             meta_onboarding_status: 'error',
-            channel_connection_status: fallback.connected ? fallback.channel_connection_status : 'error',
+            channel_connection_status: 'error',
             updated_at: new Date().toISOString(),
             last_error: message
         }));
