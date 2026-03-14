@@ -25895,18 +25895,23 @@ Thank you for shopping with {store_name}!</textarea>
                 updated_at: new Date().toISOString()
             });
             appendWhatsAppReviewLog('launch', t('whatsapp_connect.log_popup_opened'));
-            window.FB.login(async function (response) {
-                if (response?.authResponse?.code) {
-                    whatsappRuntimeAuthCode = response.authResponse.code;
-                    const preview = maskAuthCodePreview(whatsappRuntimeAuthCode);
-                    appendWhatsAppReviewLog('auth', t('whatsapp_connect.log_auth_code_received'), { auth_code_preview: preview });
-                    await handleWhatsAppEmbeddedSignupSuccess({
-                        auth_code_received: true,
-                        auth_code_preview: preview
-                    });
-                } else {
-                    await handleWhatsAppEmbeddedSignupCancel(sanitizeWhatsAppPayload(response));
-                }
+            window.FB.login(function (response) {
+                (async () => {
+                    if (response?.authResponse?.code) {
+                        whatsappRuntimeAuthCode = response.authResponse.code;
+                        const preview = maskAuthCodePreview(whatsappRuntimeAuthCode);
+                        appendWhatsAppReviewLog('auth', t('whatsapp_connect.log_auth_code_received'), { auth_code_preview: preview });
+                        await handleWhatsAppEmbeddedSignupSuccess({
+                            auth_code_received: true,
+                            auth_code_preview: preview
+                        });
+                    } else {
+                        await handleWhatsAppEmbeddedSignupCancel(sanitizeWhatsAppPayload(response));
+                    }
+                })().catch(async (callbackError) => {
+                    console.error('FB.login callback error', callbackError);
+                    await handleWhatsAppEmbeddedSignupError(callbackError);
+                });
             }, {
                 config_id: WHATSAPP_EMBEDDED_SIGNUP_CONFIG_ID,
                 response_type: 'code',
