@@ -24,6 +24,26 @@ function resolveTargetUrl(rawLink) {
   }
 }
 
+function buildTargetLink(payload = {}) {
+  if (payload?.data?.link || payload.link) {
+    return payload?.data?.link || payload.link;
+  }
+
+  const params = new URLSearchParams();
+  const entity = payload?.data?.entity || payload.entity || null;
+  const entityId = payload?.data?.entityId || payload.entity_id || null;
+  const eventKey = payload?.data?.eventKey || payload.event_key || null;
+  const notificationId = payload?.data?.notificationId || payload.notification_id || null;
+
+  if (entity) params.set('entity', entity);
+  if (entityId) params.set('id', entityId);
+  if (eventKey) params.set('event', eventKey);
+  if (notificationId) params.set('notification_id', notificationId);
+
+  const query = params.toString();
+  return query ? `#orders?${query}` : '#orders';
+}
+
 async function parsePushPayload(event) {
   if (!event.data) return {};
 
@@ -43,11 +63,14 @@ self.addEventListener('push', (event) => {
     const payload = await parsePushPayload(event);
     const title = String(payload.title || 'Digitivia Notification');
     const body = String(payload.body || payload.message || '');
-    const link = payload?.data?.link || payload.link || '#orders';
+    const link = buildTargetLink(payload);
     const notificationId = payload?.data?.notificationId || payload.notification_id || null;
+    const entity = payload?.data?.entity || payload.entity || null;
+    const entityId = payload?.data?.entityId || payload.entity_id || null;
+    const eventKey = payload?.data?.eventKey || payload.event_key || null;
     const icon = payload.icon || payload.image || './cropped-White.png';
     const badge = payload.badge || icon;
-    const tag = payload.tag || (notificationId ? `notification-${notificationId}` : 'digitivia-order-push');
+    const tag = payload.tag || (notificationId ? `notification-${notificationId}` : `digitivia-${entity || 'push'}`);
 
     await self.registration.showNotification(title, {
       body,
@@ -57,7 +80,10 @@ self.addEventListener('push', (event) => {
       data: {
         link,
         notificationId,
-        orgId: payload?.data?.orgId || payload.org_id || null
+        orgId: payload?.data?.orgId || payload.org_id || null,
+        entity,
+        entityId,
+        eventKey
       }
     });
   })());
@@ -69,6 +95,9 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil((async () => {
     const link = event.notification?.data?.link || '#orders';
     const notificationId = event.notification?.data?.notificationId || null;
+    const entity = event.notification?.data?.entity || null;
+    const entityId = event.notification?.data?.entityId || null;
+    const eventKey = event.notification?.data?.eventKey || null;
     const targetUrl = resolveTargetUrl(link);
     const clientList = await self.clients.matchAll({
       type: 'window',
@@ -95,7 +124,10 @@ self.addEventListener('notificationclick', (event) => {
       existingClient.postMessage({
         type: 'push-notification-click',
         link,
-        notificationId
+        notificationId,
+        entity,
+        entityId,
+        eventKey
       });
       return;
     }
@@ -105,7 +137,10 @@ self.addEventListener('notificationclick', (event) => {
       openedClient.postMessage({
         type: 'push-notification-click',
         link,
-        notificationId
+        notificationId,
+        entity,
+        entityId,
+        eventKey
       });
     }
   })());

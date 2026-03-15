@@ -1811,7 +1811,126 @@
             push_disable_failed: "Could not disable push notifications.",
             push_sync_failed: "Could not sync the browser subscription.",
             push_test_sent: "A real test notification was sent through the service worker.",
-            push_test_failed: "Push was enabled, but the test notification could not be shown."
+            push_test_failed: "Push was enabled, but the test notification could not be shown.",
+            open_setup: "Open Notification Setup",
+            setup_title: "Notifications",
+            setup_subtitle: "Stay on top of new orders and meetings without constantly checking the dashboard.",
+            health_help_title: "Best experience with Digitivia",
+            health_steps_title: "How to enable notifications",
+            health_cta_enable: "Enable Notifications",
+            health_cta_retry: "Reconnect Notifications",
+            health_cta_open: "Open Setup",
+            health_cta_enabled: "Notifications Active",
+            health_dismiss: "Dismiss",
+            states: {
+                enabled: "Notifications are active on this device.",
+                not_enabled: "Enable notifications to get instant updates about orders and meetings.",
+                blocked: "Notifications are blocked in this browser or operating system.",
+                needs_resubscribe: "This device needs a fresh notification connection.",
+                unsupported: "This browser cannot receive real push notifications.",
+                ios_install: "Add Digitivia to your Home Screen first to enable notifications on iPhone and iPad."
+            },
+            detail: {
+                enabled: "You will receive concise, professional updates and can jump straight to the exact order or meeting.",
+                not_enabled: "Turn notifications on once and Digitivia will bring you directly to what matters most.",
+                blocked: "Allow notifications in your browser and system settings to restore the full experience.",
+                needs_resubscribe: "Reconnect this browser so Digitivia can safely deliver background alerts again.",
+                unsupported: "The in-app bell will still work while the tab is open, but background alerts are not available here.",
+                ios_install: "Open Safari share menu, tap Add to Home Screen, then reopen Digitivia from the installed app."
+            },
+            smart_banner: {
+                title: "Stay in sync with Digitivia",
+                subtitle: "Enable concise notifications for important orders and meetings without extra noise.",
+                cta: "Set Up Notifications"
+            },
+            help: {
+                windows: "Windows: Allow Chrome/Edge notifications in Settings > System > Notifications.",
+                mac: "macOS: Allow browser notifications in System Settings > Notifications.",
+                android: "Android: Allow notifications for your browser and keep Digitivia open once to finish setup.",
+                ios: "iPhone/iPad: Add Digitivia to the Home Screen, open the installed app, then enable notifications.",
+                browser: "Browser: If notifications were blocked, open the site settings and change them to Allow."
+            },
+            events: {
+                order_new_title: "New Order Received",
+                order_live_title: "Order Confirmed",
+                meeting_created_title: "New Meeting Booked",
+                meeting_confirmed_title: "Meeting Confirmed",
+                meeting_rescheduled_title: "Meeting Rescheduled",
+                meeting_cancelled_title: "Meeting Cancelled",
+                meeting_no_show_title: "Meeting Marked No-show"
+            }
+        });
+        window.LANG_EN.orders.notifications = {
+            new_body: "{customer_name} placed an order for {amount}.",
+            live_body: "Order for {customer_name} is now confirmed."
+        };
+        window.LANG_EN.meetings.notifications = {
+            created_body: "{service_name} with {customer_name}, {datetime}.",
+            confirmed_body: "{service_name} with {customer_name}, {datetime}.",
+            rescheduled_body: "{service_name} with {customer_name} moved to {datetime}.",
+            cancelled_body: "{service_name} with {customer_name} was cancelled.",
+            no_show_body: "{customer_name} did not attend {service_name}."
+        };
+        window.LANG_EN.notifications.health = {
+            title: "Notification Setup",
+            subtitle: "Enable concise notifications for important orders and meetings without extra noise.",
+            state: {
+                enabled: "Notifications active",
+                not_enabled: "Notifications not enabled",
+                blocked: "Notifications blocked",
+                needs_resubscribe: "Reconnect required",
+                unsupported: "Push not supported",
+                ios_install: "Install on Home Screen first"
+            },
+            detail: window.LANG_EN.notifications.detail,
+            cta_enable: "Enable Notifications",
+            cta_reconnect: "Reconnect Notifications",
+            cta_help: "Review Setup",
+            cta_test: "Send Test Notification",
+            steps: {
+                windows: window.LANG_EN.notifications.help.windows,
+                mac: window.LANG_EN.notifications.help.mac,
+                android: window.LANG_EN.notifications.help.android,
+                ios: window.LANG_EN.notifications.help.ios,
+                browser: window.LANG_EN.notifications.help.browser
+            }
+        };
+        Object.assign(window.LANG_EN.notifications, {
+            banner_dismiss: "Not now",
+            push_test_title: "Digitivia notifications are ready",
+            push_test_body: "Important orders and meetings will reach this device in the background.",
+            default_customer_name: "Customer",
+            default_meeting_label: "meeting",
+            smart_banner: {
+                not_enabled: "Enable notifications once and Digitivia will bring you straight to urgent orders and meetings.",
+                blocked: "Allow notifications to restore the full Digitivia experience on this device.",
+                needs_resubscribe: "Reconnect this browser so Digitivia can resume reliable background delivery.",
+                unsupported: "This browser keeps the in-app bell, but background push is not available here.",
+                ios_install: "Add Digitivia to your Home Screen first to enable web push on iPhone and iPad."
+            },
+            events: {
+                order_created: {
+                    title: "New Order Received"
+                },
+                order_live: {
+                    title: "Order Confirmed"
+                },
+                meeting_created: {
+                    title: "New Meeting Booked"
+                },
+                meeting_confirmed: {
+                    title: "Meeting Confirmed"
+                },
+                meeting_rescheduled: {
+                    title: "Meeting Rescheduled"
+                },
+                meeting_cancelled: {
+                    title: "Meeting Cancelled"
+                },
+                meeting_no_show: {
+                    title: "Meeting Marked No-show"
+                }
+            }
         });
         Object.assign(window.LANG_EN.dashboard.stats, {
             total_meetings: "Total Meetings",
@@ -1960,7 +2079,126 @@
             push_disable_failed: "تعذر تعطيل إشعارات الدفع.",
             push_sync_failed: "تعذر مزامنة اشتراك المتصفح.",
             push_test_sent: "تم إرسال إشعار تجريبي حقيقي عبر عامل الخدمة.",
-            push_test_failed: "تم تفعيل الدفع لكن تعذر عرض الإشعار التجريبي."
+            push_test_failed: "تم تفعيل الدفع لكن تعذر عرض الإشعار التجريبي.",
+            open_setup: "فتح إعدادات الإشعارات",
+            setup_title: "الإشعارات",
+            setup_subtitle: "تابع الطلبات والاجتماعات المهمة فوراً بدون الحاجة لفتح اللوحة كل مرة.",
+            health_help_title: "أفضل تجربة مع Digitivia",
+            health_steps_title: "طريقة تفعيل الإشعارات",
+            health_cta_enable: "تفعيل الإشعارات",
+            health_cta_retry: "إعادة ربط الإشعارات",
+            health_cta_open: "فتح الإعدادات",
+            health_cta_enabled: "الإشعارات مفعلة",
+            health_dismiss: "إخفاء",
+            states: {
+                enabled: "الإشعارات مفعلة على هذا الجهاز.",
+                not_enabled: "فعّل الإشعارات لتصلك أهم تحديثات الطلبات والاجتماعات فوراً.",
+                blocked: "الإشعارات محظورة من المتصفح أو من إعدادات النظام.",
+                needs_resubscribe: "هذا الجهاز يحتاج إعادة ربط الإشعارات.",
+                unsupported: "هذا المتصفح لا يمكنه استقبال إشعارات دفع حقيقية.",
+                ios_install: "أضف Digitivia إلى الشاشة الرئيسية أولاً لتفعيل الإشعارات على iPhone و iPad."
+            },
+            detail: {
+                enabled: "ستصلك تنبيهات مختصرة واحترافية مع فتح مباشر على الطلب أو الاجتماع المطلوب.",
+                not_enabled: "فعّل الإشعارات مرة واحدة وسيأخذك Digitivia مباشرة إلى أهم ما يحتاج انتباهك.",
+                blocked: "اسمح بالإشعارات من المتصفح والنظام لاستعادة التجربة الكاملة.",
+                needs_resubscribe: "أعد ربط هذا المتصفح حتى يتمكن Digitivia من إرسال التنبيهات الخلفية بشكل صحيح.",
+                unsupported: "سيبقى جرس الإشعارات داخل التطبيق يعمل أثناء فتح الصفحة، لكن التنبيهات الخلفية غير متاحة هنا.",
+                ios_install: "افتح قائمة المشاركة في Safari ثم اختر إضافة إلى الشاشة الرئيسية وبعدها افتح Digitivia من التطبيق المثبّت."
+            },
+            smart_banner: {
+                title: "ابقَ متصلاً مع Digitivia",
+                subtitle: "فعّل إشعارات مختصرة للطلبات والاجتماعات المهمة بدون إزعاج.",
+                cta: "إعداد الإشعارات"
+            },
+            help: {
+                windows: "Windows: فعّل إشعارات Chrome أو Edge من الإعدادات > النظام > الإشعارات.",
+                mac: "macOS: فعّل إشعارات المتصفح من إعدادات النظام > الإشعارات.",
+                android: "Android: اسمح بإشعارات المتصفح واترك Digitivia مفتوحاً مرة واحدة لإكمال الإعداد.",
+                ios: "iPhone/iPad: أضف Digitivia إلى الشاشة الرئيسية ثم افتح التطبيق المثبّت وبعدها فعّل الإشعارات.",
+                browser: "المتصفح: إذا تم حظر الإشعارات افتح إعدادات الموقع وغيّرها إلى السماح."
+            },
+            events: {
+                order_new_title: "تم استلام طلب جديد",
+                order_live_title: "تم تأكيد الطلب",
+                meeting_created_title: "تم حجز اجتماع جديد",
+                meeting_confirmed_title: "تم تأكيد الاجتماع",
+                meeting_rescheduled_title: "تمت إعادة جدولة الاجتماع",
+                meeting_cancelled_title: "تم إلغاء الاجتماع",
+                meeting_no_show_title: "تم تسجيل عدم الحضور"
+            }
+        });
+        window.LANG_AR.orders.notifications = {
+            new_body: "قام {customer_name} بطلب جديد بقيمة {amount}.",
+            live_body: "تم تأكيد طلب {customer_name}."
+        };
+        window.LANG_AR.meetings.notifications = {
+            created_body: "{service_name} مع {customer_name}، {datetime}.",
+            confirmed_body: "{service_name} مع {customer_name}، {datetime}.",
+            rescheduled_body: "تم نقل {service_name} مع {customer_name} إلى {datetime}.",
+            cancelled_body: "تم إلغاء {service_name} مع {customer_name}.",
+            no_show_body: "لم يحضر {customer_name} إلى {service_name}."
+        };
+        window.LANG_AR.notifications.health = {
+            title: "إعداد الإشعارات",
+            subtitle: "فعّل إشعارات مختصرة للطلبات والاجتماعات المهمة بدون إزعاج.",
+            state: {
+                enabled: "الإشعارات مفعلة",
+                not_enabled: "الإشعارات غير مفعلة",
+                blocked: "الإشعارات محظورة",
+                needs_resubscribe: "تحتاج إعادة ربط",
+                unsupported: "الدفع غير مدعوم",
+                ios_install: "أضفه إلى الشاشة الرئيسية أولاً"
+            },
+            detail: window.LANG_AR.notifications.detail,
+            cta_enable: "تفعيل الإشعارات",
+            cta_reconnect: "إعادة ربط الإشعارات",
+            cta_help: "مراجعة الإعداد",
+            cta_test: "إرسال إشعار تجريبي",
+            steps: {
+                windows: window.LANG_AR.notifications.help.windows,
+                mac: window.LANG_AR.notifications.help.mac,
+                android: window.LANG_AR.notifications.help.android,
+                ios: window.LANG_AR.notifications.help.ios,
+                browser: window.LANG_AR.notifications.help.browser
+            }
+        };
+        Object.assign(window.LANG_AR.notifications, {
+            banner_dismiss: "لاحقاً",
+            push_test_title: "إشعارات Digitivia جاهزة",
+            push_test_body: "ستصل إلى هذا الجهاز أهم تحديثات الطلبات والاجتماعات حتى في الخلفية.",
+            default_customer_name: "العميل",
+            default_meeting_label: "الاجتماع",
+            smart_banner: {
+                not_enabled: "فعّل الإشعارات مرة واحدة وسيأخذك Digitivia مباشرة إلى الطلبات والاجتماعات المهمة.",
+                blocked: "اسمح بالإشعارات لاستعادة التجربة الكاملة لـ Digitivia على هذا الجهاز.",
+                needs_resubscribe: "أعد ربط هذا المتصفح حتى يستأنف Digitivia الإرسال الخلفي بشكل موثوق.",
+                unsupported: "سيبقى جرس الإشعارات داخل التطبيق يعمل هنا لكن الدفع الخلفي غير متاح.",
+                ios_install: "أضف Digitivia إلى الشاشة الرئيسية أولاً لتفعيل Web Push على iPhone و iPad."
+            },
+            events: {
+                order_created: {
+                    title: "تم استلام طلب جديد"
+                },
+                order_live: {
+                    title: "تم تأكيد الطلب"
+                },
+                meeting_created: {
+                    title: "تم حجز اجتماع جديد"
+                },
+                meeting_confirmed: {
+                    title: "تم تأكيد الاجتماع"
+                },
+                meeting_rescheduled: {
+                    title: "تمت إعادة جدولة الاجتماع"
+                },
+                meeting_cancelled: {
+                    title: "تم إلغاء الاجتماع"
+                },
+                meeting_no_show: {
+                    title: "تم تسجيل عدم الحضور"
+                }
+            }
         });
         Object.assign(window.LANG_AR.dashboard.stats, {
             total_meetings: "إجمالي الاجتماعات",
@@ -7715,6 +7953,200 @@
             transition: all 0.3s;
         }
 
+        .notification-health-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            text-align: start;
+        }
+
+        .notification-health-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .notification-health-title {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .notification-health-subtitle {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .notification-health-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 30px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+        }
+
+        .notification-health-pill.state-enabled {
+            background: rgba(34, 197, 94, 0.14);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .notification-health-pill.state-not_enabled,
+        .notification-health-pill.state-needs_resubscribe {
+            background: rgba(245, 158, 11, 0.14);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #fbbf24;
+        }
+
+        .notification-health-pill.state-blocked,
+        .notification-health-pill.state-unsupported {
+            background: rgba(239, 68, 68, 0.14);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #fda4af;
+        }
+
+        .notification-health-pill.state-ios_install {
+            background: rgba(59, 130, 246, 0.14);
+            border-color: rgba(59, 130, 246, 0.28);
+            color: #93c5fd;
+        }
+
+        .notification-health-state,
+        .notification-health-detail {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .notification-health-state {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .notification-health-detail {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .notification-health-steps-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .notification-health-steps {
+            margin: 0;
+            padding-inline-start: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .notification-smart-banner {
+            display: none;
+            position: sticky;
+            top: 10px;
+            z-index: 1600;
+            margin: 10px 16px 0;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(91, 174, 176, 0.24);
+            background: linear-gradient(135deg, rgba(16, 28, 44, 0.96), rgba(10, 18, 32, 0.92));
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(16px);
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .notification-smart-banner.show {
+            display: flex;
+        }
+
+        .notification-smart-banner-copy {
+            min-width: 0;
+        }
+
+        .notification-smart-banner-title {
+            margin: 0 0 4px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .notification-smart-banner-text {
+            margin: 0;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .notification-smart-banner-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .notification-smart-banner-btn {
+            min-height: 40px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid color-mix(in srgb, var(--theme-color) 24%, transparent);
+            background: color-mix(in srgb, var(--theme-color) 16%, transparent);
+            color: var(--text-main);
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .notification-smart-banner-dismiss {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 6px 0;
+        }
+
+        .notification-target-highlight {
+            animation: notificationTargetPulse 2.3s ease;
+            position: relative;
+            box-shadow: 0 0 0 1px rgba(91, 174, 176, 0.35), 0 0 0 4px rgba(91, 174, 176, 0.12);
+        }
+
+        @keyframes notificationTargetPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(91, 174, 176, 0.42);
+                background: rgba(91, 174, 176, 0.16);
+            }
+
+            100% {
+                box-shadow: 0 0 0 1px rgba(91, 174, 176, 0.28), 0 0 0 4px rgba(91, 174, 176, 0);
+                background: transparent;
+            }
+        }
+
         .profile-actions .btn-upgrade {
             background: var(--theme-color);
             color: white;
@@ -9297,6 +9729,24 @@
 
             .orders-mobile-list {
                 display: flex !important;
+            }
+
+            .notification-smart-banner {
+                margin: 10px 12px 0;
+                padding: 14px;
+                border-radius: 16px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .notification-smart-banner-actions {
+                width: 100%;
+                justify-content: stretch;
+                flex-wrap: wrap;
+            }
+
+            .notification-smart-banner-btn {
+                flex: 1 1 180px;
             }
         }
 
@@ -14341,6 +14791,31 @@
             background: #f1f5f9 !important;
         }
 
+        :root[data-theme="light"] .notification-health-card,
+        :root[data-theme="light"] .notification-smart-banner {
+            background: rgba(255, 255, 255, 0.94) !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12) !important;
+        }
+
+        :root[data-theme="light"] .notification-health-title,
+        :root[data-theme="light"] .notification-health-state,
+        :root[data-theme="light"] .notification-smart-banner-title {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .notification-health-subtitle,
+        :root[data-theme="light"] .notification-health-detail,
+        :root[data-theme="light"] .notification-smart-banner-text,
+        :root[data-theme="light"] .notification-health-steps {
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .notification-smart-banner-btn,
+        :root[data-theme="light"] .notification-health-pill {
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+
         :root[data-theme="light"] .fu-config-card,
         :root[data-theme="light"] .fu-preview-card {
             background: #ffffff !important;
@@ -17285,6 +17760,8 @@
             <div class="loading-text" data-i18n="messages.loading_config">Fetching Agent Configurations...</div>
         </div>
 
+        <div id="notification-smart-banner" class="notification-smart-banner" aria-live="polite"></div>
+
         <main>
             <div id="dynamic-content-area"></div>
             <footer class="app-legal-footer">
@@ -17474,7 +17951,8 @@
                     onclick="closeProfileModal(); openOnboardingWizard();"
                     style="display:none; width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);"
                     data-i18n="onboarding.btn_open_setup">⚙️ Setup Wizard</button>
-                <button class="btn-secondary" onclick="enablePushNotifications()"
+                <div id="notification-health-card" class="notification-health-card" aria-live="polite"></div>
+                <button id="profile-push-btn" class="btn-secondary" onclick="enablePushNotifications()"
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
                     🔔 Enable/Test Notifications
                 </button>
@@ -18224,6 +18702,17 @@
             if (typeof initFloatingAIWidget === 'function') initFloatingAIWidget();
             if (typeof refreshOnboardingWizard === 'function') refreshOnboardingWizard();
             if (typeof loadDashboard === 'function' && document.getElementById('dashboard')?.classList.contains('active')) loadDashboard();
+            if (typeof syncPushLanguagePreference === 'function') {
+                syncPushLanguagePreference().catch((error) => {
+                    console.warn(`${PUSH_LOG_PREFIX} Failed to sync push language preference:`, error);
+                });
+            }
+            if (typeof renderNotificationHealthUI === 'function') {
+                renderNotificationHealthUI().catch((error) => {
+                    console.warn(`${PUSH_LOG_PREFIX} Failed to refresh notification health UI:`, error);
+                });
+            }
+            if (typeof updateNotificationUI === 'function') updateNotificationUI();
             updateThemeToggleUI();
         }
 
@@ -18457,6 +18946,11 @@
         function openProfileModal() {
             updateProfileModalData();
             document.getElementById('profile-modal').classList.add('show');
+            if (typeof renderNotificationHealthUI === 'function') {
+                renderNotificationHealthUI().catch((error) => {
+                    console.warn(`${PUSH_LOG_PREFIX} Failed to render notification health UI in profile modal:`, error);
+                });
+            }
         }
 
         function closeProfileModal(event) {
@@ -24240,6 +24734,7 @@ Thank you for shopping with {store_name}!</textarea>
             cachedOrders.forEach(order => {
                 const row = document.createElement('tr');
                 row.className = 'clickable-row';
+                row.dataset.orderId = String(order.id || '');
                 const phone = order.customer_phone || order.phone || '--';
                 row.setAttribute('onclick', `openOrderChat('${phone}')`);
 
@@ -24310,6 +24805,7 @@ Thank you for shopping with {store_name}!</textarea>
                 if (mobileList) {
                     const card = document.createElement('div');
                     card.className = 'order-card-mobile glass clickable-row';
+                    card.dataset.orderId = String(order.id || '');
                     card.setAttribute('onclick', `openOrderChat('${phone}')`);
                     card.innerHTML = `
                         <div class="order-card-header">
@@ -24510,7 +25006,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const leadStatus = meeting.meta?.lead_status ? `${t('leads.col_status')}: ${meeting.meta.lead_status}` : '';
 
                 tbody.insertAdjacentHTML('beforeend', `
-                    <tr>
+                    <tr data-meeting-id="${esc(String(meeting.id || ''))}">
                         <td>
                             <div class="meeting-cell-main">
                                 <strong>${esc(meeting.customer_name || '--')}</strong>
@@ -24541,7 +25037,7 @@ Thank you for shopping with {store_name}!</textarea>
                 `);
 
                 mobileList.insertAdjacentHTML('beforeend', `
-                    <div class="meeting-card-mobile glass">
+                    <div class="meeting-card-mobile glass" data-meeting-id="${esc(String(meeting.id || ''))}">
                         <div class="meeting-card-header">
                             <div class="meeting-card-title">
                                 <strong>${esc(meeting.customer_name || '--')}</strong>
@@ -28871,10 +29367,13 @@ Thank you for shopping with {store_name}!</textarea>
     let notificationsChannel = null;
     let pushServiceWorkerRegistration = null;
     let pushServiceWorkerBridgeBound = false;
+    let notificationHealthSnapshot = null;
+    let pendingNotificationTarget = null;
     const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
     notificationSound.preload = 'auto';
     const PUSH_NOTIFICATION_ICON = new URL('cropped-White.png', window.location.href).href;
     const PUSH_NOTIFICATION_BADGE = PUSH_NOTIFICATION_ICON;
+    const NOTIFICATION_SMART_BANNER_KEY = 'digitivia_notification_banner_dismissed_v2';
 
     function supportsPushNotifications() {
         return Boolean(
@@ -28883,6 +29382,56 @@ Thank you for shopping with {store_name}!</textarea>
             'PushManager' in window &&
             'Notification' in window
         );
+    }
+
+    function waitForTimeout(ms = 120) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function escapeCssIdentifier(value) {
+        const stringValue = String(value || '');
+        if (window.CSS?.escape) return window.CSS.escape(stringValue);
+        return stringValue.replace(/["\\]/g, '\\$&');
+    }
+
+    function parseJsonObject(value, fallback = {}) {
+        if (!value) return fallback;
+        if (typeof value === 'object') return value;
+        if (typeof value !== 'string') return fallback;
+        try {
+            const parsed = JSON.parse(value);
+            return parsed && typeof parsed === 'object' ? parsed : fallback;
+        } catch (_error) {
+            return fallback;
+        }
+    }
+
+    function isIosDevice() {
+        const ua = navigator.userAgent || '';
+        const platform = navigator.platform || '';
+        return /iPad|iPhone|iPod/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+
+    function isStandaloneWebApp() {
+        return Boolean(window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone);
+    }
+
+    function detectNotificationPlatform() {
+        const ua = navigator.userAgent || '';
+        if (isIosDevice()) return 'ios';
+        if (/Android/i.test(ua)) return 'android';
+        if (/Windows/i.test(ua)) return 'windows';
+        if (/Mac/i.test(ua)) return 'mac';
+        return 'desktop';
+    }
+
+    function getNotificationPlatformStepKeys(platform) {
+        const steps = ['notifications.health.steps.browser'];
+        if (platform === 'windows') return ['notifications.health.steps.windows', ...steps];
+        if (platform === 'mac') return ['notifications.health.steps.mac', ...steps];
+        if (platform === 'android') return ['notifications.health.steps.android', ...steps];
+        if (platform === 'ios') return ['notifications.health.steps.ios'];
+        return steps;
     }
 
     function urlBase64ToUint8Array(base64String) {
@@ -28900,13 +29449,11 @@ Thank you for shopping with {store_name}!</textarea>
 
     function arrayBufferToBase64Url(buffer) {
         if (!buffer) return '';
-
         const bytes = new Uint8Array(buffer);
         let binary = '';
         bytes.forEach((byte) => {
             binary += String.fromCharCode(byte);
         });
-
         return window.btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     }
 
@@ -28914,16 +29461,13 @@ Thank you for shopping with {store_name}!</textarea>
         if (!subscription) {
             throw new Error('Missing push subscription.');
         }
-
         const json = typeof subscription.toJSON === 'function' ? subscription.toJSON() : {};
         const keys = json.keys || {};
         const p256dh = keys.p256dh || arrayBufferToBase64Url(subscription.getKey('p256dh'));
         const auth = keys.auth || arrayBufferToBase64Url(subscription.getKey('auth'));
-
         if (!subscription.endpoint || !p256dh || !auth) {
             throw new Error('Push subscription is incomplete.');
         }
-
         return {
             endpoint: subscription.endpoint,
             p256dh,
@@ -28935,17 +29479,199 @@ Thank you for shopping with {store_name}!</textarea>
         if (!registration) {
             throw new Error('Service worker registration is missing.');
         }
-
         if (!(registration.active || registration.installing || registration.waiting)) {
             throw new Error('Service worker has no active lifecycle state yet.');
         }
-
         return registration;
+    }
+
+    function getNotificationPayload(notificationLike) {
+        if (!notificationLike) return {};
+        return parseJsonObject(notificationLike.payload || notificationLike.data || {}, {});
+    }
+
+    function buildNotificationTargetLink({ entity, entityId, eventKey, notificationId }) {
+        const params = new URLSearchParams();
+        if (entity) params.set('entity', entity);
+        if (entityId) params.set('id', entityId);
+        if (eventKey) params.set('event', eventKey);
+        if (notificationId) params.set('notification_id', notificationId);
+        const query = params.toString();
+        return query ? `#orders?${query}` : '#orders';
+    }
+
+    function parseNotificationTargetLink(rawLink) {
+        if (!rawLink || typeof rawLink !== 'string') return null;
+        if (!rawLink.startsWith('#')) return { link: rawLink };
+        const [hashPath, queryString = ''] = rawLink.split('?');
+        if (!queryString) return { link: hashPath };
+        const params = new URLSearchParams(queryString);
+        return {
+            link: rawLink,
+            hashPath,
+            entity: params.get('entity') || null,
+            entityId: params.get('id') || null,
+            eventKey: params.get('event') || null,
+            notificationId: params.get('notification_id') || null
+        };
+    }
+
+    function buildNotificationDescriptor(notificationLike) {
+        const payload = getNotificationPayload(notificationLike);
+        const route = parseNotificationTargetLink(notificationLike?.link || payload.link || '') || {};
+        const eventKey = notificationLike?.event_key || payload.event_key || route.eventKey || null;
+        const entity = payload.entity || route.entity || (eventKey?.startsWith('meeting_') ? 'meeting' : (eventKey?.startsWith('order_') ? 'order' : null));
+        const entityId = payload.entity_id || payload.order_id || payload.meeting_id || route.entityId || null;
+        const notificationId = notificationLike?.id || payload.notification_id || route.notificationId || null;
+        return {
+            notificationId,
+            link: route.link || notificationLike?.link || payload.link || buildNotificationTargetLink({ entity, entityId, eventKey, notificationId }),
+            eventKey,
+            entity,
+            entityId,
+            payload,
+            title: notificationLike?.title || '',
+            message: notificationLike?.message || ''
+        };
+    }
+
+    function formatNotificationMoney(payload) {
+        const amount = Number(payload.total_amount ?? payload.amount ?? 0);
+        if (!Number.isFinite(amount) || amount <= 0) return '';
+        const currency = payload.currency || 'EGP';
+        try {
+            return new Intl.NumberFormat(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+                style: 'currency',
+                currency,
+                maximumFractionDigits: 2
+            }).format(amount);
+        } catch (_error) {
+            return `${amount.toFixed(2)} ${currency}`;
+        }
+    }
+
+    function formatNotificationMeetingDateTime(payload, lang = currentLang) {
+        const iso = payload.scheduled_at || payload.new_scheduled_at || payload.meeting_time || null;
+        if (!iso) return '--';
+        const date = new Date(iso);
+        if (Number.isNaN(date.getTime())) return '--';
+        return date.toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
+        });
+    }
+
+    function getLocalizedNotificationContent(notificationLike, lang = currentLang) {
+        const descriptor = buildNotificationDescriptor(notificationLike);
+        const payload = descriptor.payload || {};
+        const customerName = payload.customer_name || payload.customer || payload.name || t('notifications.default_customer_name');
+        const serviceName = payload.service_name || payload.topic || payload.meeting_type || t('notifications.default_meeting_label');
+        const orderAmount = formatNotificationMoney(payload);
+        const meetingDateTime = formatNotificationMeetingDateTime(payload, lang);
+
+        const templates = {
+            order_created: {
+                title: t('notifications.events.order_created.title'),
+                body: t('orders.notifications.new_body', {
+                    customer_name: customerName,
+                    amount: orderAmount || (lang === 'ar' ? 'طلب جديد' : 'a new order')
+                })
+            },
+            order_live: {
+                title: t('notifications.events.order_live.title'),
+                body: t('orders.notifications.live_body', {
+                    customer_name: customerName
+                })
+            },
+            meeting_created: {
+                title: t('notifications.events.meeting_created.title'),
+                body: t('meetings.notifications.created_body', {
+                    service_name: serviceName,
+                    customer_name: customerName,
+                    datetime: meetingDateTime
+                })
+            },
+            meeting_confirmed: {
+                title: t('notifications.events.meeting_confirmed.title'),
+                body: t('meetings.notifications.confirmed_body', {
+                    service_name: serviceName,
+                    customer_name: customerName,
+                    datetime: meetingDateTime
+                })
+            },
+            meeting_rescheduled: {
+                title: t('notifications.events.meeting_rescheduled.title'),
+                body: t('meetings.notifications.rescheduled_body', {
+                    service_name: serviceName,
+                    customer_name: customerName,
+                    datetime: meetingDateTime
+                })
+            },
+            meeting_cancelled: {
+                title: t('notifications.events.meeting_cancelled.title'),
+                body: t('meetings.notifications.cancelled_body', {
+                    service_name: serviceName,
+                    customer_name: customerName
+                })
+            },
+            meeting_no_show: {
+                title: t('notifications.events.meeting_no_show.title'),
+                body: t('meetings.notifications.no_show_body', {
+                    service_name: serviceName,
+                    customer_name: customerName
+                })
+            }
+        };
+
+        const localized = descriptor.eventKey ? templates[descriptor.eventKey] : null;
+        return {
+            title: localized?.title || descriptor.title || t('notifications.header'),
+            body: localized?.body || descriptor.message || '',
+            descriptor
+        };
+    }
+
+    function getNotificationIconMarkup(notificationLike) {
+        const descriptor = buildNotificationDescriptor(notificationLike);
+        if (descriptor.entity === 'meeting') {
+            return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 15H5V10h14v9zm-7-7h5v5h-5z"/></svg>';
+        }
+        return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7 4V2H5v2H2v2h1l1.6 9.59A2 2 0 0 0 6.58 17H18a2 2 0 0 0 1.96-1.61L21 8H7.42l-.3-2H22V4H7zm1 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 .001 3.999A2 2 0 0 0 18 19z"/></svg>';
+    }
+
+    function rememberNotificationBannerDismissal(state) {
+        try {
+            localStorage.setItem(NOTIFICATION_SMART_BANNER_KEY, JSON.stringify({
+                state,
+                dismissed_at: new Date().toISOString()
+            }));
+        } catch (_error) {
+        }
+    }
+
+    function getNotificationBannerDismissal() {
+        try {
+            return parseJsonObject(localStorage.getItem(NOTIFICATION_SMART_BANNER_KEY), {});
+        } catch (_error) {
+            return {};
+        }
+    }
+
+    function resetNotificationBannerDismissalIfNeeded(state) {
+        const dismissal = getNotificationBannerDismissal();
+        if (dismissal.state && dismissal.state !== state) {
+            try {
+                localStorage.removeItem(NOTIFICATION_SMART_BANNER_KEY);
+            } catch (_error) {
+            }
+        }
     }
 
     async function getAuthenticatedUserId() {
         if (currentUserProfile?.user_id) return currentUserProfile.user_id;
-
         const { data, error } = await supabaseClient.auth.getUser();
         if (error) throw error;
         return data?.user?.id || null;
@@ -28955,19 +29681,220 @@ Thank you for shopping with {store_name}!</textarea>
         if (!supportsPushNotifications()) {
             throw new Error('Push notifications are not supported in this browser.');
         }
-
         const existing = await navigator.serviceWorker.getRegistration();
         const registration = existing || await navigator.serviceWorker.register(PUSH_SERVICE_WORKER_PATH, { scope: './' });
         pushServiceWorkerRegistration = validateServiceWorkerRegistrationState(registration);
         return pushServiceWorkerRegistration;
     }
 
+    async function fetchActivePushSubscriptionRows() {
+        if (!currentUserOrgId) return [];
+        const userId = await getAuthenticatedUserId();
+        if (!userId) return [];
+        const { data, error } = await supabaseClient
+            .from('push_subscriptions')
+            .select('endpoint, preferred_language, updated_at, last_seen_at')
+            .eq('org_id', currentUserOrgId)
+            .eq('user_id', userId)
+            .is('disabled_at', null)
+            .limit(10);
+        if (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to fetch active push subscriptions:`, error);
+            return [];
+        }
+        return data || [];
+    }
+
+    async function inspectNotificationHealth({ registration = null, subscription = null } = {}) {
+        const supported = supportsPushNotifications();
+        const platform = detectNotificationPlatform();
+        const permission = ('Notification' in window && Notification.permission) ? Notification.permission : 'unsupported';
+        const standalone = isStandaloneWebApp();
+        let activeRegistration = registration;
+        let browserSubscription = subscription;
+
+        if (supported) {
+            try {
+                activeRegistration = activeRegistration || await registerPushServiceWorker();
+                browserSubscription = browserSubscription || await activeRegistration.pushManager.getSubscription();
+            } catch (error) {
+                console.warn(`${PUSH_LOG_PREFIX} Failed to inspect browser subscription state:`, error);
+            }
+        }
+
+        const serverSubscriptions = currentUserOrgId ? await fetchActivePushSubscriptionRows() : [];
+        const endpoint = browserSubscription?.endpoint || null;
+        const hasBrowserSubscription = Boolean(endpoint);
+        const hasServerSubscription = Boolean(serverSubscriptions.length);
+        const endpointMatched = Boolean(endpoint && serverSubscriptions.some((item) => item.endpoint === endpoint));
+
+        let state = 'not_enabled';
+        if (!supported) {
+            state = 'unsupported';
+        } else if (platform === 'ios' && !standalone) {
+            state = 'ios_install';
+        } else if (permission === 'denied') {
+            state = 'blocked';
+        } else if (permission === 'granted' && hasBrowserSubscription && endpointMatched) {
+            state = 'enabled';
+        } else if (permission === 'granted' && (hasBrowserSubscription || hasServerSubscription)) {
+            state = 'needs_resubscribe';
+        }
+
+        return {
+            state,
+            platform,
+            permission,
+            supported,
+            standalone,
+            registrationReady: Boolean(activeRegistration?.active || activeRegistration?.waiting || activeRegistration?.installing),
+            hasBrowserSubscription,
+            hasServerSubscription,
+            endpointMatched,
+            browserSubscription,
+            serverSubscriptions
+        };
+    }
+
+    function getNotificationHealthMeta(health) {
+        const map = {
+            enabled: {
+                pill: t('notifications.health.state.enabled'),
+                pillClass: 'success',
+                state: t('notifications.health.state.enabled'),
+                detail: t('notifications.health.detail.enabled'),
+                subtitle: t('notifications.health.subtitle'),
+                cta: t('notifications.health.cta_test')
+            },
+            not_enabled: {
+                pill: t('notifications.health.state.not_enabled'),
+                pillClass: 'warning',
+                state: t('notifications.health.state.not_enabled'),
+                detail: t('notifications.health.detail.not_enabled'),
+                subtitle: t('notifications.health.subtitle'),
+                cta: t('notifications.health.cta_enable')
+            },
+            blocked: {
+                pill: t('notifications.health.state.blocked'),
+                pillClass: 'danger',
+                state: t('notifications.health.state.blocked'),
+                detail: t('notifications.health.detail.blocked'),
+                subtitle: t('notifications.health.subtitle'),
+                cta: t('notifications.health.cta_help')
+            },
+            needs_resubscribe: {
+                pill: t('notifications.health.state.needs_resubscribe'),
+                pillClass: 'warning',
+                state: t('notifications.health.state.needs_resubscribe'),
+                detail: t('notifications.health.detail.needs_resubscribe'),
+                subtitle: t('notifications.health.subtitle'),
+                cta: t('notifications.health.cta_reconnect')
+            },
+            unsupported: {
+                pill: t('notifications.health.state.unsupported'),
+                pillClass: 'neutral',
+                state: t('notifications.health.state.unsupported'),
+                detail: t('notifications.health.detail.unsupported'),
+                subtitle: t('notifications.health.subtitle'),
+                cta: t('notifications.health.cta_help')
+            },
+            ios_install: {
+                pill: t('notifications.health.state.ios_install'),
+                pillClass: 'warning',
+                state: t('notifications.health.state.ios_install'),
+                detail: t('notifications.health.detail.ios_install'),
+                subtitle: t('notifications.health.subtitle'),
+                cta: t('notifications.health.cta_help')
+            }
+        };
+        return map[health.state] || map.not_enabled;
+    }
+
+    function renderNotificationSmartBanner(health) {
+        const banner = document.getElementById('notification-smart-banner');
+        if (!banner) return;
+        const meta = getNotificationHealthMeta(health);
+        resetNotificationBannerDismissalIfNeeded(health.state);
+        const dismissed = getNotificationBannerDismissal();
+        const shouldHide = health.state === 'enabled' || dismissed.state === health.state;
+        if (shouldHide) {
+            banner.classList.remove('show');
+            banner.innerHTML = '';
+            return;
+        }
+
+        banner.innerHTML = `
+            <div class="notification-smart-banner-copy">
+                <div class="notification-smart-banner-title">${esc(meta.state)}</div>
+                <div class="notification-smart-banner-text">${esc(t(`notifications.smart_banner.${health.state}`))}</div>
+            </div>
+            <div class="notification-smart-banner-actions">
+                <button class="notification-smart-banner-btn" type="button" onclick="${health.state === 'blocked' || health.state === 'unsupported' || health.state === 'ios_install' ? 'openNotificationSetupExperience()' : 'enablePushNotifications()'}">${esc(meta.cta)}</button>
+                <button class="notification-smart-banner-dismiss" type="button" onclick="dismissNotificationSmartBanner()">${esc(t('notifications.banner_dismiss'))}</button>
+            </div>
+        `;
+        banner.classList.add('show');
+    }
+
+    function dismissNotificationSmartBanner() {
+        if (!notificationHealthSnapshot) return;
+        rememberNotificationBannerDismissal(notificationHealthSnapshot.state);
+        renderNotificationSmartBanner(notificationHealthSnapshot);
+    }
+
+    function openNotificationSetupExperience() {
+        if (!document.getElementById('profile-modal')?.classList.contains('show')) {
+            openProfileModal();
+        }
+        if (notificationHealthSnapshot) {
+            showToast(getNotificationHealthMeta(notificationHealthSnapshot).detail, 'info');
+        }
+    }
+
+    async function renderNotificationHealthUI() {
+        const card = document.getElementById('notification-health-card');
+        const button = document.getElementById('profile-push-btn');
+        if (!card || !button) return null;
+
+        const health = await inspectNotificationHealth();
+        notificationHealthSnapshot = health;
+        const meta = getNotificationHealthMeta(health);
+        const steps = getNotificationPlatformStepKeys(health.platform)
+            .map((key) => `<li>${esc(t(key))}</li>`)
+            .join('');
+
+        card.innerHTML = `
+            <div class="notification-health-top">
+                <div>
+                    <div class="notification-health-title">${esc(t('notifications.health.title'))}</div>
+                    <div class="notification-health-subtitle">${esc(meta.subtitle)}</div>
+                </div>
+                <span class="notification-health-pill ${meta.pillClass}">${esc(meta.pill)}</span>
+            </div>
+            <div class="notification-health-state">${esc(meta.state)}</div>
+            <div class="notification-health-detail">${esc(meta.detail)}</div>
+            <div class="notification-health-steps-label">${esc(t('notifications.health_steps_title'))}</div>
+            <ul class="notification-health-steps">${steps}</ul>
+        `;
+
+        button.textContent = `🔔 ${meta.cta}`;
+        button.disabled = false;
+        button.onclick = () => {
+            if (health.state === 'blocked' || health.state === 'ios_install' || health.state === 'unsupported') {
+                openNotificationSetupExperience();
+                return;
+            }
+            enablePushNotifications();
+        };
+
+        renderNotificationSmartBanner(health);
+        return health;
+    }
+
     function bindPushServiceWorkerBridge() {
         if (pushServiceWorkerBridgeBound || !('serviceWorker' in navigator)) return;
-
         navigator.serviceWorker.addEventListener('message', (event) => {
             const payload = event?.data || {};
-
             if (payload.type === 'push-subscription-change') {
                 console.info(`${PUSH_LOG_PREFIX} Browser subscription changed; syncing latest endpoint.`);
                 syncPushSubscriptionFromBrowser().catch((error) => {
@@ -28975,26 +29902,33 @@ Thank you for shopping with {store_name}!</textarea>
                 });
                 return;
             }
-
-            if (payload.type === 'push-notification-click' && payload.link) {
-                if (payload.notificationId) {
-                    handleNotificationClick(payload.notificationId, payload.link);
-                } else if (payload.link === '#orders') {
-                    const ordersTabBtn = document.querySelector('[onclick*="orders"]');
-                    if (ordersTabBtn) ordersTabBtn.click();
-                } else {
-                    window.location.href = payload.link;
-                }
+            if (payload.type === 'push-notification-click') {
+                const descriptor = buildNotificationDescriptor({
+                    id: payload.notificationId || null,
+                    link: payload.link || buildNotificationTargetLink({
+                        entity: payload.entity || null,
+                        entityId: payload.entityId || null,
+                        eventKey: payload.eventKey || null,
+                        notificationId: payload.notificationId || null
+                    }),
+                    event_key: payload.eventKey || null,
+                    payload: {
+                        entity: payload.entity || null,
+                        entity_id: payload.entityId || null,
+                        notification_id: payload.notificationId || null
+                    }
+                });
+                openNotificationTarget(descriptor).catch((error) => {
+                    console.error(`${PUSH_LOG_PREFIX} Failed to open push notification target:`, error);
+                });
             }
         });
-
         pushServiceWorkerBridgeBound = true;
     }
 
     async function logPushNotificationState(registration = null) {
         const permission = ('Notification' in window && Notification.permission) ? Notification.permission : 'unsupported';
         console.info(`${PUSH_LOG_PREFIX} supported=${supportsPushNotifications()} permission=${permission}`);
-
         if (navigator.permissions?.query) {
             try {
                 const status = await navigator.permissions.query({ name: 'notifications' });
@@ -29003,12 +29937,10 @@ Thank you for shopping with {store_name}!</textarea>
                 console.info(`${PUSH_LOG_PREFIX} Permissions API not available for notifications:`, error);
             }
         }
-
         if (!supportsPushNotifications()) {
             console.warn(`${PUSH_LOG_PREFIX} Browser can only use the in-app notification bell. Background push requires service workers and PushManager support.`);
             return;
         }
-
         try {
             const activeRegistration = registration || await registerPushServiceWorker();
             const subscription = await activeRegistration.pushManager.getSubscription();
@@ -29020,7 +29952,6 @@ Thank you for shopping with {store_name}!</textarea>
 
     async function disableStalePushSubscriptions(activeEndpoint, userId) {
         if (!currentUserOrgId || !userId) return;
-
         const nowIso = new Date().toISOString();
         let query = supabaseClient
             .from('push_subscriptions')
@@ -29031,11 +29962,9 @@ Thank you for shopping with {store_name}!</textarea>
             .eq('org_id', currentUserOrgId)
             .eq('user_id', userId)
             .is('disabled_at', null);
-
         if (activeEndpoint) {
             query = query.neq('endpoint', activeEndpoint);
         }
-
         const { error } = await query;
         if (error) {
             console.warn(`${PUSH_LOG_PREFIX} Failed to disable stale browser subscriptions:`, error);
@@ -29046,7 +29975,6 @@ Thank you for shopping with {store_name}!</textarea>
         if (!currentUserOrgId) {
             throw new Error('Missing organization context.');
         }
-
         const userId = await getAuthenticatedUserId();
         const keys = extractPushSubscriptionKeys(subscription);
         const nowIso = new Date().toISOString();
@@ -29057,36 +29985,54 @@ Thank you for shopping with {store_name}!</textarea>
             p256dh: keys.p256dh,
             auth: keys.auth,
             user_agent: navigator.userAgent || null,
+            preferred_language: currentLang || 'en',
             updated_at: nowIso,
             last_seen_at: nowIso,
             disabled_at: null
         };
-
         const { error } = await supabaseClient
             .from('push_subscriptions')
             .upsert(payload, { onConflict: 'endpoint' });
-
         if (error) throw error;
-
         await disableStalePushSubscriptions(keys.endpoint, userId);
         console.info(`${PUSH_LOG_PREFIX} Saved push subscription for org ${currentUserOrgId}.`);
         return payload;
     }
 
+    async function syncPushLanguagePreference() {
+        if (!supportsPushNotifications() || !currentUserOrgId || Notification.permission !== 'granted') return false;
+        const registration = await registerPushServiceWorker();
+        const subscription = await registration.pushManager.getSubscription();
+        if (!subscription) return false;
+        const { error } = await supabaseClient
+            .from('push_subscriptions')
+            .update({
+                preferred_language: currentLang || 'en',
+                updated_at: new Date().toISOString(),
+                last_seen_at: new Date().toISOString(),
+                disabled_at: null
+            })
+            .eq('org_id', currentUserOrgId)
+            .eq('endpoint', subscription.endpoint);
+        if (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to sync language preference:`, error);
+            return false;
+        }
+        return true;
+    }
+
     async function syncPushSubscriptionFromBrowser({ registration = null } = {}) {
         if (!supportsPushNotifications() || !currentUserOrgId) return null;
         if (Notification.permission !== 'granted') return null;
-
         const activeRegistration = registration || await registerPushServiceWorker();
         const subscription = await activeRegistration.pushManager.getSubscription();
-
         if (!subscription) {
             console.info(`${PUSH_LOG_PREFIX} No existing browser push subscription to sync.`);
             return null;
         }
-
         try {
             await upsertPushSubscription(subscription);
+            await renderNotificationHealthUI();
             return subscription;
         } catch (error) {
             console.error(`${PUSH_LOG_PREFIX} Failed to sync push subscription:`, error);
@@ -29098,13 +30044,14 @@ Thank you for shopping with {store_name}!</textarea>
     async function showServiceWorkerTestNotification(registration = null) {
         try {
             const activeRegistration = registration || await registerPushServiceWorker();
-            await activeRegistration.showNotification('Digitivia Push Enabled', {
-                body: 'Background notifications are now configured for this device.',
+            await activeRegistration.showNotification(t('notifications.push_test_title'), {
+                body: t('notifications.push_test_body'),
                 icon: PUSH_NOTIFICATION_ICON,
                 badge: PUSH_NOTIFICATION_BADGE,
                 tag: 'digitivia-push-enabled',
                 data: {
                     link: '#orders',
+                    entity: isServiceOrg() ? 'meeting' : 'order',
                     source: 'service-worker-test'
                 }
             });
@@ -29120,19 +30067,24 @@ Thank you for shopping with {store_name}!</textarea>
             showToast(t('messages.error_no_org') || 'Missing organization context', 'error');
             return false;
         }
-
         if (!supportsPushNotifications()) {
             console.warn(`${PUSH_LOG_PREFIX} PushManager or service workers are unavailable.`);
             showToast(t('notifications.push_unsupported'), 'warning');
+            await renderNotificationHealthUI();
             return false;
         }
-
+        if (detectNotificationPlatform() === 'ios' && !isStandaloneWebApp()) {
+            showToast(t('notifications.health.detail.ios_install'), 'warning');
+            await renderNotificationHealthUI();
+            return false;
+        }
         try {
             const registration = await registerPushServiceWorker();
             bindPushServiceWorkerBridge();
 
             if (Notification.permission === 'denied') {
                 showToast(t('notifications.push_permission_denied'), 'warning');
+                await renderNotificationHealthUI();
                 return false;
             }
 
@@ -29148,12 +30100,12 @@ Thank you for shopping with {store_name}!</textarea>
                         : t('notifications.push_permission_default'),
                     'warning'
                 );
+                await renderNotificationHealthUI();
                 return false;
             }
 
             let subscription = await registration.pushManager.getSubscription();
             const alreadyEnabled = Boolean(subscription);
-
             if (!subscription) {
                 subscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
@@ -29169,24 +30121,23 @@ Thank you for shopping with {store_name}!</textarea>
                 t(testShown ? 'notifications.push_test_sent' : 'notifications.push_test_failed'),
                 testShown ? 'info' : 'warning'
             );
-
+            await renderNotificationHealthUI();
             return true;
         } catch (error) {
             console.error(`${PUSH_LOG_PREFIX} Failed to enable push notifications:`, error);
             showToast(t('notifications.push_enable_failed'), 'error');
+            await renderNotificationHealthUI();
             return false;
         }
     }
 
     async function disablePushNotifications() {
         if (!supportsPushNotifications()) return false;
-
         try {
             const registration = await registerPushServiceWorker();
             const subscription = await registration.pushManager.getSubscription();
             const userId = await getAuthenticatedUserId();
             const nowIso = new Date().toISOString();
-
             if (subscription) {
                 await supabaseClient
                     .from('push_subscriptions')
@@ -29197,11 +30148,10 @@ Thank you for shopping with {store_name}!</textarea>
                     .eq('org_id', currentUserOrgId)
                     .eq('user_id', userId)
                     .eq('endpoint', subscription.endpoint);
-
                 await subscription.unsubscribe();
             }
-
             showToast(t('notifications.push_disabled'), 'info');
+            await renderNotificationHealthUI();
             return true;
         } catch (error) {
             console.error(`${PUSH_LOG_PREFIX} Failed to disable push notifications:`, error);
@@ -29210,16 +30160,198 @@ Thank you for shopping with {store_name}!</textarea>
         }
     }
 
+    function highlightNotificationTarget(selector) {
+        const previous = document.querySelector('.notification-target-highlight');
+        if (previous) previous.classList.remove('notification-target-highlight');
+        let target = selector;
+        if (typeof selector === 'string') {
+            const matches = Array.from(document.querySelectorAll(selector));
+            target = matches.find((item) => item.offsetParent !== null) || matches[0] || null;
+        }
+        if (!target) return false;
+        target.classList.add('notification-target-highlight');
+        try {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (_error) {
+        }
+        window.setTimeout(() => target.classList.remove('notification-target-highlight'), 2600);
+        return true;
+    }
+
+    async function fetchOrderById(orderId) {
+        if (!currentUserOrgId || !orderId) return null;
+        const { data, error } = await supabaseClient
+            .from('orders')
+            .select('*')
+            .eq('org_id', currentUserOrgId)
+            .eq('id', orderId)
+            .maybeSingle();
+        if (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to fetch order by id:`, error);
+            return null;
+        }
+        return data || null;
+    }
+
+    async function fetchMeetingById(meetingId) {
+        if (!currentUserOrgId || !meetingId) return null;
+        const { data, error } = await supabaseClient
+            .from('meetings')
+            .select('*')
+            .eq('org_id', currentUserOrgId)
+            .eq('id', meetingId)
+            .maybeSingle();
+        if (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to fetch meeting by id:`, error);
+            return null;
+        }
+        return data || null;
+    }
+
+    async function openOrderNotificationTarget(descriptor) {
+        const orderId = String(descriptor.entityId || '');
+        navigateToTab('orders');
+        await waitForTimeout(180);
+        const incomingBtn = document.getElementById('orders-subtab-incoming');
+        if (incomingBtn) switchOrdersSubtab('incoming', incomingBtn);
+        if (!cachedOrders.some((order) => String(order.id) === orderId)) {
+            await fetchOrders();
+        }
+        if (!cachedOrders.some((order) => String(order.id) === orderId)) {
+            const order = await fetchOrderById(orderId);
+            if (order) {
+                cachedOrders = [order, ...cachedOrders.filter((item) => String(item.id) !== orderId)];
+                renderOrders();
+            }
+        }
+        await waitForTimeout(120);
+        const selector = `[data-order-id="${escapeCssIdentifier(orderId)}"]`;
+        const matched = highlightNotificationTarget(selector);
+        if (!matched) {
+            const link = descriptor.link || '#orders';
+            if (link) window.location.hash = link;
+        }
+    }
+
+    function resetMeetingFiltersForDirectOpen() {
+        activeMeetingFilters = {
+            search: '',
+            status: 'all',
+            source: 'all',
+            date: 'all',
+            sort: 'scheduled_desc'
+        };
+        const mappings = {
+            'meetings-search': '',
+            'meetings-filter-status': 'all',
+            'meetings-filter-source': 'all',
+            'meetings-filter-date': 'all',
+            'meetings-sort': 'scheduled_desc'
+        };
+        Object.entries(mappings).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.value = value;
+        });
+    }
+
+    async function openMeetingNotificationTarget(descriptor) {
+        const meetingId = String(descriptor.entityId || '');
+        navigateToTab('orders');
+        await waitForTimeout(180);
+        const incomingBtn = document.getElementById('orders-subtab-incoming');
+        if (incomingBtn) switchOrdersSubtab('incoming', incomingBtn);
+        resetMeetingFiltersForDirectOpen();
+        if (!cachedMeetings.some((meeting) => String(meeting.id) === meetingId)) {
+            await fetchMeetings();
+        }
+        if (!cachedMeetings.some((meeting) => String(meeting.id) === meetingId)) {
+            const meeting = await fetchMeetingById(meetingId);
+            if (meeting) {
+                cachedMeetings = [meeting, ...cachedMeetings.filter((item) => String(item.id) !== meetingId)];
+            }
+        }
+        renderMeetings();
+        await waitForTimeout(120);
+        highlightNotificationTarget(`[data-meeting-id="${escapeCssIdentifier(meetingId)}"]`);
+        openMeetingDetailsModal(meetingId);
+    }
+
+    async function markNotificationReadById(id) {
+        if (!id) return;
+        try {
+            const { error } = await supabaseClient
+                .from('notifications')
+                .update({ is_read: true })
+                .eq('id', id);
+            if (!error) {
+                const local = notifications.find((item) => String(item.id) === String(id));
+                if (local) local.is_read = true;
+                updateNotificationUI();
+            }
+        } catch (error) {
+            console.error(`${PUSH_LOG_PREFIX} Failed to mark notification as read:`, error);
+        }
+    }
+
+    function clearPendingNotificationRouteFromLocation() {
+        const parsed = parseNotificationTargetLink(window.location.hash);
+        if (!parsed?.entity) return;
+        history.replaceState({}, '', `${window.location.pathname}${window.location.search}#orders`);
+    }
+
+    async function openNotificationTarget(notificationLike, options = {}) {
+        const descriptor = buildNotificationDescriptor(notificationLike);
+        if (!descriptor.entity && descriptor.link && !descriptor.link.startsWith('#orders')) {
+            if (descriptor.notificationId) await markNotificationReadById(descriptor.notificationId);
+            window.location.href = descriptor.link;
+            return true;
+        }
+        if (!currentUserOrgId) {
+            pendingNotificationTarget = descriptor;
+            return false;
+        }
+
+        if (options.markRead !== false && descriptor.notificationId) {
+            await markNotificationReadById(descriptor.notificationId);
+        }
+
+        if (descriptor.entity === 'meeting' && descriptor.entityId) {
+            await openMeetingNotificationTarget(descriptor);
+        } else if (descriptor.entity === 'order' && descriptor.entityId) {
+            await openOrderNotificationTarget(descriptor);
+        } else if (descriptor.link === '#orders' || descriptor.link?.startsWith('#orders?')) {
+            navigateToTab('orders');
+        } else if (descriptor.link) {
+            window.location.href = descriptor.link;
+        }
+
+        if (options.clearRoute !== false) {
+            pendingNotificationTarget = null;
+            clearPendingNotificationRouteFromLocation();
+        }
+
+        document.querySelectorAll('.notification-dropdown.show').forEach((dropdown) => {
+            dropdown.classList.remove('show');
+        });
+        return true;
+    }
+
+    async function processPendingNotificationRoute() {
+        const descriptor = pendingNotificationTarget || parseNotificationTargetLink(window.location.hash);
+        if (!descriptor?.entity && !descriptor?.notificationId && !(descriptor?.link && descriptor.link !== '#orders')) return false;
+        pendingNotificationTarget = descriptor;
+        if (!currentUserOrgId) return false;
+        await openNotificationTarget(descriptor, { clearRoute: true });
+        return true;
+    }
+
     async function setupNotifications() {
         if (!currentUserOrgId) return;
-
         await fetchNotifications();
         subscribeToNotifications();
-
         try {
             bindPushServiceWorkerBridge();
             await logPushNotificationState();
-
             if (supportsPushNotifications()) {
                 const registration = await registerPushServiceWorker();
                 await logPushNotificationState(registration);
@@ -29230,6 +30362,8 @@ Thank you for shopping with {store_name}!</textarea>
         } catch (error) {
             console.warn(`${PUSH_LOG_PREFIX} Push setup diagnostics failed:`, error);
         }
+        await renderNotificationHealthUI();
+        await processPendingNotificationRoute();
     }
 
     async function fetchNotifications() {
@@ -29240,25 +30374,22 @@ Thank you for shopping with {store_name}!</textarea>
                 .eq('org_id', currentUserOrgId)
                 .order('created_at', { ascending: false })
                 .limit(20);
-
             if (error) throw error;
             notifications = data || [];
             updateNotificationUI();
         } catch (e) {
-            console.error("Error fetching notifications:", e);
+            console.error('Error fetching notifications:', e);
         }
     }
 
     function subscribeToNotifications() {
         if (!currentUserOrgId) return;
-
         if (notificationsChannel) {
             supabaseClient.removeChannel(notificationsChannel);
             notificationsChannel = null;
         }
-
-        // Realtime is preserved for the in-app bell and dropdown only.
-        // Background-capable delivery is handled separately through the Push API + service worker.
+        // Realtime remains for the in-app bell/dropdown only.
+        // Real background delivery comes from Push API + service worker.
         notificationsChannel = supabaseClient
             .channel(`public:notifications:${currentUserOrgId}`)
             .on('postgres_changes', {
@@ -29267,21 +30398,18 @@ Thank you for shopping with {store_name}!</textarea>
                 table: 'notifications',
                 filter: `org_id=eq.${currentUserOrgId}`
             }, payload => {
-                console.log("New notification:", payload);
                 const newNotif = payload.new;
                 notifications.unshift(newNotif);
-
-                showToast(`🔔 ${newNotif.title}: ${newNotif.message}`, 'info');
-
-                // Optional foreground cue only. Audio is not treated as delivery confirmation.
+                const localized = getLocalizedNotificationContent(newNotif);
+                showToast(`🔔 ${localized.title}: ${localized.body}`, 'info');
                 try {
-                    notificationSound.play().catch(e => console.log("Audio play failed (user interaction needed first):", e));
-                } catch (e) { }
-
+                    notificationSound.play().catch((error) => console.log('Audio play failed (user interaction needed first):', error));
+                } catch (_error) {
+                }
                 updateNotificationUI();
             })
             .subscribe((status) => {
-                console.log("Notification subscription status:", status);
+                console.log('Notification subscription status:', status);
             });
     }
 
@@ -29641,19 +30769,17 @@ Thank you for shopping with {store_name}!</textarea>
         const renderList = (listEl) => {
             if (!listEl) return;
             if (notifications.length === 0) {
-                listEl.innerHTML = `<div class="no-notifications">No notifications yet</div>`;
+                listEl.innerHTML = `<div class="no-notifications">${esc(t('notifications.empty'))}</div>`;
                 return;
             }
             listEl.innerHTML = notifications.map(n => `
-                <div class="notification-item ${n.is_read ? '' : 'unread'}" onclick="handleNotificationClick('${n.id}', '${n.link || ''}')">
+                <div class="notification-item ${n.is_read ? '' : 'unread'}" onclick="handleNotificationClick('${n.id}')">
                     <div class="notification-icon">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                        </svg>
+                        ${getNotificationIconMarkup(n)}
                     </div>
                     <div class="notification-content">
-                        <div class="notif-title">${n.title}</div>
-                        <div class="notif-msg">${n.message}</div>
+                        <div class="notif-title">${esc(getLocalizedNotificationContent(n).title)}</div>
+                        <div class="notif-msg">${esc(getLocalizedNotificationContent(n).body)}</div>
                         <div class="notif-time">${new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </div>
                 </div>
@@ -29707,28 +30833,25 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     async function handleNotificationClick(id, link) {
-        // Mark as read
-        try {
-            const { error } = await supabaseClient
+        let notification = notifications.find((item) => String(item.id) === String(id));
+        if (!notification && id) {
+            const { data, error } = await supabaseClient
                 .from('notifications')
-                .update({ is_read: true })
-                .eq('id', id);
-
-            if (!error) {
-                const n = notifications.find(x => x.id === id);
-                if (n) n.is_read = true;
+                .select('*')
+                .eq('id', id)
+                .maybeSingle();
+            if (!error && data) {
+                notification = data;
+                notifications = [data, ...notifications.filter((item) => String(item.id) !== String(id))];
                 updateNotificationUI();
             }
-        } catch (e) { console.error(e); }
-
-        // Navigate if link provided
-        if (link) {
-            if (link === '#orders') {
-                const ordersTabBtn = document.querySelector('[onclick*="orders"]');
-                if (ordersTabBtn) ordersTabBtn.click();
-            } else {
-                window.location.href = link;
-            }
+        }
+        if (!notification && link) {
+            await openNotificationTarget({ id, link }, { clearRoute: false });
+            return;
+        }
+        if (notification) {
+            await openNotificationTarget(notification, { clearRoute: false });
         }
     }
 

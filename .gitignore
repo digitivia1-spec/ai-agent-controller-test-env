@@ -9,3 +9,5 @@ supabase/migrations/20260315_harden_meeting_functions.sql
 supabase/migrations/20260315_order_push_trigger_fix.sql
 supabase/migrations/20260315_push_notifications.sql
 supabase/functions/send-order-push/index.ts
+supabase/migrations/20260315_notification_semantics_and_meeting_push.sql
+supabase/functions/send-push-notification/index.ts
