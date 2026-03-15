@@ -2033,7 +2033,8 @@
                 no_show: "Mark No-show",
                 cancel: "Cancel",
                 reschedule: "Reschedule",
-                delete: "Delete"
+                delete: "Delete",
+                more: "More"
             },
             detail: {
                 title: "Meeting Details",
@@ -2303,7 +2304,8 @@
                 no_show: "عدم حضور",
                 cancel: "إلغاء",
                 reschedule: "إعادة الجدولة",
-                delete: "حذف"
+                delete: "حذف",
+                more: "المزيد"
             },
             detail: {
                 title: "تفاصيل الاجتماع",
@@ -9971,23 +9973,68 @@
         }
 
         .meetings-toolbar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 22px;
+        }
+
+        .meetings-toolbar-search,
+        .meetings-toolbar-filters {
+            display: grid;
+            gap: 12px;
+        }
+
+        .meetings-toolbar-search {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .meetings-toolbar-filters {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .meetings-toolbar .leads-filter-input,
+        .meetings-toolbar .leads-filter-select {
+            min-height: 46px;
+            border-radius: 16px;
+            padding-inline: 14px;
+        }
+
+        .meetings-filter-secondary {
+            opacity: 0.92;
+        }
+
+        .meetings-table tbody tr {
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .meetings-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .meetings-table td {
+            vertical-align: top;
         }
 
         .meetings-table .meeting-cell-main {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
             min-width: 0;
+        }
+
+        .meetings-table .meeting-cell-main strong {
+            color: var(--text-main);
+            font-size: 0.94rem;
+            line-height: 1.35;
         }
 
         .meetings-table .meeting-cell-sub {
             color: var(--text-muted);
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             white-space: normal;
+            line-height: 1.45;
         }
 
         .meeting-status-pill {
@@ -9995,7 +10042,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 999px;
-            padding: 6px 12px;
+            padding: 7px 12px;
+            min-height: 32px;
             font-size: 0.75rem;
             font-weight: 700;
             white-space: nowrap;
@@ -10036,19 +10084,27 @@
         .meeting-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
+            justify-content: flex-end;
+            min-width: 168px;
         }
 
         .meeting-action-btn {
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: rgba(255, 255, 255, 0.04);
             color: var(--text-main);
-            border-radius: 10px;
-            padding: 6px 10px;
+            border-radius: 12px;
+            padding: 10px 12px;
+            min-height: 44px;
             cursor: pointer;
-            font-size: 0.76rem;
-            font-weight: 600;
-            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+            font-size: 0.78rem;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
         }
 
         .meeting-action-btn:hover {
@@ -10057,16 +10113,43 @@
             border-color: rgba(255, 255, 255, 0.2);
         }
 
+        .meeting-action-btn.primary {
+            background: color-mix(in srgb, var(--theme-color) 18%, rgba(255, 255, 255, 0.02));
+            border-color: color-mix(in srgb, var(--theme-color) 38%, transparent);
+            color: #e8fcfd;
+        }
+
+        .meeting-action-btn.subtle {
+            color: var(--text-muted);
+        }
+
+        .meeting-action-btn.more {
+            min-width: 44px;
+            padding-inline: 12px;
+            font-size: 0.95rem;
+        }
+
         .meeting-action-btn.critical {
             color: #f87171;
             border-color: rgba(248, 113, 113, 0.28);
         }
 
         .meeting-card-mobile {
-            padding: 16px;
-            border-radius: 16px;
+            padding: 18px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .meeting-card-mobile:hover {
+            transform: translateY(-1px);
+            border-color: rgba(91, 174, 176, 0.34);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .meeting-card-header {
@@ -10074,7 +10157,6 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 10px;
         }
 
         .meeting-card-title {
@@ -10084,37 +10166,86 @@
             min-width: 0;
         }
 
-        .meeting-card-title strong,
+        .meeting-card-title strong {
+            font-size: 1.02rem;
+            line-height: 1.35;
+            color: var(--text-main);
+            overflow-wrap: anywhere;
+        }
+
+        .meeting-card-subline {
+            margin: 0;
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: rgba(233, 244, 255, 0.95);
+            overflow-wrap: anywhere;
+        }
+
         .meeting-card-topic {
-            word-break: break-word;
+            margin: 0;
+            font-size: 0.84rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            overflow-wrap: anywhere;
+        }
+
+        .meeting-card-contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .meeting-card-contact {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
+        .meeting-card-contact strong {
+            color: var(--text-main);
+            font-size: 0.8rem;
+            min-width: 52px;
         }
 
         .meeting-card-meta {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
-            margin-top: 14px;
         }
 
         .meeting-card-meta-item {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
             min-width: 0;
+            padding: 12px 13px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .meeting-card-meta-item span:first-child {
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .meeting-card-meta-item strong {
+            line-height: 1.45;
+            overflow-wrap: anywhere;
         }
 
         .meeting-card-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 2px;
+        }
+
+        .meeting-card-actions .meeting-action-btn {
+            width: 100%;
         }
 
         .meeting-modal-overlay {
@@ -10134,24 +10265,28 @@
         }
 
         .meeting-modal {
-            width: min(860px, 100%);
-            max-height: min(88vh, 900px);
+            width: min(880px, 100%);
+            max-height: min(90vh, 940px);
             overflow: auto;
             border-radius: 24px;
             background: linear-gradient(180deg, rgba(22, 30, 46, 0.96), rgba(13, 18, 30, 0.96));
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-            padding: 22px;
+            padding: 24px;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .meeting-modal-close {
             position: absolute;
             inset-inline-end: 18px;
             top: 18px;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            min-height: 40px;
+            border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-main);
@@ -10164,13 +10299,12 @@
             justify-content: space-between;
             gap: 16px;
             align-items: flex-start;
-            margin-bottom: 18px;
-            padding-inline-end: 42px;
+            padding-inline-end: 48px;
         }
 
         .meeting-modal-kicker {
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 6px;
@@ -10178,17 +10312,18 @@
 
         .meeting-modal-header h3 {
             margin: 0;
-            font-size: 1.35rem;
+            font-size: 1.4rem;
+            line-height: 1.3;
         }
 
         .meeting-modal-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
+            gap: 14px;
         }
 
         .meeting-modal-field {
-            padding: 14px;
+            padding: 15px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -10199,25 +10334,27 @@
         .meeting-modal-notes label,
         .meeting-modal-reschedule label {
             display: block;
-            font-size: 0.77rem;
+            font-size: 0.76rem;
             color: var(--text-muted);
             margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .meeting-modal-field div,
         .meeting-modal-notes-box {
             word-break: break-word;
-            line-height: 1.5;
+            line-height: 1.55;
         }
 
         .meeting-modal-notes,
         .meeting-modal-reschedule {
-            margin-top: 16px;
+            margin-top: 2px;
         }
 
         .meeting-modal-notes-box {
             min-height: 80px;
-            padding: 14px;
+            padding: 14px 15px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -10232,13 +10369,19 @@
         .meeting-modal-reschedule-row input {
             flex: 1 1 220px;
             min-width: 0;
+            min-height: 46px;
+        }
+
+        .meeting-reschedule-submit {
+            min-height: 46px;
+            padding-inline: 18px;
         }
 
         .meeting-modal-actions {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 10px;
-            margin-top: 18px;
+            margin-top: 4px;
         }
 
         .meeting-activity-list {
@@ -10268,29 +10411,33 @@
         }
 
         @media (max-width: 768px) {
-            .meetings-toolbar {
-                grid-template-columns: 1fr;
+            .meetings-toolbar-filters {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .meeting-card-mobile {
-                padding: 14px;
+                padding: 16px;
             }
 
             .meeting-card-meta {
                 grid-template-columns: 1fr;
             }
 
-            .meeting-card-actions .meeting-action-btn,
-            .meeting-modal-actions .meeting-action-btn {
-                flex: 1 1 calc(50% - 8px);
-                min-height: 42px;
-                text-align: center;
+            .meeting-card-contact strong {
+                min-width: 44px;
+            }
+
+            .meeting-modal-overlay {
+                padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+                align-items: flex-end;
             }
 
             .meeting-modal {
-                padding: 18px;
-                border-radius: 20px;
-                max-height: 92vh;
+                width: 100%;
+                max-height: calc(100dvh - 18px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+                padding: 18px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+                border-radius: 26px 26px 20px 20px;
+                gap: 14px;
             }
 
             .meeting-modal-grid {
@@ -10299,19 +10446,64 @@
 
             .meeting-modal-header {
                 flex-direction: column;
-                padding-inline-end: 0;
+                padding-inline-end: 48px;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                margin: -18px -16px 0;
+                padding: 18px 16px 12px;
+                background: linear-gradient(180deg, rgba(22, 30, 46, 0.98), rgba(22, 30, 46, 0.92));
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             }
 
             .meeting-modal-close {
                 top: 14px;
                 inset-inline-end: 14px;
             }
+
+            .meeting-modal-actions {
+                position: sticky;
+                bottom: calc(-16px - env(safe-area-inset-bottom, 0px));
+                z-index: 2;
+                margin: 6px -16px calc(-16px - env(safe-area-inset-bottom, 0px));
+                padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+                background: linear-gradient(180deg, rgba(13, 18, 30, 0.12), rgba(13, 18, 30, 0.98) 22%);
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .meeting-modal-actions .meeting-action-btn,
+            .meeting-reschedule-submit {
+                min-height: 46px;
+                width: 100%;
+                text-align: center;
+            }
         }
 
         @media (max-width: 480px) {
-            .meeting-card-actions .meeting-action-btn,
-            .meeting-modal-actions .meeting-action-btn {
-                flex-basis: 100%;
+            .meetings-toolbar-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .meeting-modal {
+                padding-inline: 14px;
+            }
+
+            .meeting-modal-header {
+                margin-inline: -14px;
+                padding-inline: 14px;
+            }
+
+            .meeting-modal-actions {
+                grid-template-columns: 1fr;
+                margin-inline: -14px;
+                padding-inline: 14px;
+            }
+
+            .meeting-card-meta-item,
+            .meeting-modal-field,
+            .meeting-modal-notes-box {
+                border-radius: 14px;
             }
         }
 
@@ -15252,6 +15444,65 @@
             color: #0f172a;
             background: #f1f5f9;
             border-radius: 8px;
+        }
+
+        :root[data-theme="light"] .meeting-card-mobile,
+        :root[data-theme="light"] .meeting-card-meta-item,
+        :root[data-theme="light"] .meeting-modal-field,
+        :root[data-theme="light"] .meeting-modal-notes-box {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        :root[data-theme="light"] .meeting-modal {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98)) !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+
+        :root[data-theme="light"] .meeting-card-title strong,
+        :root[data-theme="light"] .meeting-card-subline,
+        :root[data-theme="light"] .meeting-card-meta-item strong,
+        :root[data-theme="light"] .meeting-modal-header h3,
+        :root[data-theme="light"] .meeting-modal-field div,
+        :root[data-theme="light"] .meeting-modal-notes-box {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .meeting-card-topic,
+        :root[data-theme="light"] .meeting-card-contact,
+        :root[data-theme="light"] .meeting-card-meta-item span:first-child,
+        :root[data-theme="light"] .meeting-modal-kicker,
+        :root[data-theme="light"] .meeting-modal-field label,
+        :root[data-theme="light"] .meeting-modal-notes label,
+        :root[data-theme="light"] .meeting-modal-reschedule label {
+            color: #64748b !important;
+        }
+
+        :root[data-theme="light"] .meeting-action-btn {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .meeting-action-btn.primary {
+            background: rgba(13, 148, 136, 0.12) !important;
+            border-color: rgba(13, 148, 136, 0.28) !important;
+            color: #0f766e !important;
+        }
+
+        :root[data-theme="light"] .meeting-action-btn.subtle {
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .meeting-action-btn.critical {
+            color: #dc2626 !important;
+            border-color: rgba(220, 38, 38, 0.24) !important;
+        }
+
+        :root[data-theme="light"] .meeting-modal-header,
+        :root[data-theme="light"] .meeting-modal-actions {
+            border-color: rgba(15, 23, 42, 0.08) !important;
         }
 
         :root[data-theme="light"] #pricing-modal {
@@ -20705,14 +20956,18 @@
                         </div>
                         <div id="meetings-service-view" style="display:none;">
                             <div class="meetings-toolbar">
-                                <input type="text" id="meetings-search" class="leads-filter-input" data-i18n-placeholder="meetings.search_placeholder" placeholder="Search meetings..." oninput="renderMeetings()">
-                                <select id="meetings-filter-status" class="leads-filter-select" onchange="renderMeetings()"></select>
-                                <select id="meetings-filter-source" class="leads-filter-select" onchange="renderMeetings()"></select>
-                                <select id="meetings-filter-date" class="leads-filter-select" onchange="renderMeetings()"></select>
-                                <select id="meetings-sort" class="leads-filter-select" onchange="renderMeetings()">
-                                    <option value="scheduled_desc" data-i18n="meetings.filters.sort_latest">Latest First</option>
-                                    <option value="scheduled_asc" data-i18n="meetings.filters.sort_earliest">Earliest First</option>
-                                </select>
+                                <div class="meetings-toolbar-search">
+                                    <input type="text" id="meetings-search" class="leads-filter-input" data-i18n-placeholder="meetings.search_placeholder" placeholder="Search meetings..." oninput="renderMeetings()">
+                                </div>
+                                <div class="meetings-toolbar-filters">
+                                    <select id="meetings-filter-status" class="leads-filter-select meetings-filter-primary" onchange="renderMeetings()"></select>
+                                    <select id="meetings-filter-date" class="leads-filter-select meetings-filter-primary" onchange="renderMeetings()"></select>
+                                    <select id="meetings-filter-source" class="leads-filter-select meetings-filter-secondary" onchange="renderMeetings()"></select>
+                                    <select id="meetings-sort" class="leads-filter-select meetings-filter-secondary" onchange="renderMeetings()">
+                                        <option value="scheduled_desc" data-i18n="meetings.filters.sort_latest">Latest First</option>
+                                        <option value="scheduled_asc" data-i18n="meetings.filters.sort_earliest">Earliest First</option>
+                                    </select>
+                                </div>
                             </div>
                             <div id="meetings-loading" style="text-align:center; padding: 40px; color: #888;">
                                 <div class="loading-spinner"></div>
@@ -21041,7 +21296,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <label for="meeting-reschedule-input" data-i18n="meetings.detail.reschedule_label">Reschedule Meeting</label>
                             <div class="meeting-modal-reschedule-row">
                                 <input type="datetime-local" id="meeting-reschedule-input">
-                                <button class="pill-btn secondary" onclick="submitMeetingReschedule()" data-i18n="meetings.actions.reschedule">Reschedule</button>
+                                <button class="pill-btn secondary meeting-reschedule-submit" onclick="submitMeetingReschedule()" data-i18n="meetings.actions.reschedule">Reschedule</button>
                             </div>
                         </div>
                         <div class="meeting-modal-actions" id="meeting-detail-actions"></div>
@@ -25209,17 +25464,98 @@ Thank you for shopping with {store_name}!</textarea>
             return filtered;
         }
 
-        function buildMeetingActionButtons(meeting, compact = false) {
-            const actions = [
-                `<button class="meeting-action-btn" onclick="event.stopPropagation(); openMeetingDetailsModal('${meeting.id}')">${t('meetings.actions.view')}</button>`,
-                `<button class="meeting-action-btn" onclick="event.stopPropagation(); updateMeetingStatus('${meeting.id}', 'confirmed')">${t('meetings.actions.confirm')}</button>`,
-                `<button class="meeting-action-btn" onclick="event.stopPropagation(); updateMeetingStatus('${meeting.id}', 'completed')">${t('meetings.actions.complete')}</button>`,
-                `<button class="meeting-action-btn" onclick="event.stopPropagation(); updateMeetingStatus('${meeting.id}', 'no_show')">${t('meetings.actions.no_show')}</button>`,
-                `<button class="meeting-action-btn" onclick="event.stopPropagation(); openMeetingDetailsModal('${meeting.id}', true)">${t('meetings.actions.reschedule')}</button>`,
-                `<button class="meeting-action-btn critical" onclick="event.stopPropagation(); updateMeetingStatus('${meeting.id}', 'cancelled')">${t('meetings.actions.cancel')}</button>`,
-                `<button class="meeting-action-btn critical" onclick="event.stopPropagation(); deleteMeeting('${meeting.id}')">${t('meetings.actions.delete')}</button>`
+        function getMeetingPrimaryInlineAction(meeting) {
+            const meetingId = escapeNotificationHtml(String(meeting?.id || ''));
+            const status = String(meeting?.status || '').toLowerCase();
+
+            if (['pending', 'rescheduled'].includes(status)) {
+                return {
+                    label: t('meetings.actions.confirm'),
+                    className: 'primary',
+                    onclick: `event.stopPropagation(); updateMeetingStatus('${meetingId}', 'confirmed')`
+                };
+            }
+
+            if (status === 'confirmed') {
+                return {
+                    label: t('meetings.actions.complete'),
+                    className: 'primary',
+                    onclick: `event.stopPropagation(); updateMeetingStatus('${meetingId}', 'completed')`
+                };
+            }
+
+            return null;
+        }
+
+        function openMeetingDetailActions(meetingId) {
+            openMeetingDetailsModal(meetingId);
+            setTimeout(() => {
+                document.getElementById('meeting-detail-actions')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                });
+            }, 140);
+        }
+
+        function focusMeetingRescheduleInput() {
+            const input = document.getElementById('meeting-reschedule-input');
+            if (!input) return;
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => input.focus(), 140);
+        }
+
+        function getMeetingDetailActionConfigs(meeting) {
+            const meetingId = escapeNotificationHtml(String(meeting?.id || ''));
+            const status = String(meeting?.status || '').toLowerCase();
+
+            if (['pending', 'rescheduled'].includes(status)) {
+                return [
+                    { label: t('meetings.actions.confirm'), className: 'primary', onclick: `updateMeetingStatus('${meetingId}', 'confirmed')` },
+                    { label: t('meetings.actions.reschedule'), className: '', onclick: 'focusMeetingRescheduleInput()' },
+                    { label: t('meetings.actions.cancel'), className: 'critical', onclick: `updateMeetingStatus('${meetingId}', 'cancelled')` }
+                ];
+            }
+
+            if (status === 'confirmed') {
+                return [
+                    { label: t('meetings.actions.complete'), className: 'primary', onclick: `updateMeetingStatus('${meetingId}', 'completed')` },
+                    { label: t('meetings.actions.no_show'), className: '', onclick: `updateMeetingStatus('${meetingId}', 'no_show')` },
+                    { label: t('meetings.actions.reschedule'), className: '', onclick: 'focusMeetingRescheduleInput()' },
+                    { label: t('meetings.actions.cancel'), className: 'critical', onclick: `updateMeetingStatus('${meetingId}', 'cancelled')` }
+                ];
+            }
+
+            if (['completed', 'cancelled', 'no_show'].includes(status)) {
+                return [
+                    { label: t('meetings.actions.delete'), className: 'critical', onclick: `deleteMeeting('${meetingId}')` }
+                ];
+            }
+
+            return [
+                { label: t('meetings.actions.reschedule'), className: '', onclick: 'focusMeetingRescheduleInput()' }
             ];
-            return `<div class="${compact ? 'meeting-card-actions' : 'meeting-actions'}">${actions.join('')}</div>`;
+        }
+
+        function buildMeetingActionButtons(meeting, compact = false) {
+            const meetingId = escapeNotificationHtml(String(meeting?.id || ''));
+            if (compact) {
+                return `
+                    <div class="meeting-card-actions">
+                        <button class="meeting-action-btn primary" onclick="event.stopPropagation(); openMeetingDetailsModal('${meetingId}')">${t('meetings.actions.view')}</button>
+                    </div>
+                `;
+            }
+
+            const primaryAction = getMeetingPrimaryInlineAction(meeting);
+            const actions = [
+                `<button class="meeting-action-btn" onclick="event.stopPropagation(); openMeetingDetailsModal('${meetingId}')">${t('meetings.actions.view')}</button>`
+            ];
+            if (primaryAction) {
+                actions.push(`<button class="meeting-action-btn ${primaryAction.className}" onclick="${primaryAction.onclick}">${primaryAction.label}</button>`);
+            }
+            actions.push(`<button class="meeting-action-btn subtle more" onclick="event.stopPropagation(); openMeetingDetailActions('${meetingId}')" aria-label="${t('meetings.actions.more')}">${t('meetings.actions.more')}</button>`);
+
+            return `<div class="meeting-actions">${actions.join('')}</div>`;
         }
 
         function renderMeetings() {
@@ -25249,9 +25585,26 @@ Thank you for shopping with {store_name}!</textarea>
                 const statusClass = getMeetingStatusClass(meeting.status);
                 const sourceLabel = getMeetingSourceLabel(meeting);
                 const leadStatus = meeting.meta?.lead_status ? `${t('leads.col_status')}: ${meeting.meta.lead_status}` : '';
+                const meetingId = escapeNotificationHtml(String(meeting.id || ''));
+                const phoneValue = meeting.customer_phone || '';
+                const emailValue = meeting.customer_email || '';
+                const sourceBits = [sourceLabel, meeting.platform].filter((value, index, array) => value && array.indexOf(value) === index);
+                const scheduleSummary = `${formatMeetingDate(meeting.scheduled_at)} • ${formatMeetingTime(meeting.scheduled_at)}`;
+                const metaItems = [
+                    { label: `${t('meetings.table.date')} • ${t('meetings.table.time')}`, value: scheduleSummary },
+                    { label: t('meetings.table.source'), value: sourceBits.join(' • ') || '--' },
+                    { label: t('meetings.table.duration'), value: formatMeetingDuration(meeting.duration_minutes) }
+                ];
+                const topicHtml = meeting.topic
+                    ? `<p class="meeting-card-topic">${escapeNotificationHtml(meeting.topic)}</p>`
+                    : '';
+                const contactItems = [
+                    phoneValue ? `<div class="meeting-card-contact"><strong>${escapeNotificationHtml(t('meetings.table.phone'))}</strong><span>${escapeNotificationHtml(phoneValue)}</span></div>` : '',
+                    emailValue ? `<div class="meeting-card-contact"><strong>${escapeNotificationHtml(t('meetings.table.email'))}</strong><span>${escapeNotificationHtml(emailValue)}</span></div>` : ''
+                ].filter(Boolean).join('');
 
                 tbody.insertAdjacentHTML('beforeend', `
-                    <tr data-meeting-id="${escapeNotificationHtml(String(meeting.id || ''))}">
+                    <tr class="clickable-row meeting-table-row" data-meeting-id="${meetingId}" onclick="openMeetingDetailsModal('${meetingId}')">
                         <td>
                             <div class="meeting-cell-main">
                                 <strong>${escapeNotificationHtml(meeting.customer_name || '--')}</strong>
@@ -25282,33 +25635,24 @@ Thank you for shopping with {store_name}!</textarea>
                 `);
 
                 mobileList.insertAdjacentHTML('beforeend', `
-                    <div class="meeting-card-mobile glass" data-meeting-id="${escapeNotificationHtml(String(meeting.id || ''))}">
+                    <div class="meeting-card-mobile glass" data-meeting-id="${meetingId}" onclick="openMeetingDetailsModal('${meetingId}')">
                         <div class="meeting-card-header">
                             <div class="meeting-card-title">
                                 <strong>${escapeNotificationHtml(meeting.customer_name || '--')}</strong>
-                                <span>${escapeNotificationHtml(meeting.customer_phone || '--')}</span>
-                                <span class="meeting-card-topic">${escapeNotificationHtml(meeting.topic || '--')}</span>
                             </div>
                             <span class="meeting-status-pill ${statusClass}">${escapeNotificationHtml(getMeetingStatusLabel(meeting.status))}</span>
                         </div>
+                        <p class="meeting-card-subline">${escapeNotificationHtml(meeting.service_name || '--')}</p>
+                        ${topicHtml}
                         <div class="meeting-card-meta">
-                            <div class="meeting-card-meta-item">
-                                <span>${t('meetings.table.service')}</span>
-                                <strong>${escapeNotificationHtml(meeting.service_name || '--')}</strong>
-                            </div>
-                            <div class="meeting-card-meta-item">
-                                <span>${t('meetings.table.date')}</span>
-                                <strong>${formatMeetingDate(meeting.scheduled_at)}</strong>
-                            </div>
-                            <div class="meeting-card-meta-item">
-                                <span>${t('meetings.table.time')}</span>
-                                <strong>${formatMeetingTime(meeting.scheduled_at)}</strong>
-                            </div>
-                            <div class="meeting-card-meta-item">
-                                <span>${t('meetings.table.source')}</span>
-                                <strong>${escapeNotificationHtml(sourceLabel)}</strong>
-                            </div>
+                            ${metaItems.map((item) => `
+                                <div class="meeting-card-meta-item">
+                                    <span>${escapeNotificationHtml(item.label)}</span>
+                                    <strong>${escapeNotificationHtml(item.value)}</strong>
+                                </div>
+                            `).join('')}
                         </div>
+                        ${contactItems ? `<div class="meeting-card-contact-list">${contactItems}</div>` : ''}
                         ${buildMeetingActionButtons(meeting, true)}
                     </div>
                 `);
@@ -25400,15 +25744,11 @@ Thank you for shopping with {store_name}!</textarea>
             `).join('');
             notes.textContent = meeting.notes || '--';
             rescheduleInput.value = toDatetimeLocalValue(meeting.scheduled_at);
-            actions.innerHTML = [
-                `<button class="meeting-action-btn" onclick="updateMeetingStatus('${meeting.id}', 'confirmed')">${t('meetings.actions.confirm')}</button>`,
-                `<button class="meeting-action-btn" onclick="updateMeetingStatus('${meeting.id}', 'completed')">${t('meetings.actions.complete')}</button>`,
-                `<button class="meeting-action-btn" onclick="updateMeetingStatus('${meeting.id}', 'no_show')">${t('meetings.actions.no_show')}</button>`,
-                `<button class="meeting-action-btn critical" onclick="updateMeetingStatus('${meeting.id}', 'cancelled')">${t('meetings.actions.cancel')}</button>`,
-                `<button class="meeting-action-btn critical" onclick="deleteMeeting('${meeting.id}')">${t('meetings.actions.delete')}</button>`
-            ].join('');
+            actions.innerHTML = getMeetingDetailActionConfigs(meeting)
+                .map((action) => `<button class="meeting-action-btn ${action.className || ''}" onclick="${action.onclick}">${action.label}</button>`)
+                .join('');
             modal.classList.add('show');
-            if (focusReschedule) setTimeout(() => rescheduleInput.focus(), 50);
+            if (focusReschedule) setTimeout(() => focusMeetingRescheduleInput(), 50);
         }
 
         function closeMeetingDetailsModal(event) {
@@ -25421,7 +25761,10 @@ Thank you for shopping with {store_name}!</textarea>
             if (!currentMeetingId) return;
             const input = document.getElementById('meeting-reschedule-input');
             const nextValue = input?.value;
-            if (!nextValue) return;
+            if (!nextValue) {
+                focusMeetingRescheduleInput();
+                return;
+            }
             const currentMeeting = cachedMeetings.find((item) => String(item.id) === String(currentMeetingId));
             await updateMeetingStatus(currentMeetingId, 'rescheduled', {
                 old_scheduled_at: currentMeeting?.scheduled_at || null,
