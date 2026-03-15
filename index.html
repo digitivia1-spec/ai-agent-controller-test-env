@@ -1860,6 +1860,8 @@
                 meeting_no_show_title: "Meeting Marked No-show"
             }
         });
+        window.LANG_EN.orders = window.LANG_EN.orders || {};
+        window.LANG_EN.meetings = window.LANG_EN.meetings || {};
         window.LANG_EN.orders.notifications = {
             new_body: "{customer_name} placed an order for {amount}.",
             live_body: "Order for {customer_name} is now confirmed."
@@ -1961,7 +1963,7 @@
         window.LANG_EN.dashboard.activity.meeting_rescheduled = "Meeting rescheduled";
         window.LANG_EN.dashboard.activity.meeting_no_show = "Marked as no-show";
         window.LANG_EN.dashboard.activity.meeting_note = "Meeting note added";
-        window.LANG_EN.meetings = {
+        Object.assign(window.LANG_EN.meetings, {
             area_title: "Customers Area",
             title: "Incoming Meetings",
             subtab_incoming: "Incoming Meetings",
@@ -2056,7 +2058,7 @@
                 assigned_to: "Assigned To",
                 reschedule_label: "Reschedule Meeting"
             }
-        };
+        });
 
         Object.assign(window.LANG_AR.sidebar, {
             nav_orders_product: "منطقة الطلبات",
@@ -2128,6 +2130,8 @@
                 meeting_no_show_title: "تم تسجيل عدم الحضور"
             }
         });
+        window.LANG_AR.orders = window.LANG_AR.orders || {};
+        window.LANG_AR.meetings = window.LANG_AR.meetings || {};
         window.LANG_AR.orders.notifications = {
             new_body: "قام {customer_name} بطلب جديد بقيمة {amount}.",
             live_body: "تم تأكيد طلب {customer_name}."
@@ -2229,7 +2233,7 @@
         window.LANG_AR.dashboard.activity.meeting_rescheduled = "تمت إعادة جدولة الاجتماع";
         window.LANG_AR.dashboard.activity.meeting_no_show = "تم تسجيل عدم الحضور";
         window.LANG_AR.dashboard.activity.meeting_note = "تمت إضافة ملاحظة للاجتماع";
-        window.LANG_AR.meetings = {
+        Object.assign(window.LANG_AR.meetings, {
             area_title: "منطقة العملاء",
             title: "الاجتماعات الواردة",
             subtab_incoming: "الاجتماعات الواردة",
@@ -2324,7 +2328,7 @@
                 assigned_to: "المسؤول",
                 reschedule_label: "إعادة جدولة الاجتماع"
             }
-        };
+        });
     </script>
 
     <style>
@@ -29406,6 +29410,15 @@ Thank you for shopping with {store_name}!</textarea>
         }
     }
 
+    function escapeNotificationHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function isIosDevice() {
         const ua = navigator.userAgent || '';
         const platform = navigator.platform || '';
@@ -29825,12 +29838,12 @@ Thank you for shopping with {store_name}!</textarea>
 
         banner.innerHTML = `
             <div class="notification-smart-banner-copy">
-                <div class="notification-smart-banner-title">${esc(meta.state)}</div>
-                <div class="notification-smart-banner-text">${esc(t(`notifications.smart_banner.${health.state}`))}</div>
+                <div class="notification-smart-banner-title">${escapeNotificationHtml(meta.state)}</div>
+                <div class="notification-smart-banner-text">${escapeNotificationHtml(t(`notifications.smart_banner.${health.state}`))}</div>
             </div>
             <div class="notification-smart-banner-actions">
-                <button class="notification-smart-banner-btn" type="button" onclick="${health.state === 'blocked' || health.state === 'unsupported' || health.state === 'ios_install' ? 'openNotificationSetupExperience()' : 'enablePushNotifications()'}">${esc(meta.cta)}</button>
-                <button class="notification-smart-banner-dismiss" type="button" onclick="dismissNotificationSmartBanner()">${esc(t('notifications.banner_dismiss'))}</button>
+                <button class="notification-smart-banner-btn" type="button" onclick="${health.state === 'blocked' || health.state === 'unsupported' || health.state === 'ios_install' ? 'openNotificationSetupExperience()' : 'enablePushNotifications()'}">${escapeNotificationHtml(meta.cta)}</button>
+                <button class="notification-smart-banner-dismiss" type="button" onclick="dismissNotificationSmartBanner()">${escapeNotificationHtml(t('notifications.banner_dismiss'))}</button>
             </div>
         `;
         banner.classList.add('show');
@@ -29860,20 +29873,20 @@ Thank you for shopping with {store_name}!</textarea>
         notificationHealthSnapshot = health;
         const meta = getNotificationHealthMeta(health);
         const steps = getNotificationPlatformStepKeys(health.platform)
-            .map((key) => `<li>${esc(t(key))}</li>`)
+            .map((key) => `<li>${escapeNotificationHtml(t(key))}</li>`)
             .join('');
 
         card.innerHTML = `
             <div class="notification-health-top">
                 <div>
-                    <div class="notification-health-title">${esc(t('notifications.health.title'))}</div>
-                    <div class="notification-health-subtitle">${esc(meta.subtitle)}</div>
+                    <div class="notification-health-title">${escapeNotificationHtml(t('notifications.health.title'))}</div>
+                    <div class="notification-health-subtitle">${escapeNotificationHtml(meta.subtitle)}</div>
                 </div>
-                <span class="notification-health-pill ${meta.pillClass}">${esc(meta.pill)}</span>
+                <span class="notification-health-pill ${meta.pillClass}">${escapeNotificationHtml(meta.pill)}</span>
             </div>
-            <div class="notification-health-state">${esc(meta.state)}</div>
-            <div class="notification-health-detail">${esc(meta.detail)}</div>
-            <div class="notification-health-steps-label">${esc(t('notifications.health_steps_title'))}</div>
+            <div class="notification-health-state">${escapeNotificationHtml(meta.state)}</div>
+            <div class="notification-health-detail">${escapeNotificationHtml(meta.detail)}</div>
+            <div class="notification-health-steps-label">${escapeNotificationHtml(t('notifications.health_steps_title'))}</div>
             <ul class="notification-health-steps">${steps}</ul>
         `;
 
@@ -30769,7 +30782,7 @@ Thank you for shopping with {store_name}!</textarea>
         const renderList = (listEl) => {
             if (!listEl) return;
             if (notifications.length === 0) {
-                listEl.innerHTML = `<div class="no-notifications">${esc(t('notifications.empty'))}</div>`;
+                listEl.innerHTML = `<div class="no-notifications">${escapeNotificationHtml(t('notifications.empty'))}</div>`;
                 return;
             }
             listEl.innerHTML = notifications.map(n => `
@@ -30778,8 +30791,8 @@ Thank you for shopping with {store_name}!</textarea>
                         ${getNotificationIconMarkup(n)}
                     </div>
                     <div class="notification-content">
-                        <div class="notif-title">${esc(getLocalizedNotificationContent(n).title)}</div>
-                        <div class="notif-msg">${esc(getLocalizedNotificationContent(n).body)}</div>
+                        <div class="notif-title">${escapeNotificationHtml(getLocalizedNotificationContent(n).title)}</div>
+                        <div class="notif-msg">${escapeNotificationHtml(getLocalizedNotificationContent(n).body)}</div>
                         <div class="notif-time">${new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </div>
                 </div>
