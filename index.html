@@ -7815,6 +7815,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            min-height: 100dvh;
             background: rgba(0, 0, 0, 0.7);
             z-index: 6000;
             align-items: center;
@@ -7841,7 +7842,11 @@
             max-height: min(88vh, 760px);
             overflow-y: auto;
             overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
 
         .close-modal-btn {
@@ -7869,52 +7874,6 @@
             transform: scale(1.1);
         }
 
-        /* Mobile Adjustments for Profile Modal */
-        @media (max-width: 480px) {
-            .profile-modal {
-                padding: 18px;
-                max-width: 100%;
-                width: 100%;
-                max-height: min(90vh, 820px);
-                border-radius: 18px;
-            }
-
-            .close-modal-btn {
-                top: 10px;
-                right: 15px;
-                font-size: 1.8rem;
-            }
-
-            .profile-info-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-
-            .profile-info-label {
-                width: 100%;
-                margin-bottom: 2px;
-                font-size: 0.85rem;
-                text-align: left;
-            }
-
-            .profile-info-value,
-            .profile-info-row input,
-            .profile-info-row div {
-                width: 100% !important;
-                text-align: left;
-            }
-
-            /* Specifically target the container inside row */
-            .profile-info-row>div {
-                width: 100%;
-            }
-
-            .profile-actions {
-                flex-direction: column;
-            }
-        }
-
         .profile-modal-avatar {
             width: 80px;
             height: 80px;
@@ -7935,15 +7894,19 @@
         .profile-modal .email {
             color: var(--text-muted);
             font-size: 0.9rem;
-            margin-bottom: 20px;
+            margin: -8px 0 8px;
+            overflow-wrap: anywhere;
         }
 
         .profile-info-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            gap: 14px;
             padding: 12px 0;
             border-bottom: 1px solid var(--glass-border);
             font-size: 0.9rem;
+            min-width: 0;
         }
 
         .profile-info-row:last-of-type {
@@ -7952,11 +7915,15 @@
 
         .profile-info-label {
             color: var(--text-muted);
+            flex: 0 0 132px;
+            text-align: start;
         }
 
         .profile-info-value {
             color: white;
             font-weight: 600;
+            min-width: 0;
+            text-align: end;
         }
 
         .profile-actions {
@@ -7964,6 +7931,29 @@
             display: flex;
             gap: 10px;
             width: 100%;
+            min-width: 0;
+        }
+
+        .profile-password-fields {
+            flex: 2 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .profile-actions-spacer {
+            height: 6px;
+        }
+
+        .profile-actions-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .profile-actions-row>* {
+            flex: 1 1 0;
             min-width: 0;
         }
 
@@ -29535,7 +29525,7 @@ Thank you for shopping with {store_name}!</textarea>
     let pendingNotificationTarget = null;
     const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
     notificationSound.preload = 'auto';
-    const PUSH_NOTIFICATION_ICON = new URL('cropped-White.png', window.location.href).href;
+    const PUSH_NOTIFICATION_ICON = new URL('icon.png', window.location.href).href;
     const PUSH_NOTIFICATION_BADGE = PUSH_NOTIFICATION_ICON;
     const NOTIFICATION_SMART_BANNER_KEY = 'digitivia_notification_banner_dismissed_v2';
 
