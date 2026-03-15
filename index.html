@@ -4212,11 +4212,13 @@
         /* --- MAIN LAYOUT --- */
         #app-container {
             display: none;
+            flex-direction: column;
             flex: 1;
             margin-left: var(--sidebar-width);
             /* Push content */
             transition: margin-left 0.3s;
             width: calc(100% - var(--sidebar-width));
+            min-width: 0;
         }
 
         main {
@@ -7810,6 +7812,8 @@
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(5px);
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .profile-modal-overlay.show {
@@ -7826,7 +7830,10 @@
             text-align: center;
             animation: popIn 0.3s ease;
             position: relative;
-            /* For close button */
+            max-height: min(88vh, 760px);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            box-sizing: border-box;
         }
 
         .close-modal-btn {
@@ -7857,8 +7864,11 @@
         /* Mobile Adjustments for Profile Modal */
         @media (max-width: 480px) {
             .profile-modal {
-                padding: 20px;
-                max-width: 95%;
+                padding: 18px;
+                max-width: 100%;
+                width: 100%;
+                max-height: min(90vh, 820px);
+                border-radius: 18px;
             }
 
             .close-modal-btn {
@@ -7945,27 +7955,32 @@
             margin-top: 25px;
             display: flex;
             gap: 10px;
+            width: 100%;
+            min-width: 0;
         }
 
         .profile-actions button {
-            flex: 1;
+            flex: 1 1 auto;
             padding: 12px;
-            border-radius: 50px;
+            border-radius: 16px;
             border: none;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            min-width: 0;
         }
 
         .notification-health-card {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding: 14px;
+            gap: 10px;
+            padding: 14px 14px 12px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.09);
             text-align: start;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .notification-health-top {
@@ -7984,7 +7999,7 @@
 
         .notification-health-subtitle {
             margin: 4px 0 0;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             line-height: 1.5;
         }
@@ -8037,50 +8052,76 @@
         }
 
         .notification-health-state {
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             color: var(--text-main);
             font-weight: 600;
         }
 
         .notification-health-detail {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
         }
 
-        .notification-health-steps-label {
-            font-size: 0.78rem;
-            color: var(--text-muted);
+        .notification-health-help {
+            margin: 2px 0 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 10px;
+        }
+
+        .notification-health-help summary {
+            list-style: none;
+            cursor: pointer;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.76rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--theme-color);
+        }
+
+        .notification-health-help summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .notification-health-help summary::after {
+            content: '+';
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .notification-health-help[open] summary::after {
+            content: '-';
         }
 
         .notification-health-steps {
-            margin: 0;
+            margin: 10px 0 0;
             padding-inline-start: 18px;
-            display: flex;
-            flex-direction: column;
+            display: grid;
             gap: 6px;
             color: var(--text-muted);
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             line-height: 1.45;
         }
 
         .notification-smart-banner {
             display: none;
-            position: sticky;
-            top: 10px;
-            z-index: 1600;
-            margin: 10px 16px 0;
+            position: fixed;
+            inset-block-start: 84px;
+            inset-inline-end: 18px;
+            z-index: 4100;
+            inline-size: min(360px, calc(100vw - 28px));
+            max-inline-size: calc(100vw - 28px);
             padding: 14px 16px;
             border-radius: 18px;
             border: 1px solid rgba(91, 174, 176, 0.24);
             background: linear-gradient(135deg, rgba(16, 28, 44, 0.96), rgba(10, 18, 32, 0.92));
-            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.24);
             backdrop-filter: blur(16px);
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 14px;
+            box-sizing: border-box;
         }
 
         .notification-smart-banner.show {
@@ -8089,6 +8130,7 @@
 
         .notification-smart-banner-copy {
             min-width: 0;
+            flex: 1 1 auto;
         }
 
         .notification-smart-banner-title {
@@ -8110,16 +8152,18 @@
             align-items: center;
             gap: 10px;
             flex-shrink: 0;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .notification-smart-banner-btn {
-            min-height: 40px;
-            padding: 10px 14px;
+            min-height: 38px;
+            padding: 10px 13px;
             border-radius: 12px;
             border: 1px solid color-mix(in srgb, var(--theme-color) 24%, transparent);
             background: color-mix(in srgb, var(--theme-color) 16%, transparent);
             color: var(--text-main);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 700;
             cursor: pointer;
         }
@@ -8130,7 +8174,7 @@
             color: var(--text-muted);
             cursor: pointer;
             font-size: 0.8rem;
-            padding: 6px 0;
+            padding: 6px 2px;
         }
 
         .notification-target-highlight {
@@ -9736,7 +9780,11 @@
             }
 
             .notification-smart-banner {
-                margin: 10px 12px 0;
+                inset-inline: 12px;
+                inset-inline-end: 12px;
+                inset-block-start: 72px;
+                inline-size: auto;
+                max-inline-size: none;
                 padding: 14px;
                 border-radius: 16px;
                 flex-direction: column;
@@ -9751,6 +9799,26 @@
 
             .notification-smart-banner-btn {
                 flex: 1 1 180px;
+            }
+
+            .profile-modal-overlay {
+                padding: 12px;
+                align-items: flex-start;
+            }
+
+            .profile-modal {
+                margin-top: calc(20px + env(safe-area-inset-top, 0px));
+                width: min(100%, 560px);
+                max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+            }
+
+            .notification-health-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .notification-health-pill {
+                align-self: flex-start;
             }
         }
 
@@ -29859,6 +29927,10 @@ Thank you for shopping with {store_name}!</textarea>
         if (!document.getElementById('profile-modal')?.classList.contains('show')) {
             openProfileModal();
         }
+        const card = document.getElementById('notification-health-card');
+        if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
         if (notificationHealthSnapshot) {
             showToast(getNotificationHealthMeta(notificationHealthSnapshot).detail, 'info');
         }
@@ -29875,6 +29947,7 @@ Thank you for shopping with {store_name}!</textarea>
         const steps = getNotificationPlatformStepKeys(health.platform)
             .map((key) => `<li>${escapeNotificationHtml(t(key))}</li>`)
             .join('');
+        const shouldShowHelp = health.state !== 'enabled';
 
         card.innerHTML = `
             <div class="notification-health-top">
@@ -29886,8 +29959,12 @@ Thank you for shopping with {store_name}!</textarea>
             </div>
             <div class="notification-health-state">${escapeNotificationHtml(meta.state)}</div>
             <div class="notification-health-detail">${escapeNotificationHtml(meta.detail)}</div>
-            <div class="notification-health-steps-label">${escapeNotificationHtml(t('notifications.health_steps_title'))}</div>
-            <ul class="notification-health-steps">${steps}</ul>
+            ${shouldShowHelp ? `
+                <details class="notification-health-help">
+                    <summary>${escapeNotificationHtml(t('notifications.health_steps_title'))}</summary>
+                    <ul class="notification-health-steps">${steps}</ul>
+                </details>
+            ` : ''}
         `;
 
         button.textContent = `🔔 ${meta.cta}`;
