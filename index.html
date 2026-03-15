@@ -30174,10 +30174,28 @@ Thank you for shopping with {store_name}!</textarea>
             last_seen_at: nowIso,
             disabled_at: null
         };
-        const { error } = await supabaseClient
-            .from('push_subscriptions')
-            .upsert(payload, { onConflict: 'endpoint' });
-        if (error) throw error;
+        let saveError = null;
+
+        try {
+            const { error } = await supabaseClient.rpc('save_push_subscription', {
+                p_org_id: payload.org_id,
+                p_user_id: payload.user_id,
+                p_endpoint: payload.endpoint,
+                p_p256dh: payload.p256dh,
+                p_auth: payload.auth,
+                p_user_agent: payload.user_agent,
+                p_preferred_language: payload.preferred_language
+            });
+            if (error) throw error;
+        } catch (rpcError) {
+            console.warn(`${PUSH_LOG_PREFIX} RPC save_push_subscription failed; falling back to direct upsert.`, rpcError);
+            const { error } = await supabaseClient
+                .from('push_subscriptions')
+                .upsert(payload, { onConflict: 'endpoint' });
+            saveError = error;
+        }
+
+        if (saveError) throw saveError;
         await disableStalePushSubscriptions(keys.endpoint, userId);
         console.info(`${PUSH_LOG_PREFIX} Saved push subscription for org ${currentUserOrgId}.`);
         return payload;
@@ -30220,7 +30238,7 @@ Thank you for shopping with {store_name}!</textarea>
             return subscription;
         } catch (error) {
             console.error(`${PUSH_LOG_PREFIX} Failed to sync push subscription:`, error);
-            showToast(t('notifications.push_sync_failed'), 'error');
+            await renderNotificationHealthUI();
             return null;
         }
     }

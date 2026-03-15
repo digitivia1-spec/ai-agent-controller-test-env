@@ -68,8 +68,8 @@ self.addEventListener('push', (event) => {
     const entity = payload?.data?.entity || payload.entity || null;
     const entityId = payload?.data?.entityId || payload.entity_id || null;
     const eventKey = payload?.data?.eventKey || payload.event_key || null;
-    const icon = payload.icon || payload.image || './cropped-White.png';
-    const badge = payload.badge || icon;
+    const icon = payload.icon || payload.image || '/icon.png';
+    const badge = payload.badge || '/icon.png';
     const tag = payload.tag || (notificationId ? `notification-${notificationId}` : `digitivia-${entity || 'push'}`);
 
     await self.registration.showNotification(title, {

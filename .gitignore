@@ -11,3 +11,4 @@ supabase/migrations/20260315_push_notifications.sql
 supabase/functions/send-order-push/index.ts
 supabase/migrations/20260315_notification_semantics_and_meeting_push.sql
 supabase/functions/send-push-notification/index.ts
+supabase/migrations/20260315_push_subscription_rpc.sql
