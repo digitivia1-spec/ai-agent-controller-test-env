@@ -24451,7 +24451,7 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="meeting-activity-item">
                             <div>
                                 <div class="act-title">${t(`dashboard.activity.${evt.event_type}`)}</div>
-                                <div class="act-desc">${esc([evt.details?.customer_name, evt.details?.topic, evt.details?.service_name].filter(Boolean).join(' • ') || evt.details?.status || '--')}</div>
+                                <div class="act-desc">${escapeNotificationHtml([evt.details?.customer_name, evt.details?.topic, evt.details?.service_name].filter(Boolean).join(' • ') || evt.details?.status || '--')}</div>
                             </div>
                             <div class="meeting-activity-meta">${formatMeetingDateTime(evt.created_at)}</div>
                         </div>
@@ -25097,7 +25097,7 @@ Thank you for shopping with {store_name}!</textarea>
                 .concat(MEETING_STATUSES.map((status) => `<option value="${status}" ${activeMeetingFilters.status === status ? 'selected' : ''}>${t(`meetings.status.${status}`)}</option>`))
                 .join('');
             sourceEl.innerHTML = [`<option value="all">${t('meetings.filters.all_sources')}</option>`]
-                .concat(sources.map((source) => `<option value="${esc(source)}" ${activeMeetingFilters.source === source ? 'selected' : ''}>${esc(getMeetingSourceLabel({ source }))}</option>`))
+                .concat(sources.map((source) => `<option value="${escapeNotificationHtml(source)}" ${activeMeetingFilters.source === source ? 'selected' : ''}>${escapeNotificationHtml(getMeetingSourceLabel({ source }))}</option>`))
                 .join('');
             dateEl.innerHTML = MEETING_DATE_FILTERS.map((value) => {
                 const keyMap = {
@@ -25251,30 +25251,30 @@ Thank you for shopping with {store_name}!</textarea>
                 const leadStatus = meeting.meta?.lead_status ? `${t('leads.col_status')}: ${meeting.meta.lead_status}` : '';
 
                 tbody.insertAdjacentHTML('beforeend', `
-                    <tr data-meeting-id="${esc(String(meeting.id || ''))}">
+                    <tr data-meeting-id="${escapeNotificationHtml(String(meeting.id || ''))}">
                         <td>
                             <div class="meeting-cell-main">
-                                <strong>${esc(meeting.customer_name || '--')}</strong>
-                                <span class="meeting-cell-sub">${esc(leadStatus || meeting.location_type || '--')}</span>
+                                <strong>${escapeNotificationHtml(meeting.customer_name || '--')}</strong>
+                                <span class="meeting-cell-sub">${escapeNotificationHtml(leadStatus || meeting.location_type || '--')}</span>
                             </div>
                         </td>
-                        <td>${esc(meeting.customer_phone || '--')}</td>
-                        <td>${esc(meeting.customer_email || '--')}</td>
+                        <td>${escapeNotificationHtml(meeting.customer_phone || '--')}</td>
+                        <td>${escapeNotificationHtml(meeting.customer_email || '--')}</td>
                         <td>
                             <div class="meeting-cell-main">
-                                <strong>${esc(meeting.topic || '--')}</strong>
-                                <span class="meeting-cell-sub">${esc(meeting.meeting_type ? getMeetingTypeLabel(meeting.meeting_type) : '--')}</span>
+                                <strong>${escapeNotificationHtml(meeting.topic || '--')}</strong>
+                                <span class="meeting-cell-sub">${escapeNotificationHtml(meeting.meeting_type ? getMeetingTypeLabel(meeting.meeting_type) : '--')}</span>
                             </div>
                         </td>
-                        <td>${esc(meeting.service_name || '--')}</td>
+                        <td>${escapeNotificationHtml(meeting.service_name || '--')}</td>
                         <td>${formatMeetingDate(meeting.scheduled_at)}</td>
                         <td>${formatMeetingTime(meeting.scheduled_at)}</td>
                         <td>${formatMeetingDuration(meeting.duration_minutes)}</td>
-                        <td><span class="meeting-status-pill ${statusClass}">${esc(getMeetingStatusLabel(meeting.status))}</span></td>
+                        <td><span class="meeting-status-pill ${statusClass}">${escapeNotificationHtml(getMeetingStatusLabel(meeting.status))}</span></td>
                         <td>
                             <div class="meeting-cell-main">
-                                <strong>${esc(sourceLabel)}</strong>
-                                <span class="meeting-cell-sub">${esc(meeting.platform || '--')}</span>
+                                <strong>${escapeNotificationHtml(sourceLabel)}</strong>
+                                <span class="meeting-cell-sub">${escapeNotificationHtml(meeting.platform || '--')}</span>
                             </div>
                         </td>
                         <td>${buildMeetingActionButtons(meeting)}</td>
@@ -25282,19 +25282,19 @@ Thank you for shopping with {store_name}!</textarea>
                 `);
 
                 mobileList.insertAdjacentHTML('beforeend', `
-                    <div class="meeting-card-mobile glass" data-meeting-id="${esc(String(meeting.id || ''))}">
+                    <div class="meeting-card-mobile glass" data-meeting-id="${escapeNotificationHtml(String(meeting.id || ''))}">
                         <div class="meeting-card-header">
                             <div class="meeting-card-title">
-                                <strong>${esc(meeting.customer_name || '--')}</strong>
-                                <span>${esc(meeting.customer_phone || '--')}</span>
-                                <span class="meeting-card-topic">${esc(meeting.topic || '--')}</span>
+                                <strong>${escapeNotificationHtml(meeting.customer_name || '--')}</strong>
+                                <span>${escapeNotificationHtml(meeting.customer_phone || '--')}</span>
+                                <span class="meeting-card-topic">${escapeNotificationHtml(meeting.topic || '--')}</span>
                             </div>
-                            <span class="meeting-status-pill ${statusClass}">${esc(getMeetingStatusLabel(meeting.status))}</span>
+                            <span class="meeting-status-pill ${statusClass}">${escapeNotificationHtml(getMeetingStatusLabel(meeting.status))}</span>
                         </div>
                         <div class="meeting-card-meta">
                             <div class="meeting-card-meta-item">
                                 <span>${t('meetings.table.service')}</span>
-                                <strong>${esc(meeting.service_name || '--')}</strong>
+                                <strong>${escapeNotificationHtml(meeting.service_name || '--')}</strong>
                             </div>
                             <div class="meeting-card-meta-item">
                                 <span>${t('meetings.table.date')}</span>
@@ -25306,7 +25306,7 @@ Thank you for shopping with {store_name}!</textarea>
                             </div>
                             <div class="meeting-card-meta-item">
                                 <span>${t('meetings.table.source')}</span>
-                                <strong>${esc(sourceLabel)}</strong>
+                                <strong>${escapeNotificationHtml(sourceLabel)}</strong>
                             </div>
                         </div>
                         ${buildMeetingActionButtons(meeting, true)}
@@ -25395,7 +25395,7 @@ Thank you for shopping with {store_name}!</textarea>
             grid.innerHTML = getMeetingDetailFields(meeting).map((field) => `
                 <div class="meeting-modal-field">
                     <label>${t(`meetings.detail.${field.key}`)}</label>
-                    <div>${field.key === 'meeting_url' && field.value && field.value !== '--' ? `<a href="${esc(field.value)}" target="_blank" rel="noopener noreferrer">${esc(field.value)}</a>` : esc(field.value)}</div>
+                    <div>${field.key === 'meeting_url' && field.value && field.value !== '--' ? `<a href="${escapeNotificationHtml(field.value)}" target="_blank" rel="noopener noreferrer">${escapeNotificationHtml(field.value)}</a>` : escapeNotificationHtml(field.value)}</div>
                 </div>
             `).join('');
             notes.textContent = meeting.notes || '--';
