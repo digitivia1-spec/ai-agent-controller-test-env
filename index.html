@@ -8128,6 +8128,10 @@
             display: flex;
         }
 
+        body.has-onboarding-banner .notification-smart-banner {
+            inset-block-start: calc(84px + var(--onb-banner-offset, 0px));
+        }
+
         .notification-smart-banner-copy {
             min-width: 0;
             flex: 1 1 auto;
@@ -8138,6 +8142,7 @@
             font-size: 0.98rem;
             font-weight: 700;
             color: var(--text-main);
+            overflow-wrap: anywhere;
         }
 
         .notification-smart-banner-text {
@@ -8145,6 +8150,7 @@
             font-size: 0.82rem;
             color: var(--text-muted);
             line-height: 1.45;
+            overflow-wrap: anywhere;
         }
 
         .notification-smart-banner-actions {
@@ -9782,32 +9788,67 @@
             .notification-smart-banner {
                 inset-inline: 12px;
                 inset-inline-end: 12px;
-                inset-block-start: 72px;
+                inset-block-start: auto;
+                inset-block-end: calc(88px + env(safe-area-inset-bottom, 0px));
                 inline-size: auto;
                 max-inline-size: none;
                 padding: 14px;
-                border-radius: 16px;
+                border-radius: 18px;
                 flex-direction: column;
                 align-items: stretch;
+                gap: 12px;
             }
 
             .notification-smart-banner-actions {
                 width: 100%;
-                justify-content: stretch;
-                flex-wrap: wrap;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                gap: 10px;
             }
 
             .notification-smart-banner-btn {
-                flex: 1 1 180px;
+                width: 100%;
+                min-height: 44px;
+                padding-inline: 14px;
+            }
+
+            .notification-smart-banner-dismiss {
+                justify-self: end;
+                padding: 10px 4px;
+            }
+
+            .notification-smart-banner-title {
+                font-size: 0.94rem;
+            }
+
+            .notification-smart-banner-text {
+                font-size: 0.8rem;
+            }
+
+            body.has-notification-smart-banner main {
+                padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px));
+            }
+
+            #toast {
+                min-width: 0;
+                width: calc(100vw - 28px);
+                max-width: 360px;
+                bottom: calc(178px + env(safe-area-inset-bottom, 0px));
+            }
+
+            #toast.show {
+                bottom: calc(194px + env(safe-area-inset-bottom, 0px));
             }
 
             .profile-modal-overlay {
                 padding: 12px;
-                align-items: flex-start;
+                align-items: flex-end;
             }
 
             .profile-modal {
-                margin-top: calc(20px + env(safe-area-inset-top, 0px));
+                margin-top: calc(12px + env(safe-area-inset-top, 0px));
+                margin-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
                 width: min(100%, 560px);
                 max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
             }
@@ -9819,6 +9860,17 @@
 
             .notification-health-pill {
                 align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .notification-smart-banner-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .notification-smart-banner-dismiss {
+                justify-self: center;
+                padding-top: 0;
             }
         }
 
@@ -15353,8 +15405,8 @@
             opacity: 1;
         }
 
-        .onb-banner~#app-container {
-            margin-top: 52px;
+        body.has-onboarding-banner #app-container {
+            margin-top: var(--onb-banner-offset, 52px);
         }
 
         .onb-overlay {
@@ -18758,6 +18810,9 @@
             // Apply translations to all elements with data-i18n attribute
             applyTranslations();
             if (typeof applyOfferTypeUI === 'function') applyOfferTypeUI();
+            if (typeof syncOnboardingBannerLayout === 'function') {
+                requestAnimationFrame(syncOnboardingBannerLayout);
+            }
 
             // Re-render dynamically generated elements that rely on language
             if (typeof renderWaButtonsList === 'function') renderWaButtonsList();
@@ -29899,6 +29954,7 @@ Thank you for shopping with {store_name}!</textarea>
         const dismissed = getNotificationBannerDismissal();
         const shouldHide = health.state === 'enabled' || dismissed.state === health.state;
         if (shouldHide) {
+            document.body.classList.remove('has-notification-smart-banner');
             banner.classList.remove('show');
             banner.innerHTML = '';
             return;
@@ -29914,6 +29970,7 @@ Thank you for shopping with {store_name}!</textarea>
                 <button class="notification-smart-banner-dismiss" type="button" onclick="dismissNotificationSmartBanner()">${escapeNotificationHtml(t('notifications.banner_dismiss'))}</button>
             </div>
         `;
+        document.body.classList.add('has-notification-smart-banner');
         banner.classList.add('show');
     }
 
@@ -32276,17 +32333,39 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
+        function syncOnboardingBannerLayout() {
+            const banner = document.getElementById('onb-banner');
+            const isVisible = !!(banner && banner.style.display !== 'none');
+            if (!banner || !isVisible) {
+                document.body.classList.remove('has-onboarding-banner');
+                document.documentElement.style.setProperty('--onb-banner-offset', '0px');
+                return;
+            }
+
+            const offset = Math.ceil(banner.getBoundingClientRect().height || banner.offsetHeight || 0);
+            document.body.classList.add('has-onboarding-banner');
+            document.documentElement.style.setProperty('--onb-banner-offset', `${offset}px`);
+        }
+
+        window.addEventListener('resize', () => {
+            if (document.body.classList.contains('has-onboarding-banner')) {
+                syncOnboardingBannerLayout();
+            }
+        });
+
         function showOnboardingBanner() {
             const banner = document.getElementById('onb-banner');
             if (!banner) return;
             document.getElementById('onb-banner-text').textContent = t('onboarding.banner_text');
             document.getElementById('onb-banner-btn').textContent = t('onboarding.btn_continue');
             banner.style.display = 'flex';
+            requestAnimationFrame(syncOnboardingBannerLayout);
         }
 
         window.dismissOnboardingBanner = function () {
             const banner = document.getElementById('onb-banner');
             if (banner) banner.style.display = 'none';
+            syncOnboardingBannerLayout();
         };
 
         window.isOnboardingOpen = function () {
