@@ -7811,10 +7811,9 @@
         .profile-modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
-            height: 100%;
+            height: 100dvh;
             min-height: 100dvh;
             background: rgba(0, 0, 0, 0.7);
             z-index: 6000;
@@ -7823,6 +7822,8 @@
             backdrop-filter: blur(5px);
             padding: 20px;
             box-sizing: border-box;
+            overflow-y: auto;
+            overscroll-behavior: contain;
         }
 
         .profile-modal-overlay.show {
@@ -7847,6 +7848,7 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
+            scrollbar-gutter: stable both-edges;
         }
 
         .close-modal-btn {
@@ -7896,6 +7898,13 @@
             font-size: 0.9rem;
             margin: -8px 0 8px;
             overflow-wrap: anywhere;
+        }
+
+        .profile-password-row {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+            padding-top: 10px;
+            align-items: flex-start;
         }
 
         .profile-info-row {
@@ -7955,6 +7964,10 @@
         .profile-actions-row>* {
             flex: 1 1 0;
             min-width: 0;
+        }
+
+        body.profile-modal-open {
+            overflow: hidden;
         }
 
         .profile-actions button {
@@ -9848,15 +9861,46 @@
             }
 
             .profile-modal-overlay {
-                padding: 12px;
-                align-items: flex-end;
+                padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(12px + env(safe-area-inset-bottom, 0px));
+                align-items: flex-start;
             }
 
             .profile-modal {
-                margin-top: calc(12px + env(safe-area-inset-top, 0px));
-                margin-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-                width: min(100%, 560px);
-                max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+                margin: 0 auto;
+                width: 100%;
+                max-width: 560px;
+                max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+                padding: 18px 16px 16px;
+                border-radius: 22px;
+                gap: 12px;
+            }
+
+            .close-modal-btn {
+                top: 10px;
+                right: 10px;
+                width: 36px;
+                height: 36px;
+                font-size: 1.6rem;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .profile-modal-avatar {
+                width: 64px;
+                height: 64px;
+                margin: 0 auto 4px;
+                font-size: 1.6rem;
+            }
+
+            .profile-modal h3 {
+                margin: 0;
+                padding-inline: 28px;
+                font-size: clamp(1.2rem, 5vw, 1.55rem);
+            }
+
+            .profile-modal .email {
+                margin: 0 0 4px;
+                font-size: 0.85rem;
             }
 
             .notification-health-top {
@@ -9867,9 +9911,55 @@
             .notification-health-pill {
                 align-self: flex-start;
             }
+
+            .profile-info-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px 0;
+            }
+
+            .profile-info-label {
+                flex: none;
+                width: 100%;
+                margin: 0;
+                font-size: 0.82rem;
+            }
+
+            .profile-info-value,
+            .profile-info-row input,
+            .profile-info-row>div {
+                width: 100% !important;
+                text-align: start;
+            }
+
+            .profile-password-row {
+                margin-top: 4px;
+                padding-top: 12px;
+            }
+
+            .profile-actions {
+                margin-top: 10px;
+            }
+
+            .profile-actions button {
+                min-height: 44px;
+            }
+
+            .profile-actions-row {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 480px) {
+            .profile-modal-overlay {
+                padding-inline: 10px;
+            }
+
+            .profile-modal {
+                padding: 16px 14px 14px;
+            }
+
             .notification-smart-banner-actions {
                 grid-template-columns: 1fr;
             }
@@ -18061,10 +18151,9 @@
             </div>
 
             <!-- NEW: Password Change Section -->
-            <div class="profile-info-row"
-                style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 10px;">
+            <div class="profile-info-row profile-password-row">
                 <span class="profile-info-label" data-i18n="modals.profile.label_password">Password</span>
-                <div style="flex:2; display:flex; flex-direction:column; gap:8px;">
+                <div class="profile-password-fields">
                     <input type="password" id="profile-new-pass" class="login-input"
                         style="margin:0; padding:8px; font-size:0.9rem;" placeholder="New Password"
                         data-i18n-placeholder="modals.profile.placeholder_new_pass">
@@ -18086,11 +18175,11 @@
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
                     🔔 Enable/Test Notifications
                 </button>
-                <div style="height: 10px;"></div>
+                <div class="profile-actions-spacer"></div>
                 <button class="btn-confirm" id="save-org-btn" onclick="saveOrganizationName()"
                     style="width:100%; border-radius:8px;" data-i18n="modals.profile.btn_save">Save Organization
                     Name</button>
-                <div style="display: flex; gap: 10px; width: 100%;">
+                <div class="profile-actions-row">
                     <button class="btn-upgrade" onclick="closeProfileModal(); openPricingModal();" style="flex:1;"
                         data-i18n="modals.profile.btn_upgrade">Upgrade Plan</button>
                     <button class="btn-logout" onclick="performLogout()" style="flex:1;"
@@ -19079,6 +19168,7 @@
         function openProfileModal() {
             updateProfileModalData();
             document.getElementById('profile-modal').classList.add('show');
+            document.body.classList.add('profile-modal-open');
             if (typeof renderNotificationHealthUI === 'function') {
                 renderNotificationHealthUI().catch((error) => {
                     console.warn(`${PUSH_LOG_PREFIX} Failed to render notification health UI in profile modal:`, error);
@@ -19089,6 +19179,7 @@
         function closeProfileModal(event) {
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('profile-modal').classList.remove('show');
+            document.body.classList.remove('profile-modal-open');
         }
 
         async function openHelpModal() {
