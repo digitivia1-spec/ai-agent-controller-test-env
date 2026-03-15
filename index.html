@@ -1799,6 +1799,20 @@
             exported_csv: "CSV exported successfully",
             exported_excel: "Excel exported successfully"
         });
+        Object.assign(window.LANG_EN.notifications, {
+            push_supported: "Push notifications are supported on this browser.",
+            push_unsupported: "This browser does not support real push notifications.",
+            push_permission_denied: "Push notifications are blocked in this browser.",
+            push_permission_default: "Push notifications are not enabled yet.",
+            push_enabled: "Real push notifications are enabled.",
+            push_already_enabled: "Push notifications are already enabled on this device.",
+            push_disabled: "Push notifications were disabled on this device.",
+            push_enable_failed: "Could not enable push notifications.",
+            push_disable_failed: "Could not disable push notifications.",
+            push_sync_failed: "Could not sync the browser subscription.",
+            push_test_sent: "A real test notification was sent through the service worker.",
+            push_test_failed: "Push was enabled, but the test notification could not be shown."
+        });
         Object.assign(window.LANG_EN.dashboard.stats, {
             total_meetings: "Total Meetings",
             meetings_subtext: "{count} Meetings"
@@ -1933,6 +1947,20 @@
             title_product: "منطقة الطلبات",
             exported_csv: "تم تصدير ملف CSV بنجاح",
             exported_excel: "تم تصدير ملف Excel بنجاح"
+        });
+        Object.assign(window.LANG_AR.notifications, {
+            push_supported: "الإشعارات الفعلية مدعومة في هذا المتصفح.",
+            push_unsupported: "هذا المتصفح لا يدعم إشعارات الدفع الحقيقية.",
+            push_permission_denied: "تم حظر الإشعارات في هذا المتصفح.",
+            push_permission_default: "لم يتم تفعيل إشعارات الدفع بعد.",
+            push_enabled: "تم تفعيل إشعارات الدفع الحقيقية.",
+            push_already_enabled: "إشعارات الدفع مفعلة بالفعل على هذا الجهاز.",
+            push_disabled: "تم تعطيل إشعارات الدفع على هذا الجهاز.",
+            push_enable_failed: "تعذر تفعيل إشعارات الدفع.",
+            push_disable_failed: "تعذر تعطيل إشعارات الدفع.",
+            push_sync_failed: "تعذر مزامنة اشتراك المتصفح.",
+            push_test_sent: "تم إرسال إشعار تجريبي حقيقي عبر عامل الخدمة.",
+            push_test_failed: "تم تفعيل الدفع لكن تعذر عرض الإشعار التجريبي."
         });
         Object.assign(window.LANG_AR.dashboard.stats, {
             total_meetings: "إجمالي الاجتماعات",
@@ -17446,7 +17474,7 @@
                     onclick="closeProfileModal(); openOnboardingWizard();"
                     style="display:none; width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);"
                     data-i18n="onboarding.btn_open_setup">⚙️ Setup Wizard</button>
-                <button class="btn-secondary" onclick="requestNotificationAccess()"
+                <button class="btn-secondary" onclick="enablePushNotifications()"
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
                     🔔 Enable/Test Notifications
                 </button>
@@ -17547,6 +17575,9 @@
         // --- 3. SUPABASE CONFIGURATION ---
         const SUPABASE_URL = "https://xrycghxaxqzvkmzqzzkx.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeWNnaHhheHF6dmttenF6emt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxMjg3NjIsImV4cCI6MjA4MzcwNDc2Mn0.-03VhRZ6ok6Z6NykuJxNLnoHmO2SSv1JSm8VM18yVgU";
+        const PUSH_VAPID_PUBLIC_KEY = "BKc68-GOg13z1Hng83tJbrldQKKouTaGyyZ2ZtYG9wXS94Sw9ofcPj2SYTiyfwJiN0B1XmUMCNMWchhZqJD4FiY";
+        const PUSH_SERVICE_WORKER_PATH = "./sw.js";
+        const PUSH_LOG_PREFIX = "[Push]";
 
 
         // Initialize Supabase Client
@@ -28837,36 +28868,368 @@ Thank you for shopping with {store_name}!</textarea>
     // --- NOTIFICATIONS SYSTEM ---
     let notifications = [];
     let unreadCount = 0;
-    const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'); // Simple ding sound
+    let notificationsChannel = null;
+    let pushServiceWorkerRegistration = null;
+    let pushServiceWorkerBridgeBound = false;
+    const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+    notificationSound.preload = 'auto';
+    const PUSH_NOTIFICATION_ICON = new URL('cropped-White.png', window.location.href).href;
+    const PUSH_NOTIFICATION_BADGE = PUSH_NOTIFICATION_ICON;
+
+    function supportsPushNotifications() {
+        return Boolean(
+            window.isSecureContext &&
+            'serviceWorker' in navigator &&
+            'PushManager' in window &&
+            'Notification' in window
+        );
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; i += 1) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+
+        return outputArray;
+    }
+
+    function arrayBufferToBase64Url(buffer) {
+        if (!buffer) return '';
+
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        bytes.forEach((byte) => {
+            binary += String.fromCharCode(byte);
+        });
+
+        return window.btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function extractPushSubscriptionKeys(subscription) {
+        if (!subscription) {
+            throw new Error('Missing push subscription.');
+        }
+
+        const json = typeof subscription.toJSON === 'function' ? subscription.toJSON() : {};
+        const keys = json.keys || {};
+        const p256dh = keys.p256dh || arrayBufferToBase64Url(subscription.getKey('p256dh'));
+        const auth = keys.auth || arrayBufferToBase64Url(subscription.getKey('auth'));
+
+        if (!subscription.endpoint || !p256dh || !auth) {
+            throw new Error('Push subscription is incomplete.');
+        }
+
+        return {
+            endpoint: subscription.endpoint,
+            p256dh,
+            auth
+        };
+    }
+
+    function validateServiceWorkerRegistrationState(registration) {
+        if (!registration) {
+            throw new Error('Service worker registration is missing.');
+        }
+
+        if (!(registration.active || registration.installing || registration.waiting)) {
+            throw new Error('Service worker has no active lifecycle state yet.');
+        }
+
+        return registration;
+    }
+
+    async function getAuthenticatedUserId() {
+        if (currentUserProfile?.user_id) return currentUserProfile.user_id;
+
+        const { data, error } = await supabaseClient.auth.getUser();
+        if (error) throw error;
+        return data?.user?.id || null;
+    }
+
+    async function registerPushServiceWorker() {
+        if (!supportsPushNotifications()) {
+            throw new Error('Push notifications are not supported in this browser.');
+        }
+
+        const existing = await navigator.serviceWorker.getRegistration();
+        const registration = existing || await navigator.serviceWorker.register(PUSH_SERVICE_WORKER_PATH, { scope: './' });
+        pushServiceWorkerRegistration = validateServiceWorkerRegistrationState(registration);
+        return pushServiceWorkerRegistration;
+    }
+
+    function bindPushServiceWorkerBridge() {
+        if (pushServiceWorkerBridgeBound || !('serviceWorker' in navigator)) return;
+
+        navigator.serviceWorker.addEventListener('message', (event) => {
+            const payload = event?.data || {};
+
+            if (payload.type === 'push-subscription-change') {
+                console.info(`${PUSH_LOG_PREFIX} Browser subscription changed; syncing latest endpoint.`);
+                syncPushSubscriptionFromBrowser().catch((error) => {
+                    console.error(`${PUSH_LOG_PREFIX} Failed to sync subscription after browser change:`, error);
+                });
+                return;
+            }
+
+            if (payload.type === 'push-notification-click' && payload.link) {
+                if (payload.notificationId) {
+                    handleNotificationClick(payload.notificationId, payload.link);
+                } else if (payload.link === '#orders') {
+                    const ordersTabBtn = document.querySelector('[onclick*="orders"]');
+                    if (ordersTabBtn) ordersTabBtn.click();
+                } else {
+                    window.location.href = payload.link;
+                }
+            }
+        });
+
+        pushServiceWorkerBridgeBound = true;
+    }
+
+    async function logPushNotificationState(registration = null) {
+        const permission = ('Notification' in window && Notification.permission) ? Notification.permission : 'unsupported';
+        console.info(`${PUSH_LOG_PREFIX} supported=${supportsPushNotifications()} permission=${permission}`);
+
+        if (navigator.permissions?.query) {
+            try {
+                const status = await navigator.permissions.query({ name: 'notifications' });
+                console.info(`${PUSH_LOG_PREFIX} permissions-api=${status.state}`);
+            } catch (error) {
+                console.info(`${PUSH_LOG_PREFIX} Permissions API not available for notifications:`, error);
+            }
+        }
+
+        if (!supportsPushNotifications()) {
+            console.warn(`${PUSH_LOG_PREFIX} Browser can only use the in-app notification bell. Background push requires service workers and PushManager support.`);
+            return;
+        }
+
+        try {
+            const activeRegistration = registration || await registerPushServiceWorker();
+            const subscription = await activeRegistration.pushManager.getSubscription();
+            console.info(`${PUSH_LOG_PREFIX} service-worker-ready=${Boolean(activeRegistration.active || activeRegistration.waiting || activeRegistration.installing)} subscribed=${Boolean(subscription)}`);
+        } catch (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to inspect push registration state:`, error);
+        }
+    }
+
+    async function disableStalePushSubscriptions(activeEndpoint, userId) {
+        if (!currentUserOrgId || !userId) return;
+
+        const nowIso = new Date().toISOString();
+        let query = supabaseClient
+            .from('push_subscriptions')
+            .update({
+                disabled_at: nowIso,
+                updated_at: nowIso
+            })
+            .eq('org_id', currentUserOrgId)
+            .eq('user_id', userId)
+            .is('disabled_at', null);
+
+        if (activeEndpoint) {
+            query = query.neq('endpoint', activeEndpoint);
+        }
+
+        const { error } = await query;
+        if (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to disable stale browser subscriptions:`, error);
+        }
+    }
+
+    async function upsertPushSubscription(subscription) {
+        if (!currentUserOrgId) {
+            throw new Error('Missing organization context.');
+        }
+
+        const userId = await getAuthenticatedUserId();
+        const keys = extractPushSubscriptionKeys(subscription);
+        const nowIso = new Date().toISOString();
+        const payload = {
+            org_id: currentUserOrgId,
+            user_id: userId,
+            endpoint: keys.endpoint,
+            p256dh: keys.p256dh,
+            auth: keys.auth,
+            user_agent: navigator.userAgent || null,
+            updated_at: nowIso,
+            last_seen_at: nowIso,
+            disabled_at: null
+        };
+
+        const { error } = await supabaseClient
+            .from('push_subscriptions')
+            .upsert(payload, { onConflict: 'endpoint' });
+
+        if (error) throw error;
+
+        await disableStalePushSubscriptions(keys.endpoint, userId);
+        console.info(`${PUSH_LOG_PREFIX} Saved push subscription for org ${currentUserOrgId}.`);
+        return payload;
+    }
+
+    async function syncPushSubscriptionFromBrowser({ registration = null } = {}) {
+        if (!supportsPushNotifications() || !currentUserOrgId) return null;
+        if (Notification.permission !== 'granted') return null;
+
+        const activeRegistration = registration || await registerPushServiceWorker();
+        const subscription = await activeRegistration.pushManager.getSubscription();
+
+        if (!subscription) {
+            console.info(`${PUSH_LOG_PREFIX} No existing browser push subscription to sync.`);
+            return null;
+        }
+
+        try {
+            await upsertPushSubscription(subscription);
+            return subscription;
+        } catch (error) {
+            console.error(`${PUSH_LOG_PREFIX} Failed to sync push subscription:`, error);
+            showToast(t('notifications.push_sync_failed'), 'error');
+            return null;
+        }
+    }
+
+    async function showServiceWorkerTestNotification(registration = null) {
+        try {
+            const activeRegistration = registration || await registerPushServiceWorker();
+            await activeRegistration.showNotification('Digitivia Push Enabled', {
+                body: 'Background notifications are now configured for this device.',
+                icon: PUSH_NOTIFICATION_ICON,
+                badge: PUSH_NOTIFICATION_BADGE,
+                tag: 'digitivia-push-enabled',
+                data: {
+                    link: '#orders',
+                    source: 'service-worker-test'
+                }
+            });
+            return true;
+        } catch (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Failed to show service-worker test notification:`, error);
+            return false;
+        }
+    }
+
+    async function enablePushNotifications() {
+        if (!currentUserOrgId) {
+            showToast(t('messages.error_no_org') || 'Missing organization context', 'error');
+            return false;
+        }
+
+        if (!supportsPushNotifications()) {
+            console.warn(`${PUSH_LOG_PREFIX} PushManager or service workers are unavailable.`);
+            showToast(t('notifications.push_unsupported'), 'warning');
+            return false;
+        }
+
+        try {
+            const registration = await registerPushServiceWorker();
+            bindPushServiceWorkerBridge();
+
+            if (Notification.permission === 'denied') {
+                showToast(t('notifications.push_permission_denied'), 'warning');
+                return false;
+            }
+
+            let permission = Notification.permission;
+            if (permission !== 'granted') {
+                permission = await Notification.requestPermission();
+            }
+
+            if (permission !== 'granted') {
+                showToast(
+                    permission === 'denied'
+                        ? t('notifications.push_permission_denied')
+                        : t('notifications.push_permission_default'),
+                    'warning'
+                );
+                return false;
+            }
+
+            let subscription = await registration.pushManager.getSubscription();
+            const alreadyEnabled = Boolean(subscription);
+
+            if (!subscription) {
+                subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(PUSH_VAPID_PUBLIC_KEY)
+                });
+            }
+
+            await upsertPushSubscription(subscription);
+            showToast(t(alreadyEnabled ? 'notifications.push_already_enabled' : 'notifications.push_enabled'), 'success');
+
+            const testShown = await showServiceWorkerTestNotification(registration);
+            showToast(
+                t(testShown ? 'notifications.push_test_sent' : 'notifications.push_test_failed'),
+                testShown ? 'info' : 'warning'
+            );
+
+            return true;
+        } catch (error) {
+            console.error(`${PUSH_LOG_PREFIX} Failed to enable push notifications:`, error);
+            showToast(t('notifications.push_enable_failed'), 'error');
+            return false;
+        }
+    }
+
+    async function disablePushNotifications() {
+        if (!supportsPushNotifications()) return false;
+
+        try {
+            const registration = await registerPushServiceWorker();
+            const subscription = await registration.pushManager.getSubscription();
+            const userId = await getAuthenticatedUserId();
+            const nowIso = new Date().toISOString();
+
+            if (subscription) {
+                await supabaseClient
+                    .from('push_subscriptions')
+                    .update({
+                        disabled_at: nowIso,
+                        updated_at: nowIso
+                    })
+                    .eq('org_id', currentUserOrgId)
+                    .eq('user_id', userId)
+                    .eq('endpoint', subscription.endpoint);
+
+                await subscription.unsubscribe();
+            }
+
+            showToast(t('notifications.push_disabled'), 'info');
+            return true;
+        } catch (error) {
+            console.error(`${PUSH_LOG_PREFIX} Failed to disable push notifications:`, error);
+            showToast(t('notifications.push_disable_failed'), 'error');
+            return false;
+        }
+    }
 
     async function setupNotifications() {
         if (!currentUserOrgId) return;
 
-        // Check permission, if default, request it.
-        // Note: Browsers block this unless triggered by user interaction.
-        // We will add a button in Profile Settings to enable it manually if needed.
-        if ("Notification" in window) {
-            if (Notification.permission === "granted") {
-                console.log("Notifications already granted");
-            } else if (Notification.permission !== "denied") {
-                // Try to request, but might be blocked if not user interaction
-                try {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification("Notifications Enabled", {
-                                body: "You will now receive alerts for new orders.",
-                                icon: 'cropped-White.png'
-                            });
-                        }
-                    });
-                } catch (e) {
-                    console.error("Auto-request notification permission failed:", e);
-                }
-            }
-        }
-
         await fetchNotifications();
         subscribeToNotifications();
+
+        try {
+            bindPushServiceWorkerBridge();
+            await logPushNotificationState();
+
+            if (supportsPushNotifications()) {
+                const registration = await registerPushServiceWorker();
+                await logPushNotificationState(registration);
+                await syncPushSubscriptionFromBrowser({ registration });
+            } else {
+                console.info(`${PUSH_LOG_PREFIX} ${t('notifications.push_unsupported')}`);
+            }
+        } catch (error) {
+            console.warn(`${PUSH_LOG_PREFIX} Push setup diagnostics failed:`, error);
+        }
     }
 
     async function fetchNotifications() {
@@ -28887,8 +29250,17 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     function subscribeToNotifications() {
-        supabaseClient
-            .channel('public:notifications')
+        if (!currentUserOrgId) return;
+
+        if (notificationsChannel) {
+            supabaseClient.removeChannel(notificationsChannel);
+            notificationsChannel = null;
+        }
+
+        // Realtime is preserved for the in-app bell and dropdown only.
+        // Background-capable delivery is handled separately through the Push API + service worker.
+        notificationsChannel = supabaseClient
+            .channel(`public:notifications:${currentUserOrgId}`)
             .on('postgres_changes', {
                 event: 'INSERT',
                 schema: 'public',
@@ -28899,27 +29271,9 @@ Thank you for shopping with {store_name}!</textarea>
                 const newNotif = payload.new;
                 notifications.unshift(newNotif);
 
-                // Show App Toast
                 showToast(`🔔 ${newNotif.title}: ${newNotif.message}`, 'info');
 
-                // System Notification (Desktop/Mobile)
-                if ("Notification" in window && Notification.permission === "granted") {
-                    try {
-                        const systemNotif = new Notification(newNotif.title, {
-                            body: newNotif.message,
-                            icon: 'cropped-White.png',
-                            requireInteraction: true // Keep it on screen until clicked
-                        });
-
-                        systemNotif.onclick = function () {
-                            window.focus();
-                            handleNotificationClick(newNotif.id, newNotif.link);
-                            this.close();
-                        };
-                    } catch (e) { console.error("System notification error:", e); }
-                }
-
-                // Play sound
+                // Optional foreground cue only. Audio is not treated as delivery confirmation.
                 try {
                     notificationSound.play().catch(e => console.log("Audio play failed (user interaction needed first):", e));
                 } catch (e) { }
@@ -29392,36 +29746,13 @@ Thank you for shopping with {store_name}!</textarea>
         } catch (e) { console.error(e); }
     }
 
-    // Manual Permission Request & Test
+    // Backward-compatible wrapper kept because older UI hooks may still call it.
     function requestNotificationAccess() {
-        if (!("Notification" in window)) {
-            alert("This browser does not support desktop notifications");
-            return;
-        }
-
-        // Unlock Audio Context immediately on user interaction
-        notificationSound.play().then(() => {
-            notificationSound.pause();
-            notificationSound.currentTime = 0;
-        }).catch(e => console.log("Audio unlock failed:", e));
-
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                const notif = new Notification("Test Notification", {
-                    body: "Desktop notifications are working! 🚀",
-                    icon: 'cropped-White.png'
-                });
-                notif.onclick = () => window.focus();
-
-                // Play sound for test
-                notificationSound.play();
-            } else {
-                alert("Notifications denied. Please enable them in your browser settings.");
-            }
-        });
+        return enablePushNotifications();
     }
 
-    // Client-side Simulation (Bypass Backend)
+    // UI-only simulation used to test the bell/dropdown without backend inserts.
+    // This does not represent real push delivery and intentionally avoids new Notification(...).
     function simulateIncomingOrder() {
         const fakeOrder = {
             id: 'sim-' + Date.now(),
@@ -29436,15 +29767,6 @@ Thank you for shopping with {store_name}!</textarea>
         notifications.unshift(fakeOrder);
 
         showToast(`🔔 ${fakeOrder.title}: ${fakeOrder.message}`, 'info');
-
-        if ("Notification" in window && Notification.permission === "granted") {
-            const systemNotif = new Notification(fakeOrder.title, {
-                body: fakeOrder.message,
-                icon: 'cropped-White.png',
-                requireInteraction: true
-            });
-            systemNotif.onclick = () => window.focus();
-        }
 
         notificationSound.play().catch(e => console.error(e));
         updateNotificationUI();
