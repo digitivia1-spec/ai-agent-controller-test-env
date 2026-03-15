@@ -7142,27 +7142,35 @@
         /* --- Overlays --- */
         #toast {
             visibility: hidden;
-            min-width: 250px;
+            min-width: 220px;
             background-color: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: #fff;
             text-align: center;
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 14px 18px;
             position: fixed;
             z-index: 3500;
             left: 50%;
             bottom: 30px;
-            transform: translateX(-50%);
+            width: fit-content;
+            max-width: min(420px, calc(100vw - 40px));
+            line-height: 1.4;
+            font-size: 0.95rem;
+            overflow-wrap: anywhere;
+            transform: translateX(-50%) translateY(10px);
             backdrop-filter: blur(10px);
             opacity: 0;
-            transition: opacity 0.3s, bottom 0.3s;
+            pointer-events: none;
+            box-sizing: border-box;
+            transition: opacity 0.25s ease, transform 0.25s ease, bottom 0.25s ease;
         }
 
         #toast.show {
             visibility: visible;
             opacity: 1;
             bottom: 50px;
+            transform: translateX(-50%) translateY(0);
         }
 
         #toast.success {
@@ -9831,14 +9839,22 @@
             }
 
             #toast {
-                min-width: 0;
-                width: calc(100vw - 28px);
-                max-width: 360px;
-                bottom: calc(178px + env(safe-area-inset-bottom, 0px));
+                min-width: min(220px, calc(100vw - 32px));
+                width: fit-content;
+                max-width: calc(100vw - 32px);
+                bottom: calc(28px + env(safe-area-inset-bottom, 0px));
             }
 
             #toast.show {
-                bottom: calc(194px + env(safe-area-inset-bottom, 0px));
+                bottom: calc(44px + env(safe-area-inset-bottom, 0px));
+            }
+
+            body.has-notification-smart-banner #toast {
+                bottom: calc(182px + env(safe-area-inset-bottom, 0px));
+            }
+
+            body.has-notification-smart-banner #toast.show {
+                bottom: calc(198px + env(safe-area-inset-bottom, 0px));
             }
 
             .profile-modal-overlay {
@@ -17956,7 +17972,7 @@
         </div>
     </div>
 
-    <div id="toast">Saved Successfully!</div>
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true">Saved Successfully!</div>
 
     <!-- OLD PRICING MODAL REMOVED -->
 
@@ -23638,10 +23654,31 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function handleEnter(e, agentId) { if (e.key === 'Enter') sendChatMessage(agentId); }
-        function showToast(msg, type) {
+        let toastTimerId = null;
+
+        function showToast(msg, type = 'info') {
             const t = document.getElementById('toast');
-            t.className = type; t.innerText = msg; t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
+            if (!t) return;
+
+            if (toastTimerId) {
+                clearTimeout(toastTimerId);
+                toastTimerId = null;
+            }
+
+            t.className = '';
+            t.textContent = String(msg || '');
+            if (type) t.classList.add(type);
+
+            // Restart the entry transition when multiple toasts fire quickly.
+            t.classList.remove('show');
+            void t.offsetWidth;
+            t.classList.add('show');
+
+            const duration = type === 'error' ? 3600 : 3000;
+            toastTimerId = window.setTimeout(() => {
+                t.classList.remove('show');
+                toastTimerId = null;
+            }, duration);
         }
 
         // --- PHASE 4: TEST CHAT LOGIC (HYBRID MEMORY + BRAIN) ---
