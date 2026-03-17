@@ -28145,7 +28145,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             // Period Label
             const periodLabelKey = billingPeriod === 'yearly' ? 'period_year' : 'period_month';
-            const periodText = translateText(periodLabelKey, 'modals.pricing') || (billingPeriod === 'yearly' ? '/year' : '/month');
+            const periodText = t(`modals.pricing.${periodLabelKey}`) || (billingPeriod === 'yearly' ? '/year' : '/month');
 
             const vatText = translateText('Prices include VAT', 'ui');
             const idealLabel = currentLang === 'ar' ? '💡 مثالي إذا:' : '💡 IDEAL IF:';
