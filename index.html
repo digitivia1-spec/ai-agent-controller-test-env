@@ -2374,6 +2374,7 @@
                 "inbox.export": { mode: "tooltip", body: "Export inbox data for the selected platform or view." },
                 "inbox.manual_reply": { mode: "popover+inline", title: "Manual reply", body: ["Manual reply is only available when AI is paused.", "Pause the AI first, then type and send your message."], inline: "Pause AI first if you want to reply manually." },
                 "leads.search": { mode: "tooltip", body: "Search by customer, phone, or message content." },
+                "leads.status_guide": { mode: "popover", title: "Lead stages", body: ["New means nobody handled the lead yet.", "Contacted means your team already reached out.", "Qualified means the lead is a good fit to follow up.", "Won means the lead converted. Lost means it did not convert."] },
                 "leads.export_csv": { mode: "tooltip", body: "Export the current leads data as CSV." },
                 "leads.export_excel": { mode: "tooltip", body: "Export the current leads data as Excel." },
                 "leads.view_table": { mode: "tooltip", body: "Show leads in a standard table layout." },
@@ -2456,6 +2457,7 @@
                 "inbox.export": { mode: "tooltip", body: "صدّر بيانات صندوق الوارد حسب المنصة أو العرض الحالي." },
                 "inbox.manual_reply": { mode: "popover+inline", title: "الرد اليدوي", body: ["الرد اليدوي متاح فقط عند إيقاف الذكاء الاصطناعي.", "أوقف الذكاء الاصطناعي أولاً ثم اكتب رسالتك وأرسلها."], inline: "أوقف الذكاء الاصطناعي أولاً إذا أردت الرد يدوياً." },
                 "leads.search": { mode: "tooltip", body: "ابحث باسم العميل أو الهاتف أو محتوى الرسالة." },
+                "leads.status_guide": { mode: "popover", title: "مراحل العميل المحتمل", body: ["جديد يعني أنه لم يتم التعامل مع العميل بعد.", "تم التواصل يعني أن الفريق تواصل معه بالفعل.", "مؤهل يعني أن العميل مناسب ويستحق المتابعة.", "تم التحويل يعني أنه أصبح عميلًا. مفقود يعني أنه لم يتحول."] },
                 "leads.export_csv": { mode: "tooltip", body: "صدّر بيانات العملاء المحتملين الحالية بصيغة CSV." },
                 "leads.export_excel": { mode: "tooltip", body: "صدّر بيانات العملاء المحتملين الحالية بصيغة Excel." },
                 "leads.view_table": { mode: "tooltip", body: "عرض العملاء المحتملين بشكل جدولي." },
@@ -3810,6 +3812,10 @@
             min-inline-size: 0;
         }
 
+        .help-overlay-anchor {
+            position: relative;
+        }
+
         .help-label-host.help-justify-between {
             display: flex;
             justify-content: space-between;
@@ -3864,16 +3870,16 @@
         }
 
         .help-trigger.compact {
-            min-inline-size: 36px;
-            min-block-size: 36px;
-            inline-size: 36px;
-            block-size: 36px;
+            min-inline-size: 32px;
+            min-block-size: 32px;
+            inline-size: 32px;
+            block-size: 32px;
         }
 
         .help-trigger.compact .help-trigger-icon {
-            inline-size: 18px;
-            block-size: 18px;
-            font-size: 0.76rem;
+            inline-size: 16px;
+            block-size: 16px;
+            font-size: 0.72rem;
         }
 
         .help-inline {
@@ -4073,10 +4079,10 @@
         }
 
         .help-status-chip .help-trigger {
-            inline-size: 32px;
-            block-size: 32px;
-            min-inline-size: 32px;
-            min-block-size: 32px;
+            inline-size: 28px;
+            block-size: 28px;
+            min-inline-size: 28px;
+            min-block-size: 28px;
         }
 
         @media (max-width: 900px) {
@@ -5633,6 +5639,19 @@
             transition: color 0.3s;
         }
 
+        .section-header.help-label-host {
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .section-header.help-label-host .help-trigger {
+            margin-inline-start: auto;
+        }
+
+        .section-header.help-label-host::after {
+            margin-inline-start: 8px;
+        }
+
         .section-header:hover {
             color: var(--theme-color);
         }
@@ -6019,6 +6038,14 @@
             .msg-image {
                 max-width: 220px;
             }
+
+            .chat-container {
+                min-height: 310px;
+            }
+
+            .chat-input-area {
+                padding: 8px;
+            }
         }
 
         .chat-input-area {
@@ -6033,6 +6060,7 @@
             padding: 0.8rem;
             border-radius: 50px;
             flex: 1;
+            min-width: 0;
         }
 
         .send-chat-btn {
@@ -8844,6 +8872,33 @@
             .agent-title {
                 font-size: 1.2rem;
                 width: 100%;
+            }
+
+            .chat-container {
+                height: auto;
+                min-height: 340px;
+            }
+
+            .chat-history {
+                min-height: 220px;
+                padding: 0.85rem;
+            }
+
+            .chat-input-area {
+                padding: 10px;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .chat-input-area input {
+                padding: 0.85rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .send-chat-btn {
+                width: 42px;
+                height: 42px;
+                flex-shrink: 0;
             }
 
             .connect-btn {
@@ -19625,8 +19680,12 @@
                 decorateHelpTriggers(host.parentElement || document);
                 return trigger;
             }
-            host.classList.add('help-label-host');
-            if (options.justifyBetween) host.classList.add('help-justify-between');
+            if (options.preserveHostLayout) {
+                host.classList.add('help-overlay-anchor');
+            } else {
+                host.classList.add('help-label-host');
+                if (options.justifyBetween) host.classList.add('help-justify-between');
+            }
             if (options.prepend) host.prepend(trigger);
             else host.appendChild(trigger);
             decorateHelpTriggers(host);
@@ -19693,31 +19752,25 @@
         function applyDashboardHelp() {
             const dashboard = document.getElementById('dashboard');
             if (!dashboard) return;
-            const secondaryKey = isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_activity';
             [
-                ['#kpi-primary-card .kpi-label', 'dashboard.revenue'],
-                ['.kpi-card:nth-child(2) .kpi-label', 'dashboard.leads'],
-                ['.kpi-card:nth-child(3) .kpi-label', 'dashboard.active_chats'],
-                ['.kpi-card:nth-child(4) .kpi-label', 'dashboard.avg_rating']
-            ].forEach(([selector, key]) => mountHelpTrigger(dashboard.querySelector(selector), key, { compact: true }));
+                ['#kpi-primary-card', 'dashboard.revenue'],
+                ['.kpi-card:nth-child(2)', 'dashboard.leads'],
+                ['.kpi-card:nth-child(3)', 'dashboard.active_chats'],
+                ['.kpi-card:nth-child(4)', 'dashboard.avg_rating']
+            ].forEach(([selector, key]) => mountHelpTrigger(dashboard.querySelector(selector), key, { compact: true, className: 'help-kpi-corner', preserveHostLayout: true }));
             mountHelpTrigger(document.getElementById('dashboard-secondary-heading'), 'dashboard.secondary_kpis', { compact: true });
-            mountHelpTrigger(document.getElementById('dashboard-secondary-heading'), secondaryKey, { compact: true });
             mountHelpTrigger(document.querySelector('#dashboard [data-i18n="dashboard.headers.recent_activity"]'), 'dashboard.recent_activity', { compact: true });
             mountHelpTrigger(document.querySelector('#dashboard .dashboard-panel h3[data-i18n="dashboard.headers.platforms"]'), 'dashboard.platform_distribution', { compact: true });
-            mountHelpTrigger(document.querySelector('#dashboard .dashboard-panel h3[data-i18n="dashboard.headers.platforms"]'), 'dashboard.platform_stats', { compact: true });
             mountHelpTrigger(document.querySelector('#plan-usage-widget h3'), 'dashboard.plan_usage', { compact: true });
-            mountHelpTrigger(document.querySelector('#dashboard-context-panel-content h3'), isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_logs', { compact: true });
+            mountHelpTrigger(document.getElementById('dashboard-platform-stats')?.closest('.dashboard-panel'), 'dashboard.platform_stats', { compact: true, className: 'help-kpi-corner', preserveHostLayout: true });
+            mountHelpTrigger(document.getElementById('dashboard-secondary-section'), isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_activity', { compact: true, className: 'help-kpi-corner', preserveHostLayout: true });
+            mountHelpTrigger(document.getElementById('dashboard-context-panel'), isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_logs', { compact: true, className: 'help-kpi-corner', preserveHostLayout: true });
             dashboard.querySelectorAll('.icon-btn-small[onclick="loadDashboard()"]').forEach(clearTitleInScope);
         }
 
         function applyLeadsHelp() {
             mountHelpTrigger(document.getElementById('leads-search-host') || document.getElementById('leads-search')?.closest('.leads-toolbar'), 'leads.search', { compact: true });
-            document.querySelectorAll('#leads .export-btn').forEach((btn, index) => mountHelpTrigger(btn, index === 0 ? 'leads.export_csv' : 'leads.export_excel', { compact: true }));
-            document.querySelectorAll('#leads .leads-view-btn').forEach((btn) => {
-                const view = btn.getAttribute('data-view');
-                mountHelpTrigger(btn, view === 'table' ? 'leads.view_table' : (view === 'grid' ? 'leads.view_grid' : 'leads.view_pipeline'), { compact: true });
-            });
-            renderLeadStatusLegend(document.getElementById('leads-toolbar-container'));
+            mountHelpTrigger(document.querySelector('#leads .leads-controls h2'), 'leads.status_guide', { compact: true });
         }
 
         function applyInboxHelp() {
@@ -21748,9 +21801,7 @@
                             <div id="${agent.id}-chat-sec" class="section-content">
                                 <div class="chat-container">
                                     <div id="chat-history-${agent.id}" class="chat-history">
-                                    <div id="chat-history-${agent.id}" class="chat-history">
                                         <div class="message msg-ai">${t('agent_config.chat_greeting').replace('{name}', agentName)}</div>
-                                    </div>
                                     </div>
                                     <div class="chat-input-area">
                                         <input type="text" id="chat-input-${agent.id}" placeholder="${t('agent_config.chat_placeholder')}" data-i18n-placeholder="agent_config.chat_placeholder" onkeypress="handleEnter(event, '${agent.id}')">
