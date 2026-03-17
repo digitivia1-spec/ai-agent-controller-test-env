@@ -27982,6 +27982,26 @@ Thank you for shopping with {store_name}!</textarea>
                     // Adjust currency if needed or just show as is
                 }
 
+                // Hard override for EGP pricing (critical hotfix)
+                const OVERRIDE_EGP = {
+                    free_trial: 0,
+                    starter: 395000,   // EGP 3,950
+                    growth: 795000,    // EGP 7,950
+                    pro: 2095000       // EGP 20,950
+                };
+
+                plans = plans.map((plan) => {
+                    const slug = String(plan.plan_slug || '').toLowerCase();
+                    if (currentCurrency === 'EGP' && slug in OVERRIDE_EGP) {
+                        return Object.assign({}, plan, {
+                            currency: 'EGP',
+                            unit_amount_cents: OVERRIDE_EGP[slug],
+                            billing_interval: 'month'
+                        });
+                    }
+                    return plan;
+                });
+
                 grid.innerHTML = '';
 
                 // Render
