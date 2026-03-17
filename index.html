@@ -3838,7 +3838,7 @@
             cursor: pointer;
             flex-shrink: 0;
             transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
             position: relative;
             z-index: 1;
         }
@@ -3848,7 +3848,7 @@
             transform: translateY(-1px);
             background: rgba(91, 174, 176, 0.18);
             border-color: rgba(91, 174, 176, 0.38);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
             outline: none;
         }
 
@@ -3870,16 +3870,16 @@
         }
 
         .help-trigger.compact {
-            min-inline-size: 32px;
-            min-block-size: 32px;
-            inline-size: 32px;
-            block-size: 32px;
+            min-inline-size: 30px;
+            min-block-size: 30px;
+            inline-size: 30px;
+            block-size: 30px;
         }
 
         .help-trigger.compact .help-trigger-icon {
-            inline-size: 16px;
-            block-size: 16px;
-            font-size: 0.72rem;
+            inline-size: 14px;
+            block-size: 14px;
+            font-size: 0.68rem;
         }
 
         .help-inline {
@@ -4059,6 +4059,24 @@
             inset-inline-end: 12px;
         }
 
+        .section-header.help-overlay-anchor {
+            position: relative;
+            padding-inline-end: 52px;
+        }
+
+        .help-section-trigger {
+            position: absolute;
+            inset-inline-end: 22px;
+            inset-block-start: 50%;
+            transform: translateY(-50%);
+        }
+
+        .help-section-trigger:hover,
+        .help-section-trigger:focus-visible,
+        .help-section-trigger:active {
+            transform: translateY(-50%);
+        }
+
         .help-status-legend {
             display: flex;
             flex-wrap: wrap;
@@ -4087,16 +4105,16 @@
 
         @media (max-width: 900px) {
             .help-trigger.compact {
-                min-inline-size: 44px;
-                min-block-size: 44px;
-                inline-size: 44px;
-                block-size: 44px;
+                min-inline-size: 34px;
+                min-block-size: 34px;
+                inline-size: 34px;
+                block-size: 34px;
             }
 
             .help-trigger.compact .help-trigger-icon {
-                inline-size: 20px;
-                block-size: 20px;
-                font-size: 0.82rem;
+                inline-size: 15px;
+                block-size: 15px;
+                font-size: 0.7rem;
             }
 
             .help-inline {
@@ -4105,6 +4123,17 @@
 
             .help-popover {
                 max-inline-size: min(92vw, 360px);
+            }
+
+            .help-kpi-corner,
+            .help-section-trigger,
+            .help-action-trigger,
+            .help-secondary-trigger {
+                display: none !important;
+            }
+
+            .section-header.help-overlay-anchor {
+                padding-inline-end: 0;
             }
         }
 
@@ -19731,17 +19760,17 @@
                 const connectRow = tab.querySelector('.agent-header-row > div:last-child');
                 const connectBtn = tab.querySelector('.connect-btn');
                 if (connectRow && !connectRow.querySelector('.help-trigger[data-help-key="agent.connect_channel"]')) {
-                    if (connectBtn) connectBtn.insertAdjacentHTML('afterend', renderHelpTriggerMarkup('agent.connect_channel'));
-                    else connectRow.insertAdjacentHTML('beforeend', renderHelpTriggerMarkup('agent.connect_channel'));
+                    if (connectBtn) connectBtn.insertAdjacentHTML('afterend', renderHelpTriggerMarkup('agent.connect_channel', { className: 'help-secondary-trigger' }));
+                    else connectRow.insertAdjacentHTML('beforeend', renderHelpTriggerMarkup('agent.connect_channel', { className: 'help-secondary-trigger' }));
                 }
-                mountHelpTrigger(tab.querySelector('.toggle-label'), 'agent.live', { compact: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-prompt-sec"]`)?.previousElementSibling, 'agent.system_prompt', { compact: true, justifyBetween: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-tone-sec"]`)?.previousElementSibling, 'agent.tone', { compact: true, justifyBetween: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-links-sec"]`)?.previousElementSibling, 'agent.kb_links', { compact: true, justifyBetween: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-chat-sec"]`)?.previousElementSibling, 'agent.test_chat', { compact: true, justifyBetween: true });
-                mountHelpTrigger(tab.querySelector(`#lock-btn-${agent.id}`), 'agent.system_prompt_lock', { compact: true });
-                mountHelpTrigger(tab.querySelector(`button[onclick="addAgentKbLink('${agent.id}')"]`), 'agent.add_link', { compact: true });
-                mountHelpTrigger(tab.querySelector(`button[onclick="saveRole('${agent.id}')"]`), 'agent.save_role', { compact: true });
+                mountHelpTrigger(tab.querySelector('.toggle-label'), 'agent.live', { compact: true, className: 'help-secondary-trigger' });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-prompt-sec"]`)?.previousElementSibling, 'agent.system_prompt', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-tone-sec"]`)?.previousElementSibling, 'agent.tone', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-links-sec"]`)?.previousElementSibling, 'agent.kb_links', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-chat-sec"]`)?.previousElementSibling, 'agent.test_chat', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
+                mountHelpTrigger(tab.querySelector(`#lock-btn-${agent.id}`), 'agent.system_prompt_lock', { compact: true, className: 'help-action-trigger' });
+                mountHelpTrigger(tab.querySelector(`button[onclick="addAgentKbLink('${agent.id}')"]`), 'agent.add_link', { compact: true, className: 'help-action-trigger' });
+                mountHelpTrigger(tab.querySelector(`button[onclick="saveRole('${agent.id}')"]`), 'agent.save_role', { compact: true, className: 'help-action-trigger' });
                 mountInlineHelp(tab.querySelector(`#prompt-${agent.id}`), 'agent.system_prompt');
                 mountInlineHelp(tab.querySelector(`#tone-${agent.id}`), 'agent.tone');
                 mountInlineHelp(tab.querySelector(`#kb-link-input-${agent.id}`)?.closest('.kb-link-input-group') || tab.querySelector(`#kb-link-input-${agent.id}`), 'agent.kb_links');
@@ -19769,20 +19798,20 @@
         }
 
         function applyLeadsHelp() {
-            mountHelpTrigger(document.getElementById('leads-search-host') || document.getElementById('leads-search')?.closest('.leads-toolbar'), 'leads.search', { compact: true });
-            mountHelpTrigger(document.querySelector('#leads .leads-controls h2'), 'leads.status_guide', { compact: true });
+            mountHelpTrigger(document.getElementById('leads-search-host') || document.getElementById('leads-search')?.closest('.leads-toolbar'), 'leads.search', { compact: true, className: 'help-secondary-trigger' });
+            mountHelpTrigger(document.querySelector('#leads .leads-controls h2'), 'leads.status_guide', { compact: true, className: 'help-secondary-trigger' });
         }
 
         function applyInboxHelp() {
-            mountHelpTrigger(document.querySelector('#inbox [data-i18n="inbox.label_platform"]'), 'inbox.platform', { compact: true });
-            mountHelpTrigger(document.querySelector('#inbox .export-btn-sidebar'), 'inbox.export', { compact: true });
-            mountHelpTrigger(document.getElementById('inbox-search-host'), 'inbox.search', { compact: true });
-            mountHelpTrigger(document.getElementById('mode-btn-chats'), 'inbox.mode_chats', { compact: true });
-            mountHelpTrigger(document.getElementById('mode-btn-messages'), 'inbox.mode_messages', { compact: true });
+            mountHelpTrigger(document.querySelector('#inbox [data-i18n="inbox.label_platform"]'), 'inbox.platform', { compact: true, className: 'help-secondary-trigger' });
+            mountHelpTrigger(document.querySelector('#inbox .export-btn-sidebar'), 'inbox.export', { compact: true, className: 'help-secondary-trigger' });
+            mountHelpTrigger(document.getElementById('inbox-search-host'), 'inbox.search', { compact: true, className: 'help-secondary-trigger' });
+            mountHelpTrigger(document.getElementById('mode-btn-chats'), 'inbox.mode_chats', { compact: true, className: 'help-secondary-trigger' });
+            mountHelpTrigger(document.getElementById('mode-btn-messages'), 'inbox.mode_messages', { compact: true, className: 'help-secondary-trigger' });
             const findBtn = document.querySelector('#inbox .chat-search-wrapper .icon-btn-small');
             if (findBtn) {
                 clearTitleInScope(findBtn);
-                mountHelpTrigger(findBtn, 'inbox.find', { compact: true });
+                mountHelpTrigger(findBtn, 'inbox.find', { compact: true, className: 'help-secondary-trigger' });
             }
             const hint = document.getElementById('inbox-human-composer-hint');
             if (hint && !hint.dataset.helpInlineKey) hint.dataset.helpInlineKey = 'inbox.manual_reply';
@@ -24390,7 +24419,7 @@ Thank you for shopping with {store_name}!</textarea>
                 pill.insertAdjacentHTML('afterend', `<span id="inbox-ai-pill-help"></span>`);
                 pillHelp = document.getElementById('inbox-ai-pill-help');
             }
-            if (pillHelp) pillHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.human_mode' : 'inbox.ai_active', { compact: true });
+            if (pillHelp) pillHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.human_mode' : 'inbox.ai_active', { compact: true, className: 'help-secondary-trigger' });
 
             if (canToggleConversationAi()) {
                 btn.classList.remove('hidden');
@@ -24400,7 +24429,7 @@ Thank you for shopping with {store_name}!</textarea>
                     btn.insertAdjacentHTML('afterend', `<span id="inbox-ai-toggle-help"></span>`);
                     btnHelp = document.getElementById('inbox-ai-toggle-help');
                 }
-                if (btnHelp) btnHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.resume_ai' : 'inbox.stop_ai', { compact: true });
+                if (btnHelp) btnHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.resume_ai' : 'inbox.stop_ai', { compact: true, className: 'help-secondary-trigger' });
             } else {
                 btn.classList.add('hidden');
                 document.getElementById('inbox-ai-toggle-help')?.replaceChildren();
@@ -24408,7 +24437,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!document.querySelector('#inbox-window-help')) {
                 const wrapper = document.querySelector('#inbox .chat-search-wrapper');
                 if (wrapper) {
-                    wrapper.insertAdjacentHTML('beforeend', `<span id="inbox-window-help">${renderHelpTriggerMarkup('inbox.window_24h', { compact: true })}</span>`);
+                    wrapper.insertAdjacentHTML('beforeend', `<span id="inbox-window-help">${renderHelpTriggerMarkup('inbox.window_24h', { compact: true, className: 'help-secondary-trigger' })}</span>`);
                 }
             }
             if (typeof decorateHelpTriggers === 'function') decorateHelpTriggers(document);
