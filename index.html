@@ -19624,7 +19624,7 @@
             const extraClass = options.className ? ` ${options.className}` : '';
             const modeAttr = options.mode ? ` data-help-mode="${escapeHelpHtml(options.mode)}"` : '';
             const placementAttr = options.placement ? ` data-help-placement="${escapeHelpHtml(options.placement)}"` : '';
-            return `<button type="button" class="help-trigger${compactClass}${extraClass}" data-help-key="${escapeHelpHtml(key)}"${modeAttr}${placementAttr} aria-label="${escapeHelpHtml(strings.more)}" onclick="event.stopPropagation()"><span class="help-trigger-icon" aria-hidden="true">i</span><span class="sr-only">${escapeHelpHtml(strings.more)}</span></button>`;
+            return `<button type="button" class="help-trigger${compactClass}${extraClass}" data-help-key="${escapeHelpHtml(key)}"${modeAttr}${placementAttr} aria-label="${escapeHelpHtml(strings.more)}"><span class="help-trigger-icon" aria-hidden="true">i</span><span class="sr-only">${escapeHelpHtml(strings.more)}</span></button>`;
         }
 
         function renderHelpInlineMarkup(key, options = {}) {
@@ -20007,7 +20007,7 @@
                 if (activeHelpState && !event.target.closest('.help-tooltip, .help-popover, .help-sheet')) {
                     closeHelp('outside');
                 }
-            });
+            }, true);
 
             document.addEventListener('mouseover', (event) => {
                 if (isHelpMobileViewport()) return;
