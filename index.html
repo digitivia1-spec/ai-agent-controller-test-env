@@ -28002,6 +28002,21 @@ Thank you for shopping with {store_name}!</textarea>
                     return plan;
                 });
 
+                // Keep pricing cards in a stable business-defined order.
+                const planOrder = {
+                    free_trial: 0,
+                    starter: 1,
+                    growth: 2,
+                    pro: 3
+                };
+                plans.sort((a, b) => {
+                    const aSlug = String(a.plan_slug || '').toLowerCase();
+                    const bSlug = String(b.plan_slug || '').toLowerCase();
+                    const aRank = Object.prototype.hasOwnProperty.call(planOrder, aSlug) ? planOrder[aSlug] : 999;
+                    const bRank = Object.prototype.hasOwnProperty.call(planOrder, bSlug) ? planOrder[bSlug] : 999;
+                    return aRank - bRank;
+                });
+
                 grid.innerHTML = '';
 
                 // Render
