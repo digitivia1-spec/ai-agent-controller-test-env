@@ -2336,12 +2336,12 @@
             en: {
                 "agent.connect_channel": { mode: "popover", title: "Connect channel", body: ["Connect this channel so the agent can receive customer messages.", "Turn this on before expecting live conversations or automatic replies."] },
                 "agent.live": { mode: "tooltip", body: "When LIVE is on, this agent can reply automatically on the connected channel." },
-                "agent.system_prompt": { mode: "popover+inline", title: "System Prompt", body: ["This is the main instruction for your AI agent.", "It controls how the agent speaks, answers, and handles requests.", "Edit it only when you want to change live behavior."], inline: "This controls the agent's behavior and reply style." },
+                "agent.system_prompt": { mode: "popover+inline", title: "System Prompt", body: ["This is the main instruction for your AI agent.", "It controls how the agent speaks, answers, and handles requests.", "Edit it only when you want to change live behavior."], inline: "This controls the agent's behavior and reply style.", mobileModeOverride: "sheet" },
                 "agent.system_prompt_lock": { mode: "popover", title: "Editing lock", body: ["Unlock editing only when you want to change the agent's behavior.", "Changes here affect live replies after you save."] },
-                "agent.tone": { mode: "popover+inline", title: "Agent tone", body: ["Choose the speaking style for this agent.", "Use friendly for warmer replies, professional for formal replies, and sales if you want stronger conversion language."], inline: "Pick the reply style you want customers to hear." },
-                "agent.kb_links": { mode: "popover+inline", title: "Knowledge Base", body: ["Add trusted links the agent can use as a reference.", "Use pages with product details, FAQs, policies, or services.", "Better sources usually lead to better answers."], inline: "Add trusted links the agent can learn from." },
+                "agent.tone": { mode: "popover+inline", title: "Agent tone", body: ["Choose the speaking style for this agent.", "Use friendly for warmer replies, professional for formal replies, and sales if you want stronger conversion language."], inline: "Pick the reply style you want customers to hear.", mobileModeOverride: "sheet" },
+                "agent.kb_links": { mode: "popover+inline", title: "Knowledge Base", body: ["Add trusted links the agent can use as a reference.", "Use pages with product details, FAQs, policies, or services.", "Better sources usually lead to better answers."], inline: "Add trusted links the agent can learn from.", mobileModeOverride: "sheet" },
                 "agent.add_link": { mode: "tooltip", body: "Add another reference link for this agent." },
-                "agent.test_chat": { mode: "popover+inline", title: "Test Chat", body: ["Send a test message here before going live.", "Use this to check tone, clarity, and knowledge coverage."], inline: "Test the agent here before turning LIVE on." },
+                "agent.test_chat": { mode: "popover+inline", title: "Test Chat", body: ["Send a test message here before going live.", "Use this to check tone, clarity, and knowledge coverage."], inline: "Test the agent here before turning LIVE on.", mobileModeOverride: "sheet" },
                 "agent.save_role": { mode: "tooltip", body: "Save your latest agent setup changes." },
                 "onb.overview": { mode: "popover+inline", title: "Guided setup", body: ["This setup builds the basics for your workspace.", "It affects agent context, connected channels, uploaded knowledge, and store readiness."], inline: "These answers shape how your workspace is configured." },
                 "onb.whatsapp_number": { mode: "popover+inline", title: "WhatsApp Business Number", body: ["Add the business number you plan to use with WhatsApp.", "Use the full number with country code so your team can confirm the correct line."], inline: "Use the business number with country code." },
@@ -2419,12 +2419,12 @@
             ar: {
                 "agent.connect_channel": { mode: "popover", title: "ربط القناة", body: ["اربط هذه القناة ليتمكن الوكيل من استقبال رسائل العملاء.", "قم بذلك قبل انتظار المحادثات المباشرة أو الردود التلقائية."] },
                 "agent.live": { mode: "tooltip", body: "عند تفعيل LIVE يستطيع هذا الوكيل الرد تلقائياً على القناة المتصلة." },
-                "agent.system_prompt": { mode: "popover+inline", title: "توجيه النظام", body: ["هذا هو التوجيه الرئيسي لوكيل الذكاء الاصطناعي.", "هو الذي يحدد طريقة الرد وطريقة التعامل مع الطلبات.", "عدّله فقط عندما تريد تغيير السلوك الفعلي للوكيل."], inline: "هذا الحقل يحدد سلوك الوكيل وطريقة ردّه." },
+                "agent.system_prompt": { mode: "popover+inline", title: "توجيه النظام", body: ["هذا هو التوجيه الرئيسي لوكيل الذكاء الاصطناعي.", "هو الذي يحدد طريقة الرد وطريقة التعامل مع الطلبات.", "عدّله فقط عندما تريد تغيير السلوك الفعلي للوكيل."], inline: "هذا الحقل يحدد سلوك الوكيل وطريقة ردّه.", mobileModeOverride: "sheet" },
                 "agent.system_prompt_lock": { mode: "popover", title: "قفل التعديل", body: ["افتح التعديل فقط عندما تريد تغيير سلوك الوكيل.", "أي تعديل هنا يؤثر على الردود الفعلية بعد الحفظ."] },
-                "agent.tone": { mode: "popover+inline", title: "نبرة الوكيل", body: ["اختر أسلوب الرد لهذا الوكيل.", "استخدم النبرة الودودة للردود الدافئة، والمهنية للردود الرسمية، ونبرة المبيعات عندما تريد لغة أكثر إقناعاً."], inline: "اختر أسلوب الرد الذي تريد أن يسمعه العميل." },
-                "agent.kb_links": { mode: "popover+inline", title: "قاعدة المعرفة", body: ["أضف روابط موثوقة يستطيع الوكيل استخدامها كمرجع.", "استخدم صفحات المنتجات أو الأسئلة الشائعة أو السياسات أو الخدمات.", "كلما كانت المصادر أوضح كانت الإجابات أفضل غالباً."], inline: "أضف روابط موثوقة ليستند إليها الوكيل." },
+                "agent.tone": { mode: "popover+inline", title: "نبرة الوكيل", body: ["اختر أسلوب الرد لهذا الوكيل.", "استخدم النبرة الودودة للردود الدافئة، والمهنية للردود الرسمية، ونبرة المبيعات عندما تريد لغة أكثر إقناعاً."], inline: "اختر أسلوب الرد الذي تريد أن يسمعه العميل.", mobileModeOverride: "sheet" },
+                "agent.kb_links": { mode: "popover+inline", title: "قاعدة المعرفة", body: ["أضف روابط موثوقة يستطيع الوكيل استخدامها كمرجع.", "استخدم صفحات المنتجات أو الأسئلة الشائعة أو السياسات أو الخدمات.", "كلما كانت المصادر أوضح كانت الإجابات أفضل غالباً."], inline: "أضف روابط موثوقة ليستند إليها الوكيل.", mobileModeOverride: "sheet" },
                 "agent.add_link": { mode: "tooltip", body: "أضف رابطاً مرجعياً إضافياً لهذا الوكيل." },
-                "agent.test_chat": { mode: "popover+inline", title: "اختبار المحادثة", body: ["أرسل رسالة تجريبية هنا قبل التشغيل الفعلي.", "استخدم هذا المكان للتأكد من النبرة والوضوح وتغطية المعرفة."], inline: "اختبر الوكيل هنا قبل تفعيل LIVE." },
+                "agent.test_chat": { mode: "popover+inline", title: "اختبار المحادثة", body: ["أرسل رسالة تجريبية هنا قبل التشغيل الفعلي.", "استخدم هذا المكان للتأكد من النبرة والوضوح وتغطية المعرفة."], inline: "اختبر الوكيل هنا قبل تفعيل LIVE.", mobileModeOverride: "sheet" },
                 "agent.save_role": { mode: "tooltip", body: "احفظ آخر تغييرات إعداد الوكيل." },
                 "onb.overview": { mode: "popover+inline", title: "الإعداد الموجّه", body: ["هذا الإعداد يبني الأساس لمساحة العمل.", "هو يؤثر على سياق الوكلاء والقنوات المتصلة والملفات المرفوعة وجاهزية المتجر."] , inline: "هذه البيانات تشكّل طريقة إعداد مساحة العمل." },
                 "onb.whatsapp_number": { mode: "popover+inline", title: "رقم واتساب للأعمال", body: ["أضف رقم الأعمال الذي تنوي استخدامه مع واتساب.", "استخدم الرقم كاملاً مع رمز الدولة لتأكيد الخط الصحيح."], inline: "استخدم رقم الأعمال مع رمز الدولة." },
@@ -4998,6 +4998,21 @@
             margin-bottom: 1.5rem;
         }
 
+        .agent-header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .agent-header-help-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .agent-title {
             display: flex;
             align-items: center;
@@ -5695,6 +5710,63 @@
             transform: rotate(180deg);
         }
 
+        .agent-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header-toggle {
+            appearance: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            inline-size: 100%;
+            padding: 0.5rem 0;
+            border: 0;
+            background: transparent;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: start;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .section-header-toggle>span {
+            flex: 1 1 auto;
+            min-inline-size: 0;
+        }
+
+        .section-header-toggle::after {
+            content: '▼';
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .section-header-toggle:hover {
+            color: var(--theme-color);
+        }
+
+        .section-header-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .section-header-toggle:focus-visible {
+            outline: 2px solid var(--theme-color);
+            outline-offset: 4px;
+            border-radius: 12px;
+        }
+
+        .agent-section-help {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
         .section-content {
             max-height: 0;
             overflow: hidden;
@@ -5930,7 +6002,9 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 400px;
+            height: clamp(300px, 46vh, 400px);
+            min-height: 300px;
+            max-height: 420px;
         }
 
         main {
@@ -5944,11 +6018,13 @@
 
         .chat-history {
             flex: 1;
+            min-block-size: 0;
             padding: 1rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            scrollbar-gutter: stable;
         }
 
         /* Updated Message Style for Arabic Fix */
@@ -6069,7 +6145,9 @@
             }
 
             .chat-container {
-                min-height: 310px;
+                height: min(50vh, 340px);
+                min-height: 280px;
+                max-height: 360px;
             }
 
             .chat-input-area {
@@ -6082,6 +6160,7 @@
             background: rgba(255, 255, 255, 0.03);
             display: flex;
             gap: 10px;
+            align-items: center;
             border-top: 1px solid var(--glass-border);
         }
 
@@ -6104,7 +6183,13 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
+            flex-shrink: 0;
             transition: background 0.3s;
+        }
+
+        .agent-chat-inline {
+            margin-top: 0;
+            margin-bottom: 12px;
         }
 
         .mobile-only-nav {
@@ -8898,14 +8983,35 @@
                 gap: 10px;
             }
 
+            .agent-header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .agent-header-connect-group {
+                width: 100%;
+            }
+
+            .agent-header-connect-group .connect-btn,
+            .agent-header-connect-group #whatsapp-agent-connect-slot {
+                flex: 1 1 auto;
+                min-inline-size: 0;
+            }
+
+            .agent-header-connect-group .connect-btn {
+                order: 0;
+                width: auto;
+            }
+
             .agent-title {
                 font-size: 1.2rem;
                 width: 100%;
             }
 
             .chat-container {
-                height: auto;
-                min-height: 340px;
+                height: min(50vh, 340px);
+                min-height: 280px;
+                max-height: 360px;
             }
 
             .chat-history {
@@ -8928,6 +9034,15 @@
                 width: 42px;
                 height: 42px;
                 flex-shrink: 0;
+            }
+
+            .agent-section-heading {
+                gap: 10px;
+            }
+
+            .section-header-toggle {
+                min-block-size: 44px;
+                padding-block: 10px;
             }
 
             .connect-btn {
@@ -19516,7 +19631,24 @@
             const inline = getHelpInlineText(key);
             if (!inline) return '';
             const compactClass = options.compact ? ' is-compact' : '';
-            return `<div class="help-inline${compactClass}" data-help-inline-key="${escapeHelpHtml(key)}">${escapeHelpHtml(inline)}</div>`;
+            const extraClass = options.className ? ` ${options.className}` : '';
+            return `<div class="help-inline${compactClass}${extraClass}" data-help-inline-key="${escapeHelpHtml(key)}">${escapeHelpHtml(inline)}</div>`;
+        }
+
+        function renderAgentSectionHeaderMarkup({ sectionId, labelKey, fallbackText, helpKey, isActive = false, isChat = false, agentId = null }) {
+            const toggleAction = isChat
+                ? `toggleSection('${sectionId}', true, '${agentId}')`
+                : `toggleSection('${sectionId}')`;
+            return `
+                <div class="agent-section-heading">
+                    <button type="button" class="section-header-toggle${isActive ? ' active' : ''}" onclick="${toggleAction}">
+                        <span data-i18n="${escapeHelpHtml(labelKey)}">${escapeHelpHtml(fallbackText)}</span>
+                    </button>
+                    <div class="agent-section-help">
+                        ${renderHelpTriggerMarkup(helpKey, { compact: true, className: 'help-agent-section-trigger', mode: 'popover' })}
+                    </div>
+                </div>
+            `;
         }
 
         function buildHelpBodyHtml(definition) {
@@ -19757,24 +19889,9 @@
             AGENTS.forEach((agent) => {
                 const tab = scope.getElementById ? scope.getElementById(agent.id) : document.getElementById(agent.id);
                 if (!tab) return;
-                const connectRow = tab.querySelector('.agent-header-row > div:last-child');
-                const connectBtn = tab.querySelector('.connect-btn');
-                if (connectRow && !connectRow.querySelector('.help-trigger[data-help-key="agent.connect_channel"]')) {
-                    if (connectBtn) connectBtn.insertAdjacentHTML('afterend', renderHelpTriggerMarkup('agent.connect_channel', { className: 'help-secondary-trigger' }));
-                    else connectRow.insertAdjacentHTML('beforeend', renderHelpTriggerMarkup('agent.connect_channel', { className: 'help-secondary-trigger' }));
-                }
-                mountHelpTrigger(tab.querySelector('.toggle-label'), 'agent.live', { compact: true, className: 'help-secondary-trigger' });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-prompt-sec"]`)?.previousElementSibling, 'agent.system_prompt', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-tone-sec"]`)?.previousElementSibling, 'agent.tone', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-links-sec"]`)?.previousElementSibling, 'agent.kb_links', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
-                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-chat-sec"]`)?.previousElementSibling, 'agent.test_chat', { compact: true, className: 'help-section-trigger', preserveHostLayout: true });
-                mountHelpTrigger(tab.querySelector(`#lock-btn-${agent.id}`), 'agent.system_prompt_lock', { compact: true, className: 'help-action-trigger' });
-                mountHelpTrigger(tab.querySelector(`button[onclick="addAgentKbLink('${agent.id}')"]`), 'agent.add_link', { compact: true, className: 'help-action-trigger' });
-                mountHelpTrigger(tab.querySelector(`button[onclick="saveRole('${agent.id}')"]`), 'agent.save_role', { compact: true, className: 'help-action-trigger' });
                 mountInlineHelp(tab.querySelector(`#prompt-${agent.id}`), 'agent.system_prompt');
                 mountInlineHelp(tab.querySelector(`#tone-${agent.id}`), 'agent.tone');
                 mountInlineHelp(tab.querySelector(`#kb-link-input-${agent.id}`)?.closest('.kb-link-input-group') || tab.querySelector(`#kb-link-input-${agent.id}`), 'agent.kb_links');
-                mountInlineHelp(tab.querySelector(`#chat-input-${agent.id}`)?.closest('.chat-input-area') || tab.querySelector(`#chat-input-${agent.id}`), 'agent.test_chat');
             });
         }
 
@@ -19792,63 +19909,18 @@
             mountHelpTrigger(document.querySelector('#dashboard .dashboard-panel h3[data-i18n="dashboard.headers.platforms"]'), 'dashboard.platform_distribution', { compact: true });
             mountHelpTrigger(document.querySelector('#plan-usage-widget h3'), 'dashboard.plan_usage', { compact: true });
             mountHelpTrigger(document.getElementById('dashboard-platform-stats')?.closest('.dashboard-panel'), 'dashboard.platform_stats', { compact: true, className: 'help-kpi-corner', preserveHostLayout: true });
-            mountHelpTrigger(document.getElementById('dashboard-secondary-section'), isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_activity', { compact: true, className: 'help-kpi-corner', preserveHostLayout: true });
-            mountHelpTrigger(document.getElementById('dashboard-context-panel'), isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_logs', { compact: true, className: 'help-kpi-corner', preserveHostLayout: true });
             dashboard.querySelectorAll('.icon-btn-small[onclick="loadDashboard()"]').forEach(clearTitleInScope);
         }
 
-        function applyLeadsHelp() {
-            mountHelpTrigger(document.getElementById('leads-search-host') || document.getElementById('leads-search')?.closest('.leads-toolbar'), 'leads.search', { compact: true, className: 'help-secondary-trigger' });
-            mountHelpTrigger(document.querySelector('#leads .leads-controls h2'), 'leads.status_guide', { compact: true, className: 'help-secondary-trigger' });
-        }
+        function applyLeadsHelp() {}
 
         function applyInboxHelp() {
-            mountHelpTrigger(document.querySelector('#inbox [data-i18n="inbox.label_platform"]'), 'inbox.platform', { compact: true, className: 'help-secondary-trigger' });
-            mountHelpTrigger(document.querySelector('#inbox .export-btn-sidebar'), 'inbox.export', { compact: true, className: 'help-secondary-trigger' });
-            mountHelpTrigger(document.getElementById('inbox-search-host'), 'inbox.search', { compact: true, className: 'help-secondary-trigger' });
-            mountHelpTrigger(document.getElementById('mode-btn-chats'), 'inbox.mode_chats', { compact: true, className: 'help-secondary-trigger' });
-            mountHelpTrigger(document.getElementById('mode-btn-messages'), 'inbox.mode_messages', { compact: true, className: 'help-secondary-trigger' });
-            const findBtn = document.querySelector('#inbox .chat-search-wrapper .icon-btn-small');
-            if (findBtn) {
-                clearTitleInScope(findBtn);
-                mountHelpTrigger(findBtn, 'inbox.find', { compact: true, className: 'help-secondary-trigger' });
-            }
-            const hint = document.getElementById('inbox-human-composer-hint');
-            if (hint && !hint.dataset.helpInlineKey) hint.dataset.helpInlineKey = 'inbox.manual_reply';
-            updateHelpInlineContent(document);
+            document.getElementById('inbox-window-help')?.remove();
         }
 
-        function applyOrdersHelp() {
-            mountHelpTrigger(document.getElementById('orders-title-text'), 'orders.incoming', { compact: true });
-            mountHelpTrigger(document.getElementById('orders-subtab-confirmation'), 'orders.whatsapp_confirmation', { compact: true });
-            mountHelpTrigger(document.getElementById('orders-subtab-logs'), 'orders.logs', { compact: true });
-            mountHelpTrigger(document.querySelector('#orders-table th[data-i18n="orders.col_payment_status"]'), 'orders.payment_status', { compact: true });
-            mountHelpTrigger(document.querySelector('#orders-table th[data-i18n="orders.col_confirmation_status"]'), 'orders.confirmation_status', { compact: true });
-            mountHelpTrigger(document.querySelector('#orders-table th[data-i18n="orders.col_delivery_status"]'), 'orders.delivery_status', { compact: true });
-            const waTitles = document.querySelectorAll('#orders-confirmation-view .wa-section-title');
-            mountHelpTrigger(waTitles[1], 'orders.triggers', { compact: true, justifyBetween: true });
-            mountHelpTrigger(waTitles[2], 'orders.template', { compact: true, justifyBetween: true });
-            mountHelpTrigger(waTitles[3], 'orders.additional_info', { compact: true, justifyBetween: true });
-            mountHelpTrigger(waTitles[4], 'orders.actions', { compact: true, justifyBetween: true });
-            mountHelpTrigger(document.querySelector('[data-i18n="orders.confirmation.template_hint"]'), 'orders.placeholders', { compact: true });
-            mountHelpTrigger(document.querySelector('#wa-contact-phone-group label'), 'orders.support_phone', { compact: true });
-            mountHelpTrigger(document.querySelector('.wa-preview-toggle-btn'), 'orders.preview', { compact: true });
-            mountInlineHelp(document.querySelector('.wa-trigger-list'), 'orders.triggers');
-            mountInlineHelp(document.querySelector('#wa-template-section .wa-template-editor'), 'orders.template');
-            mountInlineHelp(document.querySelector('[data-i18n="orders.confirmation.template_hint"]')?.parentElement, 'orders.placeholders', { compact: true });
-            mountInlineHelp(document.getElementById('wa-additional-info'), 'orders.additional_info');
-            mountInlineHelp(document.getElementById('wa-support-phone'), 'orders.support_phone');
-            document.querySelectorAll('#orders .wa-send-btn, #orders .delete-btn').forEach(clearTitleInScope);
-        }
+        function applyOrdersHelp() {}
 
-        function applyMeetingsHelp() {
-            mountHelpTrigger(document.querySelector('#meetings-table th[data-i18n="meetings.table.status"]'), 'meetings.status', { compact: true });
-            document.querySelectorAll('.meeting-actions, .meeting-card-actions').forEach((row) => {
-                if (!row.querySelector('.help-trigger[data-help-key="meetings.actions"]')) {
-                    row.insertAdjacentHTML('beforeend', renderHelpTriggerMarkup('meetings.actions', { compact: true }));
-                }
-            });
-        }
+        function applyMeetingsHelp() {}
 
         function applyOnboardingHelp() {
             const overlay = document.getElementById('onb-overlay');
@@ -19899,11 +19971,7 @@
                     mountInlineHelp(card.querySelector('.ih-inline-domain') || inputs[0], 'integrations.shopify_domain');
                     mountInlineHelp(inputs[1], 'integrations.shopify_token');
                 }
-                mountHelpTrigger(card.querySelector('.ih-actions .ih-btn'), 'integrations.test_connection', { compact: true });
-                mountHelpTrigger(card.querySelector('.ih-actions .ih-btn-danger'), 'integrations.disconnect', { compact: true });
-                card.querySelectorAll('.onb-proof-label[data-proof-help-key]').forEach((label) => mountHelpTrigger(label, label.getAttribute('data-proof-help-key'), { compact: true }));
             });
-            mountHelpTrigger(document.querySelector('.ih-save-all .ih-btn'), 'integrations.save_credentials', { compact: true });
         }
 
         function applyContextualHelp(root = document) {
@@ -21748,22 +21816,34 @@
                             <h2 class="agent-title">
                                 <span class="icon-circle" style="background: ${agent.color};"></span> ${agentName}
                             </h2>
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                                ${agent.id === 'whatsapp'
-                                    ? `<div id="whatsapp-agent-connect-slot">${renderWhatsAppAgentHeaderActionsMarkup()}</div>`
-                                    : `<a href="${CALENDAR_URL}" target="_blank" class="connect-btn" data-i18n="agent_config.btn_connect_channel">🔗 Connect Channel</a>`}
-                                <div class="agent-toggle-container">
-                                    <span class="toggle-label" data-i18n="agent_config.label_live">LIVE</span>
-                                    <label class="switch">
-                                        <input type="checkbox" id="status-${agent.id}" onchange="toggleAgentStatus('${agent.id}')" ${window.currentUserRole === 'moderator' ? 'disabled' : ''}>
-                                        <span class="slider"></span>
-                                    </label>
+                            <div class="agent-header-actions">
+                                <div class="agent-header-help-group agent-header-connect-group">
+                                    ${agent.id === 'whatsapp'
+                                        ? `<div id="whatsapp-agent-connect-slot">${renderWhatsAppAgentHeaderActionsMarkup()}</div>`
+                                        : `<a href="${CALENDAR_URL}" target="_blank" class="connect-btn" data-i18n="agent_config.btn_connect_channel">🔗 Connect Channel</a>`}
+                                    ${renderHelpTriggerMarkup('agent.connect_channel', { compact: true, className: 'help-agent-header-trigger', mode: 'popover' })}
+                                </div>
+                                <div class="agent-header-help-group">
+                                    <div class="agent-toggle-container">
+                                        <span class="toggle-label" data-i18n="agent_config.label_live">LIVE</span>
+                                        <label class="switch">
+                                            <input type="checkbox" id="status-${agent.id}" onchange="toggleAgentStatus('${agent.id}')" ${window.currentUserRole === 'moderator' ? 'disabled' : ''}>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    ${renderHelpTriggerMarkup('agent.live', { compact: true, className: 'help-agent-header-trigger' })}
                                 </div>
                             </div>
                         </div>
 
                         <div class="section-wrapper">
-                            <div class="section-header active" onclick="toggleSection('${agent.id}-prompt-sec')" data-i18n="agent_config.header_role">Agent Role (System Prompt)</div>
+                            ${renderAgentSectionHeaderMarkup({
+                                sectionId: `${agent.id}-prompt-sec`,
+                                labelKey: 'agent_config.header_role',
+                                fallbackText: 'Agent Role (System Prompt)',
+                                helpKey: 'agent.system_prompt',
+                                isActive: true
+                            })}
                             <div id="${agent.id}-prompt-sec" class="section-content open">
                                 <div id="warning-${agent.id}" class="prompt-warning">
                                     <span style="font-size:1.2rem;">⚠️</span>
@@ -21783,7 +21863,12 @@
                             </div>
                         </div>
                         <div class="section-wrapper">
-                            <div class="section-header" onclick="toggleSection('${agent.id}-tone-sec')" data-i18n="agent_config.header_tone">Agent Tone</div>
+                            ${renderAgentSectionHeaderMarkup({
+                                sectionId: `${agent.id}-tone-sec`,
+                                labelKey: 'agent_config.header_tone',
+                                fallbackText: 'Agent Tone',
+                                helpKey: 'agent.tone'
+                            })}
                             <div id="${agent.id}-tone-sec" class="section-content">
                                 <select id="tone-${agent.id}" onchange="checkDirty('${agent.id}')">
                                     <option value="" disabled selected>Select a tone...</option>
@@ -21792,7 +21877,12 @@
                             </div>
                         </div>
                         <div class="section-wrapper">
-                            <div class="section-header" onclick="toggleSection('${agent.id}-links-sec')" data-i18n="kb.title">Knowledge Base</div>
+                            ${renderAgentSectionHeaderMarkup({
+                                sectionId: `${agent.id}-links-sec`,
+                                labelKey: 'kb.title',
+                                fallbackText: 'Knowledge Base',
+                                helpKey: 'agent.kb_links'
+                            })}
                             <div id="${agent.id}-links-sec" class="section-content">
                                 
                                 <!-- Agent Links (Editable, tied to Agent ID) -->
@@ -21826,8 +21916,16 @@
                             </div>
                         </div>
                         <div class="section-wrapper">
-                            <div class="section-header" onclick="toggleSection('${agent.id}-chat-sec', true, '${agent.id}')" data-i18n="agent_config.header_chat_test">Test Chat Window</div>
+                            ${renderAgentSectionHeaderMarkup({
+                                sectionId: `${agent.id}-chat-sec`,
+                                labelKey: 'agent_config.header_chat_test',
+                                fallbackText: 'Test Chat Window',
+                                helpKey: 'agent.test_chat',
+                                isChat: true,
+                                agentId: agent.id
+                            })}
                             <div id="${agent.id}-chat-sec" class="section-content">
+                                ${renderHelpInlineMarkup('agent.test_chat', { className: 'agent-chat-inline' })}
                                 <div class="chat-container">
                                     <div id="chat-history-${agent.id}" class="chat-history">
                                         <div class="message msg-ai">${t('agent_config.chat_greeting').replace('{name}', agentName)}</div>
@@ -24419,7 +24517,7 @@ Thank you for shopping with {store_name}!</textarea>
                 pill.insertAdjacentHTML('afterend', `<span id="inbox-ai-pill-help"></span>`);
                 pillHelp = document.getElementById('inbox-ai-pill-help');
             }
-            if (pillHelp) pillHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.human_mode' : 'inbox.ai_active', { compact: true, className: 'help-secondary-trigger' });
+            if (pillHelp) pillHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.human_mode' : 'inbox.ai_active', { compact: true, className: 'help-inbox-state-trigger' });
 
             if (canToggleConversationAi()) {
                 btn.classList.remove('hidden');
@@ -24429,17 +24527,12 @@ Thank you for shopping with {store_name}!</textarea>
                     btn.insertAdjacentHTML('afterend', `<span id="inbox-ai-toggle-help"></span>`);
                     btnHelp = document.getElementById('inbox-ai-toggle-help');
                 }
-                if (btnHelp) btnHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.resume_ai' : 'inbox.stop_ai', { compact: true, className: 'help-secondary-trigger' });
+                if (btnHelp) btnHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.resume_ai' : 'inbox.stop_ai', { compact: true, className: 'help-inbox-state-trigger' });
             } else {
                 btn.classList.add('hidden');
                 document.getElementById('inbox-ai-toggle-help')?.replaceChildren();
             }
-            if (!document.querySelector('#inbox-window-help')) {
-                const wrapper = document.querySelector('#inbox .chat-search-wrapper');
-                if (wrapper) {
-                    wrapper.insertAdjacentHTML('beforeend', `<span id="inbox-window-help">${renderHelpTriggerMarkup('inbox.window_24h', { compact: true, className: 'help-secondary-trigger' })}</span>`);
-                }
-            }
+            document.getElementById('inbox-window-help')?.remove();
             if (typeof decorateHelpTriggers === 'function') decorateHelpTriggers(document);
         }
 
@@ -24460,7 +24553,7 @@ Thank you for shopping with {store_name}!</textarea>
             const aiPaused = !!currentConversationState.ai_paused;
             hint.innerText = aiPaused ? '' : t('inbox.stop_ai_to_reply');
             hint.style.display = aiPaused ? 'none' : 'block';
-            hint.dataset.helpInlineKey = 'inbox.manual_reply';
+            delete hint.dataset.helpInlineKey;
             input.disabled = !aiPaused || isSendingHumanReply;
             sendBtn.disabled = !aiPaused || isSendingHumanReply;
             if (!sendBtn.dataset.defaultText) sendBtn.dataset.defaultText = sendBtn.innerText || 'Send';
@@ -25120,7 +25213,9 @@ Thank you for shopping with {store_name}!</textarea>
 
         function toggleSection(sectionId, isChat = false, agentId = null) {
             const section = document.getElementById(sectionId);
-            const header = section.previousElementSibling;
+            if (!section) return;
+            const heading = section.previousElementSibling;
+            const header = heading?.querySelector?.('.section-header-toggle') || heading;
             const isOpen = section.classList.contains('open');
             if (isOpen) {
                 section.classList.remove('open');
@@ -27673,10 +27768,6 @@ Thank you for shopping with {store_name}!</textarea>
                 `;
             });
             listEl.innerHTML = html;
-            const contactItem = listEl.querySelector('[data-wa-button-id="contact"] .wa-button-item-left span');
-            const rateItem = listEl.querySelector('[data-wa-button-id="rate"] .wa-button-item-left span');
-            if (contactItem) mountHelpTrigger(contactItem, 'orders.contact_button', { compact: true });
-            if (rateItem) mountHelpTrigger(rateItem, 'orders.rate_button', { compact: true });
         }
 
         function toggleWaButton(id, isEnabled) {
