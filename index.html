@@ -2331,6 +2331,173 @@
                 reschedule_label: "إعادة جدولة الاجتماع"
             }
         });
+
+        window.HELP_CONTENT = {
+            en: {
+                "agent.connect_channel": { mode: "popover", title: "Connect channel", body: ["Connect this channel so the agent can receive customer messages.", "Turn this on before expecting live conversations or automatic replies."] },
+                "agent.live": { mode: "tooltip", body: "When LIVE is on, this agent can reply automatically on the connected channel." },
+                "agent.system_prompt": { mode: "popover+inline", title: "System Prompt", body: ["This is the main instruction for your AI agent.", "It controls how the agent speaks, answers, and handles requests.", "Edit it only when you want to change live behavior."], inline: "This controls the agent's behavior and reply style." },
+                "agent.system_prompt_lock": { mode: "popover", title: "Editing lock", body: ["Unlock editing only when you want to change the agent's behavior.", "Changes here affect live replies after you save."] },
+                "agent.tone": { mode: "popover+inline", title: "Agent tone", body: ["Choose the speaking style for this agent.", "Use friendly for warmer replies, professional for formal replies, and sales if you want stronger conversion language."], inline: "Pick the reply style you want customers to hear." },
+                "agent.kb_links": { mode: "popover+inline", title: "Knowledge Base", body: ["Add trusted links the agent can use as a reference.", "Use pages with product details, FAQs, policies, or services.", "Better sources usually lead to better answers."], inline: "Add trusted links the agent can learn from." },
+                "agent.add_link": { mode: "tooltip", body: "Add another reference link for this agent." },
+                "agent.test_chat": { mode: "popover+inline", title: "Test Chat", body: ["Send a test message here before going live.", "Use this to check tone, clarity, and knowledge coverage."], inline: "Test the agent here before turning LIVE on." },
+                "agent.save_role": { mode: "tooltip", body: "Save your latest agent setup changes." },
+                "onb.overview": { mode: "popover+inline", title: "Guided setup", body: ["This setup builds the basics for your workspace.", "It affects agent context, connected channels, uploaded knowledge, and store readiness."], inline: "These answers shape how your workspace is configured." },
+                "onb.whatsapp_number": { mode: "popover+inline", title: "WhatsApp Business Number", body: ["Add the business number you plan to use with WhatsApp.", "Use the full number with country code so your team can confirm the correct line."], inline: "Use the business number with country code." },
+                "onb.kb_upload": { mode: "popover+inline", title: "Knowledge Base upload", body: ["Upload files the agent should learn from.", "Good files include FAQs, product details, menus, service information, and policy docs."], inline: "Upload clear files the agent can use as trusted reference." },
+                "integrations.woo": { mode: "popover", title: "WordPress / WooCommerce", body: ["Connect your WooCommerce store so the AI agent can read products.", "This helps the agent answer product questions more accurately."] },
+                "integrations.woo_url": { mode: "popover+inline", title: "Website Domain", body: ["Enter the website domain used by your WooCommerce store.", "Use the main store domain, not a product page link."], inline: "Example: yourstore.com" },
+                "integrations.woo_ck": { mode: "popover+inline", title: "Consumer Key", body: ["This API key lets the app read store data securely.", "Use the WooCommerce REST API key created for read access."], inline: "Paste the WooCommerce Consumer Key here." },
+                "integrations.woo_cs": { mode: "popover+inline", title: "Consumer Secret", body: ["This secret works with the Consumer Key to verify secure access.", "Keep it private and paste the full value exactly as issued."], inline: "Paste the WooCommerce Consumer Secret here." },
+                "integrations.shopify": { mode: "popover", title: "Shopify", body: ["Connect your Shopify storefront so the AI agent can read products in real time.", "This is useful when customers ask about live catalog data."] },
+                "integrations.shopify_domain": { mode: "popover+inline", title: "Shop Domain", body: ["Enter the Shopify store name or domain used by your storefront.", "Use the shop handle for the .myshopify.com store."], inline: "Example: yourstore" },
+                "integrations.shopify_token": { mode: "popover+inline", title: "Storefront Access Token", body: ["This token lets the app read storefront product data securely.", "Paste the Storefront Access Token exactly as generated in Shopify."], inline: "Paste the Storefront Access Token here." },
+                "integrations.test_connection": { mode: "popover", title: "Test Connection", body: ["Check that your credentials are correct.", "A successful test confirms the app can fetch live product data."] },
+                "integrations.proof_store": { mode: "tooltip", body: "The store name that was verified during the connection test." },
+                "integrations.proof_method": { mode: "tooltip", body: "The method used to verify your connection." },
+                "integrations.proof_verified_at": { mode: "tooltip", body: "The last time this integration was verified successfully." },
+                "integrations.proof_sample": { mode: "tooltip", body: "A sample product fetched during verification." },
+                "integrations.proof_source": { mode: "tooltip", body: "Shows whether verification used a direct route or a secure proxy." },
+                "integrations.save_credentials": { mode: "tooltip", body: "Save the current credentials for this store integration." },
+                "integrations.disconnect": { mode: "tooltip", body: "Disconnect this store integration from the workspace." },
+                "inbox.ai_active": { mode: "tooltip", body: "AI Active means the agent can reply automatically in this conversation." },
+                "inbox.human_mode": { mode: "tooltip", body: "Human Mode pauses the AI so your team can reply manually." },
+                "inbox.stop_ai": { mode: "tooltip", body: "Stop the AI before sending a manual reply." },
+                "inbox.resume_ai": { mode: "tooltip", body: "Resume automatic AI replies in this conversation." },
+                "inbox.window_24h": { mode: "popover", title: "24-hour reply window", body: ["If the customer is outside the allowed reply window, you may need the customer to message again first.", "Use this as a quick explanation when a manual reply is blocked."] },
+                "inbox.platform": { mode: "tooltip", body: "Filter inbox conversations by platform." },
+                "inbox.search": { mode: "tooltip", body: "Search conversations or messages." },
+                "inbox.mode_chats": { mode: "tooltip", body: "Browse or search full chats." },
+                "inbox.mode_messages": { mode: "tooltip", body: "Search individual messages across conversations." },
+                "inbox.find": { mode: "tooltip", body: "Find matching text inside the current chat." },
+                "inbox.export": { mode: "tooltip", body: "Export inbox data for the selected platform or view." },
+                "inbox.manual_reply": { mode: "popover+inline", title: "Manual reply", body: ["Manual reply is only available when AI is paused.", "Pause the AI first, then type and send your message."], inline: "Pause AI first if you want to reply manually." },
+                "leads.search": { mode: "tooltip", body: "Search by customer, phone, or message content." },
+                "leads.export_csv": { mode: "tooltip", body: "Export the current leads data as CSV." },
+                "leads.export_excel": { mode: "tooltip", body: "Export the current leads data as Excel." },
+                "leads.view_table": { mode: "tooltip", body: "Show leads in a standard table layout." },
+                "leads.view_grid": { mode: "tooltip", body: "Show leads as cards for easier scanning." },
+                "leads.view_pipeline": { mode: "tooltip", body: "Group leads by stage so progress is easier to track." },
+                "leads.status_new": { mode: "tooltip", body: "A new lead that has not been handled yet." },
+                "leads.status_contacted": { mode: "tooltip", body: "Someone from your team has already reached out." },
+                "leads.status_qualified": { mode: "tooltip", body: "This lead matches your business and is worth following up." },
+                "leads.status_won": { mode: "tooltip", body: "This lead converted successfully." },
+                "leads.status_lost": { mode: "tooltip", body: "This lead did not convert." },
+                "leads.status_no_phone": { mode: "tooltip", body: "The lead was captured without a phone number." },
+                "orders.incoming": { mode: "popover", title: "Incoming orders", body: ["View and manage incoming orders captured by AI agents.", "Use this area to review status, payment, confirmation, and delivery details."] },
+                "orders.whatsapp_confirmation": { mode: "popover", title: "WhatsApp confirmation", body: ["Configure order confirmation messages sent through WhatsApp.", "Use this to choose triggers, message content, and buttons."] },
+                "orders.logs": { mode: "popover", title: "Logs", body: ["Review order and WhatsApp activity logs.", "Use logs to understand what was sent and what customers clicked."] },
+                "orders.payment_status": { mode: "tooltip", body: "Shows the payment state of the order." },
+                "orders.confirmation_status": { mode: "tooltip", body: "Shows whether the customer confirmed the order." },
+                "orders.delivery_status": { mode: "tooltip", body: "Shows the delivery progress of the order." },
+                "orders.triggers": { mode: "popover+inline", title: "Notification triggers", body: ["Choose which order events should send WhatsApp notifications.", "Enable only the events you want customers to receive."], inline: "Choose which order events should send WhatsApp messages." },
+                "orders.template": { mode: "popover+inline", title: "Message template", body: ["Edit the message sent for each notification trigger.", "Keep the message short, clear, and easy for customers to scan."], inline: "Keep messages short, clear, and customer-friendly." },
+                "orders.placeholders": { mode: "popover+inline", title: "Placeholders", body: ["Placeholders insert live order data into the message automatically.", "Use them when you want customer name, order number, total, or date to appear dynamically."], inline: "These tags add live order data automatically." },
+                "orders.additional_info": { mode: "popover+inline", title: "Additional info", body: ["Add extra details such as delivery time or working hours.", "This text appears inside customer messages."], inline: "This appears inside customer messages." },
+                "orders.support_phone": { mode: "popover+inline", title: "Support phone", body: ["Add the phone number customers should use for support.", "Include the country code so the number works clearly across devices."], inline: "Include country code." },
+                "orders.contact_button": { mode: "tooltip", body: "Show a Contact Us button inside supported WhatsApp messages." },
+                "orders.rate_button": { mode: "tooltip", body: "Show a Rate Experience button after the order flow." },
+                "orders.preview": { mode: "tooltip", body: "Preview how the message will look before saving." },
+                "orders.actions": { mode: "tooltip", body: "These are the quick actions customers may receive in WhatsApp." },
+                "meetings.status": { mode: "tooltip", body: "Shows the current meeting stage, such as pending, confirmed, completed, or cancelled." },
+                "meetings.actions": { mode: "tooltip", body: "Quick actions for managing the meeting lifecycle." },
+                "dashboard.revenue": { mode: "tooltip", body: "Total revenue in the selected period." },
+                "dashboard.leads": { mode: "tooltip", body: "New leads captured in the selected period." },
+                "dashboard.active_chats": { mode: "tooltip", body: "Conversations active in the selected period." },
+                "dashboard.avg_rating": { mode: "tooltip", body: "Average review rating in the selected period." },
+                "dashboard.secondary_kpis": { mode: "popover", title: "Secondary KPIs", body: ["These extra KPIs change based on your workspace type.", "They can summarize orders, WhatsApp activity, or meetings."] },
+                "dashboard.recent_activity": { mode: "tooltip", body: "Recent important events across the workspace." },
+                "dashboard.platform_distribution": { mode: "tooltip", body: "Shows how activity is distributed across connected platforms." },
+                "dashboard.platform_stats": { mode: "tooltip", body: "Performance summary by platform." },
+                "dashboard.plan_usage": { mode: "tooltip", body: "Shows current plan usage and remaining capacity." },
+                "dashboard.wa_activity": { mode: "tooltip", body: "Order confirmation and WhatsApp performance metrics." },
+                "dashboard.wa_logs": { mode: "tooltip", body: "Recent WhatsApp-related events and outcomes." },
+                "dashboard.meetings": { mode: "tooltip", body: "Meeting activity and conversion metrics where applicable." }
+            },
+            ar: {
+                "agent.connect_channel": { mode: "popover", title: "ربط القناة", body: ["اربط هذه القناة ليتمكن الوكيل من استقبال رسائل العملاء.", "قم بذلك قبل انتظار المحادثات المباشرة أو الردود التلقائية."] },
+                "agent.live": { mode: "tooltip", body: "عند تفعيل LIVE يستطيع هذا الوكيل الرد تلقائياً على القناة المتصلة." },
+                "agent.system_prompt": { mode: "popover+inline", title: "توجيه النظام", body: ["هذا هو التوجيه الرئيسي لوكيل الذكاء الاصطناعي.", "هو الذي يحدد طريقة الرد وطريقة التعامل مع الطلبات.", "عدّله فقط عندما تريد تغيير السلوك الفعلي للوكيل."], inline: "هذا الحقل يحدد سلوك الوكيل وطريقة ردّه." },
+                "agent.system_prompt_lock": { mode: "popover", title: "قفل التعديل", body: ["افتح التعديل فقط عندما تريد تغيير سلوك الوكيل.", "أي تعديل هنا يؤثر على الردود الفعلية بعد الحفظ."] },
+                "agent.tone": { mode: "popover+inline", title: "نبرة الوكيل", body: ["اختر أسلوب الرد لهذا الوكيل.", "استخدم النبرة الودودة للردود الدافئة، والمهنية للردود الرسمية، ونبرة المبيعات عندما تريد لغة أكثر إقناعاً."], inline: "اختر أسلوب الرد الذي تريد أن يسمعه العميل." },
+                "agent.kb_links": { mode: "popover+inline", title: "قاعدة المعرفة", body: ["أضف روابط موثوقة يستطيع الوكيل استخدامها كمرجع.", "استخدم صفحات المنتجات أو الأسئلة الشائعة أو السياسات أو الخدمات.", "كلما كانت المصادر أوضح كانت الإجابات أفضل غالباً."], inline: "أضف روابط موثوقة ليستند إليها الوكيل." },
+                "agent.add_link": { mode: "tooltip", body: "أضف رابطاً مرجعياً إضافياً لهذا الوكيل." },
+                "agent.test_chat": { mode: "popover+inline", title: "اختبار المحادثة", body: ["أرسل رسالة تجريبية هنا قبل التشغيل الفعلي.", "استخدم هذا المكان للتأكد من النبرة والوضوح وتغطية المعرفة."], inline: "اختبر الوكيل هنا قبل تفعيل LIVE." },
+                "agent.save_role": { mode: "tooltip", body: "احفظ آخر تغييرات إعداد الوكيل." },
+                "onb.overview": { mode: "popover+inline", title: "الإعداد الموجّه", body: ["هذا الإعداد يبني الأساس لمساحة العمل.", "هو يؤثر على سياق الوكلاء والقنوات المتصلة والملفات المرفوعة وجاهزية المتجر."] , inline: "هذه البيانات تشكّل طريقة إعداد مساحة العمل." },
+                "onb.whatsapp_number": { mode: "popover+inline", title: "رقم واتساب للأعمال", body: ["أضف رقم الأعمال الذي تنوي استخدامه مع واتساب.", "استخدم الرقم كاملاً مع رمز الدولة لتأكيد الخط الصحيح."], inline: "استخدم رقم الأعمال مع رمز الدولة." },
+                "onb.kb_upload": { mode: "popover+inline", title: "رفع قاعدة المعرفة", body: ["ارفع الملفات التي يجب أن يتعلم منها الوكيل.", "الملفات المناسبة تشمل الأسئلة الشائعة وتفاصيل المنتجات والخدمات والسياسات."] , inline: "ارفع ملفات واضحة يعتمد عليها الوكيل كمرجع." },
+                "integrations.woo": { mode: "popover", title: "ووردبريس / ووكومرس", body: ["اربط متجر WooCommerce ليتمكن الوكيل من قراءة المنتجات.", "هذا يساعد الوكيل على الإجابة بدقة أكبر عن أسئلة المنتجات."] },
+                "integrations.woo_url": { mode: "popover+inline", title: "نطاق الموقع", body: ["أدخل نطاق الموقع المستخدم لمتجر WooCommerce.", "استخدم نطاق المتجر الرئيسي وليس رابط صفحة منتج."], inline: "مثال: yourstore.com" },
+                "integrations.woo_ck": { mode: "popover+inline", title: "Consumer Key", body: ["هذا المفتاح يسمح للتطبيق بقراءة بيانات المتجر بشكل آمن.", "استخدم مفتاح WooCommerce REST API المخصص للقراءة."], inline: "ألصق Consumer Key هنا." },
+                "integrations.woo_cs": { mode: "popover+inline", title: "Consumer Secret", body: ["هذا المفتاح السري يعمل مع Consumer Key للتحقق من الوصول الآمن.", "احتفظ به سرياً وألصقه كاملاً كما تم إنشاؤه."], inline: "ألصق Consumer Secret هنا." },
+                "integrations.shopify": { mode: "popover", title: "Shopify", body: ["اربط متجر Shopify ليتمكن الوكيل من قراءة المنتجات مباشرة.", "يفيد ذلك عندما يسأل العملاء عن بيانات حية من المتجر."] },
+                "integrations.shopify_domain": { mode: "popover+inline", title: "اسم المتجر", body: ["أدخل اسم أو نطاق متجر Shopify المستخدم.", "استخدم اسم المتجر الخاص بعنوان .myshopify.com."], inline: "مثال: yourstore" },
+                "integrations.shopify_token": { mode: "popover+inline", title: "Storefront Access Token", body: ["هذا الرمز يسمح للتطبيق بقراءة بيانات منتجات المتجر بشكل آمن.", "ألصق الرمز كما تم إنشاؤه داخل Shopify."], inline: "ألصق Storefront Access Token هنا." },
+                "integrations.test_connection": { mode: "popover", title: "اختبار الاتصال", body: ["تحقق من صحة بيانات الدخول.", "نجاح الاختبار يعني أن التطبيق يستطيع جلب بيانات المنتجات الحية."] },
+                "integrations.proof_store": { mode: "tooltip", body: "اسم المتجر الذي تم التحقق منه أثناء الاختبار." },
+                "integrations.proof_method": { mode: "tooltip", body: "الطريقة التي تم بها التحقق من الاتصال." },
+                "integrations.proof_verified_at": { mode: "tooltip", body: "آخر وقت تم فيه التحقق من هذا التكامل بنجاح." },
+                "integrations.proof_sample": { mode: "tooltip", body: "منتج تجريبي تم جلبه أثناء التحقق." },
+                "integrations.proof_source": { mode: "tooltip", body: "يوضح ما إذا تم التحقق مباشرة أو عبر Proxy آمن." },
+                "integrations.save_credentials": { mode: "tooltip", body: "احفظ بيانات الاتصال الحالية لهذا التكامل." },
+                "integrations.disconnect": { mode: "tooltip", body: "افصل هذا التكامل عن مساحة العمل." },
+                "inbox.ai_active": { mode: "tooltip", body: "وضع AI Active يعني أن الوكيل يستطيع الرد التلقائي في هذه المحادثة." },
+                "inbox.human_mode": { mode: "tooltip", body: "وضع Human Mode يوقف الذكاء الاصطناعي حتى يتمكن فريقك من الرد يدوياً." },
+                "inbox.stop_ai": { mode: "tooltip", body: "أوقف الذكاء الاصطناعي قبل إرسال رد يدوي." },
+                "inbox.resume_ai": { mode: "tooltip", body: "استأنف الردود التلقائية في هذه المحادثة." },
+                "inbox.window_24h": { mode: "popover", title: "نافذة الرد 24 ساعة", body: ["إذا كان العميل خارج نافذة الرد المسموح بها فقد تحتاج إلى أن يرسل رسالة جديدة أولاً.", "استخدم هذا الشرح عندما يُمنع الرد اليدوي."] },
+                "inbox.platform": { mode: "tooltip", body: "فلترة محادثات صندوق الوارد حسب المنصة." },
+                "inbox.search": { mode: "tooltip", body: "ابحث في المحادثات أو الرسائل." },
+                "inbox.mode_chats": { mode: "tooltip", body: "تصفح أو ابحث في المحادثات كاملة." },
+                "inbox.mode_messages": { mode: "tooltip", body: "ابحث في الرسائل الفردية عبر جميع المحادثات." },
+                "inbox.find": { mode: "tooltip", body: "ابحث عن نص مطابق داخل المحادثة الحالية." },
+                "inbox.export": { mode: "tooltip", body: "صدّر بيانات صندوق الوارد حسب المنصة أو العرض الحالي." },
+                "inbox.manual_reply": { mode: "popover+inline", title: "الرد اليدوي", body: ["الرد اليدوي متاح فقط عند إيقاف الذكاء الاصطناعي.", "أوقف الذكاء الاصطناعي أولاً ثم اكتب رسالتك وأرسلها."], inline: "أوقف الذكاء الاصطناعي أولاً إذا أردت الرد يدوياً." },
+                "leads.search": { mode: "tooltip", body: "ابحث باسم العميل أو الهاتف أو محتوى الرسالة." },
+                "leads.export_csv": { mode: "tooltip", body: "صدّر بيانات العملاء المحتملين الحالية بصيغة CSV." },
+                "leads.export_excel": { mode: "tooltip", body: "صدّر بيانات العملاء المحتملين الحالية بصيغة Excel." },
+                "leads.view_table": { mode: "tooltip", body: "عرض العملاء المحتملين بشكل جدولي." },
+                "leads.view_grid": { mode: "tooltip", body: "عرض العملاء المحتملين كبطاقات لسهولة التصفح." },
+                "leads.view_pipeline": { mode: "tooltip", body: "تجميع العملاء حسب المرحلة لتسهيل متابعة التقدم." },
+                "leads.status_new": { mode: "tooltip", body: "عميل جديد لم يتم التعامل معه بعد." },
+                "leads.status_contacted": { mode: "tooltip", body: "تم التواصل معه بالفعل من قبل الفريق." },
+                "leads.status_qualified": { mode: "tooltip", body: "هذا العميل مناسب لنشاطك ويستحق المتابعة." },
+                "leads.status_won": { mode: "tooltip", body: "تم تحويل هذا العميل بنجاح." },
+                "leads.status_lost": { mode: "tooltip", body: "لم يتم تحويل هذا العميل." },
+                "leads.status_no_phone": { mode: "tooltip", body: "تم التقاط هذا العميل بدون رقم هاتف." },
+                "orders.incoming": { mode: "popover", title: "الطلبات الواردة", body: ["عرض وإدارة الطلبات الواردة التي التقطها وكلاء الذكاء الاصطناعي.", "استخدم هذه المنطقة لمراجعة الحالة والدفع والتأكيد والتوصيل."] },
+                "orders.whatsapp_confirmation": { mode: "popover", title: "تأكيد واتساب", body: ["إعداد رسائل تأكيد الطلب المرسلة عبر واتساب.", "استخدم هذا القسم لاختيار المشغلات والرسائل والأزرار."] },
+                "orders.logs": { mode: "popover", title: "السجلات", body: ["راجع سجلات الطلبات ونشاط واتساب.", "السجلات تساعدك على معرفة ما الذي تم إرساله وما الذي نقر عليه العميل."] },
+                "orders.payment_status": { mode: "tooltip", body: "يوضح حالة الدفع الخاصة بالطلب." },
+                "orders.confirmation_status": { mode: "tooltip", body: "يوضح ما إذا كان العميل قد أكد الطلب." },
+                "orders.delivery_status": { mode: "tooltip", body: "يوضح تقدم حالة التوصيل." },
+                "orders.triggers": { mode: "popover+inline", title: "مشغلات الإشعارات", body: ["اختر أحداث الطلب التي يجب أن ترسل إشعارات واتساب.", "فعّل فقط الأحداث التي تريد أن تصل إلى العميل."] , inline: "اختر أحداث الطلب التي يجب أن ترسل رسائل واتساب." },
+                "orders.template": { mode: "popover+inline", title: "قالب الرسالة", body: ["عدّل الرسالة المرسلة لكل نوع إشعار.", "اجعل الرسالة قصيرة وواضحة وسهلة على العميل."] , inline: "اجعل الرسالة قصيرة وواضحة وسهلة للعميل." },
+                "orders.placeholders": { mode: "popover+inline", title: "العناصر المتاحة", body: ["العناصر المتاحة تضيف بيانات الطلب تلقائياً داخل الرسالة.", "استخدمها عندما تريد إظهار اسم العميل أو رقم الطلب أو الإجمالي أو التاريخ بشكل حي."] , inline: "هذه العلامات تضيف بيانات الطلب تلقائياً." },
+                "orders.additional_info": { mode: "popover+inline", title: "معلومات إضافية", body: ["أضف تفاصيل إضافية مثل وقت التوصيل أو ساعات العمل.", "تظهر هذه المعلومات داخل رسالة العميل."] , inline: "تظهر هذه المعلومات داخل رسالة العميل." },
+                "orders.support_phone": { mode: "popover+inline", title: "رقم الدعم", body: ["أضف رقم الدعم الذي يجب أن يستخدمه العميل للتواصل.", "أدخل الرقم مع رمز الدولة ليظهر بشكل واضح على كل الأجهزة."] , inline: "أضف الرقم مع رمز الدولة." },
+                "orders.contact_button": { mode: "tooltip", body: "فعّل زر اتصل بنا داخل رسائل واتساب المدعومة." },
+                "orders.rate_button": { mode: "tooltip", body: "فعّل زر تقييم التجربة بعد مسار الطلب." },
+                "orders.preview": { mode: "tooltip", body: "شاهد شكل الرسالة قبل الحفظ." },
+                "orders.actions": { mode: "tooltip", body: "هذه هي الإجراءات السريعة التي قد تظهر للعميل في واتساب." },
+                "meetings.status": { mode: "tooltip", body: "يوضح مرحلة الاجتماع الحالية مثل قيد الانتظار أو مؤكد أو مكتمل أو ملغي." },
+                "meetings.actions": { mode: "tooltip", body: "إجراءات سريعة لإدارة دورة حياة الاجتماع." },
+                "dashboard.revenue": { mode: "tooltip", body: "إجمالي الإيرادات خلال الفترة المحددة." },
+                "dashboard.leads": { mode: "tooltip", body: "عدد العملاء الجدد خلال الفترة المحددة." },
+                "dashboard.active_chats": { mode: "tooltip", body: "عدد المحادثات النشطة خلال الفترة المحددة." },
+                "dashboard.avg_rating": { mode: "tooltip", body: "متوسط تقييمات العملاء خلال الفترة المحددة." },
+                "dashboard.secondary_kpis": { mode: "popover", title: "المؤشرات الثانوية", body: ["هذه المؤشرات الإضافية تتغير حسب نوع مساحة العمل.", "قد تلخّص الطلبات أو نشاط واتساب أو الاجتماعات."] },
+                "dashboard.recent_activity": { mode: "tooltip", body: "أحدث الأحداث المهمة داخل مساحة العمل." },
+                "dashboard.platform_distribution": { mode: "tooltip", body: "يوضح توزيع النشاط بين المنصات المتصلة." },
+                "dashboard.platform_stats": { mode: "tooltip", body: "ملخص الأداء لكل منصة." },
+                "dashboard.plan_usage": { mode: "tooltip", body: "يوضح استخدام الخطة الحالية والسعة المتبقية." },
+                "dashboard.wa_activity": { mode: "tooltip", body: "مؤشرات أداء تأكيد الطلبات ورسائل واتساب." },
+                "dashboard.wa_logs": { mode: "tooltip", body: "أحدث أحداث واتساب ونتائجها." },
+                "dashboard.meetings": { mode: "tooltip", body: "مؤشرات نشاط الاجتماعات والتحويلات عند وجودها." }
+            }
+        };
     </script>
 
     <style>
@@ -3576,6 +3743,16 @@
             --warning-bg: rgba(255, 193, 7, 0.15);
             --warning-border: rgba(255, 193, 7, 0.4);
             --warning-text: #ffca28;
+            --help-bg: rgba(10, 16, 24, 0.94);
+            --help-bg-elevated: linear-gradient(180deg, rgba(21, 29, 41, 0.98), rgba(10, 15, 24, 0.98));
+            --help-border: rgba(255, 255, 255, 0.14);
+            --help-shadow: 0 24px 54px rgba(0, 0, 0, 0.44);
+            --help-text: #f8fafc;
+            --help-text-muted: #bfd0e1;
+            --help-icon-bg: rgba(91, 174, 176, 0.12);
+            --help-icon-color: #c7f5f4;
+            --help-inline-text: #b4c5d6;
+            --help-scrim: rgba(4, 9, 15, 0.56);
             --sidebar-width: 70px;
             --sidebar-expanded: 240px;
             --mobile-header-height: 60px;
@@ -3598,6 +3775,331 @@
             display: flex;
             transition: background-image 0.8s ease, background-color 0.8s ease, --theme-color 0.8s ease;
             overflow-x: hidden;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .help-label-host {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .help-inline-host {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            inline-size: 100%;
+            min-inline-size: 0;
+        }
+
+        .help-inline-host > :first-child {
+            flex: 1 1 auto;
+            min-inline-size: 0;
+        }
+
+        .help-label-host.help-justify-between {
+            display: flex;
+            justify-content: space-between;
+            inline-size: 100%;
+        }
+
+        .help-trigger {
+            appearance: none;
+            border: 1px solid var(--help-border);
+            background: var(--help-icon-bg);
+            color: var(--help-icon-color);
+            min-inline-size: 44px;
+            min-block-size: 44px;
+            inline-size: 44px;
+            block-size: 44px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
+            position: relative;
+            z-index: 1;
+        }
+
+        .help-trigger:hover,
+        .help-trigger:focus-visible {
+            transform: translateY(-1px);
+            background: rgba(91, 174, 176, 0.18);
+            border-color: rgba(91, 174, 176, 0.38);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .help-trigger:active {
+            transform: translateY(0);
+        }
+
+        .help-trigger-icon {
+            inline-size: 20px;
+            block-size: 20px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .help-trigger.compact {
+            min-inline-size: 36px;
+            min-block-size: 36px;
+            inline-size: 36px;
+            block-size: 36px;
+        }
+
+        .help-trigger.compact .help-trigger-icon {
+            inline-size: 18px;
+            block-size: 18px;
+            font-size: 0.76rem;
+        }
+
+        .help-inline {
+            margin-top: 8px;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            color: var(--help-inline-text);
+            text-align: start;
+            flex-basis: 100%;
+        }
+
+        .help-inline.is-compact {
+            margin-top: 6px;
+            font-size: 0.78rem;
+        }
+
+        .help-overlay-root {
+            position: fixed;
+            inset: 0;
+            z-index: 5300;
+            pointer-events: none;
+        }
+
+        .help-overlay-root.help-visible {
+            pointer-events: none;
+        }
+
+        .help-scrim {
+            position: absolute;
+            inset: 0;
+            background: var(--help-scrim);
+            opacity: 0;
+            transition: opacity 0.16s ease;
+            pointer-events: none;
+        }
+
+        .help-overlay-root.help-mobile.help-visible .help-scrim {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .help-tooltip,
+        .help-popover,
+        .help-sheet {
+            position: absolute;
+            background: var(--help-bg-elevated);
+            color: var(--help-text);
+            border: 1px solid var(--help-border);
+            box-shadow: var(--help-shadow);
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.16s ease, transform 0.16s ease;
+            will-change: transform, opacity;
+        }
+
+        .help-tooltip.help-visible,
+        .help-popover.help-visible,
+        .help-sheet.help-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .help-tooltip {
+            max-inline-size: min(280px, calc(100vw - 24px));
+            border-radius: 16px;
+            padding: 12px 14px;
+            font-size: 0.84rem;
+            line-height: 1.5;
+            pointer-events: none;
+        }
+
+        .help-popover {
+            max-inline-size: min(380px, calc(100vw - 24px));
+            min-inline-size: min(280px, calc(100vw - 24px));
+            border-radius: 20px;
+            padding: 18px;
+            pointer-events: auto;
+        }
+
+        .help-popover-header,
+        .help-sheet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .help-popover-title {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--help-text);
+        }
+
+        .help-popover-body {
+            color: var(--help-text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .help-popover-body ul {
+            margin: 10px 0 0;
+            padding-inline-start: 18px;
+        }
+
+        .help-popover-body li + li {
+            margin-top: 6px;
+        }
+
+        .help-popover-close,
+        .help-sheet-close {
+            appearance: none;
+            border: 1px solid var(--help-border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--help-text);
+            inline-size: 40px;
+            block-size: 40px;
+            min-inline-size: 40px;
+            min-block-size: 40px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-popover-close:focus-visible,
+        .help-sheet-close:focus-visible {
+            outline: 2px solid var(--theme-color);
+            outline-offset: 2px;
+        }
+
+        .help-arrow {
+            position: absolute;
+            inline-size: 14px;
+            block-size: 14px;
+            background: rgba(16, 24, 36, 0.98);
+            border-inline-start: 1px solid var(--help-border);
+            border-block-start: 1px solid var(--help-border);
+            transform: rotate(45deg);
+        }
+
+        .help-sheet {
+            inset-inline: 12px;
+            inset-block-end: calc(12px + env(safe-area-inset-bottom, 0px));
+            border-radius: 24px;
+            padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+            max-block-size: min(72vh, 620px);
+            overflow: auto;
+            transform: translateY(20px);
+        }
+
+        .help-sheet-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--help-text);
+        }
+
+        .help-sheet-body {
+            color: var(--help-text-muted);
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .help-sheet-body ul {
+            margin: 10px 0 0;
+            padding-inline-start: 18px;
+        }
+
+        .help-mobile .help-arrow {
+            display: none;
+        }
+
+        .help-kpi-corner {
+            position: absolute;
+            inset-block-start: 12px;
+            inset-inline-end: 12px;
+        }
+
+        .help-status-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .help-status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .help-status-chip .help-trigger {
+            inline-size: 32px;
+            block-size: 32px;
+            min-inline-size: 32px;
+            min-block-size: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .help-trigger.compact {
+                min-inline-size: 44px;
+                min-block-size: 44px;
+                inline-size: 44px;
+                block-size: 44px;
+            }
+
+            .help-trigger.compact .help-trigger-icon {
+                inline-size: 20px;
+                block-size: 20px;
+                font-size: 0.82rem;
+            }
+
+            .help-inline {
+                font-size: 0.84rem;
+            }
+
+            .help-popover {
+                max-inline-size: min(92vw, 360px);
+            }
         }
 
         /* --- Glassmorphism Utils --- */
@@ -14224,6 +14726,16 @@
             --warning-bg: rgba(217, 119, 6, 0.14);
             --warning-border: rgba(217, 119, 6, 0.3);
             --warning-text: #92400e;
+            --help-bg: rgba(255, 255, 255, 0.98);
+            --help-bg-elevated: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(245, 249, 252, 0.99));
+            --help-border: rgba(15, 23, 42, 0.14);
+            --help-shadow: 0 22px 44px rgba(15, 23, 42, 0.14);
+            --help-text: #0f172a;
+            --help-text-muted: #506174;
+            --help-icon-bg: rgba(47, 143, 145, 0.1);
+            --help-icon-color: #155e63;
+            --help-inline-text: #55657d;
+            --help-scrim: rgba(15, 23, 42, 0.28);
         }
 
         :root[data-theme="light"] body {
@@ -18870,6 +19382,522 @@
             sales: "You are a persuasive and energetic Sales Agent..."
         };
 
+        const HELP_MOBILE_MEDIA_QUERY = '(max-width: 900px), (hover: none) and (pointer: coarse)';
+        let activeHelpState = null;
+        let helpOverlayRoot = null;
+        let helpOverlayCard = null;
+        let helpOverlayArrow = null;
+        let helpOverlayScrim = null;
+        let contextualHelpInitialized = false;
+
+        function escapeHelpHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function getHelpStrings() {
+            return currentLang === 'ar'
+                ? { more: 'مساعدة إضافية', close: 'إغلاق المساعدة', sheetTitle: 'مساعدة سريعة' }
+                : { more: 'More help', close: 'Close help', sheetTitle: 'Quick help' };
+        }
+
+        function getHelpDefinition(key) {
+            const lang = currentLang === 'ar' ? 'ar' : 'en';
+            return (window.HELP_CONTENT?.[lang] && window.HELP_CONTENT[lang][key]) || (window.HELP_CONTENT?.en && window.HELP_CONTENT.en[key]) || null;
+        }
+
+        function getHelpInlineText(key) {
+            return getHelpDefinition(key)?.inline || '';
+        }
+
+        function isHelpMobileViewport() {
+            return window.matchMedia(HELP_MOBILE_MEDIA_QUERY).matches;
+        }
+
+        function renderHelpTriggerMarkup(key, options = {}) {
+            if (!getHelpDefinition(key)) return '';
+            const strings = getHelpStrings();
+            const compactClass = options.compact ? ' compact' : '';
+            const extraClass = options.className ? ` ${options.className}` : '';
+            const modeAttr = options.mode ? ` data-help-mode="${escapeHelpHtml(options.mode)}"` : '';
+            const placementAttr = options.placement ? ` data-help-placement="${escapeHelpHtml(options.placement)}"` : '';
+            return `<button type="button" class="help-trigger${compactClass}${extraClass}" data-help-key="${escapeHelpHtml(key)}"${modeAttr}${placementAttr} aria-label="${escapeHelpHtml(strings.more)}" onclick="event.stopPropagation()"><span class="help-trigger-icon" aria-hidden="true">i</span><span class="sr-only">${escapeHelpHtml(strings.more)}</span></button>`;
+        }
+
+        function renderHelpInlineMarkup(key, options = {}) {
+            const inline = getHelpInlineText(key);
+            if (!inline) return '';
+            const compactClass = options.compact ? ' is-compact' : '';
+            return `<div class="help-inline${compactClass}" data-help-inline-key="${escapeHelpHtml(key)}">${escapeHelpHtml(inline)}</div>`;
+        }
+
+        function buildHelpBodyHtml(definition) {
+            if (!definition?.body) return '';
+            if (Array.isArray(definition.body)) {
+                return `<ul>${definition.body.map((line) => `<li>${escapeHelpHtml(line)}</li>`).join('')}</ul>`;
+            }
+            return `<p>${escapeHelpHtml(definition.body)}</p>`;
+        }
+
+        function ensureHelpOverlayRoot() {
+            if (helpOverlayRoot) return helpOverlayRoot;
+            helpOverlayRoot = document.createElement('div');
+            helpOverlayRoot.className = 'help-overlay-root';
+            helpOverlayRoot.innerHTML = `
+                <div class="help-scrim"></div>
+                <div class="help-popover" hidden>
+                    <div class="help-arrow" aria-hidden="true"></div>
+                </div>
+            `;
+            helpOverlayScrim = helpOverlayRoot.querySelector('.help-scrim');
+            helpOverlayCard = helpOverlayRoot.querySelector('.help-popover');
+            helpOverlayArrow = helpOverlayRoot.querySelector('.help-arrow');
+            helpOverlayScrim.addEventListener('click', () => closeHelp('scrim'));
+            document.body.appendChild(helpOverlayRoot);
+            return helpOverlayRoot;
+        }
+
+        function closeHelp() {
+            if (!activeHelpState) return;
+            if (activeHelpState.trigger && activeHelpState.describedById) {
+                activeHelpState.trigger.removeAttribute('aria-describedby');
+            }
+            activeHelpState = null;
+            ensureHelpOverlayRoot();
+            helpOverlayRoot.classList.remove('help-visible', 'help-mobile');
+            helpOverlayCard.hidden = true;
+            helpOverlayCard.className = 'help-popover';
+            helpOverlayCard.style.top = '';
+            helpOverlayCard.style.left = '';
+            helpOverlayCard.style.right = '';
+            helpOverlayCard.style.bottom = '';
+            helpOverlayCard.innerHTML = '<div class="help-arrow" aria-hidden="true"></div>';
+            helpOverlayArrow = helpOverlayCard.querySelector('.help-arrow');
+        }
+
+        function resolveHelpMode(key, trigger, options = {}) {
+            const definition = getHelpDefinition(key);
+            const requestedMode = options.mode || trigger?.dataset?.helpMode || definition?.mode || 'tooltip';
+            let mode = requestedMode.split('+')[0];
+            const isMobile = isHelpMobileViewport();
+            if (isMobile && definition?.mobileModeOverride) mode = definition.mobileModeOverride;
+            if (!isMobile && definition?.desktopModeOverride) mode = definition.desktopModeOverride;
+            if (isMobile && mode === 'popover' && Array.isArray(definition?.body) && definition.body.length > 2) mode = 'sheet';
+            return mode;
+        }
+
+        function positionHelpOverlay() {
+            if (!activeHelpState || !helpOverlayCard || activeHelpState.mode === 'sheet') return;
+            const rect = activeHelpState.trigger?.getBoundingClientRect();
+            if (!rect || !rect.width) {
+                closeHelp('missing-trigger');
+                return;
+            }
+
+            const cardRect = helpOverlayCard.getBoundingClientRect();
+            const gap = 12;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            let placement = activeHelpState.trigger?.dataset?.helpPlacement || 'bottom';
+            let top = placement === 'top' ? rect.top - cardRect.height - gap : rect.bottom + gap;
+
+            if (placement !== 'top' && top + cardRect.height > viewportHeight - 12) {
+                placement = 'top';
+                top = rect.top - cardRect.height - gap;
+            }
+            if (placement === 'top' && top < 12) {
+                placement = 'bottom';
+                top = rect.bottom + gap;
+            }
+
+            let left = rect.left + (rect.width / 2) - (cardRect.width / 2);
+            left = Math.max(12, Math.min(left, viewportWidth - cardRect.width - 12));
+
+            helpOverlayCard.style.top = `${Math.max(12, top)}px`;
+            helpOverlayCard.style.left = `${left}px`;
+
+            if (helpOverlayArrow) {
+                const arrowLeft = Math.max(20, Math.min(cardRect.width - 20, (rect.left + rect.width / 2) - left));
+                helpOverlayArrow.style.left = `${arrowLeft - 7}px`;
+                helpOverlayArrow.style.top = placement === 'top' ? `${cardRect.height - 7}px` : '-7px';
+                helpOverlayArrow.style.transform = placement === 'top' ? 'rotate(225deg)' : 'rotate(45deg)';
+            }
+        }
+
+        function openSharedHelp(trigger, key, options = {}) {
+            const definition = getHelpDefinition(key);
+            if (!trigger || !definition) return;
+            ensureHelpOverlayRoot();
+            const mode = resolveHelpMode(key, trigger, options);
+            const strings = getHelpStrings();
+            const titleText = definition.title || strings.sheetTitle;
+            const bodyHtml = buildHelpBodyHtml(definition);
+            let markup = '';
+
+            if (mode === 'tooltip') {
+                const text = escapeHelpHtml(Array.isArray(definition.body) ? definition.body.join(' ') : (definition.body || ''));
+                markup = `<div class="help-tooltip help-visible" role="tooltip" id="help-tooltip-${Date.now()}">${text}</div>`;
+            } else if (mode === 'sheet') {
+                markup = `<div class="help-sheet help-visible" role="dialog" aria-modal="false" aria-label="${escapeHelpHtml(titleText)}">
+                    <div class="help-sheet-header">
+                        <div class="help-sheet-title">${escapeHelpHtml(titleText)}</div>
+                        <button type="button" class="help-sheet-close" aria-label="${escapeHelpHtml(strings.close)}">×</button>
+                    </div>
+                    <div class="help-sheet-body">${bodyHtml}</div>
+                </div>`;
+            } else {
+                markup = `<div class="help-popover help-visible" role="dialog" aria-modal="false" aria-label="${escapeHelpHtml(titleText)}">
+                    <div class="help-arrow" aria-hidden="true"></div>
+                    <div class="help-popover-header">
+                        <div class="help-popover-title">${escapeHelpHtml(titleText)}</div>
+                        <button type="button" class="help-popover-close" aria-label="${escapeHelpHtml(strings.close)}">×</button>
+                    </div>
+                    <div class="help-popover-body">${bodyHtml}</div>
+                </div>`;
+            }
+
+            helpOverlayRoot.classList.add('help-visible');
+            helpOverlayRoot.classList.toggle('help-mobile', mode === 'sheet');
+            helpOverlayCard.outerHTML = markup;
+            helpOverlayCard = helpOverlayRoot.querySelector('.help-tooltip, .help-popover, .help-sheet');
+            helpOverlayArrow = helpOverlayRoot.querySelector('.help-arrow');
+
+            const closeButton = helpOverlayRoot.querySelector('.help-popover-close, .help-sheet-close');
+            if (closeButton) closeButton.addEventListener('click', () => closeHelp('button'));
+
+            activeHelpState = { trigger, key, mode, options, describedById: helpOverlayCard.id || '' };
+            if (mode === 'tooltip' && helpOverlayCard.id) trigger.setAttribute('aria-describedby', helpOverlayCard.id);
+            if (mode !== 'sheet') positionHelpOverlay();
+        }
+
+        function openHelpTooltip(trigger, key) {
+            openSharedHelp(trigger, key, { mode: 'tooltip' });
+        }
+
+        function openHelpPopover(trigger, key) {
+            openSharedHelp(trigger, key, { mode: 'popover' });
+        }
+
+        function openHelpSheet(key, trigger) {
+            openSharedHelp(trigger, key, { mode: 'sheet' });
+        }
+
+        function refreshOpenHelp() {
+            if (!activeHelpState?.trigger || !document.body.contains(activeHelpState.trigger)) {
+                closeHelp('stale');
+                return;
+            }
+            openSharedHelp(activeHelpState.trigger, activeHelpState.key, activeHelpState.options || {});
+        }
+
+        function updateHelpInlineContent(root = document) {
+            root.querySelectorAll('[data-help-inline-key]').forEach((node) => {
+                node.textContent = getHelpInlineText(node.getAttribute('data-help-inline-key'));
+            });
+        }
+
+        function decorateHelpTriggers(root = document) {
+            const strings = getHelpStrings();
+            root.querySelectorAll('[data-help-key]').forEach((node) => {
+                node.setAttribute('aria-label', strings.more);
+                node.removeAttribute('title');
+                if (node.tagName === 'BUTTON') node.type = 'button';
+            });
+            updateHelpInlineContent(root);
+        }
+
+        function mountHelpTrigger(host, key, options = {}) {
+            if (!host || !key || !getHelpDefinition(key)) return null;
+            const needsSiblingMount = ['BUTTON', 'INPUT', 'TEXTAREA', 'SELECT'].includes(host.tagName);
+            const searchRoot = needsSiblingMount ? host.parentElement : host;
+            const existing = searchRoot?.querySelector(`.help-trigger[data-help-key="${key}"]`);
+            if (existing) return existing;
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = renderHelpTriggerMarkup(key, options);
+            const trigger = wrapper.firstElementChild;
+            if (!trigger) return null;
+            if (needsSiblingMount) {
+                host.insertAdjacentElement('afterend', trigger);
+                decorateHelpTriggers(host.parentElement || document);
+                return trigger;
+            }
+            host.classList.add('help-label-host');
+            if (options.justifyBetween) host.classList.add('help-justify-between');
+            if (options.prepend) host.prepend(trigger);
+            else host.appendChild(trigger);
+            decorateHelpTriggers(host);
+            return trigger;
+        }
+
+        function mountInlineHelp(target, key, options = {}) {
+            if (!target || !key || !getHelpInlineText(key)) return null;
+            const next = target.nextElementSibling;
+            if (next && next.classList?.contains('help-inline') && next.getAttribute('data-help-inline-key') === key) {
+                next.textContent = getHelpInlineText(key);
+                return next;
+            }
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = renderHelpInlineMarkup(key, options);
+            const inline = wrapper.firstElementChild;
+            if (!inline) return null;
+            target.insertAdjacentElement('afterend', inline);
+            return inline;
+        }
+
+        function clearTitleInScope(node) {
+            if (node) node.removeAttribute('title');
+        }
+
+        function renderLeadStatusLegend(container) {
+            if (!container || container.querySelector('.help-status-legend')) return;
+            const legend = document.createElement('div');
+            legend.className = 'help-status-legend';
+            const statuses = ['new', 'contacted', 'qualified', 'won', 'lost', 'no_phone'];
+            legend.innerHTML = statuses.map((status) => {
+                const key = `leads.status_${status}`;
+                const label = status === 'no_phone' ? (t('leads.status.no_phone') || 'No Phone') : (t(`leads.status.${status}`) || status);
+                return `<span class="help-status-chip">${escapeHelpHtml(label)}${renderHelpTriggerMarkup(key, { compact: true })}</span>`;
+            }).join('');
+            container.appendChild(legend);
+        }
+
+        function applyAgentHelp(scope = document) {
+            AGENTS.forEach((agent) => {
+                const tab = scope.getElementById ? scope.getElementById(agent.id) : document.getElementById(agent.id);
+                if (!tab) return;
+                const connectRow = tab.querySelector('.agent-header-row > div:last-child');
+                const connectBtn = tab.querySelector('.connect-btn');
+                if (connectRow && !connectRow.querySelector('.help-trigger[data-help-key="agent.connect_channel"]')) {
+                    if (connectBtn) connectBtn.insertAdjacentHTML('afterend', renderHelpTriggerMarkup('agent.connect_channel'));
+                    else connectRow.insertAdjacentHTML('beforeend', renderHelpTriggerMarkup('agent.connect_channel'));
+                }
+                mountHelpTrigger(tab.querySelector('.toggle-label'), 'agent.live', { compact: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-prompt-sec"]`)?.previousElementSibling, 'agent.system_prompt', { compact: true, justifyBetween: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-tone-sec"]`)?.previousElementSibling, 'agent.tone', { compact: true, justifyBetween: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-links-sec"]`)?.previousElementSibling, 'agent.kb_links', { compact: true, justifyBetween: true });
+                mountHelpTrigger(tab.querySelector(`[id="${agent.id}-chat-sec"]`)?.previousElementSibling, 'agent.test_chat', { compact: true, justifyBetween: true });
+                mountHelpTrigger(tab.querySelector(`#lock-btn-${agent.id}`), 'agent.system_prompt_lock', { compact: true });
+                mountHelpTrigger(tab.querySelector(`button[onclick="addAgentKbLink('${agent.id}')"]`), 'agent.add_link', { compact: true });
+                mountHelpTrigger(tab.querySelector(`button[onclick="saveRole('${agent.id}')"]`), 'agent.save_role', { compact: true });
+                mountInlineHelp(tab.querySelector(`#prompt-${agent.id}`), 'agent.system_prompt');
+                mountInlineHelp(tab.querySelector(`#tone-${agent.id}`), 'agent.tone');
+                mountInlineHelp(tab.querySelector(`#kb-link-input-${agent.id}`)?.closest('.kb-link-input-group') || tab.querySelector(`#kb-link-input-${agent.id}`), 'agent.kb_links');
+                mountInlineHelp(tab.querySelector(`#chat-input-${agent.id}`)?.closest('.chat-input-area') || tab.querySelector(`#chat-input-${agent.id}`), 'agent.test_chat');
+            });
+        }
+
+        function applyDashboardHelp() {
+            const dashboard = document.getElementById('dashboard');
+            if (!dashboard) return;
+            const secondaryKey = isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_activity';
+            [
+                ['#kpi-primary-card .kpi-label', 'dashboard.revenue'],
+                ['.kpi-card:nth-child(2) .kpi-label', 'dashboard.leads'],
+                ['.kpi-card:nth-child(3) .kpi-label', 'dashboard.active_chats'],
+                ['.kpi-card:nth-child(4) .kpi-label', 'dashboard.avg_rating']
+            ].forEach(([selector, key]) => mountHelpTrigger(dashboard.querySelector(selector), key, { compact: true }));
+            mountHelpTrigger(document.getElementById('dashboard-secondary-heading'), 'dashboard.secondary_kpis', { compact: true });
+            mountHelpTrigger(document.getElementById('dashboard-secondary-heading'), secondaryKey, { compact: true });
+            mountHelpTrigger(document.querySelector('#dashboard [data-i18n="dashboard.headers.recent_activity"]'), 'dashboard.recent_activity', { compact: true });
+            mountHelpTrigger(document.querySelector('#dashboard .dashboard-panel h3[data-i18n="dashboard.headers.platforms"]'), 'dashboard.platform_distribution', { compact: true });
+            mountHelpTrigger(document.querySelector('#dashboard .dashboard-panel h3[data-i18n="dashboard.headers.platforms"]'), 'dashboard.platform_stats', { compact: true });
+            mountHelpTrigger(document.querySelector('#plan-usage-widget h3'), 'dashboard.plan_usage', { compact: true });
+            mountHelpTrigger(document.querySelector('#dashboard-context-panel-content h3'), isServiceOrg() ? 'dashboard.meetings' : 'dashboard.wa_logs', { compact: true });
+            dashboard.querySelectorAll('.icon-btn-small[onclick="loadDashboard()"]').forEach(clearTitleInScope);
+        }
+
+        function applyLeadsHelp() {
+            mountHelpTrigger(document.getElementById('leads-search-host') || document.getElementById('leads-search')?.closest('.leads-toolbar'), 'leads.search', { compact: true });
+            document.querySelectorAll('#leads .export-btn').forEach((btn, index) => mountHelpTrigger(btn, index === 0 ? 'leads.export_csv' : 'leads.export_excel', { compact: true }));
+            document.querySelectorAll('#leads .leads-view-btn').forEach((btn) => {
+                const view = btn.getAttribute('data-view');
+                mountHelpTrigger(btn, view === 'table' ? 'leads.view_table' : (view === 'grid' ? 'leads.view_grid' : 'leads.view_pipeline'), { compact: true });
+            });
+            renderLeadStatusLegend(document.getElementById('leads-toolbar-container'));
+        }
+
+        function applyInboxHelp() {
+            mountHelpTrigger(document.querySelector('#inbox [data-i18n="inbox.label_platform"]'), 'inbox.platform', { compact: true });
+            mountHelpTrigger(document.querySelector('#inbox .export-btn-sidebar'), 'inbox.export', { compact: true });
+            mountHelpTrigger(document.getElementById('inbox-search-host'), 'inbox.search', { compact: true });
+            mountHelpTrigger(document.getElementById('mode-btn-chats'), 'inbox.mode_chats', { compact: true });
+            mountHelpTrigger(document.getElementById('mode-btn-messages'), 'inbox.mode_messages', { compact: true });
+            const findBtn = document.querySelector('#inbox .chat-search-wrapper .icon-btn-small');
+            if (findBtn) {
+                clearTitleInScope(findBtn);
+                mountHelpTrigger(findBtn, 'inbox.find', { compact: true });
+            }
+            const hint = document.getElementById('inbox-human-composer-hint');
+            if (hint && !hint.dataset.helpInlineKey) hint.dataset.helpInlineKey = 'inbox.manual_reply';
+            updateHelpInlineContent(document);
+        }
+
+        function applyOrdersHelp() {
+            mountHelpTrigger(document.getElementById('orders-title-text'), 'orders.incoming', { compact: true });
+            mountHelpTrigger(document.getElementById('orders-subtab-confirmation'), 'orders.whatsapp_confirmation', { compact: true });
+            mountHelpTrigger(document.getElementById('orders-subtab-logs'), 'orders.logs', { compact: true });
+            mountHelpTrigger(document.querySelector('#orders-table th[data-i18n="orders.col_payment_status"]'), 'orders.payment_status', { compact: true });
+            mountHelpTrigger(document.querySelector('#orders-table th[data-i18n="orders.col_confirmation_status"]'), 'orders.confirmation_status', { compact: true });
+            mountHelpTrigger(document.querySelector('#orders-table th[data-i18n="orders.col_delivery_status"]'), 'orders.delivery_status', { compact: true });
+            const waTitles = document.querySelectorAll('#orders-confirmation-view .wa-section-title');
+            mountHelpTrigger(waTitles[1], 'orders.triggers', { compact: true, justifyBetween: true });
+            mountHelpTrigger(waTitles[2], 'orders.template', { compact: true, justifyBetween: true });
+            mountHelpTrigger(waTitles[3], 'orders.additional_info', { compact: true, justifyBetween: true });
+            mountHelpTrigger(waTitles[4], 'orders.actions', { compact: true, justifyBetween: true });
+            mountHelpTrigger(document.querySelector('[data-i18n="orders.confirmation.template_hint"]'), 'orders.placeholders', { compact: true });
+            mountHelpTrigger(document.querySelector('#wa-contact-phone-group label'), 'orders.support_phone', { compact: true });
+            mountHelpTrigger(document.querySelector('.wa-preview-toggle-btn'), 'orders.preview', { compact: true });
+            mountInlineHelp(document.querySelector('.wa-trigger-list'), 'orders.triggers');
+            mountInlineHelp(document.querySelector('#wa-template-section .wa-template-editor'), 'orders.template');
+            mountInlineHelp(document.querySelector('[data-i18n="orders.confirmation.template_hint"]')?.parentElement, 'orders.placeholders', { compact: true });
+            mountInlineHelp(document.getElementById('wa-additional-info'), 'orders.additional_info');
+            mountInlineHelp(document.getElementById('wa-support-phone'), 'orders.support_phone');
+            document.querySelectorAll('#orders .wa-send-btn, #orders .delete-btn').forEach(clearTitleInScope);
+        }
+
+        function applyMeetingsHelp() {
+            mountHelpTrigger(document.querySelector('#meetings-table th[data-i18n="meetings.table.status"]'), 'meetings.status', { compact: true });
+            document.querySelectorAll('.meeting-actions, .meeting-card-actions').forEach((row) => {
+                if (!row.querySelector('.help-trigger[data-help-key="meetings.actions"]')) {
+                    row.insertAdjacentHTML('beforeend', renderHelpTriggerMarkup('meetings.actions', { compact: true }));
+                }
+            });
+        }
+
+        function applyOnboardingHelp() {
+            const overlay = document.getElementById('onb-overlay');
+            if (!overlay || !overlay.classList.contains('show')) return;
+            mountHelpTrigger(document.querySelector('.onb-overview-title'), 'onb.overview', { compact: true });
+            mountHelpTrigger(document.getElementById('onb-whatsapp')?.previousElementSibling, 'onb.whatsapp_number', { compact: true });
+            mountInlineHelp(document.getElementById('onb-whatsapp'), 'onb.whatsapp_number');
+            mountHelpTrigger(document.getElementById('onb-kb-upload-host'), 'onb.kb_upload', { compact: true });
+            mountInlineHelp(document.querySelector('.onb-drop-zone'), 'onb.kb_upload');
+            mountHelpTrigger(document.querySelector('.onb-platform-title'), onbIntegrationView === 'shopify' ? 'integrations.shopify' : 'integrations.woo', { compact: true });
+            const wooDomain = document.getElementById('woo-domain');
+            const wooCk = document.getElementById('woo-ck');
+            const wooCs = document.getElementById('woo-cs');
+            const shopDomain = document.getElementById('shop-domain');
+            const shopToken = document.getElementById('shop-token');
+            mountHelpTrigger(wooDomain?.previousElementSibling, 'integrations.woo_url', { compact: true });
+            mountHelpTrigger(wooCk?.previousElementSibling, 'integrations.woo_ck', { compact: true });
+            mountHelpTrigger(wooCs?.previousElementSibling, 'integrations.woo_cs', { compact: true });
+            mountHelpTrigger(shopDomain?.closest('.onb-inline-domain')?.previousElementSibling, 'integrations.shopify_domain', { compact: true });
+            mountHelpTrigger(shopToken?.previousElementSibling, 'integrations.shopify_token', { compact: true });
+            mountHelpTrigger(document.getElementById('woo-test-btn') || document.getElementById('shopify-test-btn'), 'integrations.test_connection', { compact: true });
+            mountHelpTrigger(document.querySelector('.onb-disconnect-btn'), 'integrations.disconnect', { compact: true });
+            mountInlineHelp(wooDomain, 'integrations.woo_url');
+            mountInlineHelp(wooCk, 'integrations.woo_ck');
+            mountInlineHelp(wooCs, 'integrations.woo_cs');
+            mountInlineHelp(shopDomain?.closest('.onb-inline-domain') || shopDomain, 'integrations.shopify_domain');
+            mountInlineHelp(shopToken, 'integrations.shopify_token');
+            document.querySelectorAll('.onb-proof-label[data-proof-help-key]').forEach((label) => mountHelpTrigger(label, label.getAttribute('data-proof-help-key'), { compact: true }));
+        }
+
+        function applyIntegrationsHubHelp() {
+            document.querySelectorAll('#integrations-root .ih-card').forEach((card, index) => {
+                const isWoo = index === 0;
+                mountHelpTrigger(card.querySelector('.ih-card-title'), isWoo ? 'integrations.woo' : 'integrations.shopify', { compact: true });
+                const labels = card.querySelectorAll('.ih-field label');
+                if (isWoo) {
+                    mountHelpTrigger(labels[0], 'integrations.woo_url', { compact: true });
+                    mountHelpTrigger(labels[1], 'integrations.woo_ck', { compact: true });
+                    mountHelpTrigger(labels[2], 'integrations.woo_cs', { compact: true });
+                    const inputs = card.querySelectorAll('.ih-field input');
+                    mountInlineHelp(inputs[0], 'integrations.woo_url');
+                    mountInlineHelp(inputs[1], 'integrations.woo_ck');
+                    mountInlineHelp(inputs[2], 'integrations.woo_cs');
+                } else {
+                    mountHelpTrigger(labels[0], 'integrations.shopify_domain', { compact: true });
+                    mountHelpTrigger(labels[1], 'integrations.shopify_token', { compact: true });
+                    const inputs = card.querySelectorAll('.ih-field input');
+                    mountInlineHelp(card.querySelector('.ih-inline-domain') || inputs[0], 'integrations.shopify_domain');
+                    mountInlineHelp(inputs[1], 'integrations.shopify_token');
+                }
+                mountHelpTrigger(card.querySelector('.ih-actions .ih-btn'), 'integrations.test_connection', { compact: true });
+                mountHelpTrigger(card.querySelector('.ih-actions .ih-btn-danger'), 'integrations.disconnect', { compact: true });
+                card.querySelectorAll('.onb-proof-label[data-proof-help-key]').forEach((label) => mountHelpTrigger(label, label.getAttribute('data-proof-help-key'), { compact: true }));
+            });
+            mountHelpTrigger(document.querySelector('.ih-save-all .ih-btn'), 'integrations.save_credentials', { compact: true });
+        }
+
+        function applyContextualHelp(root = document) {
+            decorateHelpTriggers(root);
+            applyAgentHelp(root);
+            applyDashboardHelp();
+            applyLeadsHelp();
+            applyInboxHelp();
+            applyOrdersHelp();
+            applyMeetingsHelp();
+            applyOnboardingHelp();
+            applyIntegrationsHubHelp();
+        }
+
+        function initContextualHelp() {
+            if (contextualHelpInitialized) return;
+            contextualHelpInitialized = true;
+            ensureHelpOverlayRoot();
+
+            document.addEventListener('click', (event) => {
+                const trigger = event.target.closest('[data-help-key]');
+                if (trigger) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const key = trigger.getAttribute('data-help-key');
+                    if (activeHelpState?.trigger === trigger) {
+                        closeHelp('toggle');
+                    } else {
+                        openSharedHelp(trigger, key, {});
+                    }
+                    return;
+                }
+                if (activeHelpState && !event.target.closest('.help-tooltip, .help-popover, .help-sheet')) {
+                    closeHelp('outside');
+                }
+            });
+
+            document.addEventListener('mouseover', (event) => {
+                if (isHelpMobileViewport()) return;
+                const trigger = event.target.closest('[data-help-key]');
+                if (!trigger || resolveHelpMode(trigger.getAttribute('data-help-key'), trigger) !== 'tooltip') return;
+                openHelpTooltip(trigger, trigger.getAttribute('data-help-key'));
+            });
+
+            document.addEventListener('mouseout', (event) => {
+                if (isHelpMobileViewport()) return;
+                const trigger = event.target.closest('[data-help-key]');
+                if (!trigger || activeHelpState?.trigger !== trigger || activeHelpState.mode !== 'tooltip') return;
+                const related = event.relatedTarget;
+                if (related && (trigger.contains(related) || helpOverlayCard?.contains(related))) return;
+                closeHelp('hover-out');
+            });
+
+            document.addEventListener('focusin', (event) => {
+                const trigger = event.target.closest('[data-help-key]');
+                if (!trigger || resolveHelpMode(trigger.getAttribute('data-help-key'), trigger) !== 'tooltip') return;
+                openHelpTooltip(trigger, trigger.getAttribute('data-help-key'));
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeHelp('escape');
+            });
+
+            window.addEventListener('resize', () => {
+                if (activeHelpState) positionHelpOverlay();
+            }, { passive: true });
+            window.addEventListener('orientationchange', () => {
+                if (activeHelpState) positionHelpOverlay();
+            }, { passive: true });
+            window.addEventListener('scroll', () => {
+                if (!activeHelpState) return;
+                if (activeHelpState.mode === 'tooltip') closeHelp('scroll');
+                else positionHelpOverlay();
+            }, true);
+        }
+
         function hydrateSidebarSocialIcons() {
             document.querySelectorAll('.social-svg-icon[data-social-icon]').forEach((imgEl) => {
                 const key = imgEl.getAttribute('data-social-icon');
@@ -19088,6 +20116,7 @@
             }
 
             updateThemeToggleUI();
+            if (typeof refreshOpenHelp === 'function') refreshOpenHelp();
         }
 
         function toggleTheme() {
@@ -19187,6 +20216,8 @@
             }
             if (typeof updateNotificationUI === 'function') updateNotificationUI();
             updateThemeToggleUI();
+            if (typeof applyContextualHelp === 'function') applyContextualHelp(document);
+            if (typeof refreshOpenHelp === 'function') refreshOpenHelp();
         }
 
         // Toggle between English and Arabic
@@ -20003,6 +21034,7 @@
             `).join('');
 
             container.innerHTML = html;
+            if (typeof applyContextualHelp === 'function') applyContextualHelp(container);
         }
 
         // --- NEW KNOWLEDGE BASE EXTENSIONS ---
@@ -20042,7 +21074,7 @@
                             </div>
                         </div>
                         <div class="kb-item-actions">
-                            <button onclick="removeAgentKbLink('${link.id}', '${agentId}')" title="${t('kb.btn_delete')}">
+                            <button onclick="removeAgentKbLink('${link.id}', '${agentId}')" aria-label="${t('kb.btn_delete')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
                         </div>
@@ -20273,8 +21305,8 @@
                             </div>
                         </div>
                         <div class="kb-item-actions">
-                            ${file.url ? `<a href="${file.url}" target="_blank" style="color: inherit; margin-right: 8px;" title="Open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
-                            <button style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}" onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${file.source_table}', '${agentId}')" title="${t('kb.btn_delete_global')}">
+                            ${file.url ? `<a href="${file.url}" target="_blank" style="color: inherit; margin-right: 8px;" aria-label="${currentLang === 'ar' ? 'فتح' : 'Open'}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
+                            <button style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}" onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${file.source_table}', '${agentId}')" aria-label="${t('kb.btn_delete_global')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
                         </div>
@@ -20506,7 +21538,7 @@
                 <div class="wa-kpi-section" id="dashboard-secondary-section">
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:15px; flex-wrap:wrap;">
                         <h3 id="dashboard-secondary-heading" data-i18n="dashboard.headers.wa_activity" style="margin:0;">Orders & WhatsApp Activity</h3>
-                        <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh" aria-label="Refresh">
+                        <button class="icon-btn-small" onclick="loadDashboard()" aria-label="${currentLang === 'ar' ? 'تحديث' : 'Refresh'}">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;">
                                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                                 <path d="M3 3v5h5"></path>
@@ -20531,7 +21563,7 @@
                     <div class="dashboard-panel glass large-panel">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                             <h3 data-i18n="dashboard.headers.recent_activity" style="margin:0;">Recent Activity</h3>
-                            <button class="icon-btn-small" onclick="loadDashboard()" title="Refresh" aria-label="Refresh">
+                            <button class="icon-btn-small" onclick="loadDashboard()" aria-label="${currentLang === 'ar' ? 'تحديث' : 'Refresh'}">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;">
                                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                                     <path d="M3 3v5h5"></path>
@@ -20793,7 +21825,7 @@
                                 <button class="platform-btn" style="background:#2AABEE" onclick="loadInbox('telegram', false)" aria-label="Telegram">${iconTelegram}</button>
                             </div>
                             <div style="padding:10px; font-size:0.8rem; text-align:center; color:#888;" data-i18n="inbox.label_platform">Select Platform</div>
-                             <button class="export-btn-sidebar" onclick="openExportModal()">
+                            <button class="export-btn-sidebar" onclick="openExportModal()">
                                 <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 
                                 <span data-i18n="inbox.btn_export">Export Data</span>
                             </button>
@@ -20801,10 +21833,12 @@
                             <!-- Search Bar -->
                             <!-- Search Bar -->
                             <div class="inbox-search-container">
-                                <div class="inbox-search-input-wrapper">
+                                <div class="help-inline-host" id="inbox-search-host">
+                                    <div class="inbox-search-input-wrapper">
                                     <input type="text" id="inbox-search-input" placeholder="Search..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value)">
                                     <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); opacity:0.5; pointer-events:none;">🔍</span>
                                     <button id="inbox-search-clear" onclick="clearInboxSearch()" class="hidden" style="position:absolute; right:30px; top:50%; transform:translateY(-50%); background:none; border:none; color:white; cursor:pointer;">×</button>
+                                </div>
                                 </div>
                                 
                                 <div class="inbox-search-modes">
@@ -20834,7 +21868,7 @@
                                         <button onclick="closeChatSearch()" class="close-search">×</button>
                                     </div>
                                     <!-- Modern SVG Icon for Find in Chat -->
-                                    <button class="icon-btn-small" onclick="openChatSearch()" title="Find in chat (Ctrl+F)">
+                                    <button class="icon-btn-small" onclick="openChatSearch()" aria-label="${currentLang === 'ar' ? 'بحث داخل المحادثة' : 'Find in chat'}">
                                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="11" cy="11" r="8"></circle>
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -21865,6 +22899,8 @@ Thank you for shopping with {store_name}!</textarea>
 
             container.innerHTML = html;
             document.getElementById('website').classList.add('active');
+            if (typeof initContextualHelp === 'function') initContextualHelp();
+            if (typeof applyContextualHelp === 'function') applyContextualHelp(container);
         }
 
         function syncInboxMobileMode(tabId) {
@@ -22074,6 +23110,7 @@ Thank you for shopping with {store_name}!</textarea>
         // --- THEME & NAVIGATION ---
         function switchTab(tabId, element, options = {}) {
             const activeTabBeforeSwitch = document.querySelector('.tab-content.active')?.id || '';
+            if (typeof closeHelp === 'function') closeHelp('tab-switch');
             if (typeof window.confirmDiscardOnboardingChanges === 'function') {
                 const canLeaveOnboarding = window.confirmDiscardOnboardingChanges();
                 if (!canLeaveOnboarding) return false;
@@ -22403,11 +23440,14 @@ Thank you for shopping with {store_name}!</textarea>
             ` : '';
 
             container.innerHTML = `
-                <input type="text" id="leads-search" class="leads-filter-input" placeholder="${t('leads.search_placeholder')}" value="${String(curSearch).replace(/"/g, '&quot;')}" oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                <div class="help-inline-host" id="leads-search-host">
+                    <input type="text" id="leads-search" class="leads-filter-input" placeholder="${t('leads.search_placeholder')}" value="${String(curSearch).replace(/"/g, '&quot;')}" oninput="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">
+                </div>
                 <select id="leads-filter-status" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${statusOpts}</select>
                 <select id="leads-filter-platform" class="leads-filter-select" onchange="renderLeads(cachedLeads, cachedLeadContactsMap, cachedLeadMessagesMap)">${platOpts}</select>
                 ${viewSwitchHtml}
             `;
+            if (typeof applyLeadsHelp === 'function') applyLeadsHelp();
         }
 
         function getLeadStatusClass(status) {
@@ -23284,6 +24324,8 @@ Thank you for shopping with {store_name}!</textarea>
             if (!currentConversationId) {
                 pill.classList.add('hidden');
                 btn.classList.add('hidden');
+                document.getElementById('inbox-ai-pill-help')?.replaceChildren();
+                document.getElementById('inbox-ai-toggle-help')?.replaceChildren();
                 return;
             }
 
@@ -23292,13 +24334,33 @@ Thank you for shopping with {store_name}!</textarea>
             pill.classList.toggle('paused', isPaused);
             pill.classList.toggle('active', !isPaused);
             pill.innerText = isPaused ? t('inbox.human_mode') : t('inbox.ai_active');
+            let pillHelp = document.getElementById('inbox-ai-pill-help');
+            if (!pillHelp) {
+                pill.insertAdjacentHTML('afterend', `<span id="inbox-ai-pill-help"></span>`);
+                pillHelp = document.getElementById('inbox-ai-pill-help');
+            }
+            if (pillHelp) pillHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.human_mode' : 'inbox.ai_active', { compact: true });
 
             if (canToggleConversationAi()) {
                 btn.classList.remove('hidden');
                 btn.innerText = isPaused ? t('inbox.resume_ai') : t('inbox.stop_ai');
+                let btnHelp = document.getElementById('inbox-ai-toggle-help');
+                if (!btnHelp) {
+                    btn.insertAdjacentHTML('afterend', `<span id="inbox-ai-toggle-help"></span>`);
+                    btnHelp = document.getElementById('inbox-ai-toggle-help');
+                }
+                if (btnHelp) btnHelp.innerHTML = renderHelpTriggerMarkup(isPaused ? 'inbox.resume_ai' : 'inbox.stop_ai', { compact: true });
             } else {
                 btn.classList.add('hidden');
+                document.getElementById('inbox-ai-toggle-help')?.replaceChildren();
             }
+            if (!document.querySelector('#inbox-window-help')) {
+                const wrapper = document.querySelector('#inbox .chat-search-wrapper');
+                if (wrapper) {
+                    wrapper.insertAdjacentHTML('beforeend', `<span id="inbox-window-help">${renderHelpTriggerMarkup('inbox.window_24h', { compact: true })}</span>`);
+                }
+            }
+            if (typeof decorateHelpTriggers === 'function') decorateHelpTriggers(document);
         }
 
         function renderInboxComposerState() {
@@ -23318,6 +24380,7 @@ Thank you for shopping with {store_name}!</textarea>
             const aiPaused = !!currentConversationState.ai_paused;
             hint.innerText = aiPaused ? '' : t('inbox.stop_ai_to_reply');
             hint.style.display = aiPaused ? 'none' : 'block';
+            hint.dataset.helpInlineKey = 'inbox.manual_reply';
             input.disabled = !aiPaused || isSendingHumanReply;
             sendBtn.disabled = !aiPaused || isSendingHumanReply;
             if (!sendBtn.dataset.defaultText) sendBtn.dataset.defaultText = sendBtn.innerText || 'Send';
@@ -24298,6 +25361,7 @@ Thank you for shopping with {store_name}!</textarea>
                 renderPlatformStats(),
                 renderDashboardSecondarySection()
             ]);
+            if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
         }
 
         async function fetchDashboardStats(usageData = null) {
@@ -24693,6 +25757,7 @@ Thank you for shopping with {store_name}!</textarea>
                         </div>
                     </div>
                 `;
+                if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
                 return;
             }
 
@@ -24713,6 +25778,7 @@ Thank you for shopping with {store_name}!</textarea>
                     `).join('')}
                 </div>
             `;
+            if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
         }
 
         async function renderPlatformStats() {
@@ -24784,6 +25850,7 @@ Thank you for shopping with {store_name}!</textarea>
                     `;
                 }
                 container.innerHTML = html;
+                if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
 
             } catch (e) {
                 console.warn(e);
@@ -24885,6 +25952,7 @@ Thank you for shopping with {store_name}!</textarea>
                             </div>
                         </div>
                     `;
+                    if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
                     return;
                 }
 
@@ -24945,6 +26013,7 @@ Thank you for shopping with {store_name}!</textarea>
                         </table>
                     </div>
                 `;
+                if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
             } catch (err) {
                 console.error("Error loading WA dashboard logs", err);
             }
@@ -25289,10 +26358,10 @@ Thank you for shopping with {store_name}!</textarea>
                     <td>${buildOrderStatusSelect(order.id, 'delivery_status', order.delivery_status, DELIVERY_STATUSES, 'delivery_status')}</td>
                     <td style="white-space: nowrap;">${dateStr}</td>
                     <td>
-                        <button class="wa-send-btn" onclick="event.stopPropagation(); sendOrderConfirmation('${order.id}')" title="${t('orders.confirmation.send_whatsapp')}">
+                        <button class="wa-send-btn" onclick="event.stopPropagation(); sendOrderConfirmation('${order.id}')" aria-label="${t('orders.confirmation.send_whatsapp')}">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         </button>
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteOrder('${order.id}')" title="${t('orders.btn_delete')}">
+                        <button class="delete-btn" onclick="event.stopPropagation(); deleteOrder('${order.id}')" aria-label="${t('orders.btn_delete')}">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                             </svg>
@@ -25333,6 +26402,7 @@ Thank you for shopping with {store_name}!</textarea>
                     mobileList.appendChild(card);
                 }
             });
+            if (typeof applyOrdersHelp === 'function') applyOrdersHelp();
         }
 
         const MEETING_STATUSES = ['pending', 'confirmed', 'completed', 'cancelled', 'rescheduled', 'no_show'];
@@ -25657,6 +26727,7 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                 `);
             });
+            if (typeof applyMeetingsHelp === 'function') applyMeetingsHelp();
         }
 
         async function insertMeetingEvent(meeting, eventType, details = {}) {
@@ -26506,7 +27577,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const isFirst = index === 0;
                 const isLast = index === waCurrentButtons.length - 1;
                 html += `
-                <div class="wa-button-item ${!btn.enabled ? 'disabled' : ''}" style="transition: all 0.3s; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px; background:rgba(0,0,0,0.2); display:flex; justify-content:space-between; align-items:center;">
+                <div class="wa-button-item ${!btn.enabled ? 'disabled' : ''}" data-wa-button-id="${btn.id}" style="transition: all 0.3s; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px; background:rgba(0,0,0,0.2); display:flex; justify-content:space-between; align-items:center;">
                     <div class="wa-button-item-left" style="display:flex; align-items:center; gap:12px;">
                         <label class="wa-toggle" style="margin:0;">
                             <input type="checkbox" onchange="toggleWaButton('${btn.id}', this.checked)" ${btn.enabled ? 'checked' : ''}>
@@ -26515,13 +27586,17 @@ Thank you for shopping with {store_name}!</textarea>
                         <span style="font-size:0.85rem; color:${btn.enabled ? '#fff' : 'rgba(255,255,255,0.5)'}; transition: color 0.3s;">${info.icon} ${labelText}</span>
                     </div>
                     <div class="wa-button-item-right" style="display:flex; flex-direction:column; gap:2px; justify-content:center; align-items:center;">
-                        <button class="wa-btn-move" onclick="moveWaButton(${index}, -1)" title="Move Up" ${isFirst ? 'disabled style="opacity:0.2; cursor:not-allowed;"' : ''}><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
-                        <button class="wa-btn-move" onclick="moveWaButton(${index}, 1)" title="Move Down" ${isLast ? 'disabled style="opacity:0.2; cursor:not-allowed;"' : ''}><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        <button class="wa-btn-move" onclick="moveWaButton(${index}, -1)" ${isFirst ? 'disabled style="opacity:0.2; cursor:not-allowed;"' : ''} aria-label="${currentLangUI === 'ar' ? 'تحريك لأعلى' : 'Move up'}"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+                        <button class="wa-btn-move" onclick="moveWaButton(${index}, 1)" ${isLast ? 'disabled style="opacity:0.2; cursor:not-allowed;"' : ''} aria-label="${currentLangUI === 'ar' ? 'تحريك لأسفل' : 'Move down'}"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
                     </div>
                 </div>
                 `;
             });
             listEl.innerHTML = html;
+            const contactItem = listEl.querySelector('[data-wa-button-id="contact"] .wa-button-item-left span');
+            const rateItem = listEl.querySelector('[data-wa-button-id="rate"] .wa-button-item-left span');
+            if (contactItem) mountHelpTrigger(contactItem, 'orders.contact_button', { compact: true });
+            if (rateItem) mountHelpTrigger(rateItem, 'orders.rate_button', { compact: true });
         }
 
         function toggleWaButton(id, isEnabled) {
@@ -33002,6 +34077,7 @@ Thank you for shopping with {store_name}!</textarea>
             renderStepper();
             renderStepContent();
             renderActions();
+            if (typeof applyOnboardingHelp === 'function') applyOnboardingHelp();
         }
 
         function renderLanguageSwitch() {
@@ -33173,7 +34249,7 @@ Thank you for shopping with {store_name}!</textarea>
                     else if (f.status === 'failed') { statusCls = 'failed'; statusTxt = tOnb('onboarding.kb_failed'); }
                     filesHtml += `<div class="onb-file-item"><span class="onb-file-name">${esc(f.file.name)}</span><span class="onb-file-size">${sizeStr}</span>`;
                     if (statusTxt) filesHtml += `<span class="onb-file-status ${statusCls}">${statusTxt}</span>`;
-                    if (f.status !== 'uploading' && f.status !== 'uploaded') filesHtml += `<button class="onb-file-remove" onclick="removeOnbFile(${i})" title="${tOnb('onboarding.kb_remove')}">&times;</button>`;
+                    if (f.status !== 'uploading' && f.status !== 'uploaded') filesHtml += `<button class="onb-file-remove" onclick="removeOnbFile(${i})" aria-label="${tOnb('onboarding.kb_remove')}">&times;</button>`;
                     filesHtml += `</div>`;
                 });
                 // Show previously uploaded files from saved data
@@ -33187,10 +34263,12 @@ Thank you for shopping with {store_name}!</textarea>
             return `<div class="onb-step-card">
                 <h3 class="onb-step-title">${tOnb('onboarding.kb_title')}</h3>
                 <p class="onb-step-subtitle">${tOnb('onboarding.kb_subtitle')}</p>
-                <div class="onb-drop-zone" id="onb-drop-zone" onclick="document.getElementById('onb-file-input').click()">
-                    <div class="onb-drop-icon">📄</div>
-                    <p>${tOnb('onboarding.kb_drop_text')}</p>
-                    <small>${tOnb('onboarding.kb_drop_hint')}</small>
+                <div class="help-inline-host" id="onb-kb-upload-host">
+                    <div class="onb-drop-zone" id="onb-drop-zone" onclick="document.getElementById('onb-file-input').click()">
+                        <div class="onb-drop-icon">📄</div>
+                        <p>${tOnb('onboarding.kb_drop_text')}</p>
+                        <small>${tOnb('onboarding.kb_drop_hint')}</small>
+                    </div>
                 </div>
                 <input type="file" id="onb-file-input" multiple accept=".pdf,.docx,.txt,.csv,.xls,.xlsx" style="display:none" onchange="handleOnbFileSelect(this.files)">
                 <div class="onb-file-list" id="onb-file-list">${filesHtml}</div>
@@ -33307,6 +34385,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!snapshot) return '';
             const rows = [];
             if (snapshot.store) rows.push({ label: tOnb('onboarding.proof_store'), value: snapshot.store });
+            if (snapshot.method) rows.push({ label: tOnb('onboarding.proof_method'), value: snapshot.method });
             if (snapshot.verified_at) rows.push({ label: tOnb('onboarding.proof_verified_at'), value: formatVerificationDate(snapshot.verified_at) });
             if (snapshot.sample) rows.push({ label: tOnb('onboarding.proof_sample'), value: snapshot.sample });
             if (snapshot.source || snapshot.method) {
@@ -33316,7 +34395,14 @@ Thank you for shopping with {store_name}!</textarea>
                 rows.push({ label: tOnb('onboarding.proof_source'), value: route });
             }
             if (!rows.length) return '';
-            return `<div class="onb-proof-list">${rows.map((row) => `<div class="onb-proof-row"><span class="onb-proof-label">${esc(row.label)}:</span><span>${esc(row.value)}</span></div>`).join('')}</div>`;
+            const helpKeyMap = {
+                [tOnb('onboarding.proof_store')]: 'integrations.proof_store',
+                [tOnb('onboarding.proof_method')]: 'integrations.proof_method',
+                [tOnb('onboarding.proof_verified_at')]: 'integrations.proof_verified_at',
+                [tOnb('onboarding.proof_sample')]: 'integrations.proof_sample',
+                [tOnb('onboarding.proof_source')]: 'integrations.proof_source'
+            };
+            return `<div class="onb-proof-list">${rows.map((row) => `<div class="onb-proof-row"><span class="onb-proof-label" data-proof-help-key="${helpKeyMap[row.label] || ''}">${esc(row.label)}:</span><span>${esc(row.value)}</span></div>`).join('')}</div>`;
         }
 
         function renderConnectionStatusHtml(provider) {
@@ -34242,6 +35328,7 @@ Thank you for shopping with {store_name}!</textarea>
                 <div class="ih-save-all">
                     <button class="ih-btn" onclick="saveIntegrationsHub()" ${!ihCanEdit || ihSaving ? 'disabled' : ''}>${t('integrations_hub.btn_save')}</button>
                 </div>`;
+            if (typeof applyIntegrationsHubHelp === 'function') applyIntegrationsHubHelp();
         }
 
         async function loadLatestOnboardingForHub() {
