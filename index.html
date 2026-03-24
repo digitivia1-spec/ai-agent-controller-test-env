@@ -25256,29 +25256,33 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         // --- PHASE 4: TEST CHAT LOGIC (HYBRID MEMORY + BRAIN) ---
+        async function getOrCreateTestChatSession(agentId) {
+            if (!currentUserOrgId) return null;
+
+            let { data: session } = await supabaseClient
+                .from('test_chat_sessions')
+                .select('id')
+                .eq('org_id', currentUserOrgId)
+                .eq('agent', agentId)
+                .single();
+
+            if (session) return session;
+
+            const { data: newSession } = await supabaseClient
+                .from('test_chat_sessions')
+                .insert([{ org_id: currentUserOrgId, agent: agentId }])
+                .select('id')
+                .single();
+
+            return newSession || null;
+        }
+
         async function loadChatHistory(agentId) {
             const historyContainer = document.getElementById(`chat-history-${agentId}`);
             if (!currentUserOrgId) return;
 
             try {
-                // 1. Get Session ID
-                let { data: session } = await supabaseClient
-                    .from('test_chat_sessions')
-                    .select('id')
-                    .eq('org_id', currentUserOrgId)
-                    .eq('agent', agentId)
-                    .single();
-
-                // Create if not exists
-                if (!session) {
-                    const { data: newSession, error: createErr } = await supabaseClient
-                        .from('test_chat_sessions')
-                        .insert([{ org_id: currentUserOrgId, agent: agentId }])
-                        .select()
-                        .single();
-                    if (newSession) session = newSession;
-                }
-
+                const session = await getOrCreateTestChatSession(agentId);
                 if (!session) return; // fail safe
 
                 // 2. Load Messages
@@ -25313,18 +25317,9 @@ Thank you for shopping with {store_name}!</textarea>
             appendMessage(agentId, 'ai', '...', loadingId);
 
             try {
-                // 1. Get Session ID (Reuse logic or cache it)
-                let { data: session } = await supabaseClient
-                    .from('test_chat_sessions')
-                    .select('id')
-                    .eq('org_id', currentUserOrgId)
-                    .eq('agent', agentId)
-                    .single();
-
-                if (!session) { // Should exist from load, but double check
-                    const { data: newSession } = await supabaseClient.from('test_chat_sessions').insert([{ org_id: currentUserOrgId, agent: agentId }]).select().single();
-                    session = newSession;
-                }
+                // 1. Get the fixed session ID for this org + agent chat
+                const session = await getOrCreateTestChatSession(agentId);
+                if (!session) throw new Error('Could not initialize test chat session.');
 
                 // 2. Save User Message (MEMORY)
                 await supabaseClient.from('test_chat_messages').insert({
@@ -25342,6 +25337,7 @@ Thank you for shopping with {store_name}!</textarea>
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        session_id: session.id,
                         message: text,
                         system_prompt: systemPrompt,
                         agent_id: agentId
