@@ -26211,11 +26211,11 @@ Thank you for shopping with {store_name}!</textarea>
 
             try {
                 // Determine Plan (Mock or Actual)
-                let planName = 'no plan';
-                let msgLimit = 1; // avoid divide-by-zero
+                let planName = 'No plan';
+                let msgLimit = 0;
                 let msgUsed = 0;
                 let subscriptionEnd = null;
-                let status = 'NONE';
+                let status = 'NO PLAN';
 
                 if (currentUserOrgId) {
                     const { data: sub, error } = await supabaseClient
@@ -26248,7 +26248,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 // WhatsApp Outbound Usage Logic (A3)
                 let waUsed = 0;
-                let waLimit = 'No limit'; // Assuming WA outbound is pay-per-use or high limit
+                let waLimit = '—'; // Not applicable when no plan
                 const waUsedEl = document.getElementById('usage-wa-outbound-used');
                 const waLimitEl = document.getElementById('usage-wa-outbound-limit');
                 const waBarEl = document.getElementById('usage-wa-outbound-bar');
@@ -26297,7 +26297,7 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 }
 
-                const percent = Math.min(100, Math.round((msgUsed / msgLimit) * 100));
+                const percent = msgLimit > 0 ? Math.min(100, Math.round((msgUsed / msgLimit) * 100)) : 0;
 
                 // Calculate Days Remaining
                 let daysRemaining = 30;
@@ -26318,11 +26318,11 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 // Update UI
-                if (nameEl) nameEl.innerText = planName.charAt(0).toUpperCase() + planName.slice(1) + ' Plan';
-                if (badgeEl) badgeEl.innerText = status;
+                if (nameEl) nameEl.innerText = planName;
+                if (badgeEl) { badgeEl.innerText = ''; badgeEl.style.display = 'none'; }
 
                 if (usedEl) usedEl.innerText = msgUsed.toLocaleString();
-                if (limitEl) limitEl.innerText = msgLimit.toLocaleString();
+                if (limitEl) limitEl.innerText = msgLimit > 0 ? msgLimit.toLocaleString() : '—';
                 if (barEl) {
                     barEl.style.width = `${percent}%`;
                     if (percent > 90) barEl.style.background = '#ef4444'; // Red if full
@@ -26345,7 +26345,7 @@ Thank you for shopping with {store_name}!</textarea>
                 if (periodEndEl) {
                     periodEndEl.innerText = subscriptionEnd
                         ? subscriptionEnd.toLocaleDateString()
-                        : 'Month End';
+                        : '—';
                 }
 
             } catch (e) {
@@ -29366,9 +29366,9 @@ Thank you for shopping with {store_name}!</textarea>
             let calculatedPrice = plan.unit_amount_cents / 100;
             let displayPeriod = 'month';
 
-            // Calculate Yearly Logic
+            // Calculate Yearly Logic with 20% discount
             if (billingPeriod === 'yearly') {
-                calculatedPrice = calculatedPrice * 12; // Yearly Total
+                calculatedPrice = calculatedPrice * 12 * 0.8; // 20% off yearly total
                 displayPeriod = 'year';
             }
 
