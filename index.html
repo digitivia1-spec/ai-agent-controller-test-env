@@ -26300,21 +26300,24 @@ Thank you for shopping with {store_name}!</textarea>
                 const percent = msgLimit > 0 ? Math.min(100, Math.round((msgUsed / msgLimit) * 100)) : 0;
 
                 // Calculate Days Remaining
-                let daysRemaining = 30;
-                if (subscriptionEnd) {
-                    const now = new Date();
-                    const diffTime = subscriptionEnd - now;
-                    if (diffTime > 0) {
-                        daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                let daysRemaining = '—';
+                if (status !== 'NO PLAN') {
+                    daysRemaining = 30;
+                    if (subscriptionEnd) {
+                        const now = new Date();
+                        const diffTime = subscriptionEnd - now;
+                        if (diffTime > 0) {
+                            daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        } else {
+                            daysRemaining = 0;
+                        }
                     } else {
-                        daysRemaining = 0;
+                        // Fallback: days until end of month
+                        const now = new Date();
+                        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                        const diffTime = Math.abs(endOfMonth - now);
+                        daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     }
-                } else {
-                    // Fallback: days until end of month
-                    const now = new Date();
-                    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                    const diffTime = Math.abs(endOfMonth - now);
-                    daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 }
 
                 // Update UI
@@ -26343,9 +26346,9 @@ Thank you for shopping with {store_name}!</textarea>
                 if (daysEl) daysEl.innerText = daysRemaining;
 
                 if (periodEndEl) {
-                    periodEndEl.innerText = subscriptionEnd
-                        ? subscriptionEnd.toLocaleDateString()
-                        : '—';
+                    periodEndEl.innerText = status === 'NO PLAN'
+                        ? '—'
+                        : (subscriptionEnd ? subscriptionEnd.toLocaleDateString() : '—');
                 }
 
             } catch (e) {
