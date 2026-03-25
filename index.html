@@ -26211,11 +26211,11 @@ Thank you for shopping with {store_name}!</textarea>
 
             try {
                 // Determine Plan (Mock or Actual)
-                let planName = 'free';
-                let msgLimit = 100;
+                let planName = 'no plan';
+                let msgLimit = 1; // avoid divide-by-zero
                 let msgUsed = 0;
                 let subscriptionEnd = null;
-                let status = 'TRIALING';
+                let status = 'NONE';
 
                 if (currentUserOrgId) {
                     const { data: sub, error } = await supabaseClient
@@ -29158,15 +29158,6 @@ Thank you for shopping with {store_name}!</textarea>
         // Fallback Plans if DB is empty or RPC fails (synced with database 2026-03-17)
         const DEFAULT_PLANS = [
             {
-                plan_slug: 'free_trial',
-                plan_name: 'Free Trial',
-                plan_description: 'Experience the power of AI with zero risk.',
-                currency: 'EGP',
-                unit_amount_cents: 0,
-                billing_interval: 'month',
-                features: ['500 conversations', 'Basic Auto Replies', 'Standard Dashboard']
-            },
-            {
                 plan_slug: 'starter',
                 plan_name: 'Starter',
                 plan_description: 'Smart AI Kickstart',
@@ -29226,11 +29217,16 @@ Thank you for shopping with {store_name}!</textarea>
 
                 // Hard override for EGP pricing (critical hotfix)
                 const OVERRIDE_EGP = {
-                    free_trial: 0,
                     starter: 395000,   // EGP 3,950
                     growth: 795000,    // EGP 7,950
                     pro: 2095000       // EGP 20,950
                 };
+
+                // Remove deprecated free trial plan (defence in depth)
+                plans = plans.filter((plan) => {
+                    const slug = String(plan.plan_slug || '').toLowerCase();
+                    return slug !== 'free_trial';
+                });
 
                 plans = plans.map((plan) => {
                     const slug = String(plan.plan_slug || '').toLowerCase();
@@ -29246,7 +29242,6 @@ Thank you for shopping with {store_name}!</textarea>
 
                 // Keep pricing cards in a stable business-defined order.
                 const planOrder = {
-                    free_trial: 0,
                     starter: 1,
                     growth: 2,
                     pro: 3
@@ -29258,6 +29253,11 @@ Thank you for shopping with {store_name}!</textarea>
                     const bRank = Object.prototype.hasOwnProperty.call(planOrder, bSlug) ? planOrder[bSlug] : 999;
                     return aRank - bRank;
                 });
+
+                if (plans.length === 0) {
+                    grid.innerHTML = '<div style="color:white; text-align:center; width:100%; grid-column:1/-1; padding:30px;">No paid plans are available right now.</div>';
+                    return;
+                }
 
                 grid.innerHTML = '';
 
@@ -29351,7 +29351,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             // Logic to distinguish popular etc
             const isPopular = plan.plan_slug === 'growth';
-            const isFree = plan.plan_slug.includes('free') || plan.unit_amount_cents === 0;
+            const isFree = false; // Trials disabled permanently
 
             const div = document.createElement('div');
             div.className = `pricing-card ${plan.plan_slug} ${isPopular ? 'most-popular' : ''}`;
@@ -29409,13 +29409,8 @@ Thank you for shopping with {store_name}!</textarea>
             const mostPopularText = translateText('MOST POPULAR', 'ui');
 
             let actionBtn = '';
-            if (isFree) {
-                const btnText = translateText('Start Free Trial', 'ui');
-                actionBtn = `<button class="pc-btn" onclick="activateFreeTrial('${plan.plan_slug}')">${btnText}</button>`;
-            } else {
-                const btnText = translateText('Upgrade', 'ui');
-                actionBtn = `<button class="pc-btn" onclick="initiateStripeCheckout('${plan.plan_slug}')">${btnText}</button>`;
-            }
+            const btnText = translateText('Upgrade', 'ui');
+            actionBtn = `<button class="pc-btn" onclick="initiateStripeCheckout('${plan.plan_slug}')">${btnText}</button>`;
 
             // Get secure payment text with proper translation
             const securePaymentText = currentLang === 'ar' ?
@@ -29484,7 +29479,6 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function getIdealText(slug) {
-            if (slug.includes('free_trial') || slug === 'free_trial') return 'You want to test drive the system first.';
             if (slug === 'starter') return 'You want to automate manual replies.';
             if (slug === 'growth') return 'You want to scale engagement & sales.';
             if (slug === 'pro') return 'You need CRM syncing & priority support.';
@@ -29493,9 +29487,8 @@ Thank you for shopping with {store_name}!</textarea>
 
         // Actions
         async function activateFreeTrial(planSlug) {
-            alert('Free trial activated! 14 days left.');
+            alert('Trials are disabled. Please pick a paid plan.');
             closePricingModal();
-            // Logic: Update user org subscription in DB via RPC or Edge Function
         }
 
         async function initiateStripeCheckout(planSlug) {
