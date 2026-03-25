@@ -26206,6 +26206,7 @@ Thank you for shopping with {store_name}!</textarea>
             const daysEl = document.getElementById('usage-days-remaining');
             const badgeEl = document.getElementById('usage-plan-badge');
             const periodEndEl = document.getElementById('usage-period-end');
+            const endLabelEl = document.getElementById('usage-end-label');
 
             if (!nameEl) return;
 
@@ -26229,21 +26230,27 @@ Thank you for shopping with {store_name}!</textarea>
                         .maybeSingle();
 
                     if (sub) {
+                        const planData = Array.isArray(sub.plan) ? sub.plan[0] : sub.plan;
+                        if (planData && planData.plan_slug) {
+                            planName = planData.plan_slug;
+                            if (planData.limits && planData.limits.conversations_limit) {
+                                msgLimit = planData.limits.conversations_limit;
+                            }
+                        }
                         if (sub.status) status = sub.status.toUpperCase();
                         if (sub.current_period_end) {
                             subscriptionEnd = new Date(sub.current_period_end);
                         }
-
-                        if (sub.plan) {
-                            const planData = Array.isArray(sub.plan) ? sub.plan[0] : sub.plan;
-                            if (planData) {
-                                planName = planData.plan_slug || 'free';
-                                if (planData.limits && planData.limits.conversations_limit) {
-                                    msgLimit = planData.limits.conversations_limit;
-                                }
-                            }
-                        }
                     }
+                }
+
+                // Normalize "no plan" state: no plan slug or canceled/inactive
+                const hasPlan = planName && planName !== 'no plan' && planName !== 'free' && planName !== 'free_trial';
+                const activeStatus = status && !['CANCELED', 'CANCELLED', 'INACTIVE', 'NONE', 'NO PLAN'].includes(status);
+                if (!hasPlan || !activeStatus) {
+                    planName = 'No plan';
+                    status = 'NO PLAN';
+                    subscriptionEnd = null;
                 }
 
                 // WhatsApp Outbound Usage Logic (A3)
@@ -26345,10 +26352,13 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (daysEl) daysEl.innerText = daysRemaining;
 
+                const showExpiry = status !== 'NO PLAN' && subscriptionEnd;
                 if (periodEndEl) {
-                    periodEndEl.innerText = status === 'NO PLAN'
-                        ? '—'
-                        : (subscriptionEnd ? subscriptionEnd.toLocaleDateString() : '—');
+                    periodEndEl.innerText = showExpiry ? subscriptionEnd.toLocaleDateString() : '—';
+                }
+                if (endLabelEl) {
+                    endLabelEl.style.visibility = showExpiry ? 'visible' : 'hidden';
+                    endLabelEl.style.opacity = showExpiry ? '1' : '0.5';
                 }
 
             } catch (e) {
