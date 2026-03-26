@@ -2067,6 +2067,8 @@
                 meeting_cta: "Send test meeting email",
                 meeting_tooltip: "Sends a sample meeting email to your current login email with meeting details and a dashboard button.",
                 recipient_missing: "No login email available",
+                auth_required: "Please refresh the page and sign in again to send the test email.",
+                client_unavailable: "The email test service is not ready yet. Please refresh the page.",
                 limit_reached: "You have already used your 5 email preview tests for today.",
                 status_failed: "Could not load email test status.",
                 toast_order_sent: "Test order email sent to {email}",
@@ -2352,6 +2354,8 @@
                 meeting_cta: "إرسال بريد اجتماع تجريبي",
                 meeting_tooltip: "يرسل بريد اجتماع تجريبي إلى بريد تسجيل الدخول الحالي مع تفاصيل الاجتماع وزر فتح لوحة التحكم.",
                 recipient_missing: "لا يوجد بريد دخول متاح",
+                auth_required: "يرجى تحديث الصفحة وتسجيل الدخول مرة أخرى لإرسال البريد التجريبي.",
+                client_unavailable: "خدمة البريد التجريبي غير جاهزة الآن. يرجى تحديث الصفحة.",
                 limit_reached: "لقد استخدمت بالفعل 5 تجارب بريدية لليوم.",
                 status_failed: "تعذر تحميل حالة تجربة البريد.",
                 toast_order_sent: "تم إرسال رسالة الطلب التجريبية إلى {email}",
@@ -27689,6 +27693,7 @@ Thank you for shopping with {store_name}!</textarea>
             recipient_email: '',
             loading: false
         };
+        let emailNotificationTestStatusRetryTimer = null;
 
         /* --- Mock logs placeholder & data --- */
         let mockOrderLogs = [];
@@ -27719,22 +27724,44 @@ Thank you for shopping with {store_name}!</textarea>
             [orderBtn, meetingBtn].forEach((btn) => {
                 if (!btn) return;
                 if (btn.hidden) return;
-                btn.disabled = exhausted || loading || !recipientEmail;
+                btn.disabled = exhausted || loading;
                 const tooltipText = btn.id === 'email-test-meeting-btn'
                     ? t('orders.email_test.meeting_tooltip')
                     : t('orders.email_test.order_tooltip');
                 const disabledText = exhausted
                     ? t('orders.email_test.limit_reached')
-                    : t('orders.email_test.recipient_missing');
-                const finalTooltip = btn.disabled ? disabledText : tooltipText;
+                    : tooltipText;
+                const finalTooltip = btn.disabled ? disabledText : (recipientEmail ? tooltipText : t('orders.email_test.recipient_missing'));
                 btn.title = finalTooltip;
                 btn.setAttribute('aria-label', finalTooltip);
             });
         }
 
-        async function loadEmailNotificationTestStatus() {
+        async function resolveEmailNotificationTestUser() {
+            if (!window.supabaseClient?.auth?.getUser) return null;
+            try {
+                const { data, error } = await window.supabaseClient.auth.getUser();
+                if (error) throw error;
+                return data?.user || null;
+            } catch (error) {
+                console.warn('Email notification auth check failed:', error);
+                return null;
+            }
+        }
+
+        async function loadEmailNotificationTestStatus(retryCount = 0) {
             if (!window.supabaseClient) return;
             try {
+                const user = await resolveEmailNotificationTestUser();
+                if (!user) {
+                    if (retryCount < 6) {
+                        clearTimeout(emailNotificationTestStatusRetryTimer);
+                        emailNotificationTestStatusRetryTimer = setTimeout(() => {
+                            loadEmailNotificationTestStatus(retryCount + 1);
+                        }, 700);
+                    }
+                    return;
+                }
                 const { data, error } = await window.supabaseClient.rpc('get_my_email_notification_test_status');
                 if (error) throw error;
                 emailNotificationTestStatus = {
@@ -27750,7 +27777,16 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function sendEmailNotificationTest(kind) {
-            if (!window.supabaseClient || emailNotificationTestStatus.loading) return;
+            if (emailNotificationTestStatus.loading) return;
+            if (!window.supabaseClient) {
+                showToast(t('orders.email_test.client_unavailable'), 'error');
+                return;
+            }
+            const user = await resolveEmailNotificationTestUser();
+            if (!user) {
+                showToast(t('orders.email_test.auth_required'), 'error');
+                return;
+            }
             emailNotificationTestStatus.loading = true;
             renderEmailNotificationTestPanel();
 
@@ -27785,6 +27821,9 @@ Thank you for shopping with {store_name}!</textarea>
                 renderEmailNotificationTestPanel();
             }
         }
+
+        window.loadEmailNotificationTestStatus = loadEmailNotificationTestStatus;
+        window.sendEmailNotificationTest = sendEmailNotificationTest;
 
         function switchOrdersSubtab(tabKey, el) {
             if (isServiceOrg()) {
