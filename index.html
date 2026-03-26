@@ -2062,24 +2062,11 @@
         });
         Object.assign(window.LANG_EN.orders, {
             email_test: {
-                kicker: "Email Notification Preview",
-                title: "Let clients preview the exact email before going live",
-                description: "Send a polished test notification to your current login email and validate the quality, clarity, and CTA experience in a real inbox.",
-                send_to: "Sent to {email}",
-                recipient_missing: "No login email available",
-                remaining: "{count} of {max} test emails remaining",
-                exhausted: "Test limit reached",
-                reset_hint: "You can test up to two emails per account.",
-                order_title: "Preview order email",
-                order_body: "Shows customer details, order items, total amount, and the dashboard action button.",
                 order_cta: "Send test order email",
-                meeting_title: "Preview meeting email",
-                meeting_body: "Shows meeting topic, schedule, service details, and the dashboard action button.",
+                order_tooltip: "Sends a sample order email to your current login email with order details and a dashboard button.",
                 meeting_cta: "Send test meeting email",
-                quality_title: "What your client will verify",
-                quality_point_1: "A real delivered email with premium structure and clear hierarchy.",
-                quality_point_2: "Live-style order or meeting details that feel production ready.",
-                quality_point_3: "A direct dashboard CTA so the flow feels complete.",
+                meeting_tooltip: "Sends a sample meeting email to your current login email with meeting details and a dashboard button.",
+                recipient_missing: "No login email available",
                 limit_reached: "You have already used your two notification preview emails.",
                 status_failed: "Could not load email test status.",
                 toast_order_sent: "Test order email sent to {email}",
@@ -2360,24 +2347,11 @@
         });
         Object.assign(window.LANG_AR.orders, {
             email_test: {
-                kicker: "معاينة إشعار البريد",
-                title: "اسمح للعميل بمعاينة الرسالة الحقيقية قبل الإطلاق",
-                description: "أرسل إشعاراً تجريبياً احترافياً إلى بريد الدخول الحالي حتى تتأكد من الجودة والوضوح وزر الانتقال داخل لوحة التحكم.",
-                send_to: "سيتم الإرسال إلى {email}",
+                order_cta: "إرسال بريد طلب تجريبي",
+                order_tooltip: "يرسل بريد طلب تجريبي إلى بريد تسجيل الدخول الحالي مع تفاصيل الطلب وزر فتح لوحة التحكم.",
+                meeting_cta: "إرسال بريد اجتماع تجريبي",
+                meeting_tooltip: "يرسل بريد اجتماع تجريبي إلى بريد تسجيل الدخول الحالي مع تفاصيل الاجتماع وزر فتح لوحة التحكم.",
                 recipient_missing: "لا يوجد بريد دخول متاح",
-                remaining: "المتبقي {count} من أصل {max} رسالتين تجريبيتين",
-                exhausted: "تم الوصول للحد الأقصى للتجربة",
-                reset_hint: "يمكنك تجربة رسالتين فقط لكل حساب.",
-                order_title: "معاينة رسالة الطلب",
-                order_body: "تعرض تفاصيل العميل والمنتجات والإجمالي وزر فتح لوحة التحكم.",
-                order_cta: "إرسال رسالة طلب تجريبية",
-                meeting_title: "معاينة رسالة الاجتماع",
-                meeting_body: "تعرض موضوع الاجتماع والموعد والخدمة وزر فتح لوحة التحكم.",
-                meeting_cta: "إرسال رسالة اجتماع تجريبية",
-                quality_title: "ما الذي سيتحقق منه العميل",
-                quality_point_1: "رسالة بريد حقيقية بتنسيق احترافي وواضح.",
-                quality_point_2: "تفاصيل طلب أو اجتماع تبدو جاهزة للإنتاج.",
-                quality_point_3: "زر انتقال مباشر إلى اللوحة ليظهر المسار كاملاً.",
                 limit_reached: "لقد استخدمت بالفعل الرسالتين التجريبيتين للإشعارات.",
                 status_failed: "تعذر تحميل حالة تجربة البريد.",
                 toast_order_sent: "تم إرسال رسالة الطلب التجريبية إلى {email}",
@@ -2455,6 +2429,8 @@
                 "orders.rate_button": { mode: "tooltip", body: "Show a Rate Experience button after the order flow." },
                 "orders.preview": { mode: "tooltip", body: "Preview how the message will look before saving." },
                 "orders.actions": { mode: "tooltip", body: "These are the quick actions customers may receive in WhatsApp." },
+                "orders.email_test.order": { mode: "tooltip", body: "Send a real sample order email to your current login email so the client can review the layout, details, and dashboard button." },
+                "orders.email_test.meeting": { mode: "tooltip", body: "Send a real sample meeting email to your current login email so the client can review the layout, details, and dashboard button." },
                 "meetings.status": { mode: "tooltip", body: "Shows the current meeting stage, such as pending, confirmed, completed, or cancelled." },
                 "meetings.actions": { mode: "tooltip", body: "Quick actions for managing the meeting lifecycle." },
                 "dashboard.revenue": { mode: "tooltip", body: "Total revenue in the selected period." },
@@ -2538,6 +2514,8 @@
                 "orders.rate_button": { mode: "tooltip", body: "فعّل زر تقييم التجربة بعد مسار الطلب." },
                 "orders.preview": { mode: "tooltip", body: "شاهد شكل الرسالة قبل الحفظ." },
                 "orders.actions": { mode: "tooltip", body: "هذه هي الإجراءات السريعة التي قد تظهر للعميل في واتساب." },
+                "orders.email_test.order": { mode: "tooltip", body: "أرسل بريداً تجريبياً حقيقياً للطلب إلى بريد تسجيل الدخول الحالي حتى يراجع العميل التصميم والتفاصيل وزر لوحة التحكم." },
+                "orders.email_test.meeting": { mode: "tooltip", body: "أرسل بريداً تجريبياً حقيقياً للاجتماع إلى بريد تسجيل الدخول الحالي حتى يراجع العميل التصميم والتفاصيل وزر لوحة التحكم." },
                 "meetings.status": { mode: "tooltip", body: "يوضح مرحلة الاجتماع الحالية مثل قيد الانتظار أو مؤكد أو مكتمل أو ملغي." },
                 "meetings.actions": { mode: "tooltip", body: "إجراءات سريعة لإدارة دورة حياة الاجتماع." },
                 "dashboard.revenue": { mode: "tooltip", body: "إجمالي الإيرادات خلال الفترة المحددة." },
@@ -11390,192 +11368,39 @@
             flex-wrap: wrap;
         }
 
-        .email-test-panel {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 18px;
-            padding: 22px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background:
-                radial-gradient(circle at top right, rgba(120, 209, 153, 0.18), transparent 36%),
-                linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.76));
-            box-shadow: 0 22px 48px rgba(2, 6, 23, 0.22);
-        }
-
-        .email-test-panel::after {
-            content: '';
-            position: absolute;
-            inset-block-start: 0;
-            inset-inline-end: 0;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle, rgba(120, 209, 153, 0.22), transparent 70%);
-            pointer-events: none;
-        }
-
-        .email-test-panel-inner {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-            gap: 18px;
-            align-items: start;
-        }
-
-        .email-test-copy {
-            max-width: 740px;
-        }
-
-        .email-test-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 12px;
-            border-radius: 999px;
-            background: rgba(120, 209, 153, 0.12);
-            color: #b8f0cb;
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-
-        .email-test-heading {
-            margin: 14px 0 10px;
-            font-size: clamp(1.2rem, 2vw, 1.6rem);
-            line-height: 1.25;
-            color: #f8fafc;
-        }
-
-        .email-test-description {
-            margin: 0;
-            color: rgba(226, 232, 240, 0.82);
-            font-size: 0.94rem;
-            line-height: 1.7;
-        }
-
-        .email-test-meta {
+        .email-test-toolbar {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .email-test-pill {
-            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            min-height: 40px;
-            padding: 8px 14px;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.06);
-            color: #e2e8f0;
-            font-size: 0.84rem;
-            font-weight: 600;
-        }
-
-        .email-test-pill.quota[data-state="empty"] {
-            background: rgba(239, 68, 68, 0.12);
-            border-color: rgba(239, 68, 68, 0.28);
-            color: #fecaca;
-        }
-
-        .email-test-points {
-            display: grid;
             gap: 10px;
-            margin-top: 18px;
+            margin-bottom: 18px;
         }
 
-        .email-test-points-title {
-            color: #f8fafc;
-            font-size: 0.88rem;
-            font-weight: 700;
-        }
-
-        .email-test-point {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            color: rgba(226, 232, 240, 0.82);
-            font-size: 0.88rem;
-            line-height: 1.55;
-        }
-
-        .email-test-point::before {
-            content: '•';
-            color: var(--theme-color);
-            font-size: 1.05rem;
-            line-height: 1.3;
-        }
-
-        .email-test-actions {
-            display: grid;
-            gap: 12px;
-        }
-
-        .email-test-action {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 16px;
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-        }
-
-        .email-test-action-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .email-test-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.15rem;
-            background: rgba(255, 255, 255, 0.09);
-            flex-shrink: 0;
-        }
-
-        .email-test-action-title {
-            color: #f8fafc;
-            font-size: 0.96rem;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        .email-test-action-body {
-            color: rgba(226, 232, 240, 0.76);
-            font-size: 0.84rem;
-            line-height: 1.6;
-            min-height: 2.8em;
+        .email-test-toolbar[hidden] {
+            display: none !important;
         }
 
         .email-test-btn {
-            width: 100%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 46px;
-            padding: 11px 16px;
+            min-height: 42px;
+            padding: 10px 14px;
             border-radius: 14px;
-            border: none;
-            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: #f8fafc;
+            font-size: 0.88rem;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease, background 0.22s ease;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+            white-space: nowrap;
         }
 
         .email-test-btn:hover:not(:disabled) {
             transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(2, 6, 23, 0.18);
         }
 
         .email-test-btn:disabled {
@@ -11583,20 +11408,35 @@
             cursor: not-allowed;
         }
 
+        .email-test-btn-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            font-size: 0.92rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
         .email-test-btn.order {
             background: linear-gradient(135deg, #78d199, #54b572);
             color: #082312;
             box-shadow: 0 14px 26px rgba(84, 181, 114, 0.2);
+            border-color: rgba(84, 181, 114, 0.35);
         }
 
         .email-test-btn.meeting {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #f8fafc;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.92), rgba(37, 99, 235, 0.92));
+            color: #eff6ff;
+            border-color: rgba(129, 140, 248, 0.3);
+            box-shadow: 0 14px 26px rgba(37, 99, 235, 0.2);
         }
 
         .email-test-btn.meeting:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.13);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(37, 99, 235, 1));
         }
 
         /* Confirmation two-column layout */
@@ -12209,10 +12049,6 @@
 
         /* Responsive */
         @media (max-width: 900px) {
-            .email-test-panel-inner {
-                grid-template-columns: 1fr;
-            }
-
             .wa-confirm-layout {
                 grid-template-columns: 1fr;
             }
@@ -12235,13 +12071,13 @@
         }
 
         @media (max-width: 500px) {
-            .email-test-panel {
-                padding: 16px;
-                border-radius: 18px;
+            .email-test-toolbar {
+                gap: 8px;
             }
 
-            .email-test-meta {
-                flex-direction: column;
+            .email-test-btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .orders-segmented-control {
@@ -16183,42 +16019,12 @@
             color: #1e293b !important;
         }
 
-        :root[data-theme="light"] .email-test-panel {
-            background:
-                radial-gradient(circle at top right, rgba(84, 181, 114, 0.15), transparent 36%),
-                linear-gradient(145deg, #ffffff, #f8fafc) !important;
-            border-color: rgba(15, 23, 42, 0.08) !important;
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08) !important;
-        }
-
-        :root[data-theme="light"] .email-test-kicker {
-            background: rgba(84, 181, 114, 0.12) !important;
-            color: #166534 !important;
-        }
-
-        :root[data-theme="light"] .email-test-heading,
-        :root[data-theme="light"] .email-test-points-title,
-        :root[data-theme="light"] .email-test-action-title {
-            color: #0f172a !important;
-        }
-
-        :root[data-theme="light"] .email-test-description,
-        :root[data-theme="light"] .email-test-point,
-        :root[data-theme="light"] .email-test-action-body,
-        :root[data-theme="light"] .email-test-pill {
-            color: #475569 !important;
-        }
-
-        :root[data-theme="light"] .email-test-pill,
-        :root[data-theme="light"] .email-test-action {
-            background: rgba(255, 255, 255, 0.88) !important;
+        :root[data-theme="light"] .email-test-btn {
             border-color: rgba(15, 23, 42, 0.08) !important;
         }
 
         :root[data-theme="light"] .email-test-btn.meeting {
-            background: #e2e8f0 !important;
-            border-color: rgba(15, 23, 42, 0.08) !important;
-            color: #0f172a !important;
+            color: #eff6ff !important;
         }
 
         :root[data-theme="light"] .wa-settings-panel,
@@ -22557,47 +22363,29 @@
 
                     <!-- VIEW 1: Incoming Orders (existing) -->
                     <div id="orders-incoming-view" class="orders-section active">
-                        <div class="email-test-panel" id="email-test-panel">
-                            <div class="email-test-panel-inner">
-                                <div class="email-test-copy">
-                                    <div class="email-test-kicker" data-i18n="orders.email_test.kicker">Email Notification Preview</div>
-                                    <h3 class="email-test-heading" data-i18n="orders.email_test.title">Let clients preview the exact email before going live</h3>
-                                    <p class="email-test-description" data-i18n="orders.email_test.description">Send a polished test notification to your current login email and validate the quality, clarity, and CTA experience in a real inbox.</p>
-                                    <div class="email-test-meta">
-                                        <div class="email-test-pill quota" id="email-test-quota-pill" data-state="ready">2 of 2 test emails remaining</div>
-                                        <div class="email-test-pill recipient" id="email-test-recipient-pill">Sent to --</div>
-                                    </div>
-                                    <div class="email-test-points">
-                                        <div class="email-test-points-title" data-i18n="orders.email_test.quality_title">What your client will verify</div>
-                                        <div class="email-test-point" data-i18n="orders.email_test.quality_point_1">A real delivered email with premium structure and clear hierarchy.</div>
-                                        <div class="email-test-point" data-i18n="orders.email_test.quality_point_2">Live-style order or meeting details that feel production ready.</div>
-                                        <div class="email-test-point" data-i18n="orders.email_test.quality_point_3">A direct dashboard CTA so the flow feels complete.</div>
-                                        <div class="email-test-point" data-i18n="orders.email_test.reset_hint">You can test up to two emails per account.</div>
-                                    </div>
-                                </div>
-                                <div class="email-test-actions">
-                                    <div class="email-test-action">
-                                        <div class="email-test-action-header">
-                                            <div class="email-test-icon">📦</div>
-                                            <div class="email-test-action-title" data-i18n="orders.email_test.order_title">Preview order email</div>
-                                        </div>
-                                        <div class="email-test-action-body" data-i18n="orders.email_test.order_body">Shows customer details, order items, total amount, and the dashboard action button.</div>
-                                        <button class="email-test-btn order" id="email-test-order-btn" onclick="sendEmailNotificationTest('order')">
-                                            <span data-i18n="orders.email_test.order_cta">Send test order email</span>
-                                        </button>
-                                    </div>
-                                    <div class="email-test-action">
-                                        <div class="email-test-action-header">
-                                            <div class="email-test-icon">📆</div>
-                                            <div class="email-test-action-title" data-i18n="orders.email_test.meeting_title">Preview meeting email</div>
-                                        </div>
-                                        <div class="email-test-action-body" data-i18n="orders.email_test.meeting_body">Shows meeting topic, schedule, service details, and the dashboard action button.</div>
-                                        <button class="email-test-btn meeting" id="email-test-meeting-btn" onclick="sendEmailNotificationTest('meeting')">
-                                            <span data-i18n="orders.email_test.meeting_cta">Send test meeting email</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="email-test-toolbar" id="email-test-toolbar">
+                            <button
+                                class="email-test-btn order"
+                                id="email-test-order-btn"
+                                onclick="sendEmailNotificationTest('order')"
+                                data-help-key="orders.email_test.order"
+                                title="Sends a sample order email to your current login email with order details and a dashboard button."
+                                aria-label="Send test order email"
+                            >
+                                <span class="email-test-btn-icon" aria-hidden="true">📦</span>
+                                <span data-i18n="orders.email_test.order_cta">Send test order email</span>
+                            </button>
+                            <button
+                                class="email-test-btn meeting"
+                                id="email-test-meeting-btn"
+                                onclick="sendEmailNotificationTest('meeting')"
+                                data-help-key="orders.email_test.meeting"
+                                title="Sends a sample meeting email to your current login email with meeting details and a dashboard button."
+                                aria-label="Send test meeting email"
+                            >
+                                <span class="email-test-btn-icon" aria-hidden="true">📆</span>
+                                <span data-i18n="orders.email_test.meeting_cta">Send test meeting email</span>
+                            </button>
                         </div>
                         <div id="orders-product-incoming">
                         <div id="orders-table-container" class="orders-table-container">
@@ -27896,43 +27684,41 @@ Thank you for shopping with {store_name}!</textarea>
         let filteredOrderLogs = [];
 
         function renderEmailNotificationTestPanel() {
-            const quotaEl = document.getElementById('email-test-quota-pill');
-            const recipientEl = document.getElementById('email-test-recipient-pill');
+            const toolbarEl = document.getElementById('email-test-toolbar');
             const orderBtn = document.getElementById('email-test-order-btn');
             const meetingBtn = document.getElementById('email-test-meeting-btn');
             const recipientEmail = emailNotificationTestStatus.recipient_email || currentUserProfile?.email || '';
             const remaining = Number.isFinite(Number(emailNotificationTestStatus.remaining)) ? Number(emailNotificationTestStatus.remaining) : 2;
-            const limit = Number.isFinite(Number(emailNotificationTestStatus.limit)) ? Number(emailNotificationTestStatus.limit) : 2;
             const exhausted = remaining <= 0;
-
-            if (quotaEl) {
-                quotaEl.dataset.state = exhausted ? 'empty' : 'ready';
-                quotaEl.textContent = exhausted
-                    ? t('orders.email_test.exhausted')
-                    : t('orders.email_test.remaining', { count: String(remaining), max: String(limit) });
-            }
-
-            if (recipientEl) {
-                recipientEl.textContent = recipientEmail
-                    ? t('orders.email_test.send_to', { email: recipientEmail })
-                    : t('orders.email_test.recipient_missing');
-            }
-
+            const serviceOrg = isServiceOrg();
             const loading = !!emailNotificationTestStatus.loading;
-            [orderBtn, meetingBtn].forEach((btn) => {
-                if (!btn) return;
-                btn.disabled = exhausted || loading || !recipientEmail;
-            });
+
+            if (toolbarEl) {
+                toolbarEl.hidden = false;
+            }
 
             if (orderBtn) {
-                orderBtn.classList.toggle('meeting', isServiceOrg());
-                orderBtn.classList.toggle('order', !isServiceOrg());
+                orderBtn.hidden = serviceOrg;
             }
 
             if (meetingBtn) {
-                meetingBtn.classList.toggle('order', isServiceOrg());
-                meetingBtn.classList.toggle('meeting', !isServiceOrg());
+                meetingBtn.hidden = !serviceOrg;
             }
+
+            [orderBtn, meetingBtn].forEach((btn) => {
+                if (!btn) return;
+                if (btn.hidden) return;
+                btn.disabled = exhausted || loading || !recipientEmail;
+                const tooltipText = btn.id === 'email-test-meeting-btn'
+                    ? t('orders.email_test.meeting_tooltip')
+                    : t('orders.email_test.order_tooltip');
+                const disabledText = exhausted
+                    ? t('orders.email_test.limit_reached')
+                    : t('orders.email_test.recipient_missing');
+                const finalTooltip = btn.disabled ? disabledText : tooltipText;
+                btn.title = finalTooltip;
+                btn.setAttribute('aria-label', finalTooltip);
+            });
         }
 
         async function loadEmailNotificationTestStatus() {
