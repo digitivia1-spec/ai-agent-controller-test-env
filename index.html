@@ -6029,37 +6029,90 @@
 
         /* Updated Message Style for Arabic Fix */
         .message {
-            max-width: 80%;
-            padding: 0.8rem 1rem;
+            inline-size: fit-content;
+            max-inline-size: min(86%, 680px);
+            padding: 0.85rem 1rem 0.7rem;
             border-radius: 12px;
             font-size: 0.95rem;
-            line-height: 1.4;
-            word-wrap: break-word;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
             unicode-bidi: plaintext;
-            /* AUTO DETECT RTL/LTR */
             text-align: start;
-            /* ALIGN BASED ON CONTENT */
+            display: grid;
+            gap: 6px;
         }
 
         .msg-ai {
-            align-self: flex-start;
             background: #2d2d2d;
             border-bottom-left-radius: 2px;
             color: #ddd;
+            margin-right: auto;
+            margin-left: 0;
         }
 
         .msg-user {
-            align-self: flex-end;
             background: var(--theme-color);
             border-bottom-right-radius: 2px;
             color: white;
             transition: background 0.3s;
+            margin-left: auto;
+            margin-right: 0;
         }
 
         /* Message timestamp styling */
         .msg-content {
             unicode-bidi: plaintext;
             text-align: start;
+            white-space: normal;
+            display: grid;
+            gap: 0.62rem;
+        }
+
+        .msg-paragraph {
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.7;
+        }
+
+        .msg-caption {
+            margin: 0;
+            display: grid;
+            gap: 0.62rem;
+            unicode-bidi: plaintext;
+            text-align: start;
+        }
+
+        .msg-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 0.48rem;
+        }
+
+        .msg-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+        }
+
+        .msg-list-marker {
+            flex: 0 0 auto;
+            min-inline-size: 1.5em;
+            font-weight: 700;
+            color: inherit;
+            opacity: 0.94;
+            line-height: 1.7;
+            text-align: start;
+        }
+
+        .msg-list-text {
+            flex: 1;
+            min-inline-size: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.7;
         }
 
         .msg-time {
@@ -6134,12 +6187,25 @@
             font-size: 0.9rem;
         }
 
-        .msg-caption {
-            unicode-bidi: plaintext;
-            text-align: start;
-        }
-
         @media (max-width: 480px) {
+            .message {
+                max-inline-size: calc(100% - 16px);
+                padding: 0.8rem 0.9rem 0.68rem;
+                font-size: 0.92rem;
+            }
+
+            .msg-content {
+                gap: 0.56rem;
+            }
+
+            .msg-list-item {
+                gap: 0.44rem;
+            }
+
+            .msg-list-marker {
+                min-inline-size: 1.25em;
+            }
+
             .msg-image {
                 max-width: 220px;
             }
@@ -10187,15 +10253,17 @@
         }
 
         [dir="rtl"] .message {
-            text-align: right;
+            text-align: start;
         }
 
         [dir="rtl"] .msg-user {
-            align-self: flex-start;
+            margin-left: auto;
+            margin-right: 0;
         }
 
         [dir="rtl"] .msg-ai {
-            align-self: flex-end;
+            margin-right: auto;
+            margin-left: 0;
         }
 
         [dir="rtl"] .login-card {
@@ -12490,13 +12558,13 @@
 
             /* Fix Message Bubbles in RTL */
             [dir="rtl"] .msg-ai {
-                border-bottom-left-radius: 12px;
-                border-bottom-right-radius: 2px;
+                border-bottom-left-radius: 2px;
+                border-bottom-right-radius: 12px;
             }
 
             [dir="rtl"] .msg-user {
-                border-bottom-right-radius: 12px;
-                border-bottom-left-radius: 2px;
+                border-bottom-right-radius: 2px;
+                border-bottom-left-radius: 12px;
             }
 
             /* Fix Chat Input in RTL */
@@ -24939,11 +25007,95 @@ Thank you for shopping with {store_name}!</textarea>
             return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
+        function formatStructuredMessageText(text, wrapperClass = 'msg-content') {
+            const raw = text === null || text === undefined || text === 'null' ? '' : String(text);
+            const normalized = raw.replace(/\r\n?/g, '\n');
+            const lines = normalized.split('\n');
+            const blocks = [];
+            let paragraphLines = [];
+            let currentList = null;
+
+            const flushParagraph = () => {
+                if (!paragraphLines.length) return;
+                const html = paragraphLines.map(makeSafeText).join('<br>');
+                blocks.push(`<p class="msg-paragraph">${html}</p>`);
+                paragraphLines = [];
+            };
+
+            const flushList = () => {
+                if (!currentList || !currentList.items.length) {
+                    currentList = null;
+                    return;
+                }
+                const tag = currentList.ordered ? 'ol' : 'ul';
+                const itemsHTML = currentList.items.map((item) => {
+                    const body = item.lines.map(makeSafeText).join('<br>');
+                    return `
+                        <li class="msg-list-item">
+                            <span class="msg-list-marker">${makeSafeText(item.marker)}</span>
+                            <span class="msg-list-text">${body}</span>
+                        </li>
+                    `;
+                }).join('');
+                blocks.push(`<${tag} class="msg-list ${currentList.ordered ? 'msg-list-ordered' : 'msg-list-bulleted'}">${itemsHTML}</${tag}>`);
+                currentList = null;
+            };
+
+            const bulletMatch = (line) => line.match(/^\s*([•●▪◦▪■▪\-*–—])\s+(.+)$/u);
+            const orderedMatch = (line) => line.match(/^\s*([\d\u0660-\u0669]+[.)-])\s+(.+)$/u);
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed) {
+                    flushParagraph();
+                    flushList();
+                    continue;
+                }
+
+                const bullet = bulletMatch(line);
+                if (bullet) {
+                    flushParagraph();
+                    if (!currentList || currentList.ordered) {
+                        flushList();
+                        currentList = { ordered: false, items: [] };
+                    }
+                    currentList.items.push({ marker: bullet[1], lines: [bullet[2].trim()] });
+                    continue;
+                }
+
+                const ordered = orderedMatch(line);
+                if (ordered) {
+                    flushParagraph();
+                    if (!currentList || !currentList.ordered) {
+                        flushList();
+                        currentList = { ordered: true, items: [] };
+                    }
+                    currentList.items.push({ marker: ordered[1], lines: [ordered[2].trim()] });
+                    continue;
+                }
+
+                if (currentList && currentList.items.length) {
+                    currentList.items[currentList.items.length - 1].lines.push(trimmed);
+                    continue;
+                }
+
+                paragraphLines.push(trimmed);
+            }
+
+            flushParagraph();
+            flushList();
+
+            if (!blocks.length) {
+                return `<div class="${wrapperClass}"></div>`;
+            }
+
+            return `<div class="${wrapperClass}" dir="auto">${blocks.join('')}</div>`;
+        }
+
         async function renderMsgContentHTML(msg) {
-            const safeCaption = makeSafeText(msg.content);
             if (!isImageMsg(msg)) {
                 // Plain text message
-                return `<div class="msg-content">${safeCaption}</div>`;
+                return formatStructuredMessageText(msg.content);
             }
             // Image message
             const url = await resolveMsgMediaUrl(msg);
@@ -24953,7 +25105,7 @@ Thank you for shopping with {store_name}!</textarea>
             } else {
                 mediaHTML = `<div class="msg-image-placeholder">📷 Image…</div>`;
             }
-            const captionHTML = safeCaption ? `<div class="msg-caption">${safeCaption}</div>` : '';
+            const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
             return `<div class="msg-content"><div class="msg-media">${mediaHTML}${captionHTML}</div></div>`;
         }
 
@@ -24978,8 +25130,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             // For images, show placeholder first, then resolve
             if (isImageMsg(msg)) {
-                const safeCaption = makeSafeText(msg.content);
-                const captionHTML = safeCaption ? `<div class="msg-caption">${safeCaption}</div>` : '';
+                const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
                 div.innerHTML = `
                     ${buildSenderBadgeHTML(msg)}
                     <div class="msg-content"><div class="msg-media"><div class="msg-image-placeholder">📷 Image…</div>${captionHTML}</div></div>
@@ -25006,10 +25157,9 @@ Thank you for shopping with {store_name}!</textarea>
                 }
             } else {
                 // Plain text message
-                const safeText = makeSafeText(msg.content);
                 div.innerHTML = `
                     ${buildSenderBadgeHTML(msg)}
-                    <div class="msg-content">${safeText}</div>
+                    ${formatStructuredMessageText(msg.content)}
                     ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
                 `;
                 container.appendChild(div);
