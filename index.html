@@ -2067,7 +2067,7 @@
                 meeting_cta: "Send test meeting email",
                 meeting_tooltip: "Sends a sample meeting email to your current login email with meeting details and a dashboard button.",
                 recipient_missing: "No login email available",
-                limit_reached: "You have already used your two notification preview emails.",
+                limit_reached: "You have already used your 5 email preview tests for today.",
                 status_failed: "Could not load email test status.",
                 toast_order_sent: "Test order email sent to {email}",
                 toast_meeting_sent: "Test meeting email sent to {email}",
@@ -2352,7 +2352,7 @@
                 meeting_cta: "إرسال بريد اجتماع تجريبي",
                 meeting_tooltip: "يرسل بريد اجتماع تجريبي إلى بريد تسجيل الدخول الحالي مع تفاصيل الاجتماع وزر فتح لوحة التحكم.",
                 recipient_missing: "لا يوجد بريد دخول متاح",
-                limit_reached: "لقد استخدمت بالفعل الرسالتين التجريبيتين للإشعارات.",
+                limit_reached: "لقد استخدمت بالفعل 5 تجارب بريدية لليوم.",
                 status_failed: "تعذر تحميل حالة تجربة البريد.",
                 toast_order_sent: "تم إرسال رسالة الطلب التجريبية إلى {email}",
                 toast_meeting_sent: "تم إرسال رسالة الاجتماع التجريبية إلى {email}",
@@ -27673,8 +27673,8 @@ Thank you for shopping with {store_name}!</textarea>
         let previewSampleLang = 'en';
         let emailNotificationTestStatus = {
             sent_count: 0,
-            remaining: 2,
-            limit: 2,
+            remaining: 5,
+            limit: 5,
             recipient_email: '',
             loading: false
         };
@@ -27688,7 +27688,7 @@ Thank you for shopping with {store_name}!</textarea>
             const orderBtn = document.getElementById('email-test-order-btn');
             const meetingBtn = document.getElementById('email-test-meeting-btn');
             const recipientEmail = emailNotificationTestStatus.recipient_email || currentUserProfile?.email || '';
-            const remaining = Number.isFinite(Number(emailNotificationTestStatus.remaining)) ? Number(emailNotificationTestStatus.remaining) : 2;
+            const remaining = Number.isFinite(Number(emailNotificationTestStatus.remaining)) ? Number(emailNotificationTestStatus.remaining) : 5;
             const exhausted = remaining <= 0;
             const serviceOrg = isServiceOrg();
             const loading = !!emailNotificationTestStatus.loading;
