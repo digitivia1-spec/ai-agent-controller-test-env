@@ -20259,6 +20259,7 @@
         let currentUserOrgId = null;
         let currentUserProfile = null; // Stores user profile data for modals
         let currentOrgData = null; // Stores organization data for modals
+        var onbIntegrationView = 'woocommerce';
 
         let insightPlatform = 'facebook';
         let insightPeriod = 'day';
@@ -20606,6 +20607,13 @@
         }
 
         function getOfferType() {
+            if (currentOrgData && (!currentOrgData.external_onboarding_data || typeof currentOrgData.external_onboarding_data !== 'object')) {
+                currentOrgData.external_onboarding_data = { business: { offer_type: 'product' } };
+            } else if (currentOrgData && (!currentOrgData.external_onboarding_data.business || typeof currentOrgData.external_onboarding_data.business !== 'object')) {
+                currentOrgData.external_onboarding_data.business = { offer_type: 'product' };
+            } else if (currentOrgData && !currentOrgData.external_onboarding_data.business.offer_type) {
+                currentOrgData.external_onboarding_data.business.offer_type = 'product';
+            }
             const raw = String(currentOrgData?.external_onboarding_data?.business?.offer_type || '').toLowerCase();
             return raw === 'service' ? 'service' : 'product';
         }
@@ -20772,6 +20780,9 @@
 
             if (usingService && incomingBtn && currentOrdersSubtab !== 'incoming') {
                 switchOrdersSubtab('incoming', incomingBtn);
+            }
+            if (typeof renderEmailNotificationTestPanel === 'function') {
+                renderEmailNotificationTestPanel();
             }
         }
 
@@ -34361,7 +34372,6 @@ Thank you for shopping with {store_name}!</textarea>
         let onbSaveTimer = null;
         let onbFinishing = false;
         let onbIndustryOpen = false;
-        let onbIntegrationView = 'woocommerce';
         let onbViewportMode = 'regular';
         let onbIntegrationDirty = false;
         let onbSavedIntegrationSignature = '';
