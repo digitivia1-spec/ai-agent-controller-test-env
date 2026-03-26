@@ -25007,9 +25007,26 @@ Thank you for shopping with {store_name}!</textarea>
             return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
+        function normalizeMessageTextStructure(text) {
+            let normalized = String(text || '')
+                .replace(/\r\n?/g, '\n')
+                .replace(/\u00a0/g, ' ');
+
+            const weekdayPattern = '(?:الأحد|الاحد|الإثنين|الاثنين|الثلاثاء|الأربعاء|الاربعاء|الخميس|الجمعة|السبت|Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)';
+
+            normalized = normalized
+                .replace(/([.!؟])\s+(?=[^\n.!؟]{2,80}:)/gu, '$1\n\n')
+                .replace(/([.!؟])\s+(?=(?:[\d\u0660-\u0669]+[.)-]\s))/gu, '$1\n\n')
+                .replace(/([^\n])\s+((?:[\d\u0660-\u0669]+[.)-]))\s+/gu, '$1\n$2 ')
+                .replace(new RegExp(`(:)\\s(?=${weekdayPattern}\\b)`, 'gu'), '$1\n• ')
+                .replace(new RegExp(`\\s[-–—]\\s(?=${weekdayPattern}\\b)`, 'gu'), '\n• ');
+
+            return normalized;
+        }
+
         function formatStructuredMessageText(text, wrapperClass = 'msg-content') {
             const raw = text === null || text === undefined || text === 'null' ? '' : String(text);
-            const normalized = raw.replace(/\r\n?/g, '\n');
+            const normalized = normalizeMessageTextStructure(raw);
             const lines = normalized.split('\n');
             const blocks = [];
             let paragraphLines = [];
