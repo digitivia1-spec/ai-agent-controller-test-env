@@ -20930,10 +20930,45 @@
             if (session) {
                 await ensureUserProfile(session.user);
                 showApp();
+                if (isFreshAuthReturn()) {
+                    await reportLoginNotificationOnce('oauth');
+                }
             } else {
                 document.getElementById('login-container').style.display = 'flex';
             }
         };
+
+        function isFreshAuthReturn() {
+            const search = window.location.search || '';
+            const hash = window.location.hash || '';
+            return /(?:^|[?&])(code|access_token|refresh_token|provider_token|provider_refresh_token)=/i.test(search)
+                || /(?:^|[#&])(access_token|refresh_token|provider_token|provider_refresh_token)=/i.test(hash);
+        }
+
+        async function reportLoginNotificationOnce(source = 'password') {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                const accessToken = session?.access_token || '';
+                if (!accessToken) return;
+
+                const tokenFingerprint = accessToken.slice(-24);
+                const storageKey = 'digitivia_last_login_notification_token';
+                if (localStorage.getItem(storageKey) === tokenFingerprint) return;
+
+                const { error } = await supabaseClient.rpc('record_login_notification', {
+                    p_source: source
+                });
+
+                if (error) {
+                    console.warn('Login notification reporting failed:', error);
+                    return;
+                }
+
+                localStorage.setItem(storageKey, tokenFingerprint);
+            } catch (error) {
+                console.warn('Login notification reporting failed:', error);
+            }
+        }
 
         async function performLogin() {
             const email = document.getElementById('login-user').value;
@@ -20956,6 +20991,7 @@
 
                 await ensureUserProfile(data.user);
                 showApp();
+                await reportLoginNotificationOnce('password');
 
             } catch (e) {
                 console.error(e);
@@ -21065,6 +21101,11 @@
 
         async function performLogout() {
             await supabaseClient.auth.signOut();
+            try {
+                localStorage.removeItem('digitivia_last_login_notification_token');
+            } catch (e) {
+                console.warn('Could not clear login notification token fingerprint:', e);
+            }
             // Clear hash fragments before reload to prevent double-hash issue
             window.location.href = window.location.origin + window.location.pathname;
         }
