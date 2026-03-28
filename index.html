@@ -6151,6 +6151,50 @@
             line-height: 1.7;
         }
 
+        .msg-audio {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px 12px;
+            flex-wrap: wrap;
+        }
+
+        .msg-audio .inbox-audio {
+            width: min(320px, 100%);
+            flex: 1 1 220px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+        }
+
+        .msg-audio .audio-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .audio-speed-btn {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: inherit;
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            min-width: 52px;
+        }
+
+        .audio-speed-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .msg-audio-error {
+            font-size: 0.9rem;
+            color: #fca5a5;
+        }
+
         .msg-time {
             font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.5);
@@ -10290,6 +10334,10 @@
 
         [dir="rtl"] .message {
             text-align: start;
+        }
+
+        [dir="rtl"] .msg-audio {
+            flex-direction: row-reverse;
         }
 
         [dir="rtl"] .msg-user {
@@ -15741,6 +15789,25 @@
 
         :root[data-theme="light"] .msg-user .msg-time {
             color: rgba(255, 255, 255, 0.86) !important;
+        }
+
+        :root[data-theme="light"] .msg-audio {
+            background: rgba(15, 23, 42, 0.04) !important;
+            border-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] .audio-speed-btn {
+            border: 1px solid rgba(15, 23, 42, 0.18) !important;
+            background: rgba(15, 23, 42, 0.04) !important;
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .audio-speed-btn:hover {
+            background: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] .msg-audio-error {
+            color: #b91c1c !important;
         }
 
         :root[data-theme="light"] .contact-item {
@@ -25140,6 +25207,17 @@ Thank you for shopping with {store_name}!</textarea>
             return false;
         }
 
+        function isAudioMsg(msg) {
+            if (!msg) return false;
+            const ct = (msg.content_type || '').toLowerCase();
+            const metaCt = (msg.meta && typeof msg.meta === 'object' && (msg.meta.mime_type || msg.meta.content_type)) ? String(msg.meta.mime_type || msg.meta.content_type).toLowerCase() : '';
+            const path = (msg.media_path || msg.media_url || '').toLowerCase();
+            const isVoiceFlag = ['voice', 'audio'].includes(ct) || ['voice', 'audio'].includes(metaCt);
+            const isAudioMime = ct.startsWith('audio/') || metaCt.startsWith('audio/');
+            const hasAudioExt = /\.(ogg|oga|opus|mp3|m4a|wav)$/i.test(path);
+            return isVoiceFlag || isAudioMime || hasAudioExt;
+        }
+
         async function resolveMsgMediaUrl(msg) {
             // A) direct media_url
             if (msg.media_url) return msg.media_url;
@@ -25312,20 +25390,46 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function renderMsgContentHTML(msg) {
-            if (!isImageMsg(msg)) {
-                // Plain text message
-                return formatStructuredMessageText(msg.content);
+            // Audio message
+            if (isAudioMsg(msg)) {
+                const url = await resolveMsgMediaUrl(msg);
+                const mime = (msg.content_type || 'audio/ogg');
+                const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
+                let audioHTML;
+                if (url) {
+                    const audioId = `audio-${msg.id || Math.random().toString(36).slice(2, 8)}`;
+                    audioHTML = `
+                        <div class="msg-audio" data-audio-wrapper="true">
+                            <audio id="${audioId}" class="inbox-audio" preload="metadata" controls controlsList="nodownload">
+                                <source src="${url}" type="${mime}">
+                                Your browser does not support audio playback.
+                            </audio>
+                            <div class="audio-controls">
+                                <button type="button" class="audio-speed-btn" data-speed-idx="0" aria-label="Toggle playback speed">1x</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    audioHTML = `<div class="msg-audio msg-audio-error">Audio unavailable</div>`;
+                }
+                return `<div class="msg-content">${audioHTML}${captionHTML}</div>`;
             }
+
             // Image message
-            const url = await resolveMsgMediaUrl(msg);
-            let mediaHTML;
-            if (url) {
-                mediaHTML = `<a href="${url}" target="_blank" rel="noopener"><img class="msg-image" src="${url}" loading="lazy" alt="Image"/></a>`;
-            } else {
-                mediaHTML = `<div class="msg-image-placeholder">📷 Image…</div>`;
+            if (isImageMsg(msg)) {
+                const url = await resolveMsgMediaUrl(msg);
+                let mediaHTML;
+                if (url) {
+                    mediaHTML = `<a href="${url}" target="_blank" rel="noopener"><img class="msg-image" src="${url}" loading="lazy" alt="Image"/></a>`;
+                } else {
+                    mediaHTML = `<div class="msg-image-placeholder">📷 Image…</div>`;
+                }
+                const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
+                return `<div class="msg-content"><div class="msg-media">${mediaHTML}${captionHTML}</div></div>`;
             }
-            const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
-            return `<div class="msg-content"><div class="msg-media">${mediaHTML}${captionHTML}</div></div>`;
+
+            // Plain text message
+            return formatStructuredMessageText(msg.content);
         }
 
         function buildSenderBadgeHTML(msg) {
@@ -25347,42 +25451,15 @@ Thank you for shopping with {store_name}!</textarea>
             if (msg.id) div.id = `msg-${msg.id}`;
             div.dataset.msgId = msg.id || '';
 
-            // For images, show placeholder first, then resolve
-            if (isImageMsg(msg)) {
-                const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
-                div.innerHTML = `
-                    ${buildSenderBadgeHTML(msg)}
-                    <div class="msg-content"><div class="msg-media"><div class="msg-image-placeholder">📷 Image…</div>${captionHTML}</div></div>
-                    ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
-                `;
-                container.appendChild(div);
-                if (allowScroll) container.scrollTop = container.scrollHeight;
-
-                // Resolve actual image URL asynchronously
-                const url = await resolveMsgMediaUrl(msg);
-                if (url) {
-                    const mediaDiv = div.querySelector('.msg-media');
-                    if (mediaDiv) {
-                        const placeholder = mediaDiv.querySelector('.msg-image-placeholder');
-                        if (placeholder) {
-                            const imgLink = document.createElement('a');
-                            imgLink.href = url;
-                            imgLink.target = '_blank';
-                            imgLink.rel = 'noopener';
-                            imgLink.innerHTML = `<img class="msg-image" src="${url}" loading="lazy" alt="Image"/>`;
-                            placeholder.replaceWith(imgLink);
-                        }
-                    }
-                }
-            } else {
-                // Plain text message
-                div.innerHTML = `
-                    ${buildSenderBadgeHTML(msg)}
-                    ${formatStructuredMessageText(msg.content)}
-                    ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
-                `;
-                container.appendChild(div);
-            }
+            const contentHTML = await renderMsgContentHTML(msg);
+            div.innerHTML = `
+                ${buildSenderBadgeHTML(msg)}
+                ${contentHTML}
+                ${timeStr ? `<div class="msg-time">${timeStr}</div>` : ''}
+            `;
+            container.appendChild(div);
+            wireMessageMediaControls(div);
+            if (allowScroll) container.scrollTop = container.scrollHeight;
             return div;
         }
 
@@ -25421,10 +25498,45 @@ Thank you for shopping with {store_name}!</textarea>
                 const timeStr = formatMsgTime(msg.created_at);
                 if (timeEl && timeStr) timeEl.innerText = timeStr;
                 if (!timeEl && timeStr) existing.insertAdjacentHTML('beforeend', `<div class="msg-time">${timeStr}</div>`);
+                wireMessageMediaControls(existing);
             } else {
                 // New message - append
                 await appendInboxMessage(container, msg, { allowScroll: true });
             }
+        }
+
+        function wireMessageMediaControls(root) {
+            if (!root) return;
+            const wrappers = root.querySelectorAll('[data-audio-wrapper="true"]');
+            wrappers.forEach(wrap => wireAudioPlayer(wrap));
+        }
+
+        function wireAudioPlayer(root) {
+            if (!root) return;
+            const audioEl = root.querySelector('audio.inbox-audio');
+            const speedBtn = root.querySelector('.audio-speed-btn');
+            if (!audioEl || !speedBtn) return;
+
+            const SPEEDS = [1, 1.5, 2];
+            let idx = Number(speedBtn.dataset.speedIdx || 0);
+
+            const applySpeed = () => {
+                const rate = SPEEDS[idx % SPEEDS.length];
+                audioEl.playbackRate = rate;
+                speedBtn.dataset.speedIdx = idx % SPEEDS.length;
+                speedBtn.innerText = `${rate}x`;
+                speedBtn.setAttribute('aria-label', `Playback speed ${rate}x`);
+            };
+
+            applySpeed();
+
+            speedBtn.onclick = (e) => {
+                e.stopPropagation();
+                idx = (idx + 1) % SPEEDS.length;
+                applySpeed();
+            };
+
+            audioEl.addEventListener('play', applySpeed);
         }
 
         function addLinkField(agentId, value = "") {
