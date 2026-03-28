@@ -24439,7 +24439,16 @@ Thank you for shopping with {store_name}!</textarea>
                         .limit(1)
                         .single();
 
-                    if (error && error.code !== 'PGRST116') throw error;
+                    if (error && error.code !== 'PGRST116') {
+                        console.error('[Insights] platform_metrics error', {
+                            code: error.code,
+                            message: error.message,
+                            details: error.details,
+                            hint: error.hint,
+                            queryPlatform
+                        });
+                        throw error;
+                    }
 
                     if (data && data.metrics) {
                         metricsData = data.metrics;
@@ -24464,6 +24473,7 @@ Thank you for shopping with {store_name}!</textarea>
                     <p>${t('insights.empty_text')}</p>
                     <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;">${t('insights.btn_connect')}</button>
                 </div>`;
+                showToast(e?.message || 'No insights data', 'error');
             }
         }
 
@@ -24509,7 +24519,16 @@ Thank you for shopping with {store_name}!</textarea>
                         .order('created_at', { ascending: false })
                         .limit(10);
 
-                    if (error) throw error;
+                    if (error) {
+                        console.error('[Insights] social_posts error', {
+                            code: error.code,
+                            message: error.message,
+                            details: error.details,
+                            hint: error.hint,
+                            platform: dbPlatform
+                        });
+                        throw error;
+                    }
                     postsArray = posts || [];
                 }
 
