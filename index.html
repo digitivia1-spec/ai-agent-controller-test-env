@@ -24328,6 +24328,19 @@ Thank you for shopping with {store_name}!</textarea>
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) throw new Error('Not authenticated');
 
+            const cfg = await getInsightsWebhookConfig();
+            const meta = cfg?.meta || {};
+
+            // Ensure required creds are present for the requested platform
+            const hasPageCreds = meta.page_account_id && meta.page_access_token;
+            const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
+            if ((platform === 'facebook' || platform === 'facebook_posts' || platform === 'messenger') && !hasPageCreds) {
+                throw new Error('Missing page credentials for insights');
+            }
+            if ((platform === 'instagram' || platform === 'instagram_posts') && !hasIgCreds) {
+                throw new Error('Missing instagram credentials for insights');
+            }
+
             const edgeFnUrl = `${SUPABASE_URL}/functions/v1/insights-proxy`;
 
             const response = await fetch(edgeFnUrl, {
@@ -24337,7 +24350,15 @@ Thank you for shopping with {store_name}!</textarea>
                     'Authorization': `Bearer ${session.access_token}`,
                     'apikey': SUPABASE_KEY
                 },
-                body: JSON.stringify({ platform, period, org_id: currentUserOrgId })
+                body: JSON.stringify({
+                    platform,
+                    period,
+                    org_id: currentUserOrgId,
+                    page_account_id: meta.page_account_id,
+                    page_access_token: meta.page_access_token,
+                    ig_account_id: meta.ig_account_id,
+                    ig_access_token: meta.ig_access_token
+                })
             });
 
             if (!response.ok) {
@@ -24391,7 +24412,12 @@ Thank you for shopping with {store_name}!</textarea>
 
                 let metricsData = null;
 
-                if (config && config.webhook_url) {
+                const meta = config?.meta || {};
+                const hasPageCreds = meta.page_account_id && meta.page_access_token;
+                const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
+                const platformCredsOk = insightPlatform === 'instagram' ? hasIgCreds : hasPageCreds;
+
+                if (config && config.webhook_url && platformCredsOk) {
                     // --- WEBHOOK PATH: Call n8n webhook ---
                     const result = await callInsightsWebhook(insightPlatform, insightPeriod);
                     console.log('[Insights] Webhook response:', result);
@@ -24453,7 +24479,12 @@ Thank you for shopping with {store_name}!</textarea>
 
                 let postsArray = [];
 
-                if (config && config.webhook_url) {
+                const meta = config?.meta || {};
+                const hasPageCreds = meta.page_account_id && meta.page_access_token;
+                const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
+                const credsOk = webhookPlatform === 'instagram_posts' ? hasIgCreds : hasPageCreds;
+
+                if (config && config.webhook_url && credsOk) {
                     // --- WEBHOOK PATH: Call n8n webhook for posts ---
                     const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
                     const result = await callInsightsWebhook(webhookPlatform, insightPeriod);
