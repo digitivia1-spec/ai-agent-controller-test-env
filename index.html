@@ -25396,14 +25396,21 @@ Thank you for shopping with {store_name}!</textarea>
             // Audio message
             if (isAudioMsg(msg)) {
                 const url = await resolveMsgMediaUrl(msg);
-                const mime = (msg.content_type || 'audio/ogg');
+                const path = (msg.media_path || msg.media_url || '');
+                const ext = path.split('.').pop()?.toLowerCase() || '';
+                const inferredMime = ext === 'mp3' ? 'audio/mpeg'
+                    : ext === 'm4a' ? 'audio/mp4'
+                    : ext === 'wav' ? 'audio/wav'
+                    : (ext === 'ogg' || ext === 'opus') ? 'audio/ogg' 
+                    : undefined;
+                const mime = (msg.content_type && msg.content_type.startsWith('audio/')) ? msg.content_type : (inferredMime || 'audio/ogg');
                 const captionHTML = msg.content ? formatStructuredMessageText(msg.content, 'msg-caption') : '';
                 let audioHTML;
                 if (url) {
                     const audioId = `audio-${msg.id || Math.random().toString(36).slice(2, 8)}`;
                     audioHTML = `
                         <div class="msg-audio" data-audio-wrapper="true">
-                            <audio id="${audioId}" class="inbox-audio" preload="metadata" controls controlsList="nodownload">
+                            <audio id="${audioId}" class="inbox-audio" preload="metadata" controls controlsList="nodownload" crossorigin="anonymous">
                                 <source src="${url}" type="${mime}">
                                 Your browser does not support audio playback.
                             </audio>
@@ -25520,6 +25527,8 @@ Thank you for shopping with {store_name}!</textarea>
             const speedBtn = root.querySelector('.audio-speed-btn');
             if (!audioEl || !speedBtn) return;
 
+            try { audioEl.preload = 'auto'; audioEl.controls = true; } catch (e) { /* ignore */ }
+
             const SPEEDS = [1, 1.5, 2];
             let idx = Number(speedBtn.dataset.speedIdx || 0);
 
@@ -25540,6 +25549,22 @@ Thank you for shopping with {store_name}!</textarea>
             };
 
             audioEl.addEventListener('play', applySpeed);
+
+            // Force load metadata so duration is set
+            if (audioEl.readyState < 1) {
+                audioEl.load();
+            }
+
+            audioEl.addEventListener('error', () => {
+                const wrapper = audioEl.closest('.msg-audio');
+                if (!wrapper) return;
+                wrapper.classList.add('msg-audio-error');
+                const note = document.createElement('div');
+                note.style.fontSize = '0.82rem';
+                note.style.color = '#fca5a5';
+                note.textContent = 'Audio unavailable';
+                wrapper.appendChild(note);
+            });
         }
 
         function addLinkField(agentId, value = "") {
