@@ -24482,11 +24482,12 @@ Thank you for shopping with {store_name}!</textarea>
                 const meta = config?.meta || {};
                 const hasPageCreds = meta.page_account_id && meta.page_access_token;
                 const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
-                const credsOk = webhookPlatform === 'instagram_posts' ? hasIgCreds : hasPageCreds;
 
-                if (config && config.webhook_url && credsOk) {
-                    // --- WEBHOOK PATH: Call n8n webhook for posts ---
+                // --- WEBHOOK PATH: Call n8n webhook for posts ---
+                if (config && config.webhook_url) {
                     const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
+                    const credsOk = webhookPlatform === 'instagram_posts' ? hasIgCreds : hasPageCreds;
+                    if (!credsOk) throw new Error('Missing credentials for posts webhook');
                     const result = await callInsightsWebhook(webhookPlatform, insightPeriod);
                     console.log('[Insights] Posts webhook response:', result);
 
