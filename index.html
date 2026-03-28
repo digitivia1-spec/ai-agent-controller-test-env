@@ -24499,7 +24499,7 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 } else {
                     // --- FALLBACK: Direct Supabase query for social_posts ---
-                    const dbPlatform = platform === 'facebook' ? 'facebook' : 'instagram';
+                    const dbPlatform = platform === 'facebook' ? 'page' : 'instagram';
 
                     const { data: posts, error } = await supabaseClient
                         .from('social_posts')
