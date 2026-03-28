@@ -6769,6 +6769,17 @@
             white-space: nowrap;
         }
 
+        #leads .lead-score-pill {
+            background: rgba(91, 174, 176, 0.16);
+            color: #8bf0f0;
+            border: 1px solid rgba(91, 174, 176, 0.32);
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
         #leads .lead-view-body {
             display: grid;
             gap: 7px;
@@ -24030,12 +24041,15 @@ Thank you for shopping with {store_name}!</textarea>
                 <div class="lead-view-card clickable-row" onclick="openLeadChat('${r.leadPhone}', '${r.source}')">
                     <div class="lead-view-head">
                         <div class="lead-view-name">${r.name}</div>
-                        <span class="lead-platform-chip">${r.platform}</span>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            ${r.score !== null && r.score !== undefined ? `<span class="lead-score-pill">Score ${r.score}</span>` : ''}
+                            <span class="lead-platform-chip">${r.platform}</span>
+                        </div>
                     </div>
                     <div class="lead-view-body">
                         <div class="lead-view-row"><strong>${t('leads.col_phone')}:</strong> ${r.phone}</div>
-                        <div class="lead-view-row"><strong>${t('leads.col_message')}:</strong></div>
-                        <div class="lead-view-msg">${String(r.lastMsg || '-')}</div>
+                        <div class="lead-view-row"><strong>Potential:</strong></div>
+                        <div class="lead-view-msg">${String(r.potential || '-')}</div>
                     </div>
                     <div class="lead-view-foot">
                         ${buildLeadStatusSelect(r.id, r.status)}
@@ -24072,14 +24086,15 @@ Thank you for shopping with {store_name}!</textarea>
                 const platform = LEAD_DISPLAY_LABELS[platformLower] || platformLower.charAt(0).toUpperCase() + platformLower.slice(1);
                 const status = lead.status || 'new';
                 const statusLower = String(status).toLowerCase();
-                let lastMsg = lead.meta?.last_inbound;
-                if (!lastMsg && leadPhone && messagesMap[leadPhone]) {
-                    lastMsg = messagesMap[leadPhone];
+                let potential = lead.meta?.potential;
+                if (!potential && leadPhone && messagesMap[leadPhone]) {
+                    potential = messagesMap[leadPhone];
                 }
-                lastMsg = lastMsg || '-';
+                potential = potential || '-';
+                const score = (lead.score !== null && lead.score !== undefined) ? Number(lead.score) : null;
                 const dateValue = lead.meta?.last_inbound_at || lead.updated_at || lead.created_at;
                 const formattedDate = formatLeadDate(dateValue);
-                const searchable = `${name} ${phone} ${platformLower} ${statusLower} ${lastMsg}`.toLowerCase();
+                const searchable = `${name} ${phone} ${platformLower} ${statusLower} ${potential} ${score ?? ''}`.toLowerCase();
                 const matchesSearch = !searchRaw || searchable.includes(searchRaw);
                 const matchesStatus = statusRaw === 'all' || statusLower === statusRaw;
                 const matchesPlatform = platformRaw === 'all' || platformLower === platformRaw;
@@ -24087,9 +24102,10 @@ Thank you for shopping with {store_name}!</textarea>
 
                 rows.push({
                     id: lead.id,
-                    name, phone, platform, status, lastMsg, formattedDate,
+                    name, phone, platform, status, potential, formattedDate,
                     leadPhone, source: lead.source || 'whatsapp',
-                    statusClass: getLeadStatusClass(status)
+                    statusClass: getLeadStatusClass(status),
+                    score
                 });
             });
 
@@ -24105,7 +24121,8 @@ Thank you for shopping with {store_name}!</textarea>
                     <td class="lead-col-name">${r.name}</td>
                     <td>${r.phone}</td>
                     <td><span class="lead-platform-chip">${r.platform}</span></td>
-                    <td class="lead-col-msg">${String(r.lastMsg || '')}</td>
+                    <td class="lead-col-msg">${String(r.potential || '')}</td>
+                    <td>${r.score !== null && r.score !== undefined ? r.score : '-'}</td>
                     <td>${r.formattedDate}</td>
                     <td>${buildLeadStatusSelect(r.id, r.status)}</td>
                 </tr>
@@ -24119,7 +24136,8 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                     <div class="lead-mobile-row"><strong>${t('leads.col_phone')}:</strong> ${r.phone}</div>
                     <div class="lead-mobile-row"><strong>${t('leads.col_platform')}:</strong> ${r.platform}</div>
-                    <div class="lead-mobile-row"><strong>${t('leads.col_message')}:</strong> ${String(r.lastMsg || '')}</div>
+                    <div class="lead-mobile-row"><strong>Potential:</strong> ${String(r.potential || '')}</div>
+                    <div class="lead-mobile-row"><strong>Score:</strong> ${r.score !== null && r.score !== undefined ? r.score : '-'}</div>
                     <div class="lead-mobile-row"><strong>${t('leads.col_date')}:</strong> ${r.formattedDate}</div>
                 </div>
             `).join('');
@@ -24164,7 +24182,8 @@ Thank you for shopping with {store_name}!</textarea>
                                     <th>${t('leads.col_name')}</th>
                                     <th>${t('leads.col_phone')}</th>
                                     <th>${t('leads.col_platform')}</th>
-                                    <th>${t('leads.col_message')}</th>
+                                    <th>Potential</th>
+                                    <th>Score</th>
                                     <th>${t('leads.col_date')}</th>
                                     <th>${t('leads.col_status')}</th>
                                 </tr>
