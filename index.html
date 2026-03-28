@@ -24013,23 +24013,54 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function openLeadChat(phone, source) {
-            if (!phone) { showToast('No phone number available', 'error'); return; }
             try {
-                const platform = (source || 'whatsapp').toLowerCase();
-                const { data: contacts } = await supabaseClient
-                    .from('inbox_contacts')
-                    .select('id, display_name, phone')
-                    .eq('org_id', currentUserOrgId)
-                    .eq('phone', phone)
-                    .limit(1);
-                if (contacts && contacts.length > 0) {
-                    const contact = contacts[0];
-                    const name = contact.display_name || contact.phone || 'Unknown';
-                    switchTab('inbox', document.querySelector('.nav-item[onclick*="inbox"]'));
-                    setTimeout(() => loadInboxMessages(platform, contact.id, name), 300);
-                } else {
-                    showToast('Chat not found for this contact', 'info');
+                const platformMap = {
+                    whatsapp: 'whatsapp',
+                    page: 'page',
+                    facebook: 'page',
+                    messenger: 'page',
+                    instagram: 'instagram',
+                    telegram: 'telegram',
+                    website: 'website'
+                };
+                const platform = platformMap[(source || '').toLowerCase()] || 'whatsapp';
+
+                let contact = null;
+
+                // Prefer phone match when provided
+                if (phone) {
+                    const { data: contacts } = await supabaseClient
+                        .from('inbox_contacts')
+                        .select('id, display_name, phone')
+                        .eq('org_id', currentUserOrgId)
+                        .eq('platform', platform)
+                        .eq('phone', phone)
+                        .limit(1);
+                    if (contacts && contacts.length > 0) contact = contacts[0];
                 }
+
+                // Fallback: latest contact on that platform
+                if (!contact) {
+                    const { data: convs } = await supabaseClient
+                        .from('inbox_conversations')
+                        .select('id, contact:inbox_contacts!contact_id(id, display_name, phone)')
+                        .eq('org_id', currentUserOrgId)
+                        .eq('platform', platform)
+                        .order('last_message_at', { ascending: false })
+                        .limit(1);
+                    if (convs && convs.length > 0 && convs[0].contact) {
+                        contact = convs[0].contact;
+                    }
+                }
+
+                if (!contact) {
+                    showToast('Chat not found for this contact', 'info');
+                    return;
+                }
+
+                const name = contact.display_name || contact.phone || 'Unknown';
+                switchTab('inbox', document.querySelector('.nav-item[onclick*="inbox"]'));
+                setTimeout(() => loadInboxMessages(platform, contact.id, name), 300);
             } catch (e) {
                 console.error('Error opening lead chat:', e);
                 showToast('Error opening chat', 'error');
