@@ -6160,11 +6160,13 @@
             border-radius: 12px;
             padding: 10px 12px;
             flex-wrap: wrap;
+            width: clamp(240px, 72vw, 420px);
         }
 
         .msg-audio .inbox-audio {
-            width: min(320px, 100%);
-            flex: 1 1 220px;
+            width: 100%;
+            min-width: 220px;
+            flex: 1 1 240px;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
         }
 
@@ -15794,6 +15796,7 @@
         :root[data-theme="light"] .msg-audio {
             background: rgba(15, 23, 42, 0.04) !important;
             border-color: rgba(15, 23, 42, 0.08) !important;
+            width: clamp(240px, 72vw, 420px);
         }
 
         :root[data-theme="light"] .audio-speed-btn {
