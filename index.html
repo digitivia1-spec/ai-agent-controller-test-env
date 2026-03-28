@@ -24086,7 +24086,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const platform = LEAD_DISPLAY_LABELS[platformLower] || platformLower.charAt(0).toUpperCase() + platformLower.slice(1);
                 const status = lead.status || 'new';
                 const statusLower = String(status).toLowerCase();
-                let potential = lead.meta?.potential;
+                let potential = lead.potential || lead.meta?.potential;
                 if (!potential && leadPhone && messagesMap[leadPhone]) {
                     potential = messagesMap[leadPhone];
                 }
