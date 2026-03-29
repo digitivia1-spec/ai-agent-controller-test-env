@@ -24284,6 +24284,7 @@ Thank you for shopping with {store_name}!</textarea>
         // Cached webhook config for the current org (loaded once per session)
         let _insightsWebhookConfig = null;
         let _insightsConfigLoaded = false;
+        let _insightsCredsCache = {};
 
         /**
          * Load the provider_insights_config for the current org.
@@ -24318,18 +24319,63 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         /**
+         * Fetch channel creds from org_channel_accounts for the given logical platform.
+         * platformKey: 'facebook' | 'instagram' | 'messenger' | 'facebook_posts' | 'instagram_posts'
+         * Resolves to org_channel_accounts.platform of 'page' or 'instagram'.
+         */
+        async function getInsightsChannelCreds(platformKey) {
+            const cacheKey = `${currentUserOrgId}:${platformKey}`;
+            if (_insightsCredsCache[cacheKey]) return _insightsCredsCache[cacheKey];
+
+            const platformMap = {
+                facebook: 'page',
+                messenger: 'page',
+                facebook_posts: 'page',
+                instagram: 'instagram',
+                instagram_posts: 'instagram'
+            };
+            const channelPlatform = platformMap[platformKey] || 'page';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('org_channel_accounts')
+                    .select('external_account_id, access_token')
+                    .eq('org_id', currentUserOrgId)
+                    .eq('platform', channelPlatform)
+                    .eq('is_active', true)
+                    .limit(1);
+
+                if (error || !data || !data.length) {
+                    console.warn('[Insights] No channel creds', { platformKey, channelPlatform, error });
+                    _insightsCredsCache[cacheKey] = null;
+                } else {
+                    const row = data[0];
+                    _insightsCredsCache[cacheKey] = {
+                        account_id: row.external_account_id,
+                        access_token: row.access_token
+                    };
+                }
+            } catch (e) {
+                console.warn('[Insights] Channel creds fetch failed', e);
+                _insightsCredsCache[cacheKey] = null;
+            }
+
+            return _insightsCredsCache[cacheKey];
+        }
+
+        /**
          * Call the insights-proxy Edge Function which forwards to the n8n webhook server-side.
          * This avoids CORS/network issues from calling external webhooks directly from the browser.
          * @param {string} platform  - 'facebook' | 'instagram' | 'facebook_posts' | 'instagram_posts'
          * @param {string} period    - 'day' | 'week' | 'days_28' | 'month'
          */
-        async function callInsightsWebhook(platform, period) {
+        async function callInsightsWebhook(platform, period, credsOverride = null) {
             // Get the user's session token for authentication
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) throw new Error('Not authenticated');
 
             const cfg = await getInsightsWebhookConfig();
-            const meta = cfg?.meta || {};
+            const meta = credsOverride || cfg?.meta || {};
 
             // Ensure required creds are present for the requested platform
             const hasPageCreds = meta.page_account_id && meta.page_access_token;
@@ -24409,15 +24455,19 @@ Thank you for shopping with {store_name}!</textarea>
             try {
                 const config = await getInsightsWebhookConfig();
                 const meta = config?.meta || {};
-                const hasPageCreds = meta.page_account_id && meta.page_access_token;
-                const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
-                const platformCredsOk = insightPlatform === 'instagram' ? hasIgCreds : hasPageCreds;
+                const channelCreds = await getInsightsChannelCreds(insightPlatform);
+                const hasPageCreds = channelCreds && channelCreds.account_id && channelCreds.access_token;
+                const hasIgCreds = channelCreds && channelCreds.account_id && channelCreds.access_token; // same object, platform-keyed above
+                const platformCredsOk = (insightPlatform === 'instagram') ? hasIgCreds : hasPageCreds;
 
                 let metricsData = null;
                 let dataSource = 'none';
 
                 if (config && config.webhook_url && platformCredsOk) {
-                    const result = await callInsightsWebhook(insightPlatform, insightPeriod);
+                    const credsPayload = (insightPlatform === 'instagram')
+                        ? { ig_account_id: channelCreds.account_id, ig_access_token: channelCreds.access_token }
+                        : { page_account_id: channelCreds.account_id, page_access_token: channelCreds.access_token };
+                    const result = await callInsightsWebhook(insightPlatform, insightPeriod, credsPayload);
                     console.log('[Insights] Webhook response:', result);
                     if (result && typeof result === 'object' && Object.keys(result).length > 0) {
                         metricsData = result;
@@ -24507,7 +24557,10 @@ Thank you for shopping with {store_name}!</textarea>
                     const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
                     const credsOk = webhookPlatform === 'instagram_posts' ? hasIgCreds : hasPageCreds;
                     if (!credsOk) throw new Error('Missing credentials for posts webhook');
-                    const result = await callInsightsWebhook(webhookPlatform, insightPeriod);
+                    const credsPayload = (platform === 'instagram')
+                        ? { ig_account_id: channelCreds.account_id, ig_access_token: channelCreds.access_token }
+                        : { page_account_id: channelCreds.account_id, page_access_token: channelCreds.access_token };
+                    const result = await callInsightsWebhook(webhookPlatform, insightPeriod, credsPayload);
                     console.log('[Insights] Posts webhook response:', result);
 
                     // The n8n "Code in JavaScript1" node returns { posts: [...] }
