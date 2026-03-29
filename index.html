@@ -24429,6 +24429,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 let metricsData = null;
                 let dataSource = 'none';
+                let upstreamEmpty = false;
 
                 if (config && config.webhook_url && platformCredsOk) {
                     const credsPayload = (insightPlatform === 'instagram')
@@ -24439,6 +24440,8 @@ Thank you for shopping with {store_name}!</textarea>
                     if (result && typeof result === 'object' && Object.keys(result).length > 0) {
                         metricsData = result;
                         dataSource = 'webhook';
+                    } else {
+                        upstreamEmpty = true;
                     }
                 }
 
@@ -24483,6 +24486,8 @@ Thank you for shopping with {store_name}!</textarea>
                         ? 'No webhook configured'
                         : !platformCredsOk
                             ? 'Missing channel credentials'
+                            : upstreamEmpty
+                                ? 'Meta returned no insights data for this channel and period'
                             : 'No cached metrics';
                     throw new Error(reason);
                 }
