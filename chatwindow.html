@@ -29,8 +29,8 @@
       --chat-radius-md: 14px;
       --chat-radius-sm: 10px;
       --chat-launcher-size: 66px;
-      --chat-panel-width: min(420px, calc(100vw - 28px));
-      --chat-panel-height: min(720px, calc(100dvh - 108px));
+      --chat-panel-width: min(408px, calc(100vw - 24px));
+      --chat-panel-height: min(700px, calc(100dvh - 92px));
       --chat-panel-offset: 86px;
       --chat-safe-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
     }
@@ -271,11 +271,12 @@
 
     .hs-chat-title {
       margin: 0;
-      font-size: 18px;
-      line-height: 1.15;
+      font-size: clamp(17px, 1rem + 0.45vw, 20px);
+      line-height: 1.18;
       font-weight: 800;
       color: var(--chat-text);
       letter-spacing: -0.02em;
+      overflow-wrap: anywhere;
     }
 
     .hs-chat-subtitle {
@@ -283,7 +284,7 @@
       color: var(--chat-muted);
       font-size: 12.5px;
       line-height: 1.45;
-      max-inline-size: 34ch;
+      max-inline-size: 30ch;
     }
 
     .hs-chat-header-actions {
@@ -291,6 +292,9 @@
       align-items: center;
       gap: 8px;
       justify-content: flex-end;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 3;
     }
 
     .hs-chat-action {
@@ -320,7 +324,7 @@
     }
 
     .hs-chat-menu-wrap {
-      position: relative;
+      position: static;
     }
 
     .hs-chat-menu-btn {
@@ -330,9 +334,9 @@
 
     .hs-chat-menu {
       position: absolute;
-      inset-inline-end: 0;
+      inset-inline-end: 16px;
       inset-block-start: calc(100% + 8px);
-      inline-size: 188px;
+      inline-size: min(188px, calc(100% - 32px));
       padding: 8px;
       display: grid;
       gap: 6px;
@@ -714,8 +718,9 @@
     .hs-chat-footer {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 10px;
+      flex-wrap: wrap;
       padding: 11px 14px max(11px, env(safe-area-inset-bottom, 0px));
       border-top: 1px solid var(--chat-border);
       background: color-mix(in srgb, var(--chat-surface) 96%, var(--chat-bg) 4%);
@@ -740,19 +745,6 @@
       outline: none;
     }
 
-    .hs-chat-footer-cta {
-      color: var(--chat-link);
-      text-decoration: none;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .hs-chat-footer-cta:hover,
-    .hs-chat-footer-cta:focus-visible {
-      text-decoration: underline;
-      outline: none;
-    }
-
     .hs-chat-widget[dir="rtl"] .hs-chat-title,
     .hs-chat-widget[dir="rtl"] .hs-chat-subtitle,
     .hs-chat-widget[dir="rtl"] .hs-chat-content,
@@ -771,7 +763,7 @@
     }
 
     .hs-chat-widget[dir="rtl"] .hs-chat-menu {
-      inset-inline-start: 0;
+      inset-inline-start: 16px;
       inset-inline-end: auto;
     }
 
@@ -795,7 +787,7 @@
 
       .hs-chat-panel {
         inline-size: min(100vw - 16px, 520px);
-        block-size: min(calc(100dvh - 92px - env(safe-area-inset-bottom)), 760px);
+        block-size: min(calc(100dvh - 78px - env(safe-area-inset-bottom)), 760px);
         min-block-size: 360px;
         border-radius: 20px;
       }
@@ -803,6 +795,7 @@
       .hs-chat-header {
         grid-template-columns: 1fr auto;
         gap: 10px;
+        padding: 14px 14px 12px;
       }
 
       .hs-chat-subtitle {
@@ -810,7 +803,6 @@
       }
 
       .hs-chat-footer {
-        flex-direction: column;
         align-items: flex-start;
       }
     }
@@ -852,10 +844,20 @@
 
       .hs-chat-header {
         grid-template-columns: 1fr;
+        padding: 14px 12px 12px;
       }
 
       .hs-chat-header-actions {
         justify-content: flex-end;
+      }
+
+      .hs-chat-menu {
+        inset-inline-end: 12px;
+        inline-size: min(172px, calc(100% - 24px));
+      }
+
+      .hs-chat-widget[dir="rtl"] .hs-chat-menu {
+        inset-inline-start: 12px;
       }
 
       .hs-chat-bubble {
@@ -1030,8 +1032,6 @@
         refs.root.querySelector(".hs-chat-powered-label").textContent = DigitiviaChatWidget.config.poweredByLabel + " ";
         refs.root.querySelector(".hs-chat-powered-link").textContent = "Digitivia";
         refs.root.querySelector(".hs-chat-powered-link").href = DigitiviaChatWidget.config.ctaUrl;
-        refs.root.querySelector(".hs-chat-footer-cta").textContent = DigitiviaChatWidget.config.ctaLabel;
-        refs.root.querySelector(".hs-chat-footer-cta").href = DigitiviaChatWidget.config.ctaUrl;
       }
 
       function applyThemeOverrides() {
@@ -1116,7 +1116,6 @@
             </div>
             <footer class="hs-chat-footer">
               <div class="hs-chat-powered"><span class="hs-chat-powered-label">${escapeHtml(DigitiviaChatWidget.config.poweredByLabel)} </span><a class="hs-chat-powered-link" href="${escapeHtml(DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">Digitivia</a></div>
-              <a class="hs-chat-footer-cta" href="${escapeHtml(DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(DigitiviaChatWidget.config.ctaLabel)}</a>
             </footer>
           </section>
         `;
@@ -1350,7 +1349,6 @@
         try {
           const response = await fetch(DigitiviaChatWidget.config.webhookUrl, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
             signal: controller.signal
           });
