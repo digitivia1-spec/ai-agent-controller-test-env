@@ -19729,6 +19729,8 @@
         // --- 3. SUPABASE CONFIGURATION ---
         const SUPABASE_URL = "https://xrycghxaxqzvkmzqzzkx.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeWNnaHhheHF6dmttenF6emt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxMjg3NjIsImV4cCI6MjA4MzcwNDc2Mn0.-03VhRZ6ok6Z6NykuJxNLnoHmO2SSv1JSm8VM18yVgU";
+        window.SUPABASE_URL = SUPABASE_URL;
+        window.SUPABASE_KEY = SUPABASE_KEY;
         const PUSH_VAPID_PUBLIC_KEY = "BKc68-GOg13z1Hng83tJbrldQKKouTaGyyZ2ZtYG9wXS94Sw9ofcPj2SYTiyfwJiN0B1XmUMCNMWchhZqJD4FiY";
         const PUSH_SERVICE_WORKER_PATH = "./sw.js";
         const PUSH_LOG_PREFIX = "[Push]";
@@ -30656,7 +30658,7 @@ Thank you for shopping with {store_name}!</textarea>
                 `  data-cta-label="${escapeHtmlAttr(state.cta_label)}"`,
                 `  data-cta-url="https://digitivia.com"`,
                 `  data-powered-by="Powered by Digitivia"`,
-                '></script>'
+                '><\\/script>'
             ].join('\n');
             const el = document.getElementById('wws-snippet');
             if (el) el.value = snippet;
@@ -35954,11 +35956,13 @@ Thank you for shopping with {store_name}!</textarea>
     })();
 </script>
 
-<script>
-    // ==========================================
-    //       ONBOARDING WIZARD (Owner-Only)
-    // ==========================================
-    (function () {
+    <script>
+        // ==========================================
+        //       ONBOARDING WIZARD (Owner-Only)
+        // ==========================================
+        (function () {
+        const SUPABASE_URL = window.SUPABASE_URL;
+        const SUPABASE_KEY = window.SUPABASE_KEY;
         const ONB_STEPS = ['profile', 'business', 'channels', 'kb', 'integrations', 'review'];
         const ONB_STEP_KEYS = ['step_profile', 'step_business', 'step_channels', 'step_kb', 'step_integrations', 'step_review'];
         const ALLOWED_KB_TYPES = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
