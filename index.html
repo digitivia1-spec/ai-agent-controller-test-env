@@ -19825,6 +19825,8 @@
 
         // --- WEBHOOKS (Kept CHAT for Brain, Removed Others) ---
         const CHAT_WEBHOOK = "https://n8n.srv1174105.hstgr.cloud/webhook/chatHandler";
+        // Static insights webhook (shared for all orgs)
+        const INSIGHTS_WEBHOOK = "https://n8n.srv1174105.hstgr.cloud/webhook/insightsgrab";
 
         // Define Agents & Colors
         const AGENTS = [
@@ -24287,33 +24289,11 @@ Thank you for shopping with {store_name}!</textarea>
         let _insightsCredsCache = {};
 
         /**
-         * Load the provider_insights_config for the current org.
-         * Returns { webhook_url, meta } or null if no config exists.
+         * Return the static insights webhook config.
          */
         async function getInsightsWebhookConfig() {
             if (_insightsConfigLoaded) return _insightsWebhookConfig;
-
-            try {
-                const { data, error } = await supabaseClient
-                    .from('provider_insights_config')
-                    .select('webhook_url, is_active, meta')
-                    .eq('org_id', currentUserOrgId)
-                    .maybeSingle();
-
-                if (error) {
-                    console.warn('Could not load insights webhook config:', error);
-                    _insightsWebhookConfig = null;
-                } else if (data && data.is_active && data.webhook_url) {
-                    _insightsWebhookConfig = data;
-                    console.log('[Insights] Webhook config loaded (via Edge Function proxy)');
-                } else {
-                    _insightsWebhookConfig = null;
-                }
-            } catch (e) {
-                console.warn('Error loading insights webhook config:', e);
-                _insightsWebhookConfig = null;
-            }
-
+            _insightsWebhookConfig = { webhook_url: INSIGHTS_WEBHOOK, meta: {} };
             _insightsConfigLoaded = true;
             return _insightsWebhookConfig;
         }
@@ -24364,18 +24344,13 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         /**
-         * Call the insights-proxy Edge Function which forwards to the n8n webhook server-side.
-         * This avoids CORS/network issues from calling external webhooks directly from the browser.
+         * Call the static n8n webhook directly with the provided credentials.
          * @param {string} platform  - 'facebook' | 'instagram' | 'facebook_posts' | 'instagram_posts'
          * @param {string} period    - 'day' | 'week' | 'days_28' | 'month'
          */
         async function callInsightsWebhook(platform, period, credsOverride = null) {
-            // Get the user's session token for authentication
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) throw new Error('Not authenticated');
-
             const cfg = await getInsightsWebhookConfig();
-            const meta = credsOverride || cfg?.meta || {};
+            const meta = credsOverride || {};
 
             // Ensure required creds are present for the requested platform
             const hasPageCreds = meta.page_account_id && meta.page_access_token;
@@ -24387,14 +24362,10 @@ Thank you for shopping with {store_name}!</textarea>
                 throw new Error('Missing instagram credentials for insights');
             }
 
-            const edgeFnUrl = `${SUPABASE_URL}/functions/v1/insights-proxy`;
-
-            const response = await fetch(edgeFnUrl, {
+            const response = await fetch(cfg.webhook_url || INSIGHTS_WEBHOOK, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`,
-                    'apikey': SUPABASE_KEY
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     platform,
@@ -24409,7 +24380,7 @@ Thank you for shopping with {store_name}!</textarea>
 
             if (!response.ok) {
                 const errBody = await response.json().catch(() => ({}));
-                throw new Error(errBody.error || `Edge Function error: ${response.status}`);
+                throw new Error(errBody.error || `Webhook error: ${response.status}`);
             }
 
             return response.json();
@@ -24454,11 +24425,9 @@ Thank you for shopping with {store_name}!</textarea>
 
             try {
                 const config = await getInsightsWebhookConfig();
-                const meta = config?.meta || {};
                 const channelCreds = await getInsightsChannelCreds(insightPlatform);
-                const hasPageCreds = channelCreds && channelCreds.account_id && channelCreds.access_token;
-                const hasIgCreds = channelCreds && channelCreds.account_id && channelCreds.access_token; // same object, platform-keyed above
-                const platformCredsOk = (insightPlatform === 'instagram') ? hasIgCreds : hasPageCreds;
+                const hasCreds = channelCreds && channelCreds.account_id && channelCreds.access_token;
+                const platformCredsOk = hasCreds;
 
                 let metricsData = null;
                 let dataSource = 'none';
@@ -24543,20 +24512,14 @@ Thank you for shopping with {store_name}!</textarea>
             list.innerHTML = `<div class="insights-inline-state">${t('insights.loading_posts')}</div>`;
 
             try {
-                // 1. Check for webhook config
+                // 1. Get static webhook config + channel creds
                 const config = await getInsightsWebhookConfig();
-
+                const channelCreds = await getInsightsChannelCreds(platform);
                 let postsArray = [];
 
-                const meta = config?.meta || {};
-                const hasPageCreds = meta.page_account_id && meta.page_access_token;
-                const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
-
                 // --- WEBHOOK PATH: Call n8n webhook for posts ---
-                if (config && config.webhook_url && ((platform === 'facebook' && hasPageCreds) || (platform === 'instagram' && hasIgCreds))) {
+                if (config && config.webhook_url && channelCreds && channelCreds.account_id && channelCreds.access_token) {
                     const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
-                    const credsOk = webhookPlatform === 'instagram_posts' ? hasIgCreds : hasPageCreds;
-                    if (!credsOk) throw new Error('Missing credentials for posts webhook');
                     const credsPayload = (platform === 'instagram')
                         ? { ig_account_id: channelCreds.account_id, ig_access_token: channelCreds.access_token }
                         : { page_account_id: channelCreds.account_id, page_access_token: channelCreds.access_token };
