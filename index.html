@@ -24430,26 +24430,33 @@ Thank you for shopping with {store_name}!</textarea>
                     // --- FALLBACK: Direct Supabase query for platform_metrics ---
                     const queryPlatform = insightPlatform === 'facebook' ? 'page' : insightPlatform;
 
-                    const { data, error } = await supabaseClient
-                        .from('platform_metrics')
-                        .select('*')
-                        .eq('org_id', currentUserOrgId)
-                        .eq('platform', queryPlatform)
-                        .order('created_at', { ascending: false })
-                        .limit(1);
+                    const platformsToTry = [queryPlatform];
+                    if (queryPlatform === 'page') platformsToTry.push('facebook');
+                    if (queryPlatform === 'instagram') platformsToTry.push('ig');
 
-                    if (error) {
-                        console.error('[Insights] platform_metrics error', {
-                            code: error.code,
-                            message: error.message,
-                            details: error.details,
-                            hint: error.hint,
-                            queryPlatform
-                        });
-                        throw error;
+                    let row = null;
+                    for (const p of platformsToTry) {
+                        const { data, error } = await supabaseClient
+                            .from('platform_metrics')
+                            .select('*')
+                            .eq('org_id', currentUserOrgId)
+                            .eq('platform', p)
+                            .order('created_at', { ascending: false })
+                            .limit(1);
+
+                        if (error) {
+                            console.error('[Insights] platform_metrics error', {
+                                code: error.code,
+                                message: error.message,
+                                details: error.details,
+                                hint: error.hint,
+                                queryPlatform: p
+                            });
+                            continue;
+                        }
+
+                        if (Array.isArray(data) && data.length) { row = data[0]; break; }
                     }
-
-                    const row = Array.isArray(data) ? data[0] : null;
 
                     if (row && row.metrics) {
                         metricsData = row.metrics;
@@ -24510,27 +24517,31 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 } else {
                     // --- FALLBACK: Direct Supabase query for social_posts ---
-                    const dbPlatform = platform === 'facebook' ? 'page' : 'instagram';
+                    const platformsToTry = platform === 'facebook'
+                        ? ['page', 'facebook']
+                        : ['instagram', 'ig'];
 
-                    const { data: posts, error } = await supabaseClient
-                        .from('social_posts')
-                        .select('*')
-                        .eq('org_id', currentUserOrgId)
-                        .eq('platform', dbPlatform)
-                        .order('created_at', { ascending: false })
-                        .limit(10);
+                    for (const p of platformsToTry) {
+                        const { data: posts, error } = await supabaseClient
+                            .from('social_posts')
+                            .select('*')
+                            .eq('org_id', currentUserOrgId)
+                            .eq('platform', p)
+                            .order('created_at', { ascending: false })
+                            .limit(10);
 
-                    if (error) {
-                        console.error('[Insights] social_posts error', {
-                            code: error.code,
-                            message: error.message,
-                            details: error.details,
-                            hint: error.hint,
-                            platform: dbPlatform
-                        });
-                        throw error;
+                        if (error) {
+                            console.error('[Insights] social_posts error', {
+                                code: error.code,
+                                message: error.message,
+                                details: error.details,
+                                hint: error.hint,
+                                platform: p
+                            });
+                            continue;
+                        }
+                        if (posts && posts.length) { postsArray = posts; break; }
                     }
-                    postsArray = posts || [];
                 }
 
                 cachedPosts = postsArray;
