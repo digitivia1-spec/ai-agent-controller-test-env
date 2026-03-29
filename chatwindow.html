@@ -240,6 +240,7 @@
       min-width: 0;
       display: grid;
       gap: 8px;
+      padding-inline-end: 2px;
     }
 
     .hs-chat-kicker {
@@ -293,8 +294,7 @@
       gap: 8px;
       justify-content: flex-end;
       flex-shrink: 0;
-      position: relative;
-      z-index: 3;
+      padding-inline-start: 4px;
     }
 
     .hs-chat-action {
@@ -302,16 +302,19 @@
       background: color-mix(in srgb, var(--chat-surface-strong) 92%, transparent);
       color: var(--chat-text);
       border-radius: 12px;
-      min-block-size: 38px;
-      min-inline-size: 38px;
-      padding: 0 12px;
+      inline-size: 40px;
+      block-size: 40px;
+      min-block-size: 40px;
+      min-inline-size: 40px;
+      padding: 0;
       font-size: 13px;
       line-height: 1;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 0;
+      flex: 0 0 auto;
       transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
     }
 
@@ -323,53 +326,30 @@
       outline: none;
     }
 
-    .hs-chat-menu-wrap {
-      position: static;
-    }
-
-    .hs-chat-menu-btn {
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .hs-chat-menu {
-      position: absolute;
-      inset-inline-end: 16px;
-      inset-block-start: calc(100% + 8px);
-      inline-size: min(188px, calc(100% - 32px));
-      padding: 8px;
-      display: grid;
-      gap: 6px;
-      background: var(--chat-surface-strong);
-      border: 1px solid var(--chat-border);
-      border-radius: 16px;
-      box-shadow: var(--chat-shadow);
-      opacity: 0;
+    .hs-chat-icon {
+      inline-size: 18px;
+      block-size: 18px;
+      display: block;
       pointer-events: none;
-      transform: translateY(-4px);
-      transition: opacity 140ms ease, transform 140ms ease;
     }
 
-    .hs-chat-menu-wrap.is-open .hs-chat-menu {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .hs-chat-menu-item {
-      inline-size: 100%;
-      justify-content: flex-start;
-      min-block-size: 40px;
-      border-radius: 12px;
-      padding-inline: 12px;
-      font-weight: 600;
-      background: transparent;
-    }
-
-    .hs-chat-close {
+    .hs-chat-close-icon {
       font-size: 22px;
       font-weight: 500;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hs-chat-visually-hidden {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
       padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .hs-chat-body {
@@ -719,8 +699,8 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 6px;
+      flex-wrap: nowrap;
       padding: 11px 14px max(11px, env(safe-area-inset-bottom, 0px));
       border-top: 1px solid var(--chat-border);
       background: color-mix(in srgb, var(--chat-surface) 96%, var(--chat-bg) 4%);
@@ -731,6 +711,10 @@
     .hs-chat-powered {
       color: var(--chat-muted);
       min-inline-size: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
     }
 
     .hs-chat-powered a {
@@ -760,11 +744,6 @@
     .hs-chat-widget[dir="rtl"] .hs-chat-footer,
     .hs-chat-widget[dir="rtl"] .hs-chat-blocked-actions {
       flex-direction: row-reverse;
-    }
-
-    .hs-chat-widget[dir="rtl"] .hs-chat-menu {
-      inset-inline-start: 16px;
-      inset-inline-end: auto;
     }
 
     @media (max-width: 640px) {
@@ -800,6 +779,14 @@
 
       .hs-chat-subtitle {
         max-inline-size: 100%;
+      }
+
+      .hs-chat-action {
+        inline-size: 38px;
+        block-size: 38px;
+        min-inline-size: 38px;
+        min-block-size: 38px;
+        border-radius: 11px;
       }
 
       .hs-chat-footer {
@@ -843,21 +830,14 @@
       }
 
       .hs-chat-header {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr auto;
         padding: 14px 12px 12px;
+        gap: 8px;
       }
 
       .hs-chat-header-actions {
         justify-content: flex-end;
-      }
-
-      .hs-chat-menu {
-        inset-inline-end: 12px;
-        inline-size: min(172px, calc(100% - 24px));
-      }
-
-      .hs-chat-widget[dir="rtl"] .hs-chat-menu {
-        inset-inline-start: 12px;
+        gap: 6px;
       }
 
       .hs-chat-bubble {
@@ -1023,13 +1003,15 @@
         refs.root.querySelector(".hs-chat-launcher").setAttribute("aria-label", DigitiviaChatWidget.config.labels.launcher);
         refs.root.querySelector(".hs-chat-panel").setAttribute("aria-label", DigitiviaChatWidget.config.title);
         refs.root.querySelector(".hs-chat-close").setAttribute("aria-label", DigitiviaChatWidget.config.labels.close);
-        refs.root.querySelector(".hs-chat-menu-btn").setAttribute("aria-label", DigitiviaChatWidget.config.labels.more);
-        refs.root.querySelector(".hs-chat-theme-toggle").textContent = DigitiviaChatWidget.config.labels.toggleTheme;
-        refs.root.querySelector(".hs-chat-reset").textContent = DigitiviaChatWidget.config.labels.newConversation;
+        refs.root.querySelector(".hs-chat-close").setAttribute("title", DigitiviaChatWidget.config.labels.close);
+        refs.root.querySelector(".hs-chat-theme-toggle").setAttribute("aria-label", DigitiviaChatWidget.config.labels.toggleTheme);
+        refs.root.querySelector(".hs-chat-theme-toggle").setAttribute("title", DigitiviaChatWidget.config.labels.toggleTheme);
+        refs.root.querySelector(".hs-chat-reset").setAttribute("aria-label", DigitiviaChatWidget.config.labels.newConversation);
+        refs.root.querySelector(".hs-chat-reset").setAttribute("title", DigitiviaChatWidget.config.labels.newConversation);
         refs.root.querySelector(".hs-chat-input").placeholder = DigitiviaChatWidget.config.labels.inputPlaceholder;
         refs.root.querySelector(".hs-chat-send").textContent = DigitiviaChatWidget.config.labels.send;
         refs.root.querySelector(".hs-chat-note").textContent = DigitiviaChatWidget.state.isBlocked ? DigitiviaChatWidget.config.labels.blockedComposerNote : DigitiviaChatWidget.config.labels.helperNote;
-        refs.root.querySelector(".hs-chat-powered-label").textContent = DigitiviaChatWidget.config.poweredByLabel + " ";
+        refs.root.querySelector(".hs-chat-powered-label").textContent = "Powered by ";
         refs.root.querySelector(".hs-chat-powered-link").textContent = "Digitivia";
         refs.root.querySelector(".hs-chat-powered-link").href = DigitiviaChatWidget.config.ctaUrl;
       }
@@ -1094,14 +1076,19 @@
                 <p class="hs-chat-subtitle">${escapeHtml(DigitiviaChatWidget.config.subtitle)}</p>
               </div>
               <div class="hs-chat-header-actions">
-                <div class="hs-chat-menu-wrap">
-                  <button type="button" class="hs-chat-action hs-chat-menu-btn" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.more)}">⋯</button>
-                  <div class="hs-chat-menu" role="menu">
-                    <button type="button" class="hs-chat-action hs-chat-menu-item hs-chat-theme-toggle" role="menuitem">${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}</button>
-                    <button type="button" class="hs-chat-action hs-chat-menu-item hs-chat-reset" role="menuitem">${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}</button>
-                  </div>
-                </div>
-                <button type="button" class="hs-chat-action hs-chat-close" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.close)}">×</button>
+                <button type="button" class="hs-chat-action hs-chat-theme-toggle" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}">
+                  <svg class="hs-chat-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 3.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 .75-.75Zm0 13.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 .75-.75Zm8.25-6a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13.5 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.01-4.76a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 0 1-1.06-1.06l1.06-1.06Zm-7.52 7.52a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06Zm8.58 2.12a.75.75 0 0 1 0 1.06.75.75 0 0 1-1.06 0l-1.06-1.06a.75.75 0 1 1 1.06-1.06l1.06 1.06Zm-7.52-7.52a.75.75 0 0 1 0 1.06.75.75 0 0 1-1.06 0L6.18 7.55a.75.75 0 1 1 1.06-1.06l1.06 1.06ZM12 8.25a3.75 3.75 0 1 1 0 7.5a3.75 3.75 0 0 1 0-7.5Z" fill="currentColor"/>
+                  </svg>
+                  <span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}</span>
+                </button>
+                <button type="button" class="hs-chat-action hs-chat-reset" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}">
+                  <svg class="hs-chat-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6.75 7.5V4.5m0 0h3m-3 0l3.3 3.3M18 12a6 6 0 1 1-2.05-4.52" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}</span>
+                </button>
+                <button type="button" class="hs-chat-action hs-chat-close" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.close)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.close)}"><span class="hs-chat-close-icon" aria-hidden="true">×</span><span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.close)}</span></button>
               </div>
             </header>
             <div class="hs-chat-body">
@@ -1115,7 +1102,7 @@
               <p class="hs-chat-note">${escapeHtml(DigitiviaChatWidget.config.labels.helperNote)}</p>
             </div>
             <footer class="hs-chat-footer">
-              <div class="hs-chat-powered"><span class="hs-chat-powered-label">${escapeHtml(DigitiviaChatWidget.config.poweredByLabel)} </span><a class="hs-chat-powered-link" href="${escapeHtml(DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">Digitivia</a></div>
+              <div class="hs-chat-powered"><span class="hs-chat-powered-label">Powered by </span><a class="hs-chat-powered-link" href="${escapeHtml(DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">Digitivia</a></div>
             </footer>
           </section>
         `;
@@ -1129,8 +1116,6 @@
         DigitiviaChatWidget.refs.input = root.querySelector(".hs-chat-input");
         DigitiviaChatWidget.refs.send = root.querySelector(".hs-chat-send");
         DigitiviaChatWidget.refs.close = root.querySelector(".hs-chat-close");
-        DigitiviaChatWidget.refs.menuWrap = root.querySelector(".hs-chat-menu-wrap");
-        DigitiviaChatWidget.refs.menuBtn = root.querySelector(".hs-chat-menu-btn");
         DigitiviaChatWidget.refs.themeToggle = root.querySelector(".hs-chat-theme-toggle");
         DigitiviaChatWidget.refs.resetBtn = root.querySelector(".hs-chat-reset");
         applyTheme(DigitiviaChatWidget.state.theme, false);
@@ -1141,49 +1126,20 @@
         refs.launcher.addEventListener("click", togglePanel);
         refs.close.addEventListener("click", closePanel);
         refs.backdrop.addEventListener("click", closePanel);
-        refs.menuBtn.addEventListener("click", toggleMenu);
-        refs.themeToggle.addEventListener("click", () => {
-          closeMenu();
-          toggleTheme();
-        });
-        refs.resetBtn.addEventListener("click", () => {
-          closeMenu();
-          resetConversation();
-        });
+        refs.themeToggle.addEventListener("click", toggleTheme);
+        refs.resetBtn.addEventListener("click", resetConversation);
         refs.send.addEventListener("click", onSend);
         refs.input.addEventListener("keydown", onInputKeydown);
         refs.input.addEventListener("input", autoresizeInput);
-        document.addEventListener("click", onDocumentClick);
         document.addEventListener("keydown", onDocumentKeydown);
-      }
-
-      function onDocumentClick(event) {
-        if (!DigitiviaChatWidget.refs.root.contains(event.target)) {
-          closeMenu();
-        }
       }
 
       function onDocumentKeydown(event) {
         if (event.key === "Escape") {
-          if (DigitiviaChatWidget.state.menuOpen) {
-            closeMenu();
-            return;
-          }
           if (DigitiviaChatWidget.state.isOpen) {
             closePanel();
           }
         }
-      }
-
-      function toggleMenu() {
-        DigitiviaChatWidget.state.menuOpen = !DigitiviaChatWidget.state.menuOpen;
-        DigitiviaChatWidget.refs.menuWrap.classList.toggle("is-open", DigitiviaChatWidget.state.menuOpen);
-        notifyStateChange();
-      }
-
-      function closeMenu() {
-        DigitiviaChatWidget.state.menuOpen = false;
-        DigitiviaChatWidget.refs.menuWrap.classList.remove("is-open");
       }
 
       function toggleTheme() {
@@ -1223,7 +1179,6 @@
 
       function closePanel() {
         DigitiviaChatWidget.state.isOpen = false;
-        closeMenu();
         DigitiviaChatWidget.refs.root.classList.remove("is-open");
         notifyStateChange();
       }
