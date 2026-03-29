@@ -24436,10 +24436,9 @@ Thank you for shopping with {store_name}!</textarea>
                         .eq('org_id', currentUserOrgId)
                         .eq('platform', queryPlatform)
                         .order('created_at', { ascending: false })
-                        .limit(1)
-                        .single();
+                        .limit(1);
 
-                    if (error && error.code !== 'PGRST116') {
+                    if (error) {
                         console.error('[Insights] platform_metrics error', {
                             code: error.code,
                             message: error.message,
@@ -24450,10 +24449,12 @@ Thank you for shopping with {store_name}!</textarea>
                         throw error;
                     }
 
-                    if (data && data.metrics) {
-                        metricsData = data.metrics;
-                    } else if (data) {
-                        metricsData = data;
+                    const row = Array.isArray(data) ? data[0] : null;
+
+                    if (row && row.metrics) {
+                        metricsData = row.metrics;
+                    } else if (row) {
+                        metricsData = row;
                     }
                 }
 
