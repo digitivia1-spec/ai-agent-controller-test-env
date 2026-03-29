@@ -1340,8 +1340,8 @@
           conversation_id: DigitiviaChatWidget.state.conversationId || "",
           source: DigitiviaChatWidget.config.source,
           timestamp: new Date().toISOString(),
-          page_url: window.location.href,
-          origin: window.location.origin,
+          page_url: DigitiviaChatWidget.config.hostPageUrl || window.location.href,
+          origin: DigitiviaChatWidget.config.hostOrigin || window.location.origin,
           lang: document.documentElement.lang || navigator.language || "en",
           dir: detectDir()
         };

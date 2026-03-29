@@ -22,6 +22,8 @@
     ctaLabel: script.dataset.ctaLabel || '',
     ctaUrl: script.dataset.ctaUrl || 'https://digitivia.com',
     poweredByLabel: script.dataset.poweredBy || 'Powered by Digitivia',
+    hostOrigin: window.location.origin || '',
+    hostPageUrl: window.location.href || '',
     embeddedFrame: true,
     previewMode: false
   };
