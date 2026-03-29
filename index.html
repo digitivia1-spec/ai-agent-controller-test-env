@@ -22098,10 +22098,12 @@
             await fetchUserRole();
 
             buildInterface();
+            initWebsiteWidgetStudio();
             if (typeof syncWhatsAppConnectionFromOrgData === 'function') syncWhatsAppConnectionFromOrgData();
             if (typeof renderWhatsAppConnectState === 'function') renderWhatsAppConnectState();
             hydrateSidebarSocialIcons();
             fetchCurrentConfigurations();
+            loadWebsiteWidgetSettings();
             document.getElementById('loader-overlay').style.display = 'none';
             // Note: startAutoRefresh is less critical now with Realtime, but good for contacts list updates
             startAutoRefresh();
@@ -29950,6 +29952,820 @@ Thank you for shopping with {store_name}!</textarea>
                 });
                 aiWidgetEscapeBound = true;
             }
+        }
+
+        const WEBSITE_WIDGET_DEFAULTS = Object.freeze({
+            enabled: false,
+            allowed_domains: [],
+            title: 'Welcome to Digitivia',
+            subtitle: 'Write in English or العربية. We answer as clearly as possible.',
+            first_message: 'Welcome to Digitivia. I can help with products, services, and general questions.',
+            primary_color: '#2c718a',
+            theme_mode: 'light',
+            position: 'bottom-right',
+            cta_label: 'Visit Digitivia',
+            cta_url: 'https://digitivia.com',
+            powered_by_label: 'Powered by Digitivia',
+            blocked_title: 'Chat is unavailable right now',
+            blocked_message: 'This website chat is not available for this site or subscription at the moment.'
+        });
+
+        let websiteWidgetSettings = null;
+        let websiteWidgetPreviewState = {
+            dir: 'ltr',
+            theme: 'light',
+            blocked: false
+        };
+
+        function injectWebsiteWidgetStudioStyles() {
+            if (document.getElementById('website-widget-studio-styles')) return;
+            const style = document.createElement('style');
+            style.id = 'website-widget-studio-styles';
+            style.textContent = `
+                .wws-shell {
+                    display: grid;
+                    gap: 18px;
+                }
+                .wws-hero {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+                    gap: 18px;
+                    padding: 22px;
+                    border-radius: 22px;
+                    border: 1px solid rgba(91, 174, 176, 0.2);
+                    background:
+                        radial-gradient(circle at top left, rgba(91, 174, 176, 0.14), transparent 35%),
+                        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.09), transparent 30%),
+                        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+                    overflow: hidden;
+                }
+                .wws-hero-copy h3,
+                .wws-card h4 {
+                    margin: 0;
+                }
+                .wws-hero-copy {
+                    display: grid;
+                    gap: 12px;
+                    align-content: start;
+                }
+                .wws-eyebrow {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    width: fit-content;
+                    padding: 8px 12px;
+                    border-radius: 999px;
+                    background: rgba(91, 174, 176, 0.14);
+                    color: #8fe1d0;
+                    font-size: 11px;
+                    font-weight: 800;
+                    letter-spacing: .06em;
+                    text-transform: uppercase;
+                }
+                .wws-eyebrow::before {
+                    content: "";
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 999px;
+                    background: currentColor;
+                }
+                .wws-hero-copy p {
+                    margin: 0;
+                    color: #b8c7d1;
+                    line-height: 1.7;
+                }
+                .wws-checklist {
+                    display: grid;
+                    gap: 10px;
+                }
+                .wws-check {
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    gap: 10px;
+                    align-items: start;
+                    color: #dbe9f0;
+                    line-height: 1.55;
+                }
+                .wws-check b {
+                    color: #ffffff;
+                }
+                .wws-check::before {
+                    content: "✓";
+                    width: 22px;
+                    height: 22px;
+                    display: inline-grid;
+                    place-items: center;
+                    border-radius: 999px;
+                    background: rgba(34, 197, 94, 0.12);
+                    color: #7ee7b3;
+                    font-weight: 800;
+                    margin-top: 1px;
+                }
+                .wws-hero-side {
+                    display: grid;
+                    gap: 12px;
+                    align-content: start;
+                }
+                .wws-stat {
+                    padding: 16px;
+                    border-radius: 18px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background: rgba(8, 15, 24, 0.34);
+                }
+                .wws-stat-label {
+                    font-size: 12px;
+                    color: #8fb0bf;
+                    margin-bottom: 6px;
+                }
+                .wws-stat-value {
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: #ffffff;
+                    overflow-wrap: anywhere;
+                }
+                .wws-grid {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+                    gap: 18px;
+                }
+                .wws-stack {
+                    display: grid;
+                    gap: 18px;
+                }
+                .wws-card {
+                    padding: 18px;
+                    border-radius: 20px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background: rgba(6, 13, 22, 0.38);
+                    display: grid;
+                    gap: 14px;
+                    overflow: hidden;
+                }
+                .wws-card p {
+                    margin: 0;
+                    color: #9db3c1;
+                    line-height: 1.6;
+                }
+                .wws-step-list {
+                    display: grid;
+                    gap: 10px;
+                }
+                .wws-step {
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    gap: 10px;
+                    align-items: start;
+                    color: #d5e2ea;
+                }
+                .wws-step-num {
+                    width: 26px;
+                    height: 26px;
+                    display: inline-grid;
+                    place-items: center;
+                    border-radius: 999px;
+                    background: rgba(91, 174, 176, 0.14);
+                    color: #95f3eb;
+                    font-size: 12px;
+                    font-weight: 800;
+                }
+                .wws-form {
+                    display: grid;
+                    gap: 14px;
+                }
+                .wws-form-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 12px;
+                }
+                .wws-field,
+                .wws-field-full {
+                    display: grid;
+                    gap: 7px;
+                }
+                .wws-field-full {
+                    grid-column: 1 / -1;
+                }
+                .wws-label {
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #e9f4f8;
+                }
+                .wws-hint {
+                    font-size: 11px;
+                    color: #89a0af;
+                }
+                .wws-input,
+                .wws-select,
+                .wws-textarea,
+                .wws-code {
+                    width: 100%;
+                    border-radius: 14px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background: rgba(255,255,255,0.04);
+                    color: #ffffff;
+                    padding: 12px 13px;
+                    font: inherit;
+                    min-width: 0;
+                }
+                .wws-textarea,
+                .wws-code {
+                    min-height: 110px;
+                    resize: vertical;
+                }
+                .wws-code {
+                    min-height: 150px;
+                    font-family: "Consolas", "SFMono-Regular", monospace;
+                    font-size: 12px;
+                    line-height: 1.65;
+                    direction: ltr;
+                }
+                .wws-input:focus,
+                .wws-select:focus,
+                .wws-textarea:focus,
+                .wws-code:focus {
+                    outline: none;
+                    border-color: rgba(91, 174, 176, 0.65);
+                    box-shadow: 0 0 0 4px rgba(91, 174, 176, 0.12);
+                }
+                .wws-inline {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    align-items: center;
+                }
+                .wws-switch-row {
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 12px 14px;
+                    border-radius: 16px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background: rgba(255,255,255,0.03);
+                }
+                .wws-chip-row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                }
+                .wws-chip-btn {
+                    border: 1px solid rgba(255,255,255,0.10);
+                    background: rgba(255,255,255,0.05);
+                    color: #dbe8f0;
+                    border-radius: 999px;
+                    padding: 8px 12px;
+                    cursor: pointer;
+                    font: inherit;
+                    font-size: 12px;
+                    transition: background .18s ease, border-color .18s ease, color .18s ease;
+                }
+                .wws-chip-btn.active {
+                    background: rgba(91, 174, 176, 0.16);
+                    border-color: rgba(91, 174, 176, 0.48);
+                    color: #a8fff2;
+                }
+                .wws-actions {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+                .wws-btn {
+                    min-height: 42px;
+                    padding: 0 16px;
+                    border-radius: 14px;
+                    border: 1px solid rgba(255,255,255,0.10);
+                    background: rgba(255,255,255,0.05);
+                    color: #ffffff;
+                    font: inherit;
+                    font-weight: 700;
+                    cursor: pointer;
+                }
+                .wws-btn.primary {
+                    background: linear-gradient(135deg, #2c718a, #235a70);
+                    border-color: rgba(91, 174, 176, 0.34);
+                    box-shadow: 0 14px 26px rgba(34, 96, 125, 0.18);
+                }
+                .wws-btn.subtle {
+                    color: #bfe7f0;
+                }
+                .wws-preview-toolbar {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+                .wws-preview-toolbar .wws-chip-row {
+                    flex: 1 1 240px;
+                }
+                .wws-preview-shell {
+                    position: relative;
+                    min-height: 540px;
+                    border-radius: 22px;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    background:
+                        radial-gradient(circle at top left, rgba(91, 174, 176, 0.18), transparent 28%),
+                        linear-gradient(180deg, rgba(12, 21, 33, 0.92), rgba(7, 15, 24, 0.96));
+                    overflow: hidden;
+                }
+                .wws-preview-frame {
+                    width: 100%;
+                    height: 540px;
+                    border: 0;
+                    background: transparent;
+                    display: block;
+                }
+                .wws-empty {
+                    display: grid;
+                    place-items: center;
+                    min-height: 540px;
+                    color: #8ea7b4;
+                    text-align: center;
+                    padding: 24px;
+                }
+                @media (max-width: 1100px) {
+                    .wws-hero,
+                    .wws-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+                @media (max-width: 720px) {
+                    .wws-form-grid {
+                        grid-template-columns: 1fr;
+                    }
+                    .wws-hero,
+                    .wws-card {
+                        padding: 16px;
+                        border-radius: 18px;
+                    }
+                    .wws-preview-shell,
+                    .wws-preview-frame,
+                    .wws-empty {
+                        min-height: 480px;
+                        height: 480px;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function initWebsiteWidgetStudio() {
+            injectWebsiteWidgetStudioStyles();
+            const tab = document.getElementById('website');
+            if (!tab || tab.dataset.widgetStudioReady === 'true') return;
+            const card = tab.querySelector('.card.glass');
+            const actionContainer = card?.querySelector('.action-container');
+            if (!card || !actionContainer) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.id = 'website-widget-studio';
+            wrapper.className = 'section-wrapper';
+            wrapper.innerHTML = `
+                <div class="section-content open">
+                    <div class="wws-shell">
+                        <section class="wws-hero">
+                            <div class="wws-hero-copy">
+                                <span class="wws-eyebrow">Website Widget Studio</span>
+                                <h3>Install a premium website widget with one snippet</h3>
+                                <p>Copy the hosted snippet, add your allowed domains, customize the widget title and first message, then test everything in the live preview before you publish it.</p>
+                                <div class="wws-checklist">
+                                    <div class="wws-check"><span><b>Server-side protection:</b> requests stay blocked until domain, widget key, agent status, and plan checks all pass.</span></div>
+                                    <div class="wws-check"><span><b>Digitivia branding:</b> the powered-by footer stays fixed inside the widget and the blocked CTA opens Digitivia.</span></div>
+                                    <div class="wws-check"><span><b>RTL/LTR and mobile-ready:</b> preview both directions and both themes before copying the embed code.</span></div>
+                                </div>
+                            </div>
+                            <div class="wws-hero-side">
+                                <div class="wws-stat">
+                                    <div class="wws-stat-label">Widget key</div>
+                                    <div class="wws-stat-value" id="wws-stat-key">Generating...</div>
+                                </div>
+                                <div class="wws-stat">
+                                    <div class="wws-stat-label">Hosted asset</div>
+                                    <div class="wws-stat-value" id="wws-stat-script">website-widget.js</div>
+                                </div>
+                                <div class="wws-stat">
+                                    <div class="wws-stat-label">Powered footer</div>
+                                    <div class="wws-stat-value">Digitivia locked</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="wws-grid">
+                            <div class="wws-stack">
+                                <section class="wws-card">
+                                    <h4>Setup steps</h4>
+                                    <div class="wws-step-list">
+                                        <div class="wws-step"><span class="wws-step-num">1</span><span>Copy the hosted snippet below.</span></div>
+                                        <div class="wws-step"><span class="wws-step-num">2</span><span>Paste it before <code>&lt;/body&gt;</code> on the website.</span></div>
+                                        <div class="wws-step"><span class="wws-step-num">3</span><span>Add every allowed production domain, one per line or separated by commas.</span></div>
+                                        <div class="wws-step"><span class="wws-step-num">4</span><span>Customize title, subtitle, first message, theme, and color.</span></div>
+                                        <div class="wws-step"><span class="wws-step-num">5</span><span>Use the live preview to test open, close, send, dark/light, RTL/LTR, and blocked-state behavior.</span></div>
+                                    </div>
+                                </section>
+
+                                <section class="wws-card">
+                                    <h4>Install snippet</h4>
+                                    <p>This snippet is ready for plain HTML websites. The widget key and the hosted asset URL are inserted automatically from your workspace settings.</p>
+                                    <textarea id="wws-snippet" class="wws-code" readonly></textarea>
+                                    <div class="wws-actions">
+                                        <button class="wws-btn primary" type="button" onclick="copyWebsiteWidgetSnippet()">Copy snippet</button>
+                                        <button class="wws-btn subtle" type="button" onclick="renderWebsiteWidgetSnippet()">Refresh code</button>
+                                    </div>
+                                </section>
+
+                                <section class="wws-card">
+                                    <h4>Widget settings</h4>
+                                    <div class="wws-form">
+                                        <div class="wws-switch-row">
+                                            <div>
+                                                <div class="wws-label">Enable website widget</div>
+                                                <div class="wws-hint">When disabled, the widget still previews here but production requests should be blocked server-side.</div>
+                                            </div>
+                                            <label class="switch">
+                                                <input type="checkbox" id="wws-enabled">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="wws-form-grid">
+                                            <label class="wws-field">
+                                                <span class="wws-label">Widget title</span>
+                                                <input id="wws-title" class="wws-input" type="text" maxlength="120">
+                                            </label>
+                                            <label class="wws-field">
+                                                <span class="wws-label">Subtitle</span>
+                                                <input id="wws-subtitle" class="wws-input" type="text" maxlength="160">
+                                            </label>
+                                            <label class="wws-field">
+                                                <span class="wws-label">Theme</span>
+                                                <select id="wws-theme" class="wws-select">
+                                                    <option value="light">Light</option>
+                                                    <option value="dark">Dark</option>
+                                                    <option value="auto">Auto</option>
+                                                </select>
+                                            </label>
+                                            <label class="wws-field">
+                                                <span class="wws-label">Position</span>
+                                                <select id="wws-position" class="wws-select">
+                                                    <option value="bottom-right">Bottom right</option>
+                                                    <option value="bottom-left">Bottom left</option>
+                                                </select>
+                                            </label>
+                                            <label class="wws-field">
+                                                <span class="wws-label">Primary color</span>
+                                                <input id="wws-color" class="wws-input" type="color" value="#2c718a">
+                                            </label>
+                                            <label class="wws-field">
+                                                <span class="wws-label">Blocked CTA label</span>
+                                                <input id="wws-cta-label" class="wws-input" type="text" maxlength="80">
+                                            </label>
+                                            <label class="wws-field-full">
+                                                <span class="wws-label">First assistant message</span>
+                                                <textarea id="wws-first-message" class="wws-textarea"></textarea>
+                                            </label>
+                                            <label class="wws-field-full">
+                                                <span class="wws-label">Allowed domains</span>
+                                                <textarea id="wws-domains" class="wws-textarea" placeholder="example.com&#10;www.example.com"></textarea>
+                                                <span class="wws-hint">Only these domains should be accepted by the website webhook. Separate domains with commas or new lines.</span>
+                                            </label>
+                                            <label class="wws-field-full">
+                                                <span class="wws-label">Blocked state title</span>
+                                                <input id="wws-blocked-title" class="wws-input" type="text" maxlength="120">
+                                            </label>
+                                            <label class="wws-field-full">
+                                                <span class="wws-label">Blocked state message</span>
+                                                <textarea id="wws-blocked-message" class="wws-textarea"></textarea>
+                                            </label>
+                                        </div>
+                                        <div class="wws-actions">
+                                            <button class="wws-btn primary" type="button" onclick="saveWebsiteWidgetSettings()">Save widget settings</button>
+                                            <button class="wws-btn subtle" type="button" onclick="applyWebsiteWidgetPreview()">Refresh preview</button>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <div class="wws-stack">
+                                <section class="wws-card">
+                                    <div class="wws-preview-toolbar">
+                                        <h4>Live widget preview</h4>
+                                        <div class="wws-actions">
+                                            <button class="wws-btn subtle" type="button" onclick="openWebsiteWidgetPreview()">Open widget</button>
+                                            <button class="wws-btn subtle" type="button" onclick="closeWebsiteWidgetPreview()">Close widget</button>
+                                        </div>
+                                    </div>
+                                    <div class="wws-chip-row">
+                                        <button class="wws-chip-btn active" data-wws-dir="ltr" onclick="setWebsiteWidgetPreviewDir('ltr', this)">LTR</button>
+                                        <button class="wws-chip-btn" data-wws-dir="rtl" onclick="setWebsiteWidgetPreviewDir('rtl', this)">RTL</button>
+                                        <button class="wws-chip-btn active" data-wws-theme="light" onclick="setWebsiteWidgetPreviewTheme('light', this)">Light</button>
+                                        <button class="wws-chip-btn" data-wws-theme="dark" onclick="setWebsiteWidgetPreviewTheme('dark', this)">Dark</button>
+                                        <button class="wws-chip-btn" data-wws-blocked="false" onclick="setWebsiteWidgetPreviewBlocked(false, this)">Live reply</button>
+                                        <button class="wws-chip-btn" data-wws-blocked="true" onclick="setWebsiteWidgetPreviewBlocked(true, this)">Blocked state</button>
+                                    </div>
+                                    <div class="wws-preview-shell">
+                                        <div id="wws-preview-empty" class="wws-empty">Loading website widget preview...</div>
+                                        <iframe id="wws-preview-frame" class="wws-preview-frame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            actionContainer.parentNode.insertBefore(wrapper, actionContainer);
+            tab.dataset.widgetStudioReady = 'true';
+
+            ['wws-enabled', 'wws-title', 'wws-subtitle', 'wws-theme', 'wws-position', 'wws-color', 'wws-cta-label', 'wws-first-message', 'wws-domains', 'wws-blocked-title', 'wws-blocked-message'].forEach((id) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('input', () => {
+                    renderWebsiteWidgetSnippet();
+                    applyWebsiteWidgetPreview();
+                });
+                el.addEventListener('change', () => {
+                    renderWebsiteWidgetSnippet();
+                    applyWebsiteWidgetPreview();
+                });
+            });
+
+            renderWebsiteWidgetSnippet();
+            loadWebsiteWidgetPreview();
+        }
+
+        function getWebsiteWidgetScriptBase() {
+            return window.location.origin && window.location.origin !== 'null'
+                ? window.location.origin
+                : 'https://digitivia.com';
+        }
+
+        function generateWebsiteWidgetKey() {
+            const chars = 'abcdef0123456789';
+            let out = 'dwk_';
+            for (let i = 0; i < 36; i += 1) out += chars[Math.floor(Math.random() * chars.length)];
+            return out;
+        }
+
+        function normalizeWebsiteWidgetSettings(raw) {
+            const base = {
+                widget_public_key: generateWebsiteWidgetKey(),
+                ...WEBSITE_WIDGET_DEFAULTS
+            };
+            const merged = { ...base, ...(raw || {}) };
+            merged.allowed_domains = Array.isArray(merged.allowed_domains)
+                ? merged.allowed_domains.map(v => String(v || '').trim()).filter(Boolean)
+                : String(merged.allowed_domains || '')
+                    .split(/[\n,]/)
+                    .map(v => v.trim())
+                    .filter(Boolean);
+            merged.enabled = !!merged.enabled;
+            merged.cta_url = String(merged.cta_url || 'https://digitivia.com').trim() || 'https://digitivia.com';
+            merged.widget_public_key = String(merged.widget_public_key || generateWebsiteWidgetKey()).trim();
+            return merged;
+        }
+
+        function collectWebsiteWidgetFormState() {
+            return normalizeWebsiteWidgetSettings({
+                enabled: document.getElementById('wws-enabled')?.checked,
+                title: document.getElementById('wws-title')?.value,
+                subtitle: document.getElementById('wws-subtitle')?.value,
+                first_message: document.getElementById('wws-first-message')?.value,
+                primary_color: document.getElementById('wws-color')?.value,
+                theme_mode: document.getElementById('wws-theme')?.value,
+                position: document.getElementById('wws-position')?.value,
+                cta_label: document.getElementById('wws-cta-label')?.value,
+                cta_url: 'https://digitivia.com',
+                powered_by_label: 'Powered by Digitivia',
+                blocked_title: document.getElementById('wws-blocked-title')?.value,
+                blocked_message: document.getElementById('wws-blocked-message')?.value,
+                widget_public_key: websiteWidgetSettings?.widget_public_key,
+                allowed_domains: document.getElementById('wws-domains')?.value
+            });
+        }
+
+        function syncWebsiteWidgetForm(settings) {
+            const state = normalizeWebsiteWidgetSettings(settings);
+            websiteWidgetSettings = state;
+            const map = {
+                'wws-enabled': state.enabled,
+                'wws-title': state.title,
+                'wws-subtitle': state.subtitle,
+                'wws-first-message': state.first_message,
+                'wws-color': state.primary_color,
+                'wws-theme': state.theme_mode,
+                'wws-position': state.position,
+                'wws-cta-label': state.cta_label,
+                'wws-domains': state.allowed_domains.join('\n'),
+                'wws-blocked-title': state.blocked_title,
+                'wws-blocked-message': state.blocked_message
+            };
+            Object.entries(map).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (el.type === 'checkbox') el.checked = !!value;
+                else el.value = value ?? '';
+            });
+            const keyStat = document.getElementById('wws-stat-key');
+            if (keyStat) keyStat.textContent = state.widget_public_key;
+            renderWebsiteWidgetSnippet();
+            applyWebsiteWidgetPreview();
+        }
+
+        async function loadWebsiteWidgetSettings() {
+            if (!currentUserOrgId) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('website_widget_settings')
+                    .select('*')
+                    .eq('org_id', currentUserOrgId)
+                    .maybeSingle();
+                if (error) throw error;
+                if (data) {
+                    syncWebsiteWidgetForm(data);
+                    return;
+                }
+                syncWebsiteWidgetForm({
+                    widget_public_key: generateWebsiteWidgetKey(),
+                    title: currentOrgData?.name ? `Welcome to ${currentOrgData.name}` : WEBSITE_WIDGET_DEFAULTS.title
+                });
+            } catch (error) {
+                console.error('loadWebsiteWidgetSettings error', error);
+                syncWebsiteWidgetForm({
+                    widget_public_key: generateWebsiteWidgetKey(),
+                    title: currentOrgData?.name ? `Welcome to ${currentOrgData.name}` : WEBSITE_WIDGET_DEFAULTS.title
+                });
+                showToast('Website widget settings could not be loaded yet.', 'info');
+            }
+        }
+
+        async function saveWebsiteWidgetSettings() {
+            if (window.currentUserRole === 'moderator') {
+                showToast(t('messages.access_denied') || 'Access denied', 'error');
+                return;
+            }
+            if (!currentUserOrgId) {
+                showToast(t('messages.error_no_org') || 'Organization missing', 'error');
+                return;
+            }
+            const payload = collectWebsiteWidgetFormState();
+            try {
+                const { error } = await supabaseClient
+                    .from('website_widget_settings')
+                    .upsert({
+                        org_id: currentUserOrgId,
+                        widget_public_key: payload.widget_public_key,
+                        enabled: payload.enabled,
+                        allowed_domains: payload.allowed_domains,
+                        title: payload.title,
+                        subtitle: payload.subtitle,
+                        first_message: payload.first_message,
+                        primary_color: payload.primary_color,
+                        theme_mode: payload.theme_mode,
+                        position: payload.position,
+                        cta_label: payload.cta_label,
+                        cta_url: payload.cta_url,
+                        powered_by_label: payload.powered_by_label,
+                        blocked_title: payload.blocked_title || WEBSITE_WIDGET_DEFAULTS.blocked_title,
+                        blocked_message: payload.blocked_message,
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'org_id' });
+                if (error) throw error;
+                websiteWidgetSettings = payload;
+                renderWebsiteWidgetSnippet();
+                applyWebsiteWidgetPreview();
+                showToast('Website widget settings saved.', 'success');
+            } catch (error) {
+                console.error('saveWebsiteWidgetSettings error', error);
+                showToast('Failed to save website widget settings.', 'error');
+            }
+        }
+
+        function renderWebsiteWidgetSnippet() {
+            const state = collectWebsiteWidgetFormState();
+            websiteWidgetSettings = state;
+            const base = getWebsiteWidgetScriptBase();
+            const snippet = [
+                '<!-- Digitivia Website Widget -->',
+                `<script src="${base}/website-widget.js"`,
+                `  data-widget-key="${escapeHtmlAttr(state.widget_public_key)}"`,
+                `  data-webhook-url="${escapeHtmlAttr('https://n8n.srv1174105.hstgr.cloud/webhook/website_chat_digitivia')}"`,
+                `  data-title="${escapeHtmlAttr(state.title)}"`,
+                `  data-subtitle="${escapeHtmlAttr(state.subtitle)}"`,
+                `  data-first-message="${escapeHtmlAttr(state.first_message)}"`,
+                `  data-theme="${escapeHtmlAttr(state.theme_mode)}"`,
+                `  data-position="${escapeHtmlAttr(state.position)}"`,
+                `  data-cta-label="${escapeHtmlAttr(state.cta_label)}"`,
+                `  data-cta-url="https://digitivia.com"`,
+                `  data-powered-by="Powered by Digitivia"`,
+                '></script>'
+            ].join('\n');
+            const el = document.getElementById('wws-snippet');
+            if (el) el.value = snippet;
+            const scriptStat = document.getElementById('wws-stat-script');
+            if (scriptStat) scriptStat.textContent = `${base}/website-widget.js`;
+        }
+
+        async function copyWebsiteWidgetSnippet() {
+            const value = document.getElementById('wws-snippet')?.value || '';
+            if (!value) return;
+            try {
+                await navigator.clipboard.writeText(value);
+                showToast('Website widget snippet copied.', 'success');
+            } catch (error) {
+                console.error('copyWebsiteWidgetSnippet error', error);
+                showToast('Could not copy the snippet automatically.', 'error');
+            }
+        }
+
+        function getWebsiteWidgetPreviewConfig() {
+            const state = collectWebsiteWidgetFormState();
+            return {
+                title: state.title,
+                subtitle: state.subtitle,
+                firstMessage: state.first_message,
+                defaultTheme: websiteWidgetPreviewState.theme === 'dark' ? 'dark' : state.theme_mode,
+                forcedDir: websiteWidgetPreviewState.dir,
+                ctaLabel: state.cta_label,
+                ctaUrl: 'https://digitivia.com',
+                poweredByLabel: 'Powered by Digitivia',
+                blockedMessage: state.blocked_message,
+                blockedTitle: state.blocked_title,
+                previewBlocked: websiteWidgetPreviewState.blocked,
+                previewMode: true,
+                embeddedFrame: true,
+                position: state.position,
+                theme: {
+                    '--chat-accent': state.primary_color,
+                    '--chat-accent-strong': state.primary_color
+                }
+            };
+        }
+
+        async function loadWebsiteWidgetPreview() {
+            const iframe = document.getElementById('wws-preview-frame');
+            const empty = document.getElementById('wws-preview-empty');
+            if (!iframe) return;
+            try {
+                const res = await fetch('chatwindow.html', { credentials: 'same-origin' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const html = await res.text();
+                const configScript = `<script>window.DigitiviaChatWidgetConfig = ${JSON.stringify(getWebsiteWidgetPreviewConfig())};<\\/script>`;
+                iframe.srcdoc = html.replace('<script>', `${configScript}\n<script>`);
+                iframe.onload = () => {
+                    if (empty) empty.style.display = 'none';
+                    applyWebsiteWidgetPreview();
+                };
+            } catch (error) {
+                console.error('loadWebsiteWidgetPreview error', error);
+                if (empty) empty.textContent = 'Preview could not be loaded from chatwindow.html.';
+            }
+        }
+
+        function applyWebsiteWidgetPreview() {
+            const iframe = document.getElementById('wws-preview-frame');
+            if (!iframe) return;
+            const previewApi = iframe.contentWindow?.DigitiviaChatWidget;
+            if (previewApi?.setConfig) {
+                previewApi.setConfig(getWebsiteWidgetPreviewConfig());
+                if (websiteWidgetPreviewState.blocked) previewApi.setBlockedState(true);
+                else previewApi.setBlockedState(false);
+            }
+            renderWebsiteWidgetSnippet();
+        }
+
+        function openWebsiteWidgetPreview() {
+            const previewApi = document.getElementById('wws-preview-frame')?.contentWindow?.DigitiviaChatWidget;
+            if (previewApi?.open) previewApi.open();
+        }
+
+        function closeWebsiteWidgetPreview() {
+            const previewApi = document.getElementById('wws-preview-frame')?.contentWindow?.DigitiviaChatWidget;
+            if (previewApi?.close) previewApi.close();
+        }
+
+        function setWebsiteWidgetPreviewDir(dir, btn) {
+            websiteWidgetPreviewState.dir = dir === 'rtl' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-wws-dir]').forEach(el => el.classList.toggle('active', el === btn));
+            applyWebsiteWidgetPreview();
+        }
+
+        function setWebsiteWidgetPreviewTheme(theme, btn) {
+            websiteWidgetPreviewState.theme = theme === 'dark' ? 'dark' : 'light';
+            document.querySelectorAll('[data-wws-theme]').forEach(el => el.classList.toggle('active', el === btn));
+            applyWebsiteWidgetPreview();
+        }
+
+        function setWebsiteWidgetPreviewBlocked(blocked, btn) {
+            websiteWidgetPreviewState.blocked = !!blocked;
+            document.querySelectorAll('[data-wws-blocked]').forEach(el => el.classList.toggle('active', el === btn));
+            applyWebsiteWidgetPreview();
+        }
+
+        function escapeHtmlAttr(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
         }
 
         // Initialize language on page load
