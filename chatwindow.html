@@ -54,6 +54,26 @@
 
     body.hs-embed-surface {
       background: transparent;
+      min-height: 100vh;
+      overflow: hidden;
+      --chat-launcher-size: 58px;
+      --chat-panel-width: min(392px, calc(100vw - 20px));
+      --chat-panel-height: min(680px, calc(100dvh - 24px));
+      --chat-panel-offset: 18px;
+      --chat-safe-bottom: 10px;
+    }
+
+    body.hs-embed-surface .hs-chat-widget {
+      inset-inline-end: 10px;
+      inset-block-end: 10px;
+    }
+
+    body.hs-embed-surface .hs-chat-widget[data-position="bottom-left"] {
+      inset-inline-start: 10px;
+    }
+
+    body.hs-embed-surface .hs-chat-panel {
+      min-block-size: min(520px, calc(100dvh - 20px));
     }
 
     .hs-chat-widget,
@@ -756,6 +776,14 @@
     }
 
     @media (max-width: 640px) {
+      body.hs-embed-surface {
+        --chat-launcher-size: 54px;
+        --chat-panel-width: min(100vw - 14px, 420px);
+        --chat-panel-height: calc(100dvh - 16px);
+        --chat-panel-offset: 12px;
+        --chat-safe-bottom: 7px;
+      }
+
       .hs-chat-widget {
         inset-inline-end: 10px;
         inset-block-end: calc(env(safe-area-inset-bottom, 0px) + 10px);
@@ -788,6 +816,10 @@
     }
 
     @media (max-width: 460px) {
+      body.hs-embed-surface {
+        --chat-panel-height: calc(100dvh - 12px);
+      }
+
       .hs-chat-widget,
       .hs-chat-widget[data-position="bottom-left"] {
         inset-inline: 6px;

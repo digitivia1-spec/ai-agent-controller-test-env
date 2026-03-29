@@ -30112,6 +30112,7 @@ Thank you for shopping with {store_name}!</textarea>
                     background: rgba(6, 13, 22, 0.38);
                     display: grid;
                     gap: 14px;
+                    align-content: start;
                     overflow: hidden;
                     min-width: 0;
                 }
@@ -30187,11 +30188,17 @@ Thank you for shopping with {store_name}!</textarea>
                     resize: vertical;
                 }
                 .wws-code {
-                    min-height: 150px;
+                    min-height: 220px;
+                    max-height: 220px;
+                    height: 220px;
+                    resize: none;
+                    overflow: auto;
                     font-family: "Consolas", "SFMono-Regular", monospace;
                     font-size: 12px;
                     line-height: 1.65;
                     direction: ltr;
+                    white-space: pre;
+                    overflow-wrap: normal;
                 }
                 .wws-input:focus,
                 .wws-select:focus,
@@ -30242,6 +30249,7 @@ Thank you for shopping with {store_name}!</textarea>
                     display: flex;
                     flex-wrap: wrap;
                     gap: 10px;
+                    align-items: center;
                 }
                 .wws-btn {
                     min-height: 42px;
@@ -30334,6 +30342,11 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                     .wws-btn {
                         flex: 1 1 100%;
+                    }
+                    .wws-code {
+                        min-height: 190px;
+                        max-height: 190px;
+                        height: 190px;
                     }
                     .wws-preview-shell,
                     .wws-preview-frame,
