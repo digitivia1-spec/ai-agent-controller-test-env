@@ -1903,6 +1903,27 @@
             push_test_body: "Important orders and meetings will reach this device in the background.",
             default_customer_name: "Customer",
             default_meeting_label: "meeting",
+            settings: {
+                title: "Notification Preferences",
+                subtitle: "Control which notifications your organization receives by channel.",
+                readonly_note: "Read-only: only organization owners can edit these settings.",
+                save: "Save Notification Settings",
+                saving: "Saving...",
+                saved: "Notification settings saved.",
+                save_failed: "Could not save notification settings right now.",
+                section_business: "Business Notifications",
+                section_account: "Account Notifications",
+                category: "Category",
+                channel_email: "Email",
+                channel_browser: "Browser",
+                global_label: "Global",
+                global_hint: "Master on/off for all business notifications by channel.",
+                messages_label: "Messages",
+                meetings_label: "Meetings",
+                orders_label: "Orders",
+                login_label: "Login Welcome Email",
+                login_hint: "Send a welcome-back email after successful sign in."
+            },
             smart_banner: {
                 not_enabled: "Enable notifications once and Digitivia will bring you straight to urgent orders and meetings.",
                 blocked: "Allow notifications to restore the full Digitivia experience on this device.",
@@ -1931,6 +1952,18 @@
                 },
                 meeting_no_show: {
                     title: "Meeting Marked No-show"
+                },
+                inbox_messages_threshold: {
+                    title: "Messages Waiting",
+                    body: "{count} new customer messages are waiting in your inbox."
+                },
+                login_detected: {
+                    title: "Welcome Back to Digitivia",
+                    body: "Welcome back, {user_name}. You signed in successfully."
+                },
+                welcome_email: {
+                    title: "Welcome to Digitivia",
+                    body: "Your Digitivia workspace is now ready."
                 }
             }
         });
@@ -2190,6 +2223,27 @@
             push_test_body: "ستصل إلى هذا الجهاز أهم تحديثات الطلبات والاجتماعات حتى في الخلفية.",
             default_customer_name: "العميل",
             default_meeting_label: "الاجتماع",
+            settings: {
+                title: "تفضيلات الإشعارات",
+                subtitle: "تحكم في الإشعارات التي تستقبلها مؤسستك حسب القناة.",
+                readonly_note: "وضع القراءة فقط: فقط مالك المؤسسة يمكنه تعديل هذه الإعدادات.",
+                save: "حفظ إعدادات الإشعارات",
+                saving: "جارٍ الحفظ...",
+                saved: "تم حفظ إعدادات الإشعارات.",
+                save_failed: "تعذر حفظ إعدادات الإشعارات الآن.",
+                section_business: "إشعارات الأعمال",
+                section_account: "إشعارات الحساب",
+                category: "الفئة",
+                channel_email: "البريد الإلكتروني",
+                channel_browser: "المتصفح",
+                global_label: "عام",
+                global_hint: "تشغيل/إيقاف رئيسي لكل إشعارات الأعمال حسب القناة.",
+                messages_label: "الرسائل",
+                meetings_label: "الاجتماعات",
+                orders_label: "الطلبات",
+                login_label: "بريد ترحيب بعد تسجيل الدخول",
+                login_hint: "إرسال بريد ترحيبي بعد نجاح تسجيل الدخول."
+            },
             smart_banner: {
                 not_enabled: "فعّل الإشعارات مرة واحدة وسيأخذك Digitivia مباشرة إلى الطلبات والاجتماعات المهمة.",
                 blocked: "اسمح بالإشعارات لاستعادة التجربة الكاملة لـ Digitivia على هذا الجهاز.",
@@ -2218,6 +2272,18 @@
                 },
                 meeting_no_show: {
                     title: "تم تسجيل عدم الحضور"
+                },
+                inbox_messages_threshold: {
+                    title: "رسائل جديدة بانتظارك",
+                    body: "لديك {count} رسالة عميل جديدة بانتظارك في صندوق الوارد."
+                },
+                login_detected: {
+                    title: "مرحباً بعودتك إلى Digitivia",
+                    body: "مرحباً بعودتك، {user_name}. تم تسجيل دخولك بنجاح."
+                },
+                welcome_email: {
+                    title: "مرحباً بك في Digitivia",
+                    body: "مساحة Digitivia الخاصة بك أصبحت جاهزة."
                 }
             }
         });
@@ -8920,6 +8986,127 @@
             line-height: 1.45;
         }
 
+        .notification-settings-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            text-align: start;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .notification-settings-title {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .notification-settings-subtitle,
+        .notification-settings-readonly {
+            margin: 0;
+            font-size: 0.78rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .notification-settings-readonly {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .notification-settings-section {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .notification-settings-section-title {
+            padding: 10px 12px;
+            font-size: 0.76rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .notification-settings-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 88px 88px;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .notification-settings-row:first-child {
+            border-top: 0;
+        }
+
+        .notification-settings-row.account {
+            grid-template-columns: minmax(0, 1fr) 88px;
+        }
+
+        .notification-settings-head {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .notification-settings-label {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .notification-settings-hint {
+            margin-top: 2px;
+            font-size: 0.73rem;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+
+        .notification-switch {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-switch input[type="checkbox"] {
+            inline-size: 18px;
+            block-size: 18px;
+            accent-color: var(--theme-color);
+            cursor: pointer;
+        }
+
+        .notification-settings-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .notification-settings-save {
+            min-height: 40px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--theme-color);
+            background: rgba(91, 174, 176, 0.2);
+            color: var(--text-main);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .notification-settings-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .notification-smart-banner {
             display: none;
             position: fixed;
@@ -10778,6 +10965,23 @@
 
             .notification-health-pill {
                 align-self: flex-start;
+            }
+
+            .notification-settings-row {
+                grid-template-columns: minmax(0, 1fr) 64px 64px;
+                gap: 8px;
+            }
+
+            .notification-settings-row.account {
+                grid-template-columns: minmax(0, 1fr) 64px;
+            }
+
+            .notification-settings-head {
+                font-size: 0.66rem;
+            }
+
+            .notification-settings-label {
+                font-size: 0.8rem;
             }
 
             .profile-info-row {
@@ -16188,7 +16392,8 @@
         }
 
         :root[data-theme="light"] .notification-health-card,
-        :root[data-theme="light"] .notification-smart-banner {
+        :root[data-theme="light"] .notification-smart-banner,
+        :root[data-theme="light"] .notification-settings-card {
             background: rgba(255, 255, 255, 0.94) !important;
             border-color: rgba(15, 23, 42, 0.12) !important;
             box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12) !important;
@@ -16203,12 +16408,28 @@
         :root[data-theme="light"] .notification-health-subtitle,
         :root[data-theme="light"] .notification-health-detail,
         :root[data-theme="light"] .notification-smart-banner-text,
-        :root[data-theme="light"] .notification-health-steps {
+        :root[data-theme="light"] .notification-health-steps,
+        :root[data-theme="light"] .notification-settings-subtitle,
+        :root[data-theme="light"] .notification-settings-hint,
+        :root[data-theme="light"] .notification-settings-head {
             color: #475569 !important;
         }
 
         :root[data-theme="light"] .notification-smart-banner-btn,
         :root[data-theme="light"] .notification-health-pill {
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+
+        :root[data-theme="light"] .notification-settings-title,
+        :root[data-theme="light"] .notification-settings-label {
+            color: #0f172a !important;
+        }
+
+        :root[data-theme="light"] .notification-settings-readonly {
+            color: #a16207 !important;
+        }
+
+        :root[data-theme="light"] .notification-settings-section {
             border-color: rgba(15, 23, 42, 0.12) !important;
         }
 
@@ -19406,6 +19627,7 @@
                     style="display:none; width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);"
                     data-i18n="onboarding.btn_open_setup">⚙️ Setup Wizard</button>
                 <div id="notification-health-card" class="notification-health-card" aria-live="polite"></div>
+                <div id="notification-settings-card" class="notification-settings-card" aria-live="polite"></div>
                 <button id="profile-push-btn" class="btn-secondary" onclick="enablePushNotifications()"
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
                     🔔 Enable/Test Notifications
@@ -20640,6 +20862,9 @@
                     console.warn(`${PUSH_LOG_PREFIX} Failed to refresh notification health UI:`, error);
                 });
             }
+            if (typeof renderNotificationSettingsPanel === 'function') {
+                renderNotificationSettingsPanel();
+            }
             if (typeof updateNotificationUI === 'function') updateNotificationUI();
             if (typeof renderEmailNotificationTestPanel === 'function') renderEmailNotificationTestPanel();
             updateThemeToggleUI();
@@ -20891,6 +21116,11 @@
             if (typeof renderNotificationHealthUI === 'function') {
                 renderNotificationHealthUI().catch((error) => {
                     console.warn(`${PUSH_LOG_PREFIX} Failed to render notification health UI in profile modal:`, error);
+                });
+            }
+            if (typeof loadNotificationSettings === 'function') {
+                loadNotificationSettings().catch((error) => {
+                    console.warn('Failed to load notification settings in profile modal:', error);
                 });
             }
         }
@@ -32015,6 +32245,13 @@ Thank you for shopping with {store_name}!</textarea>
     let pushServiceWorkerRegistration = null;
     let pushServiceWorkerBridgeBound = false;
     let notificationHealthSnapshot = null;
+    let notificationSettingsState = {
+        loading: false,
+        saving: false,
+        dirty: false,
+        source: null,
+        draft: null
+    };
     let pendingNotificationTarget = null;
     const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
     notificationSound.preload = 'auto';
@@ -32060,6 +32297,257 @@ Thank you for shopping with {store_name}!</textarea>
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;');
+    }
+
+    function getDefaultNotificationSettings() {
+        return {
+            notifications: {
+                business: {
+                    global: { email: true, browser: true },
+                    categories: {
+                        orders: { email: true, browser: true },
+                        meetings: { email: true, browser: true },
+                        messages: { email: true, browser: true }
+                    }
+                },
+                account: {
+                    login: { email: true }
+                }
+            }
+        };
+    }
+
+    function cloneNotificationSettings(value) {
+        try {
+            return JSON.parse(JSON.stringify(value || getDefaultNotificationSettings()));
+        } catch (_error) {
+            return getDefaultNotificationSettings();
+        }
+    }
+
+    function toBoolean(value, fallback = true) {
+        if (typeof value === 'boolean') return value;
+        if (typeof value === 'string') {
+            const normalized = value.trim().toLowerCase();
+            if (normalized === 'true') return true;
+            if (normalized === 'false') return false;
+        }
+        return fallback;
+    }
+
+    function normalizeNotificationSettings(raw) {
+        const source = raw && typeof raw === 'object' ? raw : {};
+        return {
+            notifications: {
+                business: {
+                    global: {
+                        email: toBoolean(source?.notifications?.business?.global?.email, true),
+                        browser: toBoolean(source?.notifications?.business?.global?.browser, true)
+                    },
+                    categories: {
+                        orders: {
+                            email: toBoolean(source?.notifications?.business?.categories?.orders?.email, true),
+                            browser: toBoolean(source?.notifications?.business?.categories?.orders?.browser, true)
+                        },
+                        meetings: {
+                            email: toBoolean(source?.notifications?.business?.categories?.meetings?.email, true),
+                            browser: toBoolean(source?.notifications?.business?.categories?.meetings?.browser, true)
+                        },
+                        messages: {
+                            email: toBoolean(source?.notifications?.business?.categories?.messages?.email, true),
+                            browser: toBoolean(source?.notifications?.business?.categories?.messages?.browser, true)
+                        }
+                    }
+                },
+                account: {
+                    login: {
+                        email: toBoolean(source?.notifications?.account?.login?.email, true)
+                    }
+                }
+            }
+        };
+    }
+
+    function isNotificationSettingsOwner() {
+        return String(window.currentUserRole || '').toLowerCase() === 'owner';
+    }
+
+    function setNotificationSettingValue(path, checked) {
+        const parts = String(path || '').split('.');
+        if (!parts.length || !notificationSettingsState.draft) return;
+        let cursor = notificationSettingsState.draft;
+        for (let index = 0; index < parts.length - 1; index += 1) {
+            const key = parts[index];
+            if (!cursor[key] || typeof cursor[key] !== 'object') cursor[key] = {};
+            cursor = cursor[key];
+        }
+        cursor[parts[parts.length - 1]] = Boolean(checked);
+    }
+
+    function notificationSettingsEqual(left, right) {
+        try {
+            return JSON.stringify(normalizeNotificationSettings(left)) === JSON.stringify(normalizeNotificationSettings(right));
+        } catch (_error) {
+            return false;
+        }
+    }
+
+    function renderNotificationSettingsPanel() {
+        const card = document.getElementById('notification-settings-card');
+        if (!card) return;
+        const owner = isNotificationSettingsOwner();
+        const loading = !!notificationSettingsState.loading;
+        const saving = !!notificationSettingsState.saving;
+        const settings = normalizeNotificationSettings(notificationSettingsState.draft || notificationSettingsState.source || getDefaultNotificationSettings());
+        const disabled = loading || !owner;
+
+        if (loading) {
+            const loadingText = currentLang === 'ar' ? 'جارٍ التحميل...' : 'Loading...';
+            card.innerHTML = `
+                <div class="notification-settings-title">${escapeNotificationHtml(t('notifications.settings.title'))}</div>
+                <div class="notification-settings-subtitle">${escapeNotificationHtml(loadingText)}</div>
+            `;
+            return;
+        }
+
+        const global = settings.notifications.business.global;
+        const categories = settings.notifications.business.categories;
+        const loginEmail = settings.notifications.account.login.email;
+        const dirty = owner && notificationSettingsState.dirty;
+
+        const checkbox = (path, checked, title) => `
+            <span class="notification-switch">
+                <input
+                    type="checkbox"
+                    ${checked ? 'checked' : ''}
+                    ${disabled ? 'disabled' : ''}
+                    onchange="handleNotificationSettingsToggle('${path}', this.checked)"
+                    aria-label="${escapeNotificationHtml(title)}"
+                />
+            </span>
+        `;
+
+        card.innerHTML = `
+            <div class="notification-settings-title">${escapeNotificationHtml(t('notifications.settings.title'))}</div>
+            <div class="notification-settings-subtitle">${escapeNotificationHtml(t('notifications.settings.subtitle'))}</div>
+            ${owner ? '' : `<div class="notification-settings-readonly">${escapeNotificationHtml(t('notifications.settings.readonly_note'))}</div>`}
+
+            <div class="notification-settings-section">
+                <div class="notification-settings-section-title">${escapeNotificationHtml(t('notifications.settings.section_business'))}</div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-head">${escapeNotificationHtml(t('notifications.settings.category'))}</div>
+                    <div class="notification-settings-head">${escapeNotificationHtml(t('notifications.settings.channel_email'))}</div>
+                    <div class="notification-settings-head">${escapeNotificationHtml(t('notifications.settings.channel_browser'))}</div>
+                </div>
+                <div class="notification-settings-row">
+                    <div>
+                        <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.global_label'))}</div>
+                        <div class="notification-settings-hint">${escapeNotificationHtml(t('notifications.settings.global_hint'))}</div>
+                    </div>
+                    ${checkbox('notifications.business.global.email', global.email, t('notifications.settings.global_label'))}
+                    ${checkbox('notifications.business.global.browser', global.browser, t('notifications.settings.global_label'))}
+                </div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.messages_label'))}</div>
+                    ${checkbox('notifications.business.categories.messages.email', categories.messages.email, t('notifications.settings.messages_label'))}
+                    ${checkbox('notifications.business.categories.messages.browser', categories.messages.browser, t('notifications.settings.messages_label'))}
+                </div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.meetings_label'))}</div>
+                    ${checkbox('notifications.business.categories.meetings.email', categories.meetings.email, t('notifications.settings.meetings_label'))}
+                    ${checkbox('notifications.business.categories.meetings.browser', categories.meetings.browser, t('notifications.settings.meetings_label'))}
+                </div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.orders_label'))}</div>
+                    ${checkbox('notifications.business.categories.orders.email', categories.orders.email, t('notifications.settings.orders_label'))}
+                    ${checkbox('notifications.business.categories.orders.browser', categories.orders.browser, t('notifications.settings.orders_label'))}
+                </div>
+            </div>
+
+            <div class="notification-settings-section">
+                <div class="notification-settings-section-title">${escapeNotificationHtml(t('notifications.settings.section_account'))}</div>
+                <div class="notification-settings-row account">
+                    <div>
+                        <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.login_label'))}</div>
+                        <div class="notification-settings-hint">${escapeNotificationHtml(t('notifications.settings.login_hint'))}</div>
+                    </div>
+                    ${checkbox('notifications.account.login.email', loginEmail, t('notifications.settings.login_label'))}
+                </div>
+            </div>
+
+            <div class="notification-settings-actions">
+                <button
+                    class="notification-settings-save"
+                    onclick="saveNotificationSettings()"
+                    ${!dirty || saving || !owner ? 'disabled' : ''}
+                >${escapeNotificationHtml(saving ? t('notifications.settings.saving') : t('notifications.settings.save'))}</button>
+            </div>
+        `;
+    }
+
+    async function loadNotificationSettings() {
+        if (!currentUserOrgId || !window.supabaseClient) return;
+        notificationSettingsState.loading = true;
+        renderNotificationSettingsPanel();
+        try {
+            const { data, error } = await window.supabaseClient.rpc('get_my_org_notification_settings');
+            if (error) throw error;
+            const normalized = normalizeNotificationSettings(data || getDefaultNotificationSettings());
+            notificationSettingsState.source = cloneNotificationSettings(normalized);
+            notificationSettingsState.draft = cloneNotificationSettings(normalized);
+            notificationSettingsState.dirty = false;
+            if (currentOrgData) {
+                currentOrgData.settings = currentOrgData.settings || {};
+                currentOrgData.settings.notifications = normalized.notifications;
+            }
+        } catch (error) {
+            console.warn('Failed to load notification settings:', error);
+            const fallback = normalizeNotificationSettings(currentOrgData?.settings || getDefaultNotificationSettings());
+            notificationSettingsState.source = cloneNotificationSettings(fallback);
+            notificationSettingsState.draft = cloneNotificationSettings(fallback);
+            notificationSettingsState.dirty = false;
+        } finally {
+            notificationSettingsState.loading = false;
+            renderNotificationSettingsPanel();
+        }
+    }
+
+    async function saveNotificationSettings() {
+        if (!isNotificationSettingsOwner() || !currentUserOrgId || !window.supabaseClient) return;
+        notificationSettingsState.saving = true;
+        renderNotificationSettingsPanel();
+        try {
+            const payload = normalizeNotificationSettings(notificationSettingsState.draft || getDefaultNotificationSettings());
+            const { data, error } = await window.supabaseClient.rpc('update_my_org_notification_settings', {
+                p_settings: payload
+            });
+            if (error) throw error;
+            const normalized = normalizeNotificationSettings(data || payload);
+            notificationSettingsState.source = cloneNotificationSettings(normalized);
+            notificationSettingsState.draft = cloneNotificationSettings(normalized);
+            notificationSettingsState.dirty = false;
+            if (currentOrgData) {
+                currentOrgData.settings = currentOrgData.settings || {};
+                currentOrgData.settings.notifications = normalized.notifications;
+            }
+            showToast(t('notifications.settings.saved'), 'success');
+        } catch (error) {
+            console.warn('Failed to save notification settings:', error);
+            showToast(t('notifications.settings.save_failed'), 'error');
+        } finally {
+            notificationSettingsState.saving = false;
+            renderNotificationSettingsPanel();
+        }
+    }
+
+    function handleNotificationSettingsToggle(path, checked) {
+        if (!isNotificationSettingsOwner()) return;
+        if (!notificationSettingsState.draft) {
+            notificationSettingsState.draft = cloneNotificationSettings(notificationSettingsState.source || getDefaultNotificationSettings());
+        }
+        setNotificationSettingValue(path, checked);
+        notificationSettingsState.dirty = !notificationSettingsEqual(notificationSettingsState.draft, notificationSettingsState.source);
+        renderNotificationSettingsPanel();
     }
 
     function isIosDevice() {
@@ -32225,6 +32713,8 @@ Thank you for shopping with {store_name}!</textarea>
         const payload = descriptor.payload || {};
         const customerName = payload.customer_name || payload.customer || payload.name || t('notifications.default_customer_name');
         const serviceName = payload.service_name || payload.topic || payload.meeting_type || t('notifications.default_meeting_label');
+        const userName = payload.user_name || payload.user || t('notifications.default_customer_name');
+        const messageCount = Number(payload.message_count || payload.threshold || 40);
         const orderAmount = formatNotificationMoney(payload);
         const meetingDateTime = formatNotificationMeetingDateTime(payload, lang);
 
@@ -32279,6 +32769,22 @@ Thank you for shopping with {store_name}!</textarea>
                     service_name: serviceName,
                     customer_name: customerName
                 })
+            },
+            inbox_messages_threshold: {
+                title: t('notifications.events.inbox_messages_threshold.title'),
+                body: t('notifications.events.inbox_messages_threshold.body', {
+                    count: String(messageCount)
+                })
+            },
+            login_detected: {
+                title: t('notifications.events.login_detected.title'),
+                body: t('notifications.events.login_detected.body', {
+                    user_name: userName
+                })
+            },
+            welcome_email: {
+                title: t('notifications.events.welcome_email.title'),
+                body: t('notifications.events.welcome_email.body')
             }
         };
 
