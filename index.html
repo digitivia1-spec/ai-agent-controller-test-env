@@ -24407,29 +24407,26 @@ Thank you for shopping with {store_name}!</textarea>
             grid.innerHTML = '<div class="insights-loading-state"><div class="spinner" style="width:30px; height:30px; margin:0 auto;"></div></div>';
 
             try {
-                // 1. Check for webhook config
                 const config = await getInsightsWebhookConfig();
-
-                let metricsData = null;
-
                 const meta = config?.meta || {};
                 const hasPageCreds = meta.page_account_id && meta.page_access_token;
                 const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
                 const platformCredsOk = insightPlatform === 'instagram' ? hasIgCreds : hasPageCreds;
 
+                let metricsData = null;
+                let dataSource = 'none';
+
                 if (config && config.webhook_url && platformCredsOk) {
-                    // --- WEBHOOK PATH: Call n8n webhook ---
                     const result = await callInsightsWebhook(insightPlatform, insightPeriod);
                     console.log('[Insights] Webhook response:', result);
-
-                    // The n8n "Code in JavaScript" node returns cleaned { metric_name: value } objects
                     if (result && typeof result === 'object' && Object.keys(result).length > 0) {
                         metricsData = result;
+                        dataSource = 'webhook';
                     }
-                } else {
-                    // --- FALLBACK: Direct Supabase query for platform_metrics ---
-                    const queryPlatform = insightPlatform === 'facebook' ? 'page' : insightPlatform;
+                }
 
+                if (!metricsData) {
+                    const queryPlatform = insightPlatform === 'facebook' ? 'page' : insightPlatform;
                     const platformsToTry = [queryPlatform];
                     if (queryPlatform === 'instagram') platformsToTry.push('ig');
 
@@ -24454,7 +24451,7 @@ Thank you for shopping with {store_name}!</textarea>
                             continue;
                         }
 
-                        if (Array.isArray(data) && data.length) { row = data[0]; break; }
+                        if (Array.isArray(data) && data.length) { row = data[0]; dataSource = `platform_metrics:${p}`; break; }
                     }
 
                     if (row && row.metrics) {
@@ -24464,11 +24461,16 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 }
 
-                // If no data from either source, show empty state
                 if (!metricsData || (typeof metricsData === 'object' && Object.keys(metricsData).length === 0)) {
-                    throw new Error("No Data");
+                    const reason = !config || !config.webhook_url
+                        ? 'No webhook configured'
+                        : !platformCredsOk
+                            ? 'Missing channel credentials'
+                            : 'No cached metrics';
+                    throw new Error(reason);
                 }
 
+                console.log('[Insights] rendering from', dataSource);
                 renderInsightCards(metricsData);
 
             } catch (e) {
@@ -24501,7 +24503,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const hasIgCreds = meta.ig_account_id && meta.ig_access_token;
 
                 // --- WEBHOOK PATH: Call n8n webhook for posts ---
-                if (config && config.webhook_url) {
+                if (config && config.webhook_url && ((platform === 'facebook' && hasPageCreds) || (platform === 'instagram' && hasIgCreds))) {
                     const webhookPlatform = platform === 'facebook' ? 'facebook_posts' : 'instagram_posts';
                     const credsOk = webhookPlatform === 'instagram_posts' ? hasIgCreds : hasPageCreds;
                     if (!credsOk) throw new Error('Missing credentials for posts webhook');
