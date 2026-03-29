@@ -24327,7 +24327,6 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (error || !data || !data.length) {
                     console.warn('[Insights] No channel creds', { platformKey, channelPlatform, error });
-                    _insightsCredsCache[cacheKey] = null;
                 } else {
                     const row = data[0];
                     _insightsCredsCache[cacheKey] = {
@@ -24337,10 +24336,9 @@ Thank you for shopping with {store_name}!</textarea>
                 }
             } catch (e) {
                 console.warn('[Insights] Channel creds fetch failed', e);
-                _insightsCredsCache[cacheKey] = null;
             }
 
-            return _insightsCredsCache[cacheKey];
+            return _insightsCredsCache[cacheKey] || null;
         }
 
         /**
