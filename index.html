@@ -24431,7 +24431,6 @@ Thank you for shopping with {store_name}!</textarea>
                     const queryPlatform = insightPlatform === 'facebook' ? 'page' : insightPlatform;
 
                     const platformsToTry = [queryPlatform];
-                    if (queryPlatform === 'page') platformsToTry.push('facebook');
                     if (queryPlatform === 'instagram') platformsToTry.push('ig');
 
                     let row = null;
@@ -24518,7 +24517,7 @@ Thank you for shopping with {store_name}!</textarea>
                 } else {
                     // --- FALLBACK: Direct Supabase query for social_posts ---
                     const platformsToTry = platform === 'facebook'
-                        ? ['page', 'facebook']
+                        ? ['page']
                         : ['instagram', 'ig'];
 
                     for (const p of platformsToTry) {
