@@ -47,8 +47,8 @@
                 "nav_telegram": "Telegram Agent",
                 "nav_insights": "Live Insights",
                 "nav_inbox": "AI Inbox",
-                "nav_leads": "Sales Leads",
-                "nav_crm": "CRM",
+                "nav_leads": "CRM",
+                "nav_crm": "CRM Profile",
                 "nav_task_manager": "Task Manager",
                 "nav_orders": "Customers Area",
                 "nav_integrations": "Integrations",
@@ -176,15 +176,15 @@
                 "find_placeholder": "Find..."
             },
             "leads": {
-                "title": "Sales Leads",
+                "title": "CRM",
                 "fetching": "Fetching data...",
                 "btn_export_csv": "Export CSV",
                 "btn_export_excel": "Export Excel",
-                "loading": "Fetching Leads...",
-                "empty_search": "No leads found.",
-                "error_loading": "Failed to load leads. Check connection.",
-                "empty_title": "No Leads Yet",
-                "empty_text": "Connect your channels to start capturing leads from conversations.",
+                "loading": "Loading CRM data...",
+                "empty_search": "No customers found.",
+                "error_loading": "Failed to load CRM data. Check connection.",
+                "empty_title": "No Customers Yet",
+                "empty_text": "Connect your channels to start capturing customers from conversations.",
                 "btn_connect": "Connect Your Channels",
                 "col_name": "Customer",
                 "col_phone": "Phone",
@@ -1017,8 +1017,8 @@
                 "nav_telegram": "وكيل تيليجرام",
                 "nav_insights": "رؤى مباشرة",
                 "nav_inbox": "صندوق AI",
-                "nav_leads": "عملاء المبيعات",
-                "nav_crm": "إدارة العملاء",
+                "nav_leads": "إدارة العملاء",
+                "nav_crm": "ملف العميل",
                 "nav_task_manager": "مدير المهام",
                 "nav_orders": "منطقة العملاء",
                 "nav_integrations": "التكاملات",
@@ -1146,15 +1146,15 @@
                 "find_placeholder": "بحث..."
             },
             "leads": {
-                "title": "عملاء المبيعات",
+                "title": "إدارة العملاء",
                 "fetching": "جاري جلب البيانات...",
                 "btn_export_csv": "تصدير CSV",
                 "btn_export_excel": "تصدير Excel",
-                "loading": "جاري جلب البيانات...",
+                "loading": "جاري تحميل بيانات إدارة العملاء...",
                 "empty_search": "لم يتم العثور على عملاء.",
-                "error_loading": "فشل التحميل. تحقق من الاتصال.",
-                "empty_title": "لا يوجد عملاء محتملين",
-                "empty_text": "قم بربط قنواتك للبدء في تجميع بيانات العملاء من المحادثات.",
+                "error_loading": "فشل تحميل بيانات إدارة العملاء. تحقق من الاتصال.",
+                "empty_title": "لا يوجد عملاء",
+                "empty_text": "قم بربط قنواتك للبدء في التقاط العملاء من المحادثات.",
                 "btn_connect": "ربط القنوات",
                 "col_name": "العميل",
                 "col_phone": "الهاتف",
@@ -1180,87 +1180,87 @@
                 }
             },
             "crm": {
-                "title": "CRM",
-                "coming_soon_title": "CRM Profile View Coming Soon",
-                "coming_soon_text": "Full CRM lead profiles, AI summaries, notes, and activity timeline will appear here.",
-                "profile_coming_soon": "Lead Profile Coming Soon",
-                "btn_back_to_crm": "Back to CRM",
-                "btn_add_note": "Add Note",
-                "btn_set_follow_up": "Set Follow-up",
-                "btn_mark_complete": "Mark Complete",
-                "btn_assign": "Assign",
-                "btn_refresh_ai": "Refresh AI Summary",
-                "label_ai_summary": "AI Summary",
-                "label_notes": "Notes",
-                "label_activity": "Activity",
-                "label_follow_up_due": "Follow-up Due",
-                "label_assigned_to": "Assigned To",
-                "label_follow_up_completed": "Follow-up Completed",
-                "note_placeholder": "Write a note...",
-                "empty_notes": "No notes yet.",
-                "empty_activity": "No activity recorded.",
+                "title": "إدارة العملاء",
+                "coming_soon_title": "عرض ملف العميل قريباً",
+                "coming_soon_text": "ستظهر ملفات العملاء الكاملة وملخصات الذكاء الاصطناعي والملاحظات وسجل النشاط هنا.",
+                "profile_coming_soon": "ملف العميل قريباً",
+                "btn_back_to_crm": "العودة إلى إدارة العملاء",
+                "btn_add_note": "إضافة ملاحظة",
+                "btn_set_follow_up": "تعيين متابعة",
+                "btn_mark_complete": "تحديد كمكتمل",
+                "btn_assign": "تعيين",
+                "btn_refresh_ai": "تحديث ملخص الذكاء الاصطناعي",
+                "label_ai_summary": "ملخص الذكاء الاصطناعي",
+                "label_notes": "الملاحظات",
+                "label_activity": "النشاط",
+                "label_follow_up_due": "متابعة مستحقة",
+                "label_assigned_to": "معين إلى",
+                "label_follow_up_completed": "متابعة مكتملة",
+                "note_placeholder": "اكتب ملاحظة...",
+                "empty_notes": "لا توجد ملاحظات بعد.",
+                "empty_activity": "لم يتم تسجيل أي نشاط.",
                 "activity_type": {
-                    "status_changed": "Status changed",
-                    "note_added": "Note added",
-                    "follow_up_set": "Follow-up scheduled",
-                    "follow_up_completed": "Follow-up completed",
-                    "ai_summary_refreshed": "AI summary refreshed",
-                    "assignment_changed": "Assignment changed",
-                    "profile_opened": "Profile opened"
+                    "status_changed": "تم تغيير الحالة",
+                    "note_added": "تمت إضافة ملاحظة",
+                    "follow_up_set": "تمت جدولة متابعة",
+                    "follow_up_completed": "تمت المتابعة",
+                    "ai_summary_refreshed": "تم تحديث ملخص الذكاء الاصطناعي",
+                    "assignment_changed": "تم تغيير التعيين",
+                    "profile_opened": "تم فتح الملف"
                 },
-                "error_loading": "Failed to load CRM data.",
-                "note_saved": "Note saved.",
-                "note_error": "Failed to save note.",
-                "follow_up_set": "Follow-up scheduled.",
-                "follow_up_error": "Failed to schedule follow-up.",
-                "follow_up_completed": "Follow-up marked complete.",
-                "assign_saved": "Lead assigned.",
-                "assign_error": "Failed to assign lead."
+                "error_loading": "فشل تحميل بيانات إدارة العملاء.",
+                "note_saved": "تم حفظ الملاحظة.",
+                "note_error": "فشل حفظ الملاحظة.",
+                "follow_up_set": "تم جدولة المتابعة.",
+                "follow_up_error": "فشل جدولة المتابعة.",
+                "follow_up_completed": "تم تحديد المتابعة كمكتملة.",
+                "assign_saved": "تم تعيين العميل.",
+                "assign_error": "فشل تعيين العميل."
             },
             "task_manager": {
-                "title": "Task Manager",
-                "loading": "Loading tasks...",
-                "error_loading": "Failed to load tasks.",
-                "empty_title": "No Tasks Yet",
-                "empty_text": "Create your first task to get started.",
-                "btn_create_task": "New Task",
-                "tasks_count_label": "Tasks",
-                "create_coming_soon": "Task creation UI coming soon.",
+                "title": "مدير المهام",
+                "loading": "جاري تحميل المهام...",
+                "error_loading": "فشل تحميل المهام.",
+                "empty_title": "لا توجد مهام بعد",
+                "empty_text": "أنشئ أول مهمة لك للبدء.",
+                "btn_create_task": "مهمة جديدة",
+                "tasks_count_label": "مهام",
+                "create_coming_soon": "واجهة إنشاء المهام قريباً.",
                 "status": {
-                    "open": "Open",
-                    "in_progress": "In Progress",
-                    "waiting": "Waiting",
-                    "done": "Done",
-                    "cancelled": "Cancelled"
+                    "open": "مفتوحة",
+                    "in_progress": "جاري العمل",
+                    "waiting": "في الانتظار",
+                    "done": "مكتملة",
+                    "cancelled": "ملغاة"
                 },
                 "priority": {
-                    "low": "Low",
-                    "medium": "Medium",
-                    "high": "High",
-                    "urgent": "Urgent"
+                    "low": "منخفضة",
+                    "medium": "متوسطة",
+                    "high": "عالية",
+                    "urgent": "عاجلة"
                 },
                 "task_type": {
-                    "internal_request": "Internal Request",
-                    "customer_followup": "Customer Follow-up",
-                    "error": "Error",
-                    "suggestion": "Suggestion",
-                    "request": "Request",
-                    "general": "General"
+                    "internal_request": "طلب داخلي",
+                    "customer_followup": "متابعة العميل",
+                    "error": "خطأ",
+                    "suggestion": "اقتراح",
+                    "request": "طلب",
+                    "general": "عام"
                 },
-                "col_title": "Title",
-                "col_status": "Status",
-                "col_priority": "Priority",
-                "col_due": "Due",
-                "col_assigned": "Assigned To",
-                "col_type": "Type",
-                "filter_all_statuses": "All Statuses",
-                "filter_all_priorities": "All Priorities",
-                "filter_all_types": "All Types",
-                "search_placeholder": "Search tasks...",
-                "error_create": "Failed to create task.",
-                "task_saved": "Task saved.",
-                "task_deleted": "Task deleted.",
-                "confirm_delete": "Delete this task?"
+                "col_title": "العنوان",
+                "col_status": "الحالة",
+                "col_priority": "الأولوية",
+                "col_due": "المستحق",
+                "col_assigned": "معين إلى",
+                "col_type": "النوع",
+                "filter_all_statuses": "جميع الحالات",
+                "filter_all_priorities": "جميع الأولويات",
+                "filter_all_types": "جميع الأنواع",
+                "search_placeholder": "البحث عن مهام...",
+                "error_create": "فشل إنشاء المهمة.",
+                "task_saved": "تم حفظ المهمة.",
+                "task_deleted": "تم حذف المهمة.",
+                "confirm_delete": "حذف هذه المهمة؟"
             },
             "orders": {
                 "title": "منطقة العملاء",
@@ -19225,6 +19225,339 @@
                 min-height: 90px;
             }
         }
+
+        /* LEAD PROFILE STYLES */
+        .lead-profile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .lead-profile-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .lead-profile-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .lead-profile-back-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            min-height: 32px;
+            transition: opacity 0.2s;
+        }
+
+        .lead-profile-back-btn:hover {
+            opacity: 0.8;
+        }
+
+        .lead-profile-title-section {
+            flex: 1;
+        }
+
+        .lead-profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: white;
+        }
+
+        .lead-profile-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted, #888);
+        }
+
+        .lead-profile-phone {
+            font-family: monospace;
+        }
+
+        .lead-profile-platform {
+            text-transform: capitalize;
+            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .lead-status-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lead-profile-actions {
+            padding: 12px 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-icon {
+            font-size: 1.2rem;
+        }
+
+        .action-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .status-dropdown {
+            position: absolute;
+            top: 200px;
+            right: 24px;
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lead-profile-content {
+            overflow-y: auto;
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .btn-icon-small {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .btn-icon-small:hover {
+            opacity: 1;
+        }
+
+        .section-content {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ai-summary-card {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-primary, #e5e7eb);
+        }
+
+        .followup-card {
+            font-size: 0.9rem;
+        }
+
+        .followup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            color: var(--text-primary, #e5e7eb);
+        }
+
+        .followup-due {
+            font-weight: 500;
+        }
+
+        .followup-overdue {
+            color: #ff6b6b;
+        }
+
+        .followup-due-soon {
+            color: #ffd43b;
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .note-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid rgba(91, 174, 176, 0.5);
+        }
+
+        .note-author {
+            font-size: 0.8rem;
+            color: var(--text-muted, #888);
+            margin-bottom: 4px;
+        }
+
+        .note-body {
+            font-size: 0.9rem;
+            color: var(--text-primary, #e5e7eb);
+            line-height: 1.5;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .activity-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border-left: 3px solid rgba(91, 174, 176, 0.3);
+        }
+
+        .activity-timestamp {
+            font-size: 0.75rem;
+            color: var(--text-muted, #888);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .activity-text {
+            color: var(--text-primary, #e5e7eb);
+        }
+
+        .note-textarea {
+            font-size: 14px;
+        }
+
+        /* Responsive Lead Profile */
+        @media (max-width: 768px) {
+            .lead-profile-overlay {
+                padding: 0;
+                align-items: flex-end;
+            }
+
+            .lead-profile-container {
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                max-height: 95vh;
+            }
+
+            .lead-profile-header {
+                padding: 20px;
+            }
+
+            .lead-profile-name {
+                font-size: 1.2rem;
+            }
+
+            .lead-profile-actions {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 12px 16px;
+            }
+
+            .lead-profile-content {
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .status-dropdown {
+                right: 16px;
+                left: 16px;
+                top: auto;
+                bottom: 60px;
+            }
+        }
     </style>
 </head>
 
@@ -19705,6 +20038,149 @@
     </div>
 
     <div id="toast" role="status" aria-live="polite" aria-atomic="true">Saved Successfully!</div>
+
+    <!-- LEAD PROFILE PAGE -->
+    <div id="lead-profile-page" class="lead-profile-overlay" style="display: none;" onclick="closeLeadProfile(event)">
+        <div class="lead-profile-container" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="lead-profile-header">
+                <button class="lead-profile-back-btn" onclick="closeLeadProfile()" title="Back to CRM">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                </button>
+                <div class="lead-profile-title-section">
+                    <h2 id="lead-profile-name" class="lead-profile-name">--</h2>
+                    <div class="lead-profile-meta">
+                        <span id="lead-profile-phone" class="lead-profile-phone">--</span>
+                        <span id="lead-profile-platform" class="lead-profile-platform">--</span>
+                    </div>
+                </div>
+                <div id="lead-profile-status-badge" class="lead-status-badge status-new">New</div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="lead-profile-actions">
+                <button class="action-btn" onclick="openStatusDropdown()">
+                    <span class="action-icon">•••</span>
+                    <span class="action-label" data-i18n="crm.label_status">Status</span>
+                </button>
+                <button class="action-btn" onclick="openAddNoteModal()">
+                    <span class="action-icon">📝</span>
+                    <span class="action-label" data-i18n="crm.btn_add_note">Add Note</span>
+                </button>
+                <button class="action-btn" onclick="openFollowUpModal()">
+                    <span class="action-icon">📅</span>
+                    <span class="action-label" data-i18n="crm.btn_set_follow_up">Set Follow-up</span>
+                </button>
+                <button class="action-btn" onclick="markFollowUpComplete()" id="lead-profile-complete-btn" style="display: none;">
+                    <span class="action-icon">✓</span>
+                    <span class="action-label" data-i18n="crm.btn_mark_complete">Complete</span>
+                </button>
+            </div>
+
+            <!-- Status Dropdown (Hidden) -->
+            <div id="status-dropdown" class="status-dropdown" style="display: none;">
+                <div class="dropdown-item" onclick="updateLeadStatus('new')">
+                    <div class="status-badge status-new">New</div>
+                    <span data-i18n="leads.status.new">New</span>
+                </div>
+                <div class="dropdown-item" onclick="updateLeadStatus('follow_up')">
+                    <div class="status-badge status-follow-up">Follow-up</div>
+                    <span data-i18n="leads.status.follow_up">Follow-up</span>
+                </div>
+                <div class="dropdown-item" onclick="updateLeadStatus('contacted')">
+                    <div class="status-badge status-contacted">Contacted</div>
+                    <span data-i18n="leads.status.contacted">Contacted</span>
+                </div>
+                <div class="dropdown-item" onclick="updateLeadStatus('qualified')">
+                    <div class="status-badge status-qualified">Qualified</div>
+                    <span data-i18n="leads.status.qualified">Qualified</span>
+                </div>
+                <div class="dropdown-item" onclick="updateLeadStatus('won')">
+                    <div class="status-badge status-won">Won</div>
+                    <span data-i18n="leads.status.won">Won</span>
+                </div>
+                <div class="dropdown-item" onclick="updateLeadStatus('lost')">
+                    <div class="status-badge status-lost">Lost</div>
+                    <span data-i18n="leads.status.lost">Lost</span>
+                </div>
+            </div>
+
+            <!-- Content Scroll Area -->
+            <div class="lead-profile-content">
+                <!-- AI Summary -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h3 data-i18n="crm.label_ai_summary">AI Summary</h3>
+                        <button class="btn-icon-small" onclick="refreshAISummary()" title="Refresh">🔄</button>
+                    </div>
+                    <div id="lead-profile-ai-summary" class="section-content ai-summary-card">
+                        <p style="color: var(--text-muted, #888);" data-i18n="crm.empty_activity">No summary yet.</p>
+                    </div>
+                </div>
+
+                <!-- Follow-up Section -->
+                <div class="profile-section" id="lead-profile-followup-section" style="display: none;">
+                    <div class="section-header">
+                        <h3 data-i18n="crm.label_follow_up_due">Follow-up Due</h3>
+                    </div>
+                    <div id="lead-profile-followup-content" class="section-content followup-card">
+                        <p style="color: var(--text-muted, #888);">--</p>
+                    </div>
+                </div>
+
+                <!-- Notes/Comments -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h3 data-i18n="crm.label_notes">Notes</h3>
+                    </div>
+                    <div id="lead-profile-notes" class="section-content notes-list">
+                        <p style="color: var(--text-muted, #888);" data-i18n="crm.empty_notes">No notes yet.</p>
+                    </div>
+                </div>
+
+                <!-- Activity Timeline -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h3 data-i18n="crm.label_activity">Activity</h3>
+                    </div>
+                    <div id="lead-profile-activity" class="section-content activity-list">
+                        <p style="color: var(--text-muted, #888);" data-i18n="crm.empty_activity">No activity recorded.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Note Modal -->
+    <div id="add-note-modal" class="modal-overlay" style="display: none;" onclick="closeAddNoteModal(event)">
+        <div class="modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeAddNoteModal()">×</div>
+            <h3 style="margin-bottom: 16px;" data-i18n="crm.btn_add_note">Add Note</h3>
+            <textarea id="note-textarea" class="note-textarea" placeholder="Write your note here..." style="width: 100%; height: 120px; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+            <div style="margin-top: 16px; display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="pill-btn secondary" onclick="closeAddNoteModal()" data-i18n="modals.btn_cancel">Cancel</button>
+                <button class="pill-btn primary" onclick="saveNewNote()" data-i18n="modals.btn_save">Save Note</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Follow-up Modal -->
+    <div id="follow-up-modal" class="modal-overlay" style="display: none;" onclick="closeFollowUpModal(event)">
+        <div class="modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeFollowUpModal()">×</div>
+            <h3 style="margin-bottom: 16px;" data-i18n="crm.btn_set_follow_up">Set Follow-up</h3>
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;" data-i18n="crm.label_follow_up_due">Follow-up Due Date</label>
+                <input type="datetime-local" id="followup-datetime" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(0,0,0,0.3); color: white; font-size: 14px;">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="pill-btn secondary" onclick="closeFollowUpModal()" data-i18n="modals.btn_cancel">Cancel</button>
+                <button class="pill-btn primary" onclick="saveFollowUpDate()" data-i18n="modals.btn_save">Save</button>
+            </div>
+        </div>
+    </div>
 
     <!-- OLD PRICING MODAL REMOVED -->
 
@@ -22866,15 +23342,14 @@
             <div id="crm" class="tab-content">
                 <div class="card glass">
                     <div class="leads-controls">
-                        <h2 data-i18n="crm.title">CRM</h2>
-                    </div>
-                    <div id="crm-content" style="min-height: 300px;">
-                        <div style="padding: 40px; text-align: center; color: var(--text-muted, #888);">
-                            <div style="font-size: 2.5rem; margin-bottom: 16px;">🗂️</div>
-                            <h3 style="margin-bottom: 8px;" data-i18n="crm.coming_soon_title">CRM Profile View Coming Soon</h3>
-                            <p data-i18n="crm.coming_soon_text">Full CRM lead profiles, AI summaries, notes, and activity timeline will appear here.</p>
+                        <h2 data-i18n="leads.title">CRM</h2>
+                        <div class="export-group">
+                            <button class="pill-btn secondary" onclick="exportLeadsCSV()" data-i18n="leads.btn_export_csv">Export CSV</button>
+                            <button class="pill-btn secondary" onclick="exportLeadsExcel()" data-i18n="leads.btn_export_excel">Export Excel</button>
                         </div>
                     </div>
+                    <div class="leads-toolbar" id="leads-toolbar-container"></div>
+                    <div id="crm-grid" class="leads-grid"></div>
                 </div>
             </div>
 
@@ -24542,7 +25017,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         function buildLeadViewCard(r, compact = false) {
             return `
-                <div class="lead-view-card clickable-row" onclick="openLeadChat('${r.leadPhone}', '${r.source}')">
+                <div class="lead-view-card clickable-row" onclick="openLeadProfile('${r.id}', '${currentOrgId || ''}')">
                     <div class="lead-view-head">
                         <div class="lead-view-name">${r.name}</div>
                         <div style="display:flex; gap:6px; align-items:center;">
@@ -24618,7 +25093,7 @@ Thank you for shopping with {store_name}!</textarea>
                 return;
             }
 
-            const openRow = (r) => `onclick="openLeadChat('${r.leadPhone}', '${r.source}')"`;
+            const openRow = (r) => `onclick="openLeadProfile('${r.id}', '${currentOrgId || ''}')"`;
 
             const desktopRows = rows.map(r => `
                 <tr class="clickable-row" ${openRow(r)}>
@@ -38160,6 +38635,674 @@ Thank you for shopping with {store_name}!</textarea>
                 } catch (persistErr) {
                     console.warn('Persist Shopify failure state failed', persistErr);
                 }
+            }
+        };
+
+        // ==========================================
+        // LEAD PROFILE FUNCTIONS
+        // ==========================================
+
+        window.currentLeadProfileId = null;
+        window.currentLeadProfileOrgId = null;
+        window.currentLeadProfileData = null;
+        window.currentLeadCrmState = null;
+
+        // ==========================================
+        // PRODUCTION OPERATIONAL LAYER
+        // Deep Links, Timezones, Notifications
+        // ==========================================
+
+        // Deep Link Parser & Router
+        window.parseDeepLink = function() {
+            const hash = window.location.hash;
+            const match = hash.match(/#(crm|task-manager)\?(.+)/);
+            if (match) {
+                const view = match[1];
+                const params = new URLSearchParams(match[2]);
+                return {
+                    view,
+                    leadId: params.get('lead'),
+                    taskId: params.get('task'),
+                    eventKey: params.get('event'),
+                    notificationId: params.get('notification_id')
+                };
+            }
+            return null;
+        };
+
+        window.handleDeepLink = function(deepLink) {
+            if (!deepLink) return;
+
+            if (deepLink.view === 'crm' && deepLink.leadId) {
+                switchTab('crm');
+                setTimeout(() => {
+                    openLeadProfile(deepLink.leadId, currentOrgId || '');
+                    if (deepLink.notificationId && typeof markNotificationAsRead === 'function') {
+                        markNotificationAsRead(deepLink.notificationId);
+                    }
+                }, 500);
+            }
+
+            if (deepLink.view === 'task-manager' && deepLink.taskId) {
+                switchTab('task-manager');
+                setTimeout(() => {
+                    if (typeof openTaskDetail === 'function') {
+                        openTaskDetail(deepLink.taskId);
+                    }
+                    if (deepLink.notificationId && typeof markNotificationAsRead === 'function') {
+                        markNotificationAsRead(deepLink.notificationId);
+                    }
+                }, 500);
+            }
+        };
+
+        // Initialize deep link handler on app load
+        window.addEventListener('hashchange', () => {
+            const deepLink = parseDeepLink();
+            if (deepLink && deepLink.view === 'crm' || deepLink.view === 'task-manager') {
+                handleDeepLink(deepLink);
+            }
+        });
+
+        // Check for deep link on initial load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                const deepLink = parseDeepLink();
+                if (deepLink) handleDeepLink(deepLink);
+            });
+        } else {
+            const deepLink = parseDeepLink();
+            if (deepLink) handleDeepLink(deepLink);
+        }
+
+        // Timezone Helper Functions
+        window.timezoneHelpers = {
+            getUserTimezone: async function(orgId) {
+                try {
+                    const {data, error} = await window.supabase
+                        .rpc('get_user_timezone', {p_user_id: (await window.supabase.auth.getUser()).user.id, p_org_id: orgId});
+                    if (error) throw error;
+                    return data || 'UTC';
+                } catch (err) {
+                    console.warn('Failed to get user timezone:', err);
+                    return 'UTC';
+                }
+            },
+
+            formatToUserTimezone: function(utcTimestamp, timezone, format = 'short') {
+                try {
+                    if (!utcTimestamp) return '--';
+                    const date = new Date(utcTimestamp);
+                    if (format === 'short') {
+                        return new Intl.DateTimeFormat('en-US', {
+                            timeZone: timezone || 'UTC',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }).format(date);
+                    } else {
+                        return new Intl.DateTimeFormat('en-US', {
+                            timeZone: timezone || 'UTC',
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        }).format(date);
+                    }
+                } catch (err) {
+                    return new Date(utcTimestamp).toLocaleString();
+                }
+            },
+
+            parseLocalToUTC: function(localTimeStr, timezone) {
+                try {
+                    const date = new Date(localTimeStr);
+                    return new Date(date.toLocaleString('en-US', {timeZone: timezone})).toISOString();
+                } catch (err) {
+                    return new Date(localTimeStr).toISOString();
+                }
+            }
+        };
+
+        // Notification Router for Service Worker Messages
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'notification-click') {
+                const {link} = event.data;
+                if (link?.includes('#crm') || link?.includes('#task-manager')) {
+                    window.location.hash = link;
+                    setTimeout(() => {
+                        const deepLink = parseDeepLink();
+                        if (deepLink) handleDeepLink(deepLink);
+                    }, 300);
+                }
+            }
+        });
+
+        // CRM View Initialization
+        window.initCrmTab = async function() {
+            try {
+                const leads = await fetchLeads();
+                if (leads) {
+                    renderCrmView(leads);
+                }
+            } catch (err) {
+                console.error('Failed to load CRM data:', err);
+            }
+        };
+
+        function renderCrmView(leads) {
+            const grid = document.getElementById('crm-grid');
+            const toolbar = document.getElementById('leads-toolbar-container');
+
+            if (!grid || !toolbar) return;
+
+            // Render toolbar (reuse leads toolbar structure)
+            const searchVal = document.querySelector('#leads-search-input')?.value || '';
+            toolbar.innerHTML = `
+                <input type="text" id="crm-search-input" class="leads-filter-input"
+                    placeholder="${t('leads.search_placeholder')}"
+                    oninput="filterAndRenderCrmData()">
+                <select id="crm-status-filter" class="leads-filter-select"
+                    onchange="filterAndRenderCrmData()">
+                    <option value="">${t('leads.filter_all_statuses')}</option>
+                    ${LEAD_STATUSES.map(s => `<option value="${s}">${t('leads.status.' + s)}</option>`).join('')}
+                </select>
+                <div class="leads-view-switch">
+                    <button class="leads-view-btn active" data-view="table" onclick="setCrmView('table', this)" data-i18n="leads.view_table">Table</button>
+                    <button class="leads-view-btn" data-view="grid" onclick="setCrmView('grid', this)" data-i18n="leads.view_grid">Cards</button>
+                    <button class="leads-view-btn" data-view="pipeline" onclick="setCrmView('pipeline', this)" data-i18n="leads.view_pipeline">Pipeline</button>
+                </div>
+            `;
+
+            // Build rows and render view
+            const filtered = filterCrmRows(leads);
+            renderCrmGrid(filtered);
+        }
+
+        window.filterAndRenderCrmData = function() {
+            if (cachedLeads) {
+                renderCrmGrid(filterCrmRows(cachedLeads));
+            }
+        };
+
+        function filterCrmRows(leads) {
+            const searchInput = document.getElementById('crm-search-input')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('crm-status-filter')?.value || '';
+
+            return leads.filter(lead => {
+                const matchesSearch = !searchInput ||
+                    (lead.full_name && lead.full_name.toLowerCase().includes(searchInput)) ||
+                    (lead.phone && lead.phone.includes(searchInput));
+
+                const matchesStatus = !statusFilter ||
+                    String(lead.status || '').toLowerCase() === statusFilter.toLowerCase();
+
+                return matchesSearch && matchesStatus;
+            });
+        }
+
+        function renderCrmGrid(rows) {
+            const grid = document.getElementById('crm-grid');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+            if (!rows || rows.length === 0) {
+                grid.innerHTML = `<div style="text-align:center; padding:24px; color:#9ca3af;">${t('leads.empty_search')}</div>`;
+                return;
+            }
+
+            const currentView = document.querySelector('.leads-view-btn.active')?.dataset.view || 'table';
+
+            if (currentView === 'pipeline') {
+                const cols = LEAD_STATUSES.map(status => {
+                    const label = t(`leads.status.${status}`) || status;
+                    const colRows = rows.filter(r => String(r.status || '').toLowerCase() === status);
+                    const cards = colRows.length > 0
+                        ? colRows.map(r => buildLeadViewCard(r, true)).join('')
+                        : `<div class="kanban-empty">${t('leads.pipeline_empty')}</div>`;
+                    return `
+                        <div class="kanban-col">
+                            <div class="kanban-head">
+                                <span class="kanban-title">${label}</span>
+                                <span class="kanban-count">${colRows.length}</span>
+                            </div>
+                            <div class="kanban-list">${cards}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                grid.innerHTML = `<div class="leads-kanban">${cols}</div>`;
+            } else if (currentView === 'grid') {
+                const cardHtml = rows.map(r => buildLeadViewCard(r, false)).join('');
+                grid.innerHTML = `<div class="leads-cards-grid">${cardHtml}</div>`;
+            } else {
+                // Table view
+                const tableRows = rows.map(r => `
+                    <tr class="clickable-row" onclick="openLeadProfile('${r.id}', '${currentOrgId || ''}')">
+                        <td class="lead-col-name">${r.full_name || '--'}</td>
+                        <td>${r.phone || '--'}</td>
+                        <td><span class="lead-platform-chip">${((r.source || 'unknown')).toUpperCase()}</span></td>
+                        <td class="lead-col-msg">${String(r.potential || '')}</td>
+                        <td>${r.score !== null && r.score !== undefined ? r.score : '-'}</td>
+                        <td>${new Date(r.created_at).toLocaleDateString()}</td>
+                        <td>${buildLeadStatusSelect(r.id, r.status)}</td>
+                    </tr>
+                `).join('');
+
+                grid.innerHTML = `
+                    <div class="leads-sheet">
+                        <div class="leads-sheet-scroll">
+                            <table class="leads-sheet-table">
+                                <thead>
+                                    <tr>
+                                        <th>${t('leads.col_name')}</th>
+                                        <th>${t('leads.col_phone')}</th>
+                                        <th>${t('leads.col_platform')}</th>
+                                        <th>Potential</th>
+                                        <th>Score</th>
+                                        <th>${t('leads.col_date')}</th>
+                                        <th>${t('leads.col_status')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>${tableRows}</tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        window.setCrmView = function(viewType, btn) {
+            document.querySelectorAll('.leads-view-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            if (cachedLeads) {
+                renderCrmGrid(filterCrmRows(cachedLeads));
+            }
+        };
+
+        window.openLeadProfile = async function(leadId, orgId) {
+            if (!leadId || !orgId) return;
+
+            window.currentLeadProfileId = leadId;
+            window.currentLeadProfileOrgId = orgId;
+
+            const profilePage = document.getElementById('lead-profile-page');
+            if (!profilePage) return;
+
+            profilePage.style.display = 'flex';
+
+            try {
+                const leadData = await fetchLeadForProfile(leadId, orgId);
+                if (leadData) {
+                    window.currentLeadProfileData = leadData;
+                    const crmState = await window.supabase
+                        .rpc('get_lead_crm_state', {p_lead_id: leadId, p_org_id: orgId});
+
+                    if (crmState.data) {
+                        window.currentLeadCrmState = crmState.data;
+                    }
+
+                    renderLeadProfile(leadData, crmState.data || {});
+                }
+            } catch (err) {
+                console.error('Failed to load lead profile:', err);
+                showToast(t('crm.error_loading'));
+            }
+        };
+
+        window.closeLeadProfile = function(event) {
+            if (event && event.target.id !== 'lead-profile-page') return;
+            const profilePage = document.getElementById('lead-profile-page');
+            if (profilePage) profilePage.style.display = 'none';
+            window.currentLeadProfileId = null;
+            window.currentLeadProfileOrgId = null;
+        };
+
+        async function fetchLeadForProfile(leadId, orgId) {
+            try {
+                const {data, error} = await window.supabase
+                    .from('leads')
+                    .select('*')
+                    .eq('id', leadId)
+                    .eq('org_id', orgId)
+                    .single();
+
+                if (error) throw error;
+                return data;
+            } catch (err) {
+                console.error('Fetch lead failed:', err);
+                return null;
+            }
+        }
+
+        function renderLeadProfile(leadData, crmState) {
+            if (!leadData) return;
+
+            const name = leadData.full_name || 'Unknown';
+            const phone = leadData.phone || '--';
+            const platform = (leadData.source || 'unknown').toUpperCase();
+            const status = leadData.status || 'new';
+
+            document.getElementById('lead-profile-name').textContent = name;
+            document.getElementById('lead-profile-phone').textContent = phone;
+            document.getElementById('lead-profile-platform').textContent = platform;
+
+            const badgeEl = document.getElementById('lead-profile-status-badge');
+            if (badgeEl) {
+                badgeEl.textContent = getStatusLabel(status);
+                badgeEl.className = 'lead-status-badge status-' + status;
+            }
+
+            // AI Summary
+            const aiSummaryEl = document.getElementById('lead-profile-ai-summary');
+            if (crmState && crmState.ai_summary) {
+                aiSummaryEl.innerHTML = `<p>${esc(crmState.ai_summary)}</p>`;
+                if (crmState.ai_summary_updated_at) {
+                    const updated = new Date(crmState.ai_summary_updated_at);
+                    aiSummaryEl.innerHTML += `<p style="font-size: 0.8rem; color: var(--text-muted, #888); margin-top: 8px;">Updated ${formatDate(updated)}</p>`;
+                }
+            } else {
+                aiSummaryEl.innerHTML = `<p style="color: var(--text-muted, #888);">${t('crm.empty_activity')}</p>`;
+            }
+
+            // Follow-up Section
+            const followupSection = document.getElementById('lead-profile-followup-section');
+            if (crmState && crmState.follow_up_due_at) {
+                followupSection.style.display = 'block';
+                const followupEl = document.getElementById('lead-profile-followup-content');
+                const dueDate = new Date(crmState.follow_up_due_at);
+                const now = new Date();
+                const isOverdue = dueDate < now;
+                const classSuffix = isOverdue ? 'overdue' : 'due-soon';
+
+                followupEl.innerHTML = `
+                    <div class="followup-item">
+                        <span class="followup-due followup-${classSuffix}">${formatDate(dueDate)}</span>
+                        ${crmState.follow_up_completed_at ? '<span style="color: #4caf50;">✓ ' + t('crm.label_follow_up_completed') + '</span>' : ''}
+                    </div>
+                `;
+                document.getElementById('lead-profile-complete-btn').style.display =
+                    !crmState.follow_up_completed_at ? 'flex' : 'none';
+            } else {
+                followupSection.style.display = 'none';
+            }
+
+            // Notes
+            const notesEl = document.getElementById('lead-profile-notes');
+            if (crmState && crmState.notes && Array.isArray(crmState.notes) && crmState.notes.length > 0) {
+                notesEl.innerHTML = crmState.notes.map(note => `
+                    <div class="note-item">
+                        <div class="note-author">${esc(note.author_name || 'Unknown')} • ${formatDate(new Date(note.created_at))}</div>
+                        <div class="note-body">${esc(note.body)}</div>
+                    </div>
+                `).join('');
+            } else {
+                notesEl.innerHTML = `<p style="color: var(--text-muted, #888);">${t('crm.empty_notes')}</p>`;
+            }
+
+            // Activity
+            const activityEl = document.getElementById('lead-profile-activity');
+            if (crmState && crmState.activity && Array.isArray(crmState.activity) && crmState.activity.length > 0) {
+                activityEl.innerHTML = crmState.activity.map(item => `
+                    <div class="activity-item">
+                        <span class="activity-timestamp">${formatDate(new Date(item.created_at))} • ${esc(item.actor_name || 'System')}</span>
+                        <span class="activity-text">${getActivityTypeLabel(item.type)}: ${esc(item.label)}</span>
+                    </div>
+                `).join('');
+            } else {
+                activityEl.innerHTML = `<p style="color: var(--text-muted, #888);">${t('crm.empty_activity')}</p>`;
+            }
+        }
+
+        function getStatusLabel(status) {
+            const statusMap = {
+                'new': t('leads.status.new'),
+                'contacted': t('leads.status.contacted'),
+                'follow_up': t('leads.status.follow_up'),
+                'qualified': t('leads.status.qualified'),
+                'won': t('leads.status.won'),
+                'lost': t('leads.status.lost')
+            };
+            return statusMap[status] || status;
+        }
+
+        function getActivityTypeLabel(type) {
+            const typeMap = {
+                'status_changed': t('crm.activity_type.status_changed'),
+                'note_added': t('crm.activity_type.note_added'),
+                'follow_up_set': t('crm.activity_type.follow_up_set'),
+                'follow_up_completed': t('crm.activity_type.follow_up_completed'),
+                'ai_summary_refreshed': t('crm.activity_type.ai_summary_refreshed'),
+                'assignment_changed': t('crm.activity_type.assignment_changed'),
+                'profile_opened': t('crm.activity_type.profile_opened')
+            };
+            return typeMap[type] || type;
+        }
+
+        function formatDate(date) {
+            if (!date) return '--';
+            const now = new Date();
+            const diff = now - date;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+            if (days === 0) {
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                if (hours < 1) {
+                    const mins = Math.floor(diff / (1000 * 60));
+                    return mins + ' min ago';
+                }
+                return hours + ' hrs ago';
+            } else if (days === 1) {
+                return 'Yesterday';
+            } else if (days < 7) {
+                return days + ' days ago';
+            }
+
+            return date.toLocaleDateString();
+        }
+
+        window.openStatusDropdown = function() {
+            const dropdown = document.getElementById('status-dropdown');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            }
+        };
+
+        window.updateLeadStatus = async function(newStatus) {
+            if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
+
+            try {
+                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId,
+                    p_crm_patch: {status: newStatus}
+                });
+
+                if (error) throw error;
+
+                const leadData = await fetchLeadForProfile(window.currentLeadProfileId, window.currentLeadProfileOrgId);
+                if (leadData) {
+                    window.currentLeadProfileData = leadData;
+                    renderLeadProfile(leadData, data || {});
+                }
+
+                showToast(t('crm.status_updated'));
+                document.getElementById('status-dropdown').style.display = 'none';
+            } catch (err) {
+                console.error('Update status failed:', err);
+                showToast(t('crm.error_loading'));
+            }
+        };
+
+        window.openAddNoteModal = function() {
+            const modal = document.getElementById('add-note-modal');
+            document.getElementById('note-textarea').value = '';
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeAddNoteModal = function(event) {
+            if (event && event.target.id !== 'add-note-modal') return;
+            const modal = document.getElementById('add-note-modal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.saveNewNote = async function() {
+            if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
+
+            const body = document.getElementById('note-textarea').value.trim();
+            if (!body) {
+                showToast('Note cannot be empty');
+                return;
+            }
+
+            try {
+                const noteId = crypto.randomUUID();
+                const authUser = window.supabase.auth.getUser();
+                const userName = authUser?.user?.email?.split('@')[0] || 'You';
+
+                const {data, error} = await window.supabase.rpc('append_lead_note', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId,
+                    p_note_id: noteId,
+                    p_body: body,
+                    p_author_id: authUser?.user?.id,
+                    p_author_name: userName
+                });
+
+                if (error) throw error;
+
+                const leadData = await fetchLeadForProfile(window.currentLeadProfileId, window.currentLeadProfileOrgId);
+                if (leadData) {
+                    const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                        p_lead_id: window.currentLeadProfileId,
+                        p_org_id: window.currentLeadProfileOrgId
+                    });
+                    window.currentLeadCrmState = crmState.data;
+                    renderLeadProfile(leadData, crmState.data || {});
+                }
+
+                showToast(t('crm.note_saved'));
+                closeAddNoteModal();
+            } catch (err) {
+                console.error('Save note failed:', err);
+                showToast(t('crm.note_error'));
+            }
+        };
+
+        window.openFollowUpModal = function() {
+            const modal = document.getElementById('follow-up-modal');
+            const input = document.getElementById('followup-datetime');
+
+            if (window.currentLeadCrmState && window.currentLeadCrmState.follow_up_due_at) {
+                const date = new Date(window.currentLeadCrmState.follow_up_due_at);
+                input.value = date.toISOString().slice(0, 16);
+            } else {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                input.value = tomorrow.toISOString().slice(0, 16);
+            }
+
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeFollowUpModal = function(event) {
+            if (event && event.target.id !== 'follow-up-modal') return;
+            const modal = document.getElementById('follow-up-modal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.saveFollowUpDate = async function() {
+            if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
+
+            const datetimeStr = document.getElementById('followup-datetime').value;
+            if (!datetimeStr) {
+                showToast('Please select a date and time');
+                return;
+            }
+
+            try {
+                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId,
+                    p_crm_patch: {follow_up_due_at: new Date(datetimeStr).toISOString()}
+                });
+
+                if (error) throw error;
+
+                const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId
+                });
+
+                if (window.currentLeadProfileData) {
+                    renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
+                }
+
+                showToast(t('crm.follow_up_set'));
+                closeFollowUpModal();
+            } catch (err) {
+                console.error('Save follow-up failed:', err);
+                showToast(t('crm.follow_up_error'));
+            }
+        };
+
+        window.markFollowUpComplete = async function() {
+            if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
+
+            try {
+                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId,
+                    p_crm_patch: {follow_up_completed_at: new Date().toISOString()}
+                });
+
+                if (error) throw error;
+
+                const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId
+                });
+
+                if (window.currentLeadProfileData) {
+                    renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
+                }
+
+                showToast(t('crm.follow_up_completed'));
+            } catch (err) {
+                console.error('Complete follow-up failed:', err);
+                showToast(t('crm.follow_up_error'));
+            }
+        };
+
+        window.refreshAISummary = async function() {
+            if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
+
+            try {
+                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId,
+                    p_crm_patch: {ai_summary_updated_at: new Date().toISOString()}
+                });
+
+                if (error) throw error;
+
+                const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId
+                });
+
+                if (window.currentLeadProfileData) {
+                    renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
+                }
+
+                showToast('AI Summary refreshed');
+            } catch (err) {
+                console.error('Refresh AI failed:', err);
+                showToast('Failed to refresh AI summary');
             }
         };
 
