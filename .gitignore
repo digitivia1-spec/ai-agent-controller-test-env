@@ -1,0 +1,15 @@
+ai-agent.digitivia.com-1771618572243.log
+*.log
+.github/agents/newa.agent.md
+supabase/migrations/20260311095000_telegram_parity.sql
+supabase/migrations/20260311100500_org_channel_accounts_add_telegram.sql
+supabase_schema_reference.txt
+supabase/migrations/20260314_create_meetings.sql
+supabase/migrations/20260315_harden_meeting_functions.sql
+supabase/migrations/20260315_order_push_trigger_fix.sql
+supabase/migrations/20260315_push_notifications.sql
+supabase/functions/send-order-push/index.ts
+supabase/migrations/20260315_notification_semantics_and_meeting_push.sql
+supabase/functions/send-push-notification/index.ts
+supabase/migrations/20260315_push_subscription_rpc.sql
+supabase/migrations/20260315_fix_handle_new_order_customer_phone.sql

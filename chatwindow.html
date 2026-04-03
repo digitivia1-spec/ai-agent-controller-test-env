@@ -1,0 +1,1720 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Digitivia Website Chat Widget</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --chat-font: "Segoe UI", "Noto Sans Arabic", "Noto Sans", "Tahoma", sans-serif;
+      --chat-bg: #eef3f5;
+      --chat-surface: rgba(255, 255, 255, 0.96);
+      --chat-surface-strong: #ffffff;
+      --chat-text: #132534;
+      --chat-muted: #617585;
+      --chat-border: rgba(42, 84, 109, 0.16);
+      --chat-accent: #2c718a;
+      --chat-accent-strong: #1f5870;
+      --chat-accent-soft: rgba(44, 113, 138, 0.12);
+      --chat-user-bubble: linear-gradient(135deg, #2c718a 0%, #255f75 100%);
+      --chat-bot-bubble: #f7fbfc;
+      --chat-link: #0f766e;
+      --chat-danger: #cf4d60;
+      --chat-success: #1f9d6d;
+      --chat-shadow: 0 24px 70px rgba(15, 35, 52, 0.18);
+      --chat-shadow-strong: 0 28px 80px rgba(15, 35, 52, 0.24);
+      --chat-radius-xl: 24px;
+      --chat-radius-lg: 18px;
+      --chat-radius-md: 14px;
+      --chat-radius-sm: 10px;
+      --chat-launcher-size: 66px;
+      --chat-panel-width: min(408px, calc(100vw - 24px));
+      --chat-panel-height: min(700px, calc(100dvh - 92px));
+      --chat-panel-offset: 86px;
+      --chat-safe-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: var(--chat-font);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(44, 113, 138, 0.10), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(15, 118, 110, 0.10), transparent 26%),
+        linear-gradient(180deg, #edf5f6 0%, #eaf0f3 100%);
+      color: var(--chat-text);
+    }
+
+    body.hs-preview-surface {
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    body.hs-embed-surface {
+      background: transparent;
+      min-height: 100vh;
+      overflow: hidden;
+      --chat-launcher-size: 58px;
+      --chat-panel-width: min(392px, calc(100vw - 20px));
+      --chat-panel-height: min(680px, calc(100dvh - 24px));
+      --chat-panel-offset: 18px;
+      --chat-safe-bottom: 10px;
+    }
+
+    body.hs-embed-surface .hs-chat-widget {
+      inset-inline-end: 10px;
+      inset-block-end: 10px;
+    }
+
+    body.hs-embed-surface .hs-chat-widget[data-position="bottom-left"] {
+      inset-inline-start: 10px;
+    }
+
+    body.hs-embed-surface .hs-chat-panel {
+      min-block-size: min(520px, calc(100dvh - 20px));
+    }
+
+    .hs-chat-widget,
+    .hs-chat-widget * {
+      box-sizing: border-box;
+    }
+
+    .hs-chat-widget {
+      position: fixed;
+      inset-inline-end: 18px;
+      inset-block-end: var(--chat-safe-bottom);
+      z-index: 2147483000;
+      font-family: var(--chat-font);
+      color: var(--chat-text);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hs-chat-widget[data-theme="dark"] {
+      color-scheme: dark;
+      --chat-bg: #0d1722;
+      --chat-surface: rgba(14, 23, 34, 0.96);
+      --chat-surface-strong: #111e2d;
+      --chat-text: #edf6fb;
+      --chat-muted: #9cb0bf;
+      --chat-border: rgba(154, 182, 201, 0.14);
+      --chat-accent: #79c6d6;
+      --chat-accent-strong: #9cdce8;
+      --chat-accent-soft: rgba(121, 198, 214, 0.14);
+      --chat-user-bubble: linear-gradient(135deg, #1e5f76 0%, #234d60 100%);
+      --chat-bot-bubble: #132433;
+      --chat-link: #8ce2d7;
+      --chat-shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
+      --chat-shadow-strong: 0 30px 90px rgba(0, 0, 0, 0.55);
+    }
+
+    .hs-chat-widget[data-position="bottom-left"] {
+      inset-inline-start: 18px;
+      inset-inline-end: auto;
+    }
+
+    .hs-chat-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 18, 28, 0.34);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+
+    .hs-chat-widget.is-open .hs-chat-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .hs-chat-launcher {
+      position: relative;
+      inline-size: var(--chat-launcher-size);
+      block-size: var(--chat-launcher-size);
+      border: 0;
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.94)),
+        linear-gradient(135deg, color-mix(in srgb, var(--chat-accent) 18%, white) 0%, white 100%);
+      color: var(--chat-accent-strong);
+      box-shadow: var(--chat-shadow), inset 0 0 0 1px rgba(255,255,255,0.45);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+      isolation: isolate;
+    }
+
+    .hs-chat-launcher::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(44, 113, 138, 0.12), rgba(15, 118, 110, 0.05));
+      z-index: -1;
+    }
+
+    .hs-chat-launcher:hover,
+    .hs-chat-launcher:focus-visible {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: var(--chat-shadow-strong);
+      filter: saturate(1.04);
+      outline: none;
+    }
+
+    .hs-chat-launcher-icon {
+      inline-size: 28px;
+      block-size: 28px;
+      display: block;
+    }
+
+    .hs-chat-launcher-ping {
+      position: absolute;
+      inset-inline-end: 6px;
+      inset-block-start: 6px;
+      inline-size: 10px;
+      block-size: 10px;
+      border-radius: 999px;
+      background: var(--chat-success);
+      box-shadow: 0 0 0 0 rgba(31, 157, 109, 0.4);
+      animation: hs-chat-ping 2.2s infinite;
+    }
+
+    @keyframes hs-chat-ping {
+      0% { box-shadow: 0 0 0 0 rgba(31, 157, 109, 0.40); }
+      70% { box-shadow: 0 0 0 12px rgba(31, 157, 109, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(31, 157, 109, 0); }
+    }
+
+    .hs-chat-panel {
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-end: var(--chat-panel-offset);
+      inline-size: var(--chat-panel-width);
+      block-size: var(--chat-panel-height);
+      min-block-size: 480px;
+      display: grid;
+      grid-template-rows: auto 1fr auto auto;
+      background: var(--chat-surface);
+      border: 1px solid var(--chat-border);
+      border-radius: var(--chat-radius-xl);
+      overflow: clip;
+      box-shadow: var(--chat-shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(18px) scale(0.975);
+      transform-origin: bottom right;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(22px);
+    }
+
+    .hs-chat-widget[data-position="bottom-left"] .hs-chat-panel {
+      inset-inline-start: 0;
+      inset-inline-end: auto;
+      transform-origin: bottom left;
+    }
+
+    .hs-chat-widget.is-open .hs-chat-panel {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .hs-chat-header {
+      position: relative;
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid var(--chat-border);
+      background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--chat-accent) 14%, transparent), transparent 46%),
+        linear-gradient(180deg, color-mix(in srgb, var(--chat-surface-strong) 92%, var(--chat-bg) 8%), var(--chat-surface));
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .hs-chat-title-wrap {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+      padding-inline-end: 2px;
+    }
+
+    .hs-chat-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--chat-accent-soft);
+      color: var(--chat-accent-strong);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hs-chat-kicker-dot {
+      inline-size: 8px;
+      block-size: 8px;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: 0.92;
+    }
+
+    .hs-chat-title {
+      margin: 0;
+      font-size: clamp(17px, 1rem + 0.45vw, 20px);
+      line-height: 1.18;
+      font-weight: 800;
+      color: var(--chat-text);
+      letter-spacing: -0.02em;
+      overflow-wrap: anywhere;
+    }
+
+    .hs-chat-subtitle {
+      margin: 0;
+      color: var(--chat-muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+      max-inline-size: 30ch;
+    }
+
+    .hs-chat-header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      padding-inline-start: 4px;
+    }
+
+    .hs-chat-action {
+      border: 1px solid var(--chat-border);
+      background: color-mix(in srgb, var(--chat-surface-strong) 92%, transparent);
+      color: var(--chat-text);
+      border-radius: 12px;
+      inline-size: 40px;
+      block-size: 40px;
+      min-block-size: 40px;
+      min-inline-size: 40px;
+      padding: 0;
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex: 0 0 auto;
+      transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    .hs-chat-action:hover,
+    .hs-chat-action:focus-visible {
+      background: color-mix(in srgb, var(--chat-surface-strong) 80%, var(--chat-bg) 20%);
+      border-color: color-mix(in srgb, var(--chat-border) 55%, var(--chat-accent) 45%);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .hs-chat-icon {
+      inline-size: 18px;
+      block-size: 18px;
+      display: block;
+      pointer-events: none;
+    }
+
+    .hs-chat-close-icon {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hs-chat-visually-hidden {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hs-chat-body {
+      position: relative;
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--chat-accent) 10%, transparent), transparent 42%),
+        linear-gradient(180deg, var(--chat-bg) 0%, color-mix(in srgb, var(--chat-bg) 86%, var(--chat-surface) 14%) 100%);
+      min-block-size: 0;
+    }
+
+    .hs-chat-messages {
+      block-size: 100%;
+      padding: 16px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-gutter: stable;
+      overscroll-behavior: contain;
+    }
+
+    .hs-chat-messages::-webkit-scrollbar {
+      inline-size: 10px;
+    }
+
+    .hs-chat-messages::-webkit-scrollbar-thumb {
+      background: color-mix(in srgb, var(--chat-muted) 25%, transparent);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .hs-chat-row {
+      display: flex;
+      inline-size: 100%;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .hs-chat-row.user {
+      justify-content: flex-end;
+    }
+
+    .hs-chat-row.assistant {
+      justify-content: flex-start;
+    }
+
+    .hs-chat-row.blocked {
+      justify-content: stretch;
+    }
+
+    .hs-chat-bubble {
+      max-inline-size: min(84%, 100%);
+      border-radius: 18px;
+      border: 1px solid var(--chat-border);
+      padding: 12px 14px;
+      line-height: 1.6;
+      font-size: 14px;
+      white-space: pre-wrap;
+      text-align: start;
+      unicode-bidi: plaintext;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      hyphens: auto;
+      box-shadow: 0 12px 28px rgba(15, 35, 52, 0.06);
+    }
+
+    .hs-chat-row.user .hs-chat-bubble {
+      background: var(--chat-user-bubble);
+      color: #f7fbff;
+      border-color: color-mix(in srgb, var(--chat-accent-strong) 80%, white 20%);
+      border-end-end-radius: 6px;
+      box-shadow: 0 16px 34px rgba(37, 95, 117, 0.20);
+    }
+
+    .hs-chat-row.assistant .hs-chat-bubble {
+      inline-size: min(100%, 338px);
+      background: var(--chat-bot-bubble);
+      color: var(--chat-text);
+      border-end-start-radius: 6px;
+    }
+
+    .hs-chat-content {
+      margin: 0;
+      white-space: pre-wrap;
+      text-align: start;
+      unicode-bidi: plaintext;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      line-height: 1.68;
+    }
+
+    .hs-chat-content + .hs-chat-content {
+      margin-top: 0.62em;
+    }
+
+    .hs-chat-content.is-list {
+      padding-inline-start: 1.3em;
+    }
+
+    .hs-chat-link {
+      color: var(--chat-link);
+      text-decoration: underline;
+      text-decoration-thickness: 1.4px;
+      text-underline-offset: 2px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .hs-chat-link:hover,
+    .hs-chat-link:focus-visible {
+      text-decoration-thickness: 2px;
+      outline: none;
+    }
+
+    .hs-chat-typing {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+      min-inline-size: min(100%, 240px);
+      max-inline-size: 100%;
+    }
+
+    .hs-chat-typing-visual {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--chat-muted) 12%, transparent);
+      min-block-size: 28px;
+      align-self: start;
+    }
+
+    .hs-chat-dot {
+      inline-size: 6px;
+      block-size: 6px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--chat-muted) 55%, transparent);
+      animation: hs-chat-bounce 1.2s infinite ease-in-out;
+    }
+
+    .hs-chat-dot:nth-child(2) { animation-delay: 130ms; }
+    .hs-chat-dot:nth-child(3) { animation-delay: 260ms; }
+
+    @keyframes hs-chat-bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
+      40% { transform: translateY(-2px); opacity: 1; }
+    }
+
+    .hs-chat-typing-meta {
+      min-inline-size: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .hs-chat-typing-text {
+      color: var(--chat-muted);
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: start;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hs-chat-typing-bar {
+      inline-size: 100%;
+      block-size: 4px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--chat-muted) 20%, transparent);
+      overflow: hidden;
+    }
+
+    .hs-chat-typing-bar::before {
+      content: "";
+      display: block;
+      inline-size: 34%;
+      block-size: 100%;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--chat-link) 45%, transparent) 0%, color-mix(in srgb, var(--chat-link) 85%, transparent) 55%, color-mix(in srgb, var(--chat-link) 45%, transparent) 100%);
+      animation: hs-chat-loading-slide 1.2s infinite ease-in-out;
+      transform: translateX(-120%);
+    }
+
+    @keyframes hs-chat-loading-slide {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(320%); }
+    }
+
+    .hs-chat-blocked-card {
+      inline-size: 100%;
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid color-mix(in srgb, var(--chat-border) 74%, var(--chat-accent) 26%);
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--chat-accent) 12%, transparent), transparent 44%),
+        linear-gradient(180deg, color-mix(in srgb, var(--chat-surface-strong) 94%, var(--chat-bg) 6%), var(--chat-surface-strong));
+      box-shadow: 0 18px 40px rgba(15, 35, 52, 0.10);
+    }
+
+    .hs-chat-blocked-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      inline-size: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--chat-danger) 12%, transparent);
+      color: var(--chat-danger);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hs-chat-blocked-title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--chat-text);
+    }
+
+    .hs-chat-blocked-text {
+      margin: 0;
+      color: var(--chat-muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .hs-chat-blocked-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hs-chat-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-block-size: 42px;
+      padding: 0 16px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--chat-accent) 0%, var(--chat-accent-strong) 100%);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 140ms ease, filter 140ms ease;
+    }
+
+    .hs-chat-cta:hover,
+    .hs-chat-cta:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      outline: none;
+    }
+
+    .hs-chat-input-wrap {
+      border-top: 1px solid var(--chat-border);
+      padding: 11px 12px 10px;
+      background: color-mix(in srgb, var(--chat-surface) 94%, var(--chat-bg) 6%);
+    }
+
+    .hs-chat-input-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .hs-chat-input {
+      inline-size: 100%;
+      min-block-size: 46px;
+      max-block-size: 132px;
+      resize: none;
+      border: 1px solid var(--chat-border);
+      border-radius: 15px;
+      background: var(--chat-surface-strong);
+      color: var(--chat-text);
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.45;
+      padding: 12px 13px;
+      text-align: start;
+      unicode-bidi: plaintext;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+    }
+
+    .hs-chat-input::placeholder {
+      color: color-mix(in srgb, var(--chat-muted) 88%, transparent);
+    }
+
+    .hs-chat-input:focus-visible {
+      border-color: color-mix(in srgb, var(--chat-accent) 58%, var(--chat-border) 42%);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--chat-accent) 16%, transparent);
+      outline: none;
+    }
+
+    .hs-chat-widget.is-blocked .hs-chat-input,
+    .hs-chat-widget.is-blocked .hs-chat-send {
+      opacity: 0.54;
+      pointer-events: none;
+    }
+
+    .hs-chat-send {
+      min-inline-size: 108px;
+      min-block-size: 46px;
+      border-radius: 15px;
+      border: 1px solid color-mix(in srgb, var(--chat-accent) 24%, var(--chat-border) 76%);
+      background: linear-gradient(135deg, var(--chat-accent) 0%, var(--chat-accent-strong) 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: filter 130ms ease, opacity 130ms ease, transform 130ms ease;
+    }
+
+    .hs-chat-send:hover,
+    .hs-chat-send:focus-visible {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .hs-chat-send:disabled {
+      opacity: 0.62;
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    .hs-chat-note {
+      margin: 8px 2px 0;
+      color: var(--chat-muted);
+      font-size: 11.5px;
+      line-height: 1.38;
+    }
+
+    .hs-chat-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+      flex-wrap: nowrap;
+      padding: 11px 14px max(11px, env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid var(--chat-border);
+      background: color-mix(in srgb, var(--chat-surface) 96%, var(--chat-bg) 4%);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .hs-chat-powered {
+      color: var(--chat-muted);
+      min-inline-size: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .hs-chat-powered a {
+      color: var(--chat-accent-strong);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .hs-chat-powered a:hover,
+    .hs-chat-powered a:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    .hs-chat-widget[dir="rtl"] .hs-chat-title,
+    .hs-chat-widget[dir="rtl"] .hs-chat-subtitle,
+    .hs-chat-widget[dir="rtl"] .hs-chat-content,
+    .hs-chat-widget[dir="rtl"] .hs-chat-note,
+    .hs-chat-widget[dir="rtl"] .hs-chat-input,
+    .hs-chat-widget[dir="rtl"] .hs-chat-blocked-text,
+    .hs-chat-widget[dir="rtl"] .hs-chat-blocked-title,
+    .hs-chat-widget[dir="rtl"] .hs-chat-powered {
+      text-align: start;
+    }
+
+    .hs-chat-widget[dir="rtl"] .hs-chat-header-actions,
+    .hs-chat-widget[dir="rtl"] .hs-chat-footer,
+    .hs-chat-widget[dir="rtl"] .hs-chat-blocked-actions {
+      flex-direction: row-reverse;
+    }
+
+    @media (max-width: 640px) {
+      body.hs-embed-surface {
+        --chat-launcher-size: 54px;
+        --chat-panel-width: min(100vw - 14px, 420px);
+        --chat-panel-height: calc(100dvh - 16px);
+        --chat-panel-offset: 12px;
+        --chat-safe-bottom: 7px;
+      }
+
+      .hs-chat-widget {
+        inset-inline-end: 10px;
+        inset-block-end: calc(env(safe-area-inset-bottom, 0px) + 10px);
+      }
+
+      .hs-chat-widget[data-position="bottom-left"] {
+        inset-inline-start: 10px;
+      }
+
+      .hs-chat-panel {
+        inline-size: min(100vw - 16px, 520px);
+        block-size: min(calc(100dvh - 78px - env(safe-area-inset-bottom)), 760px);
+        min-block-size: 360px;
+        border-radius: 20px;
+      }
+
+      .hs-chat-header {
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        padding: 14px 14px 12px;
+      }
+
+      .hs-chat-subtitle {
+        max-inline-size: 100%;
+      }
+
+      .hs-chat-action {
+        inline-size: 38px;
+        block-size: 38px;
+        min-inline-size: 38px;
+        min-block-size: 38px;
+        border-radius: 11px;
+      }
+
+      .hs-chat-footer {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 460px) {
+      body.hs-embed-surface {
+        --chat-panel-height: calc(100dvh - 12px);
+      }
+
+      .hs-chat-widget,
+      .hs-chat-widget[data-position="bottom-left"] {
+        inset-inline: 6px;
+        inset-block-end: calc(env(safe-area-inset-bottom, 0px) + 6px);
+      }
+
+      .hs-chat-panel {
+        inset-inline: 0;
+        inline-size: 100%;
+        block-size: calc(100dvh - 84px - env(safe-area-inset-bottom));
+        min-block-size: 0;
+        border-radius: 18px;
+      }
+
+      .hs-chat-launcher {
+        margin-inline-start: auto;
+      }
+
+      .hs-chat-messages {
+        padding: 14px 12px;
+      }
+
+      .hs-chat-input-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hs-chat-send {
+        inline-size: 100%;
+      }
+
+      .hs-chat-header {
+        grid-template-columns: 1fr auto;
+        padding: 14px 12px 12px;
+        gap: 8px;
+      }
+
+      .hs-chat-header-actions {
+        justify-content: flex-end;
+        gap: 6px;
+      }
+
+      .hs-chat-bubble {
+        max-inline-size: 92%;
+      }
+
+      .hs-chat-row.assistant .hs-chat-bubble {
+        inline-size: min(100%, 100%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hs-chat-launcher,
+      .hs-chat-panel,
+      .hs-chat-backdrop,
+      .hs-chat-dot,
+      .hs-chat-typing-bar::before,
+      .hs-chat-send,
+      .hs-chat-action,
+      .hs-chat-input,
+      .hs-chat-cta,
+      .hs-chat-menu {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="hs-preview-surface">
+  <script>
+    (function initDigitiviaChatWidget() {
+      "use strict";
+
+      const DigitiviaChatWidget = {
+        config: {
+          webhookUrl: "https://n8n.srv1174105.hstgr.cloud/webhook/website_chat_digitivia",
+          bootstrapUrl: "",
+          requestTimeoutMs: 16000,
+          storagePrefix: "digitiviaWebsiteChat",
+          source: "website-chat",
+          widgetKey: "",
+          title: "Welcome to Digitivia",
+          subtitle: "Write in English or العربية. We answer as clearly as possible.",
+          firstMessage: "Welcome to Digitivia. I can help with products, services, and general questions.",
+          kicker: "Live assistant",
+          defaultTheme: "light",
+          position: "bottom-right",
+          ctaLabel: "Visit Digitivia",
+          ctaUrl: "https://digitivia.com",
+          poweredByLabel: "Powered by Digitivia",
+          blockedTitle: "Chat is unavailable right now",
+          blockedMessage: "This website chat is not available for this site or subscription at the moment.",
+          blockedBadge: "Temporarily unavailable",
+          labels: {
+            launcher: "Open chat",
+            close: "Close chat",
+            newConversation: "New conversation",
+            toggleTheme: "Toggle theme",
+            more: "More",
+            send: "Send",
+            inputPlaceholder: "Type your message...",
+            helperNote: "Press Enter to send. Shift+Enter adds a new line.",
+            typing: "Assistant is typing",
+            outsideClose: "Close panel",
+            waitingStates: [
+              "Thinking through your request...",
+              "Checking the details for you...",
+              "Preparing a clear answer...",
+              "Almost there, thanks for waiting..."
+            ],
+            networkError: "We are having trouble connecting right now. Please try again in a moment.",
+            timeoutError: "The reply took too long. Please try again.",
+            unexpectedResponse: "I could not read that response clearly. Please try again.",
+            blockedComposerNote: "Chat is currently unavailable for this website.",
+            menuClose: "Close menu"
+          },
+          theme: {
+            "--chat-bg": "",
+            "--chat-surface": "",
+            "--chat-surface-strong": "",
+            "--chat-text": "",
+            "--chat-muted": "",
+            "--chat-border": "",
+            "--chat-accent": "",
+            "--chat-accent-strong": "",
+            "--chat-user-bubble": "",
+            "--chat-bot-bubble": "",
+            "--chat-link": "",
+            "--chat-shadow": ""
+          },
+          previewMode: false,
+          embeddedFrame: false,
+          previewBlocked: false,
+          forcedDir: "",
+          onStateChange: null
+        },
+        state: {
+          sessionId: "",
+          conversationId: "",
+          theme: "light",
+          isLoading: false,
+          isOpen: false,
+          isBlocked: false,
+          hasOpenedOnce: false,
+          menuOpen: false,
+          messages: [],
+          typingTicker: null,
+          typingIndex: 0
+        },
+        refs: {}
+      };
+
+      const externalConfig = window.DigitiviaChatWidgetConfig || window.HurghadaChatWidgetConfig || {};
+      deepMerge(DigitiviaChatWidget.config, externalConfig);
+      window.DigitiviaChatWidget = {
+        setConfig,
+        resetConversation,
+        open: openPanel,
+        close: closePanel,
+        setBlockedState,
+        getState: () => JSON.parse(JSON.stringify(DigitiviaChatWidget.state))
+      };
+
+      mountWidget();
+
+      function mountWidget() {
+        document.body.classList.toggle("hs-embed-surface", !!DigitiviaChatWidget.config.embeddedFrame);
+        applyThemeOverrides();
+        hydrateState();
+        renderShell();
+        bindEvents();
+        renderMessages();
+        syncRootState();
+        notifyStateChange();
+      }
+
+      function setConfig(nextConfig) {
+        deepMerge(DigitiviaChatWidget.config, nextConfig || {});
+        applyThemeOverrides();
+        if (DigitiviaChatWidget.refs.root) {
+          DigitiviaChatWidget.refs.root.setAttribute("data-position", normalizePosition(DigitiviaChatWidget.config.position));
+          DigitiviaChatWidget.refs.root.setAttribute("dir", detectDir());
+        }
+        rerenderShellText();
+        applyTheme(resolveThemeMode(), false);
+        setBlockedState(!!DigitiviaChatWidget.config.previewBlocked, {
+          title: DigitiviaChatWidget.config.blockedTitle,
+          message: DigitiviaChatWidget.config.blockedMessage,
+          ctaLabel: DigitiviaChatWidget.config.ctaLabel,
+          ctaUrl: DigitiviaChatWidget.config.ctaUrl,
+          persist: false,
+          appendMessage: false
+        });
+        notifyStateChange();
+      }
+
+      function rerenderShellText() {
+        const refs = DigitiviaChatWidget.refs;
+        if (!refs.root) return;
+        refs.root.querySelector(".hs-chat-kicker-text").textContent = DigitiviaChatWidget.config.kicker;
+        refs.root.querySelector(".hs-chat-title").textContent = DigitiviaChatWidget.config.title;
+        refs.root.querySelector(".hs-chat-subtitle").textContent = DigitiviaChatWidget.config.subtitle;
+        refs.root.querySelector(".hs-chat-launcher").setAttribute("aria-label", DigitiviaChatWidget.config.labels.launcher);
+        refs.root.querySelector(".hs-chat-panel").setAttribute("aria-label", DigitiviaChatWidget.config.title);
+        refs.root.querySelector(".hs-chat-close").setAttribute("aria-label", DigitiviaChatWidget.config.labels.close);
+        refs.root.querySelector(".hs-chat-close").setAttribute("title", DigitiviaChatWidget.config.labels.close);
+        refs.root.querySelector(".hs-chat-theme-toggle").setAttribute("aria-label", DigitiviaChatWidget.config.labels.toggleTheme);
+        refs.root.querySelector(".hs-chat-theme-toggle").setAttribute("title", DigitiviaChatWidget.config.labels.toggleTheme);
+        refs.root.querySelector(".hs-chat-reset").setAttribute("aria-label", DigitiviaChatWidget.config.labels.newConversation);
+        refs.root.querySelector(".hs-chat-reset").setAttribute("title", DigitiviaChatWidget.config.labels.newConversation);
+        refs.root.querySelector(".hs-chat-input").placeholder = DigitiviaChatWidget.config.labels.inputPlaceholder;
+        refs.root.querySelector(".hs-chat-send").textContent = DigitiviaChatWidget.config.labels.send;
+        refs.root.querySelector(".hs-chat-note").textContent = DigitiviaChatWidget.state.isBlocked ? DigitiviaChatWidget.config.labels.blockedComposerNote : DigitiviaChatWidget.config.labels.helperNote;
+        refs.root.querySelector(".hs-chat-powered-label").textContent = "Powered by ";
+        refs.root.querySelector(".hs-chat-powered-link").textContent = "Digitivia";
+        refs.root.querySelector(".hs-chat-powered-link").href = DigitiviaChatWidget.config.ctaUrl;
+      }
+
+      function applyThemeOverrides() {
+        const theme = DigitiviaChatWidget.config.theme || {};
+        Object.keys(theme).forEach((token) => {
+          if (theme[token]) {
+            document.documentElement.style.setProperty(token, String(theme[token]));
+          }
+        });
+      }
+
+      function hydrateState() {
+        const prefix = DigitiviaChatWidget.config.storagePrefix;
+        const storedSessionId = safeGetLocalStorage(prefix + ":sessionId");
+        const storedConversationId = safeGetLocalStorage(prefix + ":conversationId");
+        const storedMessages = safeGetLocalStorage(prefix + ":messages");
+        const opened = safeGetLocalStorage(prefix + ":hasOpenedOnce");
+        const storedTheme = safeGetLocalStorage(prefix + ":theme");
+
+        DigitiviaChatWidget.state.sessionId = storedSessionId || generateSessionId();
+        DigitiviaChatWidget.state.conversationId = storedConversationId || "";
+        DigitiviaChatWidget.state.hasOpenedOnce = opened === "true";
+        DigitiviaChatWidget.state.theme = (storedTheme === "dark" || storedTheme === "light") ? storedTheme : resolveThemeMode();
+
+        if (storedMessages) {
+          try {
+            const parsed = JSON.parse(storedMessages);
+            if (Array.isArray(parsed)) {
+              DigitiviaChatWidget.state.messages = parsed.filter(isValidMessage);
+            }
+          } catch (_err) {
+            DigitiviaChatWidget.state.messages = [];
+          }
+        }
+
+        DigitiviaChatWidget.state.isBlocked = !!DigitiviaChatWidget.config.previewBlocked;
+        persistSessionId();
+        persistConversationId();
+      }
+
+      function renderShell() {
+        const root = document.createElement("div");
+        root.className = "hs-chat-widget";
+        root.setAttribute("data-position", normalizePosition(DigitiviaChatWidget.config.position));
+        root.setAttribute("dir", detectDir());
+        root.innerHTML = `
+          <button type="button" class="hs-chat-backdrop" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.outsideClose)}"></button>
+          <button type="button" class="hs-chat-launcher" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.launcher)}">
+            <span class="hs-chat-launcher-ping" aria-hidden="true"></span>
+            <svg class="hs-chat-launcher-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20 4.5H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16.5h2.8l3.6 3.1c.8.7 2.1.1 2.1-1V16.5H20a1.5 1.5 0 0 0 1.5-1.5V6A1.5 1.5 0 0 0 20 4.5Z" stroke="currentColor" stroke-width="1.45"/>
+              <path d="M7 9h10M7 12h7" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <section class="hs-chat-panel" aria-label="${escapeHtml(DigitiviaChatWidget.config.title)}">
+            <header class="hs-chat-header">
+              <div class="hs-chat-title-wrap">
+                <div class="hs-chat-kicker"><span class="hs-chat-kicker-dot" aria-hidden="true"></span><span class="hs-chat-kicker-text">${escapeHtml(DigitiviaChatWidget.config.kicker)}</span></div>
+                <h2 class="hs-chat-title">${escapeHtml(DigitiviaChatWidget.config.title)}</h2>
+                <p class="hs-chat-subtitle">${escapeHtml(DigitiviaChatWidget.config.subtitle)}</p>
+              </div>
+              <div class="hs-chat-header-actions">
+                <button type="button" class="hs-chat-action hs-chat-theme-toggle" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}">
+                  <svg class="hs-chat-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 3.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 .75-.75Zm0 13.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 .75-.75Zm8.25-6a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13.5 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.01-4.76a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 0 1-1.06-1.06l1.06-1.06Zm-7.52 7.52a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06Zm8.58 2.12a.75.75 0 0 1 0 1.06.75.75 0 0 1-1.06 0l-1.06-1.06a.75.75 0 1 1 1.06-1.06l1.06 1.06Zm-7.52-7.52a.75.75 0 0 1 0 1.06.75.75 0 0 1-1.06 0L6.18 7.55a.75.75 0 1 1 1.06-1.06l1.06 1.06ZM12 8.25a3.75 3.75 0 1 1 0 7.5a3.75 3.75 0 0 1 0-7.5Z" fill="currentColor"/>
+                  </svg>
+                  <span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}</span>
+                </button>
+                <button type="button" class="hs-chat-action hs-chat-reset" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}">
+                  <svg class="hs-chat-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6.75 7.5V4.5m0 0h3m-3 0l3.3 3.3M18 12a6 6 0 1 1-2.05-4.52" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}</span>
+                </button>
+                <button type="button" class="hs-chat-action hs-chat-close" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.close)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.close)}"><span class="hs-chat-close-icon" aria-hidden="true">×</span><span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.close)}</span></button>
+              </div>
+            </header>
+            <div class="hs-chat-body">
+              <main class="hs-chat-messages" aria-live="polite" aria-relevant="additions"></main>
+            </div>
+            <div class="hs-chat-input-wrap">
+              <div class="hs-chat-input-grid">
+                <textarea class="hs-chat-input" rows="1" dir="auto" aria-label="Message input" placeholder="${escapeHtml(DigitiviaChatWidget.config.labels.inputPlaceholder)}"></textarea>
+                <button type="button" class="hs-chat-send" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.send)}">${escapeHtml(DigitiviaChatWidget.config.labels.send)}</button>
+              </div>
+              <p class="hs-chat-note">${escapeHtml(DigitiviaChatWidget.config.labels.helperNote)}</p>
+            </div>
+            <footer class="hs-chat-footer">
+              <div class="hs-chat-powered"><span class="hs-chat-powered-label">Powered by </span><a class="hs-chat-powered-link" href="${escapeHtml(DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">Digitivia</a></div>
+            </footer>
+          </section>
+        `;
+
+        document.body.appendChild(root);
+        DigitiviaChatWidget.refs.root = root;
+        DigitiviaChatWidget.refs.backdrop = root.querySelector(".hs-chat-backdrop");
+        DigitiviaChatWidget.refs.launcher = root.querySelector(".hs-chat-launcher");
+        DigitiviaChatWidget.refs.panel = root.querySelector(".hs-chat-panel");
+        DigitiviaChatWidget.refs.messages = root.querySelector(".hs-chat-messages");
+        DigitiviaChatWidget.refs.input = root.querySelector(".hs-chat-input");
+        DigitiviaChatWidget.refs.send = root.querySelector(".hs-chat-send");
+        DigitiviaChatWidget.refs.close = root.querySelector(".hs-chat-close");
+        DigitiviaChatWidget.refs.themeToggle = root.querySelector(".hs-chat-theme-toggle");
+        DigitiviaChatWidget.refs.resetBtn = root.querySelector(".hs-chat-reset");
+        applyTheme(DigitiviaChatWidget.state.theme, false);
+      }
+
+      function bindEvents() {
+        const refs = DigitiviaChatWidget.refs;
+        refs.launcher.addEventListener("click", togglePanel);
+        refs.close.addEventListener("click", closePanel);
+        refs.backdrop.addEventListener("click", closePanel);
+        refs.themeToggle.addEventListener("click", toggleTheme);
+        refs.resetBtn.addEventListener("click", resetConversation);
+        refs.send.addEventListener("click", onSend);
+        refs.input.addEventListener("keydown", onInputKeydown);
+        refs.input.addEventListener("input", autoresizeInput);
+        document.addEventListener("keydown", onDocumentKeydown);
+      }
+
+      function onDocumentKeydown(event) {
+        if (event.key === "Escape") {
+          if (DigitiviaChatWidget.state.isOpen) {
+            closePanel();
+          }
+        }
+      }
+
+      function toggleTheme() {
+        const nextTheme = DigitiviaChatWidget.state.theme === "dark" ? "light" : "dark";
+        applyTheme(nextTheme, true);
+      }
+
+      function resolveThemeMode() {
+        const mode = String(DigitiviaChatWidget.config.defaultTheme || "light").toLowerCase();
+        if (mode === "dark") return "dark";
+        if (mode === "auto") {
+          return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        return "light";
+      }
+
+      function applyTheme(theme, persist) {
+        const validTheme = theme === "dark" ? "dark" : "light";
+        DigitiviaChatWidget.state.theme = validTheme;
+        DigitiviaChatWidget.refs.root.setAttribute("data-theme", validTheme);
+        if (persist) {
+          safeSetLocalStorage(DigitiviaChatWidget.config.storagePrefix + ":theme", validTheme);
+        }
+        notifyStateChange();
+      }
+
+      function togglePanel() {
+        DigitiviaChatWidget.state.isOpen ? closePanel() : openPanel();
+      }
+
+      function openPanel() {
+        DigitiviaChatWidget.state.isOpen = true;
+        DigitiviaChatWidget.refs.root.classList.add("is-open");
+        onOpenPanel();
+        notifyStateChange();
+      }
+
+      function closePanel() {
+        DigitiviaChatWidget.state.isOpen = false;
+        DigitiviaChatWidget.refs.root.classList.remove("is-open");
+        notifyStateChange();
+      }
+
+      function onOpenPanel() {
+        if (!DigitiviaChatWidget.state.hasOpenedOnce) {
+          DigitiviaChatWidget.state.hasOpenedOnce = true;
+          safeSetLocalStorage(DigitiviaChatWidget.config.storagePrefix + ":hasOpenedOnce", "true");
+          if (!DigitiviaChatWidget.state.messages.length && !DigitiviaChatWidget.state.isBlocked) {
+            addMessage("assistant", DigitiviaChatWidget.config.firstMessage);
+          }
+        }
+        if (DigitiviaChatWidget.state.isBlocked && !hasBlockedMessage()) {
+          appendBlockedMessage({ persist: true });
+        }
+        queueMicrotask(() => {
+          DigitiviaChatWidget.refs.input.focus();
+          scrollToBottom(true);
+        });
+      }
+
+      function resetConversation() {
+        DigitiviaChatWidget.state.messages = [];
+        DigitiviaChatWidget.state.sessionId = generateSessionId();
+        DigitiviaChatWidget.state.conversationId = "";
+        persistSessionId();
+        persistConversationId();
+        persistMessages();
+        clearTypingIndicator();
+        if (DigitiviaChatWidget.state.hasOpenedOnce && !DigitiviaChatWidget.state.isBlocked) {
+          addMessage("assistant", DigitiviaChatWidget.config.firstMessage);
+        }
+        if (DigitiviaChatWidget.state.isBlocked) {
+          appendBlockedMessage({ persist: true });
+        } else {
+          renderMessages();
+        }
+        notifyStateChange();
+      }
+
+      function onInputKeydown(event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          onSend();
+        }
+      }
+
+      function autoresizeInput() {
+        const el = DigitiviaChatWidget.refs.input;
+        el.style.height = "auto";
+        el.style.height = Math.min(el.scrollHeight, 132) + "px";
+      }
+
+      async function onSend() {
+        if (DigitiviaChatWidget.state.isLoading || DigitiviaChatWidget.state.isBlocked) return;
+
+        const input = DigitiviaChatWidget.refs.input;
+        const text = String(input.value || "").trim();
+        if (!text) {
+          input.value = "";
+          autoresizeInput();
+          return;
+        }
+
+        addMessage("user", text);
+        input.value = "";
+        autoresizeInput();
+        setLoadingState(true);
+        showTypingIndicator(DigitiviaChatWidget.config.labels.waitingStates);
+
+        try {
+          const responseData = await postUserMessage(text);
+          clearTypingIndicator();
+
+          if (responseData && typeof responseData === "object" && responseData.reply_allowed === false) {
+            setBlockedState(true, {
+              title: responseData.ui_state?.title || responseData.blocked_title || DigitiviaChatWidget.config.blockedTitle,
+              message: responseData.ui_state?.message || responseData.reason || DigitiviaChatWidget.config.blockedMessage,
+              ctaLabel: responseData.blocked_cta?.label || responseData.ui_state?.cta_label || DigitiviaChatWidget.config.ctaLabel,
+              ctaUrl: responseData.blocked_cta?.url || responseData.ui_state?.cta_url || DigitiviaChatWidget.config.ctaUrl,
+              appendMessage: true,
+              persist: true
+            });
+            return;
+          }
+
+          const normalized = normalizeAssistantReply(responseData);
+          if (!normalized.length) {
+            addMessage("assistant", DigitiviaChatWidget.config.labels.unexpectedResponse);
+          } else {
+            normalized.forEach((msg) => addMessage("assistant", msg));
+          }
+        } catch (error) {
+          clearTypingIndicator();
+          const errorMessage = error && error.name === "AbortError" ? DigitiviaChatWidget.config.labels.timeoutError : DigitiviaChatWidget.config.labels.networkError;
+          addMessage("assistant", errorMessage);
+        } finally {
+          setLoadingState(false);
+        }
+      }
+
+      async function postUserMessage(messageText) {
+        if (DigitiviaChatWidget.config.previewMode) {
+          await wait(850);
+          return { reply_allowed: !DigitiviaChatWidget.state.isBlocked, reply_text: "Preview reply: the live website webhook will answer here once connected." };
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), DigitiviaChatWidget.config.requestTimeoutMs);
+        const payload = {
+          message: messageText,
+          widget_key: DigitiviaChatWidget.config.widgetKey || "",
+          visitor_session_id: DigitiviaChatWidget.state.sessionId,
+          conversation_id: DigitiviaChatWidget.state.conversationId || "",
+          source: DigitiviaChatWidget.config.source,
+          timestamp: new Date().toISOString(),
+          page_url: DigitiviaChatWidget.config.hostPageUrl || window.location.href,
+          origin: DigitiviaChatWidget.config.hostOrigin || window.location.origin,
+          lang: document.documentElement.lang || navigator.language || "en",
+          dir: detectDir()
+        };
+
+        try {
+          const response = await fetch(DigitiviaChatWidget.config.webhookUrl, {
+            method: "POST",
+            body: JSON.stringify(payload),
+            signal: controller.signal
+          });
+
+          if (!response.ok) {
+            throw new Error("HTTP_" + response.status);
+          }
+
+          const contentType = response.headers.get("content-type") || "";
+          const body = contentType.includes("application/json") ? await response.json() : await response.text();
+          if (body && typeof body === "object" && body.conversation_id) {
+            DigitiviaChatWidget.state.conversationId = String(body.conversation_id || "");
+            persistConversationId();
+          }
+          return body;
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      }
+
+      function setBlockedState(blocked, options) {
+        DigitiviaChatWidget.state.isBlocked = !!blocked;
+        syncRootState();
+        if (!blocked) {
+          if (DigitiviaChatWidget.state.messages.some((message) => message.type === "blocked")) {
+            DigitiviaChatWidget.state.messages = DigitiviaChatWidget.state.messages.filter((message) => message.type !== "blocked");
+            persistMessages();
+            renderMessages();
+          }
+          notifyStateChange();
+          return;
+        }
+        appendBlockedMessage(options || { persist: true });
+      }
+
+      function appendBlockedMessage(options) {
+        const settings = Object.assign({
+          title: DigitiviaChatWidget.config.blockedTitle,
+          message: DigitiviaChatWidget.config.blockedMessage,
+          ctaLabel: DigitiviaChatWidget.config.ctaLabel,
+          ctaUrl: DigitiviaChatWidget.config.ctaUrl,
+          persist: true,
+          appendMessage: true
+        }, options || {});
+
+        if (hasBlockedMessage()) {
+          DigitiviaChatWidget.state.messages = DigitiviaChatWidget.state.messages.filter((message) => message.type !== "blocked");
+        }
+
+        const message = {
+          id: generateMessageId(),
+          role: "assistant",
+          type: "blocked",
+          content: settings.message,
+          title: settings.title,
+          ctaLabel: settings.ctaLabel,
+          ctaUrl: settings.ctaUrl,
+          createdAt: new Date().toISOString()
+        };
+        DigitiviaChatWidget.state.messages.push(message);
+        if (settings.persist !== false) persistMessages();
+        renderMessages();
+        scrollToBottom(true);
+        notifyStateChange();
+      }
+
+      function hasBlockedMessage() {
+        return DigitiviaChatWidget.state.messages.some((message) => message.type === "blocked");
+      }
+
+      function syncRootState() {
+        DigitiviaChatWidget.refs.root.classList.toggle("is-blocked", DigitiviaChatWidget.state.isBlocked);
+        DigitiviaChatWidget.refs.input.disabled = DigitiviaChatWidget.state.isBlocked;
+        DigitiviaChatWidget.refs.send.disabled = DigitiviaChatWidget.state.isBlocked || DigitiviaChatWidget.state.isLoading;
+        DigitiviaChatWidget.refs.input.setAttribute("aria-disabled", DigitiviaChatWidget.state.isBlocked ? "true" : "false");
+        DigitiviaChatWidget.refs.root.setAttribute("dir", detectDir());
+        const note = DigitiviaChatWidget.refs.root.querySelector(".hs-chat-note");
+        note.textContent = DigitiviaChatWidget.state.isBlocked ? DigitiviaChatWidget.config.labels.blockedComposerNote : DigitiviaChatWidget.config.labels.helperNote;
+      }
+
+      function normalizeAssistantReply(payload) {
+        if (payload == null) return [];
+        if (typeof payload === "string") {
+          const cleaned = payload.trim();
+          return cleaned ? [cleaned] : [];
+        }
+        if (Array.isArray(payload)) return flattenMessagesFromArray(payload);
+        if (typeof payload === "object") {
+          const directKeys = ["message", "text", "output", "reply", "reply_text", "response", "content"];
+          for (const key of directKeys) {
+            if (typeof payload[key] === "string" && payload[key].trim()) return [payload[key].trim()];
+          }
+          if (Array.isArray(payload.messages)) {
+            const fromMessages = flattenMessagesFromArray(payload.messages);
+            if (fromMessages.length) return fromMessages;
+          }
+          const nestedKeys = ["data", "result", "output", "reply", "response"];
+          for (const key of nestedKeys) {
+            const node = payload[key];
+            if (!node) continue;
+            const nested = normalizeAssistantReply(node);
+            if (nested.length) return nested;
+          }
+        }
+        return [];
+      }
+
+      function flattenMessagesFromArray(items) {
+        const results = [];
+        items.forEach((entry) => {
+          if (typeof entry === "string") {
+            if (entry.trim()) results.push(entry.trim());
+            return;
+          }
+          if (entry && typeof entry === "object") {
+            const fields = ["text", "content", "message", "output", "reply", "response"];
+            for (const field of fields) {
+              if (typeof entry[field] === "string" && entry[field].trim()) {
+                results.push(entry[field].trim());
+                return;
+              }
+            }
+            for (const field of fields) {
+              if (Array.isArray(entry[field])) {
+                const nested = flattenMessagesFromArray(entry[field]);
+                if (nested.length) {
+                  results.push.apply(results, nested);
+                  return;
+                }
+              }
+            }
+          }
+        });
+        return results;
+      }
+
+      function showTypingIndicator(waitingStates) {
+        const row = document.createElement("div");
+        row.className = "hs-chat-row assistant";
+        row.dataset.typing = "true";
+        const statuses = Array.isArray(waitingStates) && waitingStates.length ? waitingStates : ["Thinking..."];
+        DigitiviaChatWidget.state.typingIndex = 0;
+        row.innerHTML = `
+          <div class="hs-chat-bubble" role="status" aria-atomic="true" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.typing)}">
+            <span class="hs-chat-typing">
+              <span class="hs-chat-typing-visual" aria-hidden="true">
+                <span class="hs-chat-dot"></span>
+                <span class="hs-chat-dot"></span>
+                <span class="hs-chat-dot"></span>
+              </span>
+              <span class="hs-chat-typing-meta">
+                <span class="hs-chat-typing-text" dir="auto">${escapeHtml(statuses[0])}</span>
+                <span class="hs-chat-typing-bar" aria-hidden="true"></span>
+              </span>
+            </span>
+          </div>
+        `;
+        DigitiviaChatWidget.refs.messages.appendChild(row);
+        const textEl = row.querySelector(".hs-chat-typing-text");
+        DigitiviaChatWidget.state.typingTicker = window.setInterval(() => {
+          DigitiviaChatWidget.state.typingIndex = (DigitiviaChatWidget.state.typingIndex + 1) % statuses.length;
+          if (textEl) textEl.textContent = statuses[DigitiviaChatWidget.state.typingIndex];
+        }, 1650);
+        scrollToBottom(true);
+      }
+
+      function clearTypingIndicator() {
+        if (DigitiviaChatWidget.state.typingTicker) {
+          clearInterval(DigitiviaChatWidget.state.typingTicker);
+          DigitiviaChatWidget.state.typingTicker = null;
+        }
+        const existing = DigitiviaChatWidget.refs.messages.querySelector('[data-typing="true"]');
+        if (existing) existing.remove();
+      }
+
+      function setLoadingState(isLoading) {
+        DigitiviaChatWidget.state.isLoading = isLoading;
+        DigitiviaChatWidget.refs.send.disabled = isLoading || DigitiviaChatWidget.state.isBlocked;
+        DigitiviaChatWidget.refs.input.setAttribute("aria-busy", isLoading ? "true" : "false");
+        notifyStateChange();
+      }
+
+      function addMessage(role, content) {
+        const message = {
+          id: generateMessageId(),
+          role: role === "user" ? "user" : "assistant",
+          type: "text",
+          content: String(content || ""),
+          createdAt: new Date().toISOString()
+        };
+        DigitiviaChatWidget.state.messages.push(message);
+        persistMessages();
+        renderMessage(message);
+        scrollToBottom(true);
+        notifyStateChange();
+      }
+
+      function renderMessages() {
+        DigitiviaChatWidget.refs.messages.innerHTML = "";
+        if (!DigitiviaChatWidget.state.messages.length && DigitiviaChatWidget.state.hasOpenedOnce && !DigitiviaChatWidget.state.isBlocked) {
+          addMessage("assistant", DigitiviaChatWidget.config.firstMessage);
+          return;
+        }
+        DigitiviaChatWidget.state.messages.forEach((message) => renderMessage(message));
+        scrollToBottom(false);
+      }
+
+      function renderMessage(message) {
+        const row = document.createElement("div");
+        row.className = "hs-chat-row " + (message.type === "blocked" ? "blocked" : message.role);
+        if (message.type === "blocked") {
+          row.appendChild(buildBlockedCard(message));
+          DigitiviaChatWidget.refs.messages.appendChild(row);
+          return;
+        }
+
+        const bubble = document.createElement("div");
+        bubble.className = "hs-chat-bubble";
+        const blocks = splitIntoReadableBlocks(message.content);
+        blocks.forEach((block) => {
+          if (block.type === "list") {
+            const list = document.createElement(block.ordered ? "ol" : "ul");
+            list.className = "hs-chat-content is-list";
+            list.dir = "auto";
+            block.items.forEach((itemText) => {
+              const li = document.createElement("li");
+              appendTextWithLinks(li, itemText);
+              list.appendChild(li);
+            });
+            bubble.appendChild(list);
+          } else {
+            const p = document.createElement("p");
+            p.className = "hs-chat-content";
+            p.dir = "auto";
+            appendTextWithLinks(p, block.text);
+            bubble.appendChild(p);
+          }
+        });
+        if (!blocks.length) {
+          const fallback = document.createElement("p");
+          fallback.className = "hs-chat-content";
+          fallback.dir = "auto";
+          fallback.textContent = "";
+          bubble.appendChild(fallback);
+        }
+        row.appendChild(bubble);
+        DigitiviaChatWidget.refs.messages.appendChild(row);
+      }
+
+      function buildBlockedCard(message) {
+        const card = document.createElement("article");
+        card.className = "hs-chat-blocked-card";
+        card.innerHTML = `
+          <div class="hs-chat-blocked-badge">${escapeHtml(DigitiviaChatWidget.config.blockedBadge)}</div>
+          <div>
+            <h3 class="hs-chat-blocked-title">${escapeHtml(message.title || DigitiviaChatWidget.config.blockedTitle)}</h3>
+            <p class="hs-chat-blocked-text">${escapeHtml(message.content || DigitiviaChatWidget.config.blockedMessage)}</p>
+          </div>
+          <div class="hs-chat-blocked-actions">
+            <a class="hs-chat-cta" href="${escapeHtml(message.ctaUrl || DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(message.ctaLabel || DigitiviaChatWidget.config.ctaLabel)}</a>
+          </div>
+        `;
+        return card;
+      }
+
+      function splitIntoReadableBlocks(rawText) {
+        const text = String(rawText || "").replace(/\r\n/g, "\n");
+        if (!text.trim()) return [];
+        const paragraphs = text.split(/\n{2,}/).map((chunk) => chunk.trim()).filter(Boolean);
+        const blocks = [];
+        paragraphs.forEach((paragraph) => {
+          const lines = paragraph.split("\n").map((line) => line.trim());
+          const listItems = [];
+          let listType = null;
+          let allListLike = lines.length > 1;
+          lines.forEach((line) => {
+            const orderedMatch = line.match(/^\d+[.)]\s+(.+)/);
+            const unorderedMatch = line.match(/^[-*•]\s+(.+)/);
+            if (orderedMatch) {
+              listType = listType || "ordered";
+              listItems.push(orderedMatch[1]);
+            } else if (unorderedMatch) {
+              listType = listType || "unordered";
+              listItems.push(unorderedMatch[1]);
+            } else {
+              allListLike = false;
+            }
+          });
+          if (allListLike && listItems.length >= 2) {
+            blocks.push({ type: "list", ordered: listType === "ordered", items: listItems });
+          } else {
+            blocks.push({ type: "paragraph", text: paragraph });
+          }
+        });
+        return blocks;
+      }
+
+      function appendTextWithLinks(container, text) {
+        const source = String(text || "");
+        const urlRegex = /((https?:\/\/|www\.)[^\s<>"'`]+)/gi;
+        let lastIndex = 0;
+        let match = null;
+        while ((match = urlRegex.exec(source)) !== null) {
+          const start = match.index;
+          const urlText = match[0];
+          if (start > lastIndex) container.appendChild(document.createTextNode(source.slice(lastIndex, start)));
+          const anchor = document.createElement("a");
+          const href = urlText.startsWith("http") ? urlText : "https://" + urlText;
+          anchor.href = href;
+          anchor.target = "_blank";
+          anchor.rel = "noopener noreferrer";
+          anchor.className = "hs-chat-link";
+          anchor.dir = "auto";
+          anchor.textContent = urlText;
+          container.appendChild(anchor);
+          lastIndex = start + urlText.length;
+        }
+        if (lastIndex < source.length) container.appendChild(document.createTextNode(source.slice(lastIndex)));
+      }
+
+      function scrollToBottom(smooth) {
+        const el = DigitiviaChatWidget.refs.messages;
+        if (!el) return;
+        const behavior = smooth && !prefersReducedMotion() ? "smooth" : "auto";
+        el.scrollTo({ top: el.scrollHeight, behavior });
+      }
+
+      function prefersReducedMotion() {
+        return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      }
+
+      function persistMessages() {
+        safeSetLocalStorage(DigitiviaChatWidget.config.storagePrefix + ":messages", JSON.stringify(DigitiviaChatWidget.state.messages));
+      }
+
+      function persistSessionId() {
+        safeSetLocalStorage(DigitiviaChatWidget.config.storagePrefix + ":sessionId", DigitiviaChatWidget.state.sessionId);
+      }
+
+      function persistConversationId() {
+        safeSetLocalStorage(DigitiviaChatWidget.config.storagePrefix + ":conversationId", DigitiviaChatWidget.state.conversationId || "");
+      }
+
+      function safeGetLocalStorage(key) {
+        try { return window.localStorage.getItem(key); } catch (_err) { return null; }
+      }
+
+      function safeSetLocalStorage(key, value) {
+        try { window.localStorage.setItem(key, value); } catch (_err) {}
+      }
+
+      function isValidMessage(item) {
+        return Boolean(item && typeof item === "object" && (item.role === "user" || item.role === "assistant") && typeof item.content === "string");
+      }
+
+      function generateSessionId() {
+        return "site_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      }
+
+      function generateMessageId() {
+        return "msg_" + Math.random().toString(36).slice(2, 10);
+      }
+
+      function normalizePosition(value) {
+        return value === "bottom-left" ? "bottom-left" : "bottom-right";
+      }
+
+      function detectDir() {
+        const forced = String(DigitiviaChatWidget.config.forcedDir || "").toLowerCase();
+        if (forced === "rtl" || forced === "ltr") return forced;
+        const docDir = String(document.documentElement.getAttribute("dir") || "").toLowerCase();
+        if (docDir === "rtl" || docDir === "ltr") return docDir;
+        const lang = String(document.documentElement.lang || navigator.language || "en").toLowerCase();
+        return lang.startsWith("ar") ? "rtl" : "ltr";
+      }
+
+      function notifyStateChange() {
+        if (typeof DigitiviaChatWidget.config.onStateChange === "function") {
+          try {
+            DigitiviaChatWidget.config.onStateChange(JSON.parse(JSON.stringify(DigitiviaChatWidget.state)));
+          } catch (_err) {}
+        }
+      }
+
+      function deepMerge(target, source) {
+        if (!source || typeof source !== "object") return target;
+        Object.keys(source).forEach((key) => {
+          const value = source[key];
+          if (value && typeof value === "object" && !Array.isArray(value)) {
+            if (!target[key] || typeof target[key] !== "object" || Array.isArray(target[key])) target[key] = {};
+            deepMerge(target[key], value);
+          } else {
+            target[key] = value;
+          }
+        });
+        return target;
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function wait(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+    })();
+  </script>
+</body>
+</html>
