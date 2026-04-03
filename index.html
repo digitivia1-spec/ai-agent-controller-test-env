@@ -48,6 +48,8 @@
                 "nav_insights": "Live Insights",
                 "nav_inbox": "AI Inbox",
                 "nav_leads": "Sales Leads",
+                "nav_crm": "CRM",
+                "nav_task_manager": "Task Manager",
                 "nav_orders": "Customers Area",
                 "nav_integrations": "Integrations",
                 "nav_create_post": "Content Studio",
@@ -200,11 +202,95 @@
                 "status": {
                     "new": "New",
                     "contacted": "Contacted",
+                    "follow_up": "Follow-up",
                     "qualified": "Qualified",
                     "won": "Won",
                     "lost": "Lost",
                     "no_phone": "No Phone"
                 }
+            },
+            "crm": {
+                "title": "CRM",
+                "coming_soon_title": "CRM Profile View Coming Soon",
+                "coming_soon_text": "Full CRM lead profiles, AI summaries, notes, and activity timeline will appear here.",
+                "profile_coming_soon": "Lead Profile Coming Soon",
+                "btn_back_to_crm": "Back to CRM",
+                "btn_add_note": "Add Note",
+                "btn_set_follow_up": "Set Follow-up",
+                "btn_mark_complete": "Mark Complete",
+                "btn_assign": "Assign",
+                "btn_refresh_ai": "Refresh AI Summary",
+                "label_ai_summary": "AI Summary",
+                "label_notes": "Notes",
+                "label_activity": "Activity",
+                "label_follow_up_due": "Follow-up Due",
+                "label_assigned_to": "Assigned To",
+                "label_follow_up_completed": "Follow-up Completed",
+                "note_placeholder": "Write a note...",
+                "empty_notes": "No notes yet.",
+                "empty_activity": "No activity recorded.",
+                "activity_type": {
+                    "status_changed": "Status changed",
+                    "note_added": "Note added",
+                    "follow_up_set": "Follow-up scheduled",
+                    "follow_up_completed": "Follow-up completed",
+                    "ai_summary_refreshed": "AI summary refreshed",
+                    "assignment_changed": "Assignment changed",
+                    "profile_opened": "Profile opened"
+                },
+                "error_loading": "Failed to load CRM data.",
+                "note_saved": "Note saved.",
+                "note_error": "Failed to save note.",
+                "follow_up_set": "Follow-up scheduled.",
+                "follow_up_error": "Failed to schedule follow-up.",
+                "follow_up_completed": "Follow-up marked complete.",
+                "assign_saved": "Lead assigned.",
+                "assign_error": "Failed to assign lead."
+            },
+            "task_manager": {
+                "title": "Task Manager",
+                "loading": "Loading tasks...",
+                "error_loading": "Failed to load tasks.",
+                "empty_title": "No Tasks Yet",
+                "empty_text": "Create your first task to get started.",
+                "btn_create_task": "New Task",
+                "tasks_count_label": "Tasks",
+                "create_coming_soon": "Task creation UI coming soon.",
+                "status": {
+                    "open": "Open",
+                    "in_progress": "In Progress",
+                    "waiting": "Waiting",
+                    "done": "Done",
+                    "cancelled": "Cancelled"
+                },
+                "priority": {
+                    "low": "Low",
+                    "medium": "Medium",
+                    "high": "High",
+                    "urgent": "Urgent"
+                },
+                "task_type": {
+                    "internal_request": "Internal Request",
+                    "customer_followup": "Customer Follow-up",
+                    "error": "Error",
+                    "suggestion": "Suggestion",
+                    "request": "Request",
+                    "general": "General"
+                },
+                "col_title": "Title",
+                "col_status": "Status",
+                "col_priority": "Priority",
+                "col_due": "Due",
+                "col_assigned": "Assigned To",
+                "col_type": "Type",
+                "filter_all_statuses": "All Statuses",
+                "filter_all_priorities": "All Priorities",
+                "filter_all_types": "All Types",
+                "search_placeholder": "Search tasks...",
+                "error_create": "Failed to create task.",
+                "task_saved": "Task saved.",
+                "task_deleted": "Task deleted.",
+                "confirm_delete": "Delete this task?"
             },
             "orders": {
                 "title": "Customers Area",
@@ -932,6 +1018,8 @@
                 "nav_insights": "رؤى مباشرة",
                 "nav_inbox": "صندوق AI",
                 "nav_leads": "عملاء المبيعات",
+                "nav_crm": "إدارة العملاء",
+                "nav_task_manager": "مدير المهام",
                 "nav_orders": "منطقة العملاء",
                 "nav_integrations": "التكاملات",
                 "nav_create_post": "استوديو المحتوى",
@@ -1084,11 +1172,95 @@
                 "status": {
                     "new": "جديد",
                     "contacted": "تم التواصل",
+                    "follow_up": "متابعة",
                     "qualified": "مؤهل",
                     "won": "تم الفوز",
                     "lost": "خسارة",
                     "no_phone": "لا يوجد هاتف"
                 }
+            },
+            "crm": {
+                "title": "CRM",
+                "coming_soon_title": "CRM Profile View Coming Soon",
+                "coming_soon_text": "Full CRM lead profiles, AI summaries, notes, and activity timeline will appear here.",
+                "profile_coming_soon": "Lead Profile Coming Soon",
+                "btn_back_to_crm": "Back to CRM",
+                "btn_add_note": "Add Note",
+                "btn_set_follow_up": "Set Follow-up",
+                "btn_mark_complete": "Mark Complete",
+                "btn_assign": "Assign",
+                "btn_refresh_ai": "Refresh AI Summary",
+                "label_ai_summary": "AI Summary",
+                "label_notes": "Notes",
+                "label_activity": "Activity",
+                "label_follow_up_due": "Follow-up Due",
+                "label_assigned_to": "Assigned To",
+                "label_follow_up_completed": "Follow-up Completed",
+                "note_placeholder": "Write a note...",
+                "empty_notes": "No notes yet.",
+                "empty_activity": "No activity recorded.",
+                "activity_type": {
+                    "status_changed": "Status changed",
+                    "note_added": "Note added",
+                    "follow_up_set": "Follow-up scheduled",
+                    "follow_up_completed": "Follow-up completed",
+                    "ai_summary_refreshed": "AI summary refreshed",
+                    "assignment_changed": "Assignment changed",
+                    "profile_opened": "Profile opened"
+                },
+                "error_loading": "Failed to load CRM data.",
+                "note_saved": "Note saved.",
+                "note_error": "Failed to save note.",
+                "follow_up_set": "Follow-up scheduled.",
+                "follow_up_error": "Failed to schedule follow-up.",
+                "follow_up_completed": "Follow-up marked complete.",
+                "assign_saved": "Lead assigned.",
+                "assign_error": "Failed to assign lead."
+            },
+            "task_manager": {
+                "title": "Task Manager",
+                "loading": "Loading tasks...",
+                "error_loading": "Failed to load tasks.",
+                "empty_title": "No Tasks Yet",
+                "empty_text": "Create your first task to get started.",
+                "btn_create_task": "New Task",
+                "tasks_count_label": "Tasks",
+                "create_coming_soon": "Task creation UI coming soon.",
+                "status": {
+                    "open": "Open",
+                    "in_progress": "In Progress",
+                    "waiting": "Waiting",
+                    "done": "Done",
+                    "cancelled": "Cancelled"
+                },
+                "priority": {
+                    "low": "Low",
+                    "medium": "Medium",
+                    "high": "High",
+                    "urgent": "Urgent"
+                },
+                "task_type": {
+                    "internal_request": "Internal Request",
+                    "customer_followup": "Customer Follow-up",
+                    "error": "Error",
+                    "suggestion": "Suggestion",
+                    "request": "Request",
+                    "general": "General"
+                },
+                "col_title": "Title",
+                "col_status": "Status",
+                "col_priority": "Priority",
+                "col_due": "Due",
+                "col_assigned": "Assigned To",
+                "col_type": "Type",
+                "filter_all_statuses": "All Statuses",
+                "filter_all_priorities": "All Priorities",
+                "filter_all_types": "All Types",
+                "search_placeholder": "Search tasks...",
+                "error_create": "Failed to create task.",
+                "task_saved": "Task saved.",
+                "task_deleted": "Task deleted.",
+                "confirm_delete": "Delete this task?"
             },
             "orders": {
                 "title": "منطقة العملاء",
@@ -7074,6 +7246,12 @@
             border: 1px solid rgba(244, 67, 54, 0.3);
         }
 
+        .status-follow-up {
+            background: rgba(171, 71, 188, 0.2);
+            color: #ab47bc;
+            border: 1px solid rgba(171, 71, 188, 0.3);
+        }
+
         /* Inline Status Select Dropdowns */
         .inline-status-select {
             appearance: none;
@@ -7144,6 +7322,12 @@
             background-color: rgba(244, 67, 54, 0.15);
             border-color: rgba(244, 67, 54, 0.3);
             color: #f44336;
+        }
+
+        .inline-status-select.status-follow-up {
+            background-color: rgba(171, 71, 188, 0.15);
+            border-color: rgba(171, 71, 188, 0.3);
+            color: #ab47bc;
         }
 
         /* Clickable Rows */
@@ -19286,6 +19470,18 @@
                             </svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_leads">Sales Leads</span>
                     </li>
+                    <li class="nav-item" onclick="switchTab('crm', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.82.5 13.16.5c-1.5 0-2.79.75-3.67 1.87L9 3l-.49-.63C7.62 1.25 6.34.5 4.84.5 2.18.5 0 2.54 0 4.66c0 .46.11.9.18 1.34H0v2h20V6zm-6.84-3.5c1.34 0 2.34 1.06 2.34 2.16 0 .54-.22 1.01-.58 1.34H12.3c-.36-.33-.58-.8-.58-1.34 0-1.1 1-2.16 2.44-2.16zM4.84 2.5c1.44 0 2.44 1.06 2.44 2.16 0 .54-.22 1.01-.58 1.34H2.98C2.62 5.67 2.4 5.2 2.4 4.66c0-1.1 1-2.16 2.44-2.16zM0 20h20v2H0zm0-7h20v5H0zm0-3h20v2H0z"/>
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_crm">CRM</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('task-manager', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg></div>
+                        <span class="nav-label" data-i18n="sidebar.nav_task_manager">Task Manager</span>
+                    </li>
                     <li class="nav-item" onclick="switchTab('orders', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24">
                                 <path
@@ -22666,6 +22862,39 @@
                 </div>
             </div>
 
+            <!-- CRM TAB -->
+            <div id="crm" class="tab-content">
+                <div class="card glass">
+                    <div class="leads-controls">
+                        <h2 data-i18n="crm.title">CRM</h2>
+                    </div>
+                    <div id="crm-content" style="min-height: 300px;">
+                        <div style="padding: 40px; text-align: center; color: var(--text-muted, #888);">
+                            <div style="font-size: 2.5rem; margin-bottom: 16px;">🗂️</div>
+                            <h3 style="margin-bottom: 8px;" data-i18n="crm.coming_soon_title">CRM Profile View Coming Soon</h3>
+                            <p data-i18n="crm.coming_soon_text">Full CRM lead profiles, AI summaries, notes, and activity timeline will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TASK MANAGER TAB -->
+            <div id="task-manager" class="tab-content">
+                <div class="card glass">
+                    <div class="leads-controls">
+                        <h2 data-i18n="task_manager.title">Task Manager</h2>
+                        <div class="export-group" id="task-manager-header-actions"></div>
+                    </div>
+                    <div id="task-manager-content" style="min-height: 300px;">
+                        <div style="padding: 40px; text-align: center; color: var(--text-muted, #888);">
+                            <div style="font-size: 2.5rem; margin-bottom: 16px;">✅</div>
+                            <h3 style="margin-bottom: 8px;" data-i18n="task_manager.empty_title">No Tasks Yet</h3>
+                            <p data-i18n="task_manager.empty_text">Create your first task to get started.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ORDERS AREA TAB -->
             <div id="orders" class="tab-content">
                 <div class="card glass">
@@ -23678,7 +23907,7 @@ Thank you for shopping with {store_name}!</textarea>
             website: 'group-agents', whatsapp: 'group-agents',
             page: 'group-agents', instagram: 'group-agents', telegram: 'group-agents',
             insights: 'group-live', inbox: 'group-live',
-            leads: 'group-data', orders: 'group-data',
+            leads: 'group-data', crm: 'group-data', 'task-manager': 'group-data', orders: 'group-data',
             'create-post': 'group-content', reviews: 'group-content', followups: 'group-content'
         };
 
@@ -23918,6 +24147,14 @@ Thank you for shopping with {store_name}!</textarea>
                 color = '#e6b72a'; // Gold for leads
                 fetchLeads(); // Fetch data when tab opens
             }
+            if (tabId === 'crm') {
+                color = '#7B5EA7'; // Purple for CRM
+                if (typeof initCrmTab === 'function') initCrmTab();
+            }
+            if (tabId === 'task-manager') {
+                color = '#00897B'; // Teal-green for Task Manager
+                if (typeof initTaskManagerTab === 'function') initTaskManagerTab();
+            }
             if (tabId === 'orders') {
                 color = (currentOrdersSubtab === 'confirmation' || currentOrdersSubtab === 'logs') ? WHATSAPP_SOLID_GREEN : ORDERS_BASE_COLOR;
                 applyOfferTypeUI();
@@ -24150,7 +24387,7 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
-        const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost'];
+        const LEAD_STATUSES = ['new', 'follow_up', 'contacted', 'qualified', 'won', 'lost'];
         const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'page', 'telegram', 'website'];
 
         function normalizeLeadsView(view) {
@@ -24217,7 +24454,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         function getLeadStatusClass(status) {
             const statusLower = String(status || '').toLowerCase();
-            const classMap = { 'new': 'status-new', 'contacted': 'status-contacted', 'qualified': 'status-qualified', 'won': 'status-won', 'lost': 'status-lost' };
+            const classMap = { 'new': 'status-new', 'follow_up': 'status-follow-up', 'contacted': 'status-contacted', 'qualified': 'status-qualified', 'won': 'status-won', 'lost': 'status-lost' };
             return classMap[statusLower] || 'status-new';
         }
 
