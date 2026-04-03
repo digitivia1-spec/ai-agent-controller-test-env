@@ -29,12 +29,31 @@ function buildTargetLink(payload = {}) {
     return payload?.data?.link || payload.link;
   }
 
-  const params = new URLSearchParams();
   const entity = payload?.data?.entity || payload.entity || null;
   const entityId = payload?.data?.entityId || payload.entity_id || null;
   const eventKey = payload?.data?.eventKey || payload.event_key || null;
   const notificationId = payload?.data?.notificationId || payload.notification_id || null;
 
+  // Route CRM/lead entities
+  if (entity === 'lead' || entity === 'crm' ||
+      (eventKey && (eventKey.startsWith('crm_') || eventKey.startsWith('crm_followup')))) {
+    const p = new URLSearchParams();
+    if (entityId) p.set('lead', entityId);
+    if (eventKey) p.set('event', eventKey);
+    if (notificationId) p.set('notification_id', notificationId);
+    return `#crm?${p.toString()}`;
+  }
+
+  // Route task entities
+  if (entity === 'task' || (eventKey && eventKey.startsWith('task_'))) {
+    const p = new URLSearchParams();
+    if (entityId) p.set('task', entityId);
+    if (eventKey) p.set('event', eventKey);
+    if (notificationId) p.set('notification_id', notificationId);
+    return `#task-manager?${p.toString()}`;
+  }
+
+  const params = new URLSearchParams();
   if (entity) params.set('entity', entity);
   if (entityId) params.set('id', entityId);
   if (eventKey) params.set('event', eventKey);

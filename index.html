@@ -23358,15 +23358,58 @@
                 <div class="card glass">
                     <div class="leads-controls">
                         <h2 data-i18n="task_manager.title">Task Manager</h2>
-                        <div class="export-group" id="task-manager-header-actions"></div>
+                        <button class="btn-primary" onclick="openCreateTaskModal()" style="margin-inline-start: auto;">
+                            + <span data-i18n="task_manager.btn_new_task">New Task</span>
+                        </button>
                     </div>
-                    <div id="task-manager-content" style="min-height: 300px;">
-                        <div style="padding: 40px; text-align: center; color: var(--text-muted, #888);">
-                            <div style="font-size: 2.5rem; margin-bottom: 16px;">✅</div>
-                            <h3 style="margin-bottom: 8px;" data-i18n="task_manager.empty_title">No Tasks Yet</h3>
-                            <p data-i18n="task_manager.empty_text">Create your first task to get started.</p>
+                    <div class="leads-toolbar" id="task-manager-toolbar"></div>
+                    <div id="task-manager-content" style="min-height: 300px; overflow-x: auto;"></div>
+                </div>
+            </div>
+
+            <!-- CREATE TASK MODAL -->
+            <div id="create-task-modal" class="modal-overlay" style="display:none;" onclick="closeCreateTaskModal(event)">
+                <div class="modal-box" style="max-width:520px;">
+                    <div class="modal-header">
+                        <h3 data-i18n="task_manager.modal_create_title">New Task</h3>
+                        <button class="modal-close-btn" onclick="closeCreateTaskModal()">✕</button>
+                    </div>
+                    <div class="modal-body" style="display:flex;flex-direction:column;gap:12px;">
+                        <input id="create-task-title" type="text" class="leads-filter-input" style="width:100%;" placeholder="Task title *">
+                        <textarea id="create-task-desc" class="leads-filter-input" rows="3" style="width:100%;resize:vertical;" placeholder="Description (optional)"></textarea>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <select id="create-task-type" class="leads-filter-select">
+                                <option value="general">General</option>
+                                <option value="internal_request">Internal Request</option>
+                                <option value="customer_followup">Customer Follow-up</option>
+                                <option value="error">Error</option>
+                                <option value="suggestion">Suggestion</option>
+                                <option value="request">Request</option>
+                            </select>
+                            <select id="create-task-priority" class="leads-filter-select">
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
                         </div>
+                        <input id="create-task-due" type="datetime-local" class="leads-filter-input" style="width:100%;">
                     </div>
+                    <div class="modal-footer">
+                        <button class="btn-secondary" onclick="closeCreateTaskModal()">Cancel</button>
+                        <button class="btn-primary" onclick="submitCreateTask()">Create Task</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TASK DETAIL MODAL -->
+            <div id="task-detail-modal" class="modal-overlay" style="display:none;" onclick="closeTaskDetail(event)">
+                <div class="modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto;">
+                    <div class="modal-header">
+                        <h3 id="task-detail-title">Task Detail</h3>
+                        <button class="modal-close-btn" onclick="closeTaskDetail()">✕</button>
+                    </div>
+                    <div id="task-detail-body" class="modal-body" style="display:flex;flex-direction:column;gap:16px;"></div>
                 </div>
             </div>
 
@@ -34299,6 +34342,23 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     function buildNotificationTargetLink({ entity, entityId, eventKey, notificationId }) {
+        // Route CRM/lead entities to CRM tab
+        if (entity === 'lead' || entity === 'crm' ||
+            (eventKey && (eventKey.startsWith('crm_') || eventKey.startsWith('crm_followup')))) {
+            const p = new URLSearchParams();
+            if (entityId) p.set('lead', entityId);
+            if (eventKey) p.set('event', eventKey);
+            if (notificationId) p.set('notification_id', notificationId);
+            return `#crm?${p.toString()}`;
+        }
+        // Route task entities to Task Manager tab
+        if (entity === 'task' || (eventKey && eventKey.startsWith('task_'))) {
+            const p = new URLSearchParams();
+            if (entityId) p.set('task', entityId);
+            if (eventKey) p.set('event', eventKey);
+            if (notificationId) p.set('notification_id', notificationId);
+            return `#task-manager?${p.toString()}`;
+        }
         const params = new URLSearchParams();
         if (entity) params.set('entity', entity);
         if (entityId) params.set('id', entityId);
@@ -35174,8 +35234,22 @@ Thank you for shopping with {store_name}!</textarea>
             await openMeetingNotificationTarget(descriptor);
         } else if (descriptor.entity === 'order' && descriptor.entityId) {
             await openOrderNotificationTarget(descriptor);
+        } else if ((descriptor.entity === 'lead' || descriptor.entity === 'crm') && descriptor.entityId) {
+            switchTab('crm');
+            setTimeout(() => openLeadProfile(descriptor.entityId, currentUserOrgId), 500);
+        } else if (descriptor.entity === 'task' && descriptor.entityId) {
+            switchTab('task-manager');
+            setTimeout(() => { if (typeof openTaskDetail === 'function') openTaskDetail(descriptor.entityId); }, 500);
         } else if (descriptor.link === '#orders' || descriptor.link?.startsWith('#orders?')) {
             navigateToTab('orders');
+        } else if (descriptor.link?.startsWith('#crm')) {
+            const deepLink = window.parseDeepLink ? parseDeepLink() : null;
+            if (deepLink) handleDeepLink(deepLink);
+            else switchTab('crm');
+        } else if (descriptor.link?.startsWith('#task-manager')) {
+            const deepLink = window.parseDeepLink ? parseDeepLink() : null;
+            if (deepLink) handleDeepLink(deepLink);
+            else switchTab('task-manager');
         } else if (descriptor.link) {
             window.location.href = descriptor.link;
         }
@@ -38676,7 +38750,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (deepLink.view === 'crm' && deepLink.leadId) {
                 switchTab('crm');
                 setTimeout(() => {
-                    openLeadProfile(deepLink.leadId, currentOrgId || '');
+                    openLeadProfile(deepLink.leadId, currentUserOrgId || '');
                     if (deepLink.notificationId && typeof markNotificationAsRead === 'function') {
                         markNotificationAsRead(deepLink.notificationId);
                     }
@@ -38699,7 +38773,7 @@ Thank you for shopping with {store_name}!</textarea>
         // Initialize deep link handler on app load
         window.addEventListener('hashchange', () => {
             const deepLink = parseDeepLink();
-            if (deepLink && deepLink.view === 'crm' || deepLink.view === 'task-manager') {
+            if (deepLink && (deepLink.view === 'crm' || deepLink.view === 'task-manager')) {
                 handleDeepLink(deepLink);
             }
         });
@@ -38719,8 +38793,8 @@ Thank you for shopping with {store_name}!</textarea>
         window.timezoneHelpers = {
             getUserTimezone: async function(orgId) {
                 try {
-                    const {data, error} = await window.supabase
-                        .rpc('get_user_timezone', {p_user_id: (await window.supabase.auth.getUser()).user.id, p_org_id: orgId});
+                    const {data, error} = await supabaseClient
+                        .rpc('get_user_timezone', {p_user_id: (await supabaseClient.auth.getUser()).data.user.id, p_org_id: orgId});
                     if (error) throw error;
                     return data || 'UTC';
                 } catch (err) {
@@ -38768,26 +38842,14 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
-        // Notification Router for Service Worker Messages
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'notification-click') {
-                const {link} = event.data;
-                if (link?.includes('#crm') || link?.includes('#task-manager')) {
-                    window.location.hash = link;
-                    setTimeout(() => {
-                        const deepLink = parseDeepLink();
-                        if (deepLink) handleDeepLink(deepLink);
-                    }, 300);
-                }
-            }
-        });
+        // Notification routing for CRM/Task handled via existing push-notification-click handler
 
         // CRM View Initialization
         window.initCrmTab = async function() {
             try {
-                const leads = await fetchLeads();
-                if (leads) {
-                    renderCrmView(leads);
+                await fetchLeads();
+                if (cachedLeads) {
+                    renderCrmView(cachedLeads);
                 }
             } catch (err) {
                 console.error('Failed to load CRM data:', err);
@@ -38882,7 +38944,7 @@ Thank you for shopping with {store_name}!</textarea>
             } else {
                 // Table view
                 const tableRows = rows.map(r => `
-                    <tr class="clickable-row" onclick="openLeadProfile('${r.id}', '${currentOrgId || ''}')">
+                    <tr class="clickable-row" onclick="openLeadProfile('${r.id}', '${currentUserOrgId || ''}')">
                         <td class="lead-col-name">${r.full_name || '--'}</td>
                         <td>${r.phone || '--'}</td>
                         <td><span class="lead-platform-chip">${((r.source || 'unknown')).toUpperCase()}</span></td>
@@ -38939,7 +39001,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const leadData = await fetchLeadForProfile(leadId, orgId);
                 if (leadData) {
                     window.currentLeadProfileData = leadData;
-                    const crmState = await window.supabase
+                    const crmState = await supabaseClient
                         .rpc('get_lead_crm_state', {p_lead_id: leadId, p_org_id: orgId});
 
                     if (crmState.data) {
@@ -38964,7 +39026,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function fetchLeadForProfile(leadId, orgId) {
             try {
-                const {data, error} = await window.supabase
+                const {data, error} = await supabaseClient
                     .from('leads')
                     .select('*')
                     .eq('id', leadId)
@@ -39116,19 +39178,22 @@ Thank you for shopping with {store_name}!</textarea>
             if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
 
             try {
-                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
-                    p_lead_id: window.currentLeadProfileId,
-                    p_org_id: window.currentLeadProfileOrgId,
-                    p_crm_patch: {status: newStatus}
-                });
+                const {data: updatedLead, error} = await supabaseClient
+                    .from('leads')
+                    .update({status: newStatus, updated_at: new Date().toISOString()})
+                    .eq('id', window.currentLeadProfileId)
+                    .eq('org_id', window.currentLeadProfileOrgId)
+                    .select()
+                    .single();
 
                 if (error) throw error;
 
-                const leadData = await fetchLeadForProfile(window.currentLeadProfileId, window.currentLeadProfileOrgId);
-                if (leadData) {
-                    window.currentLeadProfileData = leadData;
-                    renderLeadProfile(leadData, data || {});
-                }
+                window.currentLeadProfileData = updatedLead;
+                const crmRefresh = await supabaseClient.rpc('get_lead_crm_state', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId
+                });
+                renderLeadProfile(updatedLead, crmRefresh.data || window.currentLeadCrmState || {});
 
                 showToast(t('crm.status_updated'));
                 document.getElementById('status-dropdown').style.display = 'none';
@@ -39161,15 +39226,15 @@ Thank you for shopping with {store_name}!</textarea>
 
             try {
                 const noteId = crypto.randomUUID();
-                const authUser = window.supabase.auth.getUser();
-                const userName = authUser?.user?.email?.split('@')[0] || 'You';
+                const {data: {user: authUser}} = await supabaseClient.auth.getUser();
+                const userName = authUser?.email?.split('@')[0] || 'You';
 
-                const {data, error} = await window.supabase.rpc('append_lead_note', {
+                const {data, error} = await supabaseClient.rpc('append_lead_note', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId,
                     p_note_id: noteId,
                     p_body: body,
-                    p_author_id: authUser?.user?.id,
+                    p_author_id: authUser?.id,
                     p_author_name: userName
                 });
 
@@ -39177,7 +39242,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 const leadData = await fetchLeadForProfile(window.currentLeadProfileId, window.currentLeadProfileOrgId);
                 if (leadData) {
-                    const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                    const crmState = await supabaseClient.rpc('get_lead_crm_state', {
                         p_lead_id: window.currentLeadProfileId,
                         p_org_id: window.currentLeadProfileOrgId
                     });
@@ -39225,7 +39290,7 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             try {
-                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                const {data, error} = await supabaseClient.rpc('patch_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId,
                     p_crm_patch: {follow_up_due_at: new Date(datetimeStr).toISOString()}
@@ -39233,7 +39298,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (error) throw error;
 
-                const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                const crmState = await supabaseClient.rpc('get_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId
                 });
@@ -39254,7 +39319,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
 
             try {
-                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                const {data, error} = await supabaseClient.rpc('patch_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId,
                     p_crm_patch: {follow_up_completed_at: new Date().toISOString()}
@@ -39262,7 +39327,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (error) throw error;
 
-                const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                const crmState = await supabaseClient.rpc('get_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId
                 });
@@ -39282,7 +39347,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
 
             try {
-                const {data, error} = await window.supabase.rpc('patch_lead_crm_state', {
+                const {data, error} = await supabaseClient.rpc('patch_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId,
                     p_crm_patch: {ai_summary_updated_at: new Date().toISOString()}
@@ -39290,7 +39355,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 if (error) throw error;
 
-                const crmState = await window.supabase.rpc('get_lead_crm_state', {
+                const crmState = await supabaseClient.rpc('get_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId
                 });
@@ -39303,6 +39368,302 @@ Thank you for shopping with {store_name}!</textarea>
             } catch (err) {
                 console.error('Refresh AI failed:', err);
                 showToast('Failed to refresh AI summary');
+            }
+        };
+
+        // ==========================================
+        // TASK MANAGER IMPLEMENTATION
+        // ==========================================
+
+        window.cachedTasks = null;
+        window.currentTaskId = null;
+
+        window.initTaskManagerTab = async function() {
+            const toolbar = document.getElementById('task-manager-toolbar');
+            const content = document.getElementById('task-manager-content');
+            if (toolbar) {
+                toolbar.innerHTML = `
+                    <input type="text" id="task-search-input" class="leads-filter-input"
+                        placeholder="Search tasks..." oninput="filterAndRenderTasks()">
+                    <select id="task-status-filter" class="leads-filter-select" onchange="filterAndRenderTasks()">
+                        <option value="">All Statuses</option>
+                        <option value="open">Open</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="waiting">Waiting</option>
+                        <option value="done">Done</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <select id="task-priority-filter" class="leads-filter-select" onchange="filterAndRenderTasks()">
+                        <option value="">All Priorities</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                `;
+            }
+            if (content) content.innerHTML = `<div style="padding:32px;text-align:center;color:var(--text-muted,#888);">Loading tasks...</div>`;
+            await fetchTasks();
+        };
+
+        async function fetchTasks() {
+            if (!currentUserOrgId) return;
+            try {
+                const {data, error} = await supabaseClient
+                    .from('tasks')
+                    .select('*')
+                    .eq('org_id', currentUserOrgId)
+                    .order('created_at', {ascending: false});
+                if (error) throw error;
+                window.cachedTasks = data || [];
+                filterAndRenderTasks();
+            } catch (err) {
+                console.error('Failed to load tasks:', err);
+                const content = document.getElementById('task-manager-content');
+                if (content) content.innerHTML = `<div style="padding:32px;text-align:center;color:#ef4444;">Failed to load tasks.</div>`;
+            }
+        }
+
+        window.filterAndRenderTasks = function() {
+            if (!window.cachedTasks) return;
+            const search = (document.getElementById('task-search-input')?.value || '').toLowerCase();
+            const statusF = document.getElementById('task-status-filter')?.value || '';
+            const priorityF = document.getElementById('task-priority-filter')?.value || '';
+
+            const filtered = window.cachedTasks.filter(task => {
+                const matchSearch = !search || (task.title || '').toLowerCase().includes(search);
+                const matchStatus = !statusF || task.status === statusF;
+                const matchPriority = !priorityF || task.priority === priorityF;
+                return matchSearch && matchStatus && matchPriority;
+            });
+            renderTaskList(filtered);
+        };
+
+        function renderTaskList(tasks) {
+            const content = document.getElementById('task-manager-content');
+            if (!content) return;
+
+            if (!tasks || tasks.length === 0) {
+                content.innerHTML = `
+                    <div style="padding:40px;text-align:center;color:var(--text-muted,#888);">
+                        <div style="font-size:2rem;margin-bottom:12px;">&#x2705;</div>
+                        <p>No tasks found. Create one to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const priorityColor = {urgent: '#ef4444', high: '#f97316', medium: '#3b82f6', low: '#9ca3af'};
+            const statusLabel = {open: 'Open', in_progress: 'In Progress', waiting: 'Waiting', done: 'Done', cancelled: 'Cancelled'};
+
+            const rows = tasks.map(task => {
+                const due = task.due_at ? new Date(task.due_at).toLocaleDateString() : '--';
+                const now = new Date();
+                const isOverdue = task.due_at && new Date(task.due_at) < now && task.status !== 'done' && task.status !== 'cancelled';
+                const pColor = priorityColor[task.priority] || '#9ca3af';
+                return `
+                    <tr class="clickable-row" onclick="openTaskDetail('${esc(task.id)}')">
+                        <td style="font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(task.title)}</td>
+                        <td><span style="font-size:0.75rem;padding:2px 8px;border-radius:9999px;background:${pColor}22;color:${pColor};font-weight:600;">${task.priority || 'medium'}</span></td>
+                        <td><span class="lead-platform-chip">${statusLabel[task.status] || task.status}</span></td>
+                        <td style="${isOverdue ? 'color:#ef4444;font-weight:600;' : ''}">${due}</td>
+                        <td style="font-size:0.8rem;color:var(--text-muted,#888);">${task.task_type || 'general'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            content.innerHTML = `
+                <div class="leads-sheet">
+                    <div class="leads-sheet-scroll">
+                        <table class="leads-sheet-table">
+                            <thead><tr>
+                                <th>Title</th><th>Priority</th><th>Status</th><th>Due</th><th>Type</th>
+                            </tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.openCreateTaskModal = function() {
+            document.getElementById('create-task-title').value = '';
+            document.getElementById('create-task-desc').value = '';
+            document.getElementById('create-task-type').value = 'general';
+            document.getElementById('create-task-priority').value = 'medium';
+            document.getElementById('create-task-due').value = '';
+            document.getElementById('create-task-modal').style.display = 'flex';
+        };
+
+        window.closeCreateTaskModal = function(event) {
+            if (event && event.target.id !== 'create-task-modal') return;
+            document.getElementById('create-task-modal').style.display = 'none';
+        };
+
+        window.submitCreateTask = async function() {
+            const title = document.getElementById('create-task-title').value.trim();
+            if (!title) { showToast('Task title is required'); return; }
+            if (!currentUserOrgId) return;
+
+            try {
+                const {data: {user}} = await supabaseClient.auth.getUser();
+                const dueVal = document.getElementById('create-task-due').value;
+                const {data, error} = await supabaseClient.from('tasks').insert({
+                    org_id: currentUserOrgId,
+                    title,
+                    description: document.getElementById('create-task-desc').value.trim() || null,
+                    task_type: document.getElementById('create-task-type').value,
+                    priority: document.getElementById('create-task-priority').value,
+                    due_at: dueVal ? new Date(dueVal).toISOString() : null,
+                    created_by_user_id: user.id,
+                    status: 'open'
+                }).select().single();
+
+                if (error) throw error;
+
+                showToast('Task created');
+                closeCreateTaskModal();
+                await fetchTasks();
+            } catch (err) {
+                console.error('Create task failed:', err);
+                showToast('Failed to create task');
+            }
+        };
+
+        window.openTaskDetail = async function(taskId) {
+            if (!taskId) return;
+            window.currentTaskId = taskId;
+            const modal = document.getElementById('task-detail-modal');
+            const body = document.getElementById('task-detail-body');
+            if (!modal || !body) return;
+
+            modal.style.display = 'flex';
+            body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted,#888);">Loading...</div>';
+
+            try {
+                const [{data: task, error: te}, {data: comments, error: ce}] = await Promise.all([
+                    supabaseClient.from('tasks').select('*').eq('id', taskId).eq('org_id', currentUserOrgId).single(),
+                    supabaseClient.from('task_comments').select('*').eq('task_id', taskId).order('created_at', {ascending: true})
+                ]);
+
+                if (te) throw te;
+                document.getElementById('task-detail-title').textContent = task.title;
+
+                const priorityColor = {urgent: '#ef4444', high: '#f97316', medium: '#3b82f6', low: '#9ca3af'};
+                const pColor = priorityColor[task.priority] || '#9ca3af';
+                const dueStr = task.due_at ? new Date(task.due_at).toLocaleString() : '--';
+                const isOverdue = task.due_at && new Date(task.due_at) < new Date() && task.status !== 'done' && task.status !== 'cancelled';
+
+                const commentHtml = (comments || []).map(c => `
+                    <div style="background:var(--bg-card,#f9fafb);border-radius:8px;padding:10px 12px;margin-bottom:8px;">
+                        <div style="font-size:0.75rem;color:var(--text-muted,#888);margin-bottom:4px;">${new Date(c.created_at).toLocaleString()}</div>
+                        <div>${esc(c.body)}</div>
+                    </div>
+                `).join('') || '<p style="color:var(--text-muted,#888);">No comments yet.</p>';
+
+                body.innerHTML = `
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted,#888);">Status</label>
+                            <select id="task-detail-status" class="leads-filter-select" style="width:100%;" onchange="updateTaskStatus(this.value)">
+                                <option value="open" ${task.status==='open'?'selected':''}>Open</option>
+                                <option value="in_progress" ${task.status==='in_progress'?'selected':''}>In Progress</option>
+                                <option value="waiting" ${task.status==='waiting'?'selected':''}>Waiting</option>
+                                <option value="done" ${task.status==='done'?'selected':''}>Done</option>
+                                <option value="cancelled" ${task.status==='cancelled'?'selected':''}>Cancelled</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted,#888);">Priority</label>
+                            <div style="font-size:0.85rem;padding:4px 0;color:${pColor};font-weight:600;">${task.priority || 'medium'}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="font-size:0.8rem;color:var(--text-muted,#888);">Description</label>
+                        <p style="margin-top:4px;">${task.description ? esc(task.description) : '<span style="color:var(--text-muted,#888);">No description</span>'}</p>
+                    </div>
+                    <div>
+                        <label style="font-size:0.8rem;color:var(--text-muted,#888);">Due Date</label>
+                        <p style="margin-top:4px;${isOverdue ? 'color:#ef4444;font-weight:600;' : ''}">${dueStr}</p>
+                    </div>
+                    <div>
+                        <label style="font-size:0.8rem;color:var(--text-muted,#888);display:block;margin-bottom:8px;">Comments</label>
+                        <div id="task-comments-list">${commentHtml}</div>
+                        <div style="display:flex;gap:8px;margin-top:12px;">
+                            <input id="task-comment-input" type="text" class="leads-filter-input" style="flex:1;" placeholder="Add a comment...">
+                            <button class="btn-primary" onclick="submitTaskComment()">Add</button>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border,#e5e7eb);">
+                        <button class="btn-secondary" style="color:#ef4444;border-color:#ef4444;" onclick="deleteTask('${esc(task.id)}')">Delete Task</button>
+                    </div>
+                `;
+            } catch (err) {
+                console.error('Failed to load task detail:', err);
+                body.innerHTML = '<div style="padding:24px;text-align:center;color:#ef4444;">Failed to load task.</div>';
+            }
+        };
+
+        window.closeTaskDetail = function(event) {
+            if (event && event.target.id !== 'task-detail-modal') return;
+            document.getElementById('task-detail-modal').style.display = 'none';
+            window.currentTaskId = null;
+        };
+
+        window.updateTaskStatus = async function(newStatus) {
+            if (!window.currentTaskId || !currentUserOrgId) return;
+            try {
+                const updates = {status: newStatus, updated_at: new Date().toISOString()};
+                if (newStatus === 'done') updates.completed_at = new Date().toISOString();
+                const {error} = await supabaseClient.from('tasks').update(updates)
+                    .eq('id', window.currentTaskId).eq('org_id', currentUserOrgId);
+                if (error) throw error;
+                showToast('Status updated');
+                await fetchTasks();
+            } catch (err) {
+                console.error('Update task status failed:', err);
+                showToast('Failed to update status');
+            }
+        };
+
+        window.submitTaskComment = async function() {
+            if (!window.currentTaskId || !currentUserOrgId) return;
+            const input = document.getElementById('task-comment-input');
+            const body = input?.value.trim();
+            if (!body) return;
+
+            try {
+                const {data: {user}} = await supabaseClient.auth.getUser();
+                const {error} = await supabaseClient.from('task_comments').insert({
+                    task_id: window.currentTaskId,
+                    org_id: currentUserOrgId,
+                    author_user_id: user.id,
+                    body
+                });
+                if (error) throw error;
+                input.value = '';
+                showToast('Comment added');
+                // Reload the task detail comments section
+                await openTaskDetail(window.currentTaskId);
+            } catch (err) {
+                console.error('Add comment failed:', err);
+                showToast('Failed to add comment');
+            }
+        };
+
+        window.deleteTask = async function(taskId) {
+            if (!taskId || !currentUserOrgId) return;
+            if (!confirm('Delete this task? This cannot be undone.')) return;
+            try {
+                const {error} = await supabaseClient.from('tasks').delete()
+                    .eq('id', taskId).eq('org_id', currentUserOrgId);
+                if (error) throw error;
+                showToast('Task deleted');
+                closeTaskDetail();
+                await fetchTasks();
+            } catch (err) {
+                console.error('Delete task failed:', err);
+                showToast('Failed to delete task');
             }
         };
 
