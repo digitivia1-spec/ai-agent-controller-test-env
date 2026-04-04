@@ -19768,24 +19768,74 @@
         .form-group { display: flex; flex-direction: column; }
 
         /* ── Responsive ── */
+
+        /* CRM card wrapper – prevent overflow */
+        .crm-card-wrapper { overflow: hidden; }
+
         @media (max-width: 768px) {
+            /* Lead profile – full-screen bottom sheet on mobile */
             .lead-profile-container { max-width: 100%; border-radius: 20px 20px 0 0; height: 95dvh; }
             .lead-profile-overlay { align-items: flex-end; justify-content: stretch; }
             @keyframes slideInPanel { from { transform: translateY(100%); } to { transform: translateY(0); } }
-            .lead-profile-actions { gap: 6px; }
-            .action-btn { padding: 9px 6px; }
-            .crm-stats-strip { gap: 7px; }
-            .crm-stat-pill { padding: 5px 10px; font-size: 0.76rem; }
+            .lead-profile-actions { gap: 6px; padding: 10px 14px; }
+            .action-btn { padding: 9px 6px; font-size: 0.72rem; }
+            .action-label { font-size: 0.62rem; }
+            .lead-profile-header { padding: 14px; gap: 10px; }
+            .lead-profile-content { padding: 14px; gap: 16px; }
+
+            /* CRM stats strip */
+            .crm-stats-strip { gap: 6px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+            .crm-stat-pill { padding: 5px 10px; font-size: 0.74rem; flex-shrink: 0; }
+
+            /* CRM toolbar */
+            .crm-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
+            .crm-search-wrap { min-width: 0; }
+            .crm-filter-select { width: 100%; min-width: 0; }
+            .crm-view-btns { align-self: stretch; display: flex; }
+            .crm-view-btn { flex: 1; text-align: center; padding: 8px 6px; font-size: 0.75rem; }
+
+            /* CRM views */
             .crm-cards-grid { grid-template-columns: 1fr; }
-            .crm-kanban { scroll-snap-type: x mandatory; }
+            .crm-table-wrap { margin: 0 -14px; border-radius: 0; border-inline: none; }
+            .crm-table th, .crm-table td { padding: 10px 10px; font-size: 0.8rem; }
+            .crm-kanban { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
             .crm-kanban-col { scroll-snap-align: start; min-width: 200px; }
-            .tm-task-card { gap: 10px; padding: 12px 14px; }
-            .modal-box { border-radius: 0; border-bottom: none; }
+            .crm-card { padding: 14px; }
+
+            /* CRM header controls */
+            #crm .leads-controls { flex-direction: column; gap: 10px; align-items: stretch; }
+            #crm .leads-controls h2 { font-size: 1.1rem; }
+            #crm .export-group { display: flex; gap: 6px; }
+            #crm .export-group .pill-btn { flex: 1; font-size: 0.75rem; padding: 7px 10px; text-align: center; }
+
+            /* Task Manager */
+            .tm-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
+            .tm-task-card { gap: 10px; padding: 12px 12px; flex-wrap: wrap; }
+            .tm-task-title { white-space: normal; word-break: break-word; }
+            .tm-task-meta { font-size: 0.72rem; }
+            .tm-status-chip { font-size: 0.68rem; padding: 2px 8px; }
+
+            /* Task Manager header */
+            #task-manager .leads-controls { flex-direction: column; gap: 10px; align-items: stretch; }
+
+            /* Modals – full-width on mobile */
+            .modal-box { border-radius: 20px 20px 0 0; max-height: 90dvh; overflow-y: auto; }
+            .modal-body { padding: 16px; }
+            .modal-header { padding: 14px 16px; }
+            .modal-footer { padding: 12px 16px; }
+            .form-input { font-size: 16px; /* prevent iOS zoom */ }
         }
-        @media (max-width: 480px) {
-            .crm-toolbar { flex-direction: column; align-items: stretch; }
-            .crm-view-btns { align-self: flex-start; }
-            .tm-toolbar { flex-direction: column; align-items: stretch; }
+
+        @media (max-width: 390px) {
+            .crm-stat-pill { padding: 4px 8px; font-size: 0.7rem; }
+            .crm-stat-pill .stat-num { font-size: 0.85rem; }
+            .crm-card { padding: 12px; }
+            .crm-card-name { font-size: 0.88rem; }
+            .action-btn { padding: 8px 4px; }
+            .action-label { font-size: 0.58rem; }
+            .lp-avatar { width: 40px; height: 40px; font-size: 0.95rem; }
+            .lead-profile-name { font-size: 0.95rem; }
+            .tm-task-card { padding: 10px; gap: 8px; }
         }
     </style>
 </head>
@@ -20025,13 +20075,6 @@
                     </div>
                 </div>
                 <div class="nav-group-items">
-                    <li class="nav-item" onclick="switchTab('leads', this)">
-                        <div class="nav-icon"><svg viewBox="0 0 24 24">
-                                <path
-                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
-                            </svg></div>
-                        <span class="nav-label" data-i18n="sidebar.nav_leads">Sales Leads</span>
-                    </li>
                     <li class="nav-item" onclick="switchTab('crm', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.82.5 13.16.5c-1.5 0-2.79.75-3.67 1.87L9 3l-.49-.63C7.62 1.25 6.34.5 4.84.5 2.18.5 0 2.54 0 4.66c0 .46.11.9.18 1.34H0v2h20V6zm-6.84-3.5c1.34 0 2.34 1.06 2.34 2.16 0 .54-.22 1.01-.58 1.34H12.3c-.36-.33-.58-.8-.58-1.34 0-1.1 1-2.16 2.44-2.16zM4.84 2.5c1.44 0 2.44 1.06 2.44 2.16 0 .54-.22 1.01-.58 1.34H2.98C2.62 5.67 2.4 5.2 2.4 4.66c0-1.1 1-2.16 2.44-2.16zM0 20h20v2H0zm0-7h20v5H0zm0-3h20v2H0z"/>
@@ -23527,44 +23570,17 @@
 
             // D. LEADS AREA TAB (Same as Phase 3)
             html += `
-            <div id="leads" class="tab-content">
-                <div class="card glass">
-                    <div class="leads-controls">
-                        <h2 data-i18n="leads.title">Sales Leads</h2>
-                        <div class="export-group">
-                            <button class="export-btn" onclick="exportLeadsCSV()">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                                <span data-i18n="leads.btn_export_csv">Export CSV</span>
-                            </button>
-                            <button class="export-btn" onclick="exportLeadsExcel()">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14h-2v-4H6v-2h2V7h2v4h3v2h-3v4zm6-5h-2V7h2v5z"/></svg>
-                                <span data-i18n="leads.btn_export_excel">Export Excel</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="leads-toolbar" id="leads-toolbar-container"></div>
-                    <div id="leads-grid" class="leads-grid">
-                         <div style="text-align:center; padding: 60px; color:#888;">
-                            <div style="font-size: 3rem; margin-bottom: 20px;">👥</div>
-                            <h3 data-i18n="leads.empty_title">No Leads Yet</h3>
-                            <p data-i18n="leads.empty_text">Connect your channels to start capturing leads from conversations.</p>
-                            <button class="pill-btn primary" onclick="window.open(CALENDAR_URL, '_blank')" style="margin-top: 20px;" data-i18n="leads.btn_connect">Connect Your Channels</button>
-                         </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- CRM TAB -->
             <div id="crm" class="tab-content">
-                <div class="card glass">
+                <div class="card glass crm-card-wrapper">
                     <div class="leads-controls">
-                        <h2 data-i18n="leads.title">CRM</h2>
+                        <h2 data-i18n="sidebar.nav_crm">CRM</h2>
                         <div class="export-group">
                             <button class="pill-btn secondary" onclick="exportLeadsCSV()" data-i18n="leads.btn_export_csv">Export CSV</button>
                             <button class="pill-btn secondary" onclick="exportLeadsExcel()" data-i18n="leads.btn_export_excel">Export Excel</button>
                         </div>
                     </div>
-                    <div class="leads-toolbar" id="leads-toolbar-container"></div>
+                    <div class="leads-toolbar" id="crm-toolbar-container"></div>
                     <div id="crm-grid" class="leads-grid"></div>
                 </div>
             </div>
@@ -24892,10 +24908,6 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'integrations') {
                 color = '#4f98a0';
                 if (typeof renderIntegrationsHub === 'function') renderIntegrationsHub();
-            }
-            if (tabId === 'leads') {
-                color = '#e6b72a'; // Gold for leads
-                fetchLeads(); // Fetch data when tab opens
             }
             if (tabId === 'crm') {
                 color = '#7B5EA7'; // Purple for CRM
@@ -39109,7 +39121,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         function renderCrmView(leads) {
             const grid    = document.getElementById('crm-grid');
-            const toolbar = document.getElementById('leads-toolbar-container');
+            const toolbar = document.getElementById('crm-toolbar-container');
             if (!grid || !toolbar) return;
 
             // Stats strip
@@ -39452,6 +39464,7 @@ Thank you for shopping with {store_name}!</textarea>
                 });
                 renderLeadProfile(updatedLead, crmRefresh.data || window.currentLeadCrmState || {});
 
+                logLeadActivity('status_changed', `Status changed to ${newStatus}`, {new_status: newStatus});
                 showToast(t('crm.status_updated'));
                 document.getElementById('status-dropdown').style.display = 'none';
             } catch (err) {
@@ -39507,6 +39520,7 @@ Thank you for shopping with {store_name}!</textarea>
                     renderLeadProfile(leadData, crmState.data || {});
                 }
 
+                logLeadActivity('note_added', 'Added a note', {note_id: noteId});
                 showToast(t('crm.note_saved'));
                 closeAddNoteModal();
             } catch (err) {
@@ -39564,6 +39578,7 @@ Thank you for shopping with {store_name}!</textarea>
                     renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
                 }
 
+                logLeadActivity('follow_up_set', `Follow-up set for ${new Date(datetimeStr).toLocaleDateString()}`, {due_at: new Date(datetimeStr).toISOString()});
                 showToast(t('crm.follow_up_set'));
                 closeFollowUpModal();
             } catch (err) {
@@ -39593,6 +39608,7 @@ Thank you for shopping with {store_name}!</textarea>
                     renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
                 }
 
+                logLeadActivity('follow_up_completed', 'Follow-up marked complete', {});
                 showToast(t('crm.follow_up_completed'));
             } catch (err) {
                 console.error('Complete follow-up failed:', err);
@@ -39621,12 +39637,33 @@ Thank you for shopping with {store_name}!</textarea>
                     renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
                 }
 
+                logLeadActivity('ai_summary_refreshed', 'AI summary refreshed', {});
                 showToast('AI Summary refreshed');
             } catch (err) {
                 console.error('Refresh AI failed:', err);
                 showToast('Failed to refresh AI summary');
             }
         };
+
+        // ── Activity logger helper ──
+        async function logLeadActivity(type, label, payload) {
+            try {
+                const {data: {user: authUser}} = await supabaseClient.auth.getUser();
+                const actorName = authUser?.email?.split('@')[0] || 'System';
+                await supabaseClient.rpc('append_lead_activity', {
+                    p_lead_id: window.currentLeadProfileId,
+                    p_org_id: window.currentLeadProfileOrgId,
+                    p_activity_id: crypto.randomUUID(),
+                    p_type: type,
+                    p_label: label,
+                    p_actor_id: authUser?.id || null,
+                    p_actor_name: actorName,
+                    p_payload: payload || {}
+                });
+            } catch (err) {
+                console.warn('Activity log failed:', err);
+            }
+        }
 
         // ==========================================
         // TASK MANAGER IMPLEMENTATION
