@@ -17075,11 +17075,160 @@
             color: #0f172a !important;
         }
 
+        /* ── Light theme: CRM tab ─────────────────────────────── */
+        :root[data-theme="light"] .crm-search-input,
+        :root[data-theme="light"] .crm-filter-select {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            color: #0f172a !important;
+        }
+        :root[data-theme="light"] .crm-search-input::placeholder { color: #64748b !important; }
+        :root[data-theme="light"] .crm-search-wrap svg { color: #64748b; opacity: 0.7; }
+        :root[data-theme="light"] .crm-filter-select option { background: #ffffff; color: #0f172a; }
+        :root[data-theme="light"] .crm-search-input:focus { border-color: rgba(99,102,241,.55) !important; }
+
+        :root[data-theme="light"] .crm-view-btns {
+            background: #f1f5f9;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+        }
+        :root[data-theme="light"] .crm-view-btn { color: #475569 !important; }
+        :root[data-theme="light"] .crm-view-btn.active,
+        :root[data-theme="light"] .crm-view-btn:hover {
+            background: rgba(99,102,241,.14) !important;
+            color: #4f46e5 !important;
+        }
+
+        :root[data-theme="light"] .crm-table-wrap {
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+        :root[data-theme="light"] .crm-table thead tr { background: #f1f5f9; }
+        :root[data-theme="light"] .crm-table th {
+            color: #475569 !important;
+            border-bottom-color: rgba(15, 23, 42, 0.12) !important;
+        }
+        :root[data-theme="light"] .crm-table td {
+            color: #0f172a !important;
+            border-bottom-color: rgba(15, 23, 42, 0.07) !important;
+        }
+        :root[data-theme="light"] .crm-table tbody tr:hover { background: rgba(99,102,241,.06) !important; }
+        :root[data-theme="light"] .crm-name-text { color: #0f172a !important; }
+        :root[data-theme="light"] .crm-phone-text { color: #64748b !important; }
+
+        :root[data-theme="light"] .crm-card {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.07);
+        }
+        :root[data-theme="light"] .crm-card:hover {
+            background: rgba(99,102,241,.06) !important;
+            border-color: rgba(99,102,241,.3) !important;
+        }
+        :root[data-theme="light"] .crm-card-name { color: #0f172a !important; }
+        :root[data-theme="light"] .crm-card-phone { color: #64748b !important; }
+        :root[data-theme="light"] .crm-source-tag {
+            background: #e2e8f0 !important;
+            color: #475569 !important;
+        }
+
+        :root[data-theme="light"] .crm-kanban-col {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+        :root[data-theme="light"] .crm-kanban-head {
+            border-bottom-color: rgba(15, 23, 42, 0.10) !important;
+        }
+        :root[data-theme="light"] .crm-kanban-count {
+            background: #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        :root[data-theme="light"] .crm-kanban-card {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+            color: #0f172a !important;
+        }
+        :root[data-theme="light"] .crm-kanban-card:hover {
+            background: rgba(99,102,241,.07) !important;
+            border-color: rgba(99,102,241,.28) !important;
+        }
+        :root[data-theme="light"] .crm-kanban-empty { color: #64748b !important; }
+
+        /* ── Light theme: Task Manager ────────────────────────── */
+        :root[data-theme="light"] .tm-task-card {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.10) !important;
+        }
+        :root[data-theme="light"] .tm-task-card:hover {
+            background: rgba(99,102,241,.06) !important;
+            border-color: rgba(99,102,241,.2) !important;
+        }
+        :root[data-theme="light"] .tm-task-title { color: #0f172a !important; }
+        :root[data-theme="light"] .tm-task-meta { color: #64748b !important; }
+        :root[data-theme="light"] .tm-task-due-overdue { color: #dc2626 !important; }
+        :root[data-theme="light"] .tm-empty-state { color: #64748b !important; }
+
+        /* ── Light theme: modal-box (Task create/detail) ──────── */
+        :root[data-theme="light"] .modal-box {
+            background: #ffffff !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+            box-shadow: 0 24px 52px rgba(15, 23, 42, 0.2);
+        }
+        :root[data-theme="light"] .modal-header {
+            border-bottom-color: rgba(15, 23, 42, 0.1) !important;
+        }
+        :root[data-theme="light"] .modal-header h3 { color: #0f172a !important; }
+        :root[data-theme="light"] .modal-close-btn {
+            background: rgba(15, 23, 42, 0.06) !important;
+            color: #334155 !important;
+        }
+        :root[data-theme="light"] .modal-close-btn:hover {
+            background: rgba(15, 23, 42, 0.12) !important;
+        }
+        :root[data-theme="light"] .modal-footer {
+            border-top-color: rgba(15, 23, 42, 0.1) !important;
+        }
+        :root[data-theme="light"] .btn-secondary {
+            background: #f1f5f9 !important;
+            border-color: rgba(15, 23, 42, 0.16) !important;
+            color: #334155 !important;
+        }
+        :root[data-theme="light"] .btn-secondary:hover {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+        :root[data-theme="light"] .form-label { color: #475569 !important; }
+        :root[data-theme="light"] .form-input {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            color: #0f172a !important;
+        }
+        :root[data-theme="light"] .form-input:focus {
+            border-color: rgba(99,102,241,.55) !important;
+        }
+        :root[data-theme="light"] .form-input::placeholder { color: #94a3b8 !important; }
+        :root[data-theme="light"] .form-input option { background: #ffffff; color: #0f172a; }
+
         /* RTL Support */
         [dir="rtl"] .chat-search-bar {
             right: auto;
             left: 20px;
         }
+
+        /* ── RTL: CRM & Task Manager ─────────────────────────── */
+        /* Search bar uses inset-inline-start + padding-inline-start — already logical, no override needed */
+
+        /* Table text alignment — already uses text-align:start (logical) */
+        /* Kanban scrolls horizontally — works in RTL naturally */
+        /* Flex rows (card head, name cell, task card) — auto-reverse in RTL */
+
+        /* Stats pills — ensure numbers read correctly in mixed content */
+        [dir="rtl"] .crm-stat-pill { direction: ltr; unicode-bidi: embed; }
+
+        /* Task card: border-inline-start already flips in RTL automatically.
+           Status chip pushed to inline-end */
+        [dir="rtl"] .tm-task-card .tm-status-chip { margin-inline-start: auto; }
+
+        /* Modal footer buttons direction */
+        [dir="rtl"] .modal-footer { flex-direction: row-reverse; }
 
         /* ====== ONBOARDING WIZARD ====== */
         .onb-banner {
@@ -19269,26 +19418,34 @@
         }
         .crm-search-wrap {
             flex: 1;
-            min-width: 180px;
+            min-width: 160px;
             position: relative;
         }
         .crm-search-wrap svg {
             position: absolute;
-            inset-inline-start: 12px;
+            inset-inline-start: 11px;
             top: 50%;
             transform: translateY(-50%);
-            opacity: .45;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            opacity: .5;
             pointer-events: none;
+            color: currentColor;
         }
         .crm-search-input {
             width: 100%;
-            padding: 9px 12px 9px 38px;
+            /* Use logical padding so icon doesn't overlap in RTL */
+            padding-block: 9px;
+            padding-inline: 12px;
+            padding-inline-start: 36px;
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,.1);
             background: rgba(255,255,255,.05);
             color: inherit;
             font-size: 0.875rem;
             outline: none;
+            box-sizing: border-box;
             transition: border-color .2s;
         }
         .crm-search-input:focus { border-color: rgba(99,102,241,.6); }
@@ -19770,8 +19927,8 @@
 
         /* ── Responsive ── */
 
-        /* CRM card wrapper – prevent overflow */
-        .crm-card-wrapper { overflow: hidden; }
+        /* CRM card wrapper – allow vertical scroll, clip horizontal overflow only */
+        .crm-card-wrapper { overflow-x: hidden; }
 
         @media (max-width: 768px) {
             /* Lead profile – full-screen bottom sheet on mobile */
@@ -19799,10 +19956,16 @@
 
             /* CRM toolbar – stack vertically, full width elements */
             .crm-toolbar { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 12px; }
-            /* Search bar: icon is absolute-positioned, input has left-padding — no overlap */
+            /* Search bar: logical padding so icon gap works in both LTR and RTL */
             .crm-search-wrap { min-width: 0; width: 100%; }
-            .crm-search-input { padding: 11px 14px 11px 40px; font-size: 0.9rem; border-radius: 12px; }
-            .crm-search-wrap svg { width: 18px; height: 18px; inset-inline-start: 13px; }
+            .crm-search-input {
+                padding-block: 11px;
+                padding-inline: 14px;
+                padding-inline-start: 40px;
+                font-size: 0.9rem;
+                border-radius: 12px;
+            }
+            .crm-search-wrap svg { width: 18px; height: 18px; inset-inline-start: 12px; }
             .crm-filter-select { width: 100%; min-width: 0; padding: 11px 14px; font-size: 0.9rem; border-radius: 12px; }
             /* View toggle – equal tabs, full row */
             .crm-view-btns { align-self: stretch; display: flex; border-radius: 12px; }
@@ -19838,10 +20001,12 @@
             .tm-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
             /* Task Manager reuses .crm-search-wrap/.crm-search-input — inherits above fixes */
 
-            /* Task cards – comfortable touch targets */
+            /* Task cards – comfortable touch targets (logical padding for RTL) */
             .tm-task-card {
                 gap: 12px;
-                padding: 14px 14px 14px 18px;
+                padding-block: 14px;
+                padding-inline: 14px;
+                padding-inline-start: 18px;
                 flex-wrap: nowrap;
                 align-items: flex-start;
                 min-height: 56px;
@@ -19886,7 +20051,7 @@
             .action-label { font-size: 0.58rem; }
             .lp-avatar { width: 40px; height: 40px; font-size: 0.95rem; }
             .lead-profile-name { font-size: 0.95rem; }
-            .tm-task-card { padding: 12px 12px 12px 14px; gap: 10px; }
+            .tm-task-card { padding-block: 12px; padding-inline: 12px; padding-inline-start: 14px; gap: 10px; }
         }
     </style>
 </head>
