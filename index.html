@@ -224,7 +224,17 @@
                     "won": "Won",
                     "lost": "Lost",
                     "no_phone": "No Phone"
-                }
+                },
+                "stat_total": "Total",
+                "stat_new": "New",
+                "stat_follow_up": "Follow-up",
+                "stat_won": "Won",
+                "stat_lost": "Lost",
+                "view_btn_table": "Table",
+                "view_btn_cards": "Cards",
+                "view_btn_pipeline": "Pipeline",
+                "col_score": "Score",
+                "col_potential": "Potential"
             },
             "crm": {
                 "title": "CRM",
@@ -1194,7 +1204,17 @@
                     "won": "تم الفوز",
                     "lost": "خسارة",
                     "no_phone": "لا يوجد هاتف"
-                }
+                },
+                "stat_total": "الإجمالي",
+                "stat_new": "جديد",
+                "stat_follow_up": "متابعة",
+                "stat_won": "تم الفوز",
+                "stat_lost": "خسارة",
+                "view_btn_table": "جدول",
+                "view_btn_cards": "بطاقات",
+                "view_btn_pipeline": "المراحل",
+                "col_score": "النقاط",
+                "col_potential": "الإمكانية"
             },
             "crm": {
                 "title": "إدارة العملاء",
@@ -17559,7 +17579,7 @@
         /* Flex rows (card head, name cell, task card) — auto-reverse in RTL */
 
         /* Stats pills — ensure numbers read correctly in mixed content */
-        [dir="rtl"] .crm-stat-pill { direction: ltr; unicode-bidi: embed; }
+        [dir="rtl"] .crm-stat-pill { direction: rtl; }
 
         /* Task card: border-inline-start already flips in RTL automatically.
            Status chip pushed to inline-end */
@@ -20320,9 +20340,11 @@
 
             /* CRM card grid – single column, comfortable padding */
             .crm-cards-grid { grid-template-columns: 1fr; gap: 10px; }
-            .crm-card { padding: 16px; gap: 14px; }
-            .crm-card-name { font-size: 0.95rem; }
-            .crm-card-phone { font-size: 0.82rem; }
+            .crm-card { padding: 14px; gap: 12px; }
+            .crm-card-head { gap: 10px; }
+            .crm-card-name { font-size: 0.9rem; white-space: normal; word-break: break-word; }
+            .crm-card-phone { font-size: 0.78rem; }
+            .crm-card-foot { flex-wrap: wrap; gap: 6px; }
 
             /* CRM table – edge-to-edge, hide less critical columns */
             .crm-table-wrap { margin: 0 -14px; border-radius: 0; border-inline: none; }
@@ -25894,7 +25916,7 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                     <div class="lead-view-body">
                         <div class="lead-view-row"><strong>${t('leads.col_phone')}:</strong> ${r.phone}</div>
-                        <div class="lead-view-row"><strong>Potential:</strong></div>
+                        <div class="lead-view-row"><strong>${t('leads.col_potential')}:</strong></div>
                         <div class="lead-view-msg">${String(r.potential || '-')}</div>
                     </div>
                     <div class="lead-view-foot">
@@ -25982,8 +26004,8 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                     <div class="lead-mobile-row"><strong>${t('leads.col_phone')}:</strong> ${r.phone}</div>
                     <div class="lead-mobile-row"><strong>${t('leads.col_platform')}:</strong> ${r.platform}</div>
-                    <div class="lead-mobile-row"><strong>Potential:</strong> ${String(r.potential || '')}</div>
-                    <div class="lead-mobile-row"><strong>Score:</strong> ${r.score !== null && r.score !== undefined ? r.score : '-'}</div>
+                    <div class="lead-mobile-row"><strong>${t('leads.col_potential')}:</strong> ${String(r.potential || '')}</div>
+                    <div class="lead-mobile-row"><strong>${t('leads.col_score')}:</strong> ${r.score !== null && r.score !== undefined ? r.score : '-'}</div>
                     <div class="lead-mobile-row"><strong>${t('leads.col_date')}:</strong> ${r.formattedDate}</div>
                 </div>
             `).join('');
@@ -26028,8 +26050,8 @@ Thank you for shopping with {store_name}!</textarea>
                                     <th>${t('leads.col_name')}</th>
                                     <th>${t('leads.col_phone')}</th>
                                     <th>${t('leads.col_platform')}</th>
-                                    <th>Potential</th>
-                                    <th>Score</th>
+                                    <th>${t('leads.col_potential')}</th>
+                                    <th>${t('leads.col_score')}</th>
                                     <th>${t('leads.col_date')}</th>
                                     <th>${t('leads.col_status')}</th>
                                 </tr>
@@ -39711,11 +39733,11 @@ Thank you for shopping with {store_name}!</textarea>
 
             toolbar.innerHTML = `
                 <div class="crm-stats-strip">
-                    <span class="crm-stat-pill stat-total"><span class="stat-num">${total}</span> Total</span>
-                    <span class="crm-stat-pill stat-new"><span class="stat-num">${newCount}</span> New</span>
-                    <span class="crm-stat-pill stat-follow"><span class="stat-num">${fuCount}</span> Follow-up</span>
-                    <span class="crm-stat-pill stat-won"><span class="stat-num">${wonCount}</span> Won</span>
-                    <span class="crm-stat-pill stat-lost"><span class="stat-num">${lostCount}</span> Lost</span>
+                    <span class="crm-stat-pill stat-total"><span class="stat-num">${total}</span> ${t('leads.stat_total')}</span>
+                    <span class="crm-stat-pill stat-new"><span class="stat-num">${newCount}</span> ${t('leads.stat_new')}</span>
+                    <span class="crm-stat-pill stat-follow"><span class="stat-num">${fuCount}</span> ${t('leads.stat_follow_up')}</span>
+                    <span class="crm-stat-pill stat-won"><span class="stat-num">${wonCount}</span> ${t('leads.stat_won')}</span>
+                    <span class="crm-stat-pill stat-lost"><span class="stat-num">${lostCount}</span> ${t('leads.stat_lost')}</span>
                 </div>
                 <div class="crm-toolbar">
                     <div class="crm-search-wrap">
@@ -39729,9 +39751,9 @@ Thank you for shopping with {store_name}!</textarea>
                         ${LEAD_STATUSES.map(s => `<option value="${s}">${t('leads.status.'+s)}</option>`).join('')}
                     </select>
                     <div class="crm-view-btns">
-                        <button class="crm-view-btn active" data-view="table" onclick="setCrmView('table',this)">☰ Table</button>
-                        <button class="crm-view-btn" data-view="grid"  onclick="setCrmView('grid',this)">⊞ Cards</button>
-                        <button class="crm-view-btn" data-view="pipeline" onclick="setCrmView('pipeline',this)">⋮⋮⋮ Pipeline</button>
+                        <button class="crm-view-btn active" data-view="table" onclick="setCrmView('table',this)">☰ ${t('leads.view_btn_table')}</button>
+                        <button class="crm-view-btn" data-view="grid"  onclick="setCrmView('grid',this)">⊞ ${t('leads.view_btn_cards')}</button>
+                        <button class="crm-view-btn" data-view="pipeline" onclick="setCrmView('pipeline',this)">⋮⋮⋮ ${t('leads.view_btn_pipeline')}</button>
                     </div>
                 </div>
             `;
@@ -39770,7 +39792,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <div class="crm-kanban-card" onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
                                 <div style="font-weight:600;font-size:0.85rem;margin-bottom:4px;">${esc(r.full_name||'Unknown')}</div>
                                 <div style="font-size:0.75rem;color:var(--text-muted,#888);font-family:monospace;">${esc(r.phone||'')}</div>
-                                ${r.score != null ? `<div style="font-size:0.72rem;margin-top:5px;color:var(--text-muted,#888);">Score: ${r.score}</div>` : ''}
+                                ${r.score != null ? `<div style="font-size:0.72rem;margin-top:5px;color:var(--text-muted,#888);">${t('leads.col_score')}: ${r.score}</div>` : ''}
                             </div>`).join('')
                         : `<div class="crm-kanban-empty">${t('leads.pipeline_empty')}</div>`;
                     return `
@@ -39795,7 +39817,7 @@ Thank you for shopping with {store_name}!</textarea>
                             ${crmStatusChip(r.status||'new')}
                             <span class="crm-source-tag">${(r.source||'unknown').toUpperCase()}</span>
                         </div>
-                        ${r.score != null ? `<div style="font-size:0.78rem;color:var(--text-muted,#888);">Score: <strong>${r.score}</strong></div>` : ''}
+                        ${r.score != null ? `<div style="font-size:0.78rem;color:var(--text-muted,#888);">${t('leads.col_score')}: <strong>${r.score}</strong></div>` : ''}
                     </div>`).join('')}</div>`;
 
             } else {
@@ -39819,9 +39841,9 @@ Thank you for shopping with {store_name}!</textarea>
                         <table class="crm-table">
                             <thead><tr>
                                 <th>${t('leads.col_name')}</th>
-                                <th>Status</th>
-                                <th>Source</th>
-                                <th>Score</th>
+                                <th>${t('leads.col_status')}</th>
+                                <th>${t('leads.col_platform')}</th>
+                                <th>${t('leads.col_score')}</th>
                                 <th>${t('leads.col_date')}</th>
                             </tr></thead>
                             <tbody>${trs}</tbody>
