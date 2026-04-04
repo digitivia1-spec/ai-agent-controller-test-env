@@ -22,6 +22,23 @@
         })();
     </script>
     <script>
+        // Early permission stub (overwritten after login by the team IIFE)
+        if (!window.hasPermission) {
+            window.hasPermission = function(p) {
+                const r = String(window.currentUserRole || '').toLowerCase();
+                if (r === 'owner') return true;
+                if (r === 'admin' || r === 'moderator' || r === 'manager') {
+                    return !['org.settings','org.members','org.roles','org.billing','integrations.manage','agents.configure'].includes(p);
+                }
+                return false;
+            };
+            window.showPermissionDenied = function() {};
+            window.guardPermission = function(p, cb) { if (window.hasPermission(p)) return cb(); };
+            window.myEffectiveRole = null;
+            window.myPermissions = null;
+        }
+    </script>
+    <script>
         // ==========================================
         //        LANGUAGE & I18N (EMBEDDED)
         // ==========================================
@@ -1964,8 +1981,79 @@
 
         Object.assign(window.LANG_EN.sidebar, {
             nav_orders_product: "Orders Area",
-            nav_orders_service: "Customers Area"
+            nav_orders_service: "Customers Area",
+            nav_team: "Team"
         });
+        window.LANG_EN.team = {
+            title: "Team Management",
+            subtitle: "Manage members and control what each role can access.",
+            members_title: "Members",
+            add_member: "Add Member",
+            add_member_subtitle: "Invite someone who already has a Digitivia account.",
+            input_email: "Email address",
+            input_role: "Role",
+            btn_add: "Add",
+            btn_adding: "Adding...",
+            btn_remove: "Remove",
+            btn_removing: "Removing...",
+            confirm_remove: "Remove this member from the organization?",
+            permissions_title: "Permission Control",
+            permissions_subtitle: "Customize what each role can do in your organization.",
+            role_owner: "Owner",
+            role_manager: "Manager",
+            role_user: "User",
+            role_owner_desc: "Full control over everything",
+            role_manager_desc: "Operational access to CRM, tasks, inbox, and orders",
+            role_user_desc: "View access with limited actions",
+            joined: "Joined",
+            you_badge: "You",
+            empty_members: "No team members yet.",
+            tab_members: "Members",
+            tab_permissions: "Permissions",
+            perm_group_crm: "CRM",
+            perm_group_tasks: "Task Manager",
+            perm_group_followups: "Automation",
+            perm_group_inbox: "Inbox",
+            perm_group_insights: "Insights",
+            perm_group_orders: "Orders",
+            perm_group_agents: "AI Agents",
+            perm_group_integrations: "Integrations",
+            perm_group_org: "Organization",
+            perm_read: "View",
+            perm_write: "Create / Edit",
+            perm_delete: "Delete",
+            perm_assign: "Assign",
+            perm_change_status: "Change Status",
+            perm_notes: "Add Notes",
+            perm_complete: "Complete Any",
+            perm_complete_own: "Complete Own",
+            perm_reply: "Reply",
+            perm_toggle_ai: "Toggle AI",
+            perm_manage: "Manage",
+            perm_configure: "Configure",
+            perm_settings: "Settings",
+            perm_members: "Members",
+            perm_roles: "Roles",
+            perm_billing: "Billing",
+            saving_permissions: "Saving...",
+            permissions_saved: "Permissions updated successfully.",
+            permissions_save_failed: "Failed to update permissions.",
+            error_only_owner: "Only organization owners can do this.",
+            error_user_not_found: "No account found with this email. They need to register first.",
+            error_already_member: "This person is already a member of your organization.",
+            error_invalid_role: "Invalid role selected.",
+            error_cannot_change_owner: "The owner role cannot be changed.",
+            error_cannot_remove_owner: "The owner cannot be removed.",
+            error_cannot_remove_self: "You cannot remove yourself.",
+            error_cannot_change_own_role: "You cannot change your own role.",
+            error_generic: "Something went wrong. Please try again.",
+            member_added: "Member added successfully.",
+            member_removed: "Member removed successfully.",
+            role_updated: "Role updated successfully.",
+            permission_denied_title: "Action Not Available",
+            permission_denied_msg: "Your current role does not include this permission. Contact your organization owner for access.",
+            permission_denied_toast: "You don't have permission for this action."
+        };
         Object.assign(window.LANG_EN.orders, {
             title_product: "Orders Area",
             exported_csv: "CSV exported successfully",
@@ -2284,8 +2372,79 @@
 
         Object.assign(window.LANG_AR.sidebar, {
             nav_orders_product: "منطقة الطلبات",
-            nav_orders_service: "منطقة العملاء"
+            nav_orders_service: "منطقة العملاء",
+            nav_team: "الفريق"
         });
+        window.LANG_AR.team = {
+            title: "إدارة الفريق",
+            subtitle: "إدارة الأعضاء والتحكم في صلاحيات كل دور.",
+            members_title: "الأعضاء",
+            add_member: "إضافة عضو",
+            add_member_subtitle: "أضف شخصاً لديه حساب على Digitivia بالفعل.",
+            input_email: "البريد الإلكتروني",
+            input_role: "الدور",
+            btn_add: "إضافة",
+            btn_adding: "جاري الإضافة...",
+            btn_remove: "إزالة",
+            btn_removing: "جاري الإزالة...",
+            confirm_remove: "هل تريد إزالة هذا العضو من المؤسسة؟",
+            permissions_title: "التحكم في الصلاحيات",
+            permissions_subtitle: "خصّص ما يمكن لكل دور فعله في مؤسستك.",
+            role_owner: "المالك",
+            role_manager: "مدير",
+            role_user: "مستخدم",
+            role_owner_desc: "تحكم كامل في كل شيء",
+            role_manager_desc: "صلاحيات تشغيلية كاملة للعملاء والمهام والبريد والطلبات",
+            role_user_desc: "صلاحيات عرض مع إجراءات محدودة",
+            joined: "انضم",
+            you_badge: "أنت",
+            empty_members: "لا يوجد أعضاء في الفريق بعد.",
+            tab_members: "الأعضاء",
+            tab_permissions: "الصلاحيات",
+            perm_group_crm: "إدارة العملاء",
+            perm_group_tasks: "مدير المهام",
+            perm_group_followups: "الأتمتة",
+            perm_group_inbox: "البريد الوارد",
+            perm_group_insights: "التحليلات",
+            perm_group_orders: "الطلبات",
+            perm_group_agents: "الوكلاء الذكية",
+            perm_group_integrations: "التكاملات",
+            perm_group_org: "المؤسسة",
+            perm_read: "عرض",
+            perm_write: "إنشاء / تعديل",
+            perm_delete: "حذف",
+            perm_assign: "تعيين",
+            perm_change_status: "تغيير الحالة",
+            perm_notes: "إضافة ملاحظات",
+            perm_complete: "إتمام أي مهمة",
+            perm_complete_own: "إتمام مهامك",
+            perm_reply: "الرد",
+            perm_toggle_ai: "تبديل الذكاء الاصطناعي",
+            perm_manage: "إدارة",
+            perm_configure: "إعداد",
+            perm_settings: "الإعدادات",
+            perm_members: "الأعضاء",
+            perm_roles: "الأدوار",
+            perm_billing: "الفوترة",
+            saving_permissions: "جاري الحفظ...",
+            permissions_saved: "تم تحديث الصلاحيات بنجاح.",
+            permissions_save_failed: "فشل تحديث الصلاحيات.",
+            error_only_owner: "فقط مالك المؤسسة يمكنه القيام بهذا.",
+            error_user_not_found: "لم يتم العثور على حساب بهذا البريد. يجب التسجيل أولاً.",
+            error_already_member: "هذا الشخص عضو بالفعل في مؤسستك.",
+            error_invalid_role: "الدور المحدد غير صالح.",
+            error_cannot_change_owner: "لا يمكن تغيير دور المالك.",
+            error_cannot_remove_owner: "لا يمكن إزالة المالك.",
+            error_cannot_remove_self: "لا يمكنك إزالة نفسك.",
+            error_cannot_change_own_role: "لا يمكنك تغيير دورك الخاص.",
+            error_generic: "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+            member_added: "تمت إضافة العضو بنجاح.",
+            member_removed: "تمت إزالة العضو بنجاح.",
+            role_updated: "تم تحديث الدور بنجاح.",
+            permission_denied_title: "الإجراء غير متاح",
+            permission_denied_msg: "دورك الحالي لا يتضمن هذه الصلاحية. تواصل مع مالك المؤسسة للحصول عليها.",
+            permission_denied_toast: "ليس لديك صلاحية لهذا الإجراء."
+        };
         Object.assign(window.LANG_AR.orders, {
             title_product: "منطقة الطلبات",
             exported_csv: "تم تصدير ملف CSV بنجاح",
@@ -9169,6 +9328,125 @@
             font-size: 0.76rem;
             line-height: 1.45;
         }
+
+        /* ===== TEAM MANAGEMENT ===== */
+        .team-page { max-width: 860px; margin: 0 auto; padding: 20px 16px; }
+        .team-header { margin-bottom: 24px; }
+        .team-header h2 { margin: 0 0 4px; font-size: 1.25rem; font-weight: 700; color: var(--text-main, #fff); }
+        .team-header p { margin: 0; font-size: 0.82rem; color: var(--text-muted, #888); line-height: 1.5; }
+
+        .team-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 20px; }
+        .team-tab-btn { padding: 10px 20px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted, #888); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all .2s; white-space: nowrap; }
+        .team-tab-btn:hover { color: var(--text-main, #fff); }
+        .team-tab-btn.active { color: var(--theme-color, #6366f1); border-bottom-color: var(--theme-color, #6366f1); }
+        .team-tab-panel { display: none; }
+        .team-tab-panel.active { display: block; }
+
+        .team-add-bar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 20px; padding: 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; }
+        .team-add-bar .form-group { flex: 1; min-width: 180px; margin: 0; }
+        .team-add-bar .form-group.role-group { flex: 0 0 140px; min-width: 120px; }
+        .team-add-bar .btn-primary { align-self: flex-end; flex-shrink: 0; height: 42px; }
+        .team-add-bar .team-add-hint { width: 100%; font-size: 0.76rem; color: var(--text-muted, #888); margin-top: -4px; }
+
+        .team-members-list { display: flex; flex-direction: column; gap: 8px; }
+        .team-member-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; transition: background .15s; }
+        .team-member-card:hover { background: rgba(255,255,255,.05); }
+
+        .team-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--theme-color, #6366f1); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; text-transform: uppercase; }
+        .team-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+        .team-member-info { flex: 1; min-width: 0; }
+        .team-member-name { font-size: 0.9rem; font-weight: 600; color: var(--text-main, #fff); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .team-member-email { font-size: 0.78rem; color: var(--text-muted, #888); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .team-member-meta { font-size: 0.72rem; color: var(--text-muted, #666); margin-top: 2px; }
+
+        .team-role-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+        .team-role-badge.owner { background: rgba(245,158,11,.15); color: #f59e0b; }
+        .team-role-badge.manager { background: rgba(99,102,241,.15); color: #818cf8; }
+        .team-role-badge.user { background: rgba(100,116,139,.15); color: #94a3b8; }
+        .team-you-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,.08); color: var(--text-muted, #888); font-weight: 500; }
+
+        .team-member-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .team-member-actions select { padding: 6px 10px; font-size: 0.78rem; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; color: var(--text-main, #fff); cursor: pointer; }
+        .team-member-actions select:focus { border-color: var(--theme-color, #6366f1); outline: none; }
+        .team-remove-btn { padding: 6px 12px; font-size: 0.75rem; font-weight: 600; background: rgba(239,68,68,.1); color: #ef4444; border: 1px solid rgba(239,68,68,.2); border-radius: 8px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+        .team-remove-btn:hover { background: rgba(239,68,68,.2); }
+        .team-remove-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+        /* Permission editor */
+        .team-perm-role-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .team-perm-role-btn { padding: 8px 18px; font-size: 0.82rem; font-weight: 600; border-radius: 9px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); color: var(--text-muted, #888); cursor: pointer; transition: all .15s; }
+        .team-perm-role-btn:hover { background: rgba(255,255,255,.06); }
+        .team-perm-role-btn.active { background: var(--theme-color, #6366f1); color: #fff; border-color: transparent; }
+
+        .team-perm-group { margin-bottom: 16px; }
+        .team-perm-group-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--text-muted, #888); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,.06); }
+        .team-perm-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; transition: background .1s; }
+        .team-perm-row:hover { background: rgba(255,255,255,.03); }
+        .team-perm-label { font-size: 0.82rem; color: var(--text-main, #fff); }
+        .team-perm-toggle { position: relative; width: 38px; height: 22px; flex-shrink: 0; }
+        .team-perm-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .team-perm-toggle .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.1); border-radius: 11px; cursor: pointer; transition: background .2s; }
+        .team-perm-toggle .slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+        .team-perm-toggle input:checked + .slider { background: var(--theme-color, #6366f1); }
+        .team-perm-toggle input:checked + .slider::before { transform: translateX(16px); }
+        .team-perm-toggle input:disabled + .slider { opacity: .4; cursor: not-allowed; }
+
+        .team-perm-owner-note { padding: 14px 16px; background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); border-radius: 10px; font-size: 0.82rem; color: #f59e0b; text-align: center; }
+
+        .team-empty { text-align: center; padding: 48px 20px; color: var(--text-muted, #888); }
+        .team-empty p { margin: 0; font-size: 0.9rem; }
+
+        /* Permission denied modal */
+        .perm-denied-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); animation: permDeniedIn .2s ease; }
+        .perm-denied-box { background: var(--bg-surface, #0f172a); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 32px 28px; max-width: 380px; width: calc(100% - 32px); text-align: center; }
+        .perm-denied-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(239,68,68,.12); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .perm-denied-icon svg { width: 28px; height: 28px; fill: #ef4444; }
+        .perm-denied-title { font-size: 1.05rem; font-weight: 700; color: var(--text-main, #fff); margin: 0 0 8px; }
+        .perm-denied-msg { font-size: 0.85rem; color: var(--text-muted, #888); line-height: 1.6; margin: 0 0 20px; }
+        .perm-denied-close { padding: 10px 28px; font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,.08); color: var(--text-main, #fff); border: 1px solid rgba(255,255,255,.1); border-radius: 9px; cursor: pointer; }
+        .perm-denied-close:hover { background: rgba(255,255,255,.12); }
+        @keyframes permDeniedIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Team mobile responsive */
+        @media (max-width: 640px) {
+            .team-page { padding: 14px 10px; }
+            .team-add-bar { flex-direction: column; gap: 10px; }
+            .team-add-bar .form-group { min-width: 100%; }
+            .team-add-bar .form-group.role-group { flex: 1; min-width: 100%; }
+            .team-add-bar .btn-primary { width: 100%; }
+            .team-member-card { flex-wrap: wrap; gap: 10px; padding: 12px; }
+            .team-member-actions { width: 100%; justify-content: flex-end; }
+            .team-member-actions select { flex: 1; }
+            .team-perm-role-tabs { gap: 6px; }
+            .team-perm-role-btn { padding: 7px 14px; font-size: 0.78rem; flex: 1; text-align: center; }
+            .team-perm-row { padding: 10px 8px; }
+            .team-perm-label { font-size: 0.8rem; }
+            .perm-denied-box { padding: 24px 20px; }
+        }
+
+        /* RTL support */
+        [dir="rtl"] .team-member-card { flex-direction: row; }
+        [dir="rtl"] .team-remove-btn { margin-inline-start: 0; }
+        [dir="rtl"] .team-perm-toggle .slider::before { left: auto; right: 3px; }
+        [dir="rtl"] .team-perm-toggle input:checked + .slider::before { transform: translateX(-16px); }
+
+        /* Light theme */
+        :root[data-theme="light"] .team-add-bar { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.08); }
+        :root[data-theme="light"] .team-member-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.06); }
+        :root[data-theme="light"] .team-member-card:hover { background: rgba(0,0,0,.04); }
+        :root[data-theme="light"] .team-tabs { border-bottom-color: rgba(0,0,0,.08); }
+        :root[data-theme="light"] .team-member-actions select { background: #fff; border-color: rgba(0,0,0,.12); color: #1e293b; }
+        :root[data-theme="light"] .team-perm-role-btn { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.1); color: #64748b; }
+        :root[data-theme="light"] .team-perm-group-title { border-bottom-color: rgba(0,0,0,.06); }
+        :root[data-theme="light"] .team-perm-row:hover { background: rgba(0,0,0,.02); }
+        :root[data-theme="light"] .team-perm-toggle .slider { background: rgba(0,0,0,.12); }
+        :root[data-theme="light"] .team-perm-owner-note { background: rgba(245,158,11,.06); border-color: rgba(245,158,11,.12); }
+        :root[data-theme="light"] .perm-denied-box { background: #fff; border-color: rgba(0,0,0,.1); }
+        :root[data-theme="light"] .perm-denied-close { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.1); color: #1e293b; }
+        :root[data-theme="light"] .team-you-badge { background: rgba(0,0,0,.05); }
+        :root[data-theme="light"] .team-remove-btn { background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.15); }
+        :root[data-theme="light"] .team-remove-btn:hover { background: rgba(239,68,68,.12); }
 
         .notification-settings-card {
             display: flex;
@@ -20419,6 +20697,14 @@
 
             <div class="nav-group-divider"></div>
 
+            <!-- Team (standalone, owner/manager only) -->
+            <li class="nav-item" id="nav-team-item" onclick="switchTab('team', this)" style="display:none">
+                <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg></div>
+                <span class="nav-label" data-i18n="sidebar.nav_team">Team</span>
+            </li>
+
             <!-- Plans (standalone) -->
             <li class="nav-item" onclick="openPricingModal()">
                 <div class="nav-icon"><svg viewBox="0 0 24 24">
@@ -22118,10 +22404,8 @@
             const orgInput = document.getElementById('profile-org-input');
             const saveOrgBtn = document.getElementById('save-org-btn'); // Assuming button ID, check HTML
 
-            if (window.currentUserRole === 'moderator') {
+            if (!window.hasPermission('org.settings')) {
                 if (orgInput) orgInput.disabled = true;
-                // We need to hide/disable the button.
-                // Button logic implies find element by onclick or ID.
                 const btn = document.querySelector('button[onclick="saveOrganizationName()"]');
                 if (btn) btn.style.display = 'none';
             }
@@ -22434,8 +22718,8 @@
         }
 
         async function saveOrganizationName() {
-            if (window.currentUserRole === 'moderator') {
-                showToast(t('messages.access_denied'), "error");
+            if (!window.hasPermission('org.settings')) {
+                window.showPermissionDenied();
                 return;
             }
             const newName = document.getElementById('profile-org-input').value.trim();
@@ -23049,9 +23333,8 @@
 
         async function removeAgentKbLink(linkId, agentId) {
             if (!confirm('Remove this link?')) return;
-            // Prevent non-owners from doing this (although UI won't show it for moderators either, add safety layer)
-            if (window.currentUserRole === 'moderator') {
-                showToast(t('kb.toast_file_failed'), 'error');
+            if (!window.hasPermission('agents.configure')) {
+                window.showPermissionDenied();
                 return;
             }
             try {
@@ -23071,8 +23354,8 @@
         }
 
         async function uploadKbFileDirectly(agentId) {
-            if (window.currentUserRole === 'moderator') {
-                showToast(t('kb.toast_file_failed') || "Unauthorized", 'error');
+            if (!window.hasPermission('agents.configure')) {
+                window.showPermissionDenied();
                 return;
             }
             const fileInput = document.getElementById(`kb-file-upload-${agentId}`);
@@ -23226,7 +23509,7 @@
                         </div>
                         <div class="kb-item-actions">
                             ${file.url ? `<a href="${file.url}" target="_blank" style="color: inherit; margin-right: 8px;" aria-label="${currentLang === 'ar' ? 'فتح' : 'Open'}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
-                            <button style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}" onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${file.source_table}', '${agentId}')" aria-label="${t('kb.btn_delete_global')}">
+                            <button style="${!window.hasPermission('agents.configure') ? 'display:none' : ''}" onclick="deleteSharedKbFile('${file.path}', '${file.id}', '${file.source_table}', '${agentId}')" aria-label="${t('kb.btn_delete_global')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
                         </div>
@@ -23239,7 +23522,7 @@
         }
 
         async function deleteSharedKbFile(storagePath, recordId, sourceTable, currentAgentId) {
-            if (window.currentUserRole === 'moderator') return;
+            if (!window.hasPermission('agents.configure')) { window.showPermissionDenied(); return; }
             // Strict confirm per prompt requirements
             if (!confirm(t('kb.delete_confirm') || 'Delete for all agents?')) return;
 
@@ -23600,7 +23883,7 @@
                                     <div class="agent-toggle-container">
                                         <span class="toggle-label" data-i18n="agent_config.label_live">LIVE</span>
                                         <label class="switch">
-                                            <input type="checkbox" id="status-${agent.id}" onchange="toggleAgentStatus('${agent.id}')" ${window.currentUserRole === 'moderator' ? 'disabled' : ''}>
+                                            <input type="checkbox" id="status-${agent.id}" onchange="toggleAgentStatus('${agent.id}')" ${!window.hasPermission('agents.configure') ? 'disabled' : ''}>
                                             <span class="slider"></span>
                                         </label>
                                     </div>
@@ -23623,7 +23906,7 @@
                                     <span><b>Caution:</b> Modifying the system prompt will directly alter the agent's personality and behavior.</span>
                                 </div>
                                 
-                                <div onclick="requestUnlock('${agent.id}')" class="edit-lock-btn" id="lock-btn-${agent.id}" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">
+                                <div onclick="requestUnlock('${agent.id}')" class="edit-lock-btn" id="lock-btn-${agent.id}" style="${!window.hasPermission('agents.configure') ? 'display:none' : ''}">
                                     <span>🔒</span> <span data-i18n="agent_config.btn_locked">Locked - Click to Edit</span>
                                 </div>
 
@@ -23711,7 +23994,7 @@
                             </div>
                         </div>
                         <div class="action-container">
-                            <button class="save-btn" onclick="saveRole('${agent.id}')" data-i18n="agent_config.btn_save" style="${window.currentUserRole === 'moderator' ? 'display:none' : ''}">Save Role</button>
+                            <button class="save-btn" onclick="saveRole('${agent.id}')" data-i18n="agent_config.btn_save" style="${!window.hasPermission('agents.configure') ? 'display:none' : ''}">Save Role</button>
                         </div>
                     </div>
                 </div>`;
@@ -24822,6 +25105,11 @@ Thank you for shopping with {store_name}!</textarea>
             </div>`;
 
             html += `
+            <!-- TEAM MANAGEMENT TAB -->
+            <div id="team" class="tab-content">
+                <div class="team-page" id="team-page-root"></div>
+            </div>
+
             <div id="legal-privacy" class="tab-content legal-tab-content">
                 <article class="card glass legal-page">
                     <div class="legal-quick-links">
@@ -25218,6 +25506,10 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'followups') {
                 color = '#2b8a86'; // lighter and less shiny teal for followups
                 if (typeof fuInit === 'function') fuInit();
+            }
+            if (tabId === 'team') {
+                color = '#6366f1'; // Indigo for Team
+                if (typeof initTeamTab === 'function') initTeamTab();
             }
             if (tabId === 'create-post') {
                 color = '#9C27B0'; // Purple for Content Studio
@@ -26457,8 +26749,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function canToggleConversationAi() {
-            const role = (window.currentUserRole || '').toLowerCase();
-            return role === 'owner' || role === 'admin' || role === 'moderator';
+            return window.hasPermission ? window.hasPermission('inbox.toggle_ai') : ((window.currentUserRole || '').toLowerCase() !== 'member');
         }
 
         function getSenderBadgeLabel(senderType) {
@@ -27276,8 +27567,8 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function saveRole(agentId) {
-            if (window.currentUserRole === 'moderator') {
-                showToast(t('messages.access_denied'), "error");
+            if (!window.hasPermission('agents.configure')) {
+                window.showPermissionDenied();
                 return;
             }
             if (!currentUserOrgId) { showToast(t('messages.error_no_org'), "error"); return; }
@@ -27327,11 +27618,10 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function toggleAgentStatus(agentId) {
-            if (window.currentUserRole === 'moderator') {
-                // Revert visual state
+            if (!window.hasPermission('agents.configure')) {
                 const cb = document.getElementById(`status-${agentId}`);
                 if (cb) cb.checked = !cb.checked;
-                showToast(t('messages.access_denied'), "error");
+                window.showPermissionDenied();
                 return;
             }
             if (!currentUserOrgId) return;
@@ -32006,8 +32296,8 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function saveWebsiteWidgetSettings() {
-            if (window.currentUserRole === 'moderator') {
-                showToast(t('messages.access_denied') || 'Access denied', 'error');
+            if (!window.hasPermission('agents.configure')) {
+                window.showPermissionDenied();
                 return;
             }
             if (!currentUserOrgId) {
@@ -40271,6 +40561,482 @@ Thank you for shopping with {store_name}!</textarea>
         window.getOfferLabel = function (key) {
             return t(key);
         };
+
+        // ===========================================================
+        //     TEAM MANAGEMENT & RBAC PERMISSION SYSTEM
+        // ===========================================================
+        (function () {
+            let teamMembers = [];
+            let teamPermissionsCache = {};
+            let teamActiveSubtab = 'members';
+            let teamActivePermRole = 'manager';
+            let teamLoading = false;
+            let myPermissions = null;
+            let myEffectiveRole = null;
+
+            // --- Permission definitions for the UI ---
+            const PERM_GROUPS = [
+                { key: 'crm', i18n: 'perm_group_crm', perms: [
+                    { key: 'crm.read', i18n: 'perm_read' },
+                    { key: 'crm.write', i18n: 'perm_write' },
+                    { key: 'crm.delete', i18n: 'perm_delete' },
+                    { key: 'crm.change_status', i18n: 'perm_change_status' },
+                    { key: 'crm.assign', i18n: 'perm_assign' },
+                    { key: 'crm.notes', i18n: 'perm_notes' }
+                ]},
+                { key: 'tasks', i18n: 'perm_group_tasks', perms: [
+                    { key: 'tasks.read', i18n: 'perm_read' },
+                    { key: 'tasks.write', i18n: 'perm_write' },
+                    { key: 'tasks.delete', i18n: 'perm_delete' },
+                    { key: 'tasks.assign', i18n: 'perm_assign' },
+                    { key: 'tasks.complete', i18n: 'perm_complete' },
+                    { key: 'tasks.complete_own', i18n: 'perm_complete_own' }
+                ]},
+                { key: 'followups', i18n: 'perm_group_followups', perms: [
+                    { key: 'followups.read', i18n: 'perm_read' },
+                    { key: 'followups.write', i18n: 'perm_write' }
+                ]},
+                { key: 'inbox', i18n: 'perm_group_inbox', perms: [
+                    { key: 'inbox.read', i18n: 'perm_read' },
+                    { key: 'inbox.reply', i18n: 'perm_reply' },
+                    { key: 'inbox.toggle_ai', i18n: 'perm_toggle_ai' }
+                ]},
+                { key: 'insights', i18n: 'perm_group_insights', perms: [
+                    { key: 'insights.read', i18n: 'perm_read' }
+                ]},
+                { key: 'orders', i18n: 'perm_group_orders', perms: [
+                    { key: 'orders.read', i18n: 'perm_read' },
+                    { key: 'orders.manage', i18n: 'perm_manage' }
+                ]},
+                { key: 'agents', i18n: 'perm_group_agents', perms: [
+                    { key: 'agents.read', i18n: 'perm_read' },
+                    { key: 'agents.configure', i18n: 'perm_configure' }
+                ]},
+                { key: 'integrations', i18n: 'perm_group_integrations', perms: [
+                    { key: 'integrations.read', i18n: 'perm_read' },
+                    { key: 'integrations.manage', i18n: 'perm_manage' }
+                ]},
+                { key: 'org', i18n: 'perm_group_org', perms: [
+                    { key: 'org.settings', i18n: 'perm_settings' },
+                    { key: 'org.members', i18n: 'perm_members' },
+                    { key: 'org.roles', i18n: 'perm_roles' },
+                    { key: 'org.billing', i18n: 'perm_billing' }
+                ]}
+            ];
+
+            function tt(key) { return t('team.' + key); }
+
+            function getEffectiveRoleFromRaw(raw) {
+                const r = String(raw || '').toLowerCase();
+                if (r === 'owner') return 'owner';
+                if (r === 'admin' || r === 'moderator' || r === 'manager') return 'manager';
+                return 'user';
+            }
+
+            // --- Fetch my permissions on login ---
+            async function fetchMyPermissions() {
+                if (!currentUserOrgId) return;
+                try {
+                    const { data, error } = await supabaseClient.rpc('get_my_permissions', { p_org_id: currentUserOrgId });
+                    if (error) throw error;
+                    myEffectiveRole = data?.role || 'user';
+                    myPermissions = data?.permissions || {};
+                    window.myEffectiveRole = myEffectiveRole;
+                    window.myPermissions = myPermissions;
+
+                    // Show/hide team nav
+                    const teamNav = document.getElementById('nav-team-item');
+                    if (teamNav) {
+                        teamNav.style.display = (myEffectiveRole === 'owner' || myEffectiveRole === 'manager') ? '' : 'none';
+                    }
+                } catch (e) {
+                    console.error('Failed to fetch permissions:', e);
+                    myEffectiveRole = getEffectiveRoleFromRaw(window.currentUserRole);
+                    myPermissions = {};
+                    window.myEffectiveRole = myEffectiveRole;
+                    window.myPermissions = myPermissions;
+                }
+            }
+
+            // Global permission check
+            window.hasPermission = function (perm) {
+                if (!myPermissions) return myEffectiveRole === 'owner';
+                if (myEffectiveRole === 'owner') return true;
+                return myPermissions[perm] === true;
+            };
+
+            // Nice permission denied handling
+            window.showPermissionDenied = function () {
+                // Remove existing
+                document.getElementById('perm-denied-overlay')?.remove();
+
+                const overlay = document.createElement('div');
+                overlay.id = 'perm-denied-overlay';
+                overlay.className = 'perm-denied-modal';
+                overlay.onclick = function (e) { if (e.target === overlay) overlay.remove(); };
+                overlay.innerHTML = `
+                    <div class="perm-denied-box">
+                        <div class="perm-denied-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z"/></svg>
+                        </div>
+                        <div class="perm-denied-title">${esc(tt('permission_denied_title'))}</div>
+                        <div class="perm-denied-msg">${esc(tt('permission_denied_msg'))}</div>
+                        <button class="perm-denied-close" onclick="this.closest('.perm-denied-modal').remove()">OK</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            };
+
+            // Guarded action wrapper
+            window.guardPermission = function (perm, callback) {
+                if (window.hasPermission(perm)) {
+                    return callback();
+                }
+                window.showPermissionDenied();
+                return false;
+            };
+
+            // --- Team Tab Init ---
+            window.initTeamTab = async function () {
+                const root = document.getElementById('team-page-root');
+                if (!root) return;
+
+                root.innerHTML = `
+                    <div class="team-header">
+                        <h2>${esc(tt('title'))}</h2>
+                        <p>${esc(tt('subtitle'))}</p>
+                    </div>
+                    <div class="team-tabs">
+                        <button class="team-tab-btn ${teamActiveSubtab === 'members' ? 'active' : ''}" onclick="teamSwitchSubtab('members', this)">${esc(tt('tab_members'))}</button>
+                        <button class="team-tab-btn ${teamActiveSubtab === 'permissions' ? 'active' : ''}" onclick="teamSwitchSubtab('permissions', this)" style="${myEffectiveRole === 'owner' ? '' : 'display:none'}">${esc(tt('tab_permissions'))}</button>
+                    </div>
+                    <div id="team-panel-members" class="team-tab-panel ${teamActiveSubtab === 'members' ? 'active' : ''}">
+                        <div id="team-members-container"></div>
+                    </div>
+                    <div id="team-panel-permissions" class="team-tab-panel ${teamActiveSubtab === 'permissions' ? 'active' : ''}">
+                        <div id="team-permissions-container"></div>
+                    </div>
+                `;
+
+                await teamLoadMembers();
+                if (teamActiveSubtab === 'permissions' && myEffectiveRole === 'owner') {
+                    await teamLoadPermissionsPanel();
+                }
+            };
+
+            window.teamSwitchSubtab = function (tab, el) {
+                teamActiveSubtab = tab;
+                document.querySelectorAll('.team-tab-btn').forEach(b => b.classList.remove('active'));
+                if (el) el.classList.add('active');
+                document.querySelectorAll('.team-tab-panel').forEach(p => p.classList.remove('active'));
+                const panel = document.getElementById('team-panel-' + tab);
+                if (panel) panel.classList.add('active');
+
+                if (tab === 'permissions' && myEffectiveRole === 'owner') {
+                    teamLoadPermissionsPanel();
+                }
+            };
+
+            // --- Members List ---
+            async function teamLoadMembers() {
+                const container = document.getElementById('team-members-container');
+                if (!container || !currentUserOrgId) return;
+
+                container.innerHTML = `<div class="team-empty"><p>${currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p></div>`;
+
+                try {
+                    const { data, error } = await supabaseClient.rpc('list_org_members', { p_org_id: currentUserOrgId });
+                    if (error) throw error;
+                    teamMembers = data || [];
+                } catch (e) {
+                    console.error('Failed to load members:', e);
+                    container.innerHTML = `<div class="team-empty"><p>${esc(tt('error_generic'))}</p></div>`;
+                    return;
+                }
+
+                renderTeamMembers(container);
+            }
+
+            function renderTeamMembers(container) {
+                const { data: { user: currentUser } } = { data: { user: { id: null } } };
+                let currentUserId = null;
+                try { currentUserId = supabaseClient.auth?.user?.()?.id; } catch (_) {}
+                if (!currentUserId) {
+                    try {
+                        const session = JSON.parse(localStorage.getItem('sb-' + new URL(supabaseClient.supabaseUrl || '').hostname.split('.')[0] + '-auth-token') || '{}');
+                        currentUserId = session?.user?.id;
+                    } catch (_) {}
+                }
+                if (!currentUserId && currentUserProfile) currentUserId = currentUserProfile.user_id;
+
+                const isOwner = myEffectiveRole === 'owner';
+
+                let html = '';
+
+                // Add member bar (owner only)
+                if (isOwner) {
+                    html += `
+                    <div class="team-add-bar">
+                        <div class="form-group">
+                            <label class="form-label">${esc(tt('input_email'))}</label>
+                            <input type="email" id="team-add-email" class="form-input" placeholder="${esc(tt('input_email'))}">
+                        </div>
+                        <div class="form-group role-group">
+                            <label class="form-label">${esc(tt('input_role'))}</label>
+                            <select id="team-add-role" class="form-input">
+                                <option value="manager">${esc(tt('role_manager'))}</option>
+                                <option value="user" selected>${esc(tt('role_user'))}</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" id="team-add-btn" onclick="teamAddMember()">${esc(tt('btn_add'))}</button>
+                        <div class="team-add-hint">${esc(tt('add_member_subtitle'))}</div>
+                    </div>`;
+                }
+
+                if (!teamMembers.length) {
+                    html += `<div class="team-empty"><p>${esc(tt('empty_members'))}</p></div>`;
+                } else {
+                    html += '<div class="team-members-list">';
+                    for (const m of teamMembers) {
+                        const effRole = m.effective_role || getEffectiveRoleFromRaw(m.raw_role);
+                        const isMe = m.user_id === currentUserId;
+                        const initials = (m.full_name || m.email || '?').slice(0, 2).toUpperCase();
+                        const avatarHtml = m.avatar_url
+                            ? `<img src="${esc(m.avatar_url)}" alt="" loading="lazy">`
+                            : esc(initials);
+                        const joinDate = m.created_at ? new Date(m.created_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+
+                        html += `
+                        <div class="team-member-card">
+                            <div class="team-avatar">${avatarHtml}</div>
+                            <div class="team-member-info">
+                                <div class="team-member-name">
+                                    ${esc(m.full_name || (currentLang === 'ar' ? 'بدون اسم' : 'No name'))}
+                                    <span class="team-role-badge ${effRole}">${esc(tt('role_' + effRole))}</span>
+                                    ${isMe ? `<span class="team-you-badge">${esc(tt('you_badge'))}</span>` : ''}
+                                </div>
+                                <div class="team-member-email">${esc(m.email || '')}</div>
+                                ${joinDate ? `<div class="team-member-meta">${esc(tt('joined'))} ${esc(joinDate)}</div>` : ''}
+                            </div>
+                            <div class="team-member-actions">
+                                ${isOwner && !isMe && effRole !== 'owner' ? `
+                                    <select onchange="teamChangeRole('${m.user_id}', this.value)" aria-label="${esc(tt('input_role'))}">
+                                        <option value="manager" ${effRole === 'manager' ? 'selected' : ''}>${esc(tt('role_manager'))}</option>
+                                        <option value="user" ${effRole === 'user' ? 'selected' : ''}>${esc(tt('role_user'))}</option>
+                                    </select>
+                                    <button class="team-remove-btn" onclick="teamRemoveMember('${m.user_id}', this)">${esc(tt('btn_remove'))}</button>
+                                ` : ''}
+                            </div>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+
+                container.innerHTML = html;
+            }
+
+            // --- Add Member ---
+            window.teamAddMember = async function () {
+                const emailInput = document.getElementById('team-add-email');
+                const roleInput = document.getElementById('team-add-role');
+                const btn = document.getElementById('team-add-btn');
+                if (!emailInput || !btn) return;
+
+                const email = emailInput.value.trim();
+                const role = roleInput?.value || 'user';
+                if (!email) { emailInput.focus(); return; }
+
+                btn.disabled = true;
+                btn.textContent = tt('btn_adding');
+
+                try {
+                    const { data, error } = await supabaseClient.rpc('add_org_member', {
+                        p_org_id: currentUserOrgId,
+                        p_email: email,
+                        p_role: role
+                    });
+                    if (error) throw error;
+
+                    if (data?.success) {
+                        showToast(tt('member_added'), 'success');
+                        emailInput.value = '';
+                        await teamLoadMembers();
+                    } else {
+                        const errKey = data?.error || 'error_generic';
+                        const errMsg = tt('error_' + errKey.replace('only_owner_can_add', 'only_owner')) || tt('error_generic');
+                        showToast(errMsg, 'error');
+                    }
+                } catch (e) {
+                    console.error('Add member failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = tt('btn_add');
+                }
+            };
+
+            // --- Change Role ---
+            window.teamChangeRole = async function (userId, newRole) {
+                try {
+                    const { data, error } = await supabaseClient.rpc('update_member_role', {
+                        p_org_id: currentUserOrgId,
+                        p_target_user_id: userId,
+                        p_new_role: newRole
+                    });
+                    if (error) throw error;
+
+                    if (data?.success) {
+                        showToast(tt('role_updated'), 'success');
+                        await teamLoadMembers();
+                    } else {
+                        const errKey = data?.error || 'error_generic';
+                        const errMsg = tt('error_' + errKey.replace('only_owner_can_change_roles', 'only_owner').replace('cannot_change_own_role', 'cannot_change_own_role').replace('cannot_change_owner_role', 'cannot_change_owner')) || tt('error_generic');
+                        showToast(errMsg, 'error');
+                        await teamLoadMembers(); // revert select
+                    }
+                } catch (e) {
+                    console.error('Change role failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                    await teamLoadMembers();
+                }
+            };
+
+            // --- Remove Member ---
+            window.teamRemoveMember = async function (userId, btn) {
+                if (!confirm(tt('confirm_remove'))) return;
+
+                if (btn) { btn.disabled = true; btn.textContent = tt('btn_removing'); }
+
+                try {
+                    const { data, error } = await supabaseClient.rpc('remove_org_member', {
+                        p_org_id: currentUserOrgId,
+                        p_target_user_id: userId
+                    });
+                    if (error) throw error;
+
+                    if (data?.success) {
+                        showToast(tt('member_removed'), 'success');
+                        await teamLoadMembers();
+                    } else {
+                        const errKey = data?.error || 'error_generic';
+                        const errMsg = tt('error_' + errKey.replace('only_owner_can_remove', 'only_owner').replace('cannot_remove_self', 'cannot_remove_self').replace('cannot_remove_owner', 'cannot_remove_owner')) || tt('error_generic');
+                        showToast(errMsg, 'error');
+                    }
+                } catch (e) {
+                    console.error('Remove member failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                } finally {
+                    if (btn) { btn.disabled = false; btn.textContent = tt('btn_remove'); }
+                }
+            };
+
+            // --- Permissions Panel ---
+            async function teamLoadPermissionsPanel() {
+                const container = document.getElementById('team-permissions-container');
+                if (!container || !currentUserOrgId) return;
+
+                if (myEffectiveRole !== 'owner') {
+                    container.innerHTML = `<div class="team-perm-owner-note">${esc(tt('error_only_owner'))}</div>`;
+                    return;
+                }
+
+                // Load permissions for active role
+                try {
+                    const { data, error } = await supabaseClient.rpc('get_role_permissions', {
+                        p_org_id: currentUserOrgId,
+                        p_role: teamActivePermRole
+                    });
+                    if (error) throw error;
+                    teamPermissionsCache[teamActivePermRole] = data?.permissions || {};
+                } catch (e) {
+                    console.error('Failed to load permissions:', e);
+                }
+
+                renderPermissionsPanel(container);
+            }
+
+            function renderPermissionsPanel(container) {
+                const perms = teamPermissionsCache[teamActivePermRole] || {};
+                const isOwnerRole = teamActivePermRole === 'owner';
+
+                let html = `
+                    <div class="team-perm-role-tabs">
+                        <button class="team-perm-role-btn ${teamActivePermRole === 'manager' ? 'active' : ''}" onclick="teamSwitchPermRole('manager', this)">${esc(tt('role_manager'))}</button>
+                        <button class="team-perm-role-btn ${teamActivePermRole === 'user' ? 'active' : ''}" onclick="teamSwitchPermRole('user', this)">${esc(tt('role_user'))}</button>
+                        <button class="team-perm-role-btn ${teamActivePermRole === 'owner' ? 'active' : ''}" onclick="teamSwitchPermRole('owner', this)">${esc(tt('role_owner'))}</button>
+                    </div>
+                `;
+
+                if (isOwnerRole) {
+                    html += `<div class="team-perm-owner-note">${esc(tt('role_owner_desc'))}</div>`;
+                } else {
+                    for (const group of PERM_GROUPS) {
+                        html += `<div class="team-perm-group">`;
+                        html += `<div class="team-perm-group-title">${esc(tt(group.i18n))}</div>`;
+                        for (const p of group.perms) {
+                            const checked = perms[p.key] === true;
+                            html += `
+                                <div class="team-perm-row">
+                                    <span class="team-perm-label">${esc(tt(p.i18n))}</span>
+                                    <label class="team-perm-toggle">
+                                        <input type="checkbox" ${checked ? 'checked' : ''} onchange="teamTogglePerm('${teamActivePermRole}', '${p.key}', this.checked)">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            `;
+                        }
+                        html += `</div>`;
+                    }
+                }
+
+                container.innerHTML = html;
+            }
+
+            window.teamSwitchPermRole = async function (role, el) {
+                teamActivePermRole = role;
+                document.querySelectorAll('.team-perm-role-btn').forEach(b => b.classList.remove('active'));
+                if (el) el.classList.add('active');
+                await teamLoadPermissionsPanel();
+            };
+
+            window.teamTogglePerm = async function (role, perm, granted) {
+                try {
+                    const { data, error } = await supabaseClient.rpc('set_role_permission', {
+                        p_org_id: currentUserOrgId,
+                        p_role: role,
+                        p_permission: perm,
+                        p_granted: granted
+                    });
+                    if (error) throw error;
+
+                    if (data?.success) {
+                        if (teamPermissionsCache[role]) {
+                            teamPermissionsCache[role][perm] = granted;
+                        }
+                        showToast(tt('permissions_saved'), 'success');
+                    } else {
+                        showToast(tt('permissions_save_failed'), 'error');
+                        await teamLoadPermissionsPanel();
+                    }
+                } catch (e) {
+                    console.error('Toggle perm failed:', e);
+                    showToast(tt('permissions_save_failed'), 'error');
+                    await teamLoadPermissionsPanel();
+                }
+            };
+
+            // --- Hook into app init ---
+            const origFetchUserRole = window.fetchUserRole || (async function () {});
+            window.fetchUserRole = async function () {
+                await origFetchUserRole();
+                await fetchMyPermissions();
+            };
+
+            // If role already loaded, fetch permissions now
+            if (currentUserOrgId && window.currentUserRole) {
+                fetchMyPermissions();
+            }
+        })();
 
     })();
 </script>
