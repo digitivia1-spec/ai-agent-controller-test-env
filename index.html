@@ -19226,337 +19226,566 @@
             }
         }
 
-        /* LEAD PROFILE STYLES */
-        .lead-profile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+        /* ============================================================
+           CRM + LEAD PROFILE + TASK MANAGER — MODERN REDESIGN
+        ============================================================ */
+
+        /* CRM loading / error states */
+        .crm-loading { padding: 60px 24px; text-align: center; color: var(--text-muted, #888); }
+        .crm-error-state { padding: 60px 24px; text-align: center; color: var(--text-muted, #888); display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+        /* CRM stats strip */
+        .crm-stats-strip {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .crm-stat-pill {
             display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
+        .crm-stat-pill .stat-num { font-size: 1rem; font-weight: 700; }
+        .crm-stat-pill.stat-total  { background: rgba(99,102,241,.12); color: #818cf8; border-color: rgba(99,102,241,.25); }
+        .crm-stat-pill.stat-new    { background: rgba(59,130,246,.12); color: #60a5fa; border-color: rgba(59,130,246,.25); }
+        .crm-stat-pill.stat-follow { background: rgba(245,158,11,.12); color: #fbbf24; border-color: rgba(245,158,11,.25); }
+        .crm-stat-pill.stat-won    { background: rgba(16,185,129,.12); color: #34d399; border-color: rgba(16,185,129,.25); }
+        .crm-stat-pill.stat-lost   { background: rgba(239,68,68,.12);  color: #f87171; border-color: rgba(239,68,68,.25); }
 
-        .lead-profile-container {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+        /* CRM toolbar */
+        .crm-toolbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .crm-search-wrap {
+            flex: 1;
+            min-width: 180px;
+            position: relative;
+        }
+        .crm-search-wrap svg {
+            position: absolute;
+            inset-inline-start: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: .45;
+            pointer-events: none;
+        }
+        .crm-search-input {
             width: 100%;
-            max-width: 700px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            padding: 9px 12px 9px 38px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: rgba(255,255,255,.05);
+            color: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color .2s;
         }
-
-        .lead-profile-header {
-            padding: 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
+        .crm-search-input:focus { border-color: rgba(99,102,241,.6); }
+        .crm-filter-select {
+            padding: 9px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: rgba(255,255,255,.05);
+            color: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            cursor: pointer;
+            min-width: 130px;
         }
-
-        .lead-profile-back-btn {
+        .crm-view-btns {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.1);
+        }
+        .crm-view-btn {
+            padding: 8px 14px;
             background: transparent;
             border: none;
-            color: white;
+            color: var(--text-muted, #888);
             cursor: pointer;
-            padding: 4px;
+            font-size: 0.8rem;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+        .crm-view-btn.active,
+        .crm-view-btn:hover {
+            background: rgba(99,102,241,.2);
+            color: #818cf8;
+        }
+
+        /* CRM Table view */
+        .crm-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,.07); }
+        .crm-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        .crm-table thead tr { background: rgba(255,255,255,.04); }
+        .crm-table th {
+            padding: 11px 14px;
+            text-align: start;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--text-muted, #888);
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+        .crm-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            vertical-align: middle;
+        }
+        .crm-table tbody tr { cursor: pointer; transition: background .15s; }
+        .crm-table tbody tr:hover { background: rgba(99,102,241,.07); }
+        .crm-table tbody tr:last-child td { border-bottom: none; }
+        .crm-lead-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#6366f1,#8b5cf6);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .crm-name-cell { display: flex; align-items: center; gap: 10px; }
+        .crm-name-text { font-weight: 500; }
+        .crm-phone-text { font-size: 0.82rem; color: var(--text-muted,#888); margin-top: 2px; font-family: monospace; }
+
+        /* CRM card grid view */
+        .crm-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+        }
+        .crm-card {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 14px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .crm-card:hover { background: rgba(99,102,241,.08); border-color: rgba(99,102,241,.3); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+        .crm-card-head { display: flex; align-items: center; gap: 12px; }
+        .crm-card-info { flex: 1; min-width: 0; }
+        .crm-card-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .crm-card-phone { font-size: 0.8rem; color: var(--text-muted,#888); font-family: monospace; margin-top: 2px; }
+        .crm-card-foot { display: flex; align-items: center; justify-content: space-between; }
+        .crm-source-tag {
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,.08);
+            color: var(--text-muted,#888);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* CRM pipeline/kanban view */
+        .crm-kanban { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; align-items: flex-start; }
+        .crm-kanban-col {
+            min-width: 220px;
+            max-width: 260px;
+            flex-shrink: 0;
+            background: rgba(255,255,255,.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.07);
+            overflow: hidden;
+        }
+        .crm-kanban-head {
+            padding: 12px 14px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            min-width: 32px;
-            min-height: 32px;
-            transition: opacity 0.2s;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .4px;
         }
-
-        .lead-profile-back-btn:hover {
-            opacity: 0.8;
+        .crm-kanban-count {
+            background: rgba(255,255,255,.1);
+            padding: 1px 7px;
+            border-radius: 999px;
+            font-size: 0.75rem;
         }
-
-        .lead-profile-title-section {
-            flex: 1;
+        .crm-kanban-list { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 80px; }
+        .crm-kanban-card {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 9px;
+            padding: 11px 12px;
+            cursor: pointer;
+            transition: all .15s;
+            font-size: 0.85rem;
         }
+        .crm-kanban-card:hover { background: rgba(99,102,241,.1); border-color: rgba(99,102,241,.3); }
+        .crm-kanban-empty { padding: 20px 12px; text-align: center; color: var(--text-muted,#888); font-size: 0.8rem; }
 
-        .lead-profile-name {
-            font-size: 1.5rem;
+        /* Status badges — used everywhere */
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin: 0 0 8px 0;
-            color: white;
+            white-space: nowrap;
+        }
+        .status-chip.s-new       { background: rgba(59,130,246,.15);  color: #60a5fa; }
+        .status-chip.s-follow_up { background: rgba(245,158,11,.15);  color: #fbbf24; }
+        .status-chip.s-contacted { background: rgba(139,92,246,.15);  color: #a78bfa; }
+        .status-chip.s-qualified { background: rgba(14,165,233,.15);  color: #38bdf8; }
+        .status-chip.s-won       { background: rgba(16,185,129,.15);  color: #34d399; }
+        .status-chip.s-lost      { background: rgba(239,68,68,.15);   color: #f87171; }
+
+        /* ============================================================
+           LEAD PROFILE — RIGHT SLIDE PANEL
+        ============================================================ */
+        .lead-profile-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-end;
+        }
+        .lead-profile-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            backdrop-filter: blur(2px);
+        }
+        .lead-profile-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-surface, #0f172a);
+            border-inline-start: 1px solid rgba(255,255,255,.09);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            box-shadow: -20px 0 60px rgba(0,0,0,.4);
+            animation: slideInPanel .25s cubic-bezier(.4,0,.2,1);
+        }
+        @keyframes slideInPanel {
+            from { transform: translateX(100%); opacity: .7; }
+            to   { transform: translateX(0);    opacity: 1;  }
         }
 
+        /* Lead profile header */
+        .lead-profile-header {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .lead-profile-back-btn {
+            width: 36px; height: 36px;
+            border-radius: 9px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: rgba(255,255,255,.05);
+            color: inherit;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: background .2s;
+        }
+        .lead-profile-back-btn:hover { background: rgba(255,255,255,.1); }
+        .lp-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#6366f1,#8b5cf6);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .lead-profile-title-section { flex: 1; min-width: 0; }
+        .lead-profile-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0 0 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .lead-profile-meta {
             display: flex;
-            gap: 12px;
-            font-size: 0.85rem;
-            color: var(--text-muted, #888);
-        }
-
-        .lead-profile-phone {
-            font-family: monospace;
-        }
-
-        .lead-profile-platform {
-            text-transform: capitalize;
-            padding: 2px 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .lead-status-badge {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .lead-profile-actions {
-            padding: 12px 24px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-muted,#888);
+        }
+        .lead-profile-phone { font-family: monospace; }
+        .lead-profile-platform {
+            padding: 1px 7px;
+            background: rgba(255,255,255,.08);
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.72rem;
+            text-transform: uppercase;
         }
 
-        .action-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 10px 12px;
-            border-radius: 8px;
+        /* Status badge */
+        .lead-status-badge {
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .4px;
             cursor: pointer;
-            font-size: 0.85rem;
+            flex-shrink: 0;
+            border: 1px solid transparent;
+            transition: opacity .2s;
+        }
+        .lead-status-badge:hover { opacity: .8; }
+        .status-new       { background: rgba(59,130,246,.18);  color: #60a5fa;  border-color: rgba(59,130,246,.3); }
+        .status-follow_up { background: rgba(245,158,11,.18);  color: #fbbf24;  border-color: rgba(245,158,11,.3); }
+        .status-contacted { background: rgba(139,92,246,.18);  color: #a78bfa;  border-color: rgba(139,92,246,.3); }
+        .status-qualified { background: rgba(14,165,233,.18);  color: #38bdf8;  border-color: rgba(14,165,233,.3); }
+        .status-won       { background: rgba(16,185,129,.18);  color: #34d399;  border-color: rgba(16,185,129,.3); }
+        .status-lost      { background: rgba(239,68,68,.18);   color: #f87171;  border-color: rgba(239,68,68,.3);  }
+        .status-follow-up { background: rgba(245,158,11,.18);  color: #fbbf24;  border-color: rgba(245,158,11,.3); }
+
+        /* Action strip */
+        .lead-profile-actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+        .action-btn {
+            flex: 1;
+            min-width: 0;
+            padding: 10px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: rgba(255,255,255,.04);
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.78rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            transition: all 0.2s;
+            gap: 5px;
+            transition: all .2s;
+            white-space: nowrap;
         }
+        .action-btn:hover { background: rgba(99,102,241,.12); border-color: rgba(99,102,241,.35); color: #818cf8; }
+        .action-icon { font-size: 1.15rem; line-height: 1; }
+        .action-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
 
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .action-icon {
-            font-size: 1.2rem;
-        }
-
-        .action-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
+        /* Status dropdown */
         .status-dropdown {
             position: absolute;
-            top: 200px;
-            right: 24px;
-            background: rgba(15, 23, 42, 0.98);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
+            top: 130px;
+            inset-inline-end: 16px;
+            background: var(--bg-surface, #0f172a);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 12px;
             min-width: 200px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 1001;
+            box-shadow: 0 16px 48px rgba(0,0,0,.6);
+            z-index: 1100;
+            overflow: hidden;
         }
-
         .dropdown-item {
-            padding: 12px 16px;
+            padding: 11px 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: background 0.2s;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background .15s;
+            font-size: 0.875rem;
+            border-bottom: 1px solid rgba(255,255,255,.05);
         }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background: rgba(255,255,255,.06); }
 
-        .dropdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
+        /* Profile content area */
         .lead-profile-content {
-            overflow-y: auto;
             flex: 1;
-            padding: 24px;
+            overflow-y: auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
+            scrollbar-width: thin;
         }
-
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        .profile-section { display: flex; flex-direction: column; gap: 10px; }
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .section-header h3 {
             margin: 0;
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--text-muted,#888);
         }
-
         .btn-icon-small {
             background: transparent;
             border: none;
-            color: white;
+            color: var(--text-muted,#888);
             cursor: pointer;
-            font-size: 1.2rem;
-            padding: 0;
-            opacity: 0.6;
-            transition: opacity 0.2s;
+            font-size: 1rem;
+            padding: 4px;
+            border-radius: 6px;
+            transition: color .2s, background .2s;
         }
-
-        .btn-icon-small:hover {
-            opacity: 1;
-        }
-
+        .btn-icon-small:hover { color: inherit; background: rgba(255,255,255,.07); }
         .section-content {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 16px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,.04);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.07);
         }
+        .ai-summary-card { font-size: 0.9rem; line-height: 1.65; }
+        .followup-card { font-size: 0.875rem; }
+        .followup-item { display: flex; justify-content: space-between; align-items: center; }
+        .followup-due { font-weight: 600; }
+        .followup-overdue { color: #f87171; }
+        .followup-due-soon { color: #fbbf24; }
 
-        .ai-summary-card {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-primary, #e5e7eb);
-        }
-
-        .followup-card {
-            font-size: 0.9rem;
-        }
-
-        .followup-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            color: var(--text-primary, #e5e7eb);
-        }
-
-        .followup-due {
-            font-weight: 500;
-        }
-
-        .followup-overdue {
-            color: #ff6b6b;
-        }
-
-        .followup-due-soon {
-            color: #ffd43b;
-        }
-
-        .notes-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        /* Notes */
+        .notes-list { display: flex; flex-direction: column; gap: 10px; }
         .note-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 3px solid rgba(91, 174, 176, 0.5);
+            background: rgba(255,255,255,.04);
+            padding: 12px 14px;
+            border-radius: 9px;
+            border-inline-start: 3px solid rgba(99,102,241,.5);
         }
+        .note-author { font-size: 0.75rem; color: var(--text-muted,#888); margin-bottom: 5px; }
+        .note-body { font-size: 0.875rem; line-height: 1.55; }
 
-        .note-author {
-            font-size: 0.8rem;
-            color: var(--text-muted, #888);
-            margin-bottom: 4px;
-        }
-
-        .note-body {
-            font-size: 0.9rem;
-            color: var(--text-primary, #e5e7eb);
-            line-height: 1.5;
-        }
-
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        /* Activity timeline */
+        .activity-list { display: flex; flex-direction: column; gap: 8px; }
         .activity-item {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            border-left: 3px solid rgba(91, 174, 176, 0.3);
+            display: flex;
+            gap: 10px;
+            font-size: 0.85rem;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.03);
+            border-inline-start: 2px solid rgba(255,255,255,.1);
         }
+        .activity-timestamp { font-size: 0.72rem; color: var(--text-muted,#888); display: block; margin-bottom: 2px; }
+        .activity-text { color: inherit; }
+        .note-textarea { font-size: 14px; }
 
-        .activity-timestamp {
-            font-size: 0.75rem;
-            color: var(--text-muted, #888);
-            display: block;
-            margin-bottom: 4px;
+        /* ============================================================
+           TASK MANAGER — MODERN CARD LIST
+        ============================================================ */
+        .tm-toolbar {
+            display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;
         }
-
-        .activity-text {
-            color: var(--text-primary, #e5e7eb);
+        .tm-task-list { display: flex; flex-direction: column; gap: 8px; }
+        .tm-task-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.07);
+            cursor: pointer;
+            transition: all .18s;
+            border-inline-start: 4px solid transparent;
         }
-
-        .note-textarea {
-            font-size: 14px;
+        .tm-task-card:hover { background: rgba(99,102,241,.08); border-color: rgba(99,102,241,.2); border-inline-start-color: inherit; }
+        .tm-task-card.p-urgent  { border-inline-start-color: #ef4444; }
+        .tm-task-card.p-high    { border-inline-start-color: #f97316; }
+        .tm-task-card.p-medium  { border-inline-start-color: #3b82f6; }
+        .tm-task-card.p-low     { border-inline-start-color: #9ca3af; }
+        .tm-task-main { flex: 1; min-width: 0; }
+        .tm-task-title { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tm-task-meta { font-size: 0.75rem; color: var(--text-muted,#888); margin-top: 3px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .tm-task-due-overdue { color: #f87171; font-weight: 600; }
+        .tm-status-chip {
+            padding: 3px 10px; border-radius: 999px; font-size: 0.73rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; flex-shrink: 0;
         }
+        .ts-open       { background: rgba(59,130,246,.15);  color: #60a5fa; }
+        .ts-in_progress{ background: rgba(245,158,11,.15);  color: #fbbf24; }
+        .ts-waiting    { background: rgba(139,92,246,.15);  color: #a78bfa; }
+        .ts-done       { background: rgba(16,185,129,.15);  color: #34d399; }
+        .ts-cancelled  { background: rgba(100,116,139,.15); color: #94a3b8; }
+        .tm-priority-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+        }
+        .tm-empty-state {
+            padding: 60px 24px; text-align: center; color: var(--text-muted,#888);
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .tm-empty-icon { font-size: 2.5rem; opacity: .5; }
 
-        /* Responsive Lead Profile */
+        /* Task modals */
+        .modal-box { background: var(--bg-surface, #0f172a); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; width: 100%; padding: 0; overflow: hidden; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .modal-header h3 { margin: 0; font-size: 1rem; font-weight: 700; }
+        .modal-close-btn { background: rgba(255,255,255,.07); border: none; color: inherit; width: 30px; height: 30px; border-radius: 7px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+        .modal-close-btn:hover { background: rgba(255,255,255,.12); }
+        .modal-body { padding: 20px; }
+        .modal-footer { padding: 14px 20px; border-top: 1px solid rgba(255,255,255,.08); display: flex; gap: 10px; justify-content: flex-end; }
+        .btn-primary { padding: 9px 20px; background: #6366f1; color: #fff; border: none; border-radius: 9px; cursor: pointer; font-size: 0.875rem; font-weight: 600; transition: background .2s; }
+        .btn-primary:hover { background: #4f46e5; }
+        .btn-secondary { padding: 9px 20px; background: rgba(255,255,255,.07); color: inherit; border: 1px solid rgba(255,255,255,.1); border-radius: 9px; cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: background .2s; }
+        .btn-secondary:hover { background: rgba(255,255,255,.1); }
+        .form-input {
+            width: 100%; padding: 10px 12px; border-radius: 9px;
+            border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.05);
+            color: inherit; font-size: 0.875rem; outline: none; transition: border-color .2s;
+            font-family: inherit;
+        }
+        .form-input:focus { border-color: rgba(99,102,241,.6); }
+        .form-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--text-muted,#888); display: block; margin-bottom: 6px; }
+        .form-group { display: flex; flex-direction: column; }
+
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            .lead-profile-overlay {
-                padding: 0;
-                align-items: flex-end;
-            }
-
-            .lead-profile-container {
-                max-width: 100%;
-                border-radius: 20px 20px 0 0;
-                max-height: 95vh;
-            }
-
-            .lead-profile-header {
-                padding: 20px;
-            }
-
-            .lead-profile-name {
-                font-size: 1.2rem;
-            }
-
-            .lead-profile-actions {
-                grid-template-columns: repeat(2, 1fr);
-                padding: 12px 16px;
-            }
-
-            .lead-profile-content {
-                padding: 16px;
-                gap: 16px;
-            }
-
-            .status-dropdown {
-                right: 16px;
-                left: 16px;
-                top: auto;
-                bottom: 60px;
-            }
+            .lead-profile-container { max-width: 100%; border-radius: 20px 20px 0 0; height: 95dvh; }
+            .lead-profile-overlay { align-items: flex-end; justify-content: stretch; }
+            @keyframes slideInPanel { from { transform: translateY(100%); } to { transform: translateY(0); } }
+            .lead-profile-actions { gap: 6px; }
+            .action-btn { padding: 9px 6px; }
+            .crm-stats-strip { gap: 7px; }
+            .crm-stat-pill { padding: 5px 10px; font-size: 0.76rem; }
+            .crm-cards-grid { grid-template-columns: 1fr; }
+            .crm-kanban { scroll-snap-type: x mandatory; }
+            .crm-kanban-col { scroll-snap-align: start; min-width: 200px; }
+            .tm-task-card { gap: 10px; padding: 12px 14px; }
+            .modal-box { border-radius: 0; border-bottom: none; }
+        }
+        @media (max-width: 480px) {
+            .crm-toolbar { flex-direction: column; align-items: stretch; }
+            .crm-view-btns { align-self: flex-start; }
+            .tm-toolbar { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -20040,113 +20269,94 @@
     <div id="toast" role="status" aria-live="polite" aria-atomic="true">Saved Successfully!</div>
 
     <!-- LEAD PROFILE PAGE -->
-    <div id="lead-profile-page" class="lead-profile-overlay" style="display: none;" onclick="closeLeadProfile(event)">
-        <div class="lead-profile-container" onclick="event.stopPropagation()">
+    <!-- LEAD PROFILE PANEL -->
+    <div id="lead-profile-page" class="lead-profile-overlay" style="display:none;">
+        <div class="lead-profile-backdrop" onclick="closeLeadProfile()"></div>
+        <div class="lead-profile-container">
             <!-- Header -->
             <div class="lead-profile-header">
-                <button class="lead-profile-back-btn" onclick="closeLeadProfile()" title="Back to CRM">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                    </svg>
+                <button class="lead-profile-back-btn" onclick="closeLeadProfile()" title="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
                 </button>
+                <div id="lp-avatar" class="lp-avatar">?</div>
                 <div class="lead-profile-title-section">
-                    <h2 id="lead-profile-name" class="lead-profile-name">--</h2>
+                    <div id="lead-profile-name" class="lead-profile-name">--</div>
                     <div class="lead-profile-meta">
                         <span id="lead-profile-phone" class="lead-profile-phone">--</span>
                         <span id="lead-profile-platform" class="lead-profile-platform">--</span>
                     </div>
                 </div>
-                <div id="lead-profile-status-badge" class="lead-status-badge status-new">New</div>
+                <div id="lead-profile-status-badge" class="lead-status-badge status-new" onclick="openStatusDropdown()">New</div>
+            </div>
+
+            <!-- Status Dropdown -->
+            <div id="status-dropdown" class="status-dropdown" style="display:none;">
+                <div class="dropdown-item" onclick="updateLeadStatus('new')"><span class="status-chip s-new">New</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('follow_up')"><span class="status-chip s-follow_up">Follow-up</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('contacted')"><span class="status-chip s-contacted">Contacted</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('qualified')"><span class="status-chip s-qualified">Qualified</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('won')"><span class="status-chip s-won">Won</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('lost')"><span class="status-chip s-lost">Lost</span></div>
             </div>
 
             <!-- Quick Actions -->
             <div class="lead-profile-actions">
-                <button class="action-btn" onclick="openStatusDropdown()">
-                    <span class="action-icon">•••</span>
-                    <span class="action-label" data-i18n="crm.label_status">Status</span>
-                </button>
                 <button class="action-btn" onclick="openAddNoteModal()">
-                    <span class="action-icon">📝</span>
-                    <span class="action-label" data-i18n="crm.btn_add_note">Add Note</span>
+                    <span class="action-icon">✏️</span>
+                    <span class="action-label" data-i18n="crm.btn_add_note">Note</span>
                 </button>
                 <button class="action-btn" onclick="openFollowUpModal()">
                     <span class="action-icon">📅</span>
-                    <span class="action-label" data-i18n="crm.btn_set_follow_up">Set Follow-up</span>
+                    <span class="action-label" data-i18n="crm.btn_set_follow_up">Follow-up</span>
                 </button>
-                <button class="action-btn" onclick="markFollowUpComplete()" id="lead-profile-complete-btn" style="display: none;">
-                    <span class="action-icon">✓</span>
-                    <span class="action-label" data-i18n="crm.btn_mark_complete">Complete</span>
+                <button class="action-btn" id="lead-profile-complete-btn" style="display:none;" onclick="markFollowUpComplete()">
+                    <span class="action-icon">✅</span>
+                    <span class="action-label" data-i18n="crm.btn_mark_complete">Done</span>
+                </button>
+                <button class="action-btn" onclick="refreshAISummary()">
+                    <span class="action-icon">🤖</span>
+                    <span class="action-label">AI</span>
                 </button>
             </div>
 
-            <!-- Status Dropdown (Hidden) -->
-            <div id="status-dropdown" class="status-dropdown" style="display: none;">
-                <div class="dropdown-item" onclick="updateLeadStatus('new')">
-                    <div class="status-badge status-new">New</div>
-                    <span data-i18n="leads.status.new">New</span>
-                </div>
-                <div class="dropdown-item" onclick="updateLeadStatus('follow_up')">
-                    <div class="status-badge status-follow-up">Follow-up</div>
-                    <span data-i18n="leads.status.follow_up">Follow-up</span>
-                </div>
-                <div class="dropdown-item" onclick="updateLeadStatus('contacted')">
-                    <div class="status-badge status-contacted">Contacted</div>
-                    <span data-i18n="leads.status.contacted">Contacted</span>
-                </div>
-                <div class="dropdown-item" onclick="updateLeadStatus('qualified')">
-                    <div class="status-badge status-qualified">Qualified</div>
-                    <span data-i18n="leads.status.qualified">Qualified</span>
-                </div>
-                <div class="dropdown-item" onclick="updateLeadStatus('won')">
-                    <div class="status-badge status-won">Won</div>
-                    <span data-i18n="leads.status.won">Won</span>
-                </div>
-                <div class="dropdown-item" onclick="updateLeadStatus('lost')">
-                    <div class="status-badge status-lost">Lost</div>
-                    <span data-i18n="leads.status.lost">Lost</span>
-                </div>
-            </div>
-
-            <!-- Content Scroll Area -->
+            <!-- Scrollable Content -->
             <div class="lead-profile-content">
                 <!-- AI Summary -->
                 <div class="profile-section">
                     <div class="section-header">
-                        <h3 data-i18n="crm.label_ai_summary">AI Summary</h3>
-                        <button class="btn-icon-small" onclick="refreshAISummary()" title="Refresh">🔄</button>
+                        <h3 data-i18n="crm.label_ai_summary">AI SUMMARY</h3>
                     </div>
                     <div id="lead-profile-ai-summary" class="section-content ai-summary-card">
-                        <p style="color: var(--text-muted, #888);" data-i18n="crm.empty_activity">No summary yet.</p>
+                        <span style="color:var(--text-muted,#888);">No summary yet.</span>
                     </div>
                 </div>
 
-                <!-- Follow-up Section -->
-                <div class="profile-section" id="lead-profile-followup-section" style="display: none;">
+                <!-- Follow-up -->
+                <div class="profile-section" id="lead-profile-followup-section" style="display:none;">
                     <div class="section-header">
-                        <h3 data-i18n="crm.label_follow_up_due">Follow-up Due</h3>
+                        <h3 data-i18n="crm.label_follow_up_due">FOLLOW-UP</h3>
                     </div>
-                    <div id="lead-profile-followup-content" class="section-content followup-card">
-                        <p style="color: var(--text-muted, #888);">--</p>
-                    </div>
+                    <div id="lead-profile-followup-content" class="section-content followup-card"></div>
                 </div>
 
-                <!-- Notes/Comments -->
+                <!-- Notes -->
                 <div class="profile-section">
                     <div class="section-header">
-                        <h3 data-i18n="crm.label_notes">Notes</h3>
+                        <h3 data-i18n="crm.label_notes">NOTES</h3>
+                        <button class="btn-icon-small" onclick="openAddNoteModal()">+ Add</button>
                     </div>
-                    <div id="lead-profile-notes" class="section-content notes-list">
-                        <p style="color: var(--text-muted, #888);" data-i18n="crm.empty_notes">No notes yet.</p>
+                    <div id="lead-profile-notes" class="notes-list">
+                        <div class="section-content" style="color:var(--text-muted,#888);font-size:0.875rem;">No notes yet.</div>
                     </div>
                 </div>
 
-                <!-- Activity Timeline -->
+                <!-- Activity -->
                 <div class="profile-section">
                     <div class="section-header">
-                        <h3 data-i18n="crm.label_activity">Activity</h3>
+                        <h3 data-i18n="crm.label_activity">ACTIVITY</h3>
                     </div>
-                    <div id="lead-profile-activity" class="section-content activity-list">
-                        <p style="color: var(--text-muted, #888);" data-i18n="crm.empty_activity">No activity recorded.</p>
+                    <div id="lead-profile-activity" class="activity-list">
+                        <div style="color:var(--text-muted,#888);font-size:0.875rem;padding:12px 0;">No activity recorded.</div>
                     </div>
                 </div>
             </div>
@@ -20154,30 +20364,36 @@
     </div>
 
     <!-- Add Note Modal -->
-    <div id="add-note-modal" class="modal-overlay" style="display: none;" onclick="closeAddNoteModal(event)">
-        <div class="modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
-            <div class="modal-close" onclick="closeAddNoteModal()">×</div>
-            <h3 style="margin-bottom: 16px;" data-i18n="crm.btn_add_note">Add Note</h3>
-            <textarea id="note-textarea" class="note-textarea" placeholder="Write your note here..." style="width: 100%; height: 120px; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
-            <div style="margin-top: 16px; display: flex; gap: 10px; justify-content: flex-end;">
-                <button class="pill-btn secondary" onclick="closeAddNoteModal()" data-i18n="modals.btn_cancel">Cancel</button>
-                <button class="pill-btn primary" onclick="saveNewNote()" data-i18n="modals.btn_save">Save Note</button>
+    <div id="add-note-modal" class="modal-overlay" style="display:none;" onclick="closeAddNoteModal(event)">
+        <div class="modal-box" style="max-width:500px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 data-i18n="crm.btn_add_note">Add Note</h3>
+                <button class="modal-close-btn" onclick="closeAddNoteModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="note-textarea" class="form-input" rows="4" placeholder="Write your note here..." style="resize:vertical;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeAddNoteModal()" data-i18n="modals.btn_cancel">Cancel</button>
+                <button class="btn-primary" onclick="saveNewNote()" data-i18n="modals.btn_save">Save Note</button>
             </div>
         </div>
     </div>
 
     <!-- Follow-up Modal -->
-    <div id="follow-up-modal" class="modal-overlay" style="display: none;" onclick="closeFollowUpModal(event)">
-        <div class="modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
-            <div class="modal-close" onclick="closeFollowUpModal()">×</div>
-            <h3 style="margin-bottom: 16px;" data-i18n="crm.btn_set_follow_up">Set Follow-up</h3>
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;" data-i18n="crm.label_follow_up_due">Follow-up Due Date</label>
-                <input type="datetime-local" id="followup-datetime" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(0,0,0,0.3); color: white; font-size: 14px;">
+    <div id="follow-up-modal" class="modal-overlay" style="display:none;" onclick="closeFollowUpModal(event)">
+        <div class="modal-box" style="max-width:420px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 data-i18n="crm.btn_set_follow_up">Set Follow-up</h3>
+                <button class="modal-close-btn" onclick="closeFollowUpModal()">✕</button>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button class="pill-btn secondary" onclick="closeFollowUpModal()" data-i18n="modals.btn_cancel">Cancel</button>
-                <button class="pill-btn primary" onclick="saveFollowUpDate()" data-i18n="modals.btn_save">Save</button>
+            <div class="modal-body" style="display:flex;flex-direction:column;gap:10px;">
+                <label class="form-label" data-i18n="crm.label_follow_up_due">Due Date &amp; Time</label>
+                <input type="datetime-local" id="followup-datetime" class="form-input">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeFollowUpModal()" data-i18n="modals.btn_cancel">Cancel</button>
+                <button class="btn-primary" onclick="saveFollowUpDate()" data-i18n="modals.btn_save">Save</button>
             </div>
         </div>
     </div>
@@ -23368,32 +23584,48 @@
             </div>
 
             <!-- CREATE TASK MODAL -->
+            <!-- CREATE TASK MODAL -->
             <div id="create-task-modal" class="modal-overlay" style="display:none;" onclick="closeCreateTaskModal(event)">
-                <div class="modal-box" style="max-width:520px;">
+                <div class="modal-box" style="max-width:500px;width:calc(100% - 32px);" onclick="event.stopPropagation()">
                     <div class="modal-header">
                         <h3 data-i18n="task_manager.modal_create_title">New Task</h3>
                         <button class="modal-close-btn" onclick="closeCreateTaskModal()">✕</button>
                     </div>
-                    <div class="modal-body" style="display:flex;flex-direction:column;gap:12px;">
-                        <input id="create-task-title" type="text" class="leads-filter-input" style="width:100%;" placeholder="Task title *">
-                        <textarea id="create-task-desc" class="leads-filter-input" rows="3" style="width:100%;resize:vertical;" placeholder="Description (optional)"></textarea>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                            <select id="create-task-type" class="leads-filter-select">
-                                <option value="general">General</option>
-                                <option value="internal_request">Internal Request</option>
-                                <option value="customer_followup">Customer Follow-up</option>
-                                <option value="error">Error</option>
-                                <option value="suggestion">Suggestion</option>
-                                <option value="request">Request</option>
-                            </select>
-                            <select id="create-task-priority" class="leads-filter-select">
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                                <option value="high">High</option>
-                                <option value="urgent">Urgent</option>
-                            </select>
+                    <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+                        <div class="form-group">
+                            <label class="form-label">Title *</label>
+                            <input id="create-task-title" type="text" class="form-input" placeholder="What needs to be done?">
                         </div>
-                        <input id="create-task-due" type="datetime-local" class="leads-filter-input" style="width:100%;">
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="create-task-desc" class="form-input" rows="3" style="resize:vertical;" placeholder="Add more details…"></textarea>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select id="create-task-type" class="form-input">
+                                    <option value="general">General</option>
+                                    <option value="internal_request">Internal Request</option>
+                                    <option value="customer_followup">Customer Follow-up</option>
+                                    <option value="error">Error</option>
+                                    <option value="suggestion">Suggestion</option>
+                                    <option value="request">Request</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Priority</label>
+                                <select id="create-task-priority" class="form-input">
+                                    <option value="medium">🔵 Medium</option>
+                                    <option value="low">⚪ Low</option>
+                                    <option value="high">🟠 High</option>
+                                    <option value="urgent">🔴 Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Due Date (optional)</label>
+                            <input id="create-task-due" type="datetime-local" class="form-input">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn-secondary" onclick="closeCreateTaskModal()">Cancel</button>
@@ -23404,9 +23636,9 @@
 
             <!-- TASK DETAIL MODAL -->
             <div id="task-detail-modal" class="modal-overlay" style="display:none;" onclick="closeTaskDetail(event)">
-                <div class="modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto;">
-                    <div class="modal-header">
-                        <h3 id="task-detail-title">Task Detail</h3>
+                <div class="modal-box" style="max-width:560px;width:calc(100% - 32px);max-height:90dvh;overflow-y:auto;" onclick="event.stopPropagation()">
+                    <div class="modal-header" style="position:sticky;top:0;background:var(--bg-surface,#0f172a);z-index:1;">
+                        <h3 id="task-detail-title" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:calc(100% - 48px);">Task</h3>
                         <button class="modal-close-btn" onclick="closeTaskDetail()">✕</button>
                     </div>
                     <div id="task-detail-body" class="modal-body" style="display:flex;flex-direction:column;gap:16px;"></div>
@@ -38846,193 +39078,218 @@ Thank you for shopping with {store_name}!</textarea>
 
         // CRM View Initialization
         window.initCrmTab = async function() {
+            const grid = document.getElementById('crm-grid');
+            if (grid) grid.innerHTML = '<div class="crm-loading"><div class="spinner" style="width:32px;height:32px;margin:0 auto 12px;"></div><p>Loading…</p></div>';
             try {
-                await fetchLeads();
-                if (cachedLeads) {
-                    renderCrmView(cachedLeads);
-                }
+                if (!currentUserOrgId) throw new Error('Not authenticated');
+                const {data, error} = await supabaseClient
+                    .from('leads')
+                    .select('*')
+                    .eq('org_id', currentUserOrgId)
+                    .order('created_at', {ascending: false});
+                if (error) throw error;
+                cachedLeads = data || [];
+                renderCrmView(cachedLeads);
             } catch (err) {
                 console.error('Failed to load CRM data:', err);
+                if (grid) grid.innerHTML = `<div class="crm-error-state"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Failed to load CRM data.</p><button onclick="initCrmTab()" style="margin-top:12px;padding:8px 20px;background:#3b82f6;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.9rem;">Retry</button></div>`;
             }
         };
 
-        function renderCrmView(leads) {
-            const grid = document.getElementById('crm-grid');
-            const toolbar = document.getElementById('leads-toolbar-container');
+        // ── helpers ──────────────────────────────────────────────
+        function crmInitials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+        }
+        function crmStatusChip(status) {
+            const labels = {new:'New',follow_up:'Follow-up',contacted:'Contacted',qualified:'Qualified',won:'Won',lost:'Lost'};
+            return `<span class="status-chip s-${status}">${labels[status] || status}</span>`;
+        }
 
+        function renderCrmView(leads) {
+            const grid    = document.getElementById('crm-grid');
+            const toolbar = document.getElementById('leads-toolbar-container');
             if (!grid || !toolbar) return;
 
-            // Render toolbar (reuse leads toolbar structure)
-            const searchVal = document.querySelector('#leads-search-input')?.value || '';
+            // Stats strip
+            const total    = leads.length;
+            const newCount = leads.filter(l => l.status === 'new').length;
+            const fuCount  = leads.filter(l => l.status === 'follow_up').length;
+            const wonCount = leads.filter(l => l.status === 'won').length;
+            const lostCount= leads.filter(l => l.status === 'lost').length;
+
             toolbar.innerHTML = `
-                <input type="text" id="crm-search-input" class="leads-filter-input"
-                    placeholder="${t('leads.search_placeholder')}"
-                    oninput="filterAndRenderCrmData()">
-                <select id="crm-status-filter" class="leads-filter-select"
-                    onchange="filterAndRenderCrmData()">
-                    <option value="">${t('leads.filter_all_statuses')}</option>
-                    ${LEAD_STATUSES.map(s => `<option value="${s}">${t('leads.status.' + s)}</option>`).join('')}
-                </select>
-                <div class="leads-view-switch">
-                    <button class="leads-view-btn active" data-view="table" onclick="setCrmView('table', this)" data-i18n="leads.view_table">Table</button>
-                    <button class="leads-view-btn" data-view="grid" onclick="setCrmView('grid', this)" data-i18n="leads.view_grid">Cards</button>
-                    <button class="leads-view-btn" data-view="pipeline" onclick="setCrmView('pipeline', this)" data-i18n="leads.view_pipeline">Pipeline</button>
+                <div class="crm-stats-strip">
+                    <span class="crm-stat-pill stat-total"><span class="stat-num">${total}</span> Total</span>
+                    <span class="crm-stat-pill stat-new"><span class="stat-num">${newCount}</span> New</span>
+                    <span class="crm-stat-pill stat-follow"><span class="stat-num">${fuCount}</span> Follow-up</span>
+                    <span class="crm-stat-pill stat-won"><span class="stat-num">${wonCount}</span> Won</span>
+                    <span class="crm-stat-pill stat-lost"><span class="stat-num">${lostCount}</span> Lost</span>
+                </div>
+                <div class="crm-toolbar">
+                    <div class="crm-search-wrap">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <input type="text" id="crm-search-input" class="crm-search-input"
+                            placeholder="${t('leads.search_placeholder')}"
+                            oninput="filterAndRenderCrmData()">
+                    </div>
+                    <select id="crm-status-filter" class="crm-filter-select" onchange="filterAndRenderCrmData()">
+                        <option value="">${t('leads.filter_all_statuses')}</option>
+                        ${LEAD_STATUSES.map(s => `<option value="${s}">${t('leads.status.'+s)}</option>`).join('')}
+                    </select>
+                    <div class="crm-view-btns">
+                        <button class="crm-view-btn active" data-view="table" onclick="setCrmView('table',this)">☰ Table</button>
+                        <button class="crm-view-btn" data-view="grid"  onclick="setCrmView('grid',this)">⊞ Cards</button>
+                        <button class="crm-view-btn" data-view="pipeline" onclick="setCrmView('pipeline',this)">⋮⋮⋮ Pipeline</button>
+                    </div>
                 </div>
             `;
-
-            // Build rows and render view
-            const filtered = filterCrmRows(leads);
-            renderCrmGrid(filtered);
+            renderCrmGrid(filterCrmRows(leads));
         }
 
         window.filterAndRenderCrmData = function() {
-            if (cachedLeads) {
-                renderCrmGrid(filterCrmRows(cachedLeads));
-            }
+            if (cachedLeads) renderCrmGrid(filterCrmRows(cachedLeads));
         };
 
         function filterCrmRows(leads) {
-            const searchInput = document.getElementById('crm-search-input')?.value.toLowerCase() || '';
-            const statusFilter = document.getElementById('crm-status-filter')?.value || '';
-
-            return leads.filter(lead => {
-                const matchesSearch = !searchInput ||
-                    (lead.full_name && lead.full_name.toLowerCase().includes(searchInput)) ||
-                    (lead.phone && lead.phone.includes(searchInput));
-
-                const matchesStatus = !statusFilter ||
-                    String(lead.status || '').toLowerCase() === statusFilter.toLowerCase();
-
-                return matchesSearch && matchesStatus;
-            });
+            const q  = (document.getElementById('crm-search-input')?.value || '').toLowerCase();
+            const sf = document.getElementById('crm-status-filter')?.value || '';
+            return leads.filter(l =>
+                (!q  || (l.full_name||'').toLowerCase().includes(q) || (l.phone||'').includes(q)) &&
+                (!sf || String(l.status||'').toLowerCase() === sf)
+            );
         }
 
         function renderCrmGrid(rows) {
             const grid = document.getElementById('crm-grid');
             if (!grid) return;
-
-            grid.innerHTML = '';
             if (!rows || rows.length === 0) {
-                grid.innerHTML = `<div style="text-align:center; padding:24px; color:#9ca3af;">${t('leads.empty_search')}</div>`;
+                grid.innerHTML = `<div style="text-align:center;padding:48px 24px;color:var(--text-muted,#888);">${t('leads.empty_search')}</div>`;
                 return;
             }
 
-            const currentView = document.querySelector('.leads-view-btn.active')?.dataset.view || 'table';
+            const view = document.querySelector('.crm-view-btn.active')?.dataset.view || 'table';
 
-            if (currentView === 'pipeline') {
-                const cols = LEAD_STATUSES.map(status => {
+            if (view === 'pipeline') {
+                const colHtml = LEAD_STATUSES.map(status => {
                     const label = t(`leads.status.${status}`) || status;
-                    const colRows = rows.filter(r => String(r.status || '').toLowerCase() === status);
-                    const cards = colRows.length > 0
-                        ? colRows.map(r => buildLeadViewCard(r, true)).join('')
-                        : `<div class="kanban-empty">${t('leads.pipeline_empty')}</div>`;
+                    const colRows = rows.filter(r => String(r.status||'').toLowerCase() === status);
+                    const cards = colRows.length
+                        ? colRows.map(r => `
+                            <div class="crm-kanban-card" onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
+                                <div style="font-weight:600;font-size:0.85rem;margin-bottom:4px;">${esc(r.full_name||'Unknown')}</div>
+                                <div style="font-size:0.75rem;color:var(--text-muted,#888);font-family:monospace;">${esc(r.phone||'')}</div>
+                                ${r.score != null ? `<div style="font-size:0.72rem;margin-top:5px;color:var(--text-muted,#888);">Score: ${r.score}</div>` : ''}
+                            </div>`).join('')
+                        : `<div class="crm-kanban-empty">${t('leads.pipeline_empty')}</div>`;
                     return `
-                        <div class="kanban-col">
-                            <div class="kanban-head">
-                                <span class="kanban-title">${label}</span>
-                                <span class="kanban-count">${colRows.length}</span>
-                            </div>
-                            <div class="kanban-list">${cards}</div>
-                        </div>
-                    `;
+                        <div class="crm-kanban-col">
+                            <div class="crm-kanban-head">${crmStatusChip(status)}<span class="crm-kanban-count">${colRows.length}</span></div>
+                            <div class="crm-kanban-list">${cards}</div>
+                        </div>`;
                 }).join('');
+                grid.innerHTML = `<div class="crm-kanban">${colHtml}</div>`;
 
-                grid.innerHTML = `<div class="leads-kanban">${cols}</div>`;
-            } else if (currentView === 'grid') {
-                const cardHtml = rows.map(r => buildLeadViewCard(r, false)).join('');
-                grid.innerHTML = `<div class="leads-cards-grid">${cardHtml}</div>`;
-            } else {
-                // Table view
-                const tableRows = rows.map(r => `
-                    <tr class="clickable-row" onclick="openLeadProfile('${r.id}', '${currentUserOrgId || ''}')">
-                        <td class="lead-col-name">${r.full_name || '--'}</td>
-                        <td>${r.phone || '--'}</td>
-                        <td><span class="lead-platform-chip">${((r.source || 'unknown')).toUpperCase()}</span></td>
-                        <td class="lead-col-msg">${String(r.potential || '')}</td>
-                        <td>${r.score !== null && r.score !== undefined ? r.score : '-'}</td>
-                        <td>${new Date(r.created_at).toLocaleDateString()}</td>
-                        <td>${buildLeadStatusSelect(r.id, r.status)}</td>
-                    </tr>
-                `).join('');
-
-                grid.innerHTML = `
-                    <div class="leads-sheet">
-                        <div class="leads-sheet-scroll">
-                            <table class="leads-sheet-table">
-                                <thead>
-                                    <tr>
-                                        <th>${t('leads.col_name')}</th>
-                                        <th>${t('leads.col_phone')}</th>
-                                        <th>${t('leads.col_platform')}</th>
-                                        <th>Potential</th>
-                                        <th>Score</th>
-                                        <th>${t('leads.col_date')}</th>
-                                        <th>${t('leads.col_status')}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>${tableRows}</tbody>
-                            </table>
+            } else if (view === 'grid') {
+                grid.innerHTML = `<div class="crm-cards-grid">${rows.map(r => `
+                    <div class="crm-card" onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
+                        <div class="crm-card-head">
+                            <div class="crm-lead-avatar">${crmInitials(r.full_name)}</div>
+                            <div class="crm-card-info">
+                                <div class="crm-card-name">${esc(r.full_name||'Unknown')}</div>
+                                <div class="crm-card-phone">${esc(r.phone||'--')}</div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                        <div class="crm-card-foot">
+                            ${crmStatusChip(r.status||'new')}
+                            <span class="crm-source-tag">${(r.source||'unknown').toUpperCase()}</span>
+                        </div>
+                        ${r.score != null ? `<div style="font-size:0.78rem;color:var(--text-muted,#888);">Score: <strong>${r.score}</strong></div>` : ''}
+                    </div>`).join('')}</div>`;
+
+            } else {
+                // Table
+                const trs = rows.map(r => `
+                    <tr onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
+                        <td><div class="crm-name-cell">
+                            <div class="crm-lead-avatar">${crmInitials(r.full_name)}</div>
+                            <div>
+                                <div class="crm-name-text">${esc(r.full_name||'--')}</div>
+                                <div class="crm-phone-text">${esc(r.phone||'')}</div>
+                            </div>
+                        </div></td>
+                        <td>${crmStatusChip(r.status||'new')}</td>
+                        <td><span class="crm-source-tag">${(r.source||'unknown').toUpperCase()}</span></td>
+                        <td>${r.score != null ? r.score : '--'}</td>
+                        <td>${r.created_at ? new Date(r.created_at).toLocaleDateString() : '--'}</td>
+                    </tr>`).join('');
+                grid.innerHTML = `
+                    <div class="crm-table-wrap">
+                        <table class="crm-table">
+                            <thead><tr>
+                                <th>${t('leads.col_name')}</th>
+                                <th>Status</th>
+                                <th>Source</th>
+                                <th>Score</th>
+                                <th>${t('leads.col_date')}</th>
+                            </tr></thead>
+                            <tbody>${trs}</tbody>
+                        </table>
+                    </div>`;
             }
         }
 
         window.setCrmView = function(viewType, btn) {
-            document.querySelectorAll('.leads-view-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.crm-view-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
-            if (cachedLeads) {
-                renderCrmGrid(filterCrmRows(cachedLeads));
-            }
+            if (cachedLeads) renderCrmGrid(filterCrmRows(cachedLeads));
         };
 
         window.openLeadProfile = async function(leadId, orgId) {
-            if (!leadId || !orgId) return;
+            if (!leadId) return;
+            const resolvedOrg = orgId || currentUserOrgId;
+            if (!resolvedOrg) return;
 
-            window.currentLeadProfileId = leadId;
-            window.currentLeadProfileOrgId = orgId;
+            window.currentLeadProfileId  = leadId;
+            window.currentLeadProfileOrgId = resolvedOrg;
 
             const profilePage = document.getElementById('lead-profile-page');
             if (!profilePage) return;
-
             profilePage.style.display = 'flex';
 
+            // Show skeleton while loading
+            const nameEl   = document.getElementById('lead-profile-name');
+            const avatarEl = document.getElementById('lp-avatar');
+            if (nameEl)   nameEl.textContent = '…';
+            if (avatarEl) avatarEl.textContent = '…';
+
             try {
-                const leadData = await fetchLeadForProfile(leadId, orgId);
-                if (leadData) {
-                    window.currentLeadProfileData = leadData;
-                    const crmState = await supabaseClient
-                        .rpc('get_lead_crm_state', {p_lead_id: leadId, p_org_id: orgId});
+                const leadData = await fetchLeadForProfile(leadId, resolvedOrg);
+                if (!leadData) { showToast(t('crm.error_loading')); return; }
+                window.currentLeadProfileData = leadData;
 
-                    if (crmState.data) {
-                        window.currentLeadCrmState = crmState.data;
-                    }
-
-                    renderLeadProfile(leadData, crmState.data || {});
-                }
+                const crmState = await supabaseClient.rpc('get_lead_crm_state', {p_lead_id: leadId, p_org_id: resolvedOrg});
+                window.currentLeadCrmState = crmState.data || {};
+                renderLeadProfile(leadData, crmState.data || {});
             } catch (err) {
                 console.error('Failed to load lead profile:', err);
                 showToast(t('crm.error_loading'));
             }
         };
 
-        window.closeLeadProfile = function(event) {
-            if (event && event.target.id !== 'lead-profile-page') return;
+        window.closeLeadProfile = function() {
             const profilePage = document.getElementById('lead-profile-page');
             if (profilePage) profilePage.style.display = 'none';
+            document.getElementById('status-dropdown').style.display = 'none';
             window.currentLeadProfileId = null;
             window.currentLeadProfileOrgId = null;
         };
 
         async function fetchLeadForProfile(leadId, orgId) {
             try {
-                const {data, error} = await supabaseClient
-                    .from('leads')
-                    .select('*')
-                    .eq('id', leadId)
-                    .eq('org_id', orgId)
-                    .single();
-
+                const {data, error} = await supabaseClient.from('leads').select('*')
+                    .eq('id', leadId).eq('org_id', orgId).single();
                 if (error) throw error;
                 return data;
             } catch (err) {
@@ -39044,11 +39301,14 @@ Thank you for shopping with {store_name}!</textarea>
         function renderLeadProfile(leadData, crmState) {
             if (!leadData) return;
 
-            const name = leadData.full_name || 'Unknown';
-            const phone = leadData.phone || '--';
+            const name     = leadData.full_name || 'Unknown';
+            const phone    = leadData.phone || '--';
             const platform = (leadData.source || 'unknown').toUpperCase();
-            const status = leadData.status || 'new';
+            const status   = leadData.status || 'new';
 
+            // Avatar + header
+            const avatarEl = document.getElementById('lp-avatar');
+            if (avatarEl) avatarEl.textContent = crmInitials(name);
             document.getElementById('lead-profile-name').textContent = name;
             document.getElementById('lead-profile-phone').textContent = phone;
             document.getElementById('lead-profile-platform').textContent = platform;
@@ -39056,67 +39316,64 @@ Thank you for shopping with {store_name}!</textarea>
             const badgeEl = document.getElementById('lead-profile-status-badge');
             if (badgeEl) {
                 badgeEl.textContent = getStatusLabel(status);
-                badgeEl.className = 'lead-status-badge status-' + status;
+                badgeEl.className   = 'lead-status-badge status-' + status;
             }
 
             // AI Summary
-            const aiSummaryEl = document.getElementById('lead-profile-ai-summary');
-            if (crmState && crmState.ai_summary) {
-                aiSummaryEl.innerHTML = `<p>${esc(crmState.ai_summary)}</p>`;
-                if (crmState.ai_summary_updated_at) {
-                    const updated = new Date(crmState.ai_summary_updated_at);
-                    aiSummaryEl.innerHTML += `<p style="font-size: 0.8rem; color: var(--text-muted, #888); margin-top: 8px;">Updated ${formatDate(updated)}</p>`;
-                }
+            const aiEl = document.getElementById('lead-profile-ai-summary');
+            if (crmState?.ai_summary) {
+                aiEl.innerHTML = `<div>${esc(crmState.ai_summary)}</div>` +
+                    (crmState.ai_summary_updated_at
+                        ? `<div style="font-size:0.75rem;color:var(--text-muted,#888);margin-top:8px;">Updated ${formatDate(new Date(crmState.ai_summary_updated_at))}</div>`
+                        : '');
             } else {
-                aiSummaryEl.innerHTML = `<p style="color: var(--text-muted, #888);">${t('crm.empty_activity')}</p>`;
+                aiEl.innerHTML = `<span style="color:var(--text-muted,#888);font-size:0.875rem;">No AI summary yet. Tap 🤖 to generate.</span>`;
             }
 
-            // Follow-up Section
-            const followupSection = document.getElementById('lead-profile-followup-section');
-            if (crmState && crmState.follow_up_due_at) {
-                followupSection.style.display = 'block';
-                const followupEl = document.getElementById('lead-profile-followup-content');
-                const dueDate = new Date(crmState.follow_up_due_at);
-                const now = new Date();
-                const isOverdue = dueDate < now;
-                const classSuffix = isOverdue ? 'overdue' : 'due-soon';
-
-                followupEl.innerHTML = `
+            // Follow-up
+            const fuSection = document.getElementById('lead-profile-followup-section');
+            if (crmState?.follow_up_due_at) {
+                fuSection.style.display = 'block';
+                const dueDate  = new Date(crmState.follow_up_due_at);
+                const isOver   = dueDate < new Date();
+                document.getElementById('lead-profile-followup-content').innerHTML = `
                     <div class="followup-item">
-                        <span class="followup-due followup-${classSuffix}">${formatDate(dueDate)}</span>
-                        ${crmState.follow_up_completed_at ? '<span style="color: #4caf50;">✓ ' + t('crm.label_follow_up_completed') + '</span>' : ''}
-                    </div>
-                `;
+                        <span class="followup-due ${isOver ? 'followup-overdue' : 'followup-due-soon'}">
+                            ${isOver ? '⚠️ ' : '📅 '}${formatDate(dueDate)}
+                        </span>
+                        ${crmState.follow_up_completed_at
+                            ? '<span style="color:#34d399;font-size:0.8rem;">✓ Completed</span>'
+                            : `<button class="btn-secondary" style="padding:4px 12px;font-size:0.78rem;" onclick="markFollowUpComplete()">Mark done</button>`}
+                    </div>`;
                 document.getElementById('lead-profile-complete-btn').style.display =
                     !crmState.follow_up_completed_at ? 'flex' : 'none';
             } else {
-                followupSection.style.display = 'none';
+                fuSection.style.display = 'none';
+                document.getElementById('lead-profile-complete-btn').style.display = 'none';
             }
 
             // Notes
             const notesEl = document.getElementById('lead-profile-notes');
-            if (crmState && crmState.notes && Array.isArray(crmState.notes) && crmState.notes.length > 0) {
-                notesEl.innerHTML = crmState.notes.map(note => `
+            if (crmState?.notes?.length) {
+                notesEl.innerHTML = crmState.notes.slice().reverse().map(n => `
                     <div class="note-item">
-                        <div class="note-author">${esc(note.author_name || 'Unknown')} • ${formatDate(new Date(note.created_at))}</div>
-                        <div class="note-body">${esc(note.body)}</div>
-                    </div>
-                `).join('');
+                        <div class="note-author">${esc(n.author_name||'Unknown')} · ${formatDate(new Date(n.created_at))}</div>
+                        <div class="note-body">${esc(n.body)}</div>
+                    </div>`).join('');
             } else {
-                notesEl.innerHTML = `<p style="color: var(--text-muted, #888);">${t('crm.empty_notes')}</p>`;
+                notesEl.innerHTML = `<div class="section-content" style="color:var(--text-muted,#888);font-size:0.875rem;">No notes yet.</div>`;
             }
 
             // Activity
-            const activityEl = document.getElementById('lead-profile-activity');
-            if (crmState && crmState.activity && Array.isArray(crmState.activity) && crmState.activity.length > 0) {
-                activityEl.innerHTML = crmState.activity.map(item => `
+            const actEl = document.getElementById('lead-profile-activity');
+            if (crmState?.activity?.length) {
+                actEl.innerHTML = crmState.activity.slice().reverse().map(a => `
                     <div class="activity-item">
-                        <span class="activity-timestamp">${formatDate(new Date(item.created_at))} • ${esc(item.actor_name || 'System')}</span>
-                        <span class="activity-text">${getActivityTypeLabel(item.type)}: ${esc(item.label)}</span>
-                    </div>
-                `).join('');
+                        <div><span class="activity-timestamp">${formatDate(new Date(a.created_at))} · ${esc(a.actor_name||'System')}</span>
+                        <span class="activity-text">${getActivityTypeLabel(a.type)}: ${esc(a.label)}</span></div>
+                    </div>`).join('');
             } else {
-                activityEl.innerHTML = `<p style="color: var(--text-muted, #888);">${t('crm.empty_activity')}</p>`;
+                actEl.innerHTML = `<div style="color:var(--text-muted,#888);font-size:0.875rem;padding:8px 0;">No activity recorded.</div>`;
             }
         }
 
@@ -39383,9 +39640,11 @@ Thank you for shopping with {store_name}!</textarea>
             const content = document.getElementById('task-manager-content');
             if (toolbar) {
                 toolbar.innerHTML = `
-                    <input type="text" id="task-search-input" class="leads-filter-input"
-                        placeholder="Search tasks..." oninput="filterAndRenderTasks()">
-                    <select id="task-status-filter" class="leads-filter-select" onchange="filterAndRenderTasks()">
+                    <div class="crm-search-wrap" style="flex:1;min-width:160px;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <input type="text" id="task-search-input" class="crm-search-input" placeholder="Search tasks…" oninput="filterAndRenderTasks()">
+                    </div>
+                    <select id="task-status-filter" class="crm-filter-select" onchange="filterAndRenderTasks()">
                         <option value="">All Statuses</option>
                         <option value="open">Open</option>
                         <option value="in_progress">In Progress</option>
@@ -39393,16 +39652,16 @@ Thank you for shopping with {store_name}!</textarea>
                         <option value="done">Done</option>
                         <option value="cancelled">Cancelled</option>
                     </select>
-                    <select id="task-priority-filter" class="leads-filter-select" onchange="filterAndRenderTasks()">
+                    <select id="task-priority-filter" class="crm-filter-select" onchange="filterAndRenderTasks()">
                         <option value="">All Priorities</option>
-                        <option value="urgent">Urgent</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
+                        <option value="urgent">🔴 Urgent</option>
+                        <option value="high">🟠 High</option>
+                        <option value="medium">🔵 Medium</option>
+                        <option value="low">⚪ Low</option>
                     </select>
                 `;
             }
-            if (content) content.innerHTML = `<div style="padding:32px;text-align:center;color:var(--text-muted,#888);">Loading tasks...</div>`;
+            if (content) content.innerHTML = `<div class="crm-loading"><div class="spinner" style="width:28px;height:28px;margin:0 auto 12px;"></div><p>Loading tasks…</p></div>`;
             await fetchTasks();
         };
 
@@ -39445,45 +39704,47 @@ Thank you for shopping with {store_name}!</textarea>
 
             if (!tasks || tasks.length === 0) {
                 content.innerHTML = `
-                    <div style="padding:40px;text-align:center;color:var(--text-muted,#888);">
-                        <div style="font-size:2rem;margin-bottom:12px;">&#x2705;</div>
-                        <p>No tasks found. Create one to get started.</p>
-                    </div>
-                `;
+                    <div class="tm-empty-state">
+                        <div class="tm-empty-icon">✅</div>
+                        <p style="font-weight:600;">No tasks found</p>
+                        <p style="font-size:0.875rem;">Create your first task to get started.</p>
+                        <button class="btn-primary" onclick="openCreateTaskModal()" style="margin-top:4px;">+ New Task</button>
+                    </div>`;
                 return;
             }
 
-            const priorityColor = {urgent: '#ef4444', high: '#f97316', medium: '#3b82f6', low: '#9ca3af'};
-            const statusLabel = {open: 'Open', in_progress: 'In Progress', waiting: 'Waiting', done: 'Done', cancelled: 'Cancelled'};
+            const pDot   = {urgent:'#ef4444', high:'#f97316', medium:'#3b82f6', low:'#9ca3af'};
+            const sChip  = {
+                open:       '<span class="tm-status-chip ts-open">Open</span>',
+                in_progress:'<span class="tm-status-chip ts-in_progress">In Progress</span>',
+                waiting:    '<span class="tm-status-chip ts-waiting">Waiting</span>',
+                done:       '<span class="tm-status-chip ts-done">Done</span>',
+                cancelled:  '<span class="tm-status-chip ts-cancelled">Cancelled</span>'
+            };
+            const now = new Date();
 
-            const rows = tasks.map(task => {
-                const due = task.due_at ? new Date(task.due_at).toLocaleDateString() : '--';
-                const now = new Date();
-                const isOverdue = task.due_at && new Date(task.due_at) < now && task.status !== 'done' && task.status !== 'cancelled';
-                const pColor = priorityColor[task.priority] || '#9ca3af';
+            const cards = tasks.map(task => {
+                const isOverdue = task.due_at && new Date(task.due_at) < now &&
+                    task.status !== 'done' && task.status !== 'cancelled';
+                const dueStr = task.due_at
+                    ? new Date(task.due_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})
+                    : null;
+                const dotColor = pDot[task.priority] || '#9ca3af';
                 return `
-                    <tr class="clickable-row" onclick="openTaskDetail('${esc(task.id)}')">
-                        <td style="font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(task.title)}</td>
-                        <td><span style="font-size:0.75rem;padding:2px 8px;border-radius:9999px;background:${pColor}22;color:${pColor};font-weight:600;">${task.priority || 'medium'}</span></td>
-                        <td><span class="lead-platform-chip">${statusLabel[task.status] || task.status}</span></td>
-                        <td style="${isOverdue ? 'color:#ef4444;font-weight:600;' : ''}">${due}</td>
-                        <td style="font-size:0.8rem;color:var(--text-muted,#888);">${task.task_type || 'general'}</td>
-                    </tr>
-                `;
+                    <div class="tm-task-card p-${task.priority||'medium'}" onclick="openTaskDetail('${esc(task.id)}')">
+                        <div class="tm-priority-dot" style="background:${dotColor};"></div>
+                        <div class="tm-task-main">
+                            <div class="tm-task-title">${esc(task.title)}</div>
+                            <div class="tm-task-meta">
+                                <span>${(task.task_type||'general').replace('_',' ')}</span>
+                                ${dueStr ? `<span class="${isOverdue ? 'tm-task-due-overdue' : ''}">📅 ${isOverdue?'Overdue · ':''}${dueStr}</span>` : ''}
+                            </div>
+                        </div>
+                        ${sChip[task.status] || `<span class="tm-status-chip ts-open">${task.status}</span>`}
+                    </div>`;
             }).join('');
 
-            content.innerHTML = `
-                <div class="leads-sheet">
-                    <div class="leads-sheet-scroll">
-                        <table class="leads-sheet-table">
-                            <thead><tr>
-                                <th>Title</th><th>Priority</th><th>Status</th><th>Due</th><th>Type</th>
-                            </tr></thead>
-                            <tbody>${rows}</tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
+            content.innerHTML = `<div class="tm-task-list">${cards}</div>`;
         }
 
         window.openCreateTaskModal = function() {
@@ -39538,69 +39799,84 @@ Thank you for shopping with {store_name}!</textarea>
             if (!modal || !body) return;
 
             modal.style.display = 'flex';
-            body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted,#888);">Loading...</div>';
+            body.innerHTML = '<div class="crm-loading"><div class="spinner" style="width:24px;height:24px;margin:0 auto 8px;"></div><p>Loading…</p></div>';
 
             try {
-                const [{data: task, error: te}, {data: comments, error: ce}] = await Promise.all([
+                const [{data: task, error: te}, {data: comments}] = await Promise.all([
                     supabaseClient.from('tasks').select('*').eq('id', taskId).eq('org_id', currentUserOrgId).single(),
                     supabaseClient.from('task_comments').select('*').eq('task_id', taskId).order('created_at', {ascending: true})
                 ]);
-
                 if (te) throw te;
+
                 document.getElementById('task-detail-title').textContent = task.title;
 
-                const priorityColor = {urgent: '#ef4444', high: '#f97316', medium: '#3b82f6', low: '#9ca3af'};
-                const pColor = priorityColor[task.priority] || '#9ca3af';
-                const dueStr = task.due_at ? new Date(task.due_at).toLocaleString() : '--';
+                const pColor = {urgent:'#ef4444', high:'#f97316', medium:'#3b82f6', low:'#9ca3af'}[task.priority] || '#9ca3af';
                 const isOverdue = task.due_at && new Date(task.due_at) < new Date() && task.status !== 'done' && task.status !== 'cancelled';
+                const dueStr = task.due_at
+                    ? new Date(task.due_at).toLocaleString(undefined, {month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})
+                    : 'No due date';
 
-                const commentHtml = (comments || []).map(c => `
-                    <div style="background:var(--bg-card,#f9fafb);border-radius:8px;padding:10px 12px;margin-bottom:8px;">
-                        <div style="font-size:0.75rem;color:var(--text-muted,#888);margin-bottom:4px;">${new Date(c.created_at).toLocaleString()}</div>
-                        <div>${esc(c.body)}</div>
-                    </div>
-                `).join('') || '<p style="color:var(--text-muted,#888);">No comments yet.</p>';
+                const commentHtml = (comments||[]).length
+                    ? (comments||[]).map(c => `
+                        <div class="note-item" style="border-inline-start-color:rgba(99,102,241,.4);">
+                            <div class="note-author">${new Date(c.created_at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+                            <div class="note-body">${esc(c.body)}</div>
+                        </div>`).join('')
+                    : `<div style="color:var(--text-muted,#888);font-size:0.875rem;padding:4px 0;">No comments yet.</div>`;
 
                 body.innerHTML = `
+                    <!-- Status + Priority row -->
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                        <div>
-                            <label style="font-size:0.8rem;color:var(--text-muted,#888);">Status</label>
-                            <select id="task-detail-status" class="leads-filter-select" style="width:100%;" onchange="updateTaskStatus(this.value)">
-                                <option value="open" ${task.status==='open'?'selected':''}>Open</option>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select id="task-detail-status" class="form-input" onchange="updateTaskStatus(this.value)">
+                                <option value="open"        ${task.status==='open'?'selected':''}>Open</option>
                                 <option value="in_progress" ${task.status==='in_progress'?'selected':''}>In Progress</option>
-                                <option value="waiting" ${task.status==='waiting'?'selected':''}>Waiting</option>
-                                <option value="done" ${task.status==='done'?'selected':''}>Done</option>
-                                <option value="cancelled" ${task.status==='cancelled'?'selected':''}>Cancelled</option>
+                                <option value="waiting"     ${task.status==='waiting'?'selected':''}>Waiting</option>
+                                <option value="done"        ${task.status==='done'?'selected':''}>Done</option>
+                                <option value="cancelled"   ${task.status==='cancelled'?'selected':''}>Cancelled</option>
                             </select>
                         </div>
-                        <div>
-                            <label style="font-size:0.8rem;color:var(--text-muted,#888);">Priority</label>
-                            <div style="font-size:0.85rem;padding:4px 0;color:${pColor};font-weight:600;">${task.priority || 'medium'}</div>
+                        <div class="form-group">
+                            <label class="form-label">Priority</label>
+                            <div style="display:flex;align-items:center;gap:8px;padding:10px 0;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:${pColor};display:inline-block;flex-shrink:0;"></span>
+                                <span style="font-weight:600;color:${pColor};text-transform:capitalize;">${task.priority||'medium'}</span>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label style="font-size:0.8rem;color:var(--text-muted,#888);">Description</label>
-                        <p style="margin-top:4px;">${task.description ? esc(task.description) : '<span style="color:var(--text-muted,#888);">No description</span>'}</p>
+
+                    <!-- Due date -->
+                    <div class="form-group">
+                        <label class="form-label">Due Date</label>
+                        <div style="padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:0.875rem;${isOverdue?'color:#f87171;font-weight:600;':''}">${isOverdue?'⚠️ Overdue · ':''}${dueStr}</div>
                     </div>
-                    <div>
-                        <label style="font-size:0.8rem;color:var(--text-muted,#888);">Due Date</label>
-                        <p style="margin-top:4px;${isOverdue ? 'color:#ef4444;font-weight:600;' : ''}">${dueStr}</p>
-                    </div>
-                    <div>
-                        <label style="font-size:0.8rem;color:var(--text-muted,#888);display:block;margin-bottom:8px;">Comments</label>
-                        <div id="task-comments-list">${commentHtml}</div>
-                        <div style="display:flex;gap:8px;margin-top:12px;">
-                            <input id="task-comment-input" type="text" class="leads-filter-input" style="flex:1;" placeholder="Add a comment...">
-                            <button class="btn-primary" onclick="submitTaskComment()">Add</button>
+
+                    <!-- Description -->
+                    ${task.description ? `
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <div style="padding:12px 14px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:0.875rem;line-height:1.6;">${esc(task.description)}</div>
+                    </div>` : ''}
+
+                    <!-- Comments -->
+                    <div class="form-group">
+                        <label class="form-label">Comments</label>
+                        <div id="task-comments-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">${commentHtml}</div>
+                        <div style="display:flex;gap:8px;">
+                            <input id="task-comment-input" type="text" class="form-input" style="flex:1;" placeholder="Write a comment…">
+                            <button class="btn-primary" onclick="submitTaskComment()">Send</button>
                         </div>
                     </div>
-                    <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border,#e5e7eb);">
-                        <button class="btn-secondary" style="color:#ef4444;border-color:#ef4444;" onclick="deleteTask('${esc(task.id)}')">Delete Task</button>
+
+                    <!-- Danger zone -->
+                    <div style="padding-top:12px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:flex-end;">
+                        <button onclick="deleteTask('${esc(task.id)}')" style="background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-weight:600;">Delete Task</button>
                     </div>
                 `;
             } catch (err) {
                 console.error('Failed to load task detail:', err);
-                body.innerHTML = '<div style="padding:24px;text-align:center;color:#ef4444;">Failed to load task.</div>';
+                body.innerHTML = '<div style="padding:24px;text-align:center;color:#f87171;">Failed to load task.</div>';
             }
         };
 
