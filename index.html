@@ -221,6 +221,8 @@
                     "contacted": "Contacted",
                     "follow_up": "Follow-up",
                     "qualified": "Qualified",
+                    "negotiation": "In Negotiation",
+                    "proposal": "Proposal Sent",
                     "won": "Won",
                     "lost": "Lost",
                     "no_phone": "No Phone"
@@ -233,8 +235,61 @@
                 "view_btn_table": "Table",
                 "view_btn_cards": "Cards",
                 "view_btn_pipeline": "Pipeline",
+                "view_btn_dashboard": "Dashboard",
                 "col_score": "Score",
-                "col_potential": "Potential"
+                "col_potential": "Potential",
+                "col_category": "Category",
+                "col_assignee": "Assignee",
+                "col_due_date": "Due Date",
+                "col_email": "Email",
+                "col_persona": "Persona",
+                "col_service": "Service Required",
+                "col_priority": "Priority",
+                "col_first_call": "First Call",
+                "col_subscription": "Subscription Date",
+                "col_notes": "Notes",
+                "filter_all_categories": "All Categories",
+                "status_negotiation": "In Negotiation",
+                "status_proposal": "Proposal Sent",
+                "section_contact": "Contact Info",
+                "section_classification": "Classification",
+                "section_assignment": "Assignment",
+                "section_timeline": "Timeline",
+                "section_notes": "Notes",
+                "unassigned": "Unassigned",
+                "btn_save": "Save",
+                "btn_import": "Import",
+                "import_title": "Import Leads",
+                "import_drop_title": "Drop your file here",
+                "import_drop_text": "or click to browse (.xlsx, .xls, .csv)",
+                "import_mapping_title": "Map Columns",
+                "import_mapping_source": "Source Column",
+                "import_mapping_target": "CRM Field",
+                "import_mapping_skip": "Skip",
+                "import_preview_title": "Preview",
+                "import_btn_import": "Import Data",
+                "import_btn_back": "Back",
+                "import_progress": "Importing...",
+                "import_success": "{x} records imported successfully.",
+                "import_skipped": "{y} rows skipped (missing name and phone).",
+                "import_error": "Import failed. Please try again.",
+                "import_no_data": "No data found in file.",
+                "dash_kpi_total": "Total Leads",
+                "dash_kpi_total_sub": "in your pipeline",
+                "dash_kpi_won": "Won",
+                "dash_kpi_won_sub": "converted leads",
+                "dash_kpi_followup": "Follow-up Required",
+                "dash_kpi_followup_sub": "need attention",
+                "dash_kpi_avg": "Avg. per Assignee",
+                "dash_kpi_avg_sub": "leads per member",
+                "dash_chart_by_stage": "Leads by Stage",
+                "dash_chart_by_category": "Leads by Category",
+                "dash_chart_by_assignee": "Leads by Assignee",
+                "dash_chart_recent": "Recently Added",
+                "dash_empty": "Add leads to see your pipeline analytics here.",
+                "dash_no_category": "No category data yet.",
+                "dash_refresh": "Refresh",
+                "dash_other": "Other"
             },
             "crm": {
                 "title": "CRM",
@@ -317,7 +372,28 @@
                 "error_create": "Failed to create task.",
                 "task_saved": "Task saved.",
                 "task_deleted": "Task deleted.",
-                "confirm_delete": "Delete this task?"
+                "confirm_delete": "Delete this task?",
+                "view_btn_list": "Tasks",
+                "view_btn_dashboard": "Dashboard",
+                "dash_kpi_total": "Total Tasks",
+                "dash_kpi_total_sub": "active tasks",
+                "dash_kpi_done": "Completed",
+                "dash_kpi_done_sub": "this period",
+                "dash_kpi_overdue": "Overdue",
+                "dash_kpi_overdue_sub": "need attention",
+                "dash_kpi_rate": "Completion Rate",
+                "dash_kpi_rate_sub": "of all tasks",
+                "dash_chart_by_status": "Tasks by Status",
+                "dash_chart_by_priority": "Tasks by Priority",
+                "dash_chart_by_assignee": "Tasks by Assignee",
+                "dash_chart_overdue": "Overdue Tasks",
+                "dash_overdue_days": "{n} days overdue",
+                "dash_no_overdue": "No overdue tasks",
+                "dash_empty": "Create tasks to see your workload analytics here.",
+                "dash_refresh": "Refresh",
+                "dash_other": "Others",
+                "label_assign_to": "Assign To",
+                "unassigned": "Unassigned"
             },
             "orders": {
                 "title": "Customers Area",
@@ -1201,6 +1277,8 @@
                     "contacted": "تم التواصل",
                     "follow_up": "متابعة",
                     "qualified": "مؤهل",
+                    "negotiation": "قيد التفاوض",
+                    "proposal": "تم إرسال العرض",
                     "won": "تم الفوز",
                     "lost": "خسارة",
                     "no_phone": "لا يوجد هاتف"
@@ -1213,8 +1291,61 @@
                 "view_btn_table": "جدول",
                 "view_btn_cards": "بطاقات",
                 "view_btn_pipeline": "المراحل",
+                "view_btn_dashboard": "لوحة التحليلات",
                 "col_score": "النقاط",
-                "col_potential": "الإمكانية"
+                "col_potential": "الإمكانية",
+                "col_category": "الفئة",
+                "col_assignee": "المسؤول",
+                "col_due_date": "تاريخ الاستحقاق",
+                "col_email": "البريد الإلكتروني",
+                "col_persona": "الشخصية",
+                "col_service": "الخدمة المطلوبة",
+                "col_priority": "الأولوية",
+                "col_first_call": "أول اتصال",
+                "col_subscription": "تاريخ الاشتراك",
+                "col_notes": "الملاحظات",
+                "filter_all_categories": "كل الفئات",
+                "status_negotiation": "قيد التفاوض",
+                "status_proposal": "تم إرسال العرض",
+                "section_contact": "معلومات الاتصال",
+                "section_classification": "التصنيف",
+                "section_assignment": "التعيين",
+                "section_timeline": "الجدول الزمني",
+                "section_notes": "الملاحظات",
+                "unassigned": "غير معيّن",
+                "btn_save": "حفظ",
+                "btn_import": "استيراد",
+                "import_title": "استيراد العملاء",
+                "import_drop_title": "اسحب ملفك هنا",
+                "import_drop_text": "أو انقر للتصفح (.xlsx, .xls, .csv)",
+                "import_mapping_title": "تعيين الأعمدة",
+                "import_mapping_source": "عمود المصدر",
+                "import_mapping_target": "حقل CRM",
+                "import_mapping_skip": "تخطي",
+                "import_preview_title": "معاينة",
+                "import_btn_import": "استيراد البيانات",
+                "import_btn_back": "رجوع",
+                "import_progress": "جاري الاستيراد...",
+                "import_success": "تم استيراد {x} سجل بنجاح.",
+                "import_skipped": "تم تخطي {y} صف (لا يوجد اسم ولا هاتف).",
+                "import_error": "فشل الاستيراد. حاول مرة أخرى.",
+                "import_no_data": "لم يتم العثور على بيانات في الملف.",
+                "dash_kpi_total": "إجمالي العملاء",
+                "dash_kpi_total_sub": "في مسار المبيعات",
+                "dash_kpi_won": "تم الفوز",
+                "dash_kpi_won_sub": "عملاء محولون",
+                "dash_kpi_followup": "تحتاج متابعة",
+                "dash_kpi_followup_sub": "تحتاج انتباه",
+                "dash_kpi_avg": "متوسط لكل مسؤول",
+                "dash_kpi_avg_sub": "عملاء لكل عضو",
+                "dash_chart_by_stage": "العملاء حسب المرحلة",
+                "dash_chart_by_category": "العملاء حسب الفئة",
+                "dash_chart_by_assignee": "العملاء حسب المسؤول",
+                "dash_chart_recent": "أضيف مؤخراً",
+                "dash_empty": "أضف عملاء لعرض تحليلات مسار المبيعات.",
+                "dash_no_category": "لا توجد بيانات فئات بعد.",
+                "dash_refresh": "تحديث",
+                "dash_other": "أخرى"
             },
             "crm": {
                 "title": "إدارة العملاء",
@@ -1297,7 +1428,28 @@
                 "error_create": "فشل إنشاء المهمة.",
                 "task_saved": "تم حفظ المهمة.",
                 "task_deleted": "تم حذف المهمة.",
-                "confirm_delete": "حذف هذه المهمة؟"
+                "confirm_delete": "حذف هذه المهمة؟",
+                "view_btn_list": "المهام",
+                "view_btn_dashboard": "لوحة التحليلات",
+                "dash_kpi_total": "إجمالي المهام",
+                "dash_kpi_total_sub": "مهام نشطة",
+                "dash_kpi_done": "مكتملة",
+                "dash_kpi_done_sub": "هذه الفترة",
+                "dash_kpi_overdue": "متأخرة",
+                "dash_kpi_overdue_sub": "تحتاج انتباه",
+                "dash_kpi_rate": "نسبة الإنجاز",
+                "dash_kpi_rate_sub": "من كل المهام",
+                "dash_chart_by_status": "المهام حسب الحالة",
+                "dash_chart_by_priority": "المهام حسب الأولوية",
+                "dash_chart_by_assignee": "المهام حسب المسؤول",
+                "dash_chart_overdue": "المهام المتأخرة",
+                "dash_overdue_days": "متأخرة {n} يوم",
+                "dash_no_overdue": "لا توجد مهام متأخرة",
+                "dash_empty": "أنشئ مهام لعرض تحليلات العمل.",
+                "dash_refresh": "تحديث",
+                "dash_other": "أخرى",
+                "label_assign_to": "تعيين إلى",
+                "unassigned": "غير معيّن"
             },
             "orders": {
                 "title": "منطقة العملاء",
@@ -17469,11 +17621,36 @@
         }
         :root[data-theme="light"] .crm-kanban-empty { color: #64748b !important; }
 
+        /* ── Light theme: Phase 1 additions ──────────────────── */
+        :root[data-theme="light"] .crm-kanban-card-tag { background:rgba(99,102,241,.1); color:#4f46e5; }
+        :root[data-theme="light"] .crm-category-tag { background:rgba(99,102,241,.08); color:#4f46e5; }
+        :root[data-theme="light"] .crm-persona-label { color:#64748b; }
+        :root[data-theme="light"] .import-dropzone { border-color:rgba(99,102,241,.3); background:rgba(99,102,241,.04); }
+        :root[data-theme="light"] .import-dropzone:hover { border-color:rgba(99,102,241,.5); background:rgba(99,102,241,.08); }
+        :root[data-theme="light"] .import-mapping-table th { color:#475569; border-bottom-color:rgba(15,23,42,.1); }
+        :root[data-theme="light"] .import-mapping-table td { border-bottom-color:rgba(15,23,42,.06); }
+        :root[data-theme="light"] .import-mapping-table select { background:#f8fafc; border-color:rgba(15,23,42,.15); color:#0f172a; }
+        :root[data-theme="light"] .lead-detail-section { border-top-color:rgba(15,23,42,.08); }
+        :root[data-theme="light"] .lead-detail-field input,
+        :root[data-theme="light"] .lead-detail-field select,
+        :root[data-theme="light"] .lead-detail-field textarea { background:#f8fafc; border-color:rgba(15,23,42,.15); color:#0f172a; }
+        :root[data-theme="light"] .crm-dash-kpi { background:#ffffff; border-color:rgba(15,23,42,.1); box-shadow:0 2px 8px rgba(15,23,42,.06); }
+        :root[data-theme="light"] .crm-dash-kpi-value { color:#0f172a; }
+        :root[data-theme="light"] .crm-dash-chart-card { background:#ffffff; border-color:rgba(15,23,42,.1); box-shadow:0 2px 8px rgba(15,23,42,.06); }
+        :root[data-theme="light"] .crm-dash-bar-label { color:#0f172a; }
+        :root[data-theme="light"] .crm-dash-bar-track { background:rgba(15,23,42,.06); }
+        :root[data-theme="light"] .crm-dash-recent-item:hover { background:rgba(99,102,241,.06); }
+        :root[data-theme="light"] .task-view-btns { background:#f1f5f9; border-color:rgba(15,23,42,.18); }
+        :root[data-theme="light"] .task-view-btn { color:#475569; }
+        :root[data-theme="light"] .task-view-btn.active, :root[data-theme="light"] .task-view-btn:hover { background:rgba(99,102,241,.14); color:#4f46e5; }
+
         /* ── Light theme: CRM status chips ────────────────────── */
-        :root[data-theme="light"] .status-chip.s-new       { background: rgba(59,130,246,.12);  color: #2563eb; }
-        :root[data-theme="light"] .status-chip.s-follow_up { background: rgba(217,119,6,.12);   color: #b45309; }
+        :root[data-theme="light"] .status-chip.s-new       { background: rgba(245,158,11,.12);  color: #b45309; }
+        :root[data-theme="light"] .status-chip.s-follow_up { background: rgba(249,115,22,.12);   color: #c2410c; }
         :root[data-theme="light"] .status-chip.s-contacted { background: rgba(139,92,246,.12);   color: #7c3aed; }
-        :root[data-theme="light"] .status-chip.s-qualified { background: rgba(14,165,233,.12);   color: #0284c7; }
+        :root[data-theme="light"] .status-chip.s-qualified { background: rgba(59,130,246,.12);   color: #2563eb; }
+        :root[data-theme="light"] .status-chip.s-negotiation { background: rgba(139,92,246,.12); color: #7c3aed; }
+        :root[data-theme="light"] .status-chip.s-proposal  { background: rgba(6,182,212,.12);   color: #0891b2; }
         :root[data-theme="light"] .status-chip.s-won       { background: rgba(16,185,129,.12);   color: #059669; }
         :root[data-theme="light"] .status-chip.s-lost      { background: rgba(239,68,68,.12);    color: #dc2626; }
 
@@ -19953,6 +20130,111 @@
         .crm-kanban-card:hover { background: rgba(99,102,241,.1); border-color: rgba(99,102,241,.3); }
         .crm-kanban-empty { padding: 20px 12px; text-align: center; color: var(--text-muted,#888); font-size: 0.8rem; }
 
+        /* Kanban card enhanced */
+        .crm-kanban-card-name { font-weight:600; font-size:0.88rem; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .crm-kanban-card-phone { font-size:0.75rem; color:var(--text-muted,#888); font-family:monospace; }
+        .crm-kanban-card-row { display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:6px; }
+        .crm-kanban-card-tag { font-size:0.68rem; padding:2px 7px; border-radius:5px; background:rgba(99,102,241,.12); color:#818cf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100px; }
+        .crm-kanban-card-date { font-size:0.68rem; color:var(--text-muted,#888); white-space:nowrap; }
+        .crm-assignee-chip { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; font-size:0.62rem; font-weight:700; flex-shrink:0; }
+
+        /* CRM Category tag on cards */
+        .crm-category-tag { font-size:0.72rem; padding:2px 8px; border-radius:5px; background:rgba(99,102,241,.1); color:#818cf8; font-weight:500; }
+        .crm-persona-label { font-size:0.72rem; color:var(--text-muted,#888); }
+
+        /* Import modal */
+        .import-dropzone {
+            border:2px dashed rgba(99,102,241,.35); border-radius:14px; padding:40px 24px;
+            text-align:center; cursor:pointer; transition:all .2s; background:rgba(99,102,241,.04);
+        }
+        .import-dropzone:hover, .import-dropzone.dragover { border-color:rgba(99,102,241,.7); background:rgba(99,102,241,.1); }
+        .import-dropzone-icon { font-size:2.5rem; opacity:.5; margin-bottom:8px; }
+        .import-dropzone-title { font-weight:600; font-size:0.95rem; margin-bottom:4px; }
+        .import-dropzone-text { font-size:0.82rem; color:var(--text-muted,#888); }
+        .import-file-name { margin-top:12px; font-size:0.85rem; color:#818cf8; font-weight:500; }
+        .import-mapping-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+        .import-mapping-table th { text-align:start; padding:8px 10px; font-weight:600; font-size:0.78rem; color:var(--text-muted,#888); text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,.08); }
+        .import-mapping-table td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,.05); }
+        .import-mapping-table select { width:100%; padding:6px 8px; border-radius:7px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.05); color:inherit; font-size:0.82rem; }
+        .import-preview-table { width:100%; border-collapse:collapse; font-size:0.8rem; overflow-x:auto; }
+        .import-preview-table th { padding:6px 8px; font-weight:600; font-size:0.72rem; text-transform:uppercase; color:var(--text-muted,#888); border-bottom:1px solid rgba(255,255,255,.08); text-align:start; }
+        .import-preview-table td { padding:6px 8px; border-bottom:1px solid rgba(255,255,255,.05); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px; }
+        .import-progress-bar { height:6px; border-radius:3px; background:rgba(255,255,255,.08); overflow:hidden; margin:12px 0; }
+        .import-progress-fill { height:100%; background:linear-gradient(90deg,#6366f1,#818cf8); border-radius:3px; transition:width .3s; }
+
+        /* Lead detail extended form */
+        .lead-detail-form { display:flex; flex-direction:column; gap:16px; }
+        .lead-detail-section { border-top:1px solid rgba(255,255,255,.07); padding-top:14px; }
+        .lead-detail-section-title { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--text-muted,#888); margin-bottom:10px; }
+        .lead-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .lead-detail-field { display:flex; flex-direction:column; gap:4px; }
+        .lead-detail-field label { font-size:0.75rem; font-weight:600; color:var(--text-muted,#888); }
+        .lead-detail-field input,
+        .lead-detail-field select,
+        .lead-detail-field textarea {
+            padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,.1);
+            background:rgba(255,255,255,.04); color:inherit; font-size:0.85rem; outline:none;
+            transition:border-color .2s;
+        }
+        .lead-detail-field input:focus,
+        .lead-detail-field select:focus,
+        .lead-detail-field textarea:focus { border-color:rgba(99,102,241,.5); }
+        .lead-detail-field textarea { resize:vertical; min-height:60px; }
+
+        /* Dashboard tab charts */
+        .crm-dash-grid { display:grid; grid-template-columns:1fr 320px; gap:16px; }
+        .crm-dash-kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+        .crm-dash-kpi {
+            background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+            border-radius:12px; padding:16px; text-align:center;
+        }
+        .crm-dash-kpi-value { font-size:1.6rem; font-weight:700; color:var(--text-main,#fff); }
+        .crm-dash-kpi-label { font-size:0.82rem; font-weight:600; margin-top:4px; }
+        .crm-dash-kpi-sub { font-size:0.72rem; color:var(--text-muted,#888); margin-top:2px; }
+        .crm-dash-chart-card {
+            background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+            border-radius:12px; padding:16px; margin-bottom:16px;
+        }
+        .crm-dash-chart-title { font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--text-muted,#888); margin-bottom:14px; }
+        .crm-dash-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; font-size:0.82rem; }
+        .crm-dash-bar-label { width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:0; color:var(--text-main,#fff); }
+        .crm-dash-bar-track { flex:1; height:22px; background:rgba(255,255,255,.06); border-radius:6px; overflow:hidden; position:relative; }
+        .crm-dash-bar-fill { height:100%; border-radius:6px; transition:width .6s ease; min-width:2px; }
+        .crm-dash-bar-count { width:36px; text-align:end; font-weight:600; flex-shrink:0; }
+        .crm-dash-recent-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.05); cursor:pointer; transition:background .15s; border-radius:6px; }
+        .crm-dash-recent-item:hover { background:rgba(99,102,241,.08); }
+        .crm-dash-recent-item:last-child { border-bottom:none; }
+        .crm-dash-donut-wrap { display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center; }
+        .crm-dash-donut-legend { display:flex; flex-direction:column; gap:6px; }
+        .crm-dash-donut-legend-item { display:flex; align-items:center; gap:8px; font-size:0.82rem; }
+        .crm-dash-donut-swatch { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+        .crm-dash-empty-state { text-align:center; padding:48px 24px; color:var(--text-muted,#888); }
+        .crm-dash-refresh-btn { background:none; border:none; color:var(--text-muted,#888); cursor:pointer; font-size:0.85rem; padding:4px 8px; border-radius:6px; transition:all .2s; }
+        .crm-dash-refresh-btn:hover { background:rgba(99,102,241,.15); color:#818cf8; }
+
+        /* Task view toggle */
+        .task-view-btns { display:flex; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,.1); margin-inline-start:auto; }
+        .task-view-btn { padding:7px 14px; background:transparent; border:none; color:var(--text-muted,#888); cursor:pointer; font-size:0.8rem; transition:all .2s; white-space:nowrap; }
+        .task-view-btn.active, .task-view-btn:hover { background:rgba(99,102,241,.2); color:#818cf8; }
+
+        @media (max-width: 768px) {
+            .crm-dash-grid { grid-template-columns:1fr; }
+            .crm-dash-kpi-strip { grid-template-columns:1fr 1fr; }
+            .lead-detail-grid { grid-template-columns:1fr; }
+            .crm-kanban-card-row { flex-wrap:wrap; }
+        }
+        @media (max-width: 480px) {
+            .crm-dash-kpi-strip { grid-template-columns:1fr 1fr; gap:8px; }
+            .crm-dash-kpi { padding:12px; }
+            .crm-dash-kpi-value { font-size:1.3rem; }
+            .crm-dash-bar-label { width:80px; font-size:0.75rem; }
+            .crm-dash-donut-wrap { flex-direction:column; }
+        }
+
+        @media (max-width: 768px) {
+            .crm-col-category, .crm-col-due { display: none; }
+        }
+
         /* Status badges — used everywhere */
         .status-chip {
             display: inline-flex;
@@ -19963,10 +20245,12 @@
             font-weight: 600;
             white-space: nowrap;
         }
-        .status-chip.s-new       { background: rgba(59,130,246,.15);  color: #60a5fa; }
-        .status-chip.s-follow_up { background: rgba(245,158,11,.15);  color: #fbbf24; }
+        .status-chip.s-new       { background: rgba(245,158,11,.15);  color: #fbbf24; }
+        .status-chip.s-follow_up { background: rgba(249,115,22,.15);  color: #fb923c; }
         .status-chip.s-contacted { background: rgba(139,92,246,.15);  color: #a78bfa; }
-        .status-chip.s-qualified { background: rgba(14,165,233,.15);  color: #38bdf8; }
+        .status-chip.s-qualified { background: rgba(59,130,246,.15);  color: #60a5fa; }
+        .status-chip.s-negotiation { background: rgba(139,92,246,.15); color: #a78bfa; }
+        .status-chip.s-proposal  { background: rgba(6,182,212,.15);   color: #22d3ee; }
         .status-chip.s-won       { background: rgba(16,185,129,.15);  color: #34d399; }
         .status-chip.s-lost      { background: rgba(239,68,68,.15);   color: #f87171; }
 
@@ -20931,9 +21215,11 @@
             <!-- Status Dropdown -->
             <div id="status-dropdown" class="status-dropdown" style="display:none;">
                 <div class="dropdown-item" onclick="updateLeadStatus('new')"><span class="status-chip s-new">New</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('qualified')"><span class="status-chip s-qualified">Qualified</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('negotiation')"><span class="status-chip s-negotiation">In Negotiation</span></div>
+                <div class="dropdown-item" onclick="updateLeadStatus('proposal')"><span class="status-chip s-proposal">Proposal Sent</span></div>
                 <div class="dropdown-item" onclick="updateLeadStatus('follow_up')"><span class="status-chip s-follow_up">Follow-up</span></div>
                 <div class="dropdown-item" onclick="updateLeadStatus('contacted')"><span class="status-chip s-contacted">Contacted</span></div>
-                <div class="dropdown-item" onclick="updateLeadStatus('qualified')"><span class="status-chip s-qualified">Qualified</span></div>
                 <div class="dropdown-item" onclick="updateLeadStatus('won')"><span class="status-chip s-won">Won</span></div>
                 <div class="dropdown-item" onclick="updateLeadStatus('lost')"><span class="status-chip s-lost">Lost</span></div>
             </div>
@@ -20957,6 +21243,9 @@
                     <span class="action-label">AI</span>
                 </button>
             </div>
+
+            <!-- Extended Lead Fields -->
+            <div id="lead-profile-fields" class="lead-profile-content" style="padding:14px 20px 0;flex-shrink:0;"></div>
 
             <!-- Scrollable Content -->
             <div class="lead-profile-content">
@@ -24232,6 +24521,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="form-label" data-i18n="task_manager.label_assign_to">Assign To</label>
+                            <select id="create-task-assign" class="form-input">
+                                <option value="" data-i18n="task_manager.unassigned">Unassigned</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label class="form-label">Due Date (optional)</label>
                             <input id="create-task-due" type="datetime-local" class="form-input">
                         </div>
@@ -25751,11 +26046,42 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
-        const LEAD_STATUSES = ['new', 'follow_up', 'contacted', 'qualified', 'won', 'lost'];
+        const LEAD_STATUSES = ['new', 'follow_up', 'contacted', 'qualified', 'negotiation', 'proposal', 'won', 'lost'];
+        const PIPELINE_STAGES = ['new', 'qualified', 'negotiation', 'proposal', 'follow_up'];
+        const PIPELINE_COLORS = {new:'#f59e0b',qualified:'#3b82f6',negotiation:'#8b5cf6',proposal:'#06b6d4',follow_up:'#f97316',won:'#10b981',lost:'#ef4444',contacted:'#8b5cf6'};
         const LEAD_PLATFORMS = ['whatsapp', 'instagram', 'facebook', 'page', 'telegram', 'website'];
 
+        // Global org members cache for CRM and Task Manager
+        window.orgMembersCache = [];
+        window.fetchOrgMembersCache = async function() {
+            if (window.orgMembersCache.length > 0) return window.orgMembersCache;
+            if (!currentUserOrgId) return [];
+            try {
+                const {data, error} = await supabaseClient.rpc('list_org_members', {p_org_id: currentUserOrgId});
+                if (!error && data) window.orgMembersCache = data;
+            } catch(e) { console.warn('Failed to fetch org members:', e); }
+            return window.orgMembersCache;
+        };
+        function getOrgMemberName(userId) {
+            if (!userId) return '';
+            const m = window.orgMembersCache.find(m => m.user_id === userId);
+            return m ? (m.full_name || m.email || 'Member') : '';
+        }
+        function getOrgMemberInitials(userId) {
+            const name = getOrgMemberName(userId);
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+        }
+
+        // Display mapping for legacy statuses in pipeline
+        function mapStatusForPipeline(status) {
+            if (status === 'contacted') return 'new';
+            return status;
+        }
+
         function normalizeLeadsView(view) {
-            const allowed = ['table', 'grid', 'pipeline'];
+            const allowed = ['table', 'grid', 'pipeline', 'dashboard'];
             return allowed.includes(view) ? view : 'table';
         }
 
@@ -39694,11 +40020,10 @@ Thank you for shopping with {store_name}!</textarea>
             if (grid) grid.innerHTML = '<div class="crm-loading"><div class="spinner" style="width:32px;height:32px;margin:0 auto 12px;"></div><p>Loading…</p></div>';
             try {
                 if (!currentUserOrgId) throw new Error('Not authenticated');
-                const {data, error} = await supabaseClient
-                    .from('leads')
-                    .select('*')
-                    .eq('org_id', currentUserOrgId)
-                    .order('created_at', {ascending: false});
+                const [{data, error}] = await Promise.all([
+                    supabaseClient.from('leads').select('*').eq('org_id', currentUserOrgId).order('created_at', {ascending: false}),
+                    fetchOrgMembersCache()
+                ]);
                 if (error) throw error;
                 cachedLeads = data || [];
                 renderCrmView(cachedLeads);
@@ -39715,8 +40040,7 @@ Thank you for shopping with {store_name}!</textarea>
             return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
         }
         function crmStatusChip(status) {
-            const labels = {new:'New',follow_up:'Follow-up',contacted:'Contacted',qualified:'Qualified',won:'Won',lost:'Lost'};
-            return `<span class="status-chip s-${status}">${labels[status] || status}</span>`;
+            return `<span class="status-chip s-${status}">${t('leads.status.'+status) || status}</span>`;
         }
 
         function renderCrmView(leads) {
@@ -39726,10 +40050,16 @@ Thank you for shopping with {store_name}!</textarea>
 
             // Stats strip
             const total    = leads.length;
-            const newCount = leads.filter(l => l.status === 'new').length;
+            const newCount = leads.filter(l => l.status === 'new' || l.status === 'contacted').length;
             const fuCount  = leads.filter(l => l.status === 'follow_up').length;
             const wonCount = leads.filter(l => l.status === 'won').length;
             const lostCount= leads.filter(l => l.status === 'lost').length;
+
+            // Dynamic categories for filter
+            const categories = [...new Set(leads.map(l => l.category).filter(Boolean))].sort();
+            const catOptions = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+
+            const currentView = document.querySelector('.crm-view-btn.active')?.dataset.view || 'table';
 
             toolbar.innerHTML = `
                 <div class="crm-stats-strip">
@@ -39750,10 +40080,16 @@ Thank you for shopping with {store_name}!</textarea>
                         <option value="">${t('leads.filter_all_statuses')}</option>
                         ${LEAD_STATUSES.map(s => `<option value="${s}">${t('leads.status.'+s)}</option>`).join('')}
                     </select>
+                    <select id="crm-category-filter" class="crm-filter-select" onchange="filterAndRenderCrmData()">
+                        <option value="">${t('leads.filter_all_categories')}</option>
+                        ${catOptions}
+                    </select>
+                    <button class="btn-secondary" onclick="openCrmImportModal()" style="padding:8px 14px;font-size:0.82rem;white-space:nowrap;" title="${t('leads.btn_import')}">📥 ${t('leads.btn_import')}</button>
                     <div class="crm-view-btns">
-                        <button class="crm-view-btn active" data-view="table" onclick="setCrmView('table',this)">☰ ${t('leads.view_btn_table')}</button>
-                        <button class="crm-view-btn" data-view="grid"  onclick="setCrmView('grid',this)">⊞ ${t('leads.view_btn_cards')}</button>
-                        <button class="crm-view-btn" data-view="pipeline" onclick="setCrmView('pipeline',this)">⋮⋮⋮ ${t('leads.view_btn_pipeline')}</button>
+                        <button class="crm-view-btn ${currentView==='table'?'active':''}" data-view="table" onclick="setCrmView('table',this)">☰ ${t('leads.view_btn_table')}</button>
+                        <button class="crm-view-btn ${currentView==='grid'?'active':''}" data-view="grid"  onclick="setCrmView('grid',this)">⊞ ${t('leads.view_btn_cards')}</button>
+                        <button class="crm-view-btn ${currentView==='pipeline'?'active':''}" data-view="pipeline" onclick="setCrmView('pipeline',this)">⋮⋮⋮ ${t('leads.view_btn_pipeline')}</button>
+                        <button class="crm-view-btn ${currentView==='dashboard'?'active':''}" data-view="dashboard" onclick="setCrmView('dashboard',this)">◫ ${t('leads.view_btn_dashboard')}</button>
                     </div>
                 </div>
             `;
@@ -39767,37 +40103,52 @@ Thank you for shopping with {store_name}!</textarea>
         function filterCrmRows(leads) {
             const q  = (document.getElementById('crm-search-input')?.value || '').toLowerCase();
             const sf = document.getElementById('crm-status-filter')?.value || '';
+            const cf = document.getElementById('crm-category-filter')?.value || '';
             return leads.filter(l =>
-                (!q  || (l.full_name||'').toLowerCase().includes(q) || (l.phone||'').includes(q)) &&
-                (!sf || String(l.status||'').toLowerCase() === sf)
+                (!q  || (l.full_name||'').toLowerCase().includes(q) || (l.phone||'').includes(q) || (l.email||'').toLowerCase().includes(q)) &&
+                (!sf || String(l.status||'').toLowerCase() === sf) &&
+                (!cf || (l.category||'') === cf)
             );
         }
 
         function renderCrmGrid(rows) {
             const grid = document.getElementById('crm-grid');
             if (!grid) return;
+
+            const view = document.querySelector('.crm-view-btn.active')?.dataset.view || 'table';
+
+            if (view === 'dashboard') {
+                renderCrmDashboard(grid);
+                return;
+            }
+
             if (!rows || rows.length === 0) {
                 grid.innerHTML = `<div style="text-align:center;padding:48px 24px;color:var(--text-muted,#888);">${t('leads.empty_search')}</div>`;
                 return;
             }
 
-            const view = document.querySelector('.crm-view-btn.active')?.dataset.view || 'table';
-
             if (view === 'pipeline') {
-                const colHtml = LEAD_STATUSES.map(status => {
-                    const label = t(`leads.status.${status}`) || status;
-                    const colRows = rows.filter(r => String(r.status||'').toLowerCase() === status);
+                const colHtml = PIPELINE_STAGES.map(stage => {
+                    const label = t(`leads.status.${stage}`) || stage;
+                    const color = PIPELINE_COLORS[stage] || '#888';
+                    const colRows = rows.filter(r => mapStatusForPipeline(String(r.status||'')) === stage);
                     const cards = colRows.length
-                        ? colRows.map(r => `
+                        ? colRows.map(r => {
+                            const relDate = r.created_at ? formatDate(new Date(r.created_at)) : '';
+                            return `
                             <div class="crm-kanban-card" onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
-                                <div style="font-weight:600;font-size:0.85rem;margin-bottom:4px;">${esc(r.full_name||'Unknown')}</div>
-                                <div style="font-size:0.75rem;color:var(--text-muted,#888);font-family:monospace;">${esc(r.phone||'')}</div>
-                                ${r.score != null ? `<div style="font-size:0.72rem;margin-top:5px;color:var(--text-muted,#888);">${t('leads.col_score')}: ${r.score}</div>` : ''}
-                            </div>`).join('')
+                                <div class="crm-kanban-card-name">${esc(r.full_name||'Unknown')}</div>
+                                <div class="crm-kanban-card-phone">${esc(r.phone||'')}</div>
+                                <div class="crm-kanban-card-row">
+                                    ${r.category ? `<span class="crm-kanban-card-tag">${esc(r.category)}</span>` : '<span></span>'}
+                                    ${r.assigned_to_user_id ? `<span class="crm-assignee-chip" title="${esc(getOrgMemberName(r.assigned_to_user_id))}">${getOrgMemberInitials(r.assigned_to_user_id)}</span>` : ''}
+                                </div>
+                                ${relDate ? `<div class="crm-kanban-card-date">${relDate}</div>` : ''}
+                            </div>`}).join('')
                         : `<div class="crm-kanban-empty">${t('leads.pipeline_empty')}</div>`;
                     return `
-                        <div class="crm-kanban-col">
-                            <div class="crm-kanban-head">${crmStatusChip(status)}<span class="crm-kanban-count">${colRows.length}</span></div>
+                        <div class="crm-kanban-col" style="border-top:3px solid ${color};">
+                            <div class="crm-kanban-head">${crmStatusChip(stage)}<span class="crm-kanban-count">${colRows.length}</span></div>
                             <div class="crm-kanban-list">${cards}</div>
                         </div>`;
                 }).join('');
@@ -39812,16 +40163,18 @@ Thank you for shopping with {store_name}!</textarea>
                                 <div class="crm-card-name">${esc(r.full_name||'Unknown')}</div>
                                 <div class="crm-card-phone">${esc(r.phone||'--')}</div>
                             </div>
+                            ${r.assigned_to_user_id ? `<span class="crm-assignee-chip" title="${esc(getOrgMemberName(r.assigned_to_user_id))}">${getOrgMemberInitials(r.assigned_to_user_id)}</span>` : ''}
                         </div>
                         <div class="crm-card-foot">
                             ${crmStatusChip(r.status||'new')}
                             <span class="crm-source-tag">${(r.source||'unknown').toUpperCase()}</span>
                         </div>
-                        ${r.score != null ? `<div style="font-size:0.78rem;color:var(--text-muted,#888);">${t('leads.col_score')}: <strong>${r.score}</strong></div>` : ''}
+                        ${r.category ? `<span class="crm-category-tag">${esc(r.category)}</span>` : ''}
+                        ${r.persona ? `<span class="crm-persona-label">${esc(r.persona)}</span>` : ''}
                     </div>`).join('')}</div>`;
 
             } else {
-                // Table
+                // Table view — extended with category, assignee, due date
                 const trs = rows.map(r => `
                     <tr onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
                         <td><div class="crm-name-cell">
@@ -39833,7 +40186,9 @@ Thank you for shopping with {store_name}!</textarea>
                         </div></td>
                         <td>${crmStatusChip(r.status||'new')}</td>
                         <td><span class="crm-source-tag">${(r.source||'unknown').toUpperCase()}</span></td>
-                        <td>${r.score != null ? r.score : '--'}</td>
+                        <td class="crm-col-category">${r.category ? esc(r.category) : '--'}</td>
+                        <td>${r.assigned_to_user_id ? `<span class="crm-assignee-chip" title="${esc(getOrgMemberName(r.assigned_to_user_id))}">${getOrgMemberInitials(r.assigned_to_user_id)}</span> ${esc(getOrgMemberName(r.assigned_to_user_id).split(' ')[0])}` : '--'}</td>
+                        <td class="crm-col-due">${r.due_at ? new Date(r.due_at).toLocaleDateString() : '--'}</td>
                         <td>${r.created_at ? new Date(r.created_at).toLocaleDateString() : '--'}</td>
                     </tr>`).join('');
                 grid.innerHTML = `
@@ -39843,7 +40198,9 @@ Thank you for shopping with {store_name}!</textarea>
                                 <th>${t('leads.col_name')}</th>
                                 <th>${t('leads.col_status')}</th>
                                 <th>${t('leads.col_platform')}</th>
-                                <th>${t('leads.col_score')}</th>
+                                <th class="crm-col-category">${t('leads.col_category')}</th>
+                                <th>${t('leads.col_assignee')}</th>
+                                <th class="crm-col-due">${t('leads.col_due_date')}</th>
                                 <th>${t('leads.col_date')}</th>
                             </tr></thead>
                             <tbody>${trs}</tbody>
@@ -39931,6 +40288,9 @@ Thank you for shopping with {store_name}!</textarea>
                 badgeEl.className   = 'lead-status-badge status-' + status;
             }
 
+            // Extended fields section
+            renderLeadExtendedFields(leadData);
+
             // AI Summary
             const aiEl = document.getElementById('lead-profile-ai-summary');
             if (crmState?.ai_summary) {
@@ -39989,16 +40349,150 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
-        function getStatusLabel(status) {
-            const statusMap = {
-                'new': t('leads.status.new'),
-                'contacted': t('leads.status.contacted'),
-                'follow_up': t('leads.status.follow_up'),
-                'qualified': t('leads.status.qualified'),
-                'won': t('leads.status.won'),
-                'lost': t('leads.status.lost')
+        function renderLeadExtendedFields(lead) {
+            const el = document.getElementById('lead-profile-fields');
+            if (!el) return;
+            const members = window.orgMembersCache || [];
+            const memberOptions = members.map(m => `<option value="${m.user_id}" ${lead.assigned_to_user_id === m.user_id ? 'selected' : ''}>${esc(m.full_name || m.email)}</option>`).join('');
+
+            el.innerHTML = `
+                <div class="lead-detail-form">
+                    <div class="lead-detail-section">
+                        <div class="lead-detail-section-title">${t('leads.section_contact')}</div>
+                        <div class="lead-detail-grid">
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_name')}</label>
+                                <input type="text" id="lf-full_name" value="${esc(lead.full_name||'')}" dir="auto">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_phone')}</label>
+                                <input type="text" id="lf-phone" value="${esc(lead.phone||'')}" dir="auto">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_email')}</label>
+                                <input type="email" id="lf-email" value="${esc(lead.email||'')}" dir="auto">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lead-detail-section">
+                        <div class="lead-detail-section-title">${t('leads.section_classification')}</div>
+                        <div class="lead-detail-grid">
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_platform')}</label>
+                                <input type="text" id="lf-source" value="${esc(lead.source||'')}" readonly style="opacity:.7;">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_category')}</label>
+                                <input type="text" id="lf-category" value="${esc(lead.category||'')}" dir="auto">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_persona')}</label>
+                                <input type="text" id="lf-persona" value="${esc(lead.persona||'')}" dir="auto">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_service')}</label>
+                                <input type="text" id="lf-service_required" value="${esc(lead.service_required||'')}" dir="auto">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_priority')}</label>
+                                <select id="lf-priority">
+                                    <option value="">--</option>
+                                    <option value="low" ${lead.priority==='low'?'selected':''}>Low</option>
+                                    <option value="medium" ${lead.priority==='medium'?'selected':''}>Medium</option>
+                                    <option value="high" ${lead.priority==='high'?'selected':''}>High</option>
+                                    <option value="urgent" ${lead.priority==='urgent'?'selected':''}>Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lead-detail-section">
+                        <div class="lead-detail-section-title">${t('leads.section_assignment')}</div>
+                        <div class="lead-detail-grid">
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_assignee')}</label>
+                                <select id="lf-assigned_to_user_id">
+                                    <option value="">${t('leads.unassigned')}</option>
+                                    ${memberOptions}
+                                </select>
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_due_date')}</label>
+                                <input type="date" id="lf-due_at" value="${lead.due_at ? new Date(lead.due_at).toISOString().split('T')[0] : ''}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lead-detail-section">
+                        <div class="lead-detail-section-title">${t('leads.section_timeline')}</div>
+                        <div class="lead-detail-grid">
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_first_call')}</label>
+                                <input type="date" id="lf-first_call_at" value="${lead.first_call_at || ''}">
+                            </div>
+                            <div class="lead-detail-field">
+                                <label>${t('leads.col_subscription')}</label>
+                                <input type="date" id="lf-subscription_date" value="${lead.subscription_date || ''}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lead-detail-section">
+                        <div class="lead-detail-section-title">${t('leads.section_notes')}</div>
+                        <div class="lead-detail-field">
+                            <textarea id="lf-notes" dir="auto" rows="3">${esc(lead.notes||'')}</textarea>
+                        </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;padding:4px 0 8px;">
+                        <button class="btn-primary" onclick="saveLeadExtendedFields()" style="padding:8px 20px;font-size:0.85rem;">💾 ${t('leads.btn_save')}</button>
+                    </div>
+                </div>`;
+        }
+
+        window.saveLeadExtendedFields = async function() {
+            if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
+            const getVal = id => document.getElementById(id)?.value?.trim() || null;
+            const oldLead = window.currentLeadProfileData || {};
+            const newAssignee = getVal('lf-assigned_to_user_id');
+            const updates = {
+                full_name: getVal('lf-full_name'),
+                phone: getVal('lf-phone'),
+                email: getVal('lf-email'),
+                category: getVal('lf-category'),
+                persona: getVal('lf-persona'),
+                service_required: getVal('lf-service_required'),
+                priority: getVal('lf-priority'),
+                assigned_to_user_id: newAssignee || null,
+                due_at: getVal('lf-due_at') ? new Date(getVal('lf-due_at')).toISOString() : null,
+                first_call_at: getVal('lf-first_call_at') || null,
+                subscription_date: getVal('lf-subscription_date') || null,
+                notes: getVal('lf-notes'),
+                updated_at: new Date().toISOString()
             };
-            return statusMap[status] || status;
+            try {
+                const {error} = await supabaseClient.from('leads').update(updates)
+                    .eq('id', window.currentLeadProfileId).eq('org_id', window.currentLeadProfileOrgId);
+                if (error) throw error;
+                // Fire notification if assignee changed
+                if (newAssignee && newAssignee !== oldLead.assigned_to_user_id) {
+                    insertCrmNotification({
+                        orgId: window.currentLeadProfileOrgId,
+                        entityId: window.currentLeadProfileId,
+                        eventKey: 'crm_lead_assigned',
+                        title: t('leads.col_assignee'),
+                        body: (updates.full_name || 'Lead') + ' assigned',
+                        recipientUserId: newAssignee
+                    });
+                    logLeadActivity('assignment_changed', 'Assigned to ' + getOrgMemberName(newAssignee), {assigned_to: newAssignee});
+                }
+                window.currentLeadProfileData = {...oldLead, ...updates};
+                showToast(t('crm.assign_saved'));
+                initCrmTab();
+            } catch(err) {
+                console.error('Save lead fields failed:', err);
+                showToast(t('crm.assign_error'));
+            }
+        };
+
+        function getStatusLabel(status) {
+            return t('leads.status.' + status) || status;
         }
 
         function getActivityTypeLabel(type) {
@@ -40065,8 +40559,19 @@ Thank you for shopping with {store_name}!</textarea>
                 renderLeadProfile(updatedLead, crmRefresh.data || window.currentLeadCrmState || {});
 
                 logLeadActivity('status_changed', `Status changed to ${newStatus}`, {new_status: newStatus});
-                showToast(t('crm.status_updated'));
+                // Fire status change notification
+                const recipientId = updatedLead.assigned_to_user_id || null;
+                insertCrmNotification({
+                    orgId: window.currentLeadProfileOrgId,
+                    entityId: window.currentLeadProfileId,
+                    eventKey: 'crm_status_changed',
+                    title: 'Lead Status Updated',
+                    body: (updatedLead.full_name || 'Lead') + ' moved to ' + getStatusLabel(newStatus),
+                    recipientUserId: recipientId
+                });
+                showToast(t('crm.status_updated') || 'Status updated');
                 document.getElementById('status-dropdown').style.display = 'none';
+                initCrmTab();
             } catch (err) {
                 console.error('Update status failed:', err);
                 showToast(t('crm.error_loading'));
@@ -40246,6 +40751,336 @@ Thank you for shopping with {store_name}!</textarea>
         };
 
         // ── Activity logger helper ──
+        // ==========================================
+        // NOTIFICATION HELPERS (Phase 1)
+        // ==========================================
+        async function insertCrmNotification({orgId, entityId, eventKey, title, body, recipientUserId}) {
+            try {
+                const payload = recipientUserId ? {recipient_user_id: recipientUserId} : {};
+                await supabaseClient.rpc('insert_semantic_notification', {
+                    p_org_id: orgId,
+                    p_type: 'crm',
+                    p_title: title,
+                    p_message: body,
+                    p_entity: 'lead',
+                    p_entity_id: entityId,
+                    p_event_key: eventKey,
+                    p_payload: payload
+                });
+            } catch(err) { console.warn('CRM notification insert failed:', err); }
+        }
+
+        async function insertTaskNotification({orgId, entityId, eventKey, title, body, recipientUserId}) {
+            try {
+                const payload = recipientUserId ? {recipient_user_id: recipientUserId} : {};
+                await supabaseClient.rpc('insert_semantic_notification', {
+                    p_org_id: orgId,
+                    p_type: 'task',
+                    p_title: title,
+                    p_message: body,
+                    p_entity: 'task',
+                    p_entity_id: entityId,
+                    p_event_key: eventKey,
+                    p_payload: payload
+                });
+            } catch(err) { console.warn('Task notification insert failed:', err); }
+        }
+        // TODO: Phase 2 — extend send_my_email_notification_test to handle crm_lead_assigned and task_assigned
+
+        // ==========================================
+        // CRM IMPORT (Feature 3)
+        // ==========================================
+        window.openCrmImportModal = function() {
+            let existing = document.getElementById('crm-import-modal');
+            if (existing) { existing.style.display = 'flex'; return; }
+            const modal = document.createElement('div');
+            modal.id = 'crm-import-modal';
+            modal.className = 'modal-overlay';
+            modal.style.display = 'flex';
+            modal.onclick = function(e) { if (e.target === modal) modal.style.display = 'none'; };
+            modal.innerHTML = `
+                <div class="modal-box" style="max-width:620px;width:calc(100% - 32px);max-height:90dvh;overflow-y:auto;" onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <h3>${t('leads.import_title')}</h3>
+                        <button class="modal-close-btn" onclick="document.getElementById('crm-import-modal').style.display='none'">✕</button>
+                    </div>
+                    <div class="modal-body" style="padding:20px;" id="crm-import-body">
+                        <div class="import-dropzone" id="crm-import-dropzone" onclick="document.getElementById('crm-import-file').click()">
+                            <div class="import-dropzone-icon">📁</div>
+                            <div class="import-dropzone-title">${t('leads.import_drop_title')}</div>
+                            <div class="import-dropzone-text">${t('leads.import_drop_text')}</div>
+                            <div id="crm-import-filename" class="import-file-name" style="display:none;"></div>
+                            <input type="file" id="crm-import-file" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleCrmImportFile(this)">
+                        </div>
+                    </div>
+                </div>`;
+            document.body.appendChild(modal);
+            // Drag & drop
+            const dz = document.getElementById('crm-import-dropzone');
+            dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+            dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+            dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); if(e.dataTransfer.files.length) handleCrmImportFileObj(e.dataTransfer.files[0]); });
+        };
+
+        window._crmImportData = null;
+        window._crmImportHeaders = null;
+
+        window.handleCrmImportFile = function(input) {
+            if (input.files.length) handleCrmImportFileObj(input.files[0]);
+        };
+
+        function handleCrmImportFileObj(file) {
+            const fnEl = document.getElementById('crm-import-filename');
+            if (fnEl) { fnEl.textContent = file.name; fnEl.style.display = 'block'; }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const wb = XLSX.read(e.target.result, {type:'array'});
+                    const sheet = wb.Sheets[wb.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(sheet, {defval:''});
+                    if (!json.length) { showToast(t('leads.import_no_data')); return; }
+                    window._crmImportHeaders = Object.keys(json[0]);
+                    window._crmImportData = json;
+                    showCrmImportMapping();
+                } catch(err) { console.error('Parse file failed:', err); showToast(t('leads.import_error')); }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        const CRM_IMPORT_FIELDS = [
+            {key:'full_name', label:'Customer Name'},
+            {key:'phone', label:'Phone'},
+            {key:'email', label:'Email'},
+            {key:'category', label:'Category'},
+            {key:'persona', label:'Persona'},
+            {key:'service_required', label:'Service Required'},
+            {key:'priority', label:'Priority'},
+            {key:'notes', label:'Notes'},
+            {key:'company', label:'Company'}
+        ];
+        const CRM_IMPORT_AUTO_MAP = {
+            'customer name':'full_name','name':'full_name','full name':'full_name','الاسم':'full_name',
+            'phone':'phone','telephone':'phone','mobile':'phone','الهاتف':'phone',
+            'email':'email','e-mail':'email','البريد':'email',
+            'category':'category','sector':'category','الفئة':'category',
+            'persona':'persona','job title':'persona','title':'persona',
+            'service':'service_required','service required':'service_required',
+            'priority':'priority','الأولوية':'priority',
+            'notes':'notes','ملاحظات':'notes',
+            'company':'company','الشركة':'company'
+        };
+
+        function showCrmImportMapping() {
+            const body = document.getElementById('crm-import-body');
+            const headers = window._crmImportHeaders;
+            const mappings = headers.map(h => {
+                const lh = h.toLowerCase().trim();
+                return CRM_IMPORT_AUTO_MAP[lh] || '';
+            });
+            const fieldOpts = CRM_IMPORT_FIELDS.map(f => `<option value="${f.key}">${f.label}</option>`).join('');
+            const rows = headers.map((h, i) => `
+                <tr>
+                    <td>${esc(h)}</td>
+                    <td><select id="crm-map-${i}">
+                        <option value="">${t('leads.import_mapping_skip')}</option>
+                        ${fieldOpts}
+                    </select></td>
+                </tr>`).join('');
+            body.innerHTML = `
+                <h4 style="margin:0 0 12px;">${t('leads.import_mapping_title')}</h4>
+                <div style="overflow-x:auto;"><table class="import-mapping-table">
+                    <thead><tr><th>${t('leads.import_mapping_source')}</th><th>${t('leads.import_mapping_target')}</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table></div>
+                <h4 style="margin:16px 0 8px;">${t('leads.import_preview_title')}</h4>
+                <div style="overflow-x:auto;" id="crm-import-preview"></div>
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn-secondary" onclick="openCrmImportModal()">${t('leads.import_btn_back')}</button>
+                    <button class="btn-primary" onclick="executeCrmImport()">${t('leads.import_btn_import')}</button>
+                </div>`;
+            // Set auto-mapped values
+            headers.forEach((h, i) => {
+                const sel = document.getElementById('crm-map-' + i);
+                if (sel && mappings[i]) sel.value = mappings[i];
+            });
+            // Preview first 3 rows
+            renderCrmImportPreview();
+        }
+
+        function renderCrmImportPreview() {
+            const previewEl = document.getElementById('crm-import-preview');
+            if (!previewEl || !window._crmImportData) return;
+            const data = window._crmImportData.slice(0, 3);
+            const headers = window._crmImportHeaders;
+            const ths = headers.map(h => `<th>${esc(h)}</th>`).join('');
+            const trs = data.map(row => `<tr>${headers.map(h => `<td>${esc(String(row[h]||''))}</td>`).join('')}</tr>`).join('');
+            previewEl.innerHTML = `<table class="import-preview-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+        }
+
+        window.executeCrmImport = async function() {
+            if (!window._crmImportData || !currentUserOrgId) return;
+            const headers = window._crmImportHeaders;
+            const mapping = {};
+            headers.forEach((h, i) => {
+                const sel = document.getElementById('crm-map-' + i);
+                if (sel && sel.value) mapping[h] = sel.value;
+            });
+            if (Object.keys(mapping).length === 0) { showToast('Please map at least one column'); return; }
+
+            const body = document.getElementById('crm-import-body');
+            body.innerHTML = `<div style="text-align:center;padding:32px;"><div class="spinner" style="width:28px;height:28px;margin:0 auto 12px;"></div><p>${t('leads.import_progress')}</p><div class="import-progress-bar"><div id="crm-import-progress-fill" class="import-progress-fill" style="width:0%;"></div></div></div>`;
+
+            const rows = window._crmImportData;
+            let imported = 0, skipped = 0;
+            const chunks = [];
+            const batchSize = 50;
+
+            for (let i = 0; i < rows.length; i += batchSize) {
+                chunks.push(rows.slice(i, i + batchSize));
+            }
+
+            for (let ci = 0; ci < chunks.length; ci++) {
+                const chunk = chunks[ci];
+                const inserts = [];
+                for (const row of chunk) {
+                    const rec = {org_id: currentUserOrgId, source: 'import', status: 'new'};
+                    for (const [srcCol, tgtField] of Object.entries(mapping)) {
+                        const val = String(row[srcCol] || '').trim();
+                        if (val) rec[tgtField] = val;
+                    }
+                    if (!rec.full_name && !rec.phone) { skipped++; continue; }
+                    inserts.push(rec);
+                }
+                if (inserts.length) {
+                    try {
+                        const {error} = await supabaseClient.from('leads').insert(inserts);
+                        if (error) throw error;
+                        imported += inserts.length;
+                    } catch(err) {
+                        console.error('Import chunk failed:', err);
+                        skipped += inserts.length;
+                    }
+                }
+                const fill = document.getElementById('crm-import-progress-fill');
+                if (fill) fill.style.width = Math.round(((ci+1)/chunks.length)*100) + '%';
+            }
+
+            let msg = t('leads.import_success').replace('{x}', imported);
+            if (skipped > 0) msg += ' ' + t('leads.import_skipped').replace('{y}', skipped);
+            body.innerHTML = `<div style="text-align:center;padding:32px;"><div style="font-size:2rem;margin-bottom:8px;">✅</div><p style="font-weight:600;">${msg}</p><button class="btn-primary" onclick="document.getElementById('crm-import-modal').style.display='none';initCrmTab();" style="margin-top:12px;">OK</button></div>`;
+            window._crmImportData = null;
+            window._crmImportHeaders = null;
+        };
+
+        // ==========================================
+        // CRM DASHBOARD (Feature 5)
+        // ==========================================
+        function renderCrmDashboard(grid) {
+            const leads = cachedLeads || [];
+            if (leads.length < 3) {
+                grid.innerHTML = `<div class="crm-dash-empty-state"><div style="font-size:2rem;margin-bottom:8px;">📊</div><p>${t('leads.dash_empty')}</p><button class="btn-primary" style="margin-top:12px;" onclick="setCrmView('table',document.querySelector('.crm-view-btn[data-view=table]'))">+ ${t('leads.stat_new')}</button></div>`;
+                return;
+            }
+
+            // KPIs
+            const total = leads.length;
+            const won = leads.filter(l => l.status === 'won').length;
+            const fu = leads.filter(l => l.status === 'follow_up').length;
+            const assignees = [...new Set(leads.map(l => l.assigned_to_user_id).filter(Boolean))];
+            const avgPerAssignee = assignees.length ? (total / assignees.length).toFixed(1) : '--';
+
+            // Chart data
+            const stageData = {};
+            const allStages = [...PIPELINE_STAGES, 'won', 'lost'];
+            allStages.forEach(s => stageData[s] = 0);
+            leads.forEach(l => { const ms = mapStatusForPipeline(l.status||'new'); stageData[ms] = (stageData[ms]||0) + 1; });
+
+            const catData = {};
+            leads.forEach(l => { const c = l.category || ''; if (c) catData[c] = (catData[c]||0) + 1; });
+            const catEntries = Object.entries(catData).sort((a,b) => b[1]-a[1]);
+
+            const assigneeData = {};
+            leads.forEach(l => { const a = l.assigned_to_user_id || '__unassigned'; assigneeData[a] = (assigneeData[a]||0) + 1; });
+            const assigneeEntries = Object.entries(assigneeData).sort((a,b) => b[1]-a[1]).slice(0, 8);
+
+            const recent = leads.slice(0, 5);
+
+            grid.innerHTML = `
+                <div class="crm-dash-kpi-strip">
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value">${total}</div><div class="crm-dash-kpi-label">${t('leads.dash_kpi_total')}</div><div class="crm-dash-kpi-sub">${t('leads.dash_kpi_total_sub')}</div></div>
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value" style="color:#34d399;">${won}</div><div class="crm-dash-kpi-label">${t('leads.dash_kpi_won')}</div><div class="crm-dash-kpi-sub">${t('leads.dash_kpi_won_sub')}</div></div>
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value" style="color:#fb923c;">${fu}</div><div class="crm-dash-kpi-label">${t('leads.dash_kpi_followup')}</div><div class="crm-dash-kpi-sub">${t('leads.dash_kpi_followup_sub')}</div></div>
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value">${avgPerAssignee}</div><div class="crm-dash-kpi-label">${t('leads.dash_kpi_avg')}</div><div class="crm-dash-kpi-sub">${t('leads.dash_kpi_avg_sub')}</div></div>
+                </div>
+                <div class="crm-dash-grid">
+                    <div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('leads.dash_chart_by_stage')} <button class="crm-dash-refresh-btn" onclick="initCrmTab()" title="${t('leads.dash_refresh')}">↻</button></div>
+                            ${renderHBarChart(allStages.filter(s => stageData[s] > 0).map(s => ({label: t('leads.status.'+s)||s, value: stageData[s], color: PIPELINE_COLORS[s]||'#888'})))}
+                        </div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('leads.dash_chart_by_assignee')}</div>
+                            ${renderHBarChart(assigneeEntries.map(([k,v]) => ({label: k==='__unassigned' ? t('leads.unassigned') : getOrgMemberName(k)||'Member', value:v, color:'#6366f1'})))}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('leads.dash_chart_by_category')}</div>
+                            ${catEntries.length ? renderDonutChart(catEntries.slice(0,6)) : `<div style="text-align:center;padding:20px;color:var(--text-muted,#888);">${t('leads.dash_no_category')}</div>`}
+                        </div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('leads.dash_chart_recent')}</div>
+                            ${recent.map(r => `
+                                <div class="crm-dash-recent-item" onclick="openLeadProfile('${r.id}','${currentUserOrgId||''}')">
+                                    <div class="crm-lead-avatar" style="width:28px;height:28px;font-size:0.65rem;">${crmInitials(r.full_name)}</div>
+                                    <div style="flex:1;min-width:0;">
+                                        <div style="font-weight:600;font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(r.full_name||'Unknown')}</div>
+                                    </div>
+                                    ${crmStatusChip(r.status||'new')}
+                                    <span style="font-size:0.72rem;color:var(--text-muted,#888);white-space:nowrap;">${r.created_at ? formatDate(new Date(r.created_at)) : ''}</span>
+                                </div>`).join('')}
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // ==========================================
+        // SHARED SVG CHART HELPERS
+        // ==========================================
+        function renderHBarChart(items) {
+            if (!items.length) return '<div style="color:var(--text-muted,#888);font-size:0.85rem;padding:8px;">No data</div>';
+            const max = Math.max(...items.map(i => i.value), 1);
+            return items.map(item => `
+                <div class="crm-dash-bar-row">
+                    <span class="crm-dash-bar-label">${esc(item.label)}</span>
+                    <div class="crm-dash-bar-track"><div class="crm-dash-bar-fill" style="width:${(item.value/max)*100}%;background:${item.color};"></div></div>
+                    <span class="crm-dash-bar-count">${item.value}</span>
+                </div>`).join('');
+        }
+
+        function renderDonutChart(entries, customColors) {
+            const colors = customColors || ['#6366f1','#f59e0b','#10b981','#f97316','#06b6d4','#ef4444','#8b5cf6'];
+            const total = entries.reduce((s,[,v]) => s+v, 0);
+            if (total === 0) return '';
+            const size = 120, cx = 60, cy = 60, r = 48, inner = 30;
+            let paths = '', startAngle = -Math.PI / 2;
+            entries.forEach(([label, value], i) => {
+                const pct = value / total;
+                const endAngle = startAngle + pct * 2 * Math.PI;
+                const x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+                const x2 = cx + r * Math.cos(endAngle), y2 = cy + r * Math.sin(endAngle);
+                const ix1 = cx + inner * Math.cos(endAngle), iy1 = cy + inner * Math.sin(endAngle);
+                const ix2 = cx + inner * Math.cos(startAngle), iy2 = cy + inner * Math.sin(startAngle);
+                const large = pct > 0.5 ? 1 : 0;
+                paths += `<path d="M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${ix1},${iy1} A${inner},${inner} 0 ${large} 0 ${ix2},${iy2} Z" fill="${colors[i%colors.length]}" opacity="0.85"/>`;
+                startAngle = endAngle;
+            });
+            const legend = entries.map(([label, value], i) =>
+                `<div class="crm-dash-donut-legend-item"><span class="crm-dash-donut-swatch" style="background:${colors[i%colors.length]};"></span>${esc(label)} <strong>${value}</strong></div>`
+            ).join('');
+            return `<div class="crm-dash-donut-wrap"><svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${paths}</svg><div class="crm-dash-donut-legend">${legend}</div></div>`;
+        }
+
         async function logLeadActivity(type, label, payload) {
             try {
                 const {data: {user: authUser}} = await supabaseClient.auth.getUser();
@@ -40271,37 +41106,50 @@ Thank you for shopping with {store_name}!</textarea>
 
         window.cachedTasks = null;
         window.currentTaskId = null;
+        let taskView = 'list';
 
         window.initTaskManagerTab = async function() {
             const toolbar = document.getElementById('task-manager-toolbar');
             const content = document.getElementById('task-manager-content');
+            await fetchOrgMembersCache();
             if (toolbar) {
                 toolbar.innerHTML = `
                     <div class="crm-toolbar" style="margin-bottom:0;">
                         <div class="crm-search-wrap">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <input type="text" id="task-search-input" class="crm-search-input" placeholder="Search tasks…" oninput="filterAndRenderTasks()">
+                            <input type="text" id="task-search-input" class="crm-search-input" placeholder="${t('task_manager.search_placeholder')}" oninput="filterAndRenderTasks()">
                         </div>
                         <select id="task-status-filter" class="crm-filter-select" onchange="filterAndRenderTasks()">
-                            <option value="">All Statuses</option>
-                            <option value="open">Open</option>
-                            <option value="in_progress">In Progress</option>
-                            <option value="waiting">Waiting</option>
-                            <option value="done">Done</option>
-                            <option value="cancelled">Cancelled</option>
+                            <option value="">${t('task_manager.filter_all_statuses')}</option>
+                            <option value="open">${t('task_manager.status.open')}</option>
+                            <option value="in_progress">${t('task_manager.status.in_progress')}</option>
+                            <option value="waiting">${t('task_manager.status.waiting')}</option>
+                            <option value="done">${t('task_manager.status.done')}</option>
+                            <option value="cancelled">${t('task_manager.status.cancelled')}</option>
                         </select>
                         <select id="task-priority-filter" class="crm-filter-select" onchange="filterAndRenderTasks()">
-                            <option value="">All Priorities</option>
-                            <option value="urgent">🔴 Urgent</option>
-                            <option value="high">🟠 High</option>
-                            <option value="medium">🔵 Medium</option>
-                            <option value="low">⚪ Low</option>
+                            <option value="">${t('task_manager.filter_all_priorities')}</option>
+                            <option value="urgent">🔴 ${t('task_manager.priority.urgent')}</option>
+                            <option value="high">🟠 ${t('task_manager.priority.high')}</option>
+                            <option value="medium">🔵 ${t('task_manager.priority.medium')}</option>
+                            <option value="low">⚪ ${t('task_manager.priority.low')}</option>
                         </select>
+                        <div class="task-view-btns">
+                            <button class="task-view-btn ${taskView==='list'?'active':''}" onclick="setTaskView('list',this)">☰ ${t('task_manager.view_btn_list')}</button>
+                            <button class="task-view-btn ${taskView==='dashboard'?'active':''}" onclick="setTaskView('dashboard',this)">◫ ${t('task_manager.view_btn_dashboard')}</button>
+                        </div>
                     </div>
                 `;
             }
-            if (content) content.innerHTML = `<div class="crm-loading"><div class="spinner" style="width:28px;height:28px;margin:0 auto 12px;"></div><p>Loading tasks…</p></div>`;
+            if (content) content.innerHTML = `<div class="crm-loading"><div class="spinner" style="width:28px;height:28px;margin:0 auto 12px;"></div><p>${t('task_manager.loading')}</p></div>`;
             await fetchTasks();
+        };
+
+        window.setTaskView = function(view, btn) {
+            taskView = view;
+            document.querySelectorAll('.task-view-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            filterAndRenderTasks();
         };
 
         async function fetchTasks() {
@@ -40324,6 +41172,10 @@ Thank you for shopping with {store_name}!</textarea>
 
         window.filterAndRenderTasks = function() {
             if (!window.cachedTasks) return;
+            if (taskView === 'dashboard') {
+                renderTaskDashboard();
+                return;
+            }
             const search = (document.getElementById('task-search-input')?.value || '').toLowerCase();
             const statusF = document.getElementById('task-status-filter')?.value || '';
             const priorityF = document.getElementById('task-priority-filter')?.value || '';
@@ -40369,6 +41221,9 @@ Thank you for shopping with {store_name}!</textarea>
                     ? new Date(task.due_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})
                     : null;
                 const dotColor = pDot[task.priority] || '#9ca3af';
+                const assigneeHtml = task.assigned_to_user_id
+                    ? `<span class="crm-assignee-chip" title="${esc(getOrgMemberName(task.assigned_to_user_id))}">${getOrgMemberInitials(task.assigned_to_user_id)}</span>`
+                    : '';
                 return `
                     <div class="tm-task-card p-${task.priority||'medium'}" onclick="openTaskDetail('${esc(task.id)}')">
                         <div class="tm-priority-dot" style="background:${dotColor};"></div>
@@ -40379,6 +41234,7 @@ Thank you for shopping with {store_name}!</textarea>
                                 ${dueStr ? `<span class="${isOverdue ? 'tm-task-due-overdue' : ''}">📅 ${isOverdue?'Overdue · ':''}${dueStr}</span>` : ''}
                             </div>
                         </div>
+                        ${assigneeHtml}
                         ${sChip[task.status] || `<span class="tm-status-chip ts-open">${task.status}</span>`}
                     </div>`;
             }).join('');
@@ -40392,6 +41248,12 @@ Thank you for shopping with {store_name}!</textarea>
             document.getElementById('create-task-type').value = 'general';
             document.getElementById('create-task-priority').value = 'medium';
             document.getElementById('create-task-due').value = '';
+            // Populate assign-to dropdown
+            const assignSel = document.getElementById('create-task-assign');
+            if (assignSel) {
+                assignSel.innerHTML = `<option value="">${t('task_manager.unassigned')}</option>` +
+                    (window.orgMembersCache||[]).map(m => `<option value="${m.user_id}">${esc(m.full_name||m.email)}</option>`).join('');
+            }
             document.getElementById('create-task-modal').style.display = 'flex';
         };
 
@@ -40408,6 +41270,7 @@ Thank you for shopping with {store_name}!</textarea>
             try {
                 const {data: {user}} = await supabaseClient.auth.getUser();
                 const dueVal = document.getElementById('create-task-due').value;
+                const assignVal = document.getElementById('create-task-assign')?.value || null;
                 const {data, error} = await supabaseClient.from('tasks').insert({
                     org_id: currentUserOrgId,
                     title,
@@ -40415,18 +41278,31 @@ Thank you for shopping with {store_name}!</textarea>
                     task_type: document.getElementById('create-task-type').value,
                     priority: document.getElementById('create-task-priority').value,
                     due_at: dueVal ? new Date(dueVal).toISOString() : null,
+                    assigned_to_user_id: assignVal || null,
                     created_by_user_id: user.id,
                     status: 'open'
                 }).select().single();
 
                 if (error) throw error;
 
-                showToast('Task created');
+                // Fire task_assigned notification
+                if (assignVal) {
+                    insertTaskNotification({
+                        orgId: currentUserOrgId,
+                        entityId: data.id,
+                        eventKey: 'task_assigned',
+                        title: 'Task Assigned to You',
+                        body: 'New task: ' + title,
+                        recipientUserId: assignVal
+                    });
+                }
+
+                showToast(t('task_manager.task_saved'));
                 closeCreateTaskModal();
                 await fetchTasks();
             } catch (err) {
                 console.error('Create task failed:', err);
-                showToast('Failed to create task');
+                showToast(t('task_manager.error_create'));
             }
         };
 
@@ -40463,21 +41339,25 @@ Thank you for shopping with {store_name}!</textarea>
                         </div>`).join('')
                     : `<div style="color:var(--text-muted,#888);font-size:0.875rem;padding:4px 0;">No comments yet.</div>`;
 
+                const members = window.orgMembersCache || [];
+                const assigneeOptions = members.map(m => `<option value="${m.user_id}" ${task.assigned_to_user_id===m.user_id?'selected':''}>${esc(m.full_name||m.email)}</option>`).join('');
+                window._taskDetailData = task;
+
                 body.innerHTML = `
                     <!-- Status + Priority row -->
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                         <div class="form-group">
-                            <label class="form-label">Status</label>
+                            <label class="form-label">${t('task_manager.col_status')}</label>
                             <select id="task-detail-status" class="form-input" onchange="updateTaskStatus(this.value)">
-                                <option value="open"        ${task.status==='open'?'selected':''}>Open</option>
-                                <option value="in_progress" ${task.status==='in_progress'?'selected':''}>In Progress</option>
-                                <option value="waiting"     ${task.status==='waiting'?'selected':''}>Waiting</option>
-                                <option value="done"        ${task.status==='done'?'selected':''}>Done</option>
-                                <option value="cancelled"   ${task.status==='cancelled'?'selected':''}>Cancelled</option>
+                                <option value="open"        ${task.status==='open'?'selected':''}>${t('task_manager.status.open')}</option>
+                                <option value="in_progress" ${task.status==='in_progress'?'selected':''}>${t('task_manager.status.in_progress')}</option>
+                                <option value="waiting"     ${task.status==='waiting'?'selected':''}>${t('task_manager.status.waiting')}</option>
+                                <option value="done"        ${task.status==='done'?'selected':''}>${t('task_manager.status.done')}</option>
+                                <option value="cancelled"   ${task.status==='cancelled'?'selected':''}>${t('task_manager.status.cancelled')}</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Priority</label>
+                            <label class="form-label">${t('task_manager.col_priority')}</label>
                             <div style="display:flex;align-items:center;gap:8px;padding:10px 0;">
                                 <span style="width:10px;height:10px;border-radius:50%;background:${pColor};display:inline-block;flex-shrink:0;"></span>
                                 <span style="font-weight:600;color:${pColor};text-transform:capitalize;">${task.priority||'medium'}</span>
@@ -40485,9 +41365,18 @@ Thank you for shopping with {store_name}!</textarea>
                         </div>
                     </div>
 
+                    <!-- Assigned To -->
+                    <div class="form-group">
+                        <label class="form-label">${t('task_manager.label_assign_to')}</label>
+                        <select id="task-detail-assignee" class="form-input" onchange="updateTaskAssignee(this.value)">
+                            <option value="">${t('task_manager.unassigned')}</option>
+                            ${assigneeOptions}
+                        </select>
+                    </div>
+
                     <!-- Due date -->
                     <div class="form-group">
-                        <label class="form-label">Due Date</label>
+                        <label class="form-label">${t('task_manager.col_due')}</label>
                         <div style="padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:0.875rem;${isOverdue?'color:#f87171;font-weight:600;':''}">${isOverdue?'⚠️ Overdue · ':''}${dueStr}</div>
                     </div>
 
@@ -40533,11 +41422,49 @@ Thank you for shopping with {store_name}!</textarea>
                 const {error} = await supabaseClient.from('tasks').update(updates)
                     .eq('id', window.currentTaskId).eq('org_id', currentUserOrgId);
                 if (error) throw error;
-                showToast('Status updated');
+                // Fire task_completed notification
+                if (newStatus === 'done' && window._taskDetailData) {
+                    insertTaskNotification({
+                        orgId: currentUserOrgId,
+                        entityId: window.currentTaskId,
+                        eventKey: 'task_completed',
+                        title: 'Task Completed',
+                        body: (window._taskDetailData.title || 'Task') + ' was marked as done',
+                        recipientUserId: window._taskDetailData.created_by_user_id
+                    });
+                }
+                showToast(t('task_manager.task_saved'));
                 await fetchTasks();
             } catch (err) {
                 console.error('Update task status failed:', err);
                 showToast('Failed to update status');
+            }
+        };
+
+        window.updateTaskAssignee = async function(userId) {
+            if (!window.currentTaskId || !currentUserOrgId) return;
+            try {
+                const {error} = await supabaseClient.from('tasks').update({
+                    assigned_to_user_id: userId || null,
+                    updated_at: new Date().toISOString()
+                }).eq('id', window.currentTaskId).eq('org_id', currentUserOrgId);
+                if (error) throw error;
+                // Fire task_assigned notification
+                if (userId) {
+                    insertTaskNotification({
+                        orgId: currentUserOrgId,
+                        entityId: window.currentTaskId,
+                        eventKey: 'task_assigned',
+                        title: 'Task Assigned to You',
+                        body: 'New task: ' + (window._taskDetailData?.title || 'Task'),
+                        recipientUserId: userId
+                    });
+                }
+                showToast(t('task_manager.task_saved'));
+                await fetchTasks();
+            } catch(err) {
+                console.error('Update task assignee failed:', err);
+                showToast('Failed to update assignee');
             }
         };
 
@@ -40565,6 +41492,84 @@ Thank you for shopping with {store_name}!</textarea>
                 showToast('Failed to add comment');
             }
         };
+
+        // ==========================================
+        // TASK MANAGER DASHBOARD (Feature 6)
+        // ==========================================
+        function renderTaskDashboard() {
+            const content = document.getElementById('task-manager-content');
+            if (!content) return;
+            const tasks = window.cachedTasks || [];
+            if (tasks.length < 3) {
+                content.innerHTML = `<div class="crm-dash-empty-state"><div style="font-size:2rem;margin-bottom:8px;">📋</div><p>${t('task_manager.dash_empty')}</p><button class="btn-primary" style="margin-top:12px;" onclick="openCreateTaskModal()">+ ${t('task_manager.btn_create_task')}</button></div>`;
+                return;
+            }
+            const now = new Date();
+            const total = tasks.length;
+            const done = tasks.filter(t => t.status === 'done').length;
+            const overdue = tasks.filter(t => t.due_at && new Date(t.due_at) < now && t.status !== 'done' && t.status !== 'cancelled').length;
+            const rate = total > 0 ? Math.round((done / total) * 100) : 0;
+
+            // Status data
+            const statusData = {};
+            ['open','in_progress','waiting','done','cancelled'].forEach(s => statusData[s] = 0);
+            tasks.forEach(tk => { statusData[tk.status] = (statusData[tk.status]||0) + 1; });
+            const statusColors = {open:'#3b82f6',in_progress:'#f59e0b',waiting:'#8b5cf6',done:'#10b981',cancelled:'#64748b'};
+
+            // Priority data
+            const priData = {};
+            ['urgent','high','medium','low'].forEach(p => priData[p] = 0);
+            tasks.forEach(tk => { priData[tk.priority] = (priData[tk.priority]||0) + 1; });
+            const priColors = {urgent:'#ef4444',high:'#f97316',medium:'#3b82f6',low:'#9ca3af'};
+
+            // Assignee data
+            const assigneeData = {};
+            tasks.forEach(tk => { const a = tk.assigned_to_user_id || '__unassigned'; assigneeData[a] = (assigneeData[a]||0) + 1; });
+            const assigneeEntries = Object.entries(assigneeData).sort((a,b) => b[1]-a[1]).slice(0, 8);
+
+            // Overdue tasks
+            const overdueTasks = tasks.filter(tk => tk.due_at && new Date(tk.due_at) < now && tk.status !== 'done' && tk.status !== 'cancelled')
+                .sort((a,b) => new Date(a.due_at) - new Date(b.due_at)).slice(0, 5);
+
+            content.innerHTML = `
+                <div class="crm-dash-kpi-strip">
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value">${total}</div><div class="crm-dash-kpi-label">${t('task_manager.dash_kpi_total')}</div><div class="crm-dash-kpi-sub">${t('task_manager.dash_kpi_total_sub')}</div></div>
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value" style="color:#34d399;">${done}</div><div class="crm-dash-kpi-label">${t('task_manager.dash_kpi_done')}</div><div class="crm-dash-kpi-sub">${t('task_manager.dash_kpi_done_sub')}</div></div>
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value" style="color:#f87171;">${overdue}</div><div class="crm-dash-kpi-label">${t('task_manager.dash_kpi_overdue')}</div><div class="crm-dash-kpi-sub">${t('task_manager.dash_kpi_overdue_sub')}</div></div>
+                    <div class="crm-dash-kpi"><div class="crm-dash-kpi-value">${rate}%</div><div class="crm-dash-kpi-label">${t('task_manager.dash_kpi_rate')}</div><div class="crm-dash-kpi-sub">${t('task_manager.dash_kpi_rate_sub')}</div></div>
+                </div>
+                <div class="crm-dash-grid">
+                    <div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('task_manager.dash_chart_by_status')} <button class="crm-dash-refresh-btn" onclick="fetchTasks()" title="${t('task_manager.dash_refresh')}">↻</button></div>
+                            ${renderDonutChart(Object.entries(statusData).filter(([,v]) => v > 0).map(([k,v]) => [t('task_manager.status.'+k)||k, v]), Object.values(statusColors))}
+                        </div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('task_manager.dash_chart_by_assignee')}</div>
+                            ${renderHBarChart(assigneeEntries.map(([k,v]) => ({label: k==='__unassigned' ? t('task_manager.unassigned') : getOrgMemberName(k)||'Member', value:v, color:'#6366f1'})))}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('task_manager.dash_chart_by_priority')}</div>
+                            ${renderHBarChart(['urgent','high','medium','low'].filter(p => priData[p] > 0).map(p => ({label: t('task_manager.priority.'+p)||p, value: priData[p], color: priColors[p]})))}
+                        </div>
+                        <div class="crm-dash-chart-card">
+                            <div class="crm-dash-chart-title">${t('task_manager.dash_chart_overdue')}</div>
+                            ${overdueTasks.length ? overdueTasks.map(tk => {
+                                const daysOver = Math.floor((now - new Date(tk.due_at)) / (1000*60*60*24));
+                                const pDotColor = {urgent:'#ef4444',high:'#f97316',medium:'#3b82f6',low:'#9ca3af'}[tk.priority] || '#9ca3af';
+                                return `<div class="crm-dash-recent-item" onclick="openTaskDetail('${esc(tk.id)}')">
+                                    <span style="width:8px;height:8px;border-radius:50%;background:${pDotColor};flex-shrink:0;"></span>
+                                    <div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(tk.title)}</div></div>
+                                    ${tk.assigned_to_user_id ? `<span class="crm-assignee-chip" style="width:22px;height:22px;font-size:0.58rem;">${getOrgMemberInitials(tk.assigned_to_user_id)}</span>` : ''}
+                                    <span style="font-size:0.72rem;color:#f87171;font-weight:600;white-space:nowrap;">${t('task_manager.dash_overdue_days').replace('{n}', daysOver)}</span>
+                                </div>`;
+                            }).join('') : `<div style="text-align:center;padding:16px;color:#34d399;font-weight:600;">✓ ${t('task_manager.dash_no_overdue')}</div>`}
+                        </div>
+                    </div>
+                </div>`;
+        }
 
         window.deleteTask = async function(taskId) {
             if (!taskId || !currentUserOrgId) return;
