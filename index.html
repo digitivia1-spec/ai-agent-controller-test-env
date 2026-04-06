@@ -2576,18 +2576,6 @@
                 }
             }
         });
-        // Phase 5: Email test button labels
-        Object.assign(window.LANG_EN.orders.email_test, {
-            crm_tooltip: "Send a test CRM lead assignment email to yourself",
-            task_tooltip: "Send a test task assignment email to yourself",
-            team_tooltip: "Send a test team member joined email to yourself",
-            toast_crm_sent: "Test CRM email sent to {email}",
-            toast_task_sent: "Test task email sent to {email}",
-            toast_team_sent: "Test team email sent to {email}",
-            crm_cta: "Send test CRM email",
-            task_cta: "Send test task email",
-            team_cta: "Send test team email"
-        });
         Object.assign(window.LANG_EN.dashboard.stats, {
             total_meetings: "Total Meetings",
             meetings_subtext: "{count} Meetings"
@@ -3201,18 +3189,6 @@
                     body: "انضم {member_name} إلى الفريق كـ {member_role}."
                 }
             }
-        });
-        // Phase 5: Email test button labels (AR)
-        Object.assign(window.LANG_AR.orders.email_test, {
-            crm_tooltip: "أرسل بريد تجريبي لتعيين عميل لنفسك",
-            task_tooltip: "أرسل بريد تجريبي لتعيين مهمة لنفسك",
-            team_tooltip: "أرسل بريد تجريبي لانضمام عضو فريق لنفسك",
-            toast_crm_sent: "تم إرسال بريد CRM التجريبي إلى {email}",
-            toast_task_sent: "تم إرسال بريد المهمة التجريبي إلى {email}",
-            toast_team_sent: "تم إرسال بريد الفريق التجريبي إلى {email}",
-            crm_cta: "أرسل بريد CRM تجريبي",
-            task_cta: "أرسل بريد مهمة تجريبي",
-            team_cta: "أرسل بريد فريق تجريبي"
         });
         Object.assign(window.LANG_AR.dashboard.stats, {
             total_meetings: "إجمالي الاجتماعات",
@@ -25828,36 +25804,6 @@
                                 <span class="email-test-btn-icon" aria-hidden="true">📆</span>
                                 <span data-i18n="orders.email_test.meeting_cta">Send test meeting email</span>
                             </button>
-                            <button
-                                class="email-test-btn crm"
-                                id="email-test-crm-btn"
-                                onclick="sendEmailNotificationTest('crm_lead_assigned')"
-                                title="Sends a sample CRM lead assignment email."
-                                aria-label="Send test CRM email"
-                            >
-                                <span class="email-test-btn-icon" aria-hidden="true">👥</span>
-                                <span data-i18n="orders.email_test.crm_cta">Send test CRM email</span>
-                            </button>
-                            <button
-                                class="email-test-btn task"
-                                id="email-test-task-btn"
-                                onclick="sendEmailNotificationTest('task_assigned')"
-                                title="Sends a sample task assignment email."
-                                aria-label="Send test task email"
-                            >
-                                <span class="email-test-btn-icon" aria-hidden="true">✅</span>
-                                <span data-i18n="orders.email_test.task_cta">Send test task email</span>
-                            </button>
-                            <button
-                                class="email-test-btn team"
-                                id="email-test-team-btn"
-                                onclick="sendEmailNotificationTest('team_member_joined')"
-                                title="Sends a sample team member joined email."
-                                aria-label="Send test team email"
-                            >
-                                <span class="email-test-btn-icon" aria-hidden="true">🤝</span>
-                                <span data-i18n="orders.email_test.team_cta">Send test team email</span>
-                            </button>
                         </div>
                         <div id="orders-product-incoming">
                         <div id="orders-table-container" class="orders-table-container">
@@ -31899,9 +31845,6 @@ Thank you for shopping with {store_name}!</textarea>
             const toolbarEl = document.getElementById('email-test-toolbar');
             const orderBtn = document.getElementById('email-test-order-btn');
             const meetingBtn = document.getElementById('email-test-meeting-btn');
-            const crmBtn = document.getElementById('email-test-crm-btn');
-            const taskBtn = document.getElementById('email-test-task-btn');
-            const teamBtn = document.getElementById('email-test-team-btn');
             const recipientEmail = emailNotificationTestStatus.recipient_email || currentUserProfile?.email || '';
             const remaining = Number.isFinite(Number(emailNotificationTestStatus.remaining)) ? Number(emailNotificationTestStatus.remaining) : 5;
             const exhausted = remaining <= 0;
@@ -31922,13 +31865,10 @@ Thank you for shopping with {store_name}!</textarea>
 
             const tooltipMap = {
                 'email-test-meeting-btn': t('orders.email_test.meeting_tooltip'),
-                'email-test-order-btn': t('orders.email_test.order_tooltip'),
-                'email-test-crm-btn': t('orders.email_test.crm_tooltip'),
-                'email-test-task-btn': t('orders.email_test.task_tooltip'),
-                'email-test-team-btn': t('orders.email_test.team_tooltip')
+                'email-test-order-btn': t('orders.email_test.order_tooltip')
             };
 
-            [orderBtn, meetingBtn, crmBtn, taskBtn, teamBtn].forEach((btn) => {
+            [orderBtn, meetingBtn].forEach((btn) => {
                 if (!btn) return;
                 if (btn.hidden) return;
                 btn.disabled = exhausted || loading;
@@ -32011,10 +31951,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const targetEmail = data?.recipient_email || emailNotificationTestStatus.recipient_email || currentUserProfile?.email || '--';
                 const toastKeyMap = {
                     meeting: 'orders.email_test.toast_meeting_sent',
-                    order: 'orders.email_test.toast_order_sent',
-                    crm_lead_assigned: 'orders.email_test.toast_crm_sent',
-                    task_assigned: 'orders.email_test.toast_task_sent',
-                    team_member_joined: 'orders.email_test.toast_team_sent'
+                    order: 'orders.email_test.toast_order_sent'
                 };
                 const toastKey = toastKeyMap[kind] || 'orders.email_test.toast_order_sent';
                 showToast(t(toastKey, { email: targetEmail }), 'success');
@@ -43372,7 +43309,7 @@ Thank you for shopping with {store_name}!</textarea>
             const content = document.getElementById('task-manager-content');
             if (!content) return;
             const tasks = window.cachedTasks || [];
-            if (tasks.length < 3) {
+            if (tasks.length === 0) {
                 content.innerHTML = `<div class="crm-dash-empty-state"><div style="font-size:2rem;margin-bottom:8px;">📋</div><p>${t('task_manager.dash_empty')}</p><button class="btn-primary" style="margin-top:12px;" onclick="openCreateTaskModal()">+ ${t('task_manager.btn_create_task')}</button></div>`;
                 return;
             }
@@ -43876,7 +43813,16 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 } catch (e) {
                     console.error('Send invitation failed:', e);
-                    showToast(tt('error_generic'), 'error');
+                    const msg = e?.message || '';
+                    if (msg.includes('already_invited') || msg.includes('duplicate')) {
+                        showToast(tt('error_already_invited'), 'error');
+                    } else if (msg.includes('already_member') || msg.includes('already a member')) {
+                        showToast(tt('error_already_member'), 'error');
+                    } else if (msg.includes('not found') || msg.includes('42883')) {
+                        showToast(tt('error_generic') + ' (RPC)', 'error');
+                    } else {
+                        showToast(tt('error_generic'), 'error');
+                    }
                 } finally {
                     btn.disabled = false;
                     btn.textContent = tt('btn_send_invite');
