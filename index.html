@@ -2471,6 +2471,9 @@
                 messages_label: "Messages",
                 meetings_label: "Meetings",
                 orders_label: "Orders",
+                crm_label: "CRM / Leads",
+                tasks_label: "Tasks",
+                team_label: "Team",
                 login_label: "Login Welcome Email",
                 login_hint: "Send a welcome-back email after successful sign in."
             },
@@ -2514,8 +2517,40 @@
                 welcome_email: {
                     title: "Welcome to Digitivia",
                     body: "Your Digitivia workspace is now ready."
+                },
+                crm_lead_assigned: {
+                    title: "Lead Assigned",
+                    body: "Lead \"{lead_name}\" has been assigned to you."
+                },
+                crm_status_changed: {
+                    title: "Lead Status Updated",
+                    body: "Lead \"{lead_name}\" status changed to {new_status}."
+                },
+                task_assigned: {
+                    title: "Task Assigned",
+                    body: "Task \"{task_title}\" has been assigned to you."
+                },
+                task_completed: {
+                    title: "Task Completed",
+                    body: "Task \"{task_title}\" has been marked as done."
+                },
+                team_member_joined: {
+                    title: "New Team Member",
+                    body: "{member_name} joined the team as {member_role}."
                 }
             }
+        });
+        // Phase 5: Email test button labels
+        Object.assign(window.LANG_EN.orders.email_test, {
+            crm_tooltip: "Send a test CRM lead assignment email to yourself",
+            task_tooltip: "Send a test task assignment email to yourself",
+            team_tooltip: "Send a test team member joined email to yourself",
+            toast_crm_sent: "Test CRM email sent to {email}",
+            toast_task_sent: "Test task email sent to {email}",
+            toast_team_sent: "Test team email sent to {email}",
+            crm_cta: "Send test CRM email",
+            task_cta: "Send test task email",
+            team_cta: "Send test team email"
         });
         Object.assign(window.LANG_EN.dashboard.stats, {
             total_meetings: "Total Meetings",
@@ -3049,6 +3084,9 @@
                 messages_label: "الرسائل",
                 meetings_label: "الاجتماعات",
                 orders_label: "الطلبات",
+                crm_label: "إدارة العملاء",
+                tasks_label: "المهام",
+                team_label: "الفريق",
                 login_label: "بريد ترحيب بعد تسجيل الدخول",
                 login_hint: "إرسال بريد ترحيبي بعد نجاح تسجيل الدخول."
             },
@@ -3092,8 +3130,40 @@
                 welcome_email: {
                     title: "مرحباً بك في Digitivia",
                     body: "مساحة Digitivia الخاصة بك أصبحت جاهزة."
+                },
+                crm_lead_assigned: {
+                    title: "تم تعيين عميل",
+                    body: "تم تعيين العميل \"{lead_name}\" إليك."
+                },
+                crm_status_changed: {
+                    title: "تحديث حالة العميل",
+                    body: "تغيرت حالة العميل \"{lead_name}\" إلى {new_status}."
+                },
+                task_assigned: {
+                    title: "تم تعيين مهمة",
+                    body: "تم تعيين المهمة \"{task_title}\" إليك."
+                },
+                task_completed: {
+                    title: "اكتملت المهمة",
+                    body: "تم إنجاز المهمة \"{task_title}\"."
+                },
+                team_member_joined: {
+                    title: "عضو جديد في الفريق",
+                    body: "انضم {member_name} إلى الفريق كـ {member_role}."
                 }
             }
+        });
+        // Phase 5: Email test button labels (AR)
+        Object.assign(window.LANG_AR.orders.email_test, {
+            crm_tooltip: "أرسل بريد تجريبي لتعيين عميل لنفسك",
+            task_tooltip: "أرسل بريد تجريبي لتعيين مهمة لنفسك",
+            team_tooltip: "أرسل بريد تجريبي لانضمام عضو فريق لنفسك",
+            toast_crm_sent: "تم إرسال بريد CRM التجريبي إلى {email}",
+            toast_task_sent: "تم إرسال بريد المهمة التجريبي إلى {email}",
+            toast_team_sent: "تم إرسال بريد الفريق التجريبي إلى {email}",
+            crm_cta: "أرسل بريد CRM تجريبي",
+            task_cta: "أرسل بريد مهمة تجريبي",
+            team_cta: "أرسل بريد فريق تجريبي"
         });
         Object.assign(window.LANG_AR.dashboard.stats, {
             total_meetings: "إجمالي الاجتماعات",
@@ -25666,6 +25736,36 @@
                                 <span class="email-test-btn-icon" aria-hidden="true">📆</span>
                                 <span data-i18n="orders.email_test.meeting_cta">Send test meeting email</span>
                             </button>
+                            <button
+                                class="email-test-btn crm"
+                                id="email-test-crm-btn"
+                                onclick="sendEmailNotificationTest('crm_lead_assigned')"
+                                title="Sends a sample CRM lead assignment email."
+                                aria-label="Send test CRM email"
+                            >
+                                <span class="email-test-btn-icon" aria-hidden="true">👥</span>
+                                <span data-i18n="orders.email_test.crm_cta">Send test CRM email</span>
+                            </button>
+                            <button
+                                class="email-test-btn task"
+                                id="email-test-task-btn"
+                                onclick="sendEmailNotificationTest('task_assigned')"
+                                title="Sends a sample task assignment email."
+                                aria-label="Send test task email"
+                            >
+                                <span class="email-test-btn-icon" aria-hidden="true">✅</span>
+                                <span data-i18n="orders.email_test.task_cta">Send test task email</span>
+                            </button>
+                            <button
+                                class="email-test-btn team"
+                                id="email-test-team-btn"
+                                onclick="sendEmailNotificationTest('team_member_joined')"
+                                title="Sends a sample team member joined email."
+                                aria-label="Send test team email"
+                            >
+                                <span class="email-test-btn-icon" aria-hidden="true">🤝</span>
+                                <span data-i18n="orders.email_test.team_cta">Send test team email</span>
+                            </button>
                         </div>
                         <div id="orders-product-incoming">
                         <div id="orders-table-container" class="orders-table-container">
@@ -31703,6 +31803,9 @@ Thank you for shopping with {store_name}!</textarea>
             const toolbarEl = document.getElementById('email-test-toolbar');
             const orderBtn = document.getElementById('email-test-order-btn');
             const meetingBtn = document.getElementById('email-test-meeting-btn');
+            const crmBtn = document.getElementById('email-test-crm-btn');
+            const taskBtn = document.getElementById('email-test-task-btn');
+            const teamBtn = document.getElementById('email-test-team-btn');
             const recipientEmail = emailNotificationTestStatus.recipient_email || currentUserProfile?.email || '';
             const remaining = Number.isFinite(Number(emailNotificationTestStatus.remaining)) ? Number(emailNotificationTestStatus.remaining) : 5;
             const exhausted = remaining <= 0;
@@ -31721,13 +31824,19 @@ Thank you for shopping with {store_name}!</textarea>
                 meetingBtn.hidden = !serviceOrg;
             }
 
-            [orderBtn, meetingBtn].forEach((btn) => {
+            const tooltipMap = {
+                'email-test-meeting-btn': t('orders.email_test.meeting_tooltip'),
+                'email-test-order-btn': t('orders.email_test.order_tooltip'),
+                'email-test-crm-btn': t('orders.email_test.crm_tooltip'),
+                'email-test-task-btn': t('orders.email_test.task_tooltip'),
+                'email-test-team-btn': t('orders.email_test.team_tooltip')
+            };
+
+            [orderBtn, meetingBtn, crmBtn, taskBtn, teamBtn].forEach((btn) => {
                 if (!btn) return;
                 if (btn.hidden) return;
                 btn.disabled = exhausted || loading;
-                const tooltipText = btn.id === 'email-test-meeting-btn'
-                    ? t('orders.email_test.meeting_tooltip')
-                    : t('orders.email_test.order_tooltip');
+                const tooltipText = tooltipMap[btn.id] || t('orders.email_test.order_tooltip');
                 const disabledText = exhausted
                     ? t('orders.email_test.limit_reached')
                     : tooltipText;
@@ -31804,7 +31913,14 @@ Thank you for shopping with {store_name}!</textarea>
                 };
 
                 const targetEmail = data?.recipient_email || emailNotificationTestStatus.recipient_email || currentUserProfile?.email || '--';
-                const toastKey = kind === 'meeting' ? 'orders.email_test.toast_meeting_sent' : 'orders.email_test.toast_order_sent';
+                const toastKeyMap = {
+                    meeting: 'orders.email_test.toast_meeting_sent',
+                    order: 'orders.email_test.toast_order_sent',
+                    crm_lead_assigned: 'orders.email_test.toast_crm_sent',
+                    task_assigned: 'orders.email_test.toast_task_sent',
+                    team_member_joined: 'orders.email_test.toast_team_sent'
+                };
+                const toastKey = toastKeyMap[kind] || 'orders.email_test.toast_order_sent';
                 showToast(t(toastKey, { email: targetEmail }), 'success');
             } catch (error) {
                 const message = String(error?.message || '');
@@ -36748,7 +36864,10 @@ Thank you for shopping with {store_name}!</textarea>
                     categories: {
                         orders: { email: true, browser: true },
                         meetings: { email: true, browser: true },
-                        messages: { email: true, browser: true }
+                        messages: { email: true, browser: true },
+                        crm: { email: true, browser: true },
+                        tasks: { email: true, browser: true },
+                        team: { email: true, browser: true }
                     }
                 },
                 account: {
@@ -36797,6 +36916,18 @@ Thank you for shopping with {store_name}!</textarea>
                         messages: {
                             email: toBoolean(source?.notifications?.business?.categories?.messages?.email, true),
                             browser: toBoolean(source?.notifications?.business?.categories?.messages?.browser, true)
+                        },
+                        crm: {
+                            email: toBoolean(source?.notifications?.business?.categories?.crm?.email, true),
+                            browser: toBoolean(source?.notifications?.business?.categories?.crm?.browser, true)
+                        },
+                        tasks: {
+                            email: toBoolean(source?.notifications?.business?.categories?.tasks?.email, true),
+                            browser: toBoolean(source?.notifications?.business?.categories?.tasks?.browser, true)
+                        },
+                        team: {
+                            email: toBoolean(source?.notifications?.business?.categories?.team?.email, true),
+                            browser: toBoolean(source?.notifications?.business?.categories?.team?.browser, true)
                         }
                     }
                 },
@@ -36902,6 +37033,21 @@ Thank you for shopping with {store_name}!</textarea>
                     <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.orders_label'))}</div>
                     ${checkbox('notifications.business.categories.orders.email', categories.orders.email, t('notifications.settings.orders_label'))}
                     ${checkbox('notifications.business.categories.orders.browser', categories.orders.browser, t('notifications.settings.orders_label'))}
+                </div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.crm_label'))}</div>
+                    ${checkbox('notifications.business.categories.crm.email', categories.crm.email, t('notifications.settings.crm_label'))}
+                    ${checkbox('notifications.business.categories.crm.browser', categories.crm.browser, t('notifications.settings.crm_label'))}
+                </div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.tasks_label'))}</div>
+                    ${checkbox('notifications.business.categories.tasks.email', categories.tasks.email, t('notifications.settings.tasks_label'))}
+                    ${checkbox('notifications.business.categories.tasks.browser', categories.tasks.browser, t('notifications.settings.tasks_label'))}
+                </div>
+                <div class="notification-settings-row">
+                    <div class="notification-settings-label">${escapeNotificationHtml(t('notifications.settings.team_label'))}</div>
+                    ${checkbox('notifications.business.categories.team.email', categories.team.email, t('notifications.settings.team_label'))}
+                    ${checkbox('notifications.business.categories.team.browser', categories.team.browser, t('notifications.settings.team_label'))}
                 </div>
             </div>
 
@@ -37122,8 +37268,8 @@ Thank you for shopping with {store_name}!</textarea>
         const payload = getNotificationPayload(notificationLike);
         const route = parseNotificationTargetLink(notificationLike?.link || payload.link || '') || {};
         const eventKey = notificationLike?.event_key || payload.event_key || route.eventKey || null;
-        const entity = payload.entity || route.entity || (eventKey?.startsWith('meeting_') ? 'meeting' : (eventKey?.startsWith('order_') ? 'order' : null));
-        const entityId = payload.entity_id || payload.order_id || payload.meeting_id || route.entityId || null;
+        const entity = payload.entity || route.entity || (eventKey?.startsWith('meeting_') ? 'meeting' : (eventKey?.startsWith('order_') ? 'order' : (eventKey?.startsWith('crm_') ? 'lead' : (eventKey?.startsWith('task_') ? 'task' : (eventKey?.startsWith('team_') ? 'team' : null)))));
+        const entityId = payload.entity_id || payload.order_id || payload.meeting_id || payload.lead_id || payload.task_id || payload.member_id || route.entityId || null;
         const notificationId = notificationLike?.id || payload.notification_id || route.notificationId || null;
         return {
             notificationId,
@@ -37243,6 +37389,38 @@ Thank you for shopping with {store_name}!</textarea>
             welcome_email: {
                 title: t('notifications.events.welcome_email.title'),
                 body: t('notifications.events.welcome_email.body')
+            },
+            crm_lead_assigned: {
+                title: t('notifications.events.crm_lead_assigned.title'),
+                body: t('notifications.events.crm_lead_assigned.body', {
+                    lead_name: payload.lead_name || customerName
+                })
+            },
+            crm_status_changed: {
+                title: t('notifications.events.crm_status_changed.title'),
+                body: t('notifications.events.crm_status_changed.body', {
+                    lead_name: payload.lead_name || customerName,
+                    new_status: payload.new_status || '--'
+                })
+            },
+            task_assigned: {
+                title: t('notifications.events.task_assigned.title'),
+                body: t('notifications.events.task_assigned.body', {
+                    task_title: payload.task_title || 'Task'
+                })
+            },
+            task_completed: {
+                title: t('notifications.events.task_completed.title'),
+                body: t('notifications.events.task_completed.body', {
+                    task_title: payload.task_title || 'Task'
+                })
+            },
+            team_member_joined: {
+                title: t('notifications.events.team_member_joined.title'),
+                body: t('notifications.events.team_member_joined.body', {
+                    member_name: payload.member_name || 'Someone',
+                    member_role: payload.member_role || 'member'
+                })
             }
         };
 
@@ -37258,6 +37436,15 @@ Thank you for shopping with {store_name}!</textarea>
         const descriptor = buildNotificationDescriptor(notificationLike);
         if (descriptor.entity === 'meeting') {
             return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 15H5V10h14v9zm-7-7h5v5h-5z"/></svg>';
+        }
+        if (descriptor.entity === 'lead' || descriptor.entity === 'crm') {
+            return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>';
+        }
+        if (descriptor.entity === 'task') {
+            return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
+        }
+        if (descriptor.entity === 'team') {
+            return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
         }
         return '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7 4V2H5v2H2v2h1l1.6 9.59A2 2 0 0 0 6.58 17H18a2 2 0 0 0 1.96-1.61L21 8H7.42l-.3-2H22V4H7zm1 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 .001 3.999A2 2 0 0 0 18 19z"/></svg>';
     }
@@ -37974,6 +38161,8 @@ Thank you for shopping with {store_name}!</textarea>
         } else if (descriptor.entity === 'task' && descriptor.entityId) {
             switchTab('task-manager');
             setTimeout(() => { if (typeof openTaskDetail === 'function') openTaskDetail(descriptor.entityId); }, 500);
+        } else if (descriptor.entity === 'team') {
+            switchTab('team');
         } else if (descriptor.link === '#orders' || descriptor.link?.startsWith('#orders?')) {
             navigateToTab('orders');
         } else if (descriptor.link?.startsWith('#crm')) {
@@ -38031,10 +38220,13 @@ Thank you for shopping with {store_name}!</textarea>
 
     async function fetchNotifications() {
         try {
+            const myUserId = currentUserProfile?.user_id || null;
+            // Fetch org-wide (user_id IS NULL) + user-targeted notifications
             const { data, error } = await supabaseClient
                 .from('notifications')
                 .select('*')
                 .eq('org_id', currentUserOrgId)
+                .or(myUserId ? `user_id.is.null,user_id.eq.${myUserId}` : 'user_id.is.null')
                 .order('created_at', { ascending: false })
                 .limit(20);
             if (error) throw error;
@@ -38062,6 +38254,9 @@ Thank you for shopping with {store_name}!</textarea>
                 filter: `org_id=eq.${currentUserOrgId}`
             }, payload => {
                 const newNotif = payload.new;
+                // Filter: only show org-wide (user_id null) or user-targeted notifications
+                const myUserId = currentUserProfile?.user_id || null;
+                if (newNotif.user_id && newNotif.user_id !== myUserId) return;
                 notifications.unshift(newNotif);
                 const localized = getLocalizedNotificationContent(newNotif);
                 showToast(`🔔 ${localized.title}: ${localized.body}`, 'info');
