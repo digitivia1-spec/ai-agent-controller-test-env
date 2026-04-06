@@ -2297,7 +2297,52 @@
             profile_joined: "Joined",
             profile_permissions_title: "Permissions Summary",
             profile_no_phone: "Not provided",
-            btn_close: "Close"
+            btn_close: "Close",
+            // Phase 3: Custom Roles & Overrides
+            tab_custom_roles: "Custom Roles",
+            custom_roles_title: "Custom Roles",
+            btn_new_custom_role: "+ New Custom Role",
+            custom_role_members_using: "{count} member(s) using this role",
+            custom_role_no_members: "Not assigned to any member",
+            btn_edit_role: "Edit",
+            btn_duplicate_role: "Duplicate",
+            custom_role_duplicate_name: "{name} (copy)",
+            btn_delete_role: "Delete",
+            custom_role_delete_confirm: "Delete this custom role?",
+            custom_role_delete_warn: "{count} member(s) will revert to their base role. Continue?",
+            custom_role_deleted: "Custom role deleted.",
+            custom_roles_empty: "No custom roles yet. Create one to give a team member tailored permissions.",
+            modal_new_role_title: "New Custom Role",
+            modal_edit_role_title: "Edit Custom Role",
+            label_role_name: "Role Name",
+            label_role_description: "Description (optional)",
+            label_start_from: "Start from",
+            start_from_blank: "Blank",
+            start_from_manager: "Manager",
+            start_from_user: "User",
+            start_from_existing: "Existing custom role...",
+            start_from_tip: "This is a starting point — changes only affect this custom role.",
+            btn_save_role: "Save Role",
+            btn_saving_role: "Saving...",
+            custom_role_saved: "Custom role saved.",
+            custom_role_name_required: "Role name is required.",
+            custom_role_name_taken: "A role with this name already exists.",
+            section_custom_permissions: "Custom Permissions",
+            btn_edit_permissions: "Edit Permissions",
+            btn_done_editing: "Done",
+            label_member_role: "Role",
+            overrides_active: "{count} manual override(s) active",
+            btn_clear_overrides: "Clear all overrides",
+            clear_overrides_confirm: "Reset all manual overrides? This member will use their role's default permissions.",
+            overrides_cleared: "Overrides cleared.",
+            override_chip_up: "override ↑",
+            override_chip_down: "override ↓",
+            override_chip_default: "default",
+            overrides_badge: "{count} overrides",
+            label_custom_role_invite: "Custom Role (optional)",
+            invite_custom_role_none: "None — use role defaults",
+            custom_role_label: "Custom Role",
+            no_custom_role: "None (base role)"
         };
         Object.assign(window.LANG_EN.orders, {
             title_product: "Orders Area",
@@ -2761,7 +2806,52 @@
             profile_joined: "تاريخ الانضمام",
             profile_permissions_title: "ملخص الصلاحيات",
             profile_no_phone: "غير متوفر",
-            btn_close: "إغلاق"
+            btn_close: "إغلاق",
+            // Phase 3: Custom Roles & Overrides
+            tab_custom_roles: "أدوار مخصصة",
+            custom_roles_title: "الأدوار المخصصة",
+            btn_new_custom_role: "+ دور مخصص جديد",
+            custom_role_members_using: "{count} عضو يستخدم هذا الدور",
+            custom_role_no_members: "غير مُعيّن لأي عضو",
+            btn_edit_role: "تعديل",
+            btn_duplicate_role: "نسخ",
+            custom_role_duplicate_name: "{name} (نسخة)",
+            btn_delete_role: "حذف",
+            custom_role_delete_confirm: "حذف هذا الدور المخصص؟",
+            custom_role_delete_warn: "{count} عضو سيعود لدوره الأساسي. متابعة؟",
+            custom_role_deleted: "تم حذف الدور المخصص.",
+            custom_roles_empty: "لا توجد أدوار مخصصة بعد. أنشئ دوراً لمنح عضو صلاحيات مخصصة.",
+            modal_new_role_title: "دور مخصص جديد",
+            modal_edit_role_title: "تعديل الدور المخصص",
+            label_role_name: "اسم الدور",
+            label_role_description: "الوصف (اختياري)",
+            label_start_from: "ابدأ من",
+            start_from_blank: "فارغ",
+            start_from_manager: "مدير",
+            start_from_user: "مستخدم",
+            start_from_existing: "دور مخصص موجود...",
+            start_from_tip: "هذه نقطة بداية — التغييرات تؤثر فقط على هذا الدور المخصص.",
+            btn_save_role: "حفظ الدور",
+            btn_saving_role: "جاري الحفظ...",
+            custom_role_saved: "تم حفظ الدور المخصص.",
+            custom_role_name_required: "اسم الدور مطلوب.",
+            custom_role_name_taken: "يوجد دور بهذا الاسم بالفعل.",
+            section_custom_permissions: "الصلاحيات المخصصة",
+            btn_edit_permissions: "تعديل الصلاحيات",
+            btn_done_editing: "تم",
+            label_member_role: "الدور",
+            overrides_active: "{count} تعديل يدوي نشط",
+            btn_clear_overrides: "مسح جميع التعديلات",
+            clear_overrides_confirm: "إعادة تعيين جميع التعديلات اليدوية؟ سيستخدم العضو صلاحيات الدور الافتراضية.",
+            overrides_cleared: "تم مسح التعديلات.",
+            override_chip_up: "تجاوز ↑",
+            override_chip_down: "تجاوز ↓",
+            override_chip_default: "افتراضي",
+            overrides_badge: "{count} تعديلات",
+            label_custom_role_invite: "دور مخصص (اختياري)",
+            invite_custom_role_none: "بدون — استخدام الصلاحيات الافتراضية",
+            custom_role_label: "دور مخصص",
+            no_custom_role: "بدون (الدور الأساسي)"
         };
         Object.assign(window.LANG_AR.orders, {
             title_product: "منطقة الطلبات",
@@ -9891,6 +9981,93 @@
         :root[data-theme="light"] .accept-invite-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.08); }
         :root[data-theme="light"] .accept-invite-email-note { background: rgba(99,102,241,.04); }
         :root[data-theme="light"] .team-profile-row { border-bottom-color: rgba(0,0,0,.06); }
+
+        /* ===== PHASE 3: CUSTOM ROLES & OVERRIDES ===== */
+        .custom-roles-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+        .custom-roles-header h3 { margin: 0; font-size: 1rem; font-weight: 700; color: var(--text-main, #fff); }
+        .btn-new-role { padding: 8px 16px; font-size: 0.8rem; font-weight: 600; background: var(--theme-color, #6366f1); color: #fff; border: none; border-radius: 9px; cursor: pointer; transition: opacity .15s; white-space: nowrap; }
+        .btn-new-role:hover { opacity: .85; }
+
+        .custom-roles-list { display: flex; flex-direction: column; gap: 10px; }
+        .custom-role-card { padding: 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; transition: background .15s; }
+        .custom-role-card:hover { background: rgba(255,255,255,.05); }
+        .custom-role-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .custom-role-info { flex: 1; min-width: 0; }
+        .custom-role-name { font-size: 0.92rem; font-weight: 700; color: var(--text-main, #fff); margin: 0 0 4px; }
+        .custom-role-desc { font-size: 0.78rem; color: var(--text-muted, #888); margin: 0 0 6px; line-height: 1.4; }
+        .custom-role-meta { font-size: 0.72rem; color: var(--text-muted, #666); }
+        .custom-role-actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+        .custom-role-actions .btn-secondary { font-size: 0.72rem; padding: 5px 10px; }
+
+        /* Custom role editor modal */
+        .cr-editor-overlay { position: fixed; inset: 0; z-index: 10001; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); animation: permDeniedIn .2s ease; }
+        .cr-editor-box { background: var(--bg-surface, #0f172a); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 28px 24px; max-width: 560px; width: calc(100% - 32px); position: relative; max-height: 85vh; overflow-y: auto; }
+        .cr-editor-title { margin: 0 0 20px; font-size: 1.1rem; font-weight: 700; color: var(--text-main, #fff); padding-right: 30px; }
+        [dir="rtl"] .cr-editor-title { padding-right: 0; padding-left: 30px; }
+        .cr-editor-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+        .cr-editor-fields .form-group { margin: 0; }
+        .cr-start-from { margin-bottom: 16px; }
+        .cr-start-from-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted, #888); margin-bottom: 8px; }
+        .cr-start-from-strip { display: flex; gap: 6px; flex-wrap: wrap; }
+        .cr-start-btn { padding: 6px 14px; font-size: 0.76rem; font-weight: 600; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); color: var(--text-muted, #888); cursor: pointer; transition: all .15s; }
+        .cr-start-btn:hover { background: rgba(255,255,255,.06); color: var(--text-main, #fff); }
+        .cr-start-btn.active { background: var(--theme-color, #6366f1); color: #fff; border-color: transparent; }
+        .cr-start-tip { font-size: 0.72rem; color: var(--text-muted, #666); margin-top: 8px; font-style: italic; display: none; }
+        .cr-start-tip.visible { display: block; }
+        .cr-editor-perms { margin-bottom: 20px; }
+        .cr-editor-footer { display: flex; gap: 10px; justify-content: flex-end; }
+        .cr-editor-footer .btn-primary { min-width: 120px; }
+
+        /* Per-member overrides */
+        .member-perms-section { margin-top: 20px; border-top: 1px solid rgba(255,255,255,.06); padding-top: 16px; }
+        .member-perms-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .member-perms-header h4 { margin: 0; font-size: 0.88rem; font-weight: 700; color: var(--text-main, #fff); }
+        .member-role-select { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+        .member-role-select label { font-size: 0.82rem; font-weight: 600; color: var(--text-muted, #888); white-space: nowrap; }
+        .member-role-select select { padding: 7px 12px; font-size: 0.8rem; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; color: var(--text-main, #fff); cursor: pointer; min-width: 160px; }
+        .member-role-select select:focus { border-color: var(--theme-color, #6366f1); outline: none; }
+        .overrides-banner { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.12); border-radius: 8px; margin-bottom: 12px; flex-wrap: wrap; gap: 6px; }
+        .overrides-banner-text { font-size: 0.78rem; color: #f59e0b; font-weight: 600; }
+        .overrides-banner .btn-secondary { font-size: 0.7rem; padding: 4px 10px; color: #f59e0b; border-color: rgba(245,158,11,.2); }
+        .perm-override-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; transition: background .1s; }
+        .perm-override-row:hover { background: rgba(255,255,255,.03); }
+        .perm-override-left { display: flex; align-items: center; gap: 8px; flex: 1; }
+        .perm-override-label { font-size: 0.82rem; color: var(--text-main, #fff); }
+        .override-chip { font-size: 0.62rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; }
+        .override-chip.up { background: rgba(34,197,94,.12); color: #22c55e; }
+        .override-chip.down { background: rgba(239,68,68,.12); color: #ef4444; }
+        .override-chip.default { background: rgba(100,116,139,.1); color: #94a3b8; }
+        .member-perms-view .team-perm-toggle input { pointer-events: none; opacity: .5; }
+        .member-perms-edit .team-perm-toggle input { pointer-events: auto; opacity: 1; }
+
+        /* Override count badge on member card */
+        .overrides-count-badge { font-size: 0.62rem; padding: 2px 7px; border-radius: 5px; background: rgba(245,158,11,.1); color: #f59e0b; font-weight: 700; white-space: nowrap; }
+
+        /* Phase 3 mobile */
+        @media (max-width: 640px) {
+            .custom-roles-header { flex-direction: column; align-items: flex-start; }
+            .custom-role-card-top { flex-direction: column; }
+            .custom-role-actions { width: 100%; }
+            .cr-editor-box { padding: 20px 16px; margin: 12px; }
+            .cr-editor-footer { flex-direction: column; }
+            .cr-editor-footer .btn-primary { width: 100%; }
+            .cr-start-from-strip { gap: 4px; }
+            .cr-start-btn { flex: 1; text-align: center; font-size: 0.72rem; padding: 5px 8px; }
+            .member-perms-header { flex-direction: column; align-items: flex-start; }
+            .member-role-select { flex-direction: column; align-items: flex-start; }
+            .member-role-select select { width: 100%; }
+        }
+
+        /* Phase 3 Light theme */
+        :root[data-theme="light"] .custom-role-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.06); }
+        :root[data-theme="light"] .custom-role-card:hover { background: rgba(0,0,0,.04); }
+        :root[data-theme="light"] .cr-editor-box { background: #fff; border-color: rgba(0,0,0,.1); }
+        :root[data-theme="light"] .cr-start-btn { background: #f1f5f9; border-color: #cbd5e1; color: #64748b; }
+        :root[data-theme="light"] .cr-start-btn:hover { background: #e2e8f0; color: #334155; }
+        :root[data-theme="light"] .cr-start-btn.active { background: #6366f1; color: #fff; }
+        :root[data-theme="light"] .member-role-select select { background: #fff; border-color: rgba(0,0,0,.12); color: #1e293b; }
+        :root[data-theme="light"] .overrides-banner { background: rgba(245,158,11,.04); border-color: rgba(245,158,11,.1); }
+        :root[data-theme="light"] .perm-override-row:hover { background: #f8fafc; }
 
         .notification-settings-card {
             display: flex;
@@ -41891,6 +42068,8 @@ Thank you for shopping with {store_name}!</textarea>
             let teamPermissionsCache = {};
             let teamActiveSubtab = 'members';
             let teamActivePermRole = 'manager';
+            let teamCustomRoles = [];
+            let teamCustomRolesLoaded = false;
             let teamLoading = false;
             let myPermissions = null;
             let myEffectiveRole = null;
@@ -42025,6 +42204,8 @@ Thank you for shopping with {store_name}!</textarea>
                 const root = document.getElementById('team-page-root');
                 if (!root) return;
                 const isOwnerOrAdmin = myEffectiveRole === 'owner' || myEffectiveRole === 'manager';
+                // Pre-load custom roles for invite form and permissions tab
+                if (isOwnerOrAdmin && !teamCustomRolesLoaded) await teamLoadCustomRoles();
 
                 root.innerHTML = `
                     <div class="team-header">
@@ -42138,6 +42319,13 @@ Thank you for shopping with {store_name}!</textarea>
                                         <option value="user" selected>${esc(tt('role_user'))}</option>
                                     </select>
                                 </div>
+                                ${teamCustomRoles.length ? `<div class="form-group role-group">
+                                    <label class="form-label">${esc(tt('label_custom_role_invite'))}</label>
+                                    <select id="team-invite-custom-role" class="form-input">
+                                        <option value="">${esc(tt('invite_custom_role_none'))}</option>
+                                        ${teamCustomRoles.map(cr => '<option value="' + cr.id + '">' + esc(cr.name) + '</option>').join('')}
+                                    </select>
+                                </div>` : ''}
                             </div>
                             <button class="btn-primary" id="team-invite-btn" onclick="teamSendInvite()">${esc(tt('btn_send_invite'))}</button>
                         </div>
@@ -42167,6 +42355,8 @@ Thank you for shopping with {store_name}!</textarea>
                                     ${esc(m.full_name || (currentLang === 'ar' ? 'بدون اسم' : 'No name'))}
                                     <span class="team-role-badge ${effRole}">${esc(tt('role_' + effRole))}</span>
                                     ${isMe ? `<span class="team-you-badge">${esc(tt('you_badge'))}</span>` : ''}
+                                    ${m.custom_role_name ? `<span class="team-role-badge user" style="font-size:0.6rem">${esc(m.custom_role_name)}</span>` : ''}
+                                    ${isOwnerOrAdmin && m.override_count > 0 ? `<span class="overrides-count-badge">${esc(tt('overrides_badge').replace('{count}', m.override_count))}</span>` : ''}
                                 </div>
                                 <div class="team-member-email">${esc(m.email || '')}</div>
                                 ${joinDate ? `<div class="team-member-meta">${esc(tt('joined'))} ${esc(joinDate)}</div>` : ''}
@@ -42202,6 +42392,8 @@ Thank you for shopping with {store_name}!</textarea>
                 const fullName = nameInput?.value.trim() || null;
                 const phone = phoneInput?.value.trim() || null;
                 const role = roleInput?.value || 'user';
+                const customRoleInput = document.getElementById('team-invite-custom-role');
+                const customRoleId = customRoleInput?.value || null;
                 if (!email) { emailInput.focus(); return; }
 
                 btn.disabled = true;
@@ -42209,13 +42401,15 @@ Thank you for shopping with {store_name}!</textarea>
                 if (resultDiv) resultDiv.style.display = 'none';
 
                 try {
-                    const { data, error } = await supabaseClient.rpc('send_org_invitation', {
+                    const rpcParams = {
                         p_org_id: currentUserOrgId,
                         p_email: email,
                         p_full_name: fullName,
                         p_phone: phone,
                         p_role: role
-                    });
+                    };
+                    if (customRoleId) rpcParams.p_custom_role_id = customRoleId;
+                    const { data, error } = await supabaseClient.rpc('send_org_invitation', rpcParams);
                     if (error) throw error;
 
                     if (data?.success) {
@@ -42317,6 +42511,13 @@ Thank you for shopping with {store_name}!</textarea>
                                         <option value="user" selected>${esc(tt('role_user'))}</option>
                                     </select>
                                 </div>
+                                ${teamCustomRoles.length ? `<div class="form-group role-group">
+                                    <label class="form-label">${esc(tt('label_custom_role_invite'))}</label>
+                                    <select id="team-invite-custom-role" class="form-input">
+                                        <option value="">${esc(tt('invite_custom_role_none'))}</option>
+                                        ${teamCustomRoles.map(cr => '<option value="' + cr.id + '">' + esc(cr.name) + '</option>').join('')}
+                                    </select>
+                                </div>` : ''}
                             </div>
                             <button class="btn-primary" id="team-invite-btn" onclick="teamSendInvite()">${esc(tt('btn_send_invite'))}</button>
                         </div>
@@ -42458,11 +42659,17 @@ Thank you for shopping with {store_name}!</textarea>
             };
 
             // --- Member Profile Modal ---
-            window.teamShowProfile = function (userId) {
+            // Store member permissions data for the open profile modal
+            let profileMemberPermsData = null;
+            let profileEditMode = false;
+
+            window.teamShowProfile = async function (userId) {
                 const member = teamMembers.find(m => m.user_id === userId);
                 if (!member) return;
 
                 document.getElementById('team-profile-modal')?.remove();
+                profileEditMode = false;
+                profileMemberPermsData = null;
 
                 const effRole = member.effective_role || getEffectiveRoleFromRaw(member.raw_role);
                 const roleLabel = tt('role_' + effRole);
@@ -42472,10 +42679,13 @@ Thank you for shopping with {store_name}!</textarea>
                     : esc(initials);
                 const joinDate = member.created_at ? new Date(member.created_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
 
-                // Build permissions summary for this role
+                const isOwner = myEffectiveRole === 'owner';
+                const isMemberOwner = effRole === 'owner';
+
+                // Build basic permissions summary
                 const memberPerms = teamPermissionsCache[effRole] || {};
                 let permSummaryHtml = '';
-                if (effRole === 'owner') {
+                if (isMemberOwner) {
                     permSummaryHtml = `<div class="profile-perm-note">${esc(tt('role_owner_desc'))}</div>`;
                 } else {
                     for (const group of PERM_GROUPS) {
@@ -42518,11 +42728,199 @@ Thank you for shopping with {store_name}!</textarea>
                                 <h4>${esc(tt('profile_permissions_title'))}</h4>
                                 ${permSummaryHtml}
                             </div>
+                            ${isOwner && !isMemberOwner ? `<div class="member-perms-section" id="member-perms-section">
+                                <div class="member-perms-header">
+                                    <h4>${esc(tt('section_custom_permissions'))}</h4>
+                                    <button class="btn-secondary btn-sm" id="member-perms-edit-btn" onclick="memberPermsToggleEdit('${userId}')">${esc(tt('btn_edit_permissions'))}</button>
+                                </div>
+                                <div id="member-perms-body"><div class="team-empty"><p>${currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p></div></div>
+                            </div>` : ''}
                         </div>
                         <button class="btn-primary team-modal-close-btn" onclick="document.getElementById('team-profile-modal').remove()">${esc(tt('btn_close'))}</button>
                     </div>
                 `;
                 document.body.appendChild(overlay);
+
+                // Load member permissions for owner
+                if (isOwner && !isMemberOwner) {
+                    if (!teamCustomRolesLoaded) await teamLoadCustomRoles();
+                    await memberPermsLoad(userId);
+                }
+            };
+
+            async function memberPermsLoad(userId) {
+                try {
+                    const { data, error } = await supabaseClient.rpc('get_member_permissions', {
+                        p_org_id: currentUserOrgId,
+                        p_member_user_id: userId
+                    });
+                    if (error) throw error;
+                    if (data?.success) {
+                        profileMemberPermsData = data;
+                        memberPermsRender(userId);
+                    }
+                } catch (e) {
+                    console.error('Failed to load member permissions:', e);
+                    const body = document.getElementById('member-perms-body');
+                    if (body) body.innerHTML = `<div class="team-empty"><p>${esc(tt('error_generic'))}</p></div>`;
+                }
+            }
+
+            function memberPermsRender(userId) {
+                const body = document.getElementById('member-perms-body');
+                if (!body || !profileMemberPermsData) return;
+
+                const d = profileMemberPermsData;
+                const basePerms = d.base_permissions || {};
+                const effectivePerms = d.effective_permissions || {};
+                const overrides = d.permission_overrides || {};
+                const overrideCount = Object.keys(overrides).length;
+                const modeClass = profileEditMode ? 'member-perms-edit' : 'member-perms-view';
+
+                let html = '';
+
+                // Role / Custom Role selector
+                let roleOptions = `<option value="" ${!d.custom_role_id ? 'selected' : ''}>${esc(tt('role_manager'))} / ${esc(tt('role_user'))} (${esc(tt('label_member_role'))})</option>`;
+                for (const cr of teamCustomRoles) {
+                    roleOptions += `<option value="${cr.id}" ${d.custom_role_id === cr.id ? 'selected' : ''}>${esc(cr.name)}</option>`;
+                }
+
+                if (profileEditMode) {
+                    html += `
+                    <div class="member-role-select">
+                        <label>${esc(tt('custom_role_label'))}:</label>
+                        <select onchange="memberPermsSetCustomRole('${userId}', this.value || null)">
+                            <option value="" ${!d.custom_role_id ? 'selected' : ''}>${esc(tt('no_custom_role'))}</option>
+                            ${teamCustomRoles.map(cr => `<option value="${cr.id}" ${d.custom_role_id === cr.id ? 'selected' : ''}>${esc(cr.name)}</option>`).join('')}
+                        </select>
+                    </div>`;
+                } else if (d.custom_role_id && d.custom_role_name) {
+                    html += `<div class="member-role-select"><label>${esc(tt('custom_role_label'))}:</label><span style="font-size:0.85rem;color:var(--text-main,#fff)">${esc(d.custom_role_name)}</span></div>`;
+                }
+
+                // Overrides banner
+                if (overrideCount > 0) {
+                    html += `
+                    <div class="overrides-banner">
+                        <span class="overrides-banner-text">⚠ ${esc(tt('overrides_active').replace('{count}', overrideCount))}</span>
+                        ${profileEditMode ? `<button class="btn-secondary" onclick="memberPermsClearAll('${userId}')">${esc(tt('btn_clear_overrides'))}</button>` : ''}
+                    </div>`;
+                }
+
+                // Permission toggles
+                html += `<div class="${modeClass}">`;
+                for (const group of PERM_GROUPS) {
+                    html += `<div class="team-perm-group"><div class="team-perm-group-title">${esc(tt(group.i18n))}</div>`;
+                    for (const p of group.perms) {
+                        const effective = effectivePerms[p.key] === true;
+                        const base = basePerms[p.key] === true;
+                        const hasOverride = overrides.hasOwnProperty(p.key);
+                        let chipHtml = '';
+                        if (profileEditMode) {
+                            if (hasOverride) {
+                                chipHtml = effective
+                                    ? `<span class="override-chip up">${esc(tt('override_chip_up'))}</span>`
+                                    : `<span class="override-chip down">${esc(tt('override_chip_down'))}</span>`;
+                            } else {
+                                chipHtml = `<span class="override-chip default">${esc(tt('override_chip_default'))}</span>`;
+                            }
+                        } else if (hasOverride) {
+                            chipHtml = effective
+                                ? `<span class="override-chip up">${esc(tt('override_chip_up'))}</span>`
+                                : `<span class="override-chip down">${esc(tt('override_chip_down'))}</span>`;
+                        }
+
+                        html += `
+                        <div class="perm-override-row">
+                            <div class="perm-override-left">
+                                <span class="perm-override-label">${esc(tt(p.i18n))}</span>
+                                ${chipHtml}
+                            </div>
+                            <label class="team-perm-toggle">
+                                <input type="checkbox" ${effective ? 'checked' : ''} ${profileEditMode ? `onchange="memberPermsToggle('${userId}', '${p.key}', this.checked, ${base})"` : ''}>
+                                <span class="slider"></span>
+                            </label>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+                html += '</div>';
+
+                body.innerHTML = html;
+            }
+
+            window.memberPermsToggleEdit = function (userId) {
+                profileEditMode = !profileEditMode;
+                const btn = document.getElementById('member-perms-edit-btn');
+                if (btn) btn.textContent = profileEditMode ? tt('btn_done_editing') : tt('btn_edit_permissions');
+                memberPermsRender(userId);
+            };
+
+            window.memberPermsSetCustomRole = async function (userId, customRoleId) {
+                try {
+                    const { data, error } = await supabaseClient.rpc('set_member_custom_role', {
+                        p_org_id: currentUserOrgId,
+                        p_member_user_id: userId,
+                        p_custom_role_id: customRoleId || null
+                    });
+                    if (error) throw error;
+                    if (data?.success) {
+                        showToast(tt('role_updated'), 'success');
+                        await memberPermsLoad(userId);
+                    } else {
+                        showToast(tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Set custom role failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                }
+            };
+
+            window.memberPermsToggle = async function (userId, perm, checked, baseValue) {
+                // If toggled value matches base, remove override; otherwise set it
+                const pValue = (checked === baseValue) ? null : checked;
+                try {
+                    const { data, error } = await supabaseClient.rpc('set_member_permission_override', {
+                        p_org_id: currentUserOrgId,
+                        p_member_user_id: userId,
+                        p_permission: perm,
+                        p_value: pValue
+                    });
+                    if (error) throw error;
+                    if (data?.success) {
+                        // Update local data
+                        if (pValue === null) {
+                            delete profileMemberPermsData.permission_overrides[perm];
+                        } else {
+                            profileMemberPermsData.permission_overrides[perm] = pValue;
+                        }
+                        profileMemberPermsData.effective_permissions[perm] = checked;
+                        memberPermsRender(userId);
+                    }
+                } catch (e) {
+                    console.error('Toggle override failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                }
+            };
+
+            window.memberPermsClearAll = async function (userId) {
+                if (!confirm(tt('clear_overrides_confirm'))) return;
+                try {
+                    const { data, error } = await supabaseClient.rpc('clear_member_permission_overrides', {
+                        p_org_id: currentUserOrgId,
+                        p_member_user_id: userId
+                    });
+                    if (error) throw error;
+                    if (data?.success) {
+                        showToast(tt('overrides_cleared'), 'success');
+                        await memberPermsLoad(userId);
+                    } else {
+                        showToast(tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Clear overrides failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                }
             };
 
             // --- Change Role ---
@@ -42608,16 +43006,20 @@ Thank you for shopping with {store_name}!</textarea>
             function renderPermissionsPanel(container) {
                 const perms = teamPermissionsCache[teamActivePermRole] || {};
                 const isOwnerRole = teamActivePermRole === 'owner';
+                const isCustomRolesView = teamActivePermRole === 'custom';
 
                 let html = `
                     <div class="team-perm-role-tabs">
                         <button class="team-perm-role-btn ${teamActivePermRole === 'manager' ? 'active' : ''}" onclick="teamSwitchPermRole('manager', this)">${esc(tt('role_manager'))}</button>
                         <button class="team-perm-role-btn ${teamActivePermRole === 'user' ? 'active' : ''}" onclick="teamSwitchPermRole('user', this)">${esc(tt('role_user'))}</button>
                         <button class="team-perm-role-btn ${teamActivePermRole === 'owner' ? 'active' : ''}" onclick="teamSwitchPermRole('owner', this)">${esc(tt('role_owner'))}</button>
+                        <button class="team-perm-role-btn ${teamActivePermRole === 'custom' ? 'active' : ''}" onclick="teamSwitchPermRole('custom', this)">${esc(tt('tab_custom_roles'))}</button>
                     </div>
                 `;
 
-                if (isOwnerRole) {
+                if (isCustomRolesView) {
+                    html += renderCustomRolesPanel();
+                } else if (isOwnerRole) {
                     html += `<div class="team-perm-owner-note">${esc(tt('role_owner_desc'))}</div>`;
                 } else {
                     for (const group of PERM_GROUPS) {
@@ -42646,7 +43048,285 @@ Thank you for shopping with {store_name}!</textarea>
                 teamActivePermRole = role;
                 document.querySelectorAll('.team-perm-role-btn').forEach(b => b.classList.remove('active'));
                 if (el) el.classList.add('active');
+                if (role === 'custom') {
+                    await teamLoadCustomRoles();
+                }
                 await teamLoadPermissionsPanel();
+            };
+
+            // ---- Custom Roles ----
+            async function teamLoadCustomRoles() {
+                try {
+                    const { data, error } = await supabaseClient.rpc('list_org_custom_roles', { p_org_id: currentUserOrgId });
+                    if (error) throw error;
+                    if (data?.success) {
+                        teamCustomRoles = data.roles || [];
+                        teamCustomRolesLoaded = true;
+                    }
+                } catch (e) {
+                    console.error('Failed to load custom roles:', e);
+                }
+            }
+
+            function renderCustomRolesPanel() {
+                let html = `
+                    <div class="custom-roles-header">
+                        <h3>${esc(tt('custom_roles_title'))}</h3>
+                        <button class="btn-new-role" onclick="teamOpenCustomRoleEditor()">${esc(tt('btn_new_custom_role'))}</button>
+                    </div>
+                `;
+
+                if (!teamCustomRoles.length) {
+                    html += `<div class="team-empty"><p>${esc(tt('custom_roles_empty'))}</p></div>`;
+                } else {
+                    html += '<div class="custom-roles-list">';
+                    for (const cr of teamCustomRoles) {
+                        const memberText = cr.member_count > 0
+                            ? tt('custom_role_members_using').replace('{count}', cr.member_count)
+                            : tt('custom_role_no_members');
+                        html += `
+                        <div class="custom-role-card">
+                            <div class="custom-role-card-top">
+                                <div class="custom-role-info">
+                                    <div class="custom-role-name">${esc(cr.name)}</div>
+                                    ${cr.description ? `<div class="custom-role-desc">"${esc(cr.description)}"</div>` : ''}
+                                    <div class="custom-role-meta">${esc(memberText)}</div>
+                                </div>
+                                <div class="custom-role-actions">
+                                    <button class="btn-secondary" onclick="teamOpenCustomRoleEditor('${cr.id}')">${esc(tt('btn_edit_role'))}</button>
+                                    <button class="btn-secondary" onclick="teamDuplicateCustomRole('${cr.id}')">${esc(tt('btn_duplicate_role'))}</button>
+                                    <button class="team-remove-btn" onclick="teamDeleteCustomRole('${cr.id}', ${cr.member_count})">${esc(tt('btn_delete_role'))}</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+
+                return html;
+            }
+
+            window.teamOpenCustomRoleEditor = function (roleId) {
+                const existing = roleId ? teamCustomRoles.find(r => r.id === roleId) : null;
+                const isEdit = !!existing;
+                const title = isEdit ? tt('modal_edit_role_title') : tt('modal_new_role_title');
+
+                document.getElementById('cr-editor-modal')?.remove();
+
+                const overlay = document.createElement('div');
+                overlay.id = 'cr-editor-modal';
+                overlay.className = 'cr-editor-overlay';
+                overlay.onclick = function (e) { if (e.target === overlay) overlay.remove(); };
+
+                // Build permission toggles HTML
+                let permsHtml = '';
+                const editPerms = existing ? (existing.permissions || {}) : {};
+                for (const group of PERM_GROUPS) {
+                    permsHtml += `<div class="team-perm-group"><div class="team-perm-group-title">${esc(tt(group.i18n))}</div>`;
+                    for (const p of group.perms) {
+                        const checked = editPerms[p.key] === true;
+                        permsHtml += `
+                            <div class="team-perm-row">
+                                <span class="team-perm-label">${esc(tt(p.i18n))}</span>
+                                <label class="team-perm-toggle">
+                                    <input type="checkbox" data-perm="${p.key}" ${checked ? 'checked' : ''}>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>`;
+                    }
+                    permsHtml += '</div>';
+                }
+
+                // Build "start from" existing custom roles options
+                let existingRoleOptions = '';
+                for (const cr of teamCustomRoles) {
+                    if (cr.id !== roleId) {
+                        existingRoleOptions += `<option value="${cr.id}">${esc(cr.name)}</option>`;
+                    }
+                }
+
+                overlay.innerHTML = `
+                <div class="cr-editor-box">
+                    <div class="team-modal-close" onclick="document.getElementById('cr-editor-modal').remove()">&times;</div>
+                    <div class="cr-editor-title">${esc(title)}</div>
+                    <div class="cr-editor-fields">
+                        <div class="form-group">
+                            <label class="form-label">${esc(tt('label_role_name'))} *</label>
+                            <input type="text" id="cr-editor-name" class="form-input" value="${esc(existing?.name || '')}" placeholder="${esc(tt('label_role_name'))}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${esc(tt('label_role_description'))}</label>
+                            <input type="text" id="cr-editor-desc" class="form-input" value="${esc(existing?.description || '')}" placeholder="${esc(tt('label_role_description'))}">
+                        </div>
+                    </div>
+                    ${!isEdit ? `
+                    <div class="cr-start-from">
+                        <div class="cr-start-from-label">${esc(tt('label_start_from'))}</div>
+                        <div class="cr-start-from-strip">
+                            <button class="cr-start-btn" onclick="crPrefillFrom('blank', this)">${esc(tt('start_from_blank'))}</button>
+                            <button class="cr-start-btn" onclick="crPrefillFrom('manager', this)">${esc(tt('start_from_manager'))}</button>
+                            <button class="cr-start-btn" onclick="crPrefillFrom('user', this)">${esc(tt('start_from_user'))}</button>
+                            ${existingRoleOptions ? `<select class="form-input" style="flex:1;min-width:120px;font-size:0.76rem;padding:6px 10px" onchange="if(this.value)crPrefillFrom(this.value,this)">
+                                <option value="">${esc(tt('start_from_existing'))}</option>
+                                ${existingRoleOptions}
+                            </select>` : ''}
+                        </div>
+                        <div class="cr-start-tip" id="cr-start-tip">${esc(tt('start_from_tip'))}</div>
+                    </div>` : ''}
+                    <div class="cr-editor-perms" id="cr-editor-perms">
+                        ${permsHtml}
+                    </div>
+                    <div class="cr-editor-footer">
+                        <button class="btn-secondary" onclick="document.getElementById('cr-editor-modal').remove()">${esc(tt('btn_close'))}</button>
+                        <button class="btn-primary" id="cr-editor-save" onclick="crSaveRole('${roleId || ''}')">${esc(tt('btn_save_role'))}</button>
+                    </div>
+                </div>`;
+
+                document.body.appendChild(overlay);
+            };
+
+            window.crPrefillFrom = async function (source, el) {
+                let perms = {};
+                if (source === 'blank') {
+                    perms = {};
+                } else if (source === 'manager' || source === 'user') {
+                    // Fetch from cache or RPC
+                    if (teamPermissionsCache[source]) {
+                        perms = teamPermissionsCache[source];
+                    } else {
+                        try {
+                            const { data, error } = await supabaseClient.rpc('get_role_permissions', { p_org_id: currentUserOrgId, p_role: source });
+                            if (!error && data?.permissions) {
+                                perms = data.permissions;
+                                teamPermissionsCache[source] = perms;
+                            }
+                        } catch (_) {}
+                    }
+                } else {
+                    // UUID = existing custom role
+                    const cr = teamCustomRoles.find(r => r.id === source);
+                    if (cr) perms = cr.permissions || {};
+                }
+
+                // Apply to toggles
+                const container = document.getElementById('cr-editor-perms');
+                if (container) {
+                    container.querySelectorAll('input[data-perm]').forEach(inp => {
+                        inp.checked = perms[inp.dataset.perm] === true;
+                    });
+                }
+
+                // Show tip
+                const tip = document.getElementById('cr-start-tip');
+                if (tip) tip.classList.add('visible');
+
+                // Highlight button
+                document.querySelectorAll('.cr-start-btn').forEach(b => b.classList.remove('active'));
+                if (el && el.classList.contains('cr-start-btn')) el.classList.add('active');
+            };
+
+            window.crSaveRole = async function (roleId) {
+                const nameInput = document.getElementById('cr-editor-name');
+                const descInput = document.getElementById('cr-editor-desc');
+                const btn = document.getElementById('cr-editor-save');
+                if (!nameInput) return;
+
+                const name = nameInput.value.trim();
+                if (!name) { showToast(tt('custom_role_name_required'), 'error'); nameInput.focus(); return; }
+
+                // Check client-side uniqueness
+                const duplicate = teamCustomRoles.find(r => r.name.toLowerCase() === name.toLowerCase() && r.id !== roleId);
+                if (duplicate) { showToast(tt('custom_role_name_taken'), 'error'); nameInput.focus(); return; }
+
+                // Collect permissions from toggles
+                const perms = {};
+                document.querySelectorAll('#cr-editor-perms input[data-perm]').forEach(inp => {
+                    perms[inp.dataset.perm] = inp.checked;
+                });
+
+                if (btn) { btn.disabled = true; btn.textContent = tt('btn_saving_role'); }
+
+                try {
+                    const params = {
+                        p_org_id: currentUserOrgId,
+                        p_name: name,
+                        p_description: descInput?.value.trim() || null,
+                        p_permissions: perms
+                    };
+                    if (roleId) params.p_id = roleId;
+
+                    const { data, error } = await supabaseClient.rpc('upsert_org_custom_role', params);
+                    if (error) throw error;
+
+                    if (data?.success) {
+                        showToast(tt('custom_role_saved'), 'success');
+                        document.getElementById('cr-editor-modal')?.remove();
+                        await teamLoadCustomRoles();
+                        await teamLoadPermissionsPanel();
+                    } else {
+                        const errKey = data?.error || 'error_generic';
+                        if (errKey === 'name_taken') showToast(tt('custom_role_name_taken'), 'error');
+                        else if (errKey === 'name_required') showToast(tt('custom_role_name_required'), 'error');
+                        else showToast(tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Save custom role failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                } finally {
+                    if (btn) { btn.disabled = false; btn.textContent = tt('btn_save_role'); }
+                }
+            };
+
+            window.teamDuplicateCustomRole = async function (roleId) {
+                const cr = teamCustomRoles.find(r => r.id === roleId);
+                if (!cr) return;
+
+                const newName = tt('custom_role_duplicate_name').replace('{name}', cr.name);
+                try {
+                    const { data, error } = await supabaseClient.rpc('upsert_org_custom_role', {
+                        p_org_id: currentUserOrgId,
+                        p_name: newName,
+                        p_description: cr.description,
+                        p_permissions: cr.permissions
+                    });
+                    if (error) throw error;
+                    if (data?.success) {
+                        showToast(tt('custom_role_saved'), 'success');
+                        await teamLoadCustomRoles();
+                        await teamLoadPermissionsPanel();
+                    } else {
+                        showToast(tt('error_' + (data?.error || 'generic')) || tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Duplicate custom role failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                }
+            };
+
+            window.teamDeleteCustomRole = async function (roleId, memberCount) {
+                let msg = tt('custom_role_delete_confirm');
+                if (memberCount > 0) {
+                    msg = tt('custom_role_delete_warn').replace('{count}', memberCount);
+                }
+                if (!confirm(msg)) return;
+
+                try {
+                    const { data, error } = await supabaseClient.rpc('delete_org_custom_role', {
+                        p_org_id: currentUserOrgId,
+                        p_role_id: roleId
+                    });
+                    if (error) throw error;
+                    if (data?.success) {
+                        showToast(tt('custom_role_deleted'), 'success');
+                        await teamLoadCustomRoles();
+                        await teamLoadPermissionsPanel();
+                    } else {
+                        showToast(tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Delete custom role failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                }
             };
 
             window.teamTogglePerm = async function (role, perm, granted) {
