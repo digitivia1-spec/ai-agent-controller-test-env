@@ -190,7 +190,8 @@
                 "search_placeholder": "Search...",
                 "mode_chats": "Chats",
                 "mode_messages": "Messages",
-                "find_placeholder": "Find..."
+                "find_placeholder": "Find...",
+                "no_messages": "No messages yet."
             },
             "leads": {
                 "title": "CRM",
@@ -370,9 +371,11 @@
                 "filter_all_types": "All Types",
                 "search_placeholder": "Search tasks...",
                 "error_create": "Failed to create task.",
+                "error_delete": "Failed to delete task.",
+                "error_assignee": "Failed to update assignee.",
                 "task_saved": "Task saved.",
                 "task_deleted": "Task deleted.",
-                "confirm_delete": "Delete this task?",
+                "confirm_delete": "Delete this task? This cannot be undone.",
                 "view_btn_list": "Tasks",
                 "view_btn_dashboard": "Dashboard",
                 "dash_kpi_total": "Total Tasks",
@@ -689,7 +692,11 @@
                     "placeholder_new_pass": "New Password",
                     "placeholder_confirm_pass": "Confirm Password",
                     "btn_update_pass": "Update Password",
-                    "btn_logout": "Logout"
+                    "btn_logout": "Logout",
+                    "pass_mismatch": "Passwords do not match",
+                    "pass_short": "Password must be at least 6 characters",
+                    "pass_updated_success": "Password updated!",
+                    "pass_updating": "Updating..."
                 },
                 "help": {
                     "title": "Free Consultation Meeting",
@@ -833,7 +840,12 @@
                 "toast_status_fail": "Failed to update status",
                 "error_status_update": "Failed to update status (Supabase Error)",
                 "toast_no_leads_export": "No leads to export",
-                "loading_config": "Fetching Agent Configurations..."
+                "loading_config": "Fetching Agent Configurations...",
+                "access_denied": "You don't have permission for this action.",
+                "agent_activated": "Activated {agent}",
+                "agent_deactivated": "Deactivated {agent}",
+                "error_no_org": "No Organization Found. Please contact admin.",
+                "error_saving": "Error saving data: "
             },
             "addons": {
                 "title": "Add-ons",
@@ -1246,7 +1258,8 @@
                 "search_placeholder": "بحث...",
                 "mode_chats": "المحادثات",
                 "mode_messages": "الرسائل",
-                "find_placeholder": "بحث..."
+                "find_placeholder": "بحث...",
+                "no_messages": "لا توجد رسائل بعد."
             },
             "leads": {
                 "title": "إدارة العملاء",
@@ -1426,9 +1439,11 @@
                 "filter_all_types": "جميع الأنواع",
                 "search_placeholder": "البحث عن مهام...",
                 "error_create": "فشل إنشاء المهمة.",
+                "error_delete": "فشل حذف المهمة.",
+                "error_assignee": "فشل تحديث المسؤول.",
                 "task_saved": "تم حفظ المهمة.",
                 "task_deleted": "تم حذف المهمة.",
-                "confirm_delete": "حذف هذه المهمة؟",
+                "confirm_delete": "حذف هذه المهمة؟ لا يمكن التراجع عن هذا.",
                 "view_btn_list": "المهام",
                 "view_btn_dashboard": "لوحة التحليلات",
                 "dash_kpi_total": "إجمالي المهام",
@@ -1785,7 +1800,11 @@
                     "placeholder_new_pass": "كلمة المرور الجديدة",
                     "placeholder_confirm_pass": "تأكيد كلمة المرور",
                     "btn_update_pass": "تحديث كلمة المرور",
-                    "btn_logout": "تسجيل خروج"
+                    "btn_logout": "تسجيل خروج",
+                    "pass_mismatch": "كلمات المرور غير متطابقة",
+                    "pass_short": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+                    "pass_updated_success": "تم تحديث كلمة المرور!",
+                    "pass_updating": "جاري التحديث..."
                 },
                 "help": {
                     "title": "جلسة استشارة مجانية",
@@ -1897,7 +1916,11 @@
                 "error_status_update": "فشل تحديث الحالة (خطأ في قاعدة البيانات)",
                 "toast_no_leads_export": "لا يوجد عملاء للتصدير",
                 "loading_config": "جاري التحميل...",
-                "access_denied": "ليس لديك الصلاحية للقيام بهذا الإجراء."
+                "access_denied": "ليس لديك الصلاحية للقيام بهذا الإجراء.",
+                "agent_activated": "تم تفعيل {agent}",
+                "agent_deactivated": "تم إيقاف {agent}",
+                "error_no_org": "لا توجد مؤسسة. يرجى التواصل مع المسؤول.",
+                "error_saving": "خطأ في حفظ البيانات: "
             },
             "dashboard": {
                 "welcome": "مرحباً بعودتك، {name}",
@@ -2288,6 +2311,19 @@
             accept_error_not_found: "Invitation not found.",
             accept_error_login_required: "Please sign in or create an account to accept this invitation.",
             accept_error_email_mismatch: "This invitation was sent to a different email address. Please sign in with the correct account.",
+            accept_loading: "Loading...",
+            accept_signin_title: "Already have an account?",
+            accept_signin_btn: "Sign In to Accept",
+            accept_signup_title: "New to Digitivia?",
+            accept_signup_btn: "Create Account & Accept",
+            accept_or_divider: "or",
+            accept_password: "Password",
+            accept_confirm_password: "Confirm Password",
+            accept_fullname: "Full Name",
+            accept_pass_mismatch: "Passwords do not match",
+            accept_pass_short: "Password must be at least 8 characters",
+            accept_email_registered: "This email is already registered. Please use the Sign In option instead.",
+            accept_creating: "Creating account...",
             // Member profile modal
             profile_title: "Member Profile",
             profile_name: "Name",
@@ -2901,6 +2937,19 @@
             accept_error_not_found: "لم يتم العثور على الدعوة.",
             accept_error_login_required: "يرجى تسجيل الدخول أو إنشاء حساب لقبول هذه الدعوة.",
             accept_error_email_mismatch: "هذه الدعوة مرسلة لبريد إلكتروني مختلف. يرجى تسجيل الدخول بالحساب الصحيح.",
+            accept_loading: "جاري التحميل...",
+            accept_signin_title: "لديك حساب بالفعل؟",
+            accept_signin_btn: "تسجيل الدخول لقبول الدعوة",
+            accept_signup_title: "جديد على Digitivia؟",
+            accept_signup_btn: "إنشاء حساب وقبول الدعوة",
+            accept_or_divider: "أو",
+            accept_password: "كلمة المرور",
+            accept_confirm_password: "تأكيد كلمة المرور",
+            accept_fullname: "الاسم الكامل",
+            accept_pass_mismatch: "كلمات المرور غير متطابقة",
+            accept_pass_short: "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+            accept_email_registered: "هذا البريد مسجّل بالفعل. استخدم خيار تسجيل الدخول بدلاً من ذلك.",
+            accept_creating: "جاري إنشاء الحساب...",
             // Member profile modal
             profile_title: "ملف العضو",
             profile_name: "الاسم",
@@ -3790,7 +3839,7 @@
 
         #dashboard .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr) !important;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
             gap: 24px !important;
             margin-bottom: 24px !important;
             padding: 0 !important;
@@ -3860,6 +3909,9 @@
             font-weight: 500;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.3;
         }
 
         #dashboard .kpi-value {
@@ -3950,6 +4002,7 @@
         @media (max-width: 600px) {
             #dashboard .kpi-grid {
                 grid-template-columns: 1fr !important;
+                gap: 16px !important;
             }
         }
 
@@ -4163,6 +4216,9 @@
         .dash-trend-chart-area svg { width: 100%; height: auto; }
 
         /* -- Funnel Bars */
+        .dash-funnel-container {
+            display: flex; flex-direction: column; width: 100%;
+        }
         .dash-funnel-bar {
             display: flex; align-items: center; gap: 12px;
             margin-bottom: 10px;
@@ -4353,6 +4409,9 @@
         :root[data-theme="light"] .dash-trend-tab.active {
             background: rgba(99, 102, 241, 0.1);
             color: #6366f1;
+        }
+        :root[data-theme="light"] .dash-funnel-track {
+            background: rgba(0,0,0,0.06);
         }
         :root[data-theme="light"] .dash-alert-chip.alert-warning {
             background: rgba(245, 158, 11, 0.08);
@@ -10606,6 +10665,14 @@
         .accept-invite-error h3 { margin: 0; font-size: 0.95rem; color: var(--text-muted, #aaa); font-weight: 500; }
         .accept-invite-error-msg { color: #ef4444; font-size: 0.85rem; margin: 8px 0 0; }
         .accept-invite-loading { text-align: center; padding: 48px 20px; color: var(--text-muted, #888); }
+        .accept-invite-paths { margin-top: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .accept-invite-path { padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; }
+        .accept-invite-or { text-align: center; color: var(--text-muted, #888); font-size: 0.82rem; position: relative; }
+        .accept-invite-or span { background: var(--bg-dark, #0f1014); padding: 0 12px; position: relative; z-index: 1; }
+        .accept-invite-or::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.08); }
+        :root[data-theme="light"] .accept-invite-path { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
+        :root[data-theme="light"] .accept-invite-or span { background: var(--bg-light, #f8f9fa); }
+        :root[data-theme="light"] .accept-invite-or::before { background: rgba(0,0,0,0.08); }
 
         /* Phase 2 mobile responsive */
         @media (max-width: 640px) {
@@ -24298,6 +24365,18 @@
                 if (isFreshAuthReturn()) {
                     await reportLoginNotificationOnce('oauth');
                 }
+                // Auto-accept pending invitation after OAuth/session restore
+                const pendingToken = sessionStorage.getItem('pending_invite_token');
+                if (pendingToken) {
+                    sessionStorage.removeItem('pending_invite_token');
+                    try {
+                        const { data: acceptData, error: acceptErr } = await supabaseClient.rpc('accept_org_invitation', { p_token: pendingToken });
+                        if (!acceptErr && acceptData?.success) {
+                            showToast(t('team.accept_success_title') || 'Welcome aboard!', 'success');
+                            setTimeout(() => location.reload(), 1500);
+                        }
+                    } catch (ae) { console.warn('Auto-accept invite failed:', ae); }
+                }
             } else {
                 document.getElementById('login-container').style.display = 'flex';
             }
@@ -24357,6 +24436,19 @@
                 await ensureUserProfile(data.user);
                 showApp();
                 await reportLoginNotificationOnce('password');
+
+                // Auto-accept pending invitation after sign-in
+                const pendingToken = sessionStorage.getItem('pending_invite_token');
+                if (pendingToken) {
+                    sessionStorage.removeItem('pending_invite_token');
+                    try {
+                        const { data: acceptData, error: acceptErr } = await supabaseClient.rpc('accept_org_invitation', { p_token: pendingToken });
+                        if (!acceptErr && acceptData?.success) {
+                            showToast(t('team.accept_success_title') || 'Welcome aboard!', 'success');
+                            setTimeout(() => location.reload(), 1500);
+                        }
+                    } catch (ae) { console.warn('Auto-accept invite failed:', ae); }
+                }
 
             } catch (e) {
                 console.error(e);
@@ -29497,14 +29589,18 @@ Thank you for shopping with {store_name}!</textarea>
             { key: 'platform_stats',    label: () => t('dashboard.widgets.platform_stats'),    default: true }
         ];
 
+        function _dashWidgetPrefsKey() {
+            const uid = currentUserProfile?.user_id;
+            return uid ? `dash_widget_prefs_${uid}` : 'dash_widget_prefs';
+        }
         function dashGetWidgetPrefs() {
             try {
-                const raw = localStorage.getItem('dash_widget_prefs');
+                const raw = localStorage.getItem(_dashWidgetPrefsKey());
                 return raw ? JSON.parse(raw) : {};
             } catch { return {}; }
         }
         function dashSetWidgetPrefs(prefs) {
-            localStorage.setItem('dash_widget_prefs', JSON.stringify(prefs));
+            localStorage.setItem(_dashWidgetPrefsKey(), JSON.stringify(prefs));
         }
         function dashGetWidgetVisible(key) {
             const prefs = dashGetWidgetPrefs();
@@ -29558,7 +29654,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function dashResetWidgets() {
-            localStorage.removeItem('dash_widget_prefs');
+            localStorage.removeItem(_dashWidgetPrefsKey());
             dashApplyWidgetVisibility();
             dashRenderWidgetToggles();
         }
@@ -29577,7 +29673,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const { count: overdueTasks } = await supabaseClient.from('tasks')
                     .select('id', { count: 'exact', head: true })
                     .eq('org_id', currentUserOrgId)
-                    .lt('due_date', new Date().toISOString())
+                    .lt('due_at', new Date().toISOString())
                     .neq('status', 'done');
                 if (overdueTasks > 0) alerts.push({ id: 'overdue_tasks', priority: 1, type: 'danger',
                     text: t('dashboard.alerts.overdue_tasks', { count: overdueTasks }),
@@ -29728,14 +29824,14 @@ Thank you for shopping with {store_name}!</textarea>
                     const colors = { new: '#6366f1', contacted: '#3b82f6', qualified: '#10b981', won: '#22c55e', lost: '#ef4444' };
                     const labels = { new: t('dashboard.trend.new_lbl'), contacted: t('dashboard.trend.contacted'),
                         qualified: t('dashboard.trend.qualified'), won: t('dashboard.trend.won'), lost: t('dashboard.trend.lost') };
-                    area.innerHTML = statuses.map(s => `
+                    area.innerHTML = `<div class="dash-funnel-container">${statuses.map(s => `
                         <div class="dash-funnel-bar">
                             <div class="dash-funnel-label">${labels[s]}</div>
                             <div class="dash-funnel-track">
                                 <div class="dash-funnel-fill" style="width:${Math.max((counts[s] / max) * 100, 2)}%; background:${colors[s]};">${formatCountDisplay(counts[s])}</div>
                             </div>
                         </div>
-                    `).join('');
+                    `).join('')}</div>`;
 
                 } else if (dashTrendMode === 'activity') {
                     // Last 7 days area chart data
@@ -29788,7 +29884,7 @@ Thank you for shopping with {store_name}!</textarea>
                             .gte('updated_at', todayStart.toISOString()),
                         supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
                             .eq('org_id', currentUserOrgId).neq('status', 'done')
-                            .lt('due_date', new Date().toISOString())
+                            .lt('due_at', new Date().toISOString())
                     ]);
                     const open = openC || 0, done = doneC || 0, overdue = overdueC || 0;
                     const total = open + done;
@@ -29841,14 +29937,14 @@ Thank you for shopping with {store_name}!</textarea>
                         .eq('org_id', currentUserOrgId).neq('status', 'done'),
                     supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
                         .eq('org_id', currentUserOrgId).neq('status', 'done')
-                        .lt('due_date', new Date().toISOString()),
+                        .lt('due_at', new Date().toISOString()),
                     supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
                         .eq('org_id', currentUserOrgId).eq('status', 'done')
                         .gte('updated_at', todayStart.toISOString()),
-                    supabaseClient.from('tasks').select('title, due_date')
+                    supabaseClient.from('tasks').select('title, due_at')
                         .eq('org_id', currentUserOrgId).neq('status', 'done')
-                        .lt('due_date', new Date().toISOString())
-                        .order('due_date', { ascending: true })
+                        .lt('due_at', new Date().toISOString())
+                        .order('due_at', { ascending: true })
                         .limit(5)
                 ]);
                 const open = openC || 0, overdue = overdueC || 0, done = doneC || 0;
@@ -29878,7 +29974,7 @@ Thank you for shopping with {store_name}!</textarea>
                     <div class="dash-tasks-overdue-list">
                         ${(overdueList || []).map(tk => `<div class="dash-tasks-overdue-item" onclick="navigateToTab('task-manager')">
                             <span class="task-name">${escapeNotificationHtml(tk.title || '--')}</span>
-                            <span class="task-due">${t('dashboard.tasks.due')}: ${tk.due_date ? new Date(tk.due_date).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : '--'}</span>
+                            <span class="task-due">${t('dashboard.tasks.due')}: ${tk.due_at ? new Date(tk.due_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : '--'}</span>
                         </div>`).join('')}
                     </div>` : `<p style="text-align:center; color:var(--text-muted); font-size:0.83rem;">${t('dashboard.tasks.no_overdue')}</p>`}
                 </div>`;
@@ -42252,8 +42348,8 @@ Thank you for shopping with {store_name}!</textarea>
                         orgId: window.currentLeadProfileOrgId,
                         entityId: window.currentLeadProfileId,
                         eventKey: 'crm_lead_assigned',
-                        title: t('leads.col_assignee'),
-                        body: (updates.full_name || 'Lead') + ' assigned',
+                        title: t('notifications.events.crm_lead_assigned.title'),
+                        body: t('notifications.events.crm_lead_assigned.body', { lead_name: updates.full_name || 'Lead' }),
                         recipientUserId: newAssignee
                     });
                     logLeadActivity('assignment_changed', 'Assigned to ' + getOrgMemberName(newAssignee), {assigned_to: newAssignee});
@@ -42341,8 +42437,8 @@ Thank you for shopping with {store_name}!</textarea>
                     orgId: window.currentLeadProfileOrgId,
                     entityId: window.currentLeadProfileId,
                     eventKey: 'crm_status_changed',
-                    title: 'Lead Status Updated',
-                    body: (updatedLead.full_name || 'Lead') + ' moved to ' + getStatusLabel(newStatus),
+                    title: t('notifications.events.crm_status_changed.title'),
+                    body: t('notifications.events.crm_status_changed.body', { lead_name: updatedLead.full_name || 'Lead', new_status: getStatusLabel(newStatus) }),
                     recipientUserId: recipientId
                 });
                 showToast(t('crm.status_updated') || 'Status updated');
@@ -43067,8 +43163,8 @@ Thank you for shopping with {store_name}!</textarea>
                         orgId: currentUserOrgId,
                         entityId: data.id,
                         eventKey: 'task_assigned',
-                        title: 'Task Assigned to You',
-                        body: 'New task: ' + title,
+                        title: t('notifications.events.task_assigned.title'),
+                        body: t('notifications.events.task_assigned.body', { task_title: title }),
                         recipientUserId: assignVal
                     });
                 }
@@ -43175,7 +43271,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                     <!-- Danger zone -->
                     <div style="padding-top:12px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:flex-end;">
-                        <button onclick="deleteTask('${esc(task.id)}')" style="background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-weight:600;">Delete Task</button>
+                        <button onclick="deleteTask('${esc(task.id)}')" style="background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-weight:600;">${t('task_manager.btn_delete')}</button>
                     </div>
                 `;
             } catch (err) {
@@ -43204,8 +43300,8 @@ Thank you for shopping with {store_name}!</textarea>
                         orgId: currentUserOrgId,
                         entityId: window.currentTaskId,
                         eventKey: 'task_completed',
-                        title: 'Task Completed',
-                        body: (window._taskDetailData.title || 'Task') + ' was marked as done',
+                        title: t('notifications.events.task_completed.title'),
+                        body: t('notifications.events.task_completed.body', { task_title: window._taskDetailData.title || 'Task' }),
                         recipientUserId: window._taskDetailData.created_by_user_id
                     });
                 }
@@ -43213,7 +43309,7 @@ Thank you for shopping with {store_name}!</textarea>
                 await fetchTasks();
             } catch (err) {
                 console.error('Update task status failed:', err);
-                showToast('Failed to update status');
+                showToast(t('messages.toast_status_fail'));
             }
         };
 
@@ -43231,8 +43327,8 @@ Thank you for shopping with {store_name}!</textarea>
                         orgId: currentUserOrgId,
                         entityId: window.currentTaskId,
                         eventKey: 'task_assigned',
-                        title: 'Task Assigned to You',
-                        body: 'New task: ' + (window._taskDetailData?.title || 'Task'),
+                        title: t('notifications.events.task_assigned.title'),
+                        body: t('notifications.events.task_assigned.body', { task_title: window._taskDetailData?.title || 'Task' }),
                         recipientUserId: userId
                     });
                 }
@@ -43240,7 +43336,7 @@ Thank you for shopping with {store_name}!</textarea>
                 await fetchTasks();
             } catch(err) {
                 console.error('Update task assignee failed:', err);
-                showToast('Failed to update assignee');
+                showToast(t('task_manager.error_assignee'));
             }
         };
 
@@ -43349,17 +43445,17 @@ Thank you for shopping with {store_name}!</textarea>
 
         window.deleteTask = async function(taskId) {
             if (!taskId || !currentUserOrgId) return;
-            if (!confirm('Delete this task? This cannot be undone.')) return;
+            if (!confirm(t('task_manager.confirm_delete'))) return;
             try {
                 const {error} = await supabaseClient.from('tasks').delete()
                     .eq('id', taskId).eq('org_id', currentUserOrgId);
                 if (error) throw error;
-                showToast('Task deleted');
+                showToast(t('task_manager.task_deleted'));
                 closeTaskDetail();
                 await fetchTasks();
             } catch (err) {
                 console.error('Delete task failed:', err);
-                showToast('Failed to delete task');
+                showToast(t('task_manager.error_delete'));
             }
         };
 
@@ -43738,6 +43834,39 @@ Thank you for shopping with {store_name}!</textarea>
                                 <button class="btn-secondary" onclick="teamCopyInviteLink()">${esc(tt('btn_copy_link'))}</button>
                             `;
                         }
+
+                        // --- Send invitation email via insert_semantic_notification ---
+                        // NOTE: The send-email-notification edge function needs a new event_key
+                        // 'team_invitation_sent' to render an invitation email template.
+                        // Required payload fields: organization_name, inviter_name, invited_name,
+                        // invited_email, role, accept_url, recipient_emails.
+                        // Until the edge function is extended, this notification is inserted
+                        // so it's ready when the backend template is added.
+                        try {
+                            const orgName = window.currentOrgData?.name || '';
+                            const inviterName = currentUserProfile?.full_name || currentUserProfile?.email || '';
+                            await supabaseClient.rpc('insert_semantic_notification', {
+                                p_org_id: currentUserOrgId,
+                                p_type: 'team',
+                                p_title: 'Team Invitation Sent',
+                                p_message: `${inviterName} invited ${fullName || email} to join ${orgName}`,
+                                p_entity: 'invitation',
+                                p_entity_id: null,
+                                p_event_key: 'team_invitation_sent',
+                                p_payload: {
+                                    organization_name: orgName,
+                                    inviter_name: inviterName,
+                                    invited_name: fullName || '',
+                                    invited_email: email,
+                                    role: role,
+                                    accept_url: inviteUrl,
+                                    recipient_emails: [email.toLowerCase().trim()]
+                                }
+                            });
+                        } catch (emailErr) {
+                            console.warn('Invitation email notification failed:', emailErr);
+                        }
+
                         emailInput.value = '';
                         if (nameInput) nameInput.value = '';
                         if (phoneInput) phoneInput.value = '';
@@ -44674,7 +44803,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const root = document.getElementById('accept-invite-root');
                 if (!root) return;
 
-                root.innerHTML = `<div class="accept-invite-loading"><p>${currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p></div>`;
+                root.innerHTML = `<div class="accept-invite-loading"><p>${t('team.accept_loading')}</p></div>`;
 
                 // Fetch invitation details
                 let invite = null;
@@ -44712,7 +44841,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const roleLabel = invite.role === 'admin' ? tt('role_manager') : invite.role === 'member' ? tt('role_user') : tt('role_' + invite.role);
 
                 if (!session) {
-                    // Not logged in - show login prompt
+                    // Not logged in - show sign-in + sign-up paths
                     root.innerHTML = `
                     <div class="accept-invite-card">
                         <div class="accept-invite-icon">
@@ -44725,8 +44854,27 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="accept-invite-email-note">
                             <p>${esc(tt('accept_email_note'))}: <strong>${esc(invite.email)}</strong></p>
                         </div>
-                        <div class="accept-invite-login-prompt">
-                            <p>${esc(tt('accept_error_login_required'))}</p>
+
+                        <div class="accept-invite-paths">
+                            <!-- Path A: Existing user sign-in -->
+                            <div class="accept-invite-path">
+                                <h3 style="margin:0 0 8px; font-size:0.95rem; color:var(--text-main);">${esc(tt('accept_signin_title'))}</h3>
+                                <button class="btn-primary accept-invite-btn" onclick="acceptInviteSignIn('${esc(token)}')">${esc(tt('accept_signin_btn'))}</button>
+                            </div>
+
+                            <div class="accept-invite-or"><span>${esc(tt('accept_or_divider'))}</span></div>
+
+                            <!-- Path B: New user sign-up -->
+                            <div class="accept-invite-path">
+                                <h3 style="margin:0 0 12px; font-size:0.95rem; color:var(--text-main);">${esc(tt('accept_signup_title'))}</h3>
+                                <form id="accept-invite-signup-form" onsubmit="acceptInviteSignUp(event, '${esc(token)}', '${esc(invite.email)}')">
+                                    <input type="text" class="form-input" id="accept-signup-name" placeholder="${esc(tt('accept_fullname'))}" value="${esc(invite.invited_name || '')}" style="margin-bottom:10px;">
+                                    <input type="password" class="form-input" id="accept-signup-pass" placeholder="${esc(tt('accept_password'))}" autocomplete="new-password" style="margin-bottom:10px;">
+                                    <input type="password" class="form-input" id="accept-signup-pass2" placeholder="${esc(tt('accept_confirm_password'))}" autocomplete="new-password" style="margin-bottom:12px;">
+                                    <div id="accept-signup-error" style="color:#ef4444; font-size:0.82rem; margin-bottom:8px; display:none;"></div>
+                                    <button type="submit" class="btn-primary accept-invite-btn" id="accept-signup-btn">${esc(tt('accept_signup_btn'))}</button>
+                                </form>
+                            </div>
                         </div>
                     </div>`;
                     return;
@@ -44787,6 +44935,76 @@ Thank you for shopping with {store_name}!</textarea>
                     console.error('Accept invitation failed:', e);
                     if (statusDiv) statusDiv.innerHTML = `<p class="accept-invite-error-msg">${esc(tt('error_generic'))}</p>`;
                     if (btn) { btn.disabled = false; btn.textContent = tt('accept_btn'); }
+                }
+            };
+
+            // --- Accept invite: Sign In path ---
+            window.acceptInviteSignIn = function(token) {
+                sessionStorage.setItem('pending_invite_token', token);
+                location.hash = '';
+                location.reload();
+            };
+
+            // --- Accept invite: Sign Up path ---
+            window.acceptInviteSignUp = async function(e, token, email) {
+                e.preventDefault();
+                const nameInput = document.getElementById('accept-signup-name');
+                const passInput = document.getElementById('accept-signup-pass');
+                const pass2Input = document.getElementById('accept-signup-pass2');
+                const errDiv = document.getElementById('accept-signup-error');
+                const btn = document.getElementById('accept-signup-btn');
+                const tt = window._teamTT || ((k) => t('team.' + k));
+
+                const fullName = nameInput?.value.trim() || '';
+                const pass = passInput?.value || '';
+                const pass2 = pass2Input?.value || '';
+
+                errDiv.style.display = 'none';
+                const showErr = (msg) => { errDiv.textContent = msg; errDiv.style.display = 'block'; };
+
+                if (pass !== pass2) { showErr(tt('accept_pass_mismatch')); return; }
+                if (pass.length < 8) { showErr(tt('accept_pass_short')); return; }
+
+                btn.disabled = true;
+                btn.textContent = tt('accept_creating');
+
+                try {
+                    const { data: signUpData, error: signUpErr } = await supabaseClient.auth.signUp({
+                        email: email,
+                        password: pass,
+                        options: { data: { full_name: fullName } }
+                    });
+                    if (signUpErr) {
+                        if (signUpErr.message && signUpErr.message.toLowerCase().includes('already registered')) {
+                            showErr(tt('accept_email_registered'));
+                        } else {
+                            showErr(signUpErr.message || tt('error_generic'));
+                        }
+                        btn.disabled = false;
+                        btn.textContent = tt('accept_signup_btn');
+                        return;
+                    }
+
+                    // Accept the invitation
+                    const { data: acceptData, error: acceptErr } = await supabaseClient.rpc('accept_org_invitation', { p_token: token });
+                    if (acceptErr) throw acceptErr;
+
+                    if (acceptData?.success) {
+                        showToast(tt('accept_success_title'), 'success');
+                        sessionStorage.removeItem('pending_invite_token');
+                        location.hash = '';
+                        location.reload();
+                    } else {
+                        const errKey = acceptData?.error || 'generic';
+                        showErr(tt('accept_error_' + errKey) || tt('error_generic'));
+                        btn.disabled = false;
+                        btn.textContent = tt('accept_signup_btn');
+                    }
+                } catch (err) {
+                    console.error('Sign up + accept failed:', err);
+                    showErr(tt('error_generic'));
+                    btn.disabled = false;
+                    btn.textContent = tt('accept_signup_btn');
                 }
             };
 
