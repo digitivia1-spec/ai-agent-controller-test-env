@@ -2546,6 +2546,75 @@
         window.LANG_EN.dashboard.activity.meeting_rescheduled = "Meeting rescheduled";
         window.LANG_EN.dashboard.activity.meeting_no_show = "Marked as no-show";
         window.LANG_EN.dashboard.activity.meeting_note = "Meeting note added";
+        // Phase 4: Dashboard Refinement & Personalization i18n
+        Object.assign(window.LANG_EN.dashboard.headers, {
+            customize: "Customize Dashboard",
+            trend_chart: "Trend Chart",
+            tasks_summary: "Tasks Summary",
+            crm_pipeline: "CRM Pipeline Snapshot",
+            alerts: "Attention Required"
+        });
+        window.LANG_EN.dashboard.widgets = {
+            title: "Dashboard Widgets",
+            subtitle: "Toggle sections to personalize your dashboard",
+            kpi_cards: "KPI Cards",
+            secondary_section: "Activity KPIs",
+            lead_qualification: "Lead Qualification",
+            context_panel: "Context Panel",
+            activity_feed: "Activity Feed",
+            plan_usage: "Plan Usage",
+            platform_stats: "Platform Stats",
+            trend_chart: "Trend Chart",
+            tasks_summary: "Tasks Summary",
+            crm_pipeline: "CRM Pipeline",
+            alerts_strip: "Alerts Strip",
+            reset: "Reset to Default",
+            close: "Close"
+        };
+        window.LANG_EN.dashboard.trend = {
+            pipeline: "Pipeline Flow",
+            activity: "Activity Trend",
+            tasks: "Task Progress",
+            new_lbl: "New",
+            contacted: "Contacted",
+            qualified: "Qualified",
+            won: "Won",
+            lost: "Lost",
+            messages: "Messages",
+            leads: "Leads",
+            open: "Open",
+            done: "Done",
+            overdue: "Overdue",
+            no_data: "No data available for this chart."
+        };
+        window.LANG_EN.dashboard.tasks = {
+            open: "Open Tasks",
+            overdue: "Overdue",
+            done_today: "Done Today",
+            overdue_list_title: "Overdue Tasks",
+            no_overdue: "No overdue tasks",
+            due: "Due"
+        };
+        window.LANG_EN.dashboard.crm_pipeline = {
+            new_lbl: "New",
+            contacted: "Contacted",
+            qualified: "Qualified",
+            negotiation: "Negotiation",
+            won: "Won",
+            followup_title: "Follow-up Leads",
+            no_followups: "No follow-ups pending",
+            due: "Due"
+        };
+        window.LANG_EN.dashboard.alerts = {
+            overdue_tasks: "{count} overdue tasks need attention",
+            expiring_leads: "{count} leads expiring soon",
+            plan_limit: "Plan usage at {percent}%",
+            no_activity: "No activity in last 48 hours",
+            pending_invitations: "{count} pending invitations",
+            unread_messages: "{count} unread messages",
+            view: "View",
+            dismiss: "Dismiss"
+        };
         Object.assign(window.LANG_EN.meetings, {
             area_title: "Customers Area",
             title: "Incoming Meetings",
@@ -3055,6 +3124,75 @@
         window.LANG_AR.dashboard.activity.meeting_rescheduled = "تمت إعادة جدولة الاجتماع";
         window.LANG_AR.dashboard.activity.meeting_no_show = "تم تسجيل عدم الحضور";
         window.LANG_AR.dashboard.activity.meeting_note = "تمت إضافة ملاحظة للاجتماع";
+        // Phase 4: Dashboard Refinement & Personalization i18n (AR)
+        Object.assign(window.LANG_AR.dashboard.headers, {
+            customize: "تخصيص لوحة التحكم",
+            trend_chart: "مخطط الاتجاهات",
+            tasks_summary: "ملخص المهام",
+            crm_pipeline: "نظرة على خط المبيعات",
+            alerts: "يتطلب الانتباه"
+        });
+        window.LANG_AR.dashboard.widgets = {
+            title: "أقسام لوحة التحكم",
+            subtitle: "تبديل الأقسام لتخصيص لوحة التحكم",
+            kpi_cards: "بطاقات المؤشرات",
+            secondary_section: "مؤشرات النشاط",
+            lead_qualification: "تأهيل العملاء",
+            context_panel: "لوحة السياق",
+            activity_feed: "تغذية النشاط",
+            plan_usage: "استخدام الخطة",
+            platform_stats: "إحصائيات المنصات",
+            trend_chart: "مخطط الاتجاهات",
+            tasks_summary: "ملخص المهام",
+            crm_pipeline: "خط المبيعات",
+            alerts_strip: "شريط التنبيهات",
+            reset: "إعادة التعيين",
+            close: "إغلاق"
+        };
+        window.LANG_AR.dashboard.trend = {
+            pipeline: "تدفق خط المبيعات",
+            activity: "اتجاه النشاط",
+            tasks: "تقدم المهام",
+            new_lbl: "جديد",
+            contacted: "تم التواصل",
+            qualified: "مؤهل",
+            won: "رابح",
+            lost: "خاسر",
+            messages: "رسائل",
+            leads: "عملاء",
+            open: "مفتوح",
+            done: "مكتمل",
+            overdue: "متأخر",
+            no_data: "لا توجد بيانات لهذا المخطط."
+        };
+        window.LANG_AR.dashboard.tasks = {
+            open: "المهام المفتوحة",
+            overdue: "متأخرة",
+            done_today: "أنجزت اليوم",
+            overdue_list_title: "المهام المتأخرة",
+            no_overdue: "لا توجد مهام متأخرة",
+            due: "الاستحقاق"
+        };
+        window.LANG_AR.dashboard.crm_pipeline = {
+            new_lbl: "جديد",
+            contacted: "تم التواصل",
+            qualified: "مؤهل",
+            negotiation: "تفاوض",
+            won: "رابح",
+            followup_title: "عملاء للمتابعة",
+            no_followups: "لا توجد متابعات معلقة",
+            due: "الاستحقاق"
+        };
+        window.LANG_AR.dashboard.alerts = {
+            overdue_tasks: "{count} مهام متأخرة تحتاج انتباه",
+            expiring_leads: "{count} عملاء على وشك الانتهاء",
+            plan_limit: "استخدام الخطة عند {percent}%",
+            no_activity: "لا يوجد نشاط خلال 48 ساعة",
+            pending_invitations: "{count} دعوات معلقة",
+            unread_messages: "{count} رسائل غير مقروءة",
+            view: "عرض",
+            dismiss: "تجاهل"
+        };
         Object.assign(window.LANG_AR.meetings, {
             area_title: "منطقة العملاء",
             title: "الاجتماعات الواردة",
@@ -3744,6 +3882,458 @@
                 grid-template-columns: 1fr !important;
             }
         }
+
+        /* ============================================================
+           Phase 4: Dashboard Refinement & Personalization CSS
+           ============================================================ */
+
+        /* -- Section Title */
+        .dash-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 15px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .dash-section-title .dash-section-icon {
+            width: 32px; height: 32px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .dash-section-title .dash-section-icon svg {
+            width: 18px; height: 18px;
+        }
+
+        /* -- Widget visibility */
+        .dashboard-widget[data-widget-hidden="true"] { display: none !important; }
+
+        /* -- Customize Button */
+        .dash-customize-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 8px 14px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.2s;
+        }
+        .dash-customize-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+        }
+        .dash-customize-btn svg { width: 16px; height: 16px; }
+
+        /* -- Customize Drawer */
+        .dash-customize-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .dash-customize-overlay.open { opacity: 1; visibility: visible; }
+
+        .dash-customize-drawer {
+            position: fixed;
+            top: 0; right: 0;
+            width: 320px; height: 100%;
+            background: var(--bg-dark, #0f1014);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            z-index: 9999;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+            overflow-y: auto;
+        }
+        [dir="rtl"] .dash-customize-drawer {
+            right: auto; left: 0;
+            border-left: none;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            transform: translateX(-100%);
+        }
+        .dash-customize-drawer.open { transform: translateX(0); }
+        [dir="rtl"] .dash-customize-drawer.open { transform: translateX(0); }
+
+        .dash-customize-drawer .drawer-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .dash-customize-drawer .drawer-header h3 { margin: 0; font-size: 1.1rem; }
+        .dash-customize-drawer .drawer-body { padding: 16px 20px; flex: 1; }
+        .dash-customize-drawer .drawer-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; gap: 10px;
+        }
+
+        .widget-toggle-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .widget-toggle-item:last-child { border-bottom: none; }
+        .widget-toggle-item label {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* -- KPI Trend Indicator */
+        .kpi-trend-indicator {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.75rem; font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-top: 2px;
+        }
+        .kpi-trend-indicator.up {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.12);
+        }
+        .kpi-trend-indicator.down {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.12);
+        }
+        .kpi-trend-indicator.neutral {
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+        }
+        .kpi-trend-indicator svg { width: 12px; height: 12px; }
+
+        /* -- KPI Card colored top border */
+        #dashboard .kpi-card.kpi-border-revenue { border-top: 3px solid #8b5cf6; }
+        #dashboard .kpi-card.kpi-border-leads { border-top: 3px solid #10b981; }
+        #dashboard .kpi-card.kpi-border-conversations { border-top: 3px solid #3b82f6; }
+        #dashboard .kpi-card.kpi-border-reviews { border-top: 3px solid #f59e0b; }
+
+        /* -- Alerts Strip */
+        .dash-alerts-strip {
+            display: flex; gap: 12px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .dash-alert-chip {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border: 1px solid;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .dash-alert-chip:hover { transform: translateY(-1px); }
+        .dash-alert-chip.alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+        }
+        .dash-alert-chip.alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        .dash-alert-chip.alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+        }
+        .dash-alert-chip .alert-icon { display: flex; align-items: center; }
+        .dash-alert-chip .alert-icon svg { width: 16px; height: 16px; }
+        .dash-alert-chip .alert-dismiss {
+            margin-left: 8px; cursor: pointer; opacity: 0.6;
+            background: none; border: none; color: inherit; padding: 0;
+            display: flex; align-items: center;
+        }
+        [dir="rtl"] .dash-alert-chip .alert-dismiss { margin-left: 0; margin-right: 8px; }
+        .dash-alert-chip .alert-dismiss:hover { opacity: 1; }
+
+        /* -- Trend Chart Widget */
+        .dash-trend-widget {
+            background: var(--dash-bg, #0f1014);
+            border: 1px solid var(--dash-border, rgba(255,255,255,0.06));
+            border-radius: var(--dash-card-radius, 16px);
+            padding: var(--dash-card-pad, 20px);
+            margin-bottom: 24px;
+        }
+        .dash-trend-tabs {
+            display: flex; gap: 8px; margin-bottom: 16px;
+        }
+        .dash-trend-tab {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .dash-trend-tab:hover { background: rgba(255,255,255,0.08); }
+        .dash-trend-tab.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #818cf8;
+        }
+        .dash-trend-chart-area {
+            width: 100%;
+            min-height: 200px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dash-trend-chart-area svg { width: 100%; height: auto; }
+
+        /* -- Funnel Bars */
+        .dash-funnel-bar {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 10px;
+        }
+        .dash-funnel-label {
+            width: 80px; text-align: right;
+            font-size: 0.8rem; color: var(--text-muted);
+        }
+        [dir="rtl"] .dash-funnel-label { text-align: left; }
+        .dash-funnel-track {
+            flex: 1; height: 28px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 6px; overflow: hidden;
+            position: relative;
+        }
+        .dash-funnel-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex; align-items: center;
+            padding: 0 10px;
+            font-size: 0.75rem; font-weight: 600; color: #fff;
+            transition: width 0.5s ease;
+        }
+
+        /* -- Donut Chart */
+        .dash-donut-container {
+            display: flex; align-items: center; justify-content: center;
+            gap: 30px; flex-wrap: wrap;
+        }
+        .dash-donut-legend {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .dash-donut-legend-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; color: var(--text-main);
+        }
+        .dash-donut-legend-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%; flex-shrink: 0;
+        }
+
+        /* -- Tasks Summary Widget */
+        .dash-tasks-widget {
+            background: var(--dash-bg, #0f1014);
+            border: 1px solid var(--dash-border, rgba(255,255,255,0.06));
+            border-radius: var(--dash-card-radius, 16px);
+            padding: var(--dash-card-pad, 20px);
+            margin-bottom: 24px;
+        }
+        .dash-tasks-stats {
+            display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .dash-tasks-stat {
+            flex: 1; min-width: 80px;
+            text-align: center;
+            padding: 12px 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .dash-tasks-stat .stat-value {
+            font-size: 1.5rem; font-weight: 700; color: var(--text-main);
+        }
+        .dash-tasks-stat .stat-label {
+            font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;
+        }
+        .dash-tasks-stat.stat-overdue .stat-value { color: #ef4444; }
+        .dash-tasks-micro-bar {
+            height: 6px; border-radius: 3px;
+            background: rgba(255,255,255,0.06);
+            overflow: hidden; display: flex;
+            margin-bottom: 16px;
+        }
+        .dash-tasks-micro-bar > div { height: 100%; transition: width 0.5s; }
+        .dash-tasks-overdue-list {
+            max-height: 150px; overflow-y: auto;
+        }
+        .dash-tasks-overdue-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.83rem;
+        }
+        .dash-tasks-overdue-item:last-child { border-bottom: none; }
+        .dash-tasks-overdue-item .task-name { color: var(--text-main); flex: 1; }
+        .dash-tasks-overdue-item .task-due {
+            color: #ef4444; font-size: 0.75rem; white-space: nowrap;
+            margin-left: 12px;
+        }
+        [dir="rtl"] .dash-tasks-overdue-item .task-due { margin-left: 0; margin-right: 12px; }
+
+        /* -- CRM Pipeline Snapshot */
+        .dash-pipeline-widget {
+            background: var(--dash-bg, #0f1014);
+            border: 1px solid var(--dash-border, rgba(255,255,255,0.06));
+            border-radius: var(--dash-card-radius, 16px);
+            padding: var(--dash-card-pad, 20px);
+            margin-bottom: 24px;
+        }
+        .dash-pipeline-chips {
+            display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .dash-pipeline-chip {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 10px 16px; min-width: 70px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.2s;
+        }
+        .dash-pipeline-chip:hover { background: rgba(255,255,255,0.08); }
+        .dash-pipeline-chip .chip-count {
+            font-size: 1.3rem; font-weight: 700; color: var(--text-main);
+        }
+        .dash-pipeline-chip .chip-label {
+            font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;
+        }
+        .dash-pipeline-followups {
+            max-height: 150px; overflow-y: auto;
+        }
+        .dash-pipeline-followup-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.83rem;
+        }
+        .dash-pipeline-followup-item:last-child { border-bottom: none; }
+        .dash-pipeline-followup-item .lead-name { color: var(--text-main); flex: 1; }
+        .dash-pipeline-followup-item .lead-due {
+            color: #f59e0b; font-size: 0.75rem; white-space: nowrap;
+            margin-left: 12px;
+        }
+        [dir="rtl"] .dash-pipeline-followup-item .lead-due { margin-left: 0; margin-right: 12px; }
+
+        /* -- Activity Feed Enhanced */
+        #dashboard .activity-item .act-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+        #dashboard .activity-item .act-icon.icon-message {
+            background: rgba(59, 130, 246, 0.12); color: #3b82f6;
+        }
+        #dashboard .activity-item .act-icon.icon-lead {
+            background: rgba(16, 185, 129, 0.12); color: #10b981;
+        }
+        #dashboard .activity-item .act-icon.icon-meeting {
+            background: rgba(139, 92, 246, 0.12); color: #8b5cf6;
+        }
+        .dash-date-divider {
+            font-size: 0.75rem; color: var(--text-muted);
+            padding: 8px 0 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* -- Light Theme Overrides */
+        :root[data-theme="light"] .dash-customize-drawer {
+            background: #fff;
+            border-left-color: rgba(0,0,0,0.08);
+        }
+        :root[data-theme="light"] [dir="rtl"] .dash-customize-drawer {
+            border-right-color: rgba(0,0,0,0.08);
+        }
+        :root[data-theme="light"] .dash-customize-drawer .drawer-header,
+        :root[data-theme="light"] .dash-customize-drawer .drawer-footer {
+            border-color: rgba(0,0,0,0.08);
+        }
+        :root[data-theme="light"] .dash-customize-btn {
+            background: rgba(0,0,0,0.04);
+            border-color: rgba(0,0,0,0.1);
+        }
+        :root[data-theme="light"] .dash-trend-widget,
+        :root[data-theme="light"] .dash-tasks-widget,
+        :root[data-theme="light"] .dash-pipeline-widget {
+            background: #fff;
+            border-color: rgba(0,0,0,0.08);
+        }
+        :root[data-theme="light"] .dash-trend-tab {
+            background: rgba(0,0,0,0.04);
+            border-color: rgba(0,0,0,0.08);
+            color: #64748b;
+        }
+        :root[data-theme="light"] .dash-trend-tab.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+        :root[data-theme="light"] .dash-alert-chip.alert-warning {
+            background: rgba(245, 158, 11, 0.08);
+        }
+        :root[data-theme="light"] .dash-alert-chip.alert-danger {
+            background: rgba(239, 68, 68, 0.08);
+        }
+        :root[data-theme="light"] .dash-alert-chip.alert-info {
+            background: rgba(59, 130, 246, 0.08);
+        }
+        :root[data-theme="light"] .kpi-trend-indicator.up {
+            background: rgba(16, 185, 129, 0.08);
+        }
+        :root[data-theme="light"] .kpi-trend-indicator.down {
+            background: rgba(239, 68, 68, 0.08);
+        }
+        :root[data-theme="light"] .dash-tasks-stat {
+            background: rgba(0,0,0,0.02);
+            border-color: rgba(0,0,0,0.06);
+        }
+        :root[data-theme="light"] .dash-pipeline-chip {
+            background: rgba(0,0,0,0.03);
+            border-color: rgba(0,0,0,0.06);
+        }
+        :root[data-theme="light"] .widget-toggle-item {
+            border-bottom-color: rgba(0,0,0,0.06);
+        }
+        :root[data-theme="light"] #dashboard .activity-item .act-icon.icon-message {
+            background: rgba(59, 130, 246, 0.08);
+        }
+        :root[data-theme="light"] #dashboard .activity-item .act-icon.icon-lead {
+            background: rgba(16, 185, 129, 0.08);
+        }
+        :root[data-theme="light"] #dashboard .activity-item .act-icon.icon-meeting {
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        /* -- Responsive */
+        @media (max-width: 600px) {
+            .dash-customize-drawer { width: 100%; }
+            .dash-alerts-strip { gap: 8px; }
+            .dash-alert-chip { font-size: 0.75rem; padding: 8px 12px; }
+            .dash-donut-container { flex-direction: column; gap: 16px; }
+            .dash-tasks-stats { gap: 8px; }
+            .dash-pipeline-chips { gap: 6px; }
+            .dash-pipeline-chip { min-width: 60px; padding: 8px 10px; }
+        }
+
+        /* ============================================================
+           END Phase 4 CSS
+           ============================================================ */
 
         /* --- END NEW STYLES --- */
         /* --- ORIGINAL STYLES FOLLOW --- */
@@ -24439,7 +25029,7 @@
                         <h1 class="welcome-text" id="dashboard-welcome-msg">Welcome...</h1>
                         <p class="header-subtitle" data-i18n="dashboard.subtitle">Here is your performance overview</p>
                     </div>
-                    <div class="header-right">
+                    <div class="header-right" style="display:flex; gap:10px; align-items:center;">
                         <select id="dashboard-date-filter" class="date-select glass" onchange="setDashboardPeriod(this.value)">
                             <option value="today" data-i18n="dashboard.filter.today">Today</option>
                             <option value="7days" data-i18n="dashboard.filter.7days">Last 7 Days</option>
@@ -24447,13 +25037,20 @@
                             <option value="month" data-i18n="dashboard.filter.month">This Month</option>
                             <option value="all" selected data-i18n="dashboard.filter.all">All Time</option>
                         </select>
+                        <button class="dash-customize-btn" onclick="dashToggleCustomizeDrawer()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.36 6.36l-.7-.7M6.34 6.34l-.7-.7m12.72 0l-.7.7M6.34 17.66l-.7.7M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></svg>
+                            <span data-i18n="dashboard.widgets.title">Customize</span>
+                        </button>
                     </div>
                 </div>
 
+                <!-- Alerts Strip -->
+                <div class="dashboard-widget" data-widget="alerts_strip" id="dash-alerts-strip"></div>
+
                 <!-- KPI CARDS -->
-                <div class="kpi-grid">
+                <div class="kpi-grid dashboard-widget" data-widget="kpi_cards">
                     <!-- Primary Card -->
-                    <div class="kpi-card glass clickable-card" id="kpi-primary-card" onclick="navigateToTab('orders')">
+                    <div class="kpi-card glass clickable-card kpi-border-revenue" id="kpi-primary-card" onclick="navigateToTab('orders')">
                         <div class="kpi-icon-wrapper revenue-bg" id="kpi-primary-icon">
                             <svg viewBox="0 0 24 24"><path d="M19,14H5c-1.1,0-2-0.9-2-2V7c0-1.1,0.9-2,2-2h14c1.1,0,2,0.9,2,2v5C21,13.1,20.1,14,19,14z M12,12c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S10.9,12,12,12z" fill="currentColor"/></svg>
                         </div>
@@ -24465,7 +25062,7 @@
                     </div>
 
                     <!-- Leads Card -->
-                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('crm')">
+                    <div class="kpi-card glass clickable-card kpi-border-leads" onclick="navigateToTab('crm')">
                         <div class="kpi-icon-wrapper leads-bg">
                             <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                         </div>
@@ -24477,7 +25074,7 @@
                     </div>
 
                     <!-- Active Chats Card -->
-                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('inbox')">
+                    <div class="kpi-card glass clickable-card kpi-border-conversations" onclick="navigateToTab('inbox')">
                         <div class="kpi-icon-wrapper conversation-bg">
                              <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
                         </div>
@@ -24489,7 +25086,7 @@
                     </div>
 
                     <!-- Reviews Card -->
-                    <div class="kpi-card glass clickable-card" onclick="navigateToTab('reviews')">
+                    <div class="kpi-card glass clickable-card kpi-border-reviews" onclick="navigateToTab('reviews')">
                          <div class="kpi-icon-wrapper reviews-bg">
                              <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                         </div>
@@ -24501,7 +25098,7 @@
                     </div>
                 </div>
 
-                <div class="wa-kpi-section" id="dashboard-secondary-section">
+                <div class="wa-kpi-section dashboard-widget" data-widget="secondary_section" id="dashboard-secondary-section">
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:15px; flex-wrap:wrap;">
                         <h3 id="dashboard-secondary-heading" data-i18n="dashboard.headers.wa_activity" style="margin:0;">Orders & WhatsApp Activity</h3>
                         <button class="icon-btn-small" onclick="loadDashboard()" aria-label="${currentLang === 'ar' ? 'تحديث' : 'Refresh'}">
@@ -24514,19 +25111,28 @@
                     <div class="kpi-grid" id="dashboard-secondary-kpis"></div>
                 </div>
 
-                <div class="wa-kpi-section" id="dashboard-lead-qualification-section">
+                <div class="wa-kpi-section dashboard-widget" data-widget="lead_qualification" id="dashboard-lead-qualification-section">
                     <h3 data-i18n="dashboard.lead_qualification.title">Lead Qualification</h3>
                     <div class="kpi-grid" id="dashboard-lead-qualification-kpis"></div>
                 </div>
 
-                <div class="dashboard-panel glass" style="margin-bottom: 24px;" id="dashboard-context-panel">
+                <div class="dashboard-panel glass dashboard-widget" data-widget="context_panel" style="margin-bottom: 24px;" id="dashboard-context-panel">
                     <div id="dashboard-context-panel-content"></div>
                 </div>
+
+                <!-- Trend Chart Widget -->
+                <div class="dashboard-widget" data-widget="trend_chart" id="dash-trend-chart-widget"></div>
+
+                <!-- Tasks Summary Widget -->
+                <div class="dashboard-widget" data-widget="tasks_summary" id="dash-tasks-summary-widget"></div>
+
+                <!-- CRM Pipeline Snapshot Widget -->
+                <div class="dashboard-widget" data-widget="crm_pipeline" id="dash-pipeline-widget"></div>
 
                 <!-- MAIN DASHBOARD GRID -->
                 <div class="dashboard-grid-new">
                      <!-- Left Column: Activity Feed -->
-                    <div class="dashboard-panel glass large-panel">
+                    <div class="dashboard-panel glass large-panel dashboard-widget" data-widget="activity_feed">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                             <h3 data-i18n="dashboard.headers.recent_activity" style="margin:0;">Recent Activity</h3>
                             <button class="icon-btn-small" onclick="loadDashboard()" aria-label="${currentLang === 'ar' ? 'تحديث' : 'Refresh'}">
@@ -24544,7 +25150,7 @@
                     <!-- Right Column: Usage & Charts -->
                     <div class="dashboard-right-col">
                          <!-- Plan Usage Widget -->
-                        <div class="usage-widget glass" id="plan-usage-widget">
+                        <div class="usage-widget glass dashboard-widget" data-widget="plan_usage" id="plan-usage-widget">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                                 <div>
                                     <h3 style="margin: 0; color: white; font-size: 1.1rem;">
@@ -24600,12 +25206,31 @@
                         </div>
 
                         <!-- Platform Stats -->
-                        <div class="dashboard-panel glass">
+                        <div class="dashboard-panel glass dashboard-widget" data-widget="platform_stats">
                             <h3 data-i18n="dashboard.headers.platforms" style="font-size:1.1rem; margin-bottom:15px;">Platform Distribution</h3>
                              <div id="dashboard-platform-stats" class="platform-stats-list">
                                 <div class="loading-spinner"></div>
                              </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Customize Drawer -->
+                <div class="dash-customize-overlay" id="dash-customize-overlay" onclick="dashToggleCustomizeDrawer()"></div>
+                <div class="dash-customize-drawer" id="dash-customize-drawer">
+                    <div class="drawer-header">
+                        <h3 data-i18n="dashboard.widgets.title">Dashboard Widgets</h3>
+                        <button class="icon-btn-small" onclick="dashToggleCustomizeDrawer()" aria-label="Close">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    <div class="drawer-body">
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin:0 0 16px;" data-i18n="dashboard.widgets.subtitle">Toggle sections to personalize your dashboard</p>
+                        <div id="dash-widget-toggles"></div>
+                    </div>
+                    <div class="drawer-footer">
+                        <button class="pill-btn secondary" onclick="dashResetWidgets()" data-i18n="dashboard.widgets.reset" style="flex:1;">Reset</button>
+                        <button class="pill-btn primary" onclick="dashToggleCustomizeDrawer()" data-i18n="dashboard.widgets.close" style="flex:1;">Close</button>
                     </div>
                 </div>
             </div>
@@ -28754,6 +29379,472 @@ Thank you for shopping with {store_name}!</textarea>
             loadDashboard(); // Reload data
         }
 
+        // ============================================================
+        //  Phase 4: Dashboard Refinement & Personalization
+        // ============================================================
+
+        const DASHBOARD_WIDGETS = [
+            { key: 'kpi_cards',         label: () => t('dashboard.widgets.kpi_cards'),         default: true },
+            { key: 'alerts_strip',      label: () => t('dashboard.widgets.alerts_strip'),      default: true },
+            { key: 'secondary_section', label: () => t('dashboard.widgets.secondary_section'), default: true },
+            { key: 'lead_qualification',label: () => t('dashboard.widgets.lead_qualification'),default: true },
+            { key: 'context_panel',     label: () => t('dashboard.widgets.context_panel'),     default: true },
+            { key: 'trend_chart',       label: () => t('dashboard.widgets.trend_chart'),       default: true },
+            { key: 'tasks_summary',     label: () => t('dashboard.widgets.tasks_summary'),     default: true },
+            { key: 'crm_pipeline',      label: () => t('dashboard.widgets.crm_pipeline'),      default: true },
+            { key: 'activity_feed',     label: () => t('dashboard.widgets.activity_feed'),     default: true },
+            { key: 'plan_usage',        label: () => t('dashboard.widgets.plan_usage'),        default: true },
+            { key: 'platform_stats',    label: () => t('dashboard.widgets.platform_stats'),    default: true }
+        ];
+
+        function dashGetWidgetPrefs() {
+            try {
+                const raw = localStorage.getItem('dash_widget_prefs');
+                return raw ? JSON.parse(raw) : {};
+            } catch { return {}; }
+        }
+        function dashSetWidgetPrefs(prefs) {
+            localStorage.setItem('dash_widget_prefs', JSON.stringify(prefs));
+        }
+        function dashGetWidgetVisible(key) {
+            const prefs = dashGetWidgetPrefs();
+            if (key in prefs) return prefs[key];
+            const w = DASHBOARD_WIDGETS.find(w => w.key === key);
+            return w ? w.default : true;
+        }
+
+        function dashApplyWidgetVisibility() {
+            document.querySelectorAll('.dashboard-widget[data-widget]').forEach(el => {
+                const key = el.getAttribute('data-widget');
+                el.setAttribute('data-widget-hidden', dashGetWidgetVisible(key) ? 'false' : 'true');
+            });
+        }
+
+        function dashToggleCustomizeDrawer() {
+            const overlay = document.getElementById('dash-customize-overlay');
+            const drawer = document.getElementById('dash-customize-drawer');
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) {
+                overlay.classList.remove('open');
+                drawer.classList.remove('open');
+            } else {
+                dashRenderWidgetToggles();
+                overlay.classList.add('open');
+                drawer.classList.add('open');
+            }
+        }
+
+        function dashRenderWidgetToggles() {
+            const container = document.getElementById('dash-widget-toggles');
+            if (!container) return;
+            const prefs = dashGetWidgetPrefs();
+            container.innerHTML = DASHBOARD_WIDGETS.map(w => {
+                const checked = (w.key in prefs) ? prefs[w.key] : w.default;
+                return `<div class="widget-toggle-item">
+                    <label for="wt-${w.key}">${w.label()}</label>
+                    <label class="toggle-switch" style="flex-shrink:0;">
+                        <input type="checkbox" id="wt-${w.key}" ${checked ? 'checked' : ''} onchange="dashToggleWidget('${w.key}', this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>`;
+            }).join('');
+        }
+
+        function dashToggleWidget(key, visible) {
+            const prefs = dashGetWidgetPrefs();
+            prefs[key] = visible;
+            dashSetWidgetPrefs(prefs);
+            dashApplyWidgetVisibility();
+        }
+
+        function dashResetWidgets() {
+            localStorage.removeItem('dash_widget_prefs');
+            dashApplyWidgetVisibility();
+            dashRenderWidgetToggles();
+        }
+
+        // --- Alerts Strip ---
+        let dashDismissedAlerts = [];
+        try { dashDismissedAlerts = JSON.parse(sessionStorage.getItem('dash_dismissed_alerts') || '[]'); } catch {}
+
+        async function dashRenderAlertsStrip() {
+            const container = document.getElementById('dash-alerts-strip');
+            if (!container || !currentUserOrgId) return;
+            const alerts = [];
+
+            try {
+                // 1. Overdue tasks
+                const { count: overdueTasks } = await supabaseClient.from('tasks')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .lt('due_date', new Date().toISOString())
+                    .neq('status', 'done');
+                if (overdueTasks > 0) alerts.push({ id: 'overdue_tasks', priority: 1, type: 'danger',
+                    text: t('dashboard.alerts.overdue_tasks', { count: overdueTasks }),
+                    icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+                    action: "navigateToTab('task-manager')" });
+
+                // 2. Expiring leads (due_at within 48h)
+                const soon = new Date(Date.now() + 48 * 3600000).toISOString();
+                const { count: expiringLeads } = await supabaseClient.from('leads')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .lte('due_at', soon)
+                    .gte('due_at', new Date().toISOString())
+                    .not('status', 'in', '("won","lost")');
+                if (expiringLeads > 0) alerts.push({ id: 'expiring_leads', priority: 2, type: 'warning',
+                    text: t('dashboard.alerts.expiring_leads', { count: expiringLeads }),
+                    icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>',
+                    action: "navigateToTab('crm')" });
+
+                // 3. Plan usage high
+                try {
+                    const { data: usage } = await supabaseClient.from('org_usage')
+                        .select('conversations_used').eq('org_id', currentUserOrgId).maybeSingle();
+                    const { data: sub } = await supabaseClient.from('org_subscriptions')
+                        .select('plan_id').eq('org_id', currentUserOrgId).eq('status', 'active').maybeSingle();
+                    if (usage && sub) {
+                        const { data: plan } = await supabaseClient.from('plans')
+                            .select('conversation_limit').eq('id', sub.plan_id).maybeSingle();
+                        if (plan && plan.conversation_limit > 0) {
+                            const pct = Math.round((usage.conversations_used / plan.conversation_limit) * 100);
+                            if (pct >= 80) alerts.push({ id: 'plan_limit', priority: 3, type: pct >= 95 ? 'danger' : 'warning',
+                                text: t('dashboard.alerts.plan_limit', { percent: pct }),
+                                icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 15h2v2h-2v-2zm0-8h2v6h-2V7zm1-5C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>',
+                                action: "openPricingModal()" });
+                        }
+                    }
+                } catch {}
+
+                // 4. No activity in 48h
+                const ago48 = new Date(Date.now() - 48 * 3600000).toISOString();
+                const { count: recentMsgs } = await supabaseClient.from('inbox_messages')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .gte('created_at', ago48);
+                if (recentMsgs === 0) alerts.push({ id: 'no_activity', priority: 5, type: 'info',
+                    text: t('dashboard.alerts.no_activity'),
+                    icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>',
+                    action: "navigateToTab('inbox')" });
+
+                // 5. Pending invitations
+                const { count: pendingInvites } = await supabaseClient.from('org_invitations')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .eq('status', 'pending');
+                if (pendingInvites > 0) alerts.push({ id: 'pending_invitations', priority: 4, type: 'info',
+                    text: t('dashboard.alerts.pending_invitations', { count: pendingInvites }),
+                    icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>',
+                    action: "navigateToTab('team')" });
+
+                // 6. Unread messages
+                const { count: unreadMsgs } = await supabaseClient.from('inbox_messages')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .eq('direction', 'inbound')
+                    .eq('is_read', false);
+                if (unreadMsgs > 0) alerts.push({ id: 'unread_messages', priority: 3, type: 'warning',
+                    text: t('dashboard.alerts.unread_messages', { count: unreadMsgs }),
+                    icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>',
+                    action: "navigateToTab('inbox')" });
+            } catch (e) { console.warn('Alerts strip error', e); }
+
+            const filtered = alerts
+                .filter(a => !dashDismissedAlerts.includes(a.id))
+                .sort((a, b) => a.priority - b.priority)
+                .slice(0, 4);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            container.innerHTML = '<div class="dash-alerts-strip">' + filtered.map(a => `
+                <div class="dash-alert-chip alert-${a.type}" onclick="${a.action}">
+                    <span class="alert-icon">${a.icon}</span>
+                    <span>${a.text}</span>
+                    <button class="alert-dismiss" onclick="event.stopPropagation(); dashDismissAlert('${a.id}')" aria-label="Dismiss">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    </button>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function dashDismissAlert(id) {
+            dashDismissedAlerts.push(id);
+            sessionStorage.setItem('dash_dismissed_alerts', JSON.stringify(dashDismissedAlerts));
+            const chip = document.querySelector(`.dash-alert-chip[onclick*="${id}"]`);
+            if (chip) chip.remove();
+        }
+
+        // --- Trend Chart Widget ---
+        let dashTrendMode = 'pipeline';
+
+        async function dashRenderTrendChart() {
+            const container = document.getElementById('dash-trend-chart-widget');
+            if (!container || !currentUserOrgId) return;
+
+            container.innerHTML = `<div class="dash-trend-widget">
+                <div class="dash-section-title">
+                    <div class="dash-section-icon" style="background:rgba(99,102,241,0.12); color:#818cf8;">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                    </div>
+                    ${t('dashboard.headers.trend_chart')}
+                </div>
+                <div class="dash-trend-tabs">
+                    <button class="dash-trend-tab ${dashTrendMode === 'pipeline' ? 'active' : ''}" onclick="dashSetTrendMode('pipeline', this)">${t('dashboard.trend.pipeline')}</button>
+                    <button class="dash-trend-tab ${dashTrendMode === 'activity' ? 'active' : ''}" onclick="dashSetTrendMode('activity', this)">${t('dashboard.trend.activity')}</button>
+                    <button class="dash-trend-tab ${dashTrendMode === 'tasks' ? 'active' : ''}" onclick="dashSetTrendMode('tasks', this)">${t('dashboard.trend.tasks')}</button>
+                </div>
+                <div class="dash-trend-chart-area" id="dash-trend-chart-content"><div class="loading-spinner"></div></div>
+            </div>`;
+
+            await dashLoadTrendData();
+        }
+
+        function dashSetTrendMode(mode, el) {
+            dashTrendMode = mode;
+            document.querySelectorAll('.dash-trend-tab').forEach(btn => btn.classList.remove('active'));
+            if (el) el.classList.add('active');
+            dashLoadTrendData();
+        }
+
+        async function dashLoadTrendData() {
+            const area = document.getElementById('dash-trend-chart-content');
+            if (!area) return;
+            area.innerHTML = '<div class="loading-spinner"></div>';
+
+            try {
+                if (dashTrendMode === 'pipeline') {
+                    const statuses = ['new', 'contacted', 'qualified', 'won', 'lost'];
+                    const counts = {};
+                    await Promise.all(statuses.map(async s => {
+                        let q = supabaseClient.from('leads').select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId).eq('status', s);
+                        q = applyDashboardDateFilter(q, 'created_at');
+                        const { count } = await q;
+                        counts[s] = count || 0;
+                    }));
+                    const max = Math.max(...Object.values(counts), 1);
+                    const colors = { new: '#6366f1', contacted: '#3b82f6', qualified: '#10b981', won: '#22c55e', lost: '#ef4444' };
+                    const labels = { new: t('dashboard.trend.new_lbl'), contacted: t('dashboard.trend.contacted'),
+                        qualified: t('dashboard.trend.qualified'), won: t('dashboard.trend.won'), lost: t('dashboard.trend.lost') };
+                    area.innerHTML = statuses.map(s => `
+                        <div class="dash-funnel-bar">
+                            <div class="dash-funnel-label">${labels[s]}</div>
+                            <div class="dash-funnel-track">
+                                <div class="dash-funnel-fill" style="width:${Math.max((counts[s] / max) * 100, 2)}%; background:${colors[s]};">${formatCountDisplay(counts[s])}</div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                } else if (dashTrendMode === 'activity') {
+                    // Last 7 days area chart data
+                    const days = 7;
+                    const now = new Date();
+                    const dayData = [];
+                    for (let i = days - 1; i >= 0; i--) {
+                        const d = new Date(now); d.setDate(d.getDate() - i);
+                        const start = new Date(d); start.setHours(0,0,0,0);
+                        const end = new Date(d); end.setHours(23,59,59,999);
+                        const [{ count: msgs }, { count: lds }] = await Promise.all([
+                            supabaseClient.from('inbox_messages').select('id', { count: 'exact', head: true })
+                                .eq('org_id', currentUserOrgId).gte('created_at', start.toISOString()).lte('created_at', end.toISOString()),
+                            supabaseClient.from('leads').select('id', { count: 'exact', head: true })
+                                .eq('org_id', currentUserOrgId).gte('created_at', start.toISOString()).lte('created_at', end.toISOString())
+                        ]);
+                        dayData.push({ label: d.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'short' }), msgs: msgs || 0, leads: lds || 0 });
+                    }
+                    const maxVal = Math.max(...dayData.map(d => Math.max(d.msgs, d.leads)), 1);
+                    const w = 400, h = 180, pad = 30;
+                    const stepX = (w - pad * 2) / (days - 1);
+                    const scaleY = (v) => h - pad - ((v / maxVal) * (h - pad * 2));
+                    const msgPts = dayData.map((d, i) => `${pad + i * stepX},${scaleY(d.msgs)}`).join(' ');
+                    const leadPts = dayData.map((d, i) => `${pad + i * stepX},${scaleY(d.leads)}`).join(' ');
+                    const msgArea = `${pad},${h - pad} ${msgPts} ${pad + (days - 1) * stepX},${h - pad}`;
+                    const leadArea = `${pad},${h - pad} ${leadPts} ${pad + (days - 1) * stepX},${h - pad}`;
+                    const xLabels = dayData.map((d, i) => `<text x="${pad + i * stepX}" y="${h - 5}" text-anchor="middle" fill="var(--text-muted)" font-size="10">${d.label}</text>`).join('');
+
+                    area.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
+                        <polygon points="${msgArea}" fill="rgba(59,130,246,0.15)" />
+                        <polyline points="${msgPts}" fill="none" stroke="#3b82f6" stroke-width="2" />
+                        <polygon points="${leadArea}" fill="rgba(16,185,129,0.15)" />
+                        <polyline points="${leadPts}" fill="none" stroke="#10b981" stroke-width="2" />
+                        ${xLabels}
+                        ${dayData.map((d, i) => `<circle cx="${pad + i * stepX}" cy="${scaleY(d.msgs)}" r="3" fill="#3b82f6"/>
+                            <circle cx="${pad + i * stepX}" cy="${scaleY(d.leads)}" r="3" fill="#10b981"/>`).join('')}
+                    </svg>
+                    <div style="display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:0.8rem;">
+                        <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;"></span> ${t('dashboard.trend.messages')}</span>
+                        <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;"></span> ${t('dashboard.trend.leads')}</span>
+                    </div>`;
+
+                } else if (dashTrendMode === 'tasks') {
+                    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+                    const [{ count: openC }, { count: doneC }, { count: overdueC }] = await Promise.all([
+                        supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId).neq('status', 'done'),
+                        supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId).eq('status', 'done')
+                            .gte('updated_at', todayStart.toISOString()),
+                        supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId).neq('status', 'done')
+                            .lt('due_date', new Date().toISOString())
+                    ]);
+                    const open = openC || 0, done = doneC || 0, overdue = overdueC || 0;
+                    const total = open + done;
+                    const data = [
+                        { label: t('dashboard.trend.open'), value: open - overdue, color: '#3b82f6' },
+                        { label: t('dashboard.trend.done'), value: done, color: '#10b981' },
+                        { label: t('dashboard.trend.overdue'), value: overdue, color: '#ef4444' }
+                    ];
+                    // Donut SVG
+                    const r = 70, cx = 90, cy = 90, sw = 20;
+                    const circ = 2 * Math.PI * r;
+                    let offset = 0;
+                    const segments = data.map(d => {
+                        const pct = total > 0 ? d.value / total : 0;
+                        const dashLen = pct * circ;
+                        const seg = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="${sw}"
+                            stroke-dasharray="${dashLen} ${circ - dashLen}" stroke-dashoffset="${-offset}"
+                            transform="rotate(-90 ${cx} ${cy})" />`;
+                        offset += dashLen;
+                        return seg;
+                    }).join('');
+
+                    area.innerHTML = `<div class="dash-donut-container">
+                        <svg viewBox="0 0 180 180" width="160" height="160">
+                            <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${sw}" />
+                            ${segments}
+                            <text x="${cx}" y="${cy - 5}" text-anchor="middle" fill="var(--text-main)" font-size="22" font-weight="700">${total}</text>
+                            <text x="${cx}" y="${cy + 14}" text-anchor="middle" fill="var(--text-muted)" font-size="11">total</text>
+                        </svg>
+                        <div class="dash-donut-legend">
+                            ${data.map(d => `<div class="dash-donut-legend-item"><span class="dash-donut-legend-dot" style="background:${d.color};"></span>${d.label}: ${d.value}</div>`).join('')}
+                        </div>
+                    </div>`;
+                }
+            } catch (e) {
+                console.warn('Trend chart error', e);
+                area.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">${t('dashboard.trend.no_data')}</p>`;
+            }
+        }
+
+        // --- Tasks Summary Widget ---
+        async function dashRenderTasksSummary() {
+            const container = document.getElementById('dash-tasks-summary-widget');
+            if (!container || !currentUserOrgId) return;
+
+            try {
+                const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+                const [{ count: openC }, { count: overdueC }, { count: doneC }, { data: overdueList }] = await Promise.all([
+                    supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
+                        .eq('org_id', currentUserOrgId).neq('status', 'done'),
+                    supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
+                        .eq('org_id', currentUserOrgId).neq('status', 'done')
+                        .lt('due_date', new Date().toISOString()),
+                    supabaseClient.from('tasks').select('id', { count: 'exact', head: true })
+                        .eq('org_id', currentUserOrgId).eq('status', 'done')
+                        .gte('updated_at', todayStart.toISOString()),
+                    supabaseClient.from('tasks').select('title, due_date')
+                        .eq('org_id', currentUserOrgId).neq('status', 'done')
+                        .lt('due_date', new Date().toISOString())
+                        .order('due_date', { ascending: true })
+                        .limit(5)
+                ]);
+                const open = openC || 0, overdue = overdueC || 0, done = doneC || 0;
+                const total = open + done;
+                const openPct = total > 0 ? Math.round(((open - overdue) / total) * 100) : 0;
+                const overduePct = total > 0 ? Math.round((overdue / total) * 100) : 0;
+                const donePct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+                container.innerHTML = `<div class="dash-tasks-widget">
+                    <div class="dash-section-title">
+                        <div class="dash-section-icon" style="background:rgba(59,130,246,0.12); color:#3b82f6;">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        ${t('dashboard.headers.tasks_summary')}
+                    </div>
+                    <div class="dash-tasks-stats">
+                        <div class="dash-tasks-stat"><div class="stat-value">${formatCountDisplay(open)}</div><div class="stat-label">${t('dashboard.tasks.open')}</div></div>
+                        <div class="dash-tasks-stat stat-overdue"><div class="stat-value">${formatCountDisplay(overdue)}</div><div class="stat-label">${t('dashboard.tasks.overdue')}</div></div>
+                        <div class="dash-tasks-stat"><div class="stat-value">${formatCountDisplay(done)}</div><div class="stat-label">${t('dashboard.tasks.done_today')}</div></div>
+                    </div>
+                    <div class="dash-tasks-micro-bar">
+                        <div style="width:${openPct}%; background:#3b82f6;"></div>
+                        <div style="width:${overduePct}%; background:#ef4444;"></div>
+                        <div style="width:${donePct}%; background:#10b981;"></div>
+                    </div>
+                    ${overdue > 0 ? `<div style="font-size:0.85rem; font-weight:600; margin-bottom:8px;">${t('dashboard.tasks.overdue_list_title')}</div>
+                    <div class="dash-tasks-overdue-list">
+                        ${(overdueList || []).map(tk => `<div class="dash-tasks-overdue-item" onclick="navigateToTab('task-manager')">
+                            <span class="task-name">${escapeNotificationHtml(tk.title || '--')}</span>
+                            <span class="task-due">${t('dashboard.tasks.due')}: ${tk.due_date ? new Date(tk.due_date).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : '--'}</span>
+                        </div>`).join('')}
+                    </div>` : `<p style="text-align:center; color:var(--text-muted); font-size:0.83rem;">${t('dashboard.tasks.no_overdue')}</p>`}
+                </div>`;
+            } catch (e) {
+                console.warn('Tasks summary error', e);
+                container.innerHTML = '';
+            }
+        }
+
+        // --- CRM Pipeline Snapshot ---
+        async function dashRenderPipelineSnapshot() {
+            const container = document.getElementById('dash-pipeline-widget');
+            if (!container || !currentUserOrgId) return;
+
+            try {
+                const stages = ['new', 'contacted', 'qualified', 'negotiation', 'won'];
+                const counts = {};
+                await Promise.all(stages.map(async s => {
+                    let q = supabaseClient.from('leads').select('id', { count: 'exact', head: true })
+                        .eq('org_id', currentUserOrgId).eq('status', s);
+                    q = applyDashboardDateFilter(q, 'created_at');
+                    const { count } = await q;
+                    counts[s] = count || 0;
+                }));
+                const labels = {
+                    new: t('dashboard.crm_pipeline.new_lbl'), contacted: t('dashboard.crm_pipeline.contacted'),
+                    qualified: t('dashboard.crm_pipeline.qualified'), negotiation: t('dashboard.crm_pipeline.negotiation'),
+                    won: t('dashboard.crm_pipeline.won')
+                };
+                const colors = { new: '#6366f1', contacted: '#3b82f6', qualified: '#10b981', negotiation: '#f59e0b', won: '#22c55e' };
+
+                // Follow-up leads
+                const { data: followups } = await supabaseClient.from('leads')
+                    .select('full_name, due_at, status')
+                    .eq('org_id', currentUserOrgId)
+                    .eq('status', 'follow_up')
+                    .order('due_at', { ascending: true })
+                    .limit(5);
+
+                container.innerHTML = `<div class="dash-pipeline-widget">
+                    <div class="dash-section-title">
+                        <div class="dash-section-icon" style="background:rgba(16,185,129,0.12); color:#10b981;">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6.88-6.88 4 4L19.71 9.7 22 12V6z"/></svg>
+                        </div>
+                        ${t('dashboard.headers.crm_pipeline')}
+                    </div>
+                    <div class="dash-pipeline-chips">
+                        ${stages.map(s => `<div class="dash-pipeline-chip" style="border-top:3px solid ${colors[s]};">
+                            <div class="chip-count">${formatCountDisplay(counts[s])}</div>
+                            <div class="chip-label">${labels[s]}</div>
+                        </div>`).join('')}
+                    </div>
+                    ${(followups && followups.length > 0) ? `<div style="font-size:0.85rem; font-weight:600; margin-bottom:8px;">${t('dashboard.crm_pipeline.followup_title')}</div>
+                    <div class="dash-pipeline-followups">
+                        ${followups.map(l => `<div class="dash-pipeline-followup-item" onclick="navigateToTab('crm')">
+                            <span class="lead-name">${escapeNotificationHtml(l.full_name || '--')}</span>
+                            <span class="lead-due">${l.due_at ? new Date(l.due_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : '--'}</span>
+                        </div>`).join('')}
+                    </div>` : `<p style="text-align:center; color:var(--text-muted); font-size:0.83rem;">${t('dashboard.crm_pipeline.no_followups')}</p>`}
+                </div>`;
+            } catch (e) {
+                console.warn('Pipeline snapshot error', e);
+                container.innerHTML = '';
+            }
+        }
+
         async function loadDashboard() {
             const userName = currentUserProfile?.full_name || currentUserProfile?.email || 'User';
             document.getElementById('dashboard-welcome-msg').innerText = t('dashboard.welcome', { name: userName });
@@ -28775,12 +29866,18 @@ Thank you for shopping with {store_name}!</textarea>
                 usageData = data;
             } catch (err) { console.warn("Central Usage Fetch Error", err); }
 
+            dashApplyWidgetVisibility();
+
             await Promise.all([
                 loadPlanUsage(usageData),
                 fetchDashboardStats(usageData),
                 renderActivityFeed(),
                 renderPlatformStats(),
-                renderDashboardSecondarySection()
+                renderDashboardSecondarySection(),
+                dashRenderTrendChart(),
+                dashRenderTasksSummary(),
+                dashRenderPipelineSnapshot(),
+                dashRenderAlertsStrip()
             ]);
             if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
         }
@@ -28907,12 +30004,15 @@ Thank you for shopping with {store_name}!</textarea>
                     .limit(5);
 
                 let activities = [];
+                const msgSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
+                const aiSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.88-.1-2.73 2.71-2.73 7.08 0 9.79s7.15 2.71 9.88 0C18.32 15.65 19 14.08 19 12.1h2c0 1.98-.88 4.55-2.64 6.29-3.51 3.48-9.21 3.48-12.72 0-3.5-3.47-3.5-9.11 0-12.58 3.51-3.47 9.14-3.49 12.65-.06L21 3v7.12z"/></svg>';
+                const leadSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>';
                 if (msgs) activities.push(...msgs.map(m => ({
                     type: 'message',
                     title: m.direction === 'inbound' ? t('dashboard.activity.new_message') : t('dashboard.activity.ai_reply'),
                     desc: m.content,
                     time: m.created_at,
-                    icon: m.direction === 'inbound' ? '📩' : '🤖'
+                    iconHtml: `<div class="act-icon icon-message">${m.direction === 'inbound' ? msgSvg : aiSvg}</div>`
                 })));
 
                 if (leads) activities.push(...leads.map(l => ({
@@ -28920,7 +30020,7 @@ Thank you for shopping with {store_name}!</textarea>
                     title: t('dashboard.activity.new_lead'),
                     desc: `${l.full_name || t('leads.status.no_phone')} via ${l.source}`,
                     time: l.created_at,
-                    icon: '⚡'
+                    iconHtml: `<div class="act-icon icon-lead">${leadSvg}</div>`
                 })));
 
                 if (isServiceOrg()) {
@@ -28932,12 +30032,13 @@ Thank you for shopping with {store_name}!</textarea>
                             .order('created_at', { ascending: false })
                             .limit(5);
                         if (meetingEvents) {
+                            const meetingSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 15H5V10h14v9z"/></svg>';
                             activities.push(...meetingEvents.map((evt) => ({
                                 type: 'meeting',
                                 title: t(`dashboard.activity.${evt.event_type}`),
                                 desc: [evt.details?.customer_name, evt.details?.topic].filter(Boolean).join(' • ') || (evt.details?.status || '--'),
                                 time: evt.created_at,
-                                icon: '📆'
+                                iconHtml: `<div class="act-icon icon-meeting">${meetingSvg}</div>`
                             })));
                         }
                     } catch (e) {
@@ -28954,17 +30055,35 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 let html = '';
+                let lastDateKey = '';
                 activities.forEach(act => {
                     const date = new Date(act.time);
-                    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const isToday = new Date().toDateString() === date.toDateString();
-                    const dateStr = isToday ? timeStr : date.toLocaleDateString();
+                    const now = new Date();
+                    const diffMs = now - date;
+                    const diffMin = Math.floor(diffMs / 60000);
+                    const diffHr = Math.floor(diffMs / 3600000);
+                    let relTime;
+                    if (diffMin < 1) relTime = currentLang === 'ar' ? 'الآن' : 'Just now';
+                    else if (diffMin < 60) relTime = `${diffMin}${currentLang === 'ar' ? ' د' : 'm ago'}`;
+                    else if (diffHr < 24) relTime = `${diffHr}${currentLang === 'ar' ? ' س' : 'h ago'}`;
+                    else relTime = date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
+
+                    const dateKey = date.toDateString();
+                    if (dateKey !== lastDateKey) {
+                        const isToday = now.toDateString() === dateKey;
+                        const isYesterday = new Date(now - 86400000).toDateString() === dateKey;
+                        const divLabel = isToday ? (currentLang === 'ar' ? 'اليوم' : 'Today')
+                            : isYesterday ? (currentLang === 'ar' ? 'أمس' : 'Yesterday')
+                            : date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'long', day: 'numeric' });
+                        html += `<div class="dash-date-divider">${divLabel}</div>`;
+                        lastDateKey = dateKey;
+                    }
 
                     html += `
                         <div class="activity-item">
-                            <div class="act-icon">${act.icon}</div>
+                            ${act.iconHtml || '<div class="act-icon">' + (act.icon || '') + '</div>'}
                             <div class="act-content">
-                                <div class="act-title">${act.title} <span style="font-weight:normal; font-size:0.75rem; color:#888; float:right;">${dateStr}</span></div>
+                                <div class="act-title">${act.title} <span style="font-weight:normal; font-size:0.75rem; color:#888; float:${currentLang === 'ar' ? 'left' : 'right'};">${relTime}</span></div>
                                 <div class="act-desc">${act.desc ? act.desc.substring(0, 60) + (act.desc.length > 60 ? '...' : '') : ''}</div>
                             </div>
                         </div>
