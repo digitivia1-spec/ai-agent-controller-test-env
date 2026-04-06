@@ -2224,7 +2224,80 @@
             role_updated: "Role updated successfully.",
             permission_denied_title: "Action Not Available",
             permission_denied_msg: "Your current role does not include this permission. Contact your organization owner for access.",
-            permission_denied_toast: "You don't have permission for this action."
+            permission_denied_toast: "You don't have permission for this action.",
+            // Phase 2: Invitations
+            tab_invitations: "Invitations",
+            invite_title: "Invite a Team Member",
+            invite_subtitle: "Send an invitation link via email. They don't need an account yet.",
+            input_name: "Full name",
+            input_phone: "Phone number",
+            input_email_placeholder: "name@example.com",
+            input_name_placeholder: "e.g. Sarah Ahmed",
+            input_phone_placeholder: "+971 50 000 0000",
+            btn_send_invite: "Send Invitation",
+            btn_sending_invite: "Sending...",
+            btn_copy_link: "Copy Link",
+            link_copied: "Invitation link copied to clipboard.",
+            invite_sent: "Invitation sent successfully.",
+            invite_resent: "Invitation resent successfully.",
+            invite_revoked: "Invitation revoked.",
+            error_already_invited: "This email already has a pending invitation.",
+            error_already_member: "This person is already a member of your organization.",
+            error_only_owner_or_admin: "Only owners and admins can manage invitations.",
+            error_invitation_not_found: "Invitation not found or already used.",
+            error_invitation_expired: "This invitation has expired.",
+            error_email_mismatch: "You must accept this invitation with the email it was sent to.",
+            error_not_pending: "This invitation is no longer pending.",
+            domain_tip: "Tip: Members will join your organization workspace.",
+            // Invitation tracker
+            tracker_title: "Invitation History",
+            tracker_filter_all: "All",
+            tracker_filter_pending: "Pending",
+            tracker_filter_accepted: "Accepted",
+            tracker_filter_revoked: "Revoked",
+            tracker_filter_expired: "Expired",
+            tracker_empty: "No invitations found.",
+            tracker_status_pending: "Pending",
+            tracker_status_accepted: "Accepted",
+            tracker_status_revoked: "Revoked",
+            tracker_status_expired: "Expired",
+            tracker_invited_by: "Invited by",
+            tracker_expires: "Expires",
+            tracker_expired_on: "Expired",
+            tracker_accepted_on: "Accepted",
+            tracker_revoked_on: "Revoked",
+            btn_resend: "Resend",
+            btn_revoke: "Revoke",
+            btn_resending: "Resending...",
+            btn_revoking: "Revoking...",
+            confirm_revoke: "Revoke this invitation?",
+            // Accept invite page
+            accept_title: "You're Invited!",
+            accept_subtitle: "You've been invited to join",
+            accept_invited_by: "Invited by",
+            accept_role: "Your role",
+            accept_email_note: "You need to sign in with",
+            accept_btn: "Accept Invitation",
+            accept_btn_accepting: "Accepting...",
+            accept_success_title: "Welcome aboard!",
+            accept_success_msg: "You are now a member of",
+            accept_go_dashboard: "Go to Dashboard",
+            accept_error_expired: "This invitation has expired. Please ask the sender for a new one.",
+            accept_error_revoked: "This invitation has been revoked.",
+            accept_error_used: "This invitation has already been accepted.",
+            accept_error_not_found: "Invitation not found.",
+            accept_error_login_required: "Please sign in or create an account to accept this invitation.",
+            accept_error_email_mismatch: "This invitation was sent to a different email address. Please sign in with the correct account.",
+            // Member profile modal
+            profile_title: "Member Profile",
+            profile_name: "Name",
+            profile_email: "Email",
+            profile_phone: "Phone",
+            profile_role: "Role",
+            profile_joined: "Joined",
+            profile_permissions_title: "Permissions Summary",
+            profile_no_phone: "Not provided",
+            btn_close: "Close"
         };
         Object.assign(window.LANG_EN.orders, {
             title_product: "Orders Area",
@@ -2615,7 +2688,80 @@
             role_updated: "تم تحديث الدور بنجاح.",
             permission_denied_title: "الإجراء غير متاح",
             permission_denied_msg: "دورك الحالي لا يتضمن هذه الصلاحية. تواصل مع مالك المؤسسة للحصول عليها.",
-            permission_denied_toast: "ليس لديك صلاحية لهذا الإجراء."
+            permission_denied_toast: "ليس لديك صلاحية لهذا الإجراء.",
+            // Phase 2: Invitations
+            tab_invitations: "الدعوات",
+            invite_title: "دعوة عضو للفريق",
+            invite_subtitle: "أرسل رابط دعوة عبر البريد الإلكتروني. لا يحتاج لحساب مسبق.",
+            input_name: "الاسم الكامل",
+            input_phone: "رقم الهاتف",
+            input_email_placeholder: "name@example.com",
+            input_name_placeholder: "مثال: سارة أحمد",
+            input_phone_placeholder: "+971 50 000 0000",
+            btn_send_invite: "إرسال الدعوة",
+            btn_sending_invite: "جاري الإرسال...",
+            btn_copy_link: "نسخ الرابط",
+            link_copied: "تم نسخ رابط الدعوة.",
+            invite_sent: "تم إرسال الدعوة بنجاح.",
+            invite_resent: "تم إعادة إرسال الدعوة بنجاح.",
+            invite_revoked: "تم إلغاء الدعوة.",
+            error_already_invited: "هذا البريد لديه دعوة معلقة بالفعل.",
+            error_already_member: "هذا الشخص عضو بالفعل في مؤسستك.",
+            error_only_owner_or_admin: "فقط المالك والمسؤولون يمكنهم إدارة الدعوات.",
+            error_invitation_not_found: "لم يتم العثور على الدعوة أو تم استخدامها.",
+            error_invitation_expired: "انتهت صلاحية هذه الدعوة.",
+            error_email_mismatch: "يجب قبول هذه الدعوة بالبريد الإلكتروني المرسل إليه.",
+            error_not_pending: "هذه الدعوة لم تعد معلقة.",
+            domain_tip: "نصيحة: سينضم الأعضاء إلى مساحة عمل مؤسستك.",
+            // Invitation tracker
+            tracker_title: "سجل الدعوات",
+            tracker_filter_all: "الكل",
+            tracker_filter_pending: "معلقة",
+            tracker_filter_accepted: "مقبولة",
+            tracker_filter_revoked: "ملغاة",
+            tracker_filter_expired: "منتهية",
+            tracker_empty: "لا توجد دعوات.",
+            tracker_status_pending: "معلقة",
+            tracker_status_accepted: "مقبولة",
+            tracker_status_revoked: "ملغاة",
+            tracker_status_expired: "منتهية",
+            tracker_invited_by: "دعوة من",
+            tracker_expires: "تنتهي",
+            tracker_expired_on: "انتهت",
+            tracker_accepted_on: "قُبلت",
+            tracker_revoked_on: "أُلغيت",
+            btn_resend: "إعادة إرسال",
+            btn_revoke: "إلغاء",
+            btn_resending: "جاري الإرسال...",
+            btn_revoking: "جاري الإلغاء...",
+            confirm_revoke: "هل تريد إلغاء هذه الدعوة؟",
+            // Accept invite page
+            accept_title: "لديك دعوة!",
+            accept_subtitle: "تمت دعوتك للانضمام إلى",
+            accept_invited_by: "دعوة من",
+            accept_role: "دورك",
+            accept_email_note: "يجب تسجيل الدخول باستخدام",
+            accept_btn: "قبول الدعوة",
+            accept_btn_accepting: "جاري القبول...",
+            accept_success_title: "مرحباً بك!",
+            accept_success_msg: "أنت الآن عضو في",
+            accept_go_dashboard: "الذهاب للوحة التحكم",
+            accept_error_expired: "انتهت صلاحية هذه الدعوة. اطلب من المرسل إرسال دعوة جديدة.",
+            accept_error_revoked: "تم إلغاء هذه الدعوة.",
+            accept_error_used: "تم قبول هذه الدعوة بالفعل.",
+            accept_error_not_found: "لم يتم العثور على الدعوة.",
+            accept_error_login_required: "يرجى تسجيل الدخول أو إنشاء حساب لقبول هذه الدعوة.",
+            accept_error_email_mismatch: "هذه الدعوة مرسلة لبريد إلكتروني مختلف. يرجى تسجيل الدخول بالحساب الصحيح.",
+            // Member profile modal
+            profile_title: "ملف العضو",
+            profile_name: "الاسم",
+            profile_email: "البريد الإلكتروني",
+            profile_phone: "الهاتف",
+            profile_role: "الدور",
+            profile_joined: "تاريخ الانضمام",
+            profile_permissions_title: "ملخص الصلاحيات",
+            profile_no_phone: "غير متوفر",
+            btn_close: "إغلاق"
         };
         Object.assign(window.LANG_AR.orders, {
             title_product: "منطقة الطلبات",
@@ -9628,6 +9774,123 @@
         :root[data-theme="light"] .team-you-badge { background: rgba(0,0,0,.05); }
         :root[data-theme="light"] .team-remove-btn { background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.15); }
         :root[data-theme="light"] .team-remove-btn:hover { background: rgba(239,68,68,.12); }
+
+        /* ===== PHASE 2: INVITATION SYSTEM ===== */
+        .team-invite-bar { margin-bottom: 20px; padding: 20px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; }
+        .team-invite-header { margin-bottom: 14px; }
+        .team-invite-header h3 { margin: 0 0 4px; font-size: 1rem; font-weight: 700; color: var(--text-main, #fff); }
+        .team-invite-header p { margin: 0; font-size: 0.78rem; color: var(--text-muted, #888); }
+        .team-invite-form { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+        .team-invite-fields { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
+        .team-invite-fields .form-group { flex: 1; min-width: 160px; margin: 0; }
+        .team-invite-fields .form-group.role-group { flex: 0 0 130px; min-width: 110px; }
+        .team-invite-form .btn-primary { align-self: flex-end; flex-shrink: 0; height: 42px; white-space: nowrap; }
+        .team-invite-tip { font-size: 0.74rem; color: var(--text-muted, #888); margin-top: 10px; padding: 8px 12px; background: rgba(99,102,241,.06); border-radius: 8px; border-left: 3px solid var(--theme-color, #6366f1); }
+        .team-invite-result { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+        .team-invite-result .form-input { flex: 1; font-size: 0.78rem; }
+        .team-invite-result .btn-secondary { flex-shrink: 0; }
+
+        /* Invitation tracker */
+        .team-tracker-header { margin-bottom: 16px; }
+        .team-tracker-header h3 { margin: 0 0 12px; font-size: 1rem; font-weight: 700; color: var(--text-main, #fff); }
+        .team-tracker-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+        .team-filter-btn { padding: 6px 14px; font-size: 0.78rem; font-weight: 600; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); color: var(--text-muted, #888); cursor: pointer; transition: all .15s; }
+        .team-filter-btn:hover { background: rgba(255,255,255,.06); }
+        .team-filter-btn.active { background: var(--theme-color, #6366f1); color: #fff; border-color: transparent; }
+
+        .team-invitations-list { display: flex; flex-direction: column; gap: 8px; }
+        .team-invite-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; transition: background .15s; }
+        .team-invite-card:hover { background: rgba(255,255,255,.05); }
+        .team-invite-info { flex: 1; min-width: 0; }
+        .team-invite-name { font-size: 0.88rem; font-weight: 600; color: var(--text-main, #fff); }
+        .team-invite-email { font-size: 0.76rem; color: var(--text-muted, #888); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .team-invite-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+        .team-invite-status { display: inline-flex; padding: 2px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+        .team-invite-status.pending { background: rgba(59,130,246,.12); color: #3b82f6; }
+        .team-invite-status.accepted { background: rgba(34,197,94,.12); color: #22c55e; }
+        .team-invite-status.revoked { background: rgba(239,68,68,.12); color: #ef4444; }
+        .team-invite-status.expired { background: rgba(156,163,175,.12); color: #9ca3af; }
+        .team-invite-date { font-size: 0.72rem; color: var(--text-muted, #666); }
+        .team-invite-status-meta { font-size: 0.72rem; color: var(--text-muted, #666); margin-top: 2px; }
+        .team-invite-by { font-size: 0.72rem; color: var(--text-muted, #666); margin-top: 2px; }
+        .team-invite-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+        .btn-sm { padding: 5px 10px !important; font-size: 0.72rem !important; }
+        .btn-secondary { padding: 6px 14px; font-size: 0.78rem; font-weight: 600; background: rgba(255,255,255,.06); color: var(--text-main, #fff); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+        .btn-secondary:hover { background: rgba(255,255,255,.1); }
+        .btn-secondary:disabled { opacity: .5; cursor: not-allowed; }
+
+        /* Member profile modal */
+        .team-modal-overlay { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); animation: permDeniedIn .2s ease; }
+        .team-modal-box { background: var(--bg-surface, #0f172a); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 28px 24px; max-width: 440px; width: calc(100% - 32px); position: relative; max-height: 90vh; overflow-y: auto; }
+        .team-modal-close { position: absolute; top: 12px; right: 14px; font-size: 1.5rem; color: var(--text-muted, #888); cursor: pointer; line-height: 1; z-index: 1; }
+        [dir="rtl"] .team-modal-close { right: auto; left: 14px; }
+        .team-modal-close:hover { color: var(--text-main, #fff); }
+        .team-modal-close-btn { width: 100%; margin-top: 16px; }
+        .team-profile-content { text-align: center; }
+        .team-profile-avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--theme-color, #6366f1); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.4rem; margin: 0 auto 12px; text-transform: uppercase; }
+        .team-profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .team-profile-name { margin: 0 0 8px; font-size: 1.1rem; font-weight: 700; color: var(--text-main, #fff); }
+        .team-profile-details { margin-top: 20px; text-align: start; }
+        .team-profile-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 0.85rem; }
+        .team-profile-row:last-child { border-bottom: none; }
+        .team-profile-label { color: var(--text-muted, #888); font-weight: 600; }
+        .team-profile-perms { margin-top: 20px; text-align: start; }
+        .team-profile-perms h4 { margin: 0 0 10px; font-size: 0.88rem; font-weight: 700; color: var(--text-main, #fff); }
+        .profile-perm-group { font-size: 0.8rem; color: var(--text-main, #ddd); margin-bottom: 6px; line-height: 1.5; }
+        .profile-perm-note { font-size: 0.82rem; color: var(--text-muted, #888); font-style: italic; }
+
+        /* Accept invite page */
+        .accept-invite-page { max-width: 520px; margin: 0 auto; padding: 40px 16px; min-height: 60vh; display: flex; align-items: center; justify-content: center; }
+        .accept-invite-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 40px 32px; text-align: center; width: 100%; }
+        .accept-invite-icon { margin-bottom: 16px; }
+        .accept-invite-card h2 { margin: 0 0 8px; font-size: 1.4rem; font-weight: 800; color: var(--text-main, #fff); }
+        .accept-invite-subtitle { font-size: 0.92rem; color: var(--text-muted, #aaa); margin: 0 0 12px; line-height: 1.6; }
+        .accept-invite-by { font-size: 0.82rem; color: var(--text-muted, #888); margin: 0 0 8px; }
+        .accept-invite-role { font-size: 0.88rem; color: var(--text-main, #ddd); margin: 0 0 16px; }
+        .accept-invite-email-note { padding: 12px 16px; background: rgba(99,102,241,.06); border-radius: 10px; margin-bottom: 20px; font-size: 0.82rem; color: var(--text-muted, #aaa); }
+        .accept-invite-mismatch { padding: 12px 16px; background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.15); border-radius: 10px; margin-bottom: 16px; font-size: 0.82rem; color: #ef4444; }
+        .accept-invite-login-prompt { padding: 16px; background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); border-radius: 10px; font-size: 0.85rem; color: #f59e0b; }
+        .accept-invite-btn { width: 100%; padding: 14px; font-size: 0.95rem; }
+        .accept-invite-success { border-color: rgba(34,197,94,.2); }
+        .accept-invite-error { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .accept-invite-error h3 { margin: 0; font-size: 0.95rem; color: var(--text-muted, #aaa); font-weight: 500; }
+        .accept-invite-error-msg { color: #ef4444; font-size: 0.85rem; margin: 8px 0 0; }
+        .accept-invite-loading { text-align: center; padding: 48px 20px; color: var(--text-muted, #888); }
+
+        /* Phase 2 mobile responsive */
+        @media (max-width: 640px) {
+            .team-invite-form { flex-direction: column; }
+            .team-invite-fields { flex-direction: column; }
+            .team-invite-fields .form-group { min-width: 100%; }
+            .team-invite-fields .form-group.role-group { flex: 1; min-width: 100%; }
+            .team-invite-form .btn-primary { width: 100%; }
+            .team-invite-result { flex-direction: column; }
+            .team-invite-card { flex-wrap: wrap; gap: 10px; padding: 12px; }
+            .team-invite-actions { width: 100%; justify-content: flex-end; }
+            .team-tracker-filters { gap: 4px; }
+            .team-filter-btn { padding: 5px 10px; font-size: 0.74rem; flex: 1; text-align: center; }
+            .accept-invite-card { padding: 28px 20px; }
+            .team-modal-box { padding: 24px 18px; margin: 16px; }
+        }
+
+        /* Phase 2 RTL */
+        [dir="rtl"] .team-invite-tip { border-left: none; border-right: 3px solid var(--theme-color, #6366f1); }
+        [dir="rtl"] .team-invite-card { flex-direction: row; }
+
+        /* Phase 2 Light theme */
+        :root[data-theme="light"] .team-invite-bar { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.08); }
+        :root[data-theme="light"] .team-invite-tip { background: rgba(99,102,241,.04); }
+        :root[data-theme="light"] .team-invite-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.06); }
+        :root[data-theme="light"] .team-invite-card:hover { background: rgba(0,0,0,.04); }
+        :root[data-theme="light"] .team-filter-btn { background: #f1f5f9; border-color: #cbd5e1; color: #64748b; }
+        :root[data-theme="light"] .team-filter-btn:hover { background: #e2e8f0; }
+        :root[data-theme="light"] .team-filter-btn.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+        :root[data-theme="light"] .btn-secondary { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.1); color: #1e293b; }
+        :root[data-theme="light"] .btn-secondary:hover { background: rgba(0,0,0,.08); }
+        :root[data-theme="light"] .team-modal-box { background: #fff; border-color: rgba(0,0,0,.1); }
+        :root[data-theme="light"] .accept-invite-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.08); }
+        :root[data-theme="light"] .accept-invite-email-note { background: rgba(99,102,241,.04); }
+        :root[data-theme="light"] .team-profile-row { border-bottom-color: rgba(0,0,0,.06); }
 
         .notification-settings-card {
             display: flex;
@@ -25436,6 +25699,11 @@ Thank you for shopping with {store_name}!</textarea>
                 <div class="team-page" id="team-page-root"></div>
             </div>
 
+            <!-- ACCEPT INVITE PAGE -->
+            <div id="accept-invite" class="tab-content">
+                <div class="accept-invite-page" id="accept-invite-root"></div>
+            </div>
+
             <div id="legal-privacy" class="tab-content legal-tab-content">
                 <article class="card glass legal-page">
                     <div class="legal-quick-links">
@@ -39899,6 +40167,15 @@ Thank you for shopping with {store_name}!</textarea>
         // Deep Link Parser & Router
         window.parseDeepLink = function() {
             const hash = window.location.hash;
+            // Accept invite deep link
+            const inviteMatch = hash.match(/#accept-invite\?(.+)/);
+            if (inviteMatch) {
+                const params = new URLSearchParams(inviteMatch[1]);
+                return {
+                    view: 'accept-invite',
+                    token: params.get('token')
+                };
+            }
             const match = hash.match(/#(crm|task-manager)\?(.+)/);
             if (match) {
                 const view = match[1];
@@ -39916,6 +40193,14 @@ Thank you for shopping with {store_name}!</textarea>
 
         window.handleDeepLink = function(deepLink) {
             if (!deepLink) return;
+
+            if (deepLink.view === 'accept-invite' && deepLink.token) {
+                switchTab('accept-invite');
+                setTimeout(() => {
+                    if (typeof initAcceptInvitePage === 'function') initAcceptInvitePage(deepLink.token);
+                }, 300);
+                return;
+            }
 
             if (deepLink.view === 'crm' && deepLink.leadId) {
                 switchTab('crm');
@@ -39943,7 +40228,7 @@ Thank you for shopping with {store_name}!</textarea>
         // Initialize deep link handler on app load
         window.addEventListener('hashchange', () => {
             const deepLink = parseDeepLink();
-            if (deepLink && (deepLink.view === 'crm' || deepLink.view === 'task-manager')) {
+            if (deepLink && (deepLink.view === 'crm' || deepLink.view === 'task-manager' || deepLink.view === 'accept-invite')) {
                 handleDeepLink(deepLink);
             }
         });
@@ -41733,9 +42018,13 @@ Thank you for shopping with {store_name}!</textarea>
             };
 
             // --- Team Tab Init ---
+            let teamInvitations = [];
+            let teamInviteFilter = 'all';
+
             window.initTeamTab = async function () {
                 const root = document.getElementById('team-page-root');
                 if (!root) return;
+                const isOwnerOrAdmin = myEffectiveRole === 'owner' || myEffectiveRole === 'manager';
 
                 root.innerHTML = `
                     <div class="team-header">
@@ -41744,10 +42033,14 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                     <div class="team-tabs">
                         <button class="team-tab-btn ${teamActiveSubtab === 'members' ? 'active' : ''}" onclick="teamSwitchSubtab('members', this)">${esc(tt('tab_members'))}</button>
+                        ${isOwnerOrAdmin ? `<button class="team-tab-btn ${teamActiveSubtab === 'invitations' ? 'active' : ''}" onclick="teamSwitchSubtab('invitations', this)">${esc(tt('tab_invitations'))}</button>` : ''}
                         <button class="team-tab-btn ${teamActiveSubtab === 'permissions' ? 'active' : ''}" onclick="teamSwitchSubtab('permissions', this)" style="${myEffectiveRole === 'owner' ? '' : 'display:none'}">${esc(tt('tab_permissions'))}</button>
                     </div>
                     <div id="team-panel-members" class="team-tab-panel ${teamActiveSubtab === 'members' ? 'active' : ''}">
                         <div id="team-members-container"></div>
+                    </div>
+                    <div id="team-panel-invitations" class="team-tab-panel ${teamActiveSubtab === 'invitations' ? 'active' : ''}">
+                        <div id="team-invitations-container"></div>
                     </div>
                     <div id="team-panel-permissions" class="team-tab-panel ${teamActiveSubtab === 'permissions' ? 'active' : ''}">
                         <div id="team-permissions-container"></div>
@@ -41755,6 +42048,9 @@ Thank you for shopping with {store_name}!</textarea>
                 `;
 
                 await teamLoadMembers();
+                if (teamActiveSubtab === 'invitations' && isOwnerOrAdmin) {
+                    await teamLoadInvitations();
+                }
                 if (teamActiveSubtab === 'permissions' && myEffectiveRole === 'owner') {
                     await teamLoadPermissionsPanel();
                 }
@@ -41768,6 +42064,9 @@ Thank you for shopping with {store_name}!</textarea>
                 const panel = document.getElementById('team-panel-' + tab);
                 if (panel) panel.classList.add('active');
 
+                if (tab === 'invitations') {
+                    teamLoadInvitations();
+                }
                 if (tab === 'permissions' && myEffectiveRole === 'owner') {
                     teamLoadPermissionsPanel();
                 }
@@ -41806,26 +42105,44 @@ Thank you for shopping with {store_name}!</textarea>
                 if (!currentUserId && currentUserProfile) currentUserId = currentUserProfile.user_id;
 
                 const isOwner = myEffectiveRole === 'owner';
+                const isOwnerOrAdmin = isOwner || myEffectiveRole === 'manager';
 
                 let html = '';
 
-                // Add member bar (owner only)
-                if (isOwner) {
+                // Invitation form (owner/admin only)
+                if (isOwnerOrAdmin) {
                     html += `
-                    <div class="team-add-bar">
-                        <div class="form-group">
-                            <label class="form-label">${esc(tt('input_email'))}</label>
-                            <input type="email" id="team-add-email" class="form-input" placeholder="${esc(tt('input_email'))}">
+                    <div class="team-invite-bar">
+                        <div class="team-invite-header">
+                            <h3>${esc(tt('invite_title'))}</h3>
+                            <p>${esc(tt('invite_subtitle'))}</p>
                         </div>
-                        <div class="form-group role-group">
-                            <label class="form-label">${esc(tt('input_role'))}</label>
-                            <select id="team-add-role" class="form-input">
-                                <option value="manager">${esc(tt('role_manager'))}</option>
-                                <option value="user" selected>${esc(tt('role_user'))}</option>
-                            </select>
+                        <div class="team-invite-form">
+                            <div class="team-invite-fields">
+                                <div class="form-group">
+                                    <label class="form-label">${esc(tt('input_email'))} *</label>
+                                    <input type="email" id="team-invite-email" class="form-input" placeholder="${esc(tt('input_email_placeholder'))}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">${esc(tt('input_name'))}</label>
+                                    <input type="text" id="team-invite-name" class="form-input" placeholder="${esc(tt('input_name_placeholder'))}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">${esc(tt('input_phone'))}</label>
+                                    <input type="tel" id="team-invite-phone" class="form-input" placeholder="${esc(tt('input_phone_placeholder'))}">
+                                </div>
+                                <div class="form-group role-group">
+                                    <label class="form-label">${esc(tt('input_role'))}</label>
+                                    <select id="team-invite-role" class="form-input">
+                                        <option value="manager">${esc(tt('role_manager'))}</option>
+                                        <option value="user" selected>${esc(tt('role_user'))}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn-primary" id="team-invite-btn" onclick="teamSendInvite()">${esc(tt('btn_send_invite'))}</button>
                         </div>
-                        <button class="btn-primary" id="team-add-btn" onclick="teamAddMember()">${esc(tt('btn_add'))}</button>
-                        <div class="team-add-hint">${esc(tt('add_member_subtitle'))}</div>
+                        <div class="team-invite-tip">${esc(tt('domain_tip'))}</div>
+                        <div id="team-invite-result" class="team-invite-result" style="display:none"></div>
                     </div>`;
                 }
 
@@ -41843,7 +42160,7 @@ Thank you for shopping with {store_name}!</textarea>
                         const joinDate = m.created_at ? new Date(m.created_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 
                         html += `
-                        <div class="team-member-card">
+                        <div class="team-member-card" onclick="teamShowProfile('${m.user_id}')" style="cursor:pointer">
                             <div class="team-avatar">${avatarHtml}</div>
                             <div class="team-member-info">
                                 <div class="team-member-name">
@@ -41854,7 +42171,7 @@ Thank you for shopping with {store_name}!</textarea>
                                 <div class="team-member-email">${esc(m.email || '')}</div>
                                 ${joinDate ? `<div class="team-member-meta">${esc(tt('joined'))} ${esc(joinDate)}</div>` : ''}
                             </div>
-                            <div class="team-member-actions">
+                            <div class="team-member-actions" onclick="event.stopPropagation()">
                                 ${isOwner && !isMe && effRole !== 'owner' ? `
                                     <select onchange="teamChangeRole('${m.user_id}', this.value)" aria-label="${esc(tt('input_role'))}">
                                         <option value="manager" ${effRole === 'manager' ? 'selected' : ''}>${esc(tt('role_manager'))}</option>
@@ -41871,44 +42188,341 @@ Thank you for shopping with {store_name}!</textarea>
                 container.innerHTML = html;
             }
 
-            // --- Add Member ---
-            window.teamAddMember = async function () {
-                const emailInput = document.getElementById('team-add-email');
-                const roleInput = document.getElementById('team-add-role');
-                const btn = document.getElementById('team-add-btn');
+            // --- Send Invitation ---
+            window.teamSendInvite = async function () {
+                const emailInput = document.getElementById('team-invite-email');
+                const nameInput = document.getElementById('team-invite-name');
+                const phoneInput = document.getElementById('team-invite-phone');
+                const roleInput = document.getElementById('team-invite-role');
+                const btn = document.getElementById('team-invite-btn');
+                const resultDiv = document.getElementById('team-invite-result');
                 if (!emailInput || !btn) return;
 
                 const email = emailInput.value.trim();
+                const fullName = nameInput?.value.trim() || null;
+                const phone = phoneInput?.value.trim() || null;
                 const role = roleInput?.value || 'user';
                 if (!email) { emailInput.focus(); return; }
 
                 btn.disabled = true;
-                btn.textContent = tt('btn_adding');
+                btn.textContent = tt('btn_sending_invite');
+                if (resultDiv) resultDiv.style.display = 'none';
 
                 try {
-                    const { data, error } = await supabaseClient.rpc('add_org_member', {
+                    const { data, error } = await supabaseClient.rpc('send_org_invitation', {
                         p_org_id: currentUserOrgId,
                         p_email: email,
+                        p_full_name: fullName,
+                        p_phone: phone,
                         p_role: role
                     });
                     if (error) throw error;
 
                     if (data?.success) {
-                        showToast(tt('member_added'), 'success');
+                        showToast(tt('invite_sent'), 'success');
+                        // Show copy link result
+                        const token = data.token;
+                        const inviteUrl = `${location.origin}${location.pathname}#accept-invite?token=${token}`;
+                        if (resultDiv) {
+                            resultDiv.style.display = 'flex';
+                            resultDiv.innerHTML = `
+                                <input type="text" class="form-input" value="${esc(inviteUrl)}" readonly id="team-invite-link-input">
+                                <button class="btn-secondary" onclick="teamCopyInviteLink()">${esc(tt('btn_copy_link'))}</button>
+                            `;
+                        }
                         emailInput.value = '';
-                        await teamLoadMembers();
+                        if (nameInput) nameInput.value = '';
+                        if (phoneInput) phoneInput.value = '';
                     } else {
                         const errKey = data?.error || 'error_generic';
-                        const errMsg = tt('error_' + errKey.replace('only_owner_can_add', 'only_owner')) || tt('error_generic');
-                        showToast(errMsg, 'error');
+                        showToast(tt('error_' + errKey) || tt('error_generic'), 'error');
                     }
                 } catch (e) {
-                    console.error('Add member failed:', e);
+                    console.error('Send invitation failed:', e);
                     showToast(tt('error_generic'), 'error');
                 } finally {
                     btn.disabled = false;
-                    btn.textContent = tt('btn_add');
+                    btn.textContent = tt('btn_send_invite');
                 }
+            };
+
+            window.teamCopyInviteLink = function () {
+                const input = document.getElementById('team-invite-link-input');
+                if (!input) return;
+                navigator.clipboard.writeText(input.value).then(() => {
+                    showToast(tt('link_copied'), 'success');
+                }).catch(() => {
+                    input.select();
+                    document.execCommand('copy');
+                    showToast(tt('link_copied'), 'success');
+                });
+            };
+
+            // --- Invitations Panel (Tracker) ---
+            async function teamLoadInvitations() {
+                const container = document.getElementById('team-invitations-container');
+                if (!container || !currentUserOrgId) return;
+
+                container.innerHTML = `<div class="team-empty"><p>${currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p></div>`;
+
+                try {
+                    const { data, error } = await supabaseClient.rpc('list_org_invitations', { p_org_id: currentUserOrgId });
+                    if (error) throw error;
+                    if (data?.success) {
+                        teamInvitations = data.invitations || [];
+                    } else {
+                        showToast(tt('error_' + (data?.error || 'generic')) || tt('error_generic'), 'error');
+                        container.innerHTML = '';
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Failed to load invitations:', e);
+                    container.innerHTML = `<div class="team-empty"><p>${esc(tt('error_generic'))}</p></div>`;
+                    return;
+                }
+
+                renderInvitationsPanel(container);
+            }
+
+            function renderInvitationsPanel(container) {
+                let html = '';
+
+                // Invitation form at top
+                const isOwnerOrAdmin = myEffectiveRole === 'owner' || myEffectiveRole === 'manager';
+                if (isOwnerOrAdmin) {
+                    html += `
+                    <div class="team-invite-bar">
+                        <div class="team-invite-header">
+                            <h3>${esc(tt('invite_title'))}</h3>
+                            <p>${esc(tt('invite_subtitle'))}</p>
+                        </div>
+                        <div class="team-invite-form">
+                            <div class="team-invite-fields">
+                                <div class="form-group">
+                                    <label class="form-label">${esc(tt('input_email'))} *</label>
+                                    <input type="email" id="team-invite-email" class="form-input" placeholder="${esc(tt('input_email_placeholder'))}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">${esc(tt('input_name'))}</label>
+                                    <input type="text" id="team-invite-name" class="form-input" placeholder="${esc(tt('input_name_placeholder'))}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">${esc(tt('input_phone'))}</label>
+                                    <input type="tel" id="team-invite-phone" class="form-input" placeholder="${esc(tt('input_phone_placeholder'))}">
+                                </div>
+                                <div class="form-group role-group">
+                                    <label class="form-label">${esc(tt('input_role'))}</label>
+                                    <select id="team-invite-role" class="form-input">
+                                        <option value="manager">${esc(tt('role_manager'))}</option>
+                                        <option value="user" selected>${esc(tt('role_user'))}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn-primary" id="team-invite-btn" onclick="teamSendInvite()">${esc(tt('btn_send_invite'))}</button>
+                        </div>
+                        <div class="team-invite-tip">${esc(tt('domain_tip'))}</div>
+                        <div id="team-invite-result" class="team-invite-result" style="display:none"></div>
+                    </div>`;
+                }
+
+                // Filter tabs
+                html += `
+                <div class="team-tracker-header">
+                    <h3>${esc(tt('tracker_title'))}</h3>
+                    <div class="team-tracker-filters">
+                        ${['all', 'pending', 'accepted', 'revoked', 'expired'].map(f =>
+                            `<button class="team-filter-btn ${teamInviteFilter === f ? 'active' : ''}" onclick="teamFilterInvites('${f}', this)">${esc(tt('tracker_filter_' + f))}</button>`
+                        ).join('')}
+                    </div>
+                </div>`;
+
+                // Filter invitations
+                let filtered = teamInvitations;
+                if (teamInviteFilter !== 'all') {
+                    filtered = teamInvitations.filter(inv => {
+                        if (teamInviteFilter === 'expired') return inv.is_expired || inv.status === 'expired';
+                        if (inv.is_expired && inv.status === 'pending') return teamInviteFilter === 'expired';
+                        return inv.status === teamInviteFilter;
+                    });
+                }
+
+                if (!filtered.length) {
+                    html += `<div class="team-empty"><p>${esc(tt('tracker_empty'))}</p></div>`;
+                } else {
+                    html += '<div class="team-invitations-list">';
+                    for (const inv of filtered) {
+                        const isExpired = inv.is_expired || (inv.status === 'pending' && new Date(inv.expires_at) < new Date());
+                        const displayStatus = isExpired && inv.status === 'pending' ? 'expired' : inv.status;
+                        const roleLabel = inv.role === 'admin' ? tt('role_manager') : inv.role === 'member' ? tt('role_user') : tt('role_' + inv.role);
+                        const dateStr = new Date(inv.created_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                        const initials = (inv.full_name || inv.email || '?').slice(0, 2).toUpperCase();
+
+                        let statusMeta = '';
+                        if (displayStatus === 'pending') {
+                            const expDate = new Date(inv.expires_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
+                            statusMeta = `${tt('tracker_expires')} ${expDate}`;
+                        } else if (displayStatus === 'accepted' && inv.accepted_at) {
+                            statusMeta = `${tt('tracker_accepted_on')} ${new Date(inv.accepted_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' })}`;
+                        } else if (displayStatus === 'revoked' && inv.revoked_at) {
+                            statusMeta = `${tt('tracker_revoked_on')} ${new Date(inv.revoked_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' })}`;
+                        } else if (displayStatus === 'expired') {
+                            statusMeta = `${tt('tracker_expired_on')} ${new Date(inv.expires_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' })}`;
+                        }
+
+                        html += `
+                        <div class="team-invite-card">
+                            <div class="team-avatar">${esc(initials)}</div>
+                            <div class="team-invite-info">
+                                <div class="team-invite-name">${esc(inv.full_name || inv.email)}</div>
+                                ${inv.full_name ? `<div class="team-invite-email">${esc(inv.email)}</div>` : ''}
+                                <div class="team-invite-meta">
+                                    <span class="team-role-badge ${inv.role === 'admin' ? 'manager' : inv.role === 'member' ? 'user' : inv.role}">${esc(roleLabel)}</span>
+                                    <span class="team-invite-status ${displayStatus}">${esc(tt('tracker_status_' + displayStatus))}</span>
+                                    <span class="team-invite-date">${esc(dateStr)}</span>
+                                </div>
+                                ${statusMeta ? `<div class="team-invite-status-meta">${esc(statusMeta)}</div>` : ''}
+                                ${inv.invited_by_name ? `<div class="team-invite-by">${esc(tt('tracker_invited_by'))} ${esc(inv.invited_by_name)}</div>` : ''}
+                            </div>
+                            <div class="team-invite-actions">
+                                ${displayStatus === 'pending' && !isExpired ? `
+                                    <button class="btn-secondary btn-sm" onclick="teamCopyInviteLinkById('${inv.token}')">${esc(tt('btn_copy_link'))}</button>
+                                    <button class="btn-secondary btn-sm" onclick="teamResendInvite('${inv.id}', this)">${esc(tt('btn_resend'))}</button>
+                                    <button class="team-remove-btn btn-sm" onclick="teamRevokeInvite('${inv.id}', this)">${esc(tt('btn_revoke'))}</button>
+                                ` : ''}
+                                ${(displayStatus === 'expired' || displayStatus === 'revoked') ? `
+                                    <button class="btn-secondary btn-sm" onclick="teamResendInvite('${inv.id}', this)">${esc(tt('btn_resend'))}</button>
+                                ` : ''}
+                            </div>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+
+                container.innerHTML = html;
+            }
+
+            window.teamFilterInvites = function (filter, el) {
+                teamInviteFilter = filter;
+                document.querySelectorAll('.team-filter-btn').forEach(b => b.classList.remove('active'));
+                if (el) el.classList.add('active');
+                const container = document.getElementById('team-invitations-container');
+                if (container) renderInvitationsPanel(container);
+            };
+
+            window.teamCopyInviteLinkById = function (token) {
+                const inviteUrl = `${location.origin}${location.pathname}#accept-invite?token=${token}`;
+                navigator.clipboard.writeText(inviteUrl).then(() => {
+                    showToast(tt('link_copied'), 'success');
+                }).catch(() => {
+                    showToast(tt('link_copied'), 'success');
+                });
+            };
+
+            window.teamResendInvite = async function (invId, btn) {
+                if (btn) { btn.disabled = true; btn.textContent = tt('btn_resending'); }
+                try {
+                    const { data, error } = await supabaseClient.rpc('resend_org_invitation', { p_invitation_id: invId });
+                    if (error) throw error;
+                    if (data?.success) {
+                        showToast(tt('invite_resent'), 'success');
+                        await teamLoadInvitations();
+                    } else {
+                        showToast(tt('error_' + (data?.error || 'generic')) || tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Resend invite failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                } finally {
+                    if (btn) { btn.disabled = false; btn.textContent = tt('btn_resend'); }
+                }
+            };
+
+            window.teamRevokeInvite = async function (invId, btn) {
+                if (!confirm(tt('confirm_revoke'))) return;
+                if (btn) { btn.disabled = true; btn.textContent = tt('btn_revoking'); }
+                try {
+                    const { data, error } = await supabaseClient.rpc('revoke_org_invitation', { p_invitation_id: invId });
+                    if (error) throw error;
+                    if (data?.success) {
+                        showToast(tt('invite_revoked'), 'success');
+                        await teamLoadInvitations();
+                    } else {
+                        showToast(tt('error_' + (data?.error || 'generic')) || tt('error_generic'), 'error');
+                    }
+                } catch (e) {
+                    console.error('Revoke invite failed:', e);
+                    showToast(tt('error_generic'), 'error');
+                } finally {
+                    if (btn) { btn.disabled = false; btn.textContent = tt('btn_revoke'); }
+                }
+            };
+
+            // --- Member Profile Modal ---
+            window.teamShowProfile = function (userId) {
+                const member = teamMembers.find(m => m.user_id === userId);
+                if (!member) return;
+
+                document.getElementById('team-profile-modal')?.remove();
+
+                const effRole = member.effective_role || getEffectiveRoleFromRaw(member.raw_role);
+                const roleLabel = tt('role_' + effRole);
+                const initials = (member.full_name || member.email || '?').slice(0, 2).toUpperCase();
+                const avatarHtml = member.avatar_url
+                    ? `<img src="${esc(member.avatar_url)}" alt="" loading="lazy">`
+                    : esc(initials);
+                const joinDate = member.created_at ? new Date(member.created_at).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+
+                // Build permissions summary for this role
+                const memberPerms = teamPermissionsCache[effRole] || {};
+                let permSummaryHtml = '';
+                if (effRole === 'owner') {
+                    permSummaryHtml = `<div class="profile-perm-note">${esc(tt('role_owner_desc'))}</div>`;
+                } else {
+                    for (const group of PERM_GROUPS) {
+                        const grantedPerms = group.perms.filter(p => memberPerms[p.key] === true);
+                        if (grantedPerms.length > 0) {
+                            permSummaryHtml += `<div class="profile-perm-group"><strong>${esc(tt(group.i18n))}</strong>: ${grantedPerms.map(p => esc(tt(p.i18n))).join(', ')}</div>`;
+                        }
+                    }
+                    if (!permSummaryHtml) {
+                        permSummaryHtml = `<div class="profile-perm-note">${esc(tt('role_user_desc'))}</div>`;
+                    }
+                }
+
+                const overlay = document.createElement('div');
+                overlay.id = 'team-profile-modal';
+                overlay.className = 'team-modal-overlay';
+                overlay.onclick = function (e) { if (e.target === overlay) overlay.remove(); };
+                overlay.innerHTML = `
+                    <div class="team-modal-box">
+                        <div class="team-modal-close" onclick="document.getElementById('team-profile-modal').remove()">&times;</div>
+                        <div class="team-profile-content">
+                            <div class="team-profile-avatar">${avatarHtml}</div>
+                            <h3 class="team-profile-name">${esc(member.full_name || (currentLang === 'ar' ? 'بدون اسم' : 'No name'))}</h3>
+                            <span class="team-role-badge ${effRole}">${esc(roleLabel)}</span>
+                            <div class="team-profile-details">
+                                <div class="team-profile-row">
+                                    <span class="team-profile-label">${esc(tt('profile_email'))}</span>
+                                    <span>${esc(member.email || '')}</span>
+                                </div>
+                                <div class="team-profile-row">
+                                    <span class="team-profile-label">${esc(tt('profile_phone'))}</span>
+                                    <span>${esc(member.phone || tt('profile_no_phone'))}</span>
+                                </div>
+                                ${joinDate ? `<div class="team-profile-row">
+                                    <span class="team-profile-label">${esc(tt('profile_joined'))}</span>
+                                    <span>${esc(joinDate)}</span>
+                                </div>` : ''}
+                            </div>
+                            <div class="team-profile-perms">
+                                <h4>${esc(tt('profile_permissions_title'))}</h4>
+                                ${permSummaryHtml}
+                            </div>
+                        </div>
+                        <button class="btn-primary team-modal-close-btn" onclick="document.getElementById('team-profile-modal').remove()">${esc(tt('btn_close'))}</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
             };
 
             // --- Change Role ---
@@ -42058,6 +42672,127 @@ Thank you for shopping with {store_name}!</textarea>
                     console.error('Toggle perm failed:', e);
                     showToast(tt('permissions_save_failed'), 'error');
                     await teamLoadPermissionsPanel();
+                }
+            };
+
+            // --- Accept Invite Page ---
+            window.initAcceptInvitePage = async function (token) {
+                const root = document.getElementById('accept-invite-root');
+                if (!root) return;
+
+                root.innerHTML = `<div class="accept-invite-loading"><p>${currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p></div>`;
+
+                // Fetch invitation details
+                let invite = null;
+                try {
+                    const { data, error } = await supabaseClient.rpc('get_invitation_by_token', { p_token: token });
+                    if (error) throw error;
+                    if (data?.success) {
+                        invite = data;
+                    } else {
+                        root.innerHTML = `<div class="accept-invite-card"><div class="accept-invite-error"><svg viewBox="0 0 24 24" width="48" height="48"><path fill="var(--danger)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><h3>${esc(tt('accept_error_not_found'))}</h3></div></div>`;
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Failed to load invitation:', e);
+                    root.innerHTML = `<div class="accept-invite-card"><div class="accept-invite-error"><h3>${esc(tt('error_generic'))}</h3></div></div>`;
+                    return;
+                }
+
+                // Check status
+                if (invite.status === 'accepted') {
+                    root.innerHTML = `<div class="accept-invite-card"><div class="accept-invite-error"><svg viewBox="0 0 24 24" width="48" height="48"><path fill="var(--warning)" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-6h2v6z"/></svg><h3>${esc(tt('accept_error_used'))}</h3></div></div>`;
+                    return;
+                }
+                if (invite.status === 'revoked') {
+                    root.innerHTML = `<div class="accept-invite-card"><div class="accept-invite-error"><svg viewBox="0 0 24 24" width="48" height="48"><path fill="var(--danger)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><h3>${esc(tt('accept_error_revoked'))}</h3></div></div>`;
+                    return;
+                }
+                if (invite.expired) {
+                    root.innerHTML = `<div class="accept-invite-card"><div class="accept-invite-error"><svg viewBox="0 0 24 24" width="48" height="48"><path fill="var(--warning)" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg><h3>${esc(tt('accept_error_expired'))}</h3></div></div>`;
+                    return;
+                }
+
+                // Check if user is logged in
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                const roleLabel = invite.role === 'admin' ? tt('role_manager') : invite.role === 'member' ? tt('role_user') : tt('role_' + invite.role);
+
+                if (!session) {
+                    // Not logged in - show login prompt
+                    root.innerHTML = `
+                    <div class="accept-invite-card">
+                        <div class="accept-invite-icon">
+                            <svg viewBox="0 0 24 24" width="64" height="64"><path fill="var(--theme-color)" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <h2>${esc(tt('accept_title'))}</h2>
+                        <p class="accept-invite-subtitle">${esc(tt('accept_subtitle'))} <strong>${esc(invite.org_name || '')}</strong></p>
+                        ${invite.invited_by_name ? `<p class="accept-invite-by">${esc(tt('accept_invited_by'))}: ${esc(invite.invited_by_name)}</p>` : ''}
+                        <p class="accept-invite-role">${esc(tt('accept_role'))}: <span class="team-role-badge ${invite.role === 'admin' ? 'manager' : invite.role === 'member' ? 'user' : invite.role}">${esc(roleLabel)}</span></p>
+                        <div class="accept-invite-email-note">
+                            <p>${esc(tt('accept_email_note'))}: <strong>${esc(invite.email)}</strong></p>
+                        </div>
+                        <div class="accept-invite-login-prompt">
+                            <p>${esc(tt('accept_error_login_required'))}</p>
+                        </div>
+                    </div>`;
+                    return;
+                }
+
+                // User is logged in - check email match
+                const userEmail = session.user?.email?.toLowerCase() || '';
+                const inviteEmail = (invite.email || '').toLowerCase();
+                const emailMatch = userEmail === inviteEmail;
+
+                root.innerHTML = `
+                <div class="accept-invite-card">
+                    <div class="accept-invite-icon">
+                        <svg viewBox="0 0 24 24" width="64" height="64"><path fill="var(--theme-color)" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <h2>${esc(tt('accept_title'))}</h2>
+                    <p class="accept-invite-subtitle">${esc(tt('accept_subtitle'))} <strong>${esc(invite.org_name || '')}</strong></p>
+                    ${invite.invited_by_name ? `<p class="accept-invite-by">${esc(tt('accept_invited_by'))}: ${esc(invite.invited_by_name)}</p>` : ''}
+                    <p class="accept-invite-role">${esc(tt('accept_role'))}: <span class="team-role-badge ${invite.role === 'admin' ? 'manager' : invite.role === 'member' ? 'user' : invite.role}">${esc(roleLabel)}</span></p>
+                    <div class="accept-invite-email-note">
+                        <p>${esc(tt('accept_email_note'))}: <strong>${esc(invite.email)}</strong></p>
+                    </div>
+                    ${!emailMatch ? `<div class="accept-invite-mismatch"><p>${esc(tt('accept_error_email_mismatch'))}</p></div>` : ''}
+                    ${emailMatch ? `<button class="btn-primary accept-invite-btn" id="accept-invite-btn" onclick="acceptInvitation('${token}')">${esc(tt('accept_btn'))}</button>` : ''}
+                    <div id="accept-invite-status"></div>
+                </div>`;
+            };
+
+            window.acceptInvitation = async function (token) {
+                const btn = document.getElementById('accept-invite-btn');
+                const statusDiv = document.getElementById('accept-invite-status');
+                if (btn) { btn.disabled = true; btn.textContent = tt('accept_btn_accepting'); }
+
+                try {
+                    const { data, error } = await supabaseClient.rpc('accept_org_invitation', { p_token: token });
+                    if (error) throw error;
+
+                    if (data?.success) {
+                        const root = document.getElementById('accept-invite-root');
+                        if (root) {
+                            root.innerHTML = `
+                            <div class="accept-invite-card accept-invite-success">
+                                <div class="accept-invite-icon">
+                                    <svg viewBox="0 0 24 24" width="64" height="64"><path fill="var(--success)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                </div>
+                                <h2>${esc(tt('accept_success_title'))}</h2>
+                                <p>${esc(tt('accept_success_msg'))} <strong>${esc(data.org_name || '')}</strong></p>
+                                <button class="btn-primary" onclick="location.hash='';location.reload()">${esc(tt('accept_go_dashboard'))}</button>
+                            </div>`;
+                        }
+                    } else {
+                        const errKey = data?.error || 'generic';
+                        const errMsg = tt('accept_error_' + errKey) || tt('error_' + errKey) || tt('error_generic');
+                        if (statusDiv) statusDiv.innerHTML = `<p class="accept-invite-error-msg">${esc(errMsg)}</p>`;
+                        if (btn) { btn.disabled = false; btn.textContent = tt('accept_btn'); }
+                    }
+                } catch (e) {
+                    console.error('Accept invitation failed:', e);
+                    if (statusDiv) statusDiv.innerHTML = `<p class="accept-invite-error-msg">${esc(tt('error_generic'))}</p>`;
+                    if (btn) { btn.disabled = false; btn.textContent = tt('accept_btn'); }
                 }
             };
 
