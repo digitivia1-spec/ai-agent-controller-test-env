@@ -44,6 +44,15 @@ function buildTargetLink(payload = {}) {
     return `#crm?${p.toString()}`;
   }
 
+  // Route team entities
+  if (entity === 'team' || (eventKey && eventKey.startsWith('team_'))) {
+    const p = new URLSearchParams();
+    if (entityId) p.set('member', entityId);
+    if (eventKey) p.set('event', eventKey);
+    if (notificationId) p.set('notification_id', notificationId);
+    return `#team?${p.toString()}`;
+  }
+
   // Route task entities
   if (entity === 'task' || (eventKey && eventKey.startsWith('task_'))) {
     const p = new URLSearchParams();
