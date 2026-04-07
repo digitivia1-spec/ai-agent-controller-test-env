@@ -396,7 +396,14 @@
                 "dash_refresh": "Refresh",
                 "dash_other": "Others",
                 "label_assign_to": "Assign To",
-                "unassigned": "Unassigned"
+                "unassigned": "Unassigned",
+                "btn_new_task": "New Task",
+                "modal_create_title": "New Task",
+                "btn_delete": "Delete Task"
+            },
+            "modals": {
+                "btn_cancel": "Cancel",
+                "btn_save": "Save"
             },
             "orders": {
                 "title": "Customers Area",
@@ -1464,7 +1471,14 @@
                 "dash_refresh": "تحديث",
                 "dash_other": "أخرى",
                 "label_assign_to": "تعيين إلى",
-                "unassigned": "غير معيّن"
+                "unassigned": "غير معيّن",
+                "btn_new_task": "مهمة جديدة",
+                "modal_create_title": "مهمة جديدة",
+                "btn_delete": "حذف المهمة"
+            },
+            "modals": {
+                "btn_cancel": "إلغاء",
+                "btn_save": "حفظ"
             },
             "orders": {
                 "title": "منطقة العملاء",
@@ -29646,10 +29660,11 @@ Thank you for shopping with {store_name}!</textarea>
                     const { data: sub } = await supabaseClient.from('org_subscriptions')
                         .select('plan_id').eq('org_id', currentUserOrgId).eq('status', 'active').maybeSingle();
                     if (usage && sub) {
-                        const { data: plan } = await supabaseClient.from('plans')
-                            .select('conversation_limit').eq('id', sub.plan_id).maybeSingle();
-                        if (plan && plan.conversation_limit > 0) {
-                            const pct = Math.round((usage.conversations_used / plan.conversation_limit) * 100);
+                        const { data: plan } = await supabaseClient.from('billing_plans')
+                            .select('limits').eq('id', sub.plan_id).maybeSingle();
+                        const convLimit = plan?.limits?.conversations_limit;
+                        if (convLimit > 0) {
+                            const pct = Math.round((usage.conversations_used / convLimit) * 100);
                             if (pct >= 80) alerts.push({ id: 'plan_limit', priority: 3, type: pct >= 95 ? 'danger' : 'warning',
                                 text: t('dashboard.alerts.plan_limit', { percent: pct }),
                                 icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 15h2v2h-2v-2zm0-8h2v6h-2V7zm1-5C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>',
@@ -29679,14 +29694,21 @@ Thank you for shopping with {store_name}!</textarea>
                     icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>',
                     action: "navigateToTab('team')" });
 
-                // 6. Unread messages
-                const { count: unreadMsgs } = await supabaseClient.from('inbox_messages')
+                // 6. Recent unanswered inbound messages (last 24h)
+                const since24h = new Date(Date.now() - 24 * 3600000).toISOString();
+                const { count: recentInbound } = await supabaseClient.from('inbox_messages')
                     .select('id', { count: 'exact', head: true })
                     .eq('org_id', currentUserOrgId)
                     .eq('direction', 'inbound')
-                    .eq('is_read', false);
-                if (unreadMsgs > 0) alerts.push({ id: 'unread_messages', priority: 3, type: 'warning',
-                    text: t('dashboard.alerts.unread_messages', { count: unreadMsgs }),
+                    .gte('created_at', since24h);
+                const { count: recentOutbound } = await supabaseClient.from('inbox_messages')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('org_id', currentUserOrgId)
+                    .eq('direction', 'outbound')
+                    .gte('created_at', since24h);
+                const unanswered = Math.max(0, (recentInbound || 0) - (recentOutbound || 0));
+                if (unanswered > 5) alerts.push({ id: 'unread_messages', priority: 3, type: 'warning',
+                    text: t('dashboard.alerts.unread_messages', { count: unanswered }),
                     icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>',
                     action: "navigateToTab('inbox')" });
             } catch (e) { console.warn('Alerts strip error', e); }
@@ -43755,7 +43777,7 @@ Thank you for shopping with {store_name}!</textarea>
                         p_phone: phone,
                         p_role: role
                     };
-                    if (customRoleId) rpcParams.p_custom_role_id = customRoleId;
+                    rpcParams.p_custom_role_id = customRoleId || null;
                     const { data, error } = await supabaseClient.rpc('send_org_invitation', rpcParams);
                     if (error) throw error;
 
