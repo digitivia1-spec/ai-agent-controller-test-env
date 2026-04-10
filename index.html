@@ -21796,10 +21796,40 @@
             .crm-table th:nth-child(5),
             .crm-table td:nth-child(5) { display: none; }
 
-            /* CRM kanban – horizontal scroll with snap */
-            .crm-kanban { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 12px; }
-            .crm-kanban-col { scroll-snap-align: start; min-width: 240px; max-width: 280px; }
-            .crm-kanban-card { padding: 12px 14px; }
+            /* CRM kanban – horizontal scroll with snap + peek for affordance */
+            .crm-kanban {
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 12px;
+                gap: 10px;
+                scroll-padding-inline-start: 14px;
+                margin-inline: -14px;
+                padding-inline: 14px;
+            }
+            .crm-kanban-col {
+                scroll-snap-align: start;
+                min-width: 82vw;
+                max-width: 82vw;
+                width: 82vw;
+            }
+            .crm-kanban-head { padding: 11px 13px; font-size: 0.78rem; }
+            .crm-kanban-list { padding: 8px; gap: 8px; }
+            .crm-kanban-card { padding: 12px 13px; }
+            .crm-kanban-card-row { flex-wrap: wrap; }
+
+            /* Import modal – tables scroll horizontally, dropzone compact */
+            .import-dropzone { padding: 28px 16px; border-radius: 12px; }
+            .import-dropzone-icon { font-size: 2rem; }
+            .import-dropzone-title { font-size: 0.9rem; }
+            .import-dropzone-text { font-size: 0.78rem; }
+            .import-mapping-table,
+            .import-preview-table { font-size: 0.78rem; }
+            .import-mapping-table th,
+            .import-mapping-table td { padding: 7px 8px; }
+            .import-mapping-table select { font-size: 0.8rem; padding: 7px 8px; }
+            .import-preview-table th,
+            .import-preview-table td { padding: 6px 7px; }
+            .import-preview-table td { max-width: 110px; }
 
             /* CRM header controls */
             #crm .leads-controls { flex-direction: column; gap: 10px; align-items: stretch; }
@@ -21830,6 +21860,14 @@
             #task-manager .leads-controls { flex-direction: row; gap: 10px; align-items: center; flex-wrap: nowrap; }
             #task-manager .leads-controls h2 { font-size: 1.15rem; flex: 1; min-width: 0; }
             #task-manager .leads-controls .btn-primary { white-space: nowrap; flex-shrink: 0; padding: 9px 16px; font-size: 0.85rem; }
+
+            /* Task view toggle: full-width equal tabs on mobile */
+            .task-view-btns { margin-inline-start: 0; align-self: stretch; width: 100%; }
+            .task-view-btn { flex: 1; text-align: center; padding: 10px 6px; font-size: 0.8rem; }
+
+            /* Task Manager empty state: compact on mobile */
+            .tm-empty-state { padding: 36px 16px; gap: 10px; }
+            .tm-empty-icon { font-size: 2rem; }
 
             /* Modals – slide up from bottom on mobile */
             .modal-overlay { align-items: flex-end; padding: 0; }
@@ -21865,6 +21903,33 @@
             .lp-avatar { width: 40px; height: 40px; font-size: 0.95rem; }
             .lead-profile-name { font-size: 0.95rem; }
             .tm-task-card { padding-block: 12px; padding-inline: 12px; padding-inline-start: 14px; gap: 10px; }
+            /* CRM kanban peek narrower so the next column edge is visible */
+            .crm-kanban-col { min-width: 84vw; max-width: 84vw; width: 84vw; }
+            /* Task view toggle text shrinks to fit */
+            .task-view-btn { font-size: 0.74rem; padding: 9px 4px; }
+            /* Task Manager dashboard KPI value shrinks */
+            .crm-dash-kpi { padding: 11px 8px; }
+            .crm-dash-kpi-value { font-size: 1.2rem; }
+            .crm-dash-kpi-label { font-size: 0.74rem; }
+            .crm-dash-kpi-sub { font-size: 0.66rem; }
+            .crm-dash-chart-card { padding: 13px; }
+            .crm-dash-bar-label { width: 70px; font-size: 0.72rem; }
+            .crm-dash-bar-track { height: 18px; }
+        }
+
+        @media (max-width: 360px) {
+            /* Safety net for very narrow phones (iPhone SE / folded Galaxy) */
+            .crm-kanban-col { min-width: 86vw; max-width: 86vw; width: 86vw; }
+            .crm-card { padding: 12px; gap: 10px; }
+            .crm-card-name { font-size: 0.84rem; }
+            .crm-dash-kpi-strip { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .crm-dash-kpi-value { font-size: 1.1rem; }
+            .tm-task-card { padding-block: 11px; padding-inline: 11px; padding-inline-start: 13px; }
+            .tm-task-title { font-size: 0.88rem; }
+            .tm-status-chip { font-size: 0.66rem; padding: 3px 8px; }
+            .import-dropzone { padding: 22px 12px; }
+            .modal-body { padding: 14px; }
+            .modal-header { padding: 14px 14px 12px; }
         }
     </style>
 </head>
@@ -43722,9 +43787,10 @@ Thank you for shopping with {store_name}!</textarea>
                             <div class="team-member-info">
                                 <div class="team-member-name">
                                     ${esc(m.full_name || (currentLang === 'ar' ? 'بدون اسم' : 'No name'))}
-                                    <span class="team-role-badge ${effRole}">${esc(tt('role_' + effRole))}</span>
+                                    ${m.custom_role_name
+                                        ? `<span class="team-role-badge user" title="${esc(tt('role_' + effRole))}">${esc(m.custom_role_name)}</span>`
+                                        : `<span class="team-role-badge ${effRole}">${esc(tt('role_' + effRole))}</span>`}
                                     ${isMe ? `<span class="team-you-badge">${esc(tt('you_badge'))}</span>` : ''}
-                                    ${m.custom_role_name ? `<span class="team-role-badge user" style="font-size:0.6rem">${esc(m.custom_role_name)}</span>` : ''}
                                     ${isOwnerOrAdmin && m.override_count > 0 ? `<span class="overrides-count-badge">${esc(tt('overrides_badge').replace('{count}', m.override_count))}</span>` : ''}
                                 </div>
                                 <div class="team-member-email">${esc(m.email || '')}</div>
