@@ -2280,6 +2280,11 @@
             invite_revoked: "Invitation revoked.",
             error_already_invited: "This email already has a pending invitation.",
             error_already_member: "This person is already a member of your organization.",
+            error_already_in_another_org: "This person already belongs to another organization. They must leave it before accepting a new invitation.",
+            error_pending_invite_elsewhere: "This email has a pending invitation from another organization. It must be revoked or expire first.",
+            error_invalid_email: "Please enter a valid email address.",
+            error_invitation_revoked: "This invitation was revoked.",
+            error_invitation_already_used: "This invitation has already been used.",
             error_only_owner_or_admin: "Only owners and admins can manage invitations.",
             error_invitation_not_found: "Invitation not found or already used.",
             error_invitation_expired: "This invitation has expired.",
@@ -2894,6 +2899,11 @@
             invite_revoked: "تم إلغاء الدعوة.",
             error_already_invited: "هذا البريد لديه دعوة معلقة بالفعل.",
             error_already_member: "هذا الشخص عضو بالفعل في مؤسستك.",
+            error_already_in_another_org: "هذا الشخص ينتمي بالفعل إلى مؤسسة أخرى. يجب عليه مغادرتها أولاً قبل قبول دعوة جديدة.",
+            error_pending_invite_elsewhere: "هذا البريد لديه دعوة معلقة من مؤسسة أخرى. يجب إلغاؤها أو انتهاء صلاحيتها أولاً.",
+            error_invalid_email: "الرجاء إدخال بريد إلكتروني صالح.",
+            error_invitation_revoked: "تم إلغاء هذه الدعوة.",
+            error_invitation_already_used: "تم استخدام هذه الدعوة بالفعل.",
             error_only_owner_or_admin: "فقط المالك والمسؤولون يمكنهم إدارة الدعوات.",
             error_invitation_not_found: "لم يتم العثور على الدعوة أو تم استخدامها.",
             error_invitation_expired: "انتهت صلاحية هذه الدعوة.",
@@ -43951,16 +43961,23 @@ Thank you for shopping with {store_name}!</textarea>
                         if (nameInput) nameInput.value = '';
                         if (phoneInput) phoneInput.value = '';
                     } else {
-                        const errKey = data?.error || 'error_generic';
-                        showToast(tt('error_' + errKey) || tt('error_generic'), 'error');
+                        const errKey = data?.error || 'generic';
+                        const localized = tt('error_' + errKey);
+                        showToast((localized && localized !== 'error_' + errKey) ? localized : tt('error_generic'), 'error');
                     }
                 } catch (e) {
                     console.error('Send invitation failed:', e);
-                    const msg = e?.message || '';
-                    if (msg.includes('already_invited') || msg.includes('duplicate')) {
+                    const msg = (e?.message || '').toLowerCase();
+                    if (msg.includes('already_in_another_org')) {
+                        showToast(tt('error_already_in_another_org'), 'error');
+                    } else if (msg.includes('pending_invite_elsewhere')) {
+                        showToast(tt('error_pending_invite_elsewhere'), 'error');
+                    } else if (msg.includes('already_invited') || msg.includes('duplicate')) {
                         showToast(tt('error_already_invited'), 'error');
                     } else if (msg.includes('already_member') || msg.includes('already a member')) {
                         showToast(tt('error_already_member'), 'error');
+                    } else if (msg.includes('invalid_email')) {
+                        showToast(tt('error_invalid_email'), 'error');
                     } else if (msg.includes('not found') || msg.includes('42883')) {
                         showToast(tt('error_generic') + ' (RPC)', 'error');
                     } else {
