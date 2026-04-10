@@ -21931,6 +21931,61 @@
             .modal-body { padding: 14px; }
             .modal-header { padding: 14px 14px 12px; }
         }
+
+        /* ==========================================================
+           CRM dashboard widgets — mobile overflow fixes
+           Targets: #crm card padding, chart cards, bar rows, donut,
+           recent items (Leads by Stage/Assignee/Category/Recently Added)
+           ========================================================== */
+        #crm .crm-card-wrapper,
+        #crm #crm-grid { min-width: 0; }
+        #crm .crm-dash-grid,
+        #crm .crm-dash-kpi-strip { min-width: 0; }
+        #crm .crm-dash-chart-card { min-width: 0; overflow: hidden; }
+        #crm .crm-dash-chart-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; word-break: break-word; }
+        #crm .crm-dash-bar-row { min-width: 0; }
+        #crm .crm-dash-bar-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+        #crm .crm-dash-bar-track { min-width: 0; }
+        #crm .crm-dash-recent-item { min-width: 0; flex-wrap: wrap; gap: 8px; }
+        #crm .crm-dash-recent-item > div[style*="flex:1"] { min-width: 0; flex: 1 1 120px !important; }
+        #crm .crm-dash-donut-wrap { max-width: 100%; }
+        #crm .crm-dash-donut-legend { max-width: 100%; min-width: 0; }
+        #crm .crm-dash-donut-legend-item { min-width: 0; word-break: break-word; }
+
+        @media (max-width: 768px) {
+            #crm > .card.glass,
+            #crm .crm-card-wrapper { padding: 1rem; }
+            .crm-dash-grid { gap: 12px; }
+            .crm-dash-chart-card { padding: 14px; margin-bottom: 12px; }
+            .crm-dash-bar-label { width: 92px; font-size: 0.74rem; }
+            .crm-dash-bar-track { height: 18px; }
+            .crm-dash-bar-count { width: 30px; font-size: 0.75rem; }
+            .crm-dash-donut-wrap { flex-direction: column; gap: 12px; }
+            .crm-dash-donut-legend { flex-direction: row; flex-wrap: wrap; justify-content: center; row-gap: 6px; column-gap: 12px; }
+            .crm-dash-recent-item { padding: 10px 0; }
+            .crm-dash-recent-item > span[style*="white-space:nowrap"] { font-size: 0.68rem !important; }
+        }
+
+        @media (max-width: 480px) {
+            #crm > .card.glass,
+            #crm .crm-card-wrapper { padding: 0.75rem; }
+            .crm-dash-chart-card { padding: 12px; border-radius: 10px; }
+            .crm-dash-chart-title { font-size: 0.74rem; letter-spacing: .2px; margin-bottom: 10px; }
+            .crm-dash-bar-row { gap: 8px; font-size: 0.76rem; margin-bottom: 6px; }
+            .crm-dash-bar-label { width: 78px; font-size: 0.7rem; }
+            .crm-dash-bar-track { height: 16px; }
+            .crm-dash-bar-count { width: 26px; }
+            .crm-dash-recent-item { gap: 6px; }
+            .crm-dash-recent-item .crm-lead-avatar { width: 26px !important; height: 26px !important; font-size: 0.6rem !important; flex-shrink: 0; }
+            .crm-dash-recent-item .status-chip { font-size: 0.62rem; padding: 2px 7px; }
+        }
+
+        @media (max-width: 360px) {
+            .crm-dash-bar-label { width: 64px; font-size: 0.66rem; }
+            .crm-dash-bar-count { width: 22px; font-size: 0.7rem; }
+            .crm-dash-chart-card { padding: 10px; }
+            .crm-dash-chart-title { font-size: 0.7rem; }
+        }
     </style>
 </head>
 
