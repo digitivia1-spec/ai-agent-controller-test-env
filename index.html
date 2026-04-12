@@ -6663,6 +6663,69 @@
             .lp-compare-table { min-width: 600px; }
         }
 
+        /* ====== TASK MANAGER V2 ====== */
+        .tm-tab {
+            padding: 8px 16px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            background: transparent; border: none; color: var(--text-secondary);
+            border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.15s;
+        }
+        .tm-tab:hover { color: var(--text-primary); }
+        .tm-tab.active { color: var(--theme-color); border-bottom-color: var(--theme-color); }
+
+        .tm-task-row {
+            display: flex; align-items: center; gap: 10px; padding: 10px 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+            transition: background 0.1s;
+        }
+        .tm-task-row:hover { background: rgba(255,255,255,0.03); }
+        .tm-task-row.active { background: rgba(91,174,176,0.08); }
+        .tm-task-row.done .tm-task-row-title { text-decoration: line-through; opacity: 0.5; }
+
+        .tm-check {
+            width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2);
+            flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s; font-size: 0.7rem; color: transparent;
+        }
+        .tm-check:hover { border-color: var(--theme-color); }
+        .tm-check.checked { background: var(--theme-color); border-color: var(--theme-color); color: #fff; }
+
+        .tm-task-row-title { flex: 1; font-size: 0.88rem; color: var(--text-primary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .tm-task-row-meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+        .tm-task-row-due { font-size: 0.7rem; color: var(--text-secondary); }
+        .tm-task-row-due.overdue { color: #ef4444; font-weight: 600; }
+        .tm-cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        /* Drawer action buttons */
+        .tm-drawer-action {
+            display: flex; align-items: center; gap: 10px; padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+            font-size: 0.85rem; color: var(--text-secondary); transition: color 0.1s;
+        }
+        .tm-drawer-action:hover { color: var(--text-primary); }
+        .tm-drawer-action .tm-da-icon { width: 20px; text-align: center; flex-shrink: 0; }
+        .tm-drawer-action .tm-da-label { flex: 1; }
+        .tm-drawer-action .tm-da-value { font-size: 0.78rem; color: var(--theme-color); }
+        .tm-drawer-action.active { color: var(--theme-color); }
+
+        .tm-subtask-row {
+            display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 0.82rem;
+        }
+        .tm-subtask-check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: transparent; }
+        .tm-subtask-check.checked { background: var(--theme-color); border-color: var(--theme-color); color: #fff; }
+        .tm-subtask-title { color: var(--text-primary); }
+        .tm-subtask-title.done { text-decoration: line-through; opacity: 0.5; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #tm-drawer { position: fixed !important; top: 0; right: 0; height: 100vh; z-index: 8000; background: var(--bg-card,#1a1b2e); box-shadow: -4px 0 24px rgba(0,0,0,0.4); }
+            #tm-drawer-inner { width: 100vw !important; max-width: 100vw !important; }
+            .tm-tab { padding: 8px 10px; font-size: 0.75rem; }
+        }
+        :root[data-theme="light"] .tm-task-row:hover { background: rgba(0,0,0,0.03); }
+        :root[data-theme="light"] .tm-task-row.active { background: rgba(91,174,176,0.06); }
+        :root[data-theme="light"] .tm-check { border-color: #d1d5db; }
+        :root[data-theme="light"] #tm-drawer { background: #fff; }
+
         /* ====== CHAT BUTTON HIGHLIGHT ====== */
         .action-btn-chat { background: rgba(91,174,176,0.12) !important; border-color: var(--theme-color) !important; }
         .action-btn-chat .action-icon { font-size: 1.1rem; }
@@ -27259,15 +27322,58 @@
 
             <!-- TASK MANAGER TAB -->
             <div id="task-manager" class="tab-content">
-                <div class="card glass">
-                    <div class="leads-controls">
-                        <h2 data-i18n="task_manager.title">Task Manager</h2>
-                        <button class="btn-primary" onclick="openCreateTaskModal()" style="margin-inline-start: auto;">
-                            + <span data-i18n="task_manager.btn_new_task">New Task</span>
-                        </button>
+                <div class="card glass" style="padding:0;overflow:hidden;">
+                    <!-- Header -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,0.06);">
+                        <h2 style="margin:0;font-size:1.15rem;" data-i18n="task_manager.title">Task Manager</h2>
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <button class="pill-btn primary" onclick="openCreateTaskModal()" style="font-size:0.78rem;">+ Full Task</button>
+                        </div>
                     </div>
-                    <div class="leads-toolbar" id="task-manager-toolbar"></div>
-                    <div id="task-manager-content" style="min-height: 300px; overflow-x: auto;"></div>
+
+                    <!-- View Tabs: My Day | All Tasks | Assigned to Me | Dashboard -->
+                    <div style="display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.06);overflow-x:auto;" id="tm-view-tabs">
+                        <button class="tm-tab active" data-tmview="myday" onclick="setTmTab('myday',this)">☀️ My Day</button>
+                        <button class="tm-tab" data-tmview="all" onclick="setTmTab('all',this)">☰ All Tasks</button>
+                        <button class="tm-tab" data-tmview="assigned" onclick="setTmTab('assigned',this)">👤 Assigned to Me</button>
+                        <button class="tm-tab" data-tmview="dashboard" onclick="setTmTab('dashboard',this)">◫ Dashboard</button>
+                    </div>
+
+                    <!-- Toolbar: search + filters -->
+                    <div id="task-manager-toolbar" style="padding:0.6rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <input type="text" id="task-search-input" placeholder="Search tasks..." oninput="filterAndRenderTasks()" style="flex:1;min-width:150px;padding:7px 10px;border-radius:8px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.82rem;">
+                        <select id="task-status-filter" class="crm-filter-select" onchange="filterAndRenderTasks()" style="font-size:0.78rem;padding:6px 8px;">
+                            <option value="">All Status</option>
+                            <option value="open">Open</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="waiting">Waiting</option>
+                            <option value="done">Done</option>
+                        </select>
+                        <select id="task-priority-filter" class="crm-filter-select" onchange="filterAndRenderTasks()" style="font-size:0.78rem;padding:6px 8px;">
+                            <option value="">All Priority</option>
+                            <option value="urgent">🔴 Urgent</option>
+                            <option value="high">🟠 High</option>
+                            <option value="medium">🔵 Medium</option>
+                            <option value="low">⚪ Low</option>
+                        </select>
+                    </div>
+
+                    <!-- Quick Add Input -->
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 1.2rem;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);">
+                        <span style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);flex-shrink:0;"></span>
+                        <input type="text" id="tm-quick-add" placeholder="Add a task..." onkeydown="if(event.key==='Enter')quickAddTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--text-primary);font-size:0.9rem;">
+                    </div>
+
+                    <!-- Task List + Drawer Container -->
+                    <div style="display:flex;min-height:400px;position:relative;" id="tm-layout">
+                        <!-- Master List -->
+                        <div id="task-manager-content" style="flex:1;overflow-y:auto;max-height:calc(100vh - 340px);"></div>
+
+                        <!-- Right Drawer -->
+                        <div id="tm-drawer" style="width:0;overflow:hidden;border-inline-start:0 solid rgba(255,255,255,0.08);transition:width 0.25s ease, border-width 0.25s ease;flex-shrink:0;">
+                            <div id="tm-drawer-inner" style="width:380px;padding:1.2rem;overflow-y:auto;max-height:calc(100vh - 340px);"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -45346,48 +45452,25 @@ Thank you for shopping with {store_name}!</textarea>
         window.cachedTasks = null;
         window.currentTaskId = null;
         let taskView = 'list';
+        let tmCurrentTab = 'myday';
 
         window.initTaskManagerTab = async function() {
-            const toolbar = document.getElementById('task-manager-toolbar');
-            const content = document.getElementById('task-manager-content');
             await fetchOrgMembersCache();
-            if (toolbar) {
-                toolbar.innerHTML = `
-                    <div class="crm-toolbar" style="margin-bottom:0;">
-                        <div class="crm-search-wrap">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <input type="text" id="task-search-input" class="crm-search-input" placeholder="${t('task_manager.search_placeholder')}" oninput="filterAndRenderTasks()">
-                        </div>
-                        <select id="task-status-filter" class="crm-filter-select" onchange="filterAndRenderTasks()">
-                            <option value="">${t('task_manager.filter_all_statuses')}</option>
-                            <option value="open">${t('task_manager.status.open')}</option>
-                            <option value="in_progress">${t('task_manager.status.in_progress')}</option>
-                            <option value="waiting">${t('task_manager.status.waiting')}</option>
-                            <option value="done">${t('task_manager.status.done')}</option>
-                            <option value="cancelled">${t('task_manager.status.cancelled')}</option>
-                        </select>
-                        <select id="task-priority-filter" class="crm-filter-select" onchange="filterAndRenderTasks()">
-                            <option value="">${t('task_manager.filter_all_priorities')}</option>
-                            <option value="urgent">🔴 ${t('task_manager.priority.urgent')}</option>
-                            <option value="high">🟠 ${t('task_manager.priority.high')}</option>
-                            <option value="medium">🔵 ${t('task_manager.priority.medium')}</option>
-                            <option value="low">⚪ ${t('task_manager.priority.low')}</option>
-                        </select>
-                        <div class="task-view-btns">
-                            <button class="task-view-btn ${taskView==='list'?'active':''}" onclick="setTaskView('list',this)">☰ ${t('task_manager.view_btn_list')}</button>
-                            <button class="task-view-btn ${taskView==='dashboard'?'active':''}" onclick="setTaskView('dashboard',this)">◫ ${t('task_manager.view_btn_dashboard')}</button>
-                        </div>
-                    </div>
-                `;
-            }
-            if (content) content.innerHTML = `<div class="crm-loading"><div class="spinner" style="width:28px;height:28px;margin:0 auto 12px;"></div><p>${t('task_manager.loading')}</p></div>`;
+            const content = document.getElementById('task-manager-content');
+            if (content) content.innerHTML = '<div style="padding:2rem;text-align:center;"><div class="spinner" style="width:24px;height:24px;margin:0 auto 8px;"></div><p style="color:var(--text-secondary);">Loading...</p></div>';
             await fetchTasks();
+        };
+
+        window.setTmTab = function(tab, btn) {
+            tmCurrentTab = tab;
+            document.querySelectorAll('.tm-tab').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            closeTmDrawer();
+            filterAndRenderTasks();
         };
 
         window.setTaskView = function(view, btn) {
             taskView = view;
-            document.querySelectorAll('.task-view-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
             filterAndRenderTasks();
         };
 
@@ -45411,75 +45494,382 @@ Thank you for shopping with {store_name}!</textarea>
 
         window.filterAndRenderTasks = function() {
             if (!window.cachedTasks) return;
-            if (taskView === 'dashboard') {
+            if (tmCurrentTab === 'dashboard') {
                 renderTaskDashboard();
                 return;
             }
+
             const search = (document.getElementById('task-search-input')?.value || '').toLowerCase();
             const statusF = document.getElementById('task-status-filter')?.value || '';
             const priorityF = document.getElementById('task-priority-filter')?.value || '';
+            const userId = window.currentUserObj?.id;
+            const today = new Date().toISOString().split('T')[0];
 
-            const filtered = window.cachedTasks.filter(task => {
+            let filtered = window.cachedTasks.filter(task => {
+                // Exclude sub-tasks from main list
+                if (task.parent_task_id) return false;
+
                 const matchSearch = !search || (task.title || '').toLowerCase().includes(search);
                 const matchStatus = !statusF || task.status === statusF;
                 const matchPriority = !priorityF || task.priority === priorityF;
+
+                // Tab-specific filters
+                if (tmCurrentTab === 'myday') {
+                    return matchSearch && matchStatus && matchPriority && task.is_my_day && task.my_day_user_id === userId;
+                }
+                if (tmCurrentTab === 'assigned') {
+                    return matchSearch && matchStatus && matchPriority && task.assigned_to_user_id === userId;
+                }
                 return matchSearch && matchStatus && matchPriority;
             });
+
             renderTaskList(filtered);
         };
 
         function renderTaskList(tasks) {
             const content = document.getElementById('task-manager-content');
             if (!content) return;
+            const now = new Date();
 
             if (!tasks || tasks.length === 0) {
-                content.innerHTML = `
-                    <div class="tm-empty-state">
-                        <div class="tm-empty-icon">✅</div>
-                        <p style="font-weight:600;">No tasks found</p>
-                        <p style="font-size:0.875rem;">Create your first task to get started.</p>
-                        <button class="btn-primary" onclick="openCreateTaskModal()" style="margin-top:4px;">+ New Task</button>
-                    </div>`;
+                const emptyMsg = tmCurrentTab === 'myday' ? 'No tasks in My Day. Click ☀️ in a task to add it.' :
+                    tmCurrentTab === 'assigned' ? 'No tasks assigned to you.' : 'No tasks found.';
+                content.innerHTML = `<div style="padding:3rem;text-align:center;color:var(--text-secondary);">
+                    <div style="font-size:2rem;margin-bottom:0.5rem;">✅</div>
+                    <p style="font-weight:600;margin:0 0 0.3rem;">${emptyMsg}</p>
+                    <p style="font-size:0.82rem;">Type in the input above or click "+ Full Task" to create one.</p>
+                </div>`;
                 return;
             }
 
-            const pDot   = {urgent:'#ef4444', high:'#f97316', medium:'#3b82f6', low:'#9ca3af'};
-            const sChip  = {
-                open:       '<span class="tm-status-chip ts-open">Open</span>',
-                in_progress:'<span class="tm-status-chip ts-in_progress">In Progress</span>',
-                waiting:    '<span class="tm-status-chip ts-waiting">Waiting</span>',
-                done:       '<span class="tm-status-chip ts-done">Done</span>',
-                cancelled:  '<span class="tm-status-chip ts-cancelled">Cancelled</span>'
-            };
-            const now = new Date();
+            const rows = tasks.map(task => {
+                const isDone = task.status === 'done' || task.status === 'cancelled';
+                const isOverdue = task.due_at && new Date(task.due_at) < now && !isDone;
+                const dueStr = task.due_at ? new Date(task.due_at).toLocaleDateString(undefined, {month:'short', day:'numeric'}) : '';
+                const isActive = task.id === window.currentTaskId;
+                const catColor = task.category_color || '#3b82f6';
 
-            const cards = tasks.map(task => {
-                const isOverdue = task.due_at && new Date(task.due_at) < now &&
-                    task.status !== 'done' && task.status !== 'cancelled';
-                const dueStr = task.due_at
-                    ? new Date(task.due_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})
-                    : null;
-                const dotColor = pDot[task.priority] || '#9ca3af';
-                const assigneeHtml = task.assigned_to_user_id
-                    ? `<span class="crm-assignee-chip" title="${esc(getOrgMemberName(task.assigned_to_user_id))}">${getOrgMemberInitials(task.assigned_to_user_id)}</span>`
-                    : '';
-                return `
-                    <div class="tm-task-card p-${task.priority||'medium'}" onclick="openTaskDetail('${esc(task.id)}')">
-                        <div class="tm-priority-dot" style="background:${dotColor};"></div>
-                        <div class="tm-task-main">
-                            <div class="tm-task-title">${esc(task.title)}</div>
-                            <div class="tm-task-meta">
-                                <span>${(task.task_type||'general').replace('_',' ')}</span>
-                                ${dueStr ? `<span class="${isOverdue ? 'tm-task-due-overdue' : ''}">📅 ${isOverdue?'Overdue · ':''}${dueStr}</span>` : ''}
-                            </div>
-                        </div>
-                        ${assigneeHtml}
-                        ${sChip[task.status] || `<span class="tm-status-chip ts-open">${task.status}</span>`}
-                    </div>`;
+                return `<div class="tm-task-row ${isDone ? 'done' : ''} ${isActive ? 'active' : ''}" data-id="${task.id}">
+                    <div class="tm-check ${isDone ? 'checked' : ''}" onclick="event.stopPropagation();toggleTaskDone('${task.id}',${isDone})">${isDone ? '✓' : ''}</div>
+                    <span class="tm-task-row-title" onclick="openTmDrawer('${task.id}')">${esc(task.title)}</span>
+                    <div class="tm-task-row-meta" onclick="openTmDrawer('${task.id}')">
+                        ${task.category ? `<span class="tm-cat-dot" style="background:${catColor};" title="${esc(task.category)}"></span>` : ''}
+                        ${dueStr ? `<span class="tm-task-row-due ${isOverdue ? 'overdue' : ''}">${dueStr}</span>` : ''}
+                        ${task.assigned_to_user_id ? `<span class="crm-assignee-chip" style="width:20px;height:20px;font-size:0.6rem;" title="${esc(getOrgMemberName(task.assigned_to_user_id))}">${getOrgMemberInitials(task.assigned_to_user_id)}</span>` : ''}
+                    </div>
+                </div>`;
             }).join('');
 
-            content.innerHTML = `<div class="tm-task-list">${cards}</div>`;
+            content.innerHTML = rows;
         }
+
+        // Quick Add from inline input
+        window.quickAddTask = async function() {
+            const input = document.getElementById('tm-quick-add');
+            const title = input?.value?.trim();
+            if (!title || !currentUserOrgId) return;
+
+            try {
+                const {data: {user}} = await supabaseClient.auth.getUser();
+                const insertData = {
+                    org_id: currentUserOrgId, title, status: 'open', priority: 'medium',
+                    task_type: 'general', created_by_user_id: user.id
+                };
+                // If on My Day tab, auto-add to My Day
+                if (tmCurrentTab === 'myday') {
+                    insertData.is_my_day = true;
+                    insertData.my_day_user_id = user.id;
+                    insertData.my_day_date = new Date().toISOString().split('T')[0];
+                }
+                // If on Assigned to Me, auto-assign
+                if (tmCurrentTab === 'assigned') {
+                    insertData.assigned_to_user_id = user.id;
+                }
+
+                await supabaseClient.from('tasks').insert(insertData);
+                input.value = '';
+                await fetchTasks();
+            } catch (e) { showToast('Failed: ' + (e.message || ''), 'error'); }
+        };
+
+        // Toggle task done/undone
+        window.toggleTaskDone = async function(taskId, isDone) {
+            const updates = isDone
+                ? { status: 'open', completed_at: null, updated_at: new Date().toISOString() }
+                : { status: 'done', completed_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+
+            await supabaseClient.from('tasks').update(updates).eq('id', taskId).eq('org_id', currentUserOrgId);
+
+            // Notify creator if completing
+            if (!isDone) {
+                const task = (window.cachedTasks || []).find(t => t.id === taskId);
+                if (task && task.created_by_user_id && typeof insertTaskNotification === 'function') {
+                    insertTaskNotification({ orgId: currentUserOrgId, entityId: taskId, eventKey: 'task_completed',
+                        title: t('notifications.events.task_completed.title'), body: t('notifications.events.task_completed.body', { task_title: task.title }),
+                        recipientUserId: task.created_by_user_id });
+                }
+            }
+            await fetchTasks();
+        };
+
+        // ==========================================
+        // RIGHT SIDEBAR DRAWER
+        // ==========================================
+        window.openTmDrawer = async function(taskId) {
+            window.currentTaskId = taskId;
+            const drawer = document.getElementById('tm-drawer');
+            const inner = document.getElementById('tm-drawer-inner');
+            if (!drawer || !inner) return;
+
+            drawer.style.width = '380px';
+            drawer.style.borderInlineStartWidth = '1px';
+            inner.innerHTML = '<div style="text-align:center;padding:2rem;"><div class="spinner" style="width:20px;height:20px;margin:0 auto;"></div></div>';
+
+            // Highlight active row
+            document.querySelectorAll('.tm-task-row').forEach(r => r.classList.toggle('active', r.dataset.id === taskId));
+
+            try {
+                const [{data: task, error}, {data: subtasks}, {data: attachments}, {data: comments}] = await Promise.all([
+                    supabaseClient.from('tasks').select('*').eq('id', taskId).single(),
+                    supabaseClient.from('tasks').select('*').eq('parent_task_id', taskId).order('created_at'),
+                    supabaseClient.from('task_attachments').select('*').eq('task_id', taskId).order('created_at'),
+                    supabaseClient.from('task_comments').select('*').eq('task_id', taskId).order('created_at')
+                ]);
+                if (error) throw error;
+                window._taskDetailData = task;
+
+                const isDone = task.status === 'done';
+                const isMyDay = task.is_my_day && task.my_day_user_id === window.currentUserObj?.id;
+                const dueDisplay = task.due_at ? new Date(task.due_at).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : '';
+                const createdDisplay = task.created_at ? formatDate(new Date(task.created_at)) : '';
+
+                inner.innerHTML = `
+                    <!-- Header: check + title -->
+                    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:1rem;">
+                        <div class="tm-check ${isDone?'checked':''}" onclick="toggleTaskDone('${task.id}',${isDone})" style="margin-top:3px;">${isDone?'✓':''}</div>
+                        <input type="text" id="tm-drawer-title" value="${esc(task.title)}" onblur="updateTaskField('${task.id}','title',this.value)"
+                            style="flex:1;font-size:1rem;font-weight:600;background:transparent;border:none;outline:none;color:var(--text-primary);padding:0;">
+                        <button onclick="closeTmDrawer()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:1.1rem;flex-shrink:0;">✕</button>
+                    </div>
+
+                    <!-- Sub-tasks -->
+                    <div style="margin-bottom:0.8rem;">
+                        <div id="tm-subtasks-list">
+                            ${(subtasks||[]).map(st => `
+                                <div class="tm-subtask-row">
+                                    <div class="tm-subtask-check ${st.status==='done'?'checked':''}" onclick="toggleTaskDone('${st.id}',${st.status==='done'})">${st.status==='done'?'✓':''}</div>
+                                    <span class="tm-subtask-title ${st.status==='done'?'done':''}">${esc(st.title)}</span>
+                                </div>`).join('')}
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                            <span style="font-size:0.8rem;color:var(--text-secondary);">+</span>
+                            <input type="text" id="tm-add-step" placeholder="Add step" onkeydown="if(event.key==='Enter')addSubTask('${task.id}')"
+                                style="flex:1;background:transparent;border:none;outline:none;color:var(--text-primary);font-size:0.82rem;padding:4px 0;">
+                        </div>
+                    </div>
+
+                    <!-- My Day toggle -->
+                    <div class="tm-drawer-action ${isMyDay?'active':''}" onclick="toggleMyDay('${task.id}',${!isMyDay})">
+                        <span class="tm-da-icon">☀️</span>
+                        <span class="tm-da-label">${isMyDay ? 'Added to My Day' : 'Add to My Day'}</span>
+                    </div>
+
+                    <!-- Remind Me -->
+                    <div class="tm-drawer-action" onclick="setTaskReminder('${task.id}')">
+                        <span class="tm-da-icon">🔔</span>
+                        <span class="tm-da-label">Remind me</span>
+                        <span class="tm-da-value">${task.remind_at ? new Date(task.remind_at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : ''}</span>
+                    </div>
+
+                    <!-- Due Date -->
+                    <div class="tm-drawer-action" onclick="showDueDatePicker('${task.id}')">
+                        <span class="tm-da-icon">📅</span>
+                        <span class="tm-da-label">Due date</span>
+                        <span class="tm-da-value ${task.due_at && new Date(task.due_at)<new Date() && !isDone ? 'overdue' : ''}">${dueDisplay}</span>
+                    </div>
+                    <div id="tm-due-picker" style="display:none;padding:6px 0 8px 28px;">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <button class="pill-btn" onclick="setDueDate('${task.id}','today')" style="font-size:0.72rem;">Today</button>
+                            <button class="pill-btn" onclick="setDueDate('${task.id}','tomorrow')" style="font-size:0.72rem;">Tomorrow</button>
+                            <button class="pill-btn" onclick="setDueDate('${task.id}','next_week')" style="font-size:0.72rem;">Next Week</button>
+                            <input type="date" onchange="setDueDate('${task.id}','custom',this.value)" style="padding:4px 8px;border-radius:6px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.75rem;">
+                        </div>
+                    </div>
+
+                    <!-- Repeat -->
+                    <div class="tm-drawer-action" onclick="showRepeatPicker('${task.id}')">
+                        <span class="tm-da-icon">🔄</span>
+                        <span class="tm-da-label">Repeat</span>
+                        <span class="tm-da-value">${task.recurrence ? task.recurrence.charAt(0).toUpperCase()+task.recurrence.slice(1) : ''}</span>
+                    </div>
+                    <div id="tm-repeat-picker" style="display:none;padding:6px 0 8px 28px;">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            ${['daily','weekdays','weekly','monthly','yearly'].map(r => `<button class="pill-btn${task.recurrence===r?' primary':''}" onclick="setRecurrence('${task.id}','${r}')" style="font-size:0.72rem;">${r.charAt(0).toUpperCase()+r.slice(1)}</button>`).join('')}
+                            <button class="pill-btn${!task.recurrence?' primary':''}" onclick="setRecurrence('${task.id}',null)" style="font-size:0.72rem;">None</button>
+                        </div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="tm-drawer-action" onclick="showCategoryPicker('${task.id}')">
+                        <span class="tm-da-icon">🏷️</span>
+                        <span class="tm-da-label">Category</span>
+                        <span class="tm-da-value">${task.category ? `<span class="tm-cat-dot" style="display:inline-block;background:${task.category_color||'#3b82f6'};"></span> ${esc(task.category)}` : ''}</span>
+                    </div>
+                    <div id="tm-cat-picker" style="display:none;padding:6px 0 8px 28px;">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            ${[{n:'General',c:'#3b82f6'},{n:'Follow-up',c:'#f59e0b'},{n:'Urgent',c:'#ef4444'},{n:'Personal',c:'#8b5cf6'},{n:'Client',c:'#10b981'}].map(cat =>
+                                `<button class="pill-btn${task.category===cat.n?' primary':''}" onclick="setCategory('${task.id}','${cat.n}','${cat.c}')" style="font-size:0.72rem;"><span class="tm-cat-dot" style="display:inline-block;background:${cat.c};margin-right:4px;"></span>${cat.n}</button>`
+                            ).join('')}
+                            <button class="pill-btn${!task.category?' primary':''}" onclick="setCategory('${task.id}',null,null)" style="font-size:0.72rem;">None</button>
+                        </div>
+                    </div>
+
+                    <!-- File Attachment -->
+                    <div class="tm-drawer-action" onclick="document.getElementById('tm-file-input').click()">
+                        <span class="tm-da-icon">📎</span>
+                        <span class="tm-da-label">Add file</span>
+                        <span class="tm-da-value">${(attachments||[]).length ? (attachments||[]).length+' file(s)' : ''}</span>
+                    </div>
+                    <input type="file" id="tm-file-input" style="display:none;" onchange="uploadTaskFile('${task.id}',this)">
+                    ${(attachments||[]).length ? `<div style="padding:0 0 8px 28px;display:flex;gap:4px;flex-wrap:wrap;">
+                        ${(attachments||[]).map(a => `<span style="font-size:0.72rem;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--text-secondary);cursor:pointer;" onclick="downloadTaskFile('${a.file_path}','${esc(a.file_name)}')" title="Click to download">📄 ${esc(a.file_name)}</span>`).join('')}
+                    </div>` : ''}
+
+                    <!-- Notes -->
+                    <div style="margin-top:0.5rem;">
+                        <textarea id="tm-drawer-notes" placeholder="Add a note..." rows="3" dir="auto"
+                            onblur="updateTaskField('${task.id}','notes',this.value)"
+                            style="width:100%;padding:10px;border-radius:8px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;resize:vertical;">${esc(task.notes||'')}</textarea>
+                    </div>
+
+                    <!-- Status + Priority + Assignee -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.8rem;">
+                        <select onchange="updateTaskField('${task.id}','status',this.value)" style="padding:7px;border-radius:8px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.82rem;">
+                            ${['open','in_progress','waiting','done','cancelled'].map(s => `<option value="${s}"${task.status===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
+                        </select>
+                        <select onchange="updateTaskField('${task.id}','priority',this.value)" style="padding:7px;border-radius:8px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.82rem;">
+                            ${['low','medium','high','urgent'].map(p => `<option value="${p}"${task.priority===p?' selected':''}>${p}</option>`).join('')}
+                        </select>
+                    </div>
+                    <select onchange="updateTaskAssignee(this.value)" style="width:100%;margin-top:6px;padding:7px;border-radius:8px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.82rem;">
+                        <option value="">Unassigned</option>
+                        ${(window.orgMembersCache||[]).map(m => `<option value="${m.user_id}"${task.assigned_to_user_id===m.user_id?' selected':''}>${esc(m.full_name||m.email)}</option>`).join('')}
+                    </select>
+
+                    <!-- Footer: created date + delete -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.06);">
+                        <span style="font-size:0.72rem;color:var(--text-secondary);">Created ${createdDisplay}</span>
+                        <button onclick="deleteTask('${task.id}')" style="background:none;border:none;color:#ef4444;font-size:0.75rem;cursor:pointer;font-weight:600;">Delete</button>
+                    </div>
+                `;
+            } catch (err) {
+                inner.innerHTML = '<div style="padding:1rem;color:#ef4444;">Failed to load task.</div>';
+            }
+        };
+
+        window.closeTmDrawer = function() {
+            const drawer = document.getElementById('tm-drawer');
+            if (drawer) { drawer.style.width = '0'; drawer.style.borderInlineStartWidth = '0'; }
+            window.currentTaskId = null;
+            document.querySelectorAll('.tm-task-row').forEach(r => r.classList.remove('active'));
+        };
+
+        // Drawer helpers
+        window.showDueDatePicker = function() { document.getElementById('tm-due-picker').style.display = document.getElementById('tm-due-picker').style.display === 'none' ? 'block' : 'none'; };
+        window.showRepeatPicker = function() { document.getElementById('tm-repeat-picker').style.display = document.getElementById('tm-repeat-picker').style.display === 'none' ? 'block' : 'none'; };
+        window.showCategoryPicker = function() { document.getElementById('tm-cat-picker').style.display = document.getElementById('tm-cat-picker').style.display === 'none' ? 'block' : 'none'; };
+
+        window.setDueDate = async function(taskId, preset, customVal) {
+            let due;
+            const today = new Date(); today.setHours(23,59,59,0);
+            if (preset === 'today') due = today;
+            else if (preset === 'tomorrow') { due = new Date(today); due.setDate(due.getDate()+1); }
+            else if (preset === 'next_week') { due = new Date(today); due.setDate(due.getDate()+7); }
+            else if (preset === 'custom' && customVal) due = new Date(customVal+'T23:59:59');
+            if (due) await updateTaskField(taskId, 'due_at', due.toISOString());
+            openTmDrawer(taskId);
+        };
+
+        window.setRecurrence = async function(taskId, value) {
+            await updateTaskField(taskId, 'recurrence', value);
+            openTmDrawer(taskId);
+        };
+
+        window.setCategory = async function(taskId, name, color) {
+            await supabaseClient.from('tasks').update({ category: name, category_color: color, updated_at: new Date().toISOString() }).eq('id', taskId);
+            await fetchTasks();
+            openTmDrawer(taskId);
+        };
+
+        window.toggleMyDay = async function(taskId, add) {
+            const userId = window.currentUserObj?.id;
+            await supabaseClient.from('tasks').update({
+                is_my_day: add, my_day_user_id: add ? userId : null,
+                my_day_date: add ? new Date().toISOString().split('T')[0] : null,
+                updated_at: new Date().toISOString()
+            }).eq('id', taskId);
+            await fetchTasks();
+            openTmDrawer(taskId);
+        };
+
+        window.addSubTask = async function(parentId) {
+            const input = document.getElementById('tm-add-step');
+            const title = input?.value?.trim();
+            if (!title) return;
+            const {data:{user}} = await supabaseClient.auth.getUser();
+            await supabaseClient.from('tasks').insert({
+                org_id: currentUserOrgId, title, parent_task_id: parentId,
+                status: 'open', priority: 'medium', task_type: 'general', created_by_user_id: user.id
+            });
+            input.value = '';
+            openTmDrawer(parentId);
+        };
+
+        window.updateTaskField = async function(taskId, field, value) {
+            const updates = { [field]: value, updated_at: new Date().toISOString() };
+            if (field === 'status' && value === 'done') updates.completed_at = new Date().toISOString();
+            await supabaseClient.from('tasks').update(updates).eq('id', taskId).eq('org_id', currentUserOrgId);
+            await fetchTasks();
+        };
+
+        window.setTaskReminder = async function(taskId) {
+            const options = ['In 1 hour', 'Tomorrow 9 AM', 'Next Monday 9 AM', 'Pick date/time'];
+            const choice = prompt('Remind me:\n1. In 1 hour\n2. Tomorrow 9 AM\n3. Next Monday 9 AM\n4. Custom (enter ISO date)', '1');
+            let remindAt;
+            const now = new Date();
+            if (choice === '1') { remindAt = new Date(now.getTime() + 3600000); }
+            else if (choice === '2') { remindAt = new Date(now); remindAt.setDate(remindAt.getDate()+1); remindAt.setHours(9,0,0,0); }
+            else if (choice === '3') { remindAt = new Date(now); remindAt.setDate(remindAt.getDate()+(8-remindAt.getDay())%7||7); remindAt.setHours(9,0,0,0); }
+            else if (choice) { remindAt = new Date(choice); }
+            if (remindAt && !isNaN(remindAt)) {
+                await updateTaskField(taskId, 'remind_at', remindAt.toISOString());
+                showToast('Reminder set for ' + remindAt.toLocaleString(), 'success');
+                openTmDrawer(taskId);
+            }
+        };
+
+        window.uploadTaskFile = async function(taskId, inputEl) {
+            const file = inputEl?.files?.[0];
+            if (!file || !taskId) return;
+            try {
+                const path = `${currentUserOrgId}/${taskId}/${Date.now()}_${file.name}`;
+                const {error: upErr} = await supabaseClient.storage.from('task_attachments').upload(path, file);
+                if (upErr) throw upErr;
+                const {data:{user}} = await supabaseClient.auth.getUser();
+                await supabaseClient.from('task_attachments').insert({
+                    task_id: taskId, org_id: currentUserOrgId, file_name: file.name,
+                    file_path: path, file_size: file.size, mime_type: file.type, uploaded_by: user.id
+                });
+                showToast('File attached', 'success');
+                openTmDrawer(taskId);
+            } catch (e) { showToast('Upload failed: '+(e.message||''), 'error'); }
+            inputEl.value = '';
+        };
+
+        window.downloadTaskFile = async function(path, name) {
+            const {data} = await supabaseClient.storage.from('task_attachments').createSignedUrl(path, 3600);
+            if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+        };
 
         window.openCreateTaskModal = function() {
             document.getElementById('create-task-title').value = '';
