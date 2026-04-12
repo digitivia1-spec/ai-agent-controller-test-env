@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>AI Agent Command Center</title>
     <link rel="icon" type="image/png" href="cropped-White.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -23547,10 +23549,22 @@
         // Example:
         // const { data, error } = await supabaseClient.auth.signInWithPassword(...)
 
-        // --- WEBHOOKS (Kept CHAT for Brain, Removed Others) ---
-        const CHAT_WEBHOOK = "https://n8n.srv1174105.hstgr.cloud/webhook/chatHandler";
+        // --- WEBHOOKS (Proxied via Supabase Edge Function for auth + rate limiting) ---
+        const CHAT_PROXY_URL = SUPABASE_URL + '/functions/v1/chat-proxy';
+        const CHAT_WEBHOOK = CHAT_PROXY_URL; // Legacy alias
         // Static insights webhook (shared for all orgs)
         const INSIGHTS_WEBHOOK = "https://n8n.srv1174105.hstgr.cloud/webhook/insightsgrab";
+
+        // Helper: build auth headers for chat-proxy calls
+        async function getChatProxyHeaders() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const token = session?.access_token || '';
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'apikey': SUPABASE_KEY
+            };
+        }
 
         // Define Agents & Colors
         const AGENTS = [
@@ -30017,16 +30031,18 @@ Thank you for shopping with {store_name}!</textarea>
                 // We keep this to generate the actual smart response
                 const systemPrompt = document.getElementById(`prompt-${agentId}`).value;
 
-                const response = await fetch('https://n8n.srv1174105.hstgr.cloud/webhook/test_chat', {
+                const response = await fetch(CHAT_PROXY_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: await getChatProxyHeaders(),
                     body: JSON.stringify({
+                        target: 'test_chat',
                         session_id: session.id,
                         message: text,
                         system_prompt: systemPrompt,
                         agent_id: agentId
                     })
                 });
+                if (response.status === 429) throw new Error('Rate limit exceeded. Please wait before sending more messages.');
 
                 const data = await response.json();
                 const replyText = data.reply || data.output || "No reply received.";
@@ -33453,15 +33469,17 @@ Thank you for shopping with {store_name}!</textarea>
             showToast(t('create_post.ai_working') || "AI is working...", "info");
 
             try {
-                const response = await fetch('https://n8n.srv1174105.hstgr.cloud/webhook/content', {
+                const response = await fetch(CHAT_PROXY_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: await getChatProxyHeaders(),
                     body: JSON.stringify({
+                        target: 'content',
                         topic: prompt,
                         style: "Creative"
                     })
                 });
 
+                if (response.status === 429) throw new Error("Rate limit exceeded. Please wait before generating more content.");
                 if (!response.ok) throw new Error("Network response was not ok");
 
                 const data = await response.json();
@@ -34107,11 +34125,12 @@ Thank you for shopping with {store_name}!</textarea>
             if (currentUserProfile?.user_id) payload.userId = currentUserProfile.user_id;
 
             try {
-                const response = await fetch(AI_HELPER_WEBHOOK, {
+                const response = await fetch(CHAT_PROXY_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    headers: await getChatProxyHeaders(),
+                    body: JSON.stringify({ target: 'ai-helper', ...payload })
                 });
+                if (response.status === 429) throw new Error('Rate limit exceeded. Please wait before sending more messages.');
 
                 const rawText = await response.text();
                 if (!response.ok) {

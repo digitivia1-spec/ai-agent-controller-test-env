@@ -1,0 +1,22 @@
+# Security Headers for Digitivia AI Agent
+# Deployed on OVH Apache — GitHub Pages ignores this file
+
+<IfModule mod_headers.c>
+    # Content Security Policy
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'"
+
+    # Prevent clickjacking
+    Header set X-Frame-Options "DENY"
+
+    # Prevent MIME-type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Control referrer information
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Restrict browser features
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+    # Force HTTPS
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
