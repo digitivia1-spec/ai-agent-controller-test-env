@@ -22986,7 +22986,7 @@
             <h1>Manage All Your <span>AI Agents</span><br>From One Dashboard</h1>
             <p>Create, deploy, and monitor intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, and your website. Built-in CRM, order management, and content studio included.</p>
             <div class="lp-hero-ctas">
-                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Start Free — No Credit Card</button>
+                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Get Started Today</button>
                 <button onclick="scrollToFeatures()" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;">See Features</button>
             </div>
 
@@ -23175,6 +23175,13 @@
                 else localStorage.setItem('detected_currency', 'USD');
                 localStorage.setItem('detected_currency_at', String(Date.now()));
                 renderLpPricing(); // Re-render with correct currency
+                // Update comparison table price
+                const priceCell = document.getElementById('lp-compare-price');
+                if (priceCell) {
+                    const c = detectLpCurrency();
+                    const p = LP_PLANS[0].prices[c] || LP_PLANS[0].prices.USD;
+                    priceCell.textContent = 'From ' + formatLpPrice(p, c) + '/mo';
+                }
             }).catch(() => {});
         })();
         </script>
@@ -23195,13 +23202,15 @@
                 </thead>
                 <tbody>
                     <tr><td>Multi-Channel AI Agents</td><td class="lp-highlight"><span class="lp-check">5 channels</span></td><td>6+</td><td>4</td><td>3</td></tr>
-                    <tr><td>Built-in CRM</td><td class="lp-highlight"><span class="lp-check">Full CRM</span></td><td>Basic</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Built-in CRM & Pipeline</td><td class="lp-highlight"><span class="lp-check">Full CRM</span></td><td>Basic</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
                     <tr><td>Order Management</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
                     <tr><td>Content Studio</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
-                    <tr><td>WhatsApp Notifications</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td></tr>
-                    <tr><td>E-Commerce Integrations</td><td class="lp-highlight"><span class="lp-check">3 platforms</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
-                    <tr><td>Free Plan</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
-                    <tr><td>Starting Price</td><td class="lp-highlight"><span class="lp-check">$0/mo</span></td><td>$39/mo</td><td>$15/mo</td><td>$29/mo</td></tr>
+                    <tr><td>WhatsApp Order Alerts</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>E-Commerce Integrations</td><td class="lp-highlight"><span class="lp-check">Shopify, WooCommerce, Easy Orders</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
+                    <tr><td>Task Manager & Ticketing</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Google Reviews Monitoring</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Team RBAC & Permissions</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Starting Price</td><td class="lp-highlight"><span class="lp-check" id="lp-compare-price">From $79/mo</span></td><td>$39/mo</td><td>$15/mo</td><td>$29/mo</td></tr>
                 </tbody>
             </table>
         </section>
@@ -23228,8 +23237,8 @@
                 <div class="lp-faq-a">We currently integrate with Shopify (via Storefront API), WooCommerce (via REST API), and Easy Orders. Your product catalog syncs automatically, and you can manage orders and send WhatsApp confirmations.</div>
             </div>
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
-                <div class="lp-faq-q">Is there a free plan?<span>+</span></div>
-                <div class="lp-faq-a">Yes. The Free plan includes 100 messages per month, 1 AI agent, basic analytics, and community support. No credit card required to start.</div>
+                <div class="lp-faq-q">How does pricing work?<span>+</span></div>
+                <div class="lp-faq-a">We offer three plans — Starter, Growth, and Pro — with monthly or yearly billing (20% discount on yearly). Prices are shown in your local currency. All plans include the full platform; higher tiers unlock more conversations, advanced features, and priority support. Enterprise organizations can contact sales for a custom plan.</div>
             </div>
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
                 <div class="lp-faq-q">How do you handle data privacy?<span>+</span></div>
