@@ -6543,6 +6543,94 @@
         }
         :root[data-theme="light"] .lp-particle { background: rgba(91,174,176,0.2); }
 
+        /* ====== LANDING PAGE ANIMATIONS ====== */
+
+        /* Fade-in on scroll */
+        .lp-reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .lp-reveal.visible { opacity: 1; transform: translateY(0); }
+        .lp-reveal-delay-1 { transition-delay: 0.1s; }
+        .lp-reveal-delay-2 { transition-delay: 0.2s; }
+        .lp-reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Gradient animated headline */
+        .lp-gradient-text {
+            background: linear-gradient(90deg, var(--theme-color), #a78bfa, var(--theme-color));
+            background-size: 200% auto;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: lp-gradient-shift 4s ease infinite;
+        }
+        @keyframes lp-gradient-shift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+
+        /* Floating glow orbs */
+        .lp-glow-orb {
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            pointer-events: none; opacity: 0.15; z-index: -1;
+        }
+        .lp-glow-1 { width: 300px; height: 300px; background: var(--theme-color); top: 10%; left: 10%; animation: lp-float 8s ease-in-out infinite; }
+        .lp-glow-2 { width: 250px; height: 250px; background: #8b5cf6; top: 40%; right: 5%; animation: lp-float 10s ease-in-out infinite reverse; }
+        .lp-glow-3 { width: 200px; height: 200px; background: #f59e0b; bottom: 20%; left: 30%; animation: lp-float 12s ease-in-out infinite; }
+        @keyframes lp-float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -30px); }
+            50% { transform: translate(-15px, 20px); }
+            75% { transform: translate(25px, 15px); }
+        }
+
+        /* Stat counter pulse */
+        .lp-stat-num { animation: lp-count-in 0.8s ease-out; }
+        @keyframes lp-count-in {
+            0% { opacity: 0; transform: scale(0.5); }
+            60% { transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Card 3D tilt on hover */
+        .lp-tilt:hover { transform: perspective(800px) rotateY(2deg) rotateX(-2deg) translateY(-4px); }
+        .lp-tilt { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .lp-tilt:hover { box-shadow: 0 12px 40px rgba(91,174,176,0.15); }
+
+        /* Channel chip bounce-in */
+        .lp-channel-chip { animation: lp-chip-in 0.5s ease backwards; }
+        .lp-channel-chip:nth-child(1) { animation-delay: 0.1s; }
+        .lp-channel-chip:nth-child(2) { animation-delay: 0.2s; }
+        .lp-channel-chip:nth-child(3) { animation-delay: 0.3s; }
+        .lp-channel-chip:nth-child(4) { animation-delay: 0.4s; }
+        .lp-channel-chip:nth-child(5) { animation-delay: 0.5s; }
+        @keyframes lp-chip-in {
+            0% { opacity: 0; transform: translateY(15px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Pricing card shine sweep */
+        .lp-price-card { position: relative; overflow: hidden; }
+        .lp-price-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            transition: left 0.6s ease;
+        }
+        .lp-price-card:hover::after { left: 100%; }
+
+        /* Hero badge pulse glow */
+        .lp-hero-badge { animation: lp-badge-glow 3s ease-in-out infinite; }
+        @keyframes lp-badge-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(91,174,176,0); }
+            50% { box-shadow: 0 0 20px 4px rgba(91,174,176,0.2); }
+        }
+
+        /* Step number pulse */
+        .lp-step-num { animation: lp-step-pulse 2s ease-in-out infinite; }
+        @keyframes lp-step-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(91,174,176,0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(91,174,176,0); }
+        }
+
         .lp-nav {
             display: flex; align-items: center; justify-content: space-between;
             padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
@@ -6623,7 +6711,7 @@
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
             transition: transform 0.2s, border-color 0.2s;
         }
-        .lp-feature-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
+        .lp-feature-card:hover { transform: perspective(800px) rotateY(2deg) rotateX(-2deg) translateY(-4px); border-color: rgba(91,174,176,0.3); box-shadow: 0 12px 40px rgba(91,174,176,0.12); }
         .lp-feature-icon {
             width: 44px; height: 44px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
@@ -22985,6 +23073,11 @@
 
     <!-- ========== LANDING PAGE ========== -->
     <div id="landing-page">
+        <!-- Floating Glow Orbs -->
+        <div class="lp-glow-orb lp-glow-1"></div>
+        <div class="lp-glow-orb lp-glow-2"></div>
+        <div class="lp-glow-orb lp-glow-3"></div>
+
         <!-- Rain Particles Background -->
         <div class="lp-particles" id="lp-particles"></div>
         <script>
@@ -23005,6 +23098,29 @@
         })();
         </script>
 
+        <!-- Scroll Reveal Observer -->
+        <script>
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            setTimeout(() => {
+                document.querySelectorAll('#landing-page section, #landing-page .lp-feature-card, #landing-page .lp-price-card, #landing-page .lp-faq-item').forEach((el, i) => {
+                    el.classList.add('lp-reveal');
+                    if (i % 3 === 1) el.classList.add('lp-reveal-delay-1');
+                    if (i % 3 === 2) el.classList.add('lp-reveal-delay-2');
+                    observer.observe(el);
+                });
+            }, 100);
+        })();
+        </script>
+
         <!-- Navigation -->
         <nav class="lp-nav">
             <div class="lp-nav-logo">DIGITIVIA AI AGENT</div>
@@ -23020,7 +23136,7 @@
         <!-- Hero -->
         <section class="lp-hero">
             <div class="lp-hero-badge">AI-Powered Customer Engagement Platform</div>
-            <h1>Your AI Agents Handle <span>Every Customer</span><br>On Every Channel, 24/7</h1>
+            <h1>Your AI Agents Handle <span class="lp-gradient-text">Every Customer</span><br>On Every Channel, 24/7</h1>
             <p>Deploy intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram & your website. Capture leads automatically, manage orders, and let AI handle support — while you focus on growing your business.</p>
             <div class="lp-hero-ctas">
                 <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Start Automating Now</button>
@@ -23064,11 +23180,13 @@
         <section style="max-width:800px;margin:0 auto;padding:0 2rem 3rem;text-align:center;">
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;">Powering Your Growth With</div>
             <div style="display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;opacity:0.6;">
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg> Google</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Anthropic</span>
                 <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Meta</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">OpenAI</span>
                 <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Shopify</span>
                 <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">WooCommerce</span>
                 <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Stripe</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg> Google</span>
             </div>
         </section>
 
