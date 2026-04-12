@@ -26289,6 +26289,9 @@
                 showToast(t('kb.toast_file_uploaded') || "File uploaded successfully", "success");
                 fileInput.value = "";
 
+                // Trigger RAG chunking in background
+                triggerDocumentChunking(storagePath, file.name);
+
                 // Refresh all showing lists
                 AGENTS.forEach(ag => {
                     if (document.getElementById(`kb-shared-files-list-${ag.id}`)) {
@@ -26303,6 +26306,39 @@
                     uploadBtn.disabled = false;
                     uploadBtn.textContent = t('kb.btn_upload_file') || "Upload File";
                 }
+            }
+        }
+
+        // --- RAG: Trigger document chunking after KB file upload ---
+        async function triggerDocumentChunking(filePath, fileName) {
+            try {
+                // Find the file record by path
+                const { data: fileRecord } = await supabaseClient
+                    .from('agent_kb_files')
+                    .select('id')
+                    .eq('path', filePath)
+                    .eq('org_id', currentUserOrgId)
+                    .single();
+
+                if (!fileRecord) return;
+
+                // Call chunk-documents Edge Function (fire-and-forget)
+                supabaseClient.functions.invoke('chunk-documents', {
+                    body: {
+                        file_id: fileRecord.id,
+                        org_id: currentUserOrgId,
+                        agent_id: null // shared KB
+                    }
+                }).then(({ data, error }) => {
+                    if (error) {
+                        console.warn('Chunking failed for', fileName, error);
+                    } else {
+                        console.log('Chunking complete:', fileName, data?.chunks, 'chunks');
+                    }
+                }).catch(err => console.warn('Chunking error:', err));
+
+            } catch (e) {
+                console.warn('triggerDocumentChunking error:', e);
             }
         }
 
@@ -31154,6 +31190,97 @@ Thank you for shopping with {store_name}!</textarea>
         let dashDismissedAlerts = [];
         try { dashDismissedAlerts = JSON.parse(sessionStorage.getItem('dash_dismissed_alerts') || '[]'); } catch {}
 
+        // --- Sentiment Dashboard Widget ---
+        async function dashRenderSentimentWidget() {
+            // Find or create the sentiment widget container
+            let container = document.getElementById('dash-sentiment-widget');
+            if (!container) {
+                // Append to dashboard secondary section if it exists
+                const secondary = document.getElementById('dash-secondary-section') || document.getElementById('dashboard');
+                if (!secondary) return;
+                container = document.createElement('div');
+                container.id = 'dash-sentiment-widget';
+                container.className = 'dash-trend-widget';
+                container.style.cssText = 'margin-top:1rem;';
+                secondary.appendChild(container);
+            }
+
+            if (!currentUserOrgId) { container.style.display = 'none'; return; }
+
+            try {
+                const { data, error } = await supabaseClient.rpc('get_sentiment_summary', {
+                    p_org_id: currentUserOrgId,
+                    p_days: 7
+                });
+
+                if (error || !data || !data[0]) {
+                    // Show placeholder if RPC doesn't exist yet
+                    container.innerHTML = `
+                        <div style="padding:1.2rem;">
+                            <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.8rem;color:var(--text-primary);">Customer Sentiment (7 days)</div>
+                            <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                                <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(16,185,129,0.08);">
+                                    <div style="font-size:1.4rem;font-weight:800;color:#10b981;">--</div>
+                                    <div style="font-size:0.72rem;color:var(--text-secondary);">Positive</div>
+                                </div>
+                                <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(107,114,128,0.08);">
+                                    <div style="font-size:1.4rem;font-weight:800;color:#9ca3af;">--</div>
+                                    <div style="font-size:0.72rem;color:var(--text-secondary);">Neutral</div>
+                                </div>
+                                <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(239,68,68,0.08);">
+                                    <div style="font-size:1.4rem;font-weight:800;color:#ef4444;">--</div>
+                                    <div style="font-size:0.72rem;color:var(--text-secondary);">Negative</div>
+                                </div>
+                                <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(245,158,11,0.08);">
+                                    <div style="font-size:1.4rem;font-weight:800;color:#f59e0b;">--</div>
+                                    <div style="font-size:0.72rem;color:var(--text-secondary);">Urgent</div>
+                                </div>
+                            </div>
+                            <div class="sentiment-summary-bar" style="margin-top:0.8rem;">
+                                <div class="seg-positive" style="width:25%"></div>
+                                <div class="seg-neutral" style="width:50%"></div>
+                                <div class="seg-negative" style="width:15%"></div>
+                                <div class="seg-urgent" style="width:10%"></div>
+                            </div>
+                            <div style="text-align:center;margin-top:0.6rem;font-size:0.72rem;color:var(--text-secondary);">Run the sentiment SQL migration to activate</div>
+                        </div>`;
+                    return;
+                }
+
+                const s = data[0];
+                const total = s.total_messages || 1;
+                container.innerHTML = `
+                    <div style="padding:1.2rem;">
+                        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.8rem;color:var(--text-primary);">Customer Sentiment (7 days)</div>
+                        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                            <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(16,185,129,0.08);">
+                                <div style="font-size:1.4rem;font-weight:800;color:#10b981;">${s.positive_pct}%</div>
+                                <div style="font-size:0.72rem;color:var(--text-secondary);">Positive</div>
+                            </div>
+                            <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(107,114,128,0.08);">
+                                <div style="font-size:1.4rem;font-weight:800;color:#9ca3af;">${s.neutral_pct}%</div>
+                                <div style="font-size:0.72rem;color:var(--text-secondary);">Neutral</div>
+                            </div>
+                            <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(239,68,68,0.08);">
+                                <div style="font-size:1.4rem;font-weight:800;color:#ef4444;">${s.negative_pct}%</div>
+                                <div style="font-size:0.72rem;color:var(--text-secondary);">Negative</div>
+                            </div>
+                            <div style="flex:1;min-width:100px;text-align:center;padding:0.8rem;border-radius:10px;background:rgba(245,158,11,0.08);">
+                                <div style="font-size:1.4rem;font-weight:800;color:#f59e0b;">${s.urgent_count}</div>
+                                <div style="font-size:0.72rem;color:var(--text-secondary);">Urgent</div>
+                            </div>
+                        </div>
+                        <div class="sentiment-summary-bar" style="margin-top:0.8rem;">
+                            <div class="seg-positive" style="width:${s.positive_pct}%"></div>
+                            <div class="seg-neutral" style="width:${s.neutral_pct}%"></div>
+                            <div class="seg-negative" style="width:${s.negative_pct}%"></div>
+                        </div>
+                    </div>`;
+            } catch (e) {
+                console.warn('Sentiment widget error:', e);
+            }
+        }
+
         async function dashRenderAlertsStrip() {
             const container = document.getElementById('dash-alerts-strip');
             if (!container || !currentUserOrgId) return;
@@ -31572,7 +31699,8 @@ Thank you for shopping with {store_name}!</textarea>
                 dashRenderTrendChart(),
                 dashRenderTasksSummary(),
                 dashRenderPipelineSnapshot(),
-                dashRenderAlertsStrip()
+                dashRenderAlertsStrip(),
+                dashRenderSentimentWidget()
             ]);
             if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
         }
