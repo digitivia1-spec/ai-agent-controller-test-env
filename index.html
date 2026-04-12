@@ -41400,6 +41400,7 @@ Thank you for shopping with {store_name}!</textarea>
                 </div>
                 <div id="woo-test-result">${renderConnectionStatusHtml('woocommerce')}</div>`;
             }
+            if (provider === 'shopify') {
             return `<div class="onb-platform-head">
                 <div class="onb-platform-brand">
                     <img class="onb-platform-logo" src="${PLATFORM_LOGOS.shopify.primary}" onerror="this.onerror=null;this.src='${PLATFORM_LOGOS.shopify.fallback}'" alt="Shopify" loading="lazy" decoding="async">
