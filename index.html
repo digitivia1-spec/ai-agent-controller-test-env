@@ -1069,6 +1069,14 @@
                 "label_shopify_token": "Storefront Access Token",
                 "integrations_shopify_hint": "Use your Storefront Access Token. This lets AI agents fetch and search Shopify products so they can help customers in real time.",
                 "integrations_shopify_private_note": "Storefront token",
+                "integrations_easy_order_title": "Easy Order",
+                "integrations_easy_order_hint": "Use your Easy Order API key. This lets AI agents fetch and search your Easy Order products to support customers accurately.",
+                "label_easy_order_api_key": "API Key",
+                "placeholder_easy_order_api_key": "Your Easy Order API key",
+                "integrations_easy_order_badge": "API key",
+                "test_success_easy_order": "Easy Order connection verified.",
+                "test_detail_easy_order": "Connected to Easy Order and fetched live products.",
+                "review_easy_order_connected": "Easy Order configured",
                 "btn_test_connection": "Test Connection",
                 "test_loading": "Testing connection...",
                 "test_success": "Connection successful!",
@@ -2182,6 +2190,14 @@
                 "label_shopify_token": "Storefront Access Token",
                 "integrations_shopify_hint": "استخدم Storefront Access Token. هذا يسمح لوكلاء الذكاء الاصطناعي بجلب منتجات Shopify والبحث فيها لمساعدة العملاء بشكل فوري.",
                 "integrations_shopify_private_note": "رمز Storefront",
+                "integrations_easy_order_title": "Easy Order",
+                "integrations_easy_order_hint": "استخدم مفتاح API الخاص بـ Easy Order. هذا يسمح لوكلاء الذكاء الاصطناعي بجلب منتجات Easy Order والبحث فيها لخدمة العملاء بدقة.",
+                "label_easy_order_api_key": "مفتاح API",
+                "placeholder_easy_order_api_key": "مفتاح API الخاص بـ Easy Order",
+                "integrations_easy_order_badge": "مفتاح API",
+                "test_success_easy_order": "تم التحقق من اتصال Easy Order.",
+                "test_detail_easy_order": "تم الاتصال بـ Easy Order وجلب منتجات حية بنجاح.",
+                "review_easy_order_connected": "تم إعداد Easy Order",
                 "btn_test_connection": "اختبار الاتصال",
                 "test_loading": "جاري اختبار الاتصال...",
                 "test_success": "تم الاتصال بنجاح!",
@@ -23903,7 +23919,7 @@
             mountInlineHelp(document.getElementById('onb-whatsapp'), 'onb.whatsapp_number');
             mountHelpTrigger(document.getElementById('onb-kb-upload-host'), 'onb.kb_upload', { compact: true });
             mountInlineHelp(document.querySelector('.onb-drop-zone'), 'onb.kb_upload');
-            mountHelpTrigger(document.querySelector('.onb-platform-title'), onbIntegrationView === 'shopify' ? 'integrations.shopify' : 'integrations.woo', { compact: true });
+            mountHelpTrigger(document.querySelector('.onb-platform-title'), onbIntegrationView === 'shopify' ? 'integrations.shopify' : onbIntegrationView === 'easy_order' ? 'integrations.easy_order' : 'integrations.woo', { compact: true });
             const wooDomain = document.getElementById('woo-domain');
             const wooCk = document.getElementById('woo-ck');
             const wooCs = document.getElementById('woo-cs');
@@ -40711,6 +40727,10 @@ Thank you for shopping with {store_name}!</textarea>
             shopify: {
                 primary: 'https://cdn.simpleicons.org/shopify/95BF47',
                 fallback: 'https://cdn.simpleicons.org/shopify/95BF47'
+            },
+            easy_order: {
+                primary: 'https://easy-orders.net/theme3/Logo.png',
+                fallback: 'https://img.icons8.com/fluency/48/shopping-cart.png'
             }
         });
         const SHOPIFY_TEST_QUERY = `query WizardConnectionTest { shop { name primaryDomain { host url } } products(first: 1) { edges { node { title handle } } } }`;
@@ -40728,6 +40748,14 @@ Thank you for shopping with {store_name}!</textarea>
             shop_domain: '',
             storefront_token: '',
             token_type: 'storefront_access_token',
+            verified_at: '',
+            verified_store: '',
+            verification_method: '',
+            verification_snapshot: null,
+            last_test_status: ''
+        });
+        const DEFAULT_EASY_ORDER_INTEGRATION = Object.freeze({
+            api_key: '',
             verified_at: '',
             verified_store: '',
             verification_method: '',
@@ -40754,7 +40782,8 @@ Thank you for shopping with {store_name}!</textarea>
         function defaultConnectionState() {
             return {
                 woocommerce: createConnectionState(),
-                shopify: createConnectionState()
+                shopify: createConnectionState(),
+                easy_order: createConnectionState()
             };
         }
 
@@ -40809,10 +40838,22 @@ Thank you for shopping with {store_name}!</textarea>
             return merged;
         }
 
+        function normalizeEasyOrderIntegration(raw) {
+            const merged = Object.assign({}, DEFAULT_EASY_ORDER_INTEGRATION, raw || {});
+            merged.api_key = String(merged.api_key || '').trim();
+            merged.verified_at = String(merged.verified_at || '').trim();
+            merged.verified_store = String(merged.verified_store || '').trim();
+            merged.verification_method = String(merged.verification_method || '').trim();
+            merged.last_test_status = String(merged.last_test_status || '').trim();
+            merged.verification_snapshot = normalizeVerificationSnapshot(merged.verification_snapshot);
+            return merged;
+        }
+
         function normalizeIntegrationsBlock(raw) {
             return {
                 woocommerce: normalizeWooIntegration(raw?.woocommerce),
-                shopify: normalizeShopifyIntegration(raw?.shopify)
+                shopify: normalizeShopifyIntegration(raw?.shopify),
+                easy_order: normalizeEasyOrderIntegration(raw?.easy_order)
             };
         }
 
@@ -40896,6 +40937,7 @@ Thank you for shopping with {store_name}!</textarea>
             onbConnectionState = defaultConnectionState();
             const woo = onbData?.integrations?.woocommerce;
             const shop = onbData?.integrations?.shopify;
+            const eo = onbData?.integrations?.easy_order;
             if (woo?.verified_at) {
                 onbConnectionState.woocommerce = {
                     status: 'success',
@@ -40910,6 +40952,15 @@ Thank you for shopping with {store_name}!</textarea>
                     status: 'success',
                     titleKey: 'onboarding.test_success_shopify',
                     detailKey: shop.verification_method === 'storefront_access_token_proxy' ? 'onboarding.test_detail_shopify_proxy' : 'onboarding.test_detail_shopify',
+                    detailText: '',
+                    testing: false
+                };
+            }
+            if (eo?.verified_at) {
+                onbConnectionState.easy_order = {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_easy_order',
+                    detailKey: 'onboarding.test_detail_easy_order',
                     detailText: '',
                     testing: false
                 };
@@ -40991,7 +41042,7 @@ Thank you for shopping with {store_name}!</textarea>
             onbStep = getResumeStep(onbData);
             onbFiles = [];
             onbFinishing = false;
-            onbIntegrationView = (onbData.integrations?.shopify?.shop_domain || onbData.integrations?.shopify?.storefront_token) ? 'shopify' : 'woocommerce';
+            onbIntegrationView = (onbData.integrations?.easy_order?.api_key) ? 'easy_order' : (onbData.integrations?.shopify?.shop_domain || onbData.integrations?.shopify?.storefront_token) ? 'shopify' : 'woocommerce';
             syncConnectionStateFromData();
             syncSavedIntegrationSignature();
             renderWizard();
@@ -41284,15 +41335,17 @@ Thank you for shopping with {store_name}!</textarea>
         function renderStepIntegrations() {
             const w = onbData.integrations.woocommerce;
             const s = onbData.integrations.shopify;
-            const selectedProvider = onbIntegrationView === 'shopify' ? 'shopify' : 'woocommerce';
-            const selectedConfig = selectedProvider === 'woocommerce' ? w : s;
-            const isTesting = selectedProvider === 'woocommerce' ? !!onbConnectionState.woocommerce.testing : !!onbConnectionState.shopify.testing;
+            const eo = onbData.integrations.easy_order;
+            const selectedProvider = onbIntegrationView === 'shopify' ? 'shopify' : onbIntegrationView === 'easy_order' ? 'easy_order' : 'woocommerce';
+            const selectedConfig = selectedProvider === 'woocommerce' ? w : selectedProvider === 'shopify' ? s : eo;
+            const isTesting = !!onbConnectionState[selectedProvider]?.testing;
             return `<div class="onb-step-card">
                 <h3 class="onb-step-title">${tOnb('onboarding.integrations_title')}</h3>
                 <p class="onb-step-subtitle">${tOnb('onboarding.integrations_subtitle')}</p>
                 <div class="onb-int-switch">
                     <button type="button" class="onb-int-switch-btn ${selectedProvider === 'woocommerce' ? 'active' : ''}" onclick="setOnbIntegrationView('woocommerce')">${tOnb('onboarding.integrations_woo_title')}</button>
                     <button type="button" class="onb-int-switch-btn ${selectedProvider === 'shopify' ? 'active' : ''}" onclick="setOnbIntegrationView('shopify')">${tOnb('onboarding.integrations_shopify_title')}</button>
+                    <button type="button" class="onb-int-switch-btn ${selectedProvider === 'easy_order' ? 'active' : ''}" onclick="setOnbIntegrationView('easy_order')">${tOnb('onboarding.integrations_easy_order_title')}</button>
                 </div>
                 <div class="onb-int-cards">
                     <div class="onb-int-card">${renderOnbIntegrationFields(selectedProvider, selectedConfig, isTesting)}</div>
@@ -41302,7 +41355,7 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         window.setOnbIntegrationView = function (provider) {
-            if (provider !== 'woocommerce' && provider !== 'shopify') return;
+            if (provider !== 'woocommerce' && provider !== 'shopify' && provider !== 'easy_order') return;
             onbIntegrationView = provider;
             renderStepContent();
         };
@@ -41310,6 +41363,8 @@ Thank you for shopping with {store_name}!</textarea>
         function renderOnbIntegrationFields(provider, config, isTesting) {
             const canDisconnect = provider === 'woocommerce'
                 ? !!(config.website_url || config.consumer_key || config.consumer_secret || config.verified_at)
+                : provider === 'easy_order'
+                ? !!(config.api_key || config.verified_at)
                 : !!(config.shop_domain || config.storefront_token || config.verified_at);
             if (provider === 'woocommerce') {
                 return `<div class="onb-platform-head">
@@ -41376,6 +41431,31 @@ Thank you for shopping with {store_name}!</textarea>
                 <button class="onb-disconnect-btn" onclick="disconnectOnbIntegration('shopify')" ${canDisconnect ? '' : 'disabled'}>${t('integrations_hub.btn_disconnect')}</button>
             </div>
             <div id="shopify-test-result">${renderConnectionStatusHtml('shopify')}</div>`;
+            }
+            return `<div class="onb-platform-head">
+                <div class="onb-platform-brand">
+                    <img class="onb-platform-logo" src="${PLATFORM_LOGOS.easy_order.primary}" onerror="this.onerror=null;this.src='${PLATFORM_LOGOS.easy_order.fallback}'" alt="Easy Order" loading="lazy" decoding="async">
+                    <div>
+                        <h4 class="onb-platform-title">${tOnb('onboarding.integrations_easy_order_title')}</h4>
+                        <p class="onb-platform-subtitle">${tOnb('onboarding.integrations_easy_order_hint')}</p>
+                    </div>
+                </div>
+                <span class="onb-badge">${tOnb('onboarding.integrations_easy_order_badge')}</span>
+            </div>
+            <div class="onb-form-grid">
+                <div class="onb-field onb-field-full">
+                    <label>${tOnb('onboarding.label_easy_order_api_key')}</label>
+                    <input type="password" id="eo-api-key" value="${esc(config.api_key)}" placeholder="${tOnb('onboarding.placeholder_easy_order_api_key')}" oninput="updateOnbIntegrationField('easy_order','api_key',this.value)">
+                </div>
+            </div>
+            <div class="onb-conn-actions">
+                <button class="onb-test-btn" id="eo-test-btn" onclick="window.testEasyOrderConnection()" ${isTesting ? 'disabled' : ''}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    ${isTesting ? tOnb('onboarding.test_loading') : tOnb('onboarding.btn_test_connection')}
+                </button>
+                <button class="onb-disconnect-btn" onclick="disconnectOnbIntegration('easy_order')" ${canDisconnect ? '' : 'disabled'}>${t('integrations_hub.btn_disconnect')}</button>
+            </div>
+            <div id="eo-test-result">${renderConnectionStatusHtml('easy_order')}</div>`;
         }
 
         function formatVerificationDate(isoText) {
@@ -41428,14 +41508,14 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function updateConnectionStatusDom(provider) {
-            const containerId = provider === 'woocommerce' ? 'woo-test-result' : 'shopify-test-result';
+            const containerId = provider === 'woocommerce' ? 'woo-test-result' : provider === 'easy_order' ? 'eo-test-result' : 'shopify-test-result';
             const el = document.getElementById(containerId);
             if (el) el.innerHTML = renderConnectionStatusHtml(provider);
             updateConnectionButtonDom(provider);
         }
 
         function updateConnectionButtonDom(provider) {
-            const btnId = provider === 'woocommerce' ? 'woo-test-btn' : 'shopify-test-btn';
+            const btnId = provider === 'woocommerce' ? 'woo-test-btn' : provider === 'easy_order' ? 'eo-test-btn' : 'shopify-test-btn';
             const btn = document.getElementById(btnId);
             const state = onbConnectionState[provider];
             if (!btn || !state) return;
@@ -41479,6 +41559,8 @@ Thank you for shopping with {store_name}!</textarea>
                 onbData.integrations.woocommerce.website_url = '';
                 onbData.integrations.woocommerce.consumer_key = '';
                 onbData.integrations.woocommerce.consumer_secret = '';
+            } else if (provider === 'easy_order') {
+                onbData.integrations.easy_order.api_key = '';
             } else {
                 onbData.integrations.shopify.shop_domain = '';
                 onbData.integrations.shopify.storefront_token = '';
@@ -41820,6 +41902,87 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
+        async function runEasyOrderConnectionTest(config) {
+            const apiKey = String(config.api_key || '').trim();
+            if (!apiKey) throw { code: 'missing', detail: '' };
+
+            const targetUrl = 'https://api.easy-orders.net/api/v1/external-apps/products';
+            let parsed;
+            try {
+                parsed = await requestViaProxy({
+                    targetUrl,
+                    method: 'GET',
+                    headers: { 'Api-Key': apiKey }
+                });
+            } catch (e) {
+                throw { code: 'network', detail: sanitizeErrorDetail(e?.detail || e?.message || 'Could not reach Easy Order API.') };
+            }
+
+            if (!parsed.ok) {
+                const detail = extractErrorDetail(parsed) || `HTTP ${parsed.status || '0'}`;
+                throw {
+                    code: (!parsed.status || parsed.status === 0) ? 'network' : (parsed.status === 401 || parsed.status === 403 ? 'permission' : 'network'),
+                    detail
+                };
+            }
+
+            const products = Array.isArray(parsed.data) ? parsed.data : (Array.isArray(parsed.data?.data) ? parsed.data.data : (Array.isArray(parsed.data?.products) ? parsed.data.products : null));
+            const firstProduct = products?.[0];
+            const sampleText = firstProduct ? String(firstProduct.name || firstProduct.title || '').slice(0, 120) : '';
+            const verifiedAt = new Date().toISOString();
+            return {
+                verified_at: verifiedAt,
+                verified_store: 'Easy Order',
+                verification_method: 'api_key',
+                detailKey: 'onboarding.test_detail_easy_order',
+                verification_snapshot: {
+                    source: 'integration-proxy',
+                    method: 'api_key',
+                    store: 'Easy Order',
+                    sample: sampleText,
+                    verified_at: verifiedAt
+                }
+            };
+        }
+
+        window.testEasyOrderConnection = async function () {
+            const eo = onbData.integrations.easy_order;
+            if (onbConnectionState.easy_order.testing) return;
+            if (!eo.api_key) {
+                setConnectionState('easy_order', { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false });
+                return;
+            }
+
+            setConnectionState('easy_order', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
+
+            try {
+                const result = await runEasyOrderConnectionTest(eo);
+                eo.verified_at = result.verified_at;
+                eo.verified_store = result.verified_store;
+                eo.verification_method = result.verification_method;
+                eo.verification_snapshot = result.verification_snapshot;
+                eo.last_test_status = 'success';
+                markOnboardingIntegrationDirty();
+
+                setConnectionState('easy_order', {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_easy_order',
+                    detailKey: result.detailKey,
+                    detailText: '',
+                    testing: false
+                });
+                await saveOnbProgress();
+            } catch (err) {
+                console.warn('Easy Order test failed:', err);
+                clearIntegrationVerification('easy_order');
+                onbData.integrations.easy_order.last_test_status = 'failed';
+                markOnboardingIntegrationDirty();
+                const errorState = mapConnectionError(err);
+                setConnectionState('easy_order', Object.assign({ status: 'error', detailKey: '', testing: false }, errorState));
+                await saveOnbProgress();
+            }
+        };
+
         function renderStepReview() {
             const d = onbData;
             const ns = tOnb('onboarding.review_not_set');
@@ -41830,11 +41993,14 @@ Thank you for shopping with {store_name}!</textarea>
             const kbStr = kbCount > 0 ? tOnb('onboarding.review_files_uploaded', { count: kbCount }) : tOnb('onboarding.review_no_files');
             const woo = d.integrations.woocommerce;
             const shop = d.integrations.shopify;
+            const eo = d.integrations.easy_order;
             const hasWoo = woo.website_url && woo.consumer_key;
             const hasShop = shop.shop_domain && shop.storefront_token;
+            const hasEo = !!eo.api_key;
             let intStr = '';
             if (hasWoo) intStr += buildIntegrationReviewLabel(tOnb('onboarding.review_woo_connected'), woo);
             if (hasShop) intStr += (intStr ? ', ' : '') + buildIntegrationReviewLabel(tOnb('onboarding.review_shopify_connected'), shop);
+            if (hasEo) intStr += (intStr ? ', ' : '') + buildIntegrationReviewLabel(tOnb('onboarding.review_easy_order_connected'), eo);
             if (!intStr) intStr = tOnb('onboarding.review_no_integrations');
 
             return `<div class="onb-step-card">
@@ -42102,6 +42268,7 @@ Thank you for shopping with {store_name}!</textarea>
                     Object.assign(merged.knowledge_base, onbData.knowledge_base);
                     Object.assign(merged.integrations.woocommerce, onbData.integrations.woocommerce);
                     Object.assign(merged.integrations.shopify, onbData.integrations.shopify);
+                    Object.assign(merged.integrations.easy_order, onbData.integrations.easy_order);
                     merged.ui.last_step = onbStep;
                     merged.ui.last_saved_at = onbData.ui.last_saved_at;
                 }
@@ -42230,10 +42397,21 @@ Thank you for shopping with {store_name}!</textarea>
                     testing: false
                 };
             }
+            if (ihData.easy_order?.verified_at) {
+                ihConnectionState.easy_order = {
+                    status: 'success',
+                    titleKey: 'onboarding.test_success_easy_order',
+                    detailKey: 'onboarding.test_detail_easy_order',
+                    detailText: '',
+                    testing: false
+                };
+            }
         }
 
         function getIntegrationProviderTitle(provider) {
-            return provider === 'woocommerce' ? tOnb('onboarding.integrations_woo_title') : tOnb('onboarding.integrations_shopify_title');
+            if (provider === 'woocommerce') return tOnb('onboarding.integrations_woo_title');
+            if (provider === 'easy_order') return tOnb('onboarding.integrations_easy_order_title');
+            return tOnb('onboarding.integrations_shopify_title');
         }
 
         function clearHubVerification(provider) {
@@ -42263,16 +42441,17 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function renderHubProviderCard(provider) {
-            const cfg = provider === 'woocommerce' ? ihData.woocommerce : ihData.shopify;
+            const cfg = ihData[provider];
             const testing = !!ihConnectionState[provider]?.testing;
             const disabled = ihCanEdit ? '' : 'disabled';
-            const testFn = provider === 'woocommerce' ? 'testHubWooConnection' : 'testHubShopifyConnection';
-            const disconnectFn = provider === 'woocommerce' ? "disconnectHubIntegration('woocommerce')" : "disconnectHubIntegration('shopify')";
-            const logo = provider === 'woocommerce' ? PLATFORM_LOGOS.wordpress : PLATFORM_LOGOS.shopify;
-            const badge = provider === 'woocommerce' ? tOnb('onboarding.integrations_https_recommended') : tOnb('onboarding.integrations_shopify_private_note');
-            const subtitle = provider === 'woocommerce' ? tOnb('onboarding.integrations_woo_hint') : tOnb('onboarding.integrations_shopify_hint');
-            const fields = provider === 'woocommerce'
-                ? `<div class="ih-form-grid">
+            const testFn = provider === 'woocommerce' ? 'testHubWooConnection' : provider === 'easy_order' ? 'testHubEasyOrderConnection' : 'testHubShopifyConnection';
+            const disconnectFn = `disconnectHubIntegration('${provider}')`;
+            const logo = provider === 'woocommerce' ? PLATFORM_LOGOS.wordpress : provider === 'easy_order' ? PLATFORM_LOGOS.easy_order : PLATFORM_LOGOS.shopify;
+            const badge = provider === 'woocommerce' ? tOnb('onboarding.integrations_https_recommended') : provider === 'easy_order' ? tOnb('onboarding.integrations_easy_order_badge') : tOnb('onboarding.integrations_shopify_private_note');
+            const subtitle = provider === 'woocommerce' ? tOnb('onboarding.integrations_woo_hint') : provider === 'easy_order' ? tOnb('onboarding.integrations_easy_order_hint') : tOnb('onboarding.integrations_shopify_hint');
+            let fields;
+            if (provider === 'woocommerce') {
+                fields = `<div class="ih-form-grid">
                         <div class="ih-field full">
                             <label>${tOnb('onboarding.label_woo_url')}</label>
                             <input type="text" value="${esc(cfg.website_url)}" placeholder="${tOnb('onboarding.placeholder_woo_url')}" oninput="updateHubIntegrationField('woocommerce','website_url',this.value)" ${disabled}>
@@ -42285,8 +42464,16 @@ Thank you for shopping with {store_name}!</textarea>
                             <label>${tOnb('onboarding.label_woo_cs')}</label>
                             <input type="password" value="${esc(cfg.consumer_secret)}" placeholder="${tOnb('onboarding.placeholder_woo_cs')}" oninput="updateHubIntegrationField('woocommerce','consumer_secret',this.value)" ${disabled}>
                         </div>
-                    </div>`
-                : `<div class="ih-form-grid">
+                    </div>`;
+            } else if (provider === 'easy_order') {
+                fields = `<div class="ih-form-grid">
+                        <div class="ih-field full">
+                            <label>${tOnb('onboarding.label_easy_order_api_key')}</label>
+                            <input type="password" value="${esc(cfg.api_key)}" placeholder="${tOnb('onboarding.placeholder_easy_order_api_key')}" oninput="updateHubIntegrationField('easy_order','api_key',this.value)" ${disabled}>
+                        </div>
+                    </div>`;
+            } else {
+                fields = `<div class="ih-form-grid">
                         <div class="ih-field full">
                             <label>${tOnb('onboarding.label_shopify_domain')}</label>
                             <div class="ih-inline-domain">
@@ -42299,6 +42486,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <input type="password" value="${esc(cfg.storefront_token)}" placeholder="${tOnb('onboarding.placeholder_shopify_token')}" oninput="updateHubIntegrationField('shopify','storefront_token',this.value)" ${disabled}>
                         </div>
                     </div>`;
+            }
 
             return `<div class="ih-card">
                 <div class="ih-card-head">
@@ -42330,6 +42518,7 @@ Thank you for shopping with {store_name}!</textarea>
             root.innerHTML = `<div class="ih-grid">
                     ${renderHubProviderCard('woocommerce')}
                     ${renderHubProviderCard('shopify')}
+                    ${renderHubProviderCard('easy_order')}
                 </div>
                 <div class="ih-save-all">
                     <button class="ih-btn" onclick="saveIntegrationsHub()" ${!ihCanEdit || ihSaving ? 'disabled' : ''}>${t('integrations_hub.btn_save')}</button>
@@ -42420,6 +42609,8 @@ Thank you for shopping with {store_name}!</textarea>
                 ihData.woocommerce.website_url = '';
                 ihData.woocommerce.consumer_key = '';
                 ihData.woocommerce.consumer_secret = '';
+            } else if (provider === 'easy_order') {
+                ihData.easy_order.api_key = '';
             } else {
                 ihData.shopify.shop_domain = '';
                 ihData.shopify.storefront_token = '';
@@ -42520,6 +42711,46 @@ Thank you for shopping with {store_name}!</textarea>
                     setHubDirty(false);
                 } catch (persistErr) {
                     console.warn('Persist Shopify failure state failed', persistErr);
+                }
+            }
+        };
+
+        window.testHubEasyOrderConnection = async function () {
+            if (!ihCanEdit) return;
+            const eo = ihData.easy_order;
+            if (ihConnectionState.easy_order.testing) return;
+            if (!eo.api_key) {
+                ihConnectionState.easy_order = { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false };
+                renderIntegrationsHubFromState();
+                return;
+            }
+            ihConnectionState.easy_order = { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true };
+            renderIntegrationsHubFromState();
+            try {
+                const result = await runEasyOrderConnectionTest(eo);
+                Object.assign(ihData.easy_order, {
+                    verified_at: result.verified_at,
+                    verified_store: result.verified_store,
+                    verification_method: result.verification_method,
+                    verification_snapshot: result.verification_snapshot,
+                    last_test_status: 'success'
+                });
+                ihConnectionState.easy_order = { status: 'success', titleKey: 'onboarding.test_success_easy_order', detailKey: result.detailKey, detailText: '', testing: false };
+                renderIntegrationsHubFromState();
+                await persistHubIntegrations();
+                setHubDirty(false);
+            } catch (err) {
+                clearHubVerification('easy_order');
+                ihData.easy_order.last_test_status = 'failed';
+                const mapped = mapConnectionError(err);
+                ihConnectionState.easy_order = Object.assign({ status: 'error', detailKey: '', testing: false }, mapped);
+                renderIntegrationsHubFromState();
+                try {
+                    setHubDirty(true);
+                    await persistHubIntegrations();
+                    setHubDirty(false);
+                } catch (persistErr) {
+                    console.warn('Persist Easy Order failure state failed', persistErr);
                 }
             }
         };
