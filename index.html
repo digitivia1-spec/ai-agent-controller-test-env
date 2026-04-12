@@ -6516,6 +6516,152 @@
             object-fit: contain;
         }
 
+        /* --- LANDING PAGE --- */
+        #landing-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2999; overflow-y: auto; overflow-x: hidden;
+            background: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 30%, rgba(91,174,176,0.12) 0%, transparent 60%);
+            display: none;
+        }
+        #landing-page.active { display: block; }
+
+        .lp-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
+        }
+        .lp-nav-logo { font-size: 1.2rem; font-weight: 800; color: var(--theme-color); letter-spacing: 0.5px; }
+        .lp-nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .lp-nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        .lp-nav-links a:hover { color: var(--theme-color); }
+        .lp-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 0.6rem 1.5rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; border: none; transition: all 0.2s; text-decoration: none;
+        }
+        .lp-btn-primary { background: var(--theme-color); color: #fff; }
+        .lp-btn-primary:hover { filter: brightness(1.12); transform: translateY(-1px); }
+        .lp-btn-outline { background: transparent; color: var(--theme-color); border: 1.5px solid var(--theme-color); }
+        .lp-btn-outline:hover { background: rgba(91,174,176,0.1); }
+
+        .lp-hero {
+            max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 3rem;
+            text-align: center;
+        }
+        .lp-hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+            background: rgba(91,174,176,0.12); color: var(--theme-color);
+            margin-bottom: 1.5rem; border: 1px solid rgba(91,174,176,0.2);
+        }
+        .lp-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800;
+            line-height: 1.15; margin: 0 0 1.2rem;
+            color: var(--text-primary);
+        }
+        .lp-hero h1 span { color: var(--theme-color); }
+        .lp-hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-secondary);
+            max-width: 640px; margin: 0 auto 2rem; line-height: 1.6;
+        }
+        .lp-hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+
+        .lp-channels {
+            display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;
+        }
+        .lp-channel-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 999px; font-size: 0.82rem; font-weight: 600;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+        }
+        .lp-channel-chip svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+        .lp-stats {
+            display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+            padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 4rem;
+        }
+        .lp-stat { text-align: center; }
+        .lp-stat-num { font-size: 1.8rem; font-weight: 800; color: var(--theme-color); }
+        .lp-stat-label { font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px; }
+
+        .lp-features {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem;
+        }
+        .lp-section-title {
+            text-align: center; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700;
+            color: var(--text-primary); margin-bottom: 0.6rem;
+        }
+        .lp-section-sub {
+            text-align: center; font-size: 1rem; color: var(--text-secondary);
+            max-width: 550px; margin: 0 auto 2.5rem; line-height: 1.5;
+        }
+        .lp-features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .lp-feature-card {
+            padding: 1.5rem; border-radius: 16px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .lp-feature-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
+        .lp-feature-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(91,174,176,0.12); color: var(--theme-color);
+            font-size: 1.3rem; margin-bottom: 1rem;
+        }
+        .lp-feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem; }
+        .lp-feature-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+
+        .lp-faq { max-width: 720px; margin: 0 auto; padding: 0 2rem 4rem; }
+        .lp-faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 0; cursor: pointer;
+        }
+        .lp-faq-q {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.95rem; font-weight: 600; color: var(--text-primary);
+        }
+        .lp-faq-q span { transition: transform 0.2s; color: var(--text-secondary); }
+        .lp-faq-a {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;
+        }
+        .lp-faq-item.open .lp-faq-a { max-height: 200px; padding-top: 0.8rem; }
+        .lp-faq-item.open .lp-faq-q span { transform: rotate(45deg); }
+
+        .lp-trust {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem 3rem; text-align: center;
+        }
+        .lp-trust-badges {
+            display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;
+        }
+        .lp-trust-badge {
+            display: flex; align-items: center; gap: 8px; padding: 10px 18px;
+            border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
+        }
+        .lp-trust-badge svg { width: 20px; height: 20px; color: var(--theme-color); flex-shrink: 0; }
+
+        .lp-footer {
+            max-width: 1200px; margin: 0 auto; padding: 2rem;
+            text-align: center; border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .lp-footer p { font-size: 0.82rem; color: var(--text-secondary); margin: 0; }
+
+        @media (max-width: 768px) {
+            .lp-nav { padding: 1rem; }
+            .lp-nav-links a:not(.lp-btn) { display: none; }
+            .lp-hero { padding: 2.5rem 1rem 2rem; }
+            .lp-hero-ctas { flex-direction: column; align-items: center; }
+            .lp-btn { width: 100%; max-width: 300px; justify-content: center; }
+            .lp-stats { gap: 1.2rem; }
+            .lp-features, .lp-faq, .lp-trust { padding-left: 1rem; padding-right: 1rem; }
+            .lp-features-grid { grid-template-columns: 1fr; }
+        }
+
         /* --- SIDEBAR NAVIGATION --- */
         .sidebar {
             position: fixed;
@@ -22529,6 +22675,190 @@
         </span>
     </button>
 
+    <!-- ========== LANDING PAGE ========== -->
+    <div id="landing-page">
+        <!-- Navigation -->
+        <nav class="lp-nav">
+            <div class="lp-nav-logo">DIGITIVIA AI AGENT</div>
+            <div class="lp-nav-links">
+                <a href="#lp-features">Features</a>
+                <a href="#lp-faq">FAQ</a>
+                <a onclick="showLandingLogin()" class="lp-btn lp-btn-outline">Log In</a>
+                <a onclick="showLandingSignup()" class="lp-btn lp-btn-primary">Start Free</a>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="lp-hero">
+            <div class="lp-hero-badge">AI-Powered Command Center</div>
+            <h1>Manage All Your <span>AI Agents</span><br>From One Dashboard</h1>
+            <p>Create, deploy, and monitor intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, and your website. Built-in CRM, order management, and content studio included.</p>
+            <div class="lp-hero-ctas">
+                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Start Free — No Credit Card</button>
+                <button onclick="scrollToFeatures()" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;">See Features</button>
+            </div>
+
+            <!-- Channel Chips -->
+            <div class="lp-channels">
+                <div class="lp-channel-chip">
+                    <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                    WhatsApp
+                </div>
+                <div class="lp-channel-chip">
+                    <svg viewBox="0 0 24 24" fill="#0084FF"><path d="M12 2C6.477 2 2 6.477 2 12c0 3.163 1.466 5.981 3.758 7.827L4.5 22.5l2.872-1.26A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                    Messenger
+                </div>
+                <div class="lp-channel-chip">
+                    <svg viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    Instagram
+                </div>
+                <div class="lp-channel-chip">
+                    <svg viewBox="0 0 24 24" fill="#26A5E4"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Telegram
+                </div>
+                <div class="lp-channel-chip">
+                    <svg viewBox="0 0 24 24" fill="var(--theme-color)"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 4l-6 3.5L6 8V6l6 3.5L18 6v2z"/></svg>
+                    Website Chat
+                </div>
+            </div>
+
+            <!-- Social Proof Stats -->
+            <div class="lp-stats">
+                <div class="lp-stat"><div class="lp-stat-num">5+</div><div class="lp-stat-label">Channels Supported</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">24/7</div><div class="lp-stat-label">AI Agent Availability</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-label">Businesses Served</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">&lt;3s</div><div class="lp-stat-label">Average Response Time</div></div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="lp-features" id="lp-features">
+            <h2 class="lp-section-title">Everything You Need in One Platform</h2>
+            <p class="lp-section-sub">Automate customer interactions, manage leads, track orders, and create content — all powered by AI.</p>
+            <div class="lp-features-grid">
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F916;</div>
+                    <h3>AI Agents Across 5 Channels</h3>
+                    <p>Deploy intelligent agents on WhatsApp, Messenger, Instagram, Telegram, and your website with custom system prompts and personality tones.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F4E8;</div>
+                    <h3>Unified AI Inbox</h3>
+                    <p>Monitor all conversations in real-time. Seamlessly switch between AI and human mode. Never miss a customer message again.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F4CA;</div>
+                    <h3>Built-in CRM & Pipeline</h3>
+                    <p>Auto-capture leads from conversations. Track them through table, kanban, and dashboard views with scoring and assignment.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F6D2;</div>
+                    <h3>Order Management</h3>
+                    <p>Track orders with status, payments, and delivery. Send automated WhatsApp confirmations with customizable templates.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F3A8;</div>
+                    <h3>Content Studio</h3>
+                    <p>Create posts with AI-generated images and captions. Schedule to Facebook and Instagram. Manage your content queue.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F4D6;</div>
+                    <h3>Knowledge Base</h3>
+                    <p>Upload documents and add reference links. Your AI agents use this knowledge to give accurate, grounded responses.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x2B50;</div>
+                    <h3>Reviews Management</h3>
+                    <p>Monitor Google Business reviews. Track ratings, manage responses, and stay on top of your online reputation.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x26A1;</div>
+                    <h3>Automation Rules</h3>
+                    <p>Set up follow-up scheduling, automated notifications, and trigger-based actions for customer interactions.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">&#x1F4B3;</div>
+                    <h3>E-Commerce Integrations</h3>
+                    <p>Connect Shopify, WooCommerce, or Easy Orders. Sync your product catalog and manage orders from one place.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="lp-faq" id="lp-faq">
+            <h2 class="lp-section-title">Frequently Asked Questions</h2>
+            <p class="lp-section-sub">Everything you need to know about Digitivia AI Agent.</p>
+
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">What channels does the AI agent support?<span>+</span></div>
+                <div class="lp-faq-a">Digitivia AI Agent supports WhatsApp, Facebook Messenger, Instagram DMs, Telegram, and a website chat widget. All conversations appear in a unified inbox so you never miss a message.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">How does the AI agent learn about my business?<span>+</span></div>
+                <div class="lp-faq-a">You configure each agent with a system prompt that defines its personality, knowledge, and behavior. You can also add reference links and upload documents to the Knowledge Base so the agent gives accurate, business-specific answers.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">Can I take over a conversation from the AI?<span>+</span></div>
+                <div class="lp-faq-a">Yes. The AI Inbox has an AI/Human mode toggle. When you switch to Human mode, the AI pauses and you can respond directly. Switch back to AI mode anytime and the agent resumes.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">What e-commerce platforms do you integrate with?<span>+</span></div>
+                <div class="lp-faq-a">We currently integrate with Shopify (via Storefront API), WooCommerce (via REST API), and Easy Orders. Your product catalog syncs automatically, and you can manage orders and send WhatsApp confirmations.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">Is there a free plan?<span>+</span></div>
+                <div class="lp-faq-a">Yes. The Free plan includes 100 messages per month, 1 AI agent, basic analytics, and community support. No credit card required to start.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">How do you handle data privacy?<span>+</span></div>
+                <div class="lp-faq-a">We are fully GDPR compliant. You can download or delete your data at any time. All data is encrypted in transit and at rest. We maintain audit logs and strict access controls.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">Can my team use it together?<span>+</span></div>
+                <div class="lp-faq-a">Yes. You can invite team members and assign roles (Owner, Manager, Member) with granular permissions. Task assignment, lead assignment, and audit logging are built in.</div>
+            </div>
+            <div class="lp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="lp-faq-q">How long does setup take?<span>+</span></div>
+                <div class="lp-faq-a">Most businesses are up and running in under 15 minutes. A guided setup wizard walks you through connecting your channels, configuring your agent, and adding your knowledge base. We also offer 2 free consultation sessions.</div>
+            </div>
+        </section>
+
+        <!-- Trust Badges -->
+        <section class="lp-trust">
+            <h2 class="lp-section-title">Trusted & Secure</h2>
+            <div class="lp-trust-badges">
+                <div class="lp-trust-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    GDPR Compliant
+                </div>
+                <div class="lp-trust-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    SSL Encrypted
+                </div>
+                <div class="lp-trust-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Secure Payments via Stripe
+                </div>
+                <div class="lp-trust-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    Team Roles & Permissions
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="lp-hero" style="padding-top:0;padding-bottom:2rem;">
+            <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;">Ready to Automate Your Business?</h2>
+            <p style="color:var(--text-secondary);margin-bottom:1.5rem;">Join businesses already using AI to handle customer conversations 24/7.</p>
+            <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2.5rem;font-size:1rem;">Get Started for Free</button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="lp-footer">
+            <p>&copy; 2026 Digitivia. All rights reserved.</p>
+        </footer>
+    </div>
+
     <div id="login-container">
         <div class="card glass login-card">
             <div class="login-title-wrap">
@@ -25045,17 +25375,12 @@
         }
 
         async function initiateCheckout(plan) {
-            // Placeholder for Stripe checkout integration
-            // This will call the create-checkout-session Edge Function when products are ready
-            showToast(`Stripe checkout for "${plan}" plan coming soon!`, 'info');
-            console.log('Initiating checkout for plan:', plan);
-
-            // Future implementation:
-            // const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout-session`, {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
-            //     body: JSON.stringify({ plan })
-            // });
+            // Delegate to the working Stripe checkout function
+            if (typeof initiateStripeCheckout === 'function') {
+                initiateStripeCheckout(plan);
+            } else {
+                showToast('Checkout is not available. Please try again later.', 'error');
+            }
         }
 
         function contactSales() {
@@ -25133,7 +25458,9 @@
                     } catch (ae) { console.warn('Auto-accept invite failed:', ae); }
                 }
             } else {
-                document.getElementById('login-container').style.display = 'flex';
+                // Show landing page for unauthenticated visitors
+                document.getElementById('landing-page').classList.add('active');
+                document.getElementById('login-container').style.display = 'none';
             }
         };
 
@@ -25876,8 +26203,32 @@
             });
         }
 
+        // --- Landing Page Navigation ---
+        function showLandingLogin() {
+            document.getElementById('landing-page').classList.remove('active');
+            document.getElementById('login-container').style.display = 'flex';
+        }
+        function showLandingSignup() {
+            document.getElementById('landing-page').classList.remove('active');
+            document.getElementById('login-container').style.display = 'flex';
+            // Focus the email field for signup flow
+            setTimeout(() => {
+                const emailInput = document.getElementById('login-user');
+                if (emailInput) emailInput.focus();
+            }, 100);
+        }
+        function showLandingPage() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('landing-page').classList.add('active');
+        }
+        function scrollToFeatures() {
+            const el = document.getElementById('lp-features');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
         async function showApp() {
             document.getElementById('login-container').style.display = 'none';
+            document.getElementById('landing-page').classList.remove('active');
             const app = document.getElementById('app-container');
             app.style.display = 'flex';
 
@@ -35595,8 +35946,47 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         async function buyAddon(key, amount, currency) {
-            // Placeholder for checkout
-            alert(`Initiating checkout for ${key} conversations (${currency} ${amount}). Integration coming soon.`);
+            try {
+                if (!window.supabaseClient) throw new Error('Supabase not initialized');
+
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) { showToast('Please login first', 'error'); return; }
+
+                const { data: profile } = await supabaseClient.from('profiles').select('org_id').eq('user_id', user.id).single();
+                if (!profile || !profile.org_id) throw new Error('Organization not found');
+
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                const token = session?.access_token;
+                if (!token) throw new Error('No active session');
+
+                showToast('Redirecting to checkout...', 'info');
+
+                const { data, error } = await supabaseClient.functions.invoke('billing-create-checkout-session', {
+                    body: {
+                        plan_slug: `addon_${key}`,
+                        currency: currency,
+                        org_id: profile.org_id,
+                        addon_key: key,
+                        addon_amount: amount,
+                        success_url: window.location.href.split('?')[0] + `?payment=success&addon=${key}`,
+                        cancel_url: window.location.href.split('?')[0] + '?payment=cancel',
+                        access_token: token,
+                        user_email: user.email
+                    },
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (error) throw error;
+                if (data && data.error) throw new Error(data.error);
+                if (data && data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('No checkout URL returned');
+                }
+            } catch (err) {
+                console.error('Addon Checkout Error:', err);
+                showToast('Checkout failed: ' + (err.message || 'Unknown error'), 'error');
+            }
         }
 
         function closePricingModal() {
