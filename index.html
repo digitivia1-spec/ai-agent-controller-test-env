@@ -6526,6 +6526,23 @@
         }
         #landing-page.active { display: block; }
 
+        /* Rain drop particle animation */
+        .lp-particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+        }
+        .lp-particle {
+            position: absolute; width: 2px; height: 2px; border-radius: 50%;
+            background: rgba(91,174,176,0.4); animation: lp-rain linear infinite;
+        }
+        @keyframes lp-rain {
+            0% { transform: translateY(-10px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        :root[data-theme="light"] .lp-particle { background: rgba(91,174,176,0.2); }
+
         .lp-nav {
             display: flex; align-items: center; justify-content: space-between;
             padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
@@ -22968,6 +22985,26 @@
 
     <!-- ========== LANDING PAGE ========== -->
     <div id="landing-page">
+        <!-- Rain Particles Background -->
+        <div class="lp-particles" id="lp-particles"></div>
+        <script>
+        (function() {
+            const container = document.getElementById('lp-particles');
+            if (!container) return;
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'lp-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (3 + Math.random() * 5) + 's';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                p.style.width = (1 + Math.random() * 2) + 'px';
+                p.style.height = (8 + Math.random() * 16) + 'px';
+                p.style.borderRadius = '1px';
+                container.appendChild(p);
+            }
+        })();
+        </script>
+
         <!-- Navigation -->
         <nav class="lp-nav">
             <div class="lp-nav-logo">DIGITIVIA AI AGENT</div>
