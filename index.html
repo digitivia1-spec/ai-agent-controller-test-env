@@ -6526,9 +6526,214 @@
         }
         #landing-page.active { display: block; }
 
+        /* Rain drop particle animation */
+        .lp-particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+        }
+        .lp-particle {
+            position: absolute; width: 2px; height: 2px; border-radius: 50%;
+            background: rgba(91,174,176,0.4); animation: lp-rain linear infinite;
+        }
+        @keyframes lp-rain {
+            0% { transform: translateY(-10px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        :root[data-theme="light"] .lp-particle { background: rgba(91,174,176,0.2); }
+
+        /* ====== 21ST.DEV PREMIUM UX LAYER ====== */
+
+        /* Scroll progress bar */
+        .lp-scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 10000;
+            background: linear-gradient(90deg, var(--theme-color), #a78bfa, #f59e0b);
+            width: 0%; transition: width 0.1s linear;
+        }
+
+        /* Noise texture overlay */
+        #landing-page::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0; opacity: 0.4;
+        }
+
+        /* Magnetic button effect */
+        .lp-btn { transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: hidden; }
+        .lp-btn::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 0; height: 0; border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+        .lp-btn:hover::before { width: 300px; height: 300px; }
+        .lp-btn:active { transform: scale(0.97); }
+
+        /* Glassmorphism premium cards */
+        .lp-glass {
+            background: rgba(255,255,255,0.04) !important;
+            backdrop-filter: blur(12px) saturate(1.2);
+            -webkit-backdrop-filter: blur(12px) saturate(1.2);
+            border: 1px solid rgba(255,255,255,0.08) !important;
+        }
+        :root[data-theme="light"] .lp-glass {
+            background: rgba(255,255,255,0.7) !important;
+            backdrop-filter: blur(12px) saturate(1.5);
+            border-color: rgba(0,0,0,0.06) !important;
+        }
+
+        /* Section divider gradient line */
+        .lp-divider {
+            width: 60px; height: 3px; border-radius: 2px; margin: 0 auto 2rem;
+            background: linear-gradient(90deg, var(--theme-color), #a78bfa);
+        }
+
+        /* Typing cursor for hero */
+        .lp-cursor {
+            display: inline-block; width: 3px; height: 1em; background: var(--theme-color);
+            margin-left: 2px; animation: lp-blink 0.8s step-end infinite; vertical-align: text-bottom;
+        }
+        @keyframes lp-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Smooth parallax depth */
+        .lp-parallax-slow { will-change: transform; }
+        .lp-parallax-fast { will-change: transform; }
+
+        /* Feature card hover glow border */
+        .lp-feature-card { position: relative; }
+        .lp-feature-card::before {
+            content: ''; position: absolute; inset: -1px; border-radius: 17px; padding: 1px;
+            background: linear-gradient(135deg, transparent 40%, rgba(91,174,176,0.3), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .lp-feature-card:hover::before { opacity: 1; }
+
+        /* Smooth scroll behavior */
+        #landing-page { scroll-behavior: smooth; }
+
+        /* Animated underline on nav links */
+        .lp-nav-links a:not(.lp-btn) { position: relative; }
+        .lp-nav-links a:not(.lp-btn)::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: var(--theme-color); border-radius: 1px; transition: width 0.3s ease;
+        }
+        .lp-nav-links a:not(.lp-btn):hover::after { width: 100%; }
+
+        /* Price card popular glow */
+        .lp-price-card.popular {
+            box-shadow: 0 0 30px rgba(91,174,176,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .lp-price-card.popular::before {
+            background: linear-gradient(135deg, var(--theme-color), #a78bfa) !important;
+        }
+
+        /* Stagger animation for feature grid children */
+        .lp-features-grid > .lp-feature-card:nth-child(1) { transition-delay: 0.05s; }
+        .lp-features-grid > .lp-feature-card:nth-child(2) { transition-delay: 0.1s; }
+        .lp-features-grid > .lp-feature-card:nth-child(3) { transition-delay: 0.15s; }
+        .lp-features-grid > .lp-feature-card:nth-child(4) { transition-delay: 0.2s; }
+        .lp-features-grid > .lp-feature-card:nth-child(5) { transition-delay: 0.25s; }
+        .lp-features-grid > .lp-feature-card:nth-child(6) { transition-delay: 0.3s; }
+        .lp-features-grid > .lp-feature-card:nth-child(7) { transition-delay: 0.35s; }
+        .lp-features-grid > .lp-feature-card:nth-child(8) { transition-delay: 0.4s; }
+        .lp-features-grid > .lp-feature-card:nth-child(9) { transition-delay: 0.45s; }
+
+        /* ====== LANDING PAGE ANIMATIONS ====== */
+
+        /* Fade-in on scroll */
+        .lp-reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .lp-reveal.visible { opacity: 1; transform: translateY(0); }
+        .lp-reveal-delay-1 { transition-delay: 0.1s; }
+        .lp-reveal-delay-2 { transition-delay: 0.2s; }
+        .lp-reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Gradient animated headline */
+        .lp-gradient-text {
+            background: linear-gradient(90deg, var(--theme-color), #a78bfa, var(--theme-color));
+            background-size: 200% auto;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: lp-gradient-shift 4s ease infinite;
+        }
+        @keyframes lp-gradient-shift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+
+        /* Floating glow orbs */
+        .lp-glow-orb {
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            pointer-events: none; opacity: 0.15; z-index: -1;
+        }
+        .lp-glow-1 { width: 300px; height: 300px; background: var(--theme-color); top: 10%; left: 10%; animation: lp-float 8s ease-in-out infinite; }
+        .lp-glow-2 { width: 250px; height: 250px; background: #8b5cf6; top: 40%; right: 5%; animation: lp-float 10s ease-in-out infinite reverse; }
+        .lp-glow-3 { width: 200px; height: 200px; background: #f59e0b; bottom: 20%; left: 30%; animation: lp-float 12s ease-in-out infinite; }
+        @keyframes lp-float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -30px); }
+            50% { transform: translate(-15px, 20px); }
+            75% { transform: translate(25px, 15px); }
+        }
+
+        /* Stat counter pulse */
+        .lp-stat-num { animation: lp-count-in 0.8s ease-out; }
+        @keyframes lp-count-in {
+            0% { opacity: 0; transform: scale(0.5); }
+            60% { transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Card 3D tilt on hover */
+        .lp-tilt:hover { transform: perspective(800px) rotateY(2deg) rotateX(-2deg) translateY(-4px); }
+        .lp-tilt { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .lp-tilt:hover { box-shadow: 0 12px 40px rgba(91,174,176,0.15); }
+
+        /* Channel chip bounce-in */
+        .lp-channel-chip { animation: lp-chip-in 0.5s ease backwards; }
+        .lp-channel-chip:nth-child(1) { animation-delay: 0.1s; }
+        .lp-channel-chip:nth-child(2) { animation-delay: 0.2s; }
+        .lp-channel-chip:nth-child(3) { animation-delay: 0.3s; }
+        .lp-channel-chip:nth-child(4) { animation-delay: 0.4s; }
+        .lp-channel-chip:nth-child(5) { animation-delay: 0.5s; }
+        @keyframes lp-chip-in {
+            0% { opacity: 0; transform: translateY(15px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Pricing card shine sweep */
+        .lp-price-card { position: relative; overflow: hidden; }
+        .lp-price-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            transition: left 0.6s ease;
+        }
+        .lp-price-card:hover::after { left: 100%; }
+
+        /* Hero badge pulse glow */
+        .lp-hero-badge { animation: lp-badge-glow 3s ease-in-out infinite; }
+        @keyframes lp-badge-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(91,174,176,0); }
+            50% { box-shadow: 0 0 20px 4px rgba(91,174,176,0.2); }
+        }
+
+        /* Step number pulse */
+        .lp-step-num { animation: lp-step-pulse 2s ease-in-out infinite; }
+        @keyframes lp-step-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(91,174,176,0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(91,174,176,0); }
+        }
+
         .lp-nav {
             display: flex; align-items: center; justify-content: space-between;
             padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
+            position: sticky; top: 0; z-index: 100; transition: all 0.3s ease;
         }
         .lp-nav-logo { font-size: 1.2rem; font-weight: 800; color: var(--theme-color); letter-spacing: 0.5px; }
         .lp-nav-links { display: flex; gap: 1.5rem; align-items: center; }
@@ -6606,7 +6811,7 @@
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
             transition: transform 0.2s, border-color 0.2s;
         }
-        .lp-feature-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
+        .lp-feature-card:hover { transform: perspective(800px) rotateY(2deg) rotateX(-2deg) translateY(-4px); border-color: rgba(91,174,176,0.3); box-shadow: 0 12px 40px rgba(91,174,176,0.12); }
         .lp-feature-icon {
             width: 44px; height: 44px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
@@ -22968,6 +23173,152 @@
 
     <!-- ========== LANDING PAGE ========== -->
     <div id="landing-page">
+        <!-- Scroll Progress Bar -->
+        <div class="lp-scroll-progress" id="lp-scroll-progress"></div>
+
+        <!-- Floating Glow Orbs -->
+        <div class="lp-glow-orb lp-glow-1"></div>
+        <div class="lp-glow-orb lp-glow-2"></div>
+        <div class="lp-glow-orb lp-glow-3"></div>
+
+        <!-- Rain Particles Background -->
+        <div class="lp-particles" id="lp-particles"></div>
+        <script>
+        (function() {
+            const container = document.getElementById('lp-particles');
+            if (!container) return;
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'lp-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (3 + Math.random() * 5) + 's';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                p.style.width = (1 + Math.random() * 2) + 'px';
+                p.style.height = (8 + Math.random() * 16) + 'px';
+                p.style.borderRadius = '1px';
+                container.appendChild(p);
+            }
+        })();
+        </script>
+
+        <!-- Premium Interactions Engine -->
+        <script>
+        (function() {
+            // 1. Scroll Reveal Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            setTimeout(() => {
+                document.querySelectorAll('#landing-page section, #landing-page .lp-feature-card, #landing-page .lp-price-card, #landing-page .lp-faq-item').forEach((el, i) => {
+                    el.classList.add('lp-reveal');
+                    if (i % 3 === 1) el.classList.add('lp-reveal-delay-1');
+                    if (i % 3 === 2) el.classList.add('lp-reveal-delay-2');
+                    observer.observe(el);
+                });
+            }, 100);
+
+            // 2. Scroll Progress Bar
+            const lpPage = document.getElementById('landing-page');
+            const progressBar = document.getElementById('lp-scroll-progress');
+            if (lpPage && progressBar) {
+                lpPage.addEventListener('scroll', () => {
+                    const scrollTop = lpPage.scrollTop;
+                    const scrollHeight = lpPage.scrollHeight - lpPage.clientHeight;
+                    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                    progressBar.style.width = progress + '%';
+                });
+            }
+
+            // 3. Magnetic Button Effect
+            document.querySelectorAll('#landing-page .lp-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
+            });
+
+            // 4. Parallax on scroll (subtle depth layers)
+            if (lpPage) {
+                lpPage.addEventListener('scroll', () => {
+                    const scrollY = lpPage.scrollTop;
+                    document.querySelectorAll('.lp-glow-orb').forEach((orb, i) => {
+                        const speed = 0.02 + (i * 0.01);
+                        orb.style.transform = `translateY(${scrollY * speed}px)`;
+                    });
+                });
+            }
+
+            // 5. Animated Counter for Stats
+            const statObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelectorAll('.lp-stat-num').forEach(el => {
+                            const text = el.textContent;
+                            // Only animate numeric values
+                            const num = parseInt(text.replace(/[^0-9]/g, ''));
+                            if (!isNaN(num) && num > 0 && num < 100) {
+                                let current = 0;
+                                const step = Math.ceil(num / 20);
+                                const suffix = text.replace(/[0-9]/g, '');
+                                const interval = setInterval(() => {
+                                    current += step;
+                                    if (current >= num) { current = num; clearInterval(interval); }
+                                    el.textContent = current + suffix;
+                                }, 40);
+                            }
+                        });
+                        statObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            setTimeout(() => {
+                const statsEl = document.querySelector('.lp-stats');
+                if (statsEl) statObserver.observe(statsEl);
+            }, 200);
+
+            // 6. Smooth anchor scrolling
+            document.querySelectorAll('#landing-page a[href^="#"]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const target = document.querySelector(a.getAttribute('href'));
+                    if (target && lpPage) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            // 7. Navbar blur on scroll
+            if (lpPage) {
+                const nav = document.querySelector('.lp-nav');
+                if (nav) {
+                    lpPage.addEventListener('scroll', () => {
+                        if (lpPage.scrollTop > 60) {
+                            nav.style.background = 'rgba(15,16,20,0.85)';
+                            nav.style.backdropFilter = 'blur(12px)';
+                            nav.style.webkitBackdropFilter = 'blur(12px)';
+                            nav.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+                        } else {
+                            nav.style.background = 'transparent';
+                            nav.style.backdropFilter = 'none';
+                            nav.style.borderBottom = 'none';
+                        }
+                    });
+                }
+            }
+        })();
+        </script>
+
         <!-- Navigation -->
         <nav class="lp-nav">
             <div class="lp-nav-logo">DIGITIVIA AI AGENT</div>
@@ -22982,12 +23333,12 @@
 
         <!-- Hero -->
         <section class="lp-hero">
-            <div class="lp-hero-badge">AI-Powered Command Center</div>
-            <h1>Manage All Your <span>AI Agents</span><br>From One Dashboard</h1>
-            <p>Create, deploy, and monitor intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, and your website. Built-in CRM, order management, and content studio included.</p>
+            <div class="lp-hero-badge">AI-Powered Customer Engagement Platform</div>
+            <h1>Your AI Agents Handle <span class="lp-gradient-text">Every Customer</span><br>On Every Channel, 24/7</h1>
+            <p>Deploy intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram & your website. Capture leads automatically, manage orders, and let AI handle support — while you focus on growing your business.</p>
             <div class="lp-hero-ctas">
-                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Start Free — No Credit Card</button>
-                <button onclick="scrollToFeatures()" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;">See Features</button>
+                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Start Automating Now</button>
+                <button onclick="scrollToFeatures()" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;">See How It Works</button>
             </div>
 
             <!-- Channel Chips -->
@@ -23016,10 +23367,131 @@
 
             <!-- Social Proof Stats -->
             <div class="lp-stats">
-                <div class="lp-stat"><div class="lp-stat-num">5+</div><div class="lp-stat-label">Channels Supported</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">24/7</div><div class="lp-stat-label">AI Agent Availability</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-label">Businesses Served</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">&lt;3s</div><div class="lp-stat-label">Average Response Time</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">5</div><div class="lp-stat-label">Messaging Channels</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">24/7</div><div class="lp-stat-label">Always-On AI</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">&lt;3s</div><div class="lp-stat-label">Response Time</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">10x</div><div class="lp-stat-label">Faster Than Manual</div></div>
+            </div>
+        </section>
+
+        <!-- Partner Logos -->
+        <section style="max-width:800px;margin:0 auto;padding:0 2rem 3rem;text-align:center;">
+            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;">Powering Your Growth With</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;opacity:0.6;">
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Anthropic</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Meta</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">OpenAI</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Shopify</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">WooCommerce</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Stripe</span>
+                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg> Google</span>
+            </div>
+        </section>
+
+        <!-- Why Choose Digitivia -->
+        <section style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
+            <h2 class="lp-section-title">Why Choose Digitivia?</h2>
+            <p class="lp-section-sub">We don't sell generic bots. We build fully customized AI workflows.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;">
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">🧠</div>
+                    <h3>Smart Decisions</h3>
+                    <p>Powered by advanced LLMs to handle complex logic and give accurate, context-aware responses.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">⚡</div>
+                    <h3>Auto Execution</h3>
+                    <p>Performs tasks across your software ecosystem — from capturing leads to sending order confirmations.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">📊</div>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Live insights, performance reports, sentiment analysis, and actionable business intelligence.</p>
+                </div>
+                <div class="lp-feature-card">
+                    <div class="lp-feature-icon">🔒</div>
+                    <h3>Enterprise Security</h3>
+                    <p>GDPR compliant, encrypted data, audit logging, role-based access control, and secure payments via Stripe.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industry-Specific AI -->
+        <section style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
+            <h2 class="lp-section-title">Industry-Specific AI</h2>
+            <p class="lp-section-sub">Tailored logic for your sector. Pre-built templates to get started fast.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;">
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🛒</div>
+                    <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">E-Commerce</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Product recommendations, order tracking, and automated support.</p></div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🏠</div>
+                    <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">Real Estate</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Property matching, viewing coordination, and lead qualification.</p></div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🏥</div>
+                    <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">Healthcare</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Patient triage, appointment management, and follow-up reminders.</p></div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🍽️</div>
+                    <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">Restaurants & Hospitality</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Table booking, menu inquiries, and guest experience management.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agent Types -->
+        <section style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
+            <h2 class="lp-section-title">What Can Our AI Agents Do?</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:1.5rem;">
+                <div style="padding:1.5rem;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+                        <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">💰 Sales Agent</span>
+                        <span style="padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:600;border:1px solid #10b981;color:#10b981;">Revenue</span>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;margin:0;">Qualify leads and close deals automatically. Engage prospects 24/7, answer product questions, and push them through your pipeline.</p>
+                </div>
+                <div style="padding:1.5rem;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+                        <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">🎧 Support Agent</span>
+                        <span style="padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:600;border:1px solid var(--theme-color);color:var(--theme-color);">Retention</span>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;margin:0;">Instant 24/7 support in Arabic & English. Handle complaints, track orders, and resolve issues before customers leave.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- See It In Action (Video Placeholder) -->
+        <section style="max-width:800px;margin:0 auto;padding:0 2rem 4rem;text-align:center;">
+            <h2 class="lp-section-title">See It In Action</h2>
+            <p class="lp-section-sub">Watch how our AI Agent handles conversations in real-time.</p>
+            <div style="aspect-ratio:16/9;background:#0a0a0f;border-radius:16px;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;" onclick="window.open('https://wa.me/201211400092?text=I%20want%20to%20see%20a%20demo','_blank')">
+                <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <div style="position:absolute;bottom:16px;font-size:0.78rem;color:rgba(255,255,255,0.5);">Click to request a live demo</div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
+            <h2 class="lp-section-title">Up and Running in 3 Steps</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-top:2rem;">
+                <div style="text-align:center;">
+                    <div style="width:48px;height:48px;border-radius:50%;background:rgba(91,174,176,0.12);color:var(--theme-color);font-size:1.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 0.8rem;">1</div>
+                    <h3 style="font-size:0.95rem;color:var(--text-primary);margin:0 0 0.4rem;">Connect Your Channels</h3>
+                    <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.5;">Link WhatsApp, Messenger, Instagram, Telegram, or your website in minutes with our guided setup.</p>
+                </div>
+                <div style="text-align:center;">
+                    <div style="width:48px;height:48px;border-radius:50%;background:rgba(91,174,176,0.12);color:var(--theme-color);font-size:1.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 0.8rem;">2</div>
+                    <h3 style="font-size:0.95rem;color:var(--text-primary);margin:0 0 0.4rem;">Configure Your AI Agent</h3>
+                    <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.5;">Define your agent's personality, upload your knowledge base, and choose the right tone for your brand.</p>
+                </div>
+                <div style="text-align:center;">
+                    <div style="width:48px;height:48px;border-radius:50%;background:rgba(91,174,176,0.12);color:var(--theme-color);font-size:1.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 0.8rem;">3</div>
+                    <h3 style="font-size:0.95rem;color:var(--text-primary);margin:0 0 0.4rem;">Go Live & Monitor</h3>
+                    <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.5;">Your AI agent starts handling conversations instantly. Monitor from the unified inbox and take over anytime.</p>
+                </div>
             </div>
         </section>
 
@@ -23076,63 +23548,124 @@
             </div>
         </section>
 
-        <!-- Pricing -->
+        <!-- Pricing (auto-detects currency) -->
         <section class="lp-pricing" id="lp-pricing">
             <h2 class="lp-section-title">Simple, Transparent Pricing</h2>
-            <p class="lp-section-sub">Start free, scale as you grow. No hidden fees.</p>
-            <div class="lp-pricing-grid">
-                <div class="lp-price-card">
-                    <div class="lp-price-name">Free</div>
-                    <div class="lp-price-amount">$0 <span>/month</span></div>
-                    <div class="lp-price-desc">Perfect to get started</div>
-                    <ul class="lp-price-features">
-                        <li>100 messages/month</li>
-                        <li>1 AI agent</li>
-                        <li>Basic analytics</li>
-                        <li>Community support</li>
-                    </ul>
-                    <button onclick="showLandingSignup()" class="lp-btn lp-btn-outline" style="width:100%;">Get Started</button>
-                </div>
-                <div class="lp-price-card">
-                    <div class="lp-price-name">Starter</div>
-                    <div class="lp-price-amount">$19 <span>/month</span></div>
-                    <div class="lp-price-desc">For small businesses</div>
-                    <ul class="lp-price-features">
-                        <li>1,000 messages/month</li>
-                        <li>2 AI agents</li>
-                        <li>Advanced analytics</li>
-                        <li>Email support</li>
-                    </ul>
-                    <button onclick="showLandingSignup()" class="lp-btn lp-btn-outline" style="width:100%;">Start Free Trial</button>
-                </div>
-                <div class="lp-price-card popular">
-                    <div class="lp-price-name">Growth</div>
-                    <div class="lp-price-amount">$49 <span>/month</span></div>
-                    <div class="lp-price-desc">For growing teams</div>
-                    <ul class="lp-price-features">
-                        <li>10,000 messages/month</li>
-                        <li>4 AI agents</li>
-                        <li>Priority analytics</li>
-                        <li>Priority support</li>
-                        <li>Custom integrations</li>
-                    </ul>
-                    <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="width:100%;">Start Free Trial</button>
-                </div>
-                <div class="lp-price-card">
-                    <div class="lp-price-name">Enterprise</div>
-                    <div class="lp-price-amount">Custom</div>
-                    <div class="lp-price-desc">For large organizations</div>
-                    <ul class="lp-price-features">
-                        <li>Unlimited messages</li>
-                        <li>Unlimited agents</li>
-                        <li>White-label options</li>
-                        <li>Dedicated manager</li>
-                        <li>SLA guarantee</li>
-                    </ul>
-                    <button onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="width:100%;">Contact Sales</button>
-                </div>
-            </div>
+            <p class="lp-section-sub">Scale your AI agents with the perfect plan. Prices include VAT.</p>
+            <div class="lp-pricing-grid" id="lp-pricing-grid"></div>
         </section>
+        <script>
+        (function() {
+            const LP_PLANS = [
+                {
+                    name: 'Starter', icon: '🚀', tagline: 'Smart AI Kickstart',
+                    subtitle: 'Perfect for small businesses & startups.',
+                    prices: { EGP: 3950, USD: 79, EUR: 74 },
+                    originalPrices: { EGP: 5000, USD: 99, EUR: 94 },
+                    ideal: 'You want to automate manual replies.',
+                    features: ['5,000 conversations', '24/7 Auto Replies', 'Lead Qualification'],
+                    cta: 'upgrade', popular: false
+                },
+                {
+                    name: 'Growth', icon: '📈', tagline: 'Accelerate & Convert',
+                    subtitle: 'Best for growing businesses & conversions.',
+                    prices: { EGP: 7950, USD: 159, EUR: 149 },
+                    originalPrices: { EGP: 10900, USD: 219, EUR: 199 },
+                    ideal: 'You want to scale engagement & sales.',
+                    features: ['12,000 conversations', 'Advanced Lead Qualify', 'Order Confirmation'],
+                    cta: 'upgrade', popular: true
+                },
+                {
+                    name: 'Pro', icon: '🏛️', tagline: 'Powerhouse',
+                    subtitle: 'For fast-growth & high-volume operations.',
+                    prices: { EGP: 20950, USD: 419, EUR: 389 },
+                    originalPrices: { EGP: 27000, USD: 539, EUR: 499 },
+                    ideal: 'You need CRM syncing & priority support.',
+                    features: ['30,000 conversations', 'CRM integration', 'Priority support', 'Dedicated insights'],
+                    cta: 'upgrade', popular: false
+                },
+                {
+                    name: 'Customize', icon: '⚙️', tagline: 'Tailored Solution for large organizations.',
+                    prices: null,
+                    ideal: 'You need custom flows & dedicated agent.',
+                    features: ['Unlimited Usage', 'Admin Dashboard', 'Custom Workflows'],
+                    cta: 'contact', popular: false
+                }
+            ];
+
+            function detectLpCurrency() {
+                const cached = localStorage.getItem('detected_currency');
+                if (cached) return cached;
+                // Check browser timezone/locale hints
+                try {
+                    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+                    if (tz.includes('Cairo') || tz.includes('Africa')) return 'EGP';
+                    if (tz.includes('Europe')) return 'EUR';
+                } catch(e) {}
+                return 'USD';
+            }
+
+            function formatLpPrice(amount, currency) {
+                if (currency === 'EGP') return `EGP ${amount.toLocaleString()}`;
+                if (currency === 'EUR') return `€${amount.toLocaleString()}`;
+                return `$${amount.toLocaleString()}`;
+            }
+
+            function renderLpPricing() {
+                const grid = document.getElementById('lp-pricing-grid');
+                if (!grid) return;
+                const currency = detectLpCurrency();
+
+                grid.innerHTML = LP_PLANS.map(plan => {
+                    const origPrice = plan.originalPrices ? plan.originalPrices[currency] || plan.originalPrices.USD : null;
+                    const priceDisplay = plan.prices
+                        ? `${origPrice ? `<div style="font-size:0.85rem;color:var(--text-secondary);text-decoration:line-through;margin-bottom:2px;">${formatLpPrice(origPrice, currency)}</div>` : ''}
+                           <div class="lp-price-amount">${formatLpPrice(plan.prices[currency] || plan.prices.USD, currency)} <span>/month</span></div>
+                           <div class="lp-price-desc" style="font-size:0.72rem;margin-top:-4px;margin-bottom:0.8rem;">Prices include VAT</div>`
+                        : `<div class="lp-price-amount">Custom <span>Contact Sales</span></div>`;
+
+                    const ctaBtn = plan.cta === 'contact'
+                        ? `<button onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="width:100%;">Contact Sales</button>`
+                        : `<button onclick="showLandingSignup()" class="lp-btn ${plan.popular ? 'lp-btn-primary' : 'lp-btn-outline'}" style="width:100%;">Upgrade</button>`;
+
+                    return `
+                    <div class="lp-price-card ${plan.popular ? 'popular' : ''}">
+                        <div style="font-size:1.8rem;margin-bottom:0.4rem;">${plan.icon}</div>
+                        <div class="lp-price-name">${plan.name}</div>
+                        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--theme-color);font-weight:700;margin-bottom:0.3rem;">${plan.tagline}</div>
+                        ${plan.subtitle ? `<div class="lp-price-desc">${plan.subtitle}</div>` : ''}
+                        ${priceDisplay}
+                        <div style="padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);margin-bottom:1rem;font-size:0.78rem;color:var(--text-secondary);">
+                            <span style="color:var(--theme-color);">💡 IDEAL IF:</span><br>${plan.ideal}
+                        </div>
+                        <ul class="lp-price-features">
+                            ${plan.features.map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                        ${ctaBtn}
+                        <div style="text-align:center;margin-top:0.6rem;font-size:0.72rem;color:var(--text-secondary);">🔒 Secure Payment via Stripe</div>
+                    </div>`;
+                }).join('');
+            }
+
+            // Render on load and after ipapi detection
+            renderLpPricing();
+            // Also try to get precise currency via ipapi (cached from main app)
+            fetch('https://ipapi.co/json/').then(r => r.json()).then(data => {
+                if (data.country_code === 'EG') localStorage.setItem('detected_currency', 'EGP');
+                else if (['FR','DE','IT','ES','NL','BE','AT','PT','IE','FI','GR','LU','SK','SI','EE','LV','LT','CY','MT','HR'].includes(data.country_code)) localStorage.setItem('detected_currency', 'EUR');
+                else localStorage.setItem('detected_currency', 'USD');
+                localStorage.setItem('detected_currency_at', String(Date.now()));
+                renderLpPricing(); // Re-render with correct currency
+                // Update comparison table price
+                const priceCell = document.getElementById('lp-compare-price');
+                if (priceCell) {
+                    const c = detectLpCurrency();
+                    const p = LP_PLANS[0].prices[c] || LP_PLANS[0].prices.USD;
+                    priceCell.textContent = 'From ' + formatLpPrice(p, c) + '/mo';
+                }
+            }).catch(() => {});
+        })();
+        </script>
 
         <!-- Comparison -->
         <section class="lp-compare" id="lp-compare">
@@ -23150,13 +23683,15 @@
                 </thead>
                 <tbody>
                     <tr><td>Multi-Channel AI Agents</td><td class="lp-highlight"><span class="lp-check">5 channels</span></td><td>6+</td><td>4</td><td>3</td></tr>
-                    <tr><td>Built-in CRM</td><td class="lp-highlight"><span class="lp-check">Full CRM</span></td><td>Basic</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Built-in CRM & Pipeline</td><td class="lp-highlight"><span class="lp-check">Full CRM</span></td><td>Basic</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
                     <tr><td>Order Management</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
                     <tr><td>Content Studio</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
-                    <tr><td>WhatsApp Notifications</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td></tr>
-                    <tr><td>E-Commerce Integrations</td><td class="lp-highlight"><span class="lp-check">3 platforms</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
-                    <tr><td>Free Plan</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
-                    <tr><td>Starting Price</td><td class="lp-highlight"><span class="lp-check">$0/mo</span></td><td>$39/mo</td><td>$15/mo</td><td>$29/mo</td></tr>
+                    <tr><td>WhatsApp Order Alerts</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>E-Commerce Integrations</td><td class="lp-highlight"><span class="lp-check">Shopify, WooCommerce, Easy Orders</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
+                    <tr><td>Task Manager & Ticketing</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Google Reviews Monitoring</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Team RBAC & Permissions</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Starting Price</td><td class="lp-highlight"><span class="lp-check" id="lp-compare-price">From $79/mo</span></td><td>$39/mo</td><td>$15/mo</td><td>$29/mo</td></tr>
                 </tbody>
             </table>
         </section>
@@ -23183,8 +23718,8 @@
                 <div class="lp-faq-a">We currently integrate with Shopify (via Storefront API), WooCommerce (via REST API), and Easy Orders. Your product catalog syncs automatically, and you can manage orders and send WhatsApp confirmations.</div>
             </div>
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
-                <div class="lp-faq-q">Is there a free plan?<span>+</span></div>
-                <div class="lp-faq-a">Yes. The Free plan includes 100 messages per month, 1 AI agent, basic analytics, and community support. No credit card required to start.</div>
+                <div class="lp-faq-q">How does pricing work?<span>+</span></div>
+                <div class="lp-faq-a">We offer three plans — Starter, Growth, and Pro — with monthly or yearly billing (20% discount on yearly). Prices are shown in your local currency. All plans include the full platform; higher tiers unlock more conversations, advanced features, and priority support. Enterprise organizations can contact sales for a custom plan.</div>
             </div>
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
                 <div class="lp-faq-q">How do you handle data privacy?<span>+</span></div>
@@ -23197,6 +23732,42 @@
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
                 <div class="lp-faq-q">How long does setup take?<span>+</span></div>
                 <div class="lp-faq-a">Most businesses are up and running in under 15 minutes. A guided setup wizard walks you through connecting your channels, configuring your agent, and adding your knowledge base. We also offer 2 free consultation sessions.</div>
+            </div>
+        </section>
+
+        <!-- Quick Plan Comparison -->
+        <section style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
+            <h2 class="lp-section-title">Quick Comparison</h2>
+            <div style="overflow-x:auto;">
+                <table class="lp-compare-table" style="min-width:500px;">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Feature</th>
+                            <th>Starter</th>
+                            <th style="color:var(--theme-color);">Growth</th>
+                            <th>Pro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Conversations / Month</td><td>5,000</td><td>12,000</td><td>30,000</td></tr>
+                        <tr><td>Auto Replies 24/7</td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td></tr>
+                        <tr><td>Advanced Lead Qualify</td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td></tr>
+                        <tr><td>Order Confirmation</td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td></tr>
+                        <tr><td>CRM Integration</td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td><td><span class="lp-check">&#10003;</span></td></tr>
+                        <tr><td>Priority Support</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-check">&#10003;</span></td></tr>
+                        <tr><td>Dedicated Insights</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-check">&#10003;</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Payment Methods -->
+        <section style="max-width:600px;margin:0 auto;padding:0 2rem 3rem;text-align:center;">
+            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;">Secure Payment Methods</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;">
+                <span style="font-size:1.2rem;font-weight:700;color:var(--text-secondary);opacity:0.5;">stripe</span>
+                <span style="font-size:0.95rem;font-weight:700;color:var(--text-secondary);opacity:0.5;display:flex;align-items:center;gap:4px;">&#9889; InstaPay</span>
+                <span style="font-size:0.95rem;font-weight:700;color:var(--text-secondary);opacity:0.5;display:flex;align-items:center;gap:4px;">&#128241; Vodafone Cash</span>
             </div>
         </section>
 
@@ -23225,14 +23796,49 @@
 
         <!-- CTA -->
         <section class="lp-hero" style="padding-top:0;padding-bottom:2rem;">
-            <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;">Ready to Automate Your Business?</h2>
-            <p style="color:var(--text-secondary);margin-bottom:1.5rem;">Join businesses already using AI to handle customer conversations 24/7.</p>
-            <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2.5rem;font-size:1rem;">Get Started for Free</button>
+            <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;">Ready to Let AI Handle Your Customers?</h2>
+            <p style="color:var(--text-secondary);margin-bottom:0.5rem;">Set up your first AI agent in under 15 minutes.</p>
+            <p style="color:var(--text-secondary);margin-bottom:1.5rem;font-size:0.85rem;">2 free consultation sessions included with every plan.</p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2.5rem;font-size:1rem;">Start Automating Now</button>
+                <button onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;">Book a Demo</button>
+            </div>
         </section>
 
         <!-- Footer -->
-        <footer class="lp-footer">
-            <p>&copy; 2026 Digitivia. All rights reserved.</p>
+        <footer class="lp-footer" style="text-align:left;padding:2rem;">
+            <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;">
+                <div>
+                    <div style="font-weight:700;font-size:1rem;color:var(--theme-color);margin-bottom:0.8rem;">Digitivia</div>
+                    <p style="font-size:0.8rem;line-height:1.6;color:var(--text-secondary);">The first company in the Arab world to offer fully integrated intelligent solutions for businesses of all sizes.</p>
+                </div>
+                <div>
+                    <div style="font-weight:600;font-size:0.85rem;color:var(--text-primary);margin-bottom:0.8rem;">Links</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <a href="#lp-features" style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;">Features</a>
+                        <a href="#lp-pricing" style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;">Pricing</a>
+                        <a href="#lp-faq" style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;">FAQ</a>
+                        <a onclick="showLandingLogin()" style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;cursor:pointer;">Login</a>
+                    </div>
+                </div>
+                <div>
+                    <div style="font-weight:600;font-size:0.85rem;color:var(--text-primary);margin-bottom:0.8rem;">Contact Us</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;font-size:0.8rem;color:var(--text-secondary);">
+                        <span>info@digitivia.com</span>
+                        <span>+201034743235</span>
+                        <span>Building No.1 - Chillout Lotus Maxim - Fifth Settlement - New Cairo, Egypt</span>
+                    </div>
+                </div>
+            </div>
+            <div style="max-width:1200px;margin:1.5rem auto 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <p style="font-size:0.75rem;color:var(--text-secondary);">&copy; 2026 Digitivia. All rights reserved. Tax ID: 773-847-731</p>
+                <div style="display:flex;gap:12px;">
+                    <a href="https://x.com/digitivia" target="_blank" style="color:var(--text-secondary);font-size:0.9rem;">X</a>
+                    <a href="https://instagram.com/digitivia" target="_blank" style="color:var(--text-secondary);font-size:0.9rem;">IG</a>
+                    <a href="https://facebook.com/digitivia" target="_blank" style="color:var(--text-secondary);font-size:0.9rem;">FB</a>
+                    <a href="https://linkedin.com/company/digitivia" target="_blank" style="color:var(--text-secondary);font-size:0.9rem;">IN</a>
+                </div>
+            </div>
         </footer>
     </div>
 
@@ -36743,6 +37349,8 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
 
+        const EUR_COUNTRIES = ['FR','DE','IT','ES','NL','BE','AT','PT','IE','FI','GR','LU','SK','SI','EE','LV','LT','CY','MT','HR'];
+
         async function detectCurrency() {
             try {
                 // Check localStorage cache first (24h TTL)
@@ -36757,6 +37365,8 @@ Thank you for shopping with {store_name}!</textarea>
                 const data = await res.json();
                 if (data.country_code === 'EG') {
                     currentCurrency = 'EGP';
+                } else if (EUR_COUNTRIES.includes(data.country_code)) {
+                    currentCurrency = 'EUR';
                 } else {
                     currentCurrency = 'USD';
                 }
@@ -36827,11 +37437,11 @@ Thank you for shopping with {store_name}!</textarea>
                     // Adjust currency if needed or just show as is
                 }
 
-                // Hard override for EGP pricing (critical hotfix)
-                const OVERRIDE_EGP = {
-                    starter: 395000,   // EGP 3,950
-                    growth: 795000,    // EGP 7,950
-                    pro: 2095000       // EGP 20,950
+                // Price overrides per currency (amounts in cents)
+                const PRICE_OVERRIDES = {
+                    EGP: { starter: 395000, growth: 795000, pro: 2095000 },    // EGP 3,950 / 7,950 / 20,950
+                    USD: { starter: 7900, growth: 15900, pro: 41900 },         // $79 / $159 / $419
+                    EUR: { starter: 7400, growth: 14900, pro: 38900 }          // €74 / €149 / €389
                 };
 
                 // Remove deprecated free trial plan (defence in depth)
@@ -36840,12 +37450,13 @@ Thank you for shopping with {store_name}!</textarea>
                     return slug !== 'free_trial';
                 });
 
+                const overrides = PRICE_OVERRIDES[currentCurrency] || PRICE_OVERRIDES.USD;
                 plans = plans.map((plan) => {
                     const slug = String(plan.plan_slug || '').toLowerCase();
-                    if (currentCurrency === 'EGP' && slug in OVERRIDE_EGP) {
+                    if (slug in overrides) {
                         return Object.assign({}, plan, {
-                            currency: 'EGP',
-                            unit_amount_cents: OVERRIDE_EGP[slug],
+                            currency: currentCurrency,
+                            unit_amount_cents: overrides[slug],
                             billing_interval: 'month'
                         });
                     }
