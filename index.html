@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>AI Agent Command Center</title>
     <link rel="icon" type="image/png" href="cropped-White.png">
@@ -23159,6 +23159,10 @@
                         data-i18n="modals.profile.btn_update_pass">Update Password</button>
                 </div>
             </div>
+            <div class="profile-data-rights" style="display:flex; gap:8px; margin-top:8px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08);">
+                <button class="btn-secondary" onclick="downloadMyData()" style="flex:1; font-size:0.8rem; padding:8px; border-radius:8px; background:rgba(91,174,176,0.1); border:1px solid var(--theme-color);" data-i18n="modals.profile.btn_download">Download My Data</button>
+                <button class="btn-secondary" onclick="confirmDeleteAccount()" style="flex:1; font-size:0.8rem; padding:8px; border-radius:8px; background:rgba(220,53,69,0.1); border:1px solid #dc3545; color:#dc3545;" data-i18n="modals.profile.btn_delete">Delete My Account</button>
+            </div>
             <div class="profile-actions" style="flex-direction: column; gap: 10px;">
                 <button id="profile-setup-btn" class="btn-secondary"
                     onclick="closeProfileModal(); openOnboardingWizard();"
@@ -24692,6 +24696,87 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('profile-modal').classList.remove('show');
             document.body.classList.remove('profile-modal-open');
+        }
+
+        // --- GDPR Data Rights ---
+        async function downloadMyData() {
+            try {
+                showToast(t('modals.profile.exporting') || 'Preparing your data export...', 'info');
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { showToast('Please log in first', 'error'); return; }
+
+                const resp = await fetch(SUPABASE_URL + '/functions/v1/export-my-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + session.access_token,
+                        'apikey': SUPABASE_KEY
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (!resp.ok) {
+                    const err = await resp.json().catch(() => ({}));
+                    throw new Error(err.error || 'Export failed');
+                }
+
+                const blob = await resp.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'digitivia-data-export-' + new Date().toISOString().slice(0,10) + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast(t('modals.profile.export_success') || 'Data exported successfully!', 'success');
+            } catch (e) {
+                console.error('Data export error:', e);
+                showToast(e.message || 'Failed to export data', 'error');
+            }
+        }
+
+        async function confirmDeleteAccount() {
+            const confirmed = confirm(
+                (t('modals.profile.delete_confirm') || 'Are you sure you want to permanently delete your account and all associated data? This action cannot be undone.')
+            );
+            if (!confirmed) return;
+
+            const doubleConfirm = prompt(
+                t('modals.profile.delete_type_confirm') || 'Type DELETE to confirm account deletion:'
+            );
+            if (doubleConfirm !== 'DELETE') {
+                showToast(t('modals.profile.delete_cancelled') || 'Account deletion cancelled.', 'info');
+                return;
+            }
+
+            try {
+                showToast(t('modals.profile.deleting') || 'Deleting your account...', 'info');
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { showToast('Please log in first', 'error'); return; }
+
+                const resp = await fetch(SUPABASE_URL + '/functions/v1/delete-my-account', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + session.access_token,
+                        'apikey': SUPABASE_KEY
+                    },
+                    body: JSON.stringify({ confirm: 'DELETE_MY_ACCOUNT' })
+                });
+
+                const result = await resp.json().catch(() => ({}));
+                if (!resp.ok) throw new Error(result.error || 'Deletion failed');
+
+                showToast(t('modals.profile.delete_success') || 'Account deleted. Redirecting...', 'success');
+                setTimeout(() => {
+                    supabaseClient.auth.signOut();
+                    window.location.reload();
+                }, 2000);
+            } catch (e) {
+                console.error('Account deletion error:', e);
+                showToast(e.message || 'Failed to delete account', 'error');
+            }
         }
 
         async function openHelpModal() {
