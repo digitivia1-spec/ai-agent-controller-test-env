@@ -22400,6 +22400,42 @@
 
 <body>
 
+    <!-- COOKIE CONSENT BANNER -->
+    <div id="cookie-consent-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:100000; padding:16px 20px; background:rgba(20,20,30,0.96); backdrop-filter:blur(12px); border-top:1px solid rgba(91,174,176,0.3); font-family:inherit; color:#e0e0e0; font-size:0.9rem; line-height:1.5;">
+        <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px;">
+            <div style="flex:1; min-width:260px;">
+                <strong style="color:#5BAEB0;" data-i18n="cookie_banner.title">Cookie Notice</strong>
+                <span data-i18n="cookie_banner.text"> — We use essential cookies for authentication and localStorage for your preferences (theme, language). We do not use tracking or advertising cookies.</span>
+                <a href="#" onclick="event.preventDefault(); openLegalTab('legal-cookies');" style="color:#5BAEB0; text-decoration:underline; margin-left:4px;" data-i18n="cookie_banner.learn_more">Learn more</a>
+            </div>
+            <div style="display:flex; gap:8px; flex-shrink:0;">
+                <button onclick="acceptCookieConsent('all')" style="padding:8px 18px; border:none; border-radius:6px; background:#5BAEB0; color:#fff; font-size:0.85rem; font-weight:600; cursor:pointer;" data-i18n="cookie_banner.accept_all">Accept All</button>
+                <button onclick="acceptCookieConsent('essential')" style="padding:8px 18px; border:1px solid rgba(91,174,176,0.5); border-radius:6px; background:transparent; color:#5BAEB0; font-size:0.85rem; font-weight:600; cursor:pointer;" data-i18n="cookie_banner.essential_only">Essential Only</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function initCookieConsent() {
+        try {
+            const consent = localStorage.getItem('cookie_consent');
+            if (!consent) {
+                document.getElementById('cookie-consent-banner').style.display = 'block';
+            }
+        } catch(e) {}
+    })();
+    function acceptCookieConsent(level) {
+        try {
+            localStorage.setItem('cookie_consent', JSON.stringify({
+                level: level,
+                timestamp: new Date().toISOString(),
+                essential: true,
+                analytics: level === 'all'
+            }));
+        } catch(e) {}
+        document.getElementById('cookie-consent-banner').style.display = 'none';
+    }
+    </script>
+
     <button id="theme-float-btn" class="theme-float-btn" type="button" onclick="toggleTheme()"
         aria-label="Switch to light theme" title="Switch to light theme" data-theme-next="light"
         data-theme-next-label="Light mode">
