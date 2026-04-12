@@ -6663,6 +6663,58 @@
             .lp-compare-table { min-width: 600px; }
         }
 
+        /* ====== SENTIMENT INDICATORS ====== */
+        .sentiment-dot {
+            width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+            flex-shrink: 0; margin-left: 4px;
+        }
+        .sentiment-dot.positive { background: #10b981; }
+        .sentiment-dot.neutral { background: #6b7280; }
+        .sentiment-dot.negative { background: #ef4444; }
+        .sentiment-dot.urgent { background: #f59e0b; animation: pulse-urgent 1.5s infinite; }
+        @keyframes pulse-urgent { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .sentiment-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 8px; border-radius: 999px; font-size: 0.68rem; font-weight: 600;
+        }
+        .sentiment-badge.positive { background: rgba(16,185,129,0.12); color: #10b981; }
+        .sentiment-badge.neutral { background: rgba(107,114,128,0.12); color: #9ca3af; }
+        .sentiment-badge.negative { background: rgba(239,68,68,0.12); color: #ef4444; }
+        .sentiment-badge.urgent { background: rgba(245,158,11,0.12); color: #f59e0b; }
+
+        .sentiment-summary-bar {
+            display: flex; height: 6px; border-radius: 3px; overflow: hidden;
+            background: rgba(255,255,255,0.06); margin-top: 8px;
+        }
+        .sentiment-summary-bar .seg-positive { background: #10b981; }
+        .sentiment-summary-bar .seg-neutral { background: #6b7280; }
+        .sentiment-summary-bar .seg-negative { background: #ef4444; }
+        .sentiment-summary-bar .seg-urgent { background: #f59e0b; }
+
+        /* ====== LIGHT THEME OVERRIDES ====== */
+        :root[data-theme="light"] #landing-page { background: #f8fafc; background-image: radial-gradient(circle at 50% 30%, rgba(91,174,176,0.08) 0%, transparent 60%); }
+        :root[data-theme="light"] .lp-feature-card,
+        :root[data-theme="light"] .lp-price-card,
+        :root[data-theme="light"] .lp-trust-badge,
+        :root[data-theme="light"] .lp-channel-chip { background: #fff; border-color: #e2e8f0; }
+        :root[data-theme="light"] .lp-price-card.popular { border-color: var(--theme-color); }
+        :root[data-theme="light"] .lp-price-features li { border-color: #f1f5f9; }
+        :root[data-theme="light"] .lp-stats { border-color: #e2e8f0; }
+        :root[data-theme="light"] .lp-faq-item { border-color: #e2e8f0; }
+        :root[data-theme="light"] .lp-footer { border-color: #e2e8f0; }
+        :root[data-theme="light"] .lp-compare-table th,
+        :root[data-theme="light"] .lp-compare-table td { border-color: #e2e8f0; }
+        :root[data-theme="light"] .lp-compare-table .lp-highlight { background: rgba(91,174,176,0.08); }
+        :root[data-theme="light"] .lp-cross { color: #cbd5e1; }
+        :root[data-theme="light"] .lp-hero-badge { background: rgba(91,174,176,0.08); border-color: rgba(91,174,176,0.15); }
+        :root[data-theme="light"] .tour-tooltip { background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.15); border-color: var(--theme-color); }
+        :root[data-theme="light"] .cmd-palette { background: #fff; border-color: #e2e8f0; box-shadow: 0 16px 60px rgba(0,0,0,0.15); }
+        :root[data-theme="light"] .cmd-palette input { border-color: #e2e8f0; color: #1e293b; }
+        :root[data-theme="light"] .cmd-palette-item:hover,
+        :root[data-theme="light"] .cmd-palette-item.active { background: rgba(91,174,176,0.08); }
+        :root[data-theme="light"] #cookie-consent-banner { background: #fff !important; color: #1e293b !important; border-top-color: #e2e8f0 !important; }
+
         /* Onboarding Tour */
         .tour-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998; display: none; }
         .tour-overlay.active { display: block; }
@@ -15898,6 +15950,21 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
+        .notif-category-filters {
+            display: flex; gap: 4px; padding: 8px 12px;
+            border-bottom: 1px solid var(--glass-border);
+            overflow-x: auto;
+        }
+        .notif-cat-btn {
+            padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1); background: transparent;
+            color: var(--text-secondary); cursor: pointer; white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .notif-cat-btn:hover { border-color: var(--theme-color); color: var(--theme-color); }
+        .notif-cat-btn.active { background: var(--theme-color); color: #fff; border-color: var(--theme-color); }
+        :root[data-theme="light"] .notif-cat-btn { border-color: #e2e8f0; }
+
         .mark-all-read,
         .mark-read {
             font-size: 0.75rem;
@@ -22710,7 +22777,7 @@
 <body>
 
     <!-- COOKIE CONSENT BANNER -->
-    <div id="cookie-consent-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:100000; padding:16px 20px; background:rgba(20,20,30,0.96); backdrop-filter:blur(12px); border-top:1px solid rgba(91,174,176,0.3); font-family:inherit; color:#e0e0e0; font-size:0.9rem; line-height:1.5;">
+    <div id="cookie-consent-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:100000; padding:16px 20px; background:var(--bg-card, rgba(20,20,30,0.96)); backdrop-filter:blur(12px); border-top:1px solid rgba(91,174,176,0.3); font-family:inherit; color:var(--text-primary, #e0e0e0); font-size:0.9rem; line-height:1.5;">
         <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px;">
             <div style="flex:1; min-width:260px;">
                 <strong style="color:#5BAEB0;" data-i18n="cookie_banner.title">Cookie Notice</strong>
@@ -23401,6 +23468,13 @@
                         <span data-i18n="notifications.header">Notifications</span>
                         <span class="mark-read" data-i18n="notifications.mark_read"
                             onclick="markAllNotificationsRead()">Mark all read</span>
+                    </div>
+                    <div class="notif-category-filters" id="notif-category-filters">
+                        <button class="notif-cat-btn active" data-cat="all" onclick="filterNotifications('all')">All</button>
+                        <button class="notif-cat-btn" data-cat="task" onclick="filterNotifications('task')">Tasks</button>
+                        <button class="notif-cat-btn" data-cat="crm" onclick="filterNotifications('crm')">CRM</button>
+                        <button class="notif-cat-btn" data-cat="inbox" onclick="filterNotifications('inbox')">Inbox</button>
+                        <button class="notif-cat-btn" data-cat="system" onclick="filterNotifications('system')">System</button>
                     </div>
                     <div class="notification-list" id="notification-list">
                         <div class="no-notifications" data-i18n="notifications.empty">No notifications yet</div>
@@ -40168,8 +40242,10 @@ Thank you for shopping with {store_name}!</textarea>
                 listEl.innerHTML = `<div class="no-notifications">${escapeNotificationHtml(t('notifications.empty'))}</div>`;
                 return;
             }
-            listEl.innerHTML = notifications.map(n => `
-                <div class="notification-item ${n.is_read ? '' : 'unread'}" onclick="handleNotificationClick('${n.id}')">
+            listEl.innerHTML = notifications.map(n => {
+                const cat = (n.type || n.entity || 'system').toLowerCase();
+                return `
+                <div class="notification-item ${n.is_read ? '' : 'unread'}" data-notif-cat="${cat}" onclick="handleNotificationClick('${n.id}')">
                     <div class="notification-icon">
                         ${getNotificationIconMarkup(n)}
                     </div>
@@ -40178,13 +40254,30 @@ Thank you for shopping with {store_name}!</textarea>
                         <div class="notif-msg">${escapeNotificationHtml(getLocalizedNotificationContent(n).body)}</div>
                         <div class="notif-time">${new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         };
 
         renderList(desktopList);
         renderList(mobileList);
     }
+
+    window.filterNotifications = function(cat) {
+        // Update active button
+        document.querySelectorAll('.notif-cat-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+        });
+        // Filter items in all notification lists
+        document.querySelectorAll('.notification-list').forEach(list => {
+            list.querySelectorAll('.notification-item').forEach(item => {
+                if (cat === 'all') {
+                    item.style.display = '';
+                } else {
+                    item.style.display = item.getAttribute('data-notif-cat') === cat ? '' : 'none';
+                }
+            });
+        });
+    };
 
     function toggleNotifications(event, dropdownId) {
         if (event) event.stopPropagation();
