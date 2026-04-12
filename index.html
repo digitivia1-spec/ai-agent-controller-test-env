@@ -6663,6 +6663,77 @@
             .lp-compare-table { min-width: 600px; }
         }
 
+        /* ====== TEMPLATES BROWSER ====== */
+        .tpl-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 8000; display: none;
+            justify-content: center; align-items: center; padding: 2rem;
+        }
+        .tpl-modal-overlay.active { display: flex; }
+        .tpl-modal {
+            background: var(--bg-card, #1a1b2e); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px; width: 100%; max-width: 800px; max-height: 85vh;
+            overflow: hidden; display: flex; flex-direction: column;
+        }
+        .tpl-modal-header {
+            padding: 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .tpl-modal-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-primary); }
+        .tpl-modal-close { background: none; border: none; color: var(--text-secondary); font-size: 1.3rem; cursor: pointer; }
+        .tpl-filters { padding: 0.8rem 1.5rem; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .tpl-filter-btn {
+            padding: 5px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1); background: transparent;
+            color: var(--text-secondary); cursor: pointer;
+        }
+        .tpl-filter-btn.active { background: var(--theme-color); color: #fff; border-color: var(--theme-color); }
+        .tpl-grid { padding: 1rem 1.5rem; overflow-y: auto; flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+        .tpl-card {
+            padding: 1.2rem; border-radius: 14px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: all 0.2s;
+        }
+        .tpl-card:hover { border-color: var(--theme-color); transform: translateY(-2px); }
+        .tpl-card-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+        .tpl-card h4 { margin: 0 0 0.3rem; font-size: 0.9rem; color: var(--text-primary); }
+        .tpl-card p { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .tpl-card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+        .tpl-card-tag { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: rgba(91,174,176,0.1); color: var(--theme-color); }
+        .tpl-card-featured { position: relative; }
+        .tpl-card-featured::after { content: '★'; position: absolute; top: 8px; right: 10px; color: #f59e0b; font-size: 0.9rem; }
+        .tpl-preview { padding: 1.5rem; overflow-y: auto; flex: 1; }
+        .tpl-preview h3 { margin: 0 0 0.5rem; color: var(--text-primary); }
+        .tpl-preview-prompt { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 1rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap; max-height: 200px; overflow-y: auto; margin: 0.8rem 0; }
+        .tpl-apply-btn { width: 100%; padding: 0.7rem; border-radius: 10px; background: var(--theme-color); color: #fff; border: none; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 1rem; }
+        .tpl-apply-btn:hover { filter: brightness(1.1); }
+
+        /* A/B Testing */
+        .ab-test-card {
+            padding: 1.2rem; border-radius: 14px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1rem;
+        }
+        .ab-test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+        .ab-test-header h4 { margin: 0; font-size: 0.95rem; color: var(--text-primary); }
+        .ab-status-badge { padding: 3px 10px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
+        .ab-status-badge.running { background: rgba(16,185,129,0.12); color: #10b981; }
+        .ab-status-badge.draft { background: rgba(107,114,128,0.12); color: #9ca3af; }
+        .ab-status-badge.completed { background: rgba(59,130,246,0.12); color: #3b82f6; }
+        .ab-variants { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        .ab-variant { padding: 0.8rem; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); }
+        .ab-variant-label { font-size: 0.72rem; font-weight: 700; color: var(--theme-color); margin-bottom: 0.4rem; }
+        .ab-variant-prompt { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        @media (max-width: 768px) {
+            .tpl-grid { grid-template-columns: 1fr; }
+            .ab-variants { grid-template-columns: 1fr; }
+        }
+
+        /* Light theme */
+        :root[data-theme="light"] .tpl-modal { background: #fff; border-color: #e2e8f0; }
+        :root[data-theme="light"] .tpl-card { background: #f8fafc; border-color: #e2e8f0; }
+        :root[data-theme="light"] .ab-test-card { background: #f8fafc; border-color: #e2e8f0; }
+        :root[data-theme="light"] .tpl-filter-btn { border-color: #e2e8f0; }
+        :root[data-theme="light"] .tpl-preview-prompt { background: #f1f5f9; }
+
         /* ====== SENTIMENT INDICATORS ====== */
         .sentiment-dot {
             width: 8px; height: 8px; border-radius: 50%; display: inline-block;
@@ -23561,6 +23632,29 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Agent Templates Browser -->
+    <div class="tpl-modal-overlay" id="tpl-modal-overlay" onclick="if(event.target===this)closeTemplatesModal()">
+        <div class="tpl-modal">
+            <div class="tpl-modal-header">
+                <h3>Agent Templates</h3>
+                <button class="tpl-modal-close" onclick="closeTemplatesModal()">✕</button>
+            </div>
+            <div class="tpl-filters" id="tpl-filters"></div>
+            <div class="tpl-grid" id="tpl-grid"></div>
+        </div>
+    </div>
+
+    <!-- Template Preview Modal -->
+    <div class="tpl-modal-overlay" id="tpl-preview-overlay" onclick="if(event.target===this)closeTemplatePreview()">
+        <div class="tpl-modal" style="max-width:550px;">
+            <div class="tpl-modal-header">
+                <h3 id="tpl-preview-name">Template</h3>
+                <button class="tpl-modal-close" onclick="closeTemplatePreview()">✕</button>
+            </div>
+            <div class="tpl-preview" id="tpl-preview-body"></div>
         </div>
     </div>
 
@@ -47195,6 +47289,302 @@ Thank you for shopping with {store_name}!</textarea>
         })();
 
     })();
+</script>
+
+<!-- Sprint 11: Agent Templates Browser -->
+<script>
+(function() {
+    let allTemplates = [];
+    let currentCategory = 'all';
+
+    window.openTemplatesModal = async function(targetAgentId) {
+        window._tplTargetAgent = targetAgentId || null;
+        document.getElementById('tpl-modal-overlay').classList.add('active');
+
+        if (allTemplates.length === 0) {
+            try {
+                const { data, error } = await supabaseClient.from('agent_templates').select('*').order('is_featured', { ascending: false }).order('popularity', { ascending: false });
+                if (!error && data) allTemplates = data;
+            } catch (e) { console.warn('Failed to load templates:', e); }
+        }
+
+        renderTemplateFilters();
+        renderTemplateGrid();
+    };
+
+    window.closeTemplatesModal = function() {
+        document.getElementById('tpl-modal-overlay').classList.remove('active');
+    };
+
+    window.closeTemplatePreview = function() {
+        document.getElementById('tpl-preview-overlay').classList.remove('active');
+    };
+
+    function renderTemplateFilters() {
+        const categories = ['all', ...new Set(allTemplates.map(t => t.category))];
+        const container = document.getElementById('tpl-filters');
+        container.innerHTML = categories.map(cat =>
+            `<button class="tpl-filter-btn${cat === currentCategory ? ' active' : ''}" onclick="filterTemplates('${cat}')">${cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1)}</button>`
+        ).join('');
+    }
+
+    window.filterTemplates = function(cat) {
+        currentCategory = cat;
+        renderTemplateFilters();
+        renderTemplateGrid();
+    };
+
+    function renderTemplateGrid() {
+        const filtered = currentCategory === 'all' ? allTemplates : allTemplates.filter(t => t.category === currentCategory);
+        const container = document.getElementById('tpl-grid');
+
+        if (filtered.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-secondary);">No templates available yet. Run the SQL migration to seed templates.</div>';
+            return;
+        }
+
+        container.innerHTML = filtered.map(t => `
+            <div class="tpl-card${t.is_featured ? ' tpl-card-featured' : ''}" onclick="previewTemplate('${t.id}')">
+                <div class="tpl-card-icon">${t.icon || '🤖'}</div>
+                <h4>${esc(t.name)}</h4>
+                <p>${esc(t.description || '')}</p>
+                <div class="tpl-card-tags">
+                    ${(t.tags || []).slice(0, 3).map(tag => `<span class="tpl-card-tag">${esc(tag)}</span>`).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    window.previewTemplate = function(id) {
+        const tpl = allTemplates.find(t => t.id === id);
+        if (!tpl) return;
+
+        document.getElementById('tpl-preview-name').textContent = tpl.name;
+        document.getElementById('tpl-preview-body').innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+                <span style="font-size:2.5rem;">${tpl.icon || '🤖'}</span>
+                <div>
+                    <div style="font-weight:700;color:var(--text-primary);">${esc(tpl.name)}</div>
+                    <div style="font-size:0.82rem;color:var(--text-secondary);">${esc(tpl.category)} · ${esc(tpl.tone)} tone</div>
+                </div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.5;">${esc(tpl.description || '')}</p>
+            <div style="font-weight:600;font-size:0.85rem;color:var(--text-primary);margin:1rem 0 0.4rem;">System Prompt</div>
+            <div class="tpl-preview-prompt">${esc(tpl.system_prompt)}</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:0.8rem;">
+                ${(tpl.tags || []).map(tag => `<span class="tpl-card-tag">${esc(tag)}</span>`).join('')}
+            </div>
+            <button class="tpl-apply-btn" onclick="applyTemplate('${tpl.id}')">Apply to ${window._tplTargetAgent || 'Agent'}</button>
+        `;
+        document.getElementById('tpl-preview-overlay').classList.add('active');
+    };
+
+    window.applyTemplate = function(id) {
+        const tpl = allTemplates.find(t => t.id === id);
+        if (!tpl) return;
+
+        const agentId = window._tplTargetAgent;
+        if (agentId) {
+            const promptEl = document.getElementById(`prompt-${agentId}`);
+            const toneEl = document.getElementById(`tone-${agentId}`);
+            if (promptEl) { promptEl.value = tpl.system_prompt; promptEl.dispatchEvent(new Event('input')); }
+            if (toneEl) { toneEl.value = tpl.tone || ''; }
+        }
+
+        // Increment popularity
+        supabaseClient.from('agent_templates').update({ popularity: (tpl.popularity || 0) + 1 }).eq('id', id).then(() => {});
+
+        closeTemplatePreview();
+        closeTemplatesModal();
+        showToast(`Template "${tpl.name}" applied! Don't forget to save.`, 'success');
+    };
+
+    // Expose esc for templates (may not be in scope)
+    if (typeof window.esc !== 'function') {
+        window.esc = function(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+    }
+})();
+</script>
+
+<!-- Sprint 12: A/B Testing UI -->
+<script>
+(function() {
+    window.openABTestPanel = async function(agentId) {
+        const container = document.getElementById(`ab-test-panel-${agentId}`);
+        if (!container) return;
+
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        if (container.style.display === 'none') return;
+
+        try {
+            const { data: tests } = await supabaseClient
+                .from('agent_ab_tests')
+                .select('*')
+                .eq('org_id', currentUserOrgId)
+                .eq('agent_id', agentId)
+                .order('created_at', { ascending: false });
+
+            if (!tests || tests.length === 0) {
+                container.innerHTML = `
+                    <div class="ab-test-card" style="text-align:center;padding:1.5rem;">
+                        <p style="color:var(--text-secondary);margin:0 0 1rem;">No A/B tests yet. Create one to optimize your agent's responses.</p>
+                        <button class="lp-btn lp-btn-primary" onclick="createABTest('${agentId}')" style="font-size:0.85rem;">Create A/B Test</button>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+                    <span style="font-weight:600;font-size:0.9rem;color:var(--text-primary);">A/B Tests</span>
+                    <button class="lp-btn lp-btn-outline" onclick="createABTest('${agentId}')" style="font-size:0.78rem;padding:4px 12px;">+ New Test</button>
+                </div>
+                ${tests.map(test => renderABTestCard(test)).join('')}
+            `;
+        } catch (e) {
+            container.innerHTML = '<div style="color:var(--text-secondary);padding:1rem;">Run the A/B testing SQL migration to activate.</div>';
+        }
+    };
+
+    function renderABTestCard(test) {
+        const statusClass = test.status === 'running' ? 'running' : test.status === 'completed' ? 'completed' : 'draft';
+        return `
+            <div class="ab-test-card">
+                <div class="ab-test-header">
+                    <h4>${esc(test.name)}</h4>
+                    <span class="ab-status-badge ${statusClass}">${test.status}</span>
+                </div>
+                <div style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.6rem;">Traffic split: ${test.traffic_split}% A / ${100 - test.traffic_split}% B</div>
+                <div class="ab-variants">
+                    <div class="ab-variant">
+                        <div class="ab-variant-label">Variant A${test.winner === 'a' ? ' 🏆' : ''}</div>
+                        <div class="ab-variant-prompt">${esc(test.variant_a_prompt)}</div>
+                    </div>
+                    <div class="ab-variant">
+                        <div class="ab-variant-label">Variant B${test.winner === 'b' ? ' 🏆' : ''}</div>
+                        <div class="ab-variant-prompt">${esc(test.variant_b_prompt)}</div>
+                    </div>
+                </div>
+                ${test.status === 'draft' ? `<button class="lp-btn lp-btn-primary" style="width:100%;margin-top:0.8rem;font-size:0.82rem;" onclick="startABTest('${test.id}')">Start Test</button>` : ''}
+                ${test.status === 'running' ? `<button class="lp-btn lp-btn-outline" style="width:100%;margin-top:0.8rem;font-size:0.82rem;" onclick="stopABTest('${test.id}')">Stop Test</button>` : ''}
+            </div>`;
+    }
+
+    window.createABTest = async function(agentId) {
+        const promptEl = document.getElementById(`prompt-${agentId}`);
+        const currentPrompt = promptEl ? promptEl.value : '';
+
+        const name = prompt('Test name:', 'Tone Comparison Test');
+        if (!name) return;
+
+        const variantB = prompt('Variant B prompt (Variant A uses current prompt):', currentPrompt);
+        if (!variantB) return;
+
+        try {
+            await supabaseClient.from('agent_ab_tests').insert({
+                org_id: currentUserOrgId,
+                agent_id: agentId,
+                name: name,
+                variant_a_prompt: currentPrompt,
+                variant_b_prompt: variantB,
+                traffic_split: 50,
+                status: 'draft'
+            });
+            showToast('A/B test created', 'success');
+            openABTestPanel(agentId);
+        } catch (e) {
+            showToast('Failed to create test: ' + (e.message || ''), 'error');
+        }
+    };
+
+    window.startABTest = async function(testId) {
+        await supabaseClient.from('agent_ab_tests').update({ status: 'running', started_at: new Date().toISOString() }).eq('id', testId);
+        showToast('A/B test started', 'success');
+        location.reload();
+    };
+
+    window.stopABTest = async function(testId) {
+        await supabaseClient.from('agent_ab_tests').update({ status: 'completed', ended_at: new Date().toISOString() }).eq('id', testId);
+        showToast('A/B test stopped', 'info');
+        location.reload();
+    };
+
+    if (typeof window.esc !== 'function') {
+        window.esc = function(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+    }
+})();
+</script>
+
+<!-- Sprint 13: Conversation Learning -->
+<script>
+(function() {
+    // Track when humans override AI in the inbox
+    // The AI/Human toggle already exists — we track the override signal
+
+    window.trackConversationOverride = async function(conversationId, agentId) {
+        if (!currentUserOrgId || !conversationId) return;
+
+        try {
+            await supabaseClient.from('conversation_overrides').insert({
+                org_id: currentUserOrgId,
+                conversation_id: conversationId,
+                agent_id: agentId || null,
+                overridden_by: window.currentUserObj?.id || null,
+                created_at: new Date().toISOString()
+            });
+        } catch (e) {
+            // Table may not exist yet — silent fail
+            console.debug('Override tracking:', e.message);
+        }
+    };
+
+    // Learning dashboard renderer
+    window.renderLearningDashboard = async function(agentId) {
+        const container = document.getElementById(`learning-panel-${agentId}`);
+        if (!container) return;
+
+        try {
+            // Get override stats for this agent
+            const { data: overrides, error } = await supabaseClient
+                .from('conversation_overrides')
+                .select('created_at, conversation_id')
+                .eq('org_id', currentUserOrgId)
+                .order('created_at', { ascending: false })
+                .limit(100);
+
+            if (error) throw error;
+
+            const total = overrides?.length || 0;
+            const last7Days = (overrides || []).filter(o => new Date(o.created_at) > new Date(Date.now() - 7 * 86400000)).length;
+            const uniqueConvos = new Set((overrides || []).map(o => o.conversation_id)).size;
+
+            container.innerHTML = `
+                <div style="padding:1rem;">
+                    <div style="font-weight:700;font-size:0.95rem;margin-bottom:1rem;color:var(--text-primary);">AI Learning Insights</div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;">
+                        <div style="text-align:center;padding:0.8rem;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+                            <div style="font-size:1.4rem;font-weight:800;color:var(--theme-color);">${total}</div>
+                            <div style="font-size:0.72rem;color:var(--text-secondary);">Total Overrides</div>
+                        </div>
+                        <div style="text-align:center;padding:0.8rem;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+                            <div style="font-size:1.4rem;font-weight:800;color:${last7Days > 10 ? '#ef4444' : '#10b981'};">${last7Days}</div>
+                            <div style="font-size:0.72rem;color:var(--text-secondary);">Last 7 Days</div>
+                        </div>
+                        <div style="text-align:center;padding:0.8rem;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+                            <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);">${uniqueConvos}</div>
+                            <div style="font-size:0.72rem;color:var(--text-secondary);">Conversations</div>
+                        </div>
+                    </div>
+                    <div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.5;">
+                        ${total === 0 ? 'No human overrides detected yet. When you switch from AI to Human mode in conversations, the system tracks these corrections to help improve your agent.' :
+                        last7Days > 10 ? '⚠️ High override rate this week. Consider reviewing your system prompt or updating your knowledge base.' :
+                        '✅ Override rate looks healthy. Your AI agent is handling most conversations well.'}
+                    </div>
+                </div>`;
+        } catch (e) {
+            container.innerHTML = '<div style="padding:1rem;color:var(--text-secondary);font-size:0.82rem;">Run the conversation learning migration to activate insights.</div>';
+        }
+    };
+})();
 </script>
 
 <!-- Product Tour & Command Palette -->
