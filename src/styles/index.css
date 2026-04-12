@@ -1,0 +1,38 @@
+/*
+ * Digitivia AI Agent — Modular CSS Index
+ *
+ * This file imports all CSS modules in the correct order.
+ * To migrate: replace the <style> block in index.html with:
+ *   <link rel="stylesheet" href="./src/styles/index.css">
+ */
+
+/* Foundation */
+@import './variables.css';
+@import './base.css';
+
+/* Layout */
+@import './layout/sidebar.css';
+@import './layout/main.css';
+@import './layout/mobile-topbar.css';
+
+/* Components */
+@import './components/glass.css';
+@import './components/toggle.css';
+
+/* Feature Modules */
+@import './modules/landing.css';
+@import './modules/login.css';
+@import './modules/billing.css';
+@import './modules/billing-toggle.css';
+@import './modules/cards.css';
+@import './modules/automation.css';
+@import './modules/insights.css';
+@import './modules/knowledge-base.css';
+@import './modules/content-studio.css';
+@import './modules/chat.css';
+@import './modules/inbox.css';
+@import './modules/inbox-search.css';
+@import './modules/crm.css';
+@import './modules/export.css';
+@import './modules/notifications.css';
+@import './modules/ai-helper.css';

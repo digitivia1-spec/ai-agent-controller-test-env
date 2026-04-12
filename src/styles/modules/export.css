@@ -1,0 +1,181 @@
+/* --- EXPORT MODAL --- */
+#export-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 5000;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+}
+ #export-modal.active {
+    display: flex;
+}
+ .export-container {
+    background: #0f1014;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+ .export-option-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+ .export-option-label {
+    color: #94a3b8;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 0.9rem;
+}
+ .export-format-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+ .export-format-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+ .export-format-btn:hover,
+.export-format-btn.selected {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
+}
+ .export-format-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+ /* TABS Styling */
+.pricing-tab-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+ .pricing-tab-btn.active {
+    background: var(--theme-color);
+    color: white;
+    border-color: var(--theme-color);
+}
+ .pricing-tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+ /* ADD-ONS SECTION */
+.addons-section {
+    margin-top: 10px;
+    width: 100%;
+}
+ .addons-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+ .addons-header h3 {
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 5px;
+}
+ .addons-header p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+ .addons-grid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+ .addon-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ .addon-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--theme-color);
+}
+ .addon-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+ .addon-count {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 5px;
+}
+ .addon-desc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+ .addon-meta {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+ .addons-loading {
+    color: white;
+    font-size: 1rem;
+    padding: 28px 0;
+    text-align: center;
+}
+ .addon-price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--theme-color);
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+ .addon-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: auto;
+}
+ .addon-btn:hover {
+    filter: brightness(0.9);
+}
+ /* RTL Addons */
+[dir="rtl"] .addon-card {
+    direction: rtl;
+}

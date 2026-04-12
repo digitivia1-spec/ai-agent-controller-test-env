@@ -1,0 +1,136 @@
+/* --- LANDING PAGE --- */
+#landing-page {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2999; overflow-y: auto; overflow-x: hidden;
+    background: var(--bg-dark);
+    background-image: radial-gradient(circle at 50% 30%, rgba(91,174,176,0.12) 0%, transparent 60%);
+    display: none;
+}
+#landing-page.active { display: block; }
+ .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
+}
+.lp-nav-logo { font-size: 1.2rem; font-weight: 800; color: var(--theme-color); letter-spacing: 0.5px; }
+.lp-nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.lp-nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+.lp-nav-links a:hover { color: var(--theme-color); }
+.lp-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 0.6rem 1.5rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s; text-decoration: none;
+}
+.lp-btn-primary { background: var(--theme-color); color: #fff; }
+.lp-btn-primary:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.lp-btn-outline { background: transparent; color: var(--theme-color); border: 1.5px solid var(--theme-color); }
+.lp-btn-outline:hover { background: rgba(91,174,176,0.1); }
+ .lp-hero {
+    max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 3rem;
+    text-align: center;
+}
+.lp-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+    background: rgba(91,174,176,0.12); color: var(--theme-color);
+    margin-bottom: 1.5rem; border: 1px solid rgba(91,174,176,0.2);
+}
+.lp-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800;
+    line-height: 1.15; margin: 0 0 1.2rem;
+    color: var(--text-primary);
+}
+.lp-hero h1 span { color: var(--theme-color); }
+.lp-hero p {
+    font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-secondary);
+    max-width: 640px; margin: 0 auto 2rem; line-height: 1.6;
+}
+.lp-hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+ .lp-channels {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;
+}
+.lp-channel-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 999px; font-size: 0.82rem; font-weight: 600;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-secondary);
+}
+.lp-channel-chip svg { width: 18px; height: 18px; flex-shrink: 0; }
+ .lp-stats {
+    display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+    padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 4rem;
+}
+.lp-stat { text-align: center; }
+.lp-stat-num { font-size: 1.8rem; font-weight: 800; color: var(--theme-color); }
+.lp-stat-label { font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px; }
+ .lp-features {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem;
+}
+.lp-section-title {
+    text-align: center; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700;
+    color: var(--text-primary); margin-bottom: 0.6rem;
+}
+.lp-section-sub {
+    text-align: center; font-size: 1rem; color: var(--text-secondary);
+    max-width: 550px; margin: 0 auto 2.5rem; line-height: 1.5;
+}
+.lp-features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.lp-feature-card {
+    padding: 1.5rem; border-radius: 16px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.2s, border-color 0.2s;
+}
+.lp-feature-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
+.lp-feature-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(91,174,176,0.12); color: var(--theme-color);
+    font-size: 1.3rem; margin-bottom: 1rem;
+}
+.lp-feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem; }
+.lp-feature-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+ .lp-faq { max-width: 720px; margin: 0 auto; padding: 0 2rem 4rem; }
+.lp-faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 0; cursor: pointer;
+}
+.lp-faq-q {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.95rem; font-weight: 600; color: var(--text-primary);
+}
+.lp-faq-q span { transition: transform 0.2s; color: var(--text-secondary); }
+.lp-faq-a {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+    font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;
+}
+.lp-faq-item.open .lp-faq-a { max-height: 200px; padding-top: 0.8rem; }
+.lp-faq-item.open .lp-faq-q span { transform: rotate(45deg); }
+ .lp-trust {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem 3rem; text-align: center;
+}
+.lp-trust-badges {
+    display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;
+}
+.lp-trust-badge {
+    display: flex; align-items: center; gap: 8px; padding: 10px 18px;
+    border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
+}
+.lp-trust-badge svg { width: 20px; height: 20px; color: var(--theme-color); flex-shrink: 0; }
+ .lp-footer {
+    max-width: 1200px; margin: 0 auto; padding: 2rem;
+    text-align: center; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.lp-footer p { font-size: 0.82rem; color: var(--text-secondary); margin: 0; }
+ @media (max-width: 768px) {
+    .lp-nav { padding: 1rem; }
+    .lp-nav-links a:not(.lp-btn) { display: none; }
+    .lp-hero { padding: 2.5rem 1rem 2rem; }
+    .lp-hero-ctas { flex-direction: column; align-items: center; }
+    .lp-btn { width: 100%; max-width: 300px; justify-content: center; }
+    .lp-stats { gap: 1.2rem; }
+    .lp-features, .lp-faq, .lp-trust { padding-left: 1rem; padding-right: 1rem; }
+    .lp-features-grid { grid-template-columns: 1fr; }
+}

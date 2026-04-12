@@ -1,0 +1,21 @@
+/*
+ * CSS Custom Properties
+ *
+ * These variables are set dynamically via [data-theme] attribute on <html>.
+ * The actual values are defined inline in the app's theme system.
+ * This file documents all CSS custom properties used across the codebase
+ * for reference during the modularization process.
+ *
+ * Common variables used:
+ *   --bg-dark          Main background color
+ *   --bg-card          Card/panel background
+ *   --bg-sidebar       Sidebar background
+ *   --bg-input         Input field background
+ *   --text-primary     Primary text color
+ *   --text-secondary   Secondary/muted text
+ *   --text-muted       Muted text color
+ *   --theme-color      Brand accent color (teal ~#2c718a)
+ *   --border-color     Default border color
+ *   --hover-bg         Hover state background
+ *   --shadow           Box shadow value
+ */
