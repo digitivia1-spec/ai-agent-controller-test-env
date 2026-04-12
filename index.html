@@ -6543,6 +6543,105 @@
         }
         :root[data-theme="light"] .lp-particle { background: rgba(91,174,176,0.2); }
 
+        /* ====== 21ST.DEV PREMIUM UX LAYER ====== */
+
+        /* Scroll progress bar */
+        .lp-scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 10000;
+            background: linear-gradient(90deg, var(--theme-color), #a78bfa, #f59e0b);
+            width: 0%; transition: width 0.1s linear;
+        }
+
+        /* Noise texture overlay */
+        #landing-page::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0; opacity: 0.4;
+        }
+
+        /* Magnetic button effect */
+        .lp-btn { transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: hidden; }
+        .lp-btn::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 0; height: 0; border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+        .lp-btn:hover::before { width: 300px; height: 300px; }
+        .lp-btn:active { transform: scale(0.97); }
+
+        /* Glassmorphism premium cards */
+        .lp-glass {
+            background: rgba(255,255,255,0.04) !important;
+            backdrop-filter: blur(12px) saturate(1.2);
+            -webkit-backdrop-filter: blur(12px) saturate(1.2);
+            border: 1px solid rgba(255,255,255,0.08) !important;
+        }
+        :root[data-theme="light"] .lp-glass {
+            background: rgba(255,255,255,0.7) !important;
+            backdrop-filter: blur(12px) saturate(1.5);
+            border-color: rgba(0,0,0,0.06) !important;
+        }
+
+        /* Section divider gradient line */
+        .lp-divider {
+            width: 60px; height: 3px; border-radius: 2px; margin: 0 auto 2rem;
+            background: linear-gradient(90deg, var(--theme-color), #a78bfa);
+        }
+
+        /* Typing cursor for hero */
+        .lp-cursor {
+            display: inline-block; width: 3px; height: 1em; background: var(--theme-color);
+            margin-left: 2px; animation: lp-blink 0.8s step-end infinite; vertical-align: text-bottom;
+        }
+        @keyframes lp-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Smooth parallax depth */
+        .lp-parallax-slow { will-change: transform; }
+        .lp-parallax-fast { will-change: transform; }
+
+        /* Feature card hover glow border */
+        .lp-feature-card { position: relative; }
+        .lp-feature-card::before {
+            content: ''; position: absolute; inset: -1px; border-radius: 17px; padding: 1px;
+            background: linear-gradient(135deg, transparent 40%, rgba(91,174,176,0.3), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .lp-feature-card:hover::before { opacity: 1; }
+
+        /* Smooth scroll behavior */
+        #landing-page { scroll-behavior: smooth; }
+
+        /* Animated underline on nav links */
+        .lp-nav-links a:not(.lp-btn) { position: relative; }
+        .lp-nav-links a:not(.lp-btn)::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: var(--theme-color); border-radius: 1px; transition: width 0.3s ease;
+        }
+        .lp-nav-links a:not(.lp-btn):hover::after { width: 100%; }
+
+        /* Price card popular glow */
+        .lp-price-card.popular {
+            box-shadow: 0 0 30px rgba(91,174,176,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .lp-price-card.popular::before {
+            background: linear-gradient(135deg, var(--theme-color), #a78bfa) !important;
+        }
+
+        /* Stagger animation for feature grid children */
+        .lp-features-grid > .lp-feature-card:nth-child(1) { transition-delay: 0.05s; }
+        .lp-features-grid > .lp-feature-card:nth-child(2) { transition-delay: 0.1s; }
+        .lp-features-grid > .lp-feature-card:nth-child(3) { transition-delay: 0.15s; }
+        .lp-features-grid > .lp-feature-card:nth-child(4) { transition-delay: 0.2s; }
+        .lp-features-grid > .lp-feature-card:nth-child(5) { transition-delay: 0.25s; }
+        .lp-features-grid > .lp-feature-card:nth-child(6) { transition-delay: 0.3s; }
+        .lp-features-grid > .lp-feature-card:nth-child(7) { transition-delay: 0.35s; }
+        .lp-features-grid > .lp-feature-card:nth-child(8) { transition-delay: 0.4s; }
+        .lp-features-grid > .lp-feature-card:nth-child(9) { transition-delay: 0.45s; }
+
         /* ====== LANDING PAGE ANIMATIONS ====== */
 
         /* Fade-in on scroll */
@@ -6634,6 +6733,7 @@
         .lp-nav {
             display: flex; align-items: center; justify-content: space-between;
             padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
+            position: sticky; top: 0; z-index: 100; transition: all 0.3s ease;
         }
         .lp-nav-logo { font-size: 1.2rem; font-weight: 800; color: var(--theme-color); letter-spacing: 0.5px; }
         .lp-nav-links { display: flex; gap: 1.5rem; align-items: center; }
@@ -23073,6 +23173,9 @@
 
     <!-- ========== LANDING PAGE ========== -->
     <div id="landing-page">
+        <!-- Scroll Progress Bar -->
+        <div class="lp-scroll-progress" id="lp-scroll-progress"></div>
+
         <!-- Floating Glow Orbs -->
         <div class="lp-glow-orb lp-glow-1"></div>
         <div class="lp-glow-orb lp-glow-2"></div>
@@ -23098,9 +23201,10 @@
         })();
         </script>
 
-        <!-- Scroll Reveal Observer -->
+        <!-- Premium Interactions Engine -->
         <script>
         (function() {
+            // 1. Scroll Reveal Observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -23118,6 +23222,100 @@
                     observer.observe(el);
                 });
             }, 100);
+
+            // 2. Scroll Progress Bar
+            const lpPage = document.getElementById('landing-page');
+            const progressBar = document.getElementById('lp-scroll-progress');
+            if (lpPage && progressBar) {
+                lpPage.addEventListener('scroll', () => {
+                    const scrollTop = lpPage.scrollTop;
+                    const scrollHeight = lpPage.scrollHeight - lpPage.clientHeight;
+                    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                    progressBar.style.width = progress + '%';
+                });
+            }
+
+            // 3. Magnetic Button Effect
+            document.querySelectorAll('#landing-page .lp-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
+            });
+
+            // 4. Parallax on scroll (subtle depth layers)
+            if (lpPage) {
+                lpPage.addEventListener('scroll', () => {
+                    const scrollY = lpPage.scrollTop;
+                    document.querySelectorAll('.lp-glow-orb').forEach((orb, i) => {
+                        const speed = 0.02 + (i * 0.01);
+                        orb.style.transform = `translateY(${scrollY * speed}px)`;
+                    });
+                });
+            }
+
+            // 5. Animated Counter for Stats
+            const statObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelectorAll('.lp-stat-num').forEach(el => {
+                            const text = el.textContent;
+                            // Only animate numeric values
+                            const num = parseInt(text.replace(/[^0-9]/g, ''));
+                            if (!isNaN(num) && num > 0 && num < 100) {
+                                let current = 0;
+                                const step = Math.ceil(num / 20);
+                                const suffix = text.replace(/[0-9]/g, '');
+                                const interval = setInterval(() => {
+                                    current += step;
+                                    if (current >= num) { current = num; clearInterval(interval); }
+                                    el.textContent = current + suffix;
+                                }, 40);
+                            }
+                        });
+                        statObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            setTimeout(() => {
+                const statsEl = document.querySelector('.lp-stats');
+                if (statsEl) statObserver.observe(statsEl);
+            }, 200);
+
+            // 6. Smooth anchor scrolling
+            document.querySelectorAll('#landing-page a[href^="#"]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const target = document.querySelector(a.getAttribute('href'));
+                    if (target && lpPage) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            // 7. Navbar blur on scroll
+            if (lpPage) {
+                const nav = document.querySelector('.lp-nav');
+                if (nav) {
+                    lpPage.addEventListener('scroll', () => {
+                        if (lpPage.scrollTop > 60) {
+                            nav.style.background = 'rgba(15,16,20,0.85)';
+                            nav.style.backdropFilter = 'blur(12px)';
+                            nav.style.webkitBackdropFilter = 'blur(12px)';
+                            nav.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+                        } else {
+                            nav.style.background = 'transparent';
+                            nav.style.backdropFilter = 'none';
+                            nav.style.borderBottom = 'none';
+                        }
+                    });
+                }
+            }
         })();
         </script>
 
