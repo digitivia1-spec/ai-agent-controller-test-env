@@ -4,12 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://*.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.posthog.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>AI Agent Command Center</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Digitivia AI Agent — the all-in-one AI command center for managing intelligent agents across WhatsApp, Messenger, Instagram, Telegram, and your website. Automate customer support, capture leads, manage orders, and grow your business with AI.">
+    <meta name="keywords" content="AI agent, chatbot, WhatsApp automation, customer support AI, CRM, ecommerce AI, live chat, omnichannel, Digitivia">
+    <meta name="author" content="Digitivia">
+    <link rel="canonical" href="https://ai-agent.digitivia.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ai-agent.digitivia.com/">
+    <meta property="og:title" content="Digitivia AI Agent — AI-Powered Command Center">
+    <meta property="og:description" content="Create, manage, and monitor AI agents across WhatsApp, Messenger, Instagram, Telegram & Web. Built-in CRM, order management, and content studio.">
+    <meta property="og:image" content="https://ai-agent.digitivia.com/og-image.png">
+    <meta property="og:site_name" content="Digitivia AI Agent">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://ai-agent.digitivia.com/">
+    <meta name="twitter:title" content="Digitivia AI Agent — AI-Powered Command Center">
+    <meta name="twitter:description" content="Create, manage, and monitor AI agents across WhatsApp, Messenger, Instagram, Telegram & Web. Built-in CRM, order management, and content studio.">
+    <meta name="twitter:image" content="https://ai-agent.digitivia.com/og-image.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Digitivia AI Agent",
+        "description": "AI-powered command center for managing intelligent agents across WhatsApp, Messenger, Instagram, Telegram, and websites. Includes CRM, order management, content studio, and automation.",
+        "url": "https://ai-agent.digitivia.com",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "0",
+            "highPrice": "99",
+            "priceCurrency": "USD",
+            "offerCount": "4"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Digitivia",
+            "url": "https://digitivia.com"
+        }
+    }
+    </script>
+
+    <title>Digitivia AI Agent — AI-Powered Command Center</title>
     <link rel="icon" type="image/png" href="cropped-White.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <!-- Sentry Error Tracking -->
+    <script src="https://browser.sentry-cdn.com/8.51.0/bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        if (window.Sentry) {
+            Sentry.init({
+                dsn: "YOUR_SENTRY_DSN_HERE",  // TODO: Replace with actual Sentry DSN from https://sentry.io
+                environment: location.hostname === 'ai-agent.digitivia.com' ? 'production' : 'development',
+                release: 'digitivia-ai-agent@1.0.0',
+                sampleRate: 1.0,
+                tracesSampleRate: 0.2,
+                ignoreErrors: [
+                    'ResizeObserver loop limit exceeded',
+                    'Non-Error promise rejection captured'
+                ]
+            });
+        }
+    </script>
+
+    <!-- PostHog Product Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('YOUR_POSTHOG_KEY_HERE', {  // TODO: Replace with actual PostHog project API key
+            api_host: 'https://us.i.posthog.com',
+            person_profiles: 'identified_only',
+            autocapture: true,
+            capture_pageview: true,
+            capture_pageleave: true
+        });
+    </script>
     <script>
         (function initSavedTheme() {
             try {
@@ -25860,6 +25938,7 @@
 
         function startAutoRefresh() {
             setInterval(() => {
+                if (document.hidden) return; // Skip polling when tab is not visible
                 if (document.getElementById('inbox').classList.contains('active')) {
                     if (currentInboxPlatform) loadInbox(currentInboxPlatform, true);
                     // Messages handle themselves via Realtime now
@@ -35532,68 +35611,44 @@ Thank you for shopping with {store_name}!</textarea>
 
         // Initialize billing period toggle event listeners
         function initializeBillingToggle() {
-            // Try multiple possible toggle element patterns
+            // Primary toggle: #billing-switch
+            const billingSwitch = document.getElementById('billing-switch');
             const toggleInput = document.getElementById('billing-period-toggle');
             const toggleCheckbox = document.querySelector('input[type="checkbox"][id*="yearly"]');
             const toggleSwitch = document.querySelector('.billing-toggle-switch input');
-            const monthlyLabel = document.querySelector('[data-period="monthly"]');
-            const yearlyLabel = document.querySelector('[data-period="yearly"]');
 
-            // Search for elements containing "yearly" or "monthly" text for fallback
-            const allElements = document.querySelectorAll('*');
-            const yearlyElements = Array.from(allElements).filter(el =>
-                el.textContent && (el.textContent.toLowerCase().includes('yearly') || el.textContent.toLowerCase().includes('سنوي'))
-            );
-            const monthlyElements = Array.from(allElements).filter(el =>
-                el.textContent && (el.textContent.toLowerCase().includes('monthly') || el.textContent.toLowerCase().includes('شهري'))
-            );
-
-            // Attach listener to checkbox/input toggle
-            // CRITICAL: Use #billing-switch specifically, not the first checkbox!
-            const billingSwitch = document.getElementById('billing-switch');
             const toggle = billingSwitch || toggleInput || toggleCheckbox || toggleSwitch;
             if (toggle) {
                 toggle.removeEventListener('change', toggleBillingPeriod);
                 toggle.addEventListener('change', toggleBillingPeriod);
             }
 
-            // Attach listeners to label clicks
+            // Label clicks via data-period attributes (no full DOM scan)
+            const monthlyLabel = document.querySelector('[data-period="monthly"]');
+            const yearlyLabel = document.querySelector('[data-period="yearly"]');
+
             if (monthlyLabel) {
                 monthlyLabel.removeEventListener('click', handleMonthlyClick);
                 monthlyLabel.addEventListener('click', handleMonthlyClick);
-
             }
             if (yearlyLabel) {
                 yearlyLabel.removeEventListener('click', handleYearlyClick);
                 yearlyLabel.addEventListener('click', handleYearlyClick);
-
             }
 
-            // Attach to any element containing yearly/monthly text as fallback
-            yearlyElements.forEach((el, idx) => {
-                if (idx < 3 && el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') {
-                    el.style.cursor = 'pointer';
-                    el.addEventListener('click', function (e) {
-
-                        if (billingPeriod !== 'yearly') {
-                            toggleBillingPeriod();
-                        }
-                    });
-                }
+            // Targeted fallback: use data-billing-label attribute instead of scanning all DOM elements
+            document.querySelectorAll('[data-billing-label="yearly"]').forEach(el => {
+                el.style.cursor = 'pointer';
+                el.addEventListener('click', function () {
+                    if (billingPeriod !== 'yearly') toggleBillingPeriod();
+                });
             });
-            monthlyElements.forEach((el, idx) => {
-                if (idx < 3 && el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') {
-                    el.style.cursor = 'pointer';
-                    el.addEventListener('click', function (e) {
-
-                        if (billingPeriod !== 'monthly') {
-                            toggleBillingPeriod();
-                        }
-                    });
-                }
+            document.querySelectorAll('[data-billing-label="monthly"]').forEach(el => {
+                el.style.cursor = 'pointer';
+                el.addEventListener('click', function () {
+                    if (billingPeriod !== 'monthly') toggleBillingPeriod();
+                });
             });
-
-
         }
 
         function handleMonthlyClick() {
@@ -35611,6 +35666,14 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function detectCurrency() {
             try {
+                // Check localStorage cache first (24h TTL)
+                const cached = localStorage.getItem('detected_currency');
+                const cachedAt = localStorage.getItem('detected_currency_at');
+                if (cached && cachedAt && (Date.now() - Number(cachedAt)) < 86400000) {
+                    currentCurrency = cached;
+                    return;
+                }
+
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
                 if (data.country_code === 'EG') {
@@ -35618,9 +35681,9 @@ Thank you for shopping with {store_name}!</textarea>
                 } else {
                     currentCurrency = 'USD';
                 }
-                console.log('Detected Currency:', currentCurrency);
+                localStorage.setItem('detected_currency', currentCurrency);
+                localStorage.setItem('detected_currency_at', String(Date.now()));
             } catch (e) {
-                // console.warn('Currency detection failed, defaulting to EGP');
                 currentCurrency = 'EGP';
             }
         }

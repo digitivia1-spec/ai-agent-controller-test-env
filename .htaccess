@@ -3,7 +3,7 @@
 
 <IfModule mod_headers.c>
     # Content Security Policy
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://*.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.posthog.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'"
 
     # Prevent clickjacking
     Header set X-Frame-Options "DENY"
