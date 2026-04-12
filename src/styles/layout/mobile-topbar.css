@@ -1,0 +1,28 @@
+/* --- MOBILE TOP BAR --- */
+.mobile-top-bar {
+    display: none;
+    /* Hidden on desktop */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--mobile-header-height);
+    background: rgba(15, 16, 20, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 2000;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+ .mobile-hamburger-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    padding: 5px;
+}
+ .mobile-logo-img {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+}
