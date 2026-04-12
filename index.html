@@ -24939,6 +24939,18 @@
 
                 if (error) throw error;
 
+                // Audit log: password changed
+                if (currentUserOrgId && currentUserProfile?.user_id) {
+                    supabaseClient.from('dcc_audit_logs').insert({
+                        org_id: currentUserOrgId,
+                        actor_id: currentUserProfile.user_id,
+                        action: 'password_changed',
+                        target_table: 'auth.users',
+                        target_id: currentUserProfile.user_id,
+                        details: {}
+                    }).then(() => {}).catch(() => {});
+                }
+
                 showToast(t('modals.profile.pass_updated_success') || "Password updated!", "success");
 
                 // Clear inputs
@@ -25102,6 +25114,18 @@
                 showApp();
                 await reportLoginNotificationOnce('password');
 
+                // Audit log: login
+                if (currentUserOrgId) {
+                    supabaseClient.from('dcc_audit_logs').insert({
+                        org_id: currentUserOrgId,
+                        actor_id: data.user.id,
+                        action: 'login',
+                        target_table: 'auth.users',
+                        target_id: data.user.id,
+                        details: { method: 'password' }
+                    }).then(() => {}).catch(() => {});
+                }
+
                 // Auto-accept pending invitation after sign-in
                 const pendingToken = sessionStorage.getItem('pending_invite_token');
                 if (pendingToken) {
@@ -25222,6 +25246,19 @@
         }
 
         async function performLogout() {
+            // Audit log: logout
+            if (currentUserOrgId && currentUserProfile?.user_id) {
+                try {
+                    await supabaseClient.from('dcc_audit_logs').insert({
+                        org_id: currentUserOrgId,
+                        actor_id: currentUserProfile.user_id,
+                        action: 'logout',
+                        target_table: 'auth.users',
+                        target_id: currentUserProfile.user_id,
+                        details: {}
+                    });
+                } catch(e) {}
+            }
             await supabaseClient.auth.signOut();
             try {
                 localStorage.removeItem('digitivia_last_login_notification_token');
