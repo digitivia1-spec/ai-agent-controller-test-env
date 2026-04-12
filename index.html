@@ -6833,11 +6833,13 @@
             transition: transform 0.2s, border-color 0.2s; position: relative;
         }
         .lp-price-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
-        .lp-price-card.popular { border-color: var(--theme-color); }
-        .lp-price-card.popular::before {
-            content: 'POPULAR'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            background: var(--theme-color); color: #fff; font-size: 0.68rem; font-weight: 700;
-            padding: 3px 12px; border-radius: 999px; letter-spacing: 0.5px;
+        .lp-price-card.popular { border: 2px solid var(--theme-color); }
+        .lp-popular-tag {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--theme-color), #a78bfa); color: #fff;
+            font-size: 0.72rem; font-weight: 700; padding: 5px 20px; border-radius: 999px;
+            letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(91,174,176,0.3);
         }
         .lp-price-name { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
         .lp-price-amount { font-size: 2rem; font-weight: 800; color: var(--theme-color); margin-bottom: 0.3rem; }
@@ -23367,24 +23369,39 @@
 
             <!-- Social Proof Stats -->
             <div class="lp-stats">
-                <div class="lp-stat"><div class="lp-stat-num">5</div><div class="lp-stat-label">Messaging Channels</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">24/7</div><div class="lp-stat-label">Always-On AI</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">&lt;3s</div><div class="lp-stat-label">Response Time</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">10x</div><div class="lp-stat-label">Faster Than Manual</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">1M+</div><div class="lp-stat-label">Conversations Handled</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">95%</div><div class="lp-stat-label">Satisfaction Rate</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">24/7</div><div class="lp-stat-label">Always-On Support</div></div>
+                <div class="lp-stat"><div class="lp-stat-num">5+</div><div class="lp-stat-label">Channels Supported</div></div>
             </div>
         </section>
 
         <!-- Partner Logos -->
         <section style="max-width:800px;margin:0 auto;padding:0 2rem 3rem;text-align:center;">
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;">Powering Your Growth With</div>
-            <div style="display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;opacity:0.6;">
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Anthropic</span>
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Meta</span>
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">OpenAI</span>
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Shopify</span>
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">WooCommerce</span>
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Stripe</span>
-                <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg> Google</span>
+            <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1rem;font-weight:800;color:var(--text-primary);opacity:0.5;letter-spacing:-0.5px;">anthropic</span>
+                </div>
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1rem;font-weight:800;color:var(--text-primary);opacity:0.5;">Meta</span>
+                </div>
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1rem;font-weight:800;color:var(--text-primary);opacity:0.5;">OpenAI</span>
+                </div>
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1rem;font-weight:800;color:#95BF47;opacity:0.7;">Shopify</span>
+                </div>
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1rem;font-weight:800;color:#9B5C8F;opacity:0.7;">WooCommerce</span>
+                </div>
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1rem;font-weight:800;color:#635BFF;opacity:0.7;">stripe</span>
+                </div>
+                <div style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:5px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/></svg>
+                    <span style="font-size:1rem;font-weight:800;color:var(--text-primary);opacity:0.5;">Google</span>
+                </div>
             </div>
         </section>
 
@@ -23618,31 +23635,41 @@
 
                 grid.innerHTML = LP_PLANS.map(plan => {
                     const origPrice = plan.originalPrices ? plan.originalPrices[currency] || plan.originalPrices.USD : null;
+                    const currentPrice = plan.prices ? (plan.prices[currency] || plan.prices.USD) : null;
+                    const discount = origPrice && currentPrice ? Math.round(((origPrice - currentPrice) / origPrice) * 100) : 0;
+
                     const priceDisplay = plan.prices
-                        ? `${origPrice ? `<div style="font-size:0.85rem;color:var(--text-secondary);text-decoration:line-through;margin-bottom:2px;">${formatLpPrice(origPrice, currency)}</div>` : ''}
-                           <div class="lp-price-amount">${formatLpPrice(plan.prices[currency] || plan.prices.USD, currency)} <span>/month</span></div>
-                           <div class="lp-price-desc" style="font-size:0.72rem;margin-top:-4px;margin-bottom:0.8rem;">Prices include VAT</div>`
-                        : `<div class="lp-price-amount">Custom <span>Contact Sales</span></div>`;
+                        ? `${origPrice ? `<div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+                               <span style="font-size:0.88rem;color:var(--text-secondary);text-decoration:line-through;">${formatLpPrice(origPrice, currency)}</span>
+                               ${discount ? `<span style="font-size:0.7rem;font-weight:700;color:#10b981;background:rgba(16,185,129,0.12);padding:2px 8px;border-radius:999px;">-${discount}%</span>` : ''}
+                           </div>` : ''}
+                           <div class="lp-price-amount" style="margin-top:4px;">${formatLpPrice(currentPrice, currency)} <span>/month</span></div>
+                           <div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:1rem;">Prices include VAT</div>`
+                        : `<div class="lp-price-amount" style="margin-bottom:0.3rem;">Custom</div>
+                           <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">Contact Sales</div>`;
 
                     const ctaBtn = plan.cta === 'contact'
-                        ? `<button onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="width:100%;">Contact Sales</button>`
-                        : `<button onclick="showLandingSignup()" class="lp-btn ${plan.popular ? 'lp-btn-primary' : 'lp-btn-outline'}" style="width:100%;">Upgrade</button>`;
+                        ? `<button onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="width:100%;padding:0.7rem;font-size:0.92rem;">Contact Us</button>`
+                        : `<button onclick="showLandingSignup()" class="lp-btn ${plan.popular ? 'lp-btn-primary' : 'lp-btn-outline'}" style="width:100%;padding:0.7rem;font-size:0.92rem;">Select ${plan.name}</button>`;
+
+                    const borderColor = plan.popular ? 'var(--theme-color)' : plan.name === 'Pro' ? '#f59e0b' : plan.name === 'Customize' ? '#f59e0b' : 'rgba(255,255,255,0.08)';
 
                     return `
-                    <div class="lp-price-card ${plan.popular ? 'popular' : ''}">
-                        <div style="font-size:1.8rem;margin-bottom:0.4rem;">${plan.icon}</div>
-                        <div class="lp-price-name">${plan.name}</div>
-                        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--theme-color);font-weight:700;margin-bottom:0.3rem;">${plan.tagline}</div>
-                        ${plan.subtitle ? `<div class="lp-price-desc">${plan.subtitle}</div>` : ''}
+                    <div class="lp-price-card ${plan.popular ? 'popular' : ''}" style="border-color:${borderColor};padding-top:${plan.popular ? '2rem' : '1.5rem'};">
+                        ${plan.popular ? '<div class="lp-popular-tag">MOST POPULAR</div>' : ''}
+                        <div style="font-size:2rem;margin-bottom:0.5rem;">${plan.icon}</div>
+                        <div class="lp-price-name" style="font-size:1.2rem;">${plan.name}</div>
+                        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:${plan.popular ? 'var(--theme-color)' : plan.name === 'Pro' ? '#f59e0b' : 'var(--text-secondary)'};font-weight:700;margin-bottom:0.3rem;">${plan.tagline}</div>
+                        ${plan.subtitle ? `<div class="lp-price-desc" style="margin-bottom:1rem;">${plan.subtitle}</div>` : ''}
                         ${priceDisplay}
-                        <div style="padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);margin-bottom:1rem;font-size:0.78rem;color:var(--text-secondary);">
-                            <span style="color:var(--theme-color);">💡 IDEAL IF:</span><br>${plan.ideal}
+                        <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);margin-bottom:1.2rem;font-size:0.8rem;color:var(--text-secondary);">
+                            <span style="color:var(--theme-color);font-weight:600;">💡 IDEAL IF:</span><br>${plan.ideal}
                         </div>
-                        <ul class="lp-price-features">
+                        <ul class="lp-price-features" style="margin-bottom:1.5rem;">
                             ${plan.features.map(f => `<li>${f}</li>`).join('')}
                         </ul>
                         ${ctaBtn}
-                        <div style="text-align:center;margin-top:0.6rem;font-size:0.72rem;color:var(--text-secondary);">🔒 Secure Payment via Stripe</div>
+                        <div style="text-align:center;margin-top:0.8rem;font-size:0.72rem;color:var(--text-secondary);">🔒 Secure Payment via Stripe</div>
                     </div>`;
                 }).join('');
             }
@@ -23764,10 +23791,18 @@
         <!-- Payment Methods -->
         <section style="max-width:600px;margin:0 auto;padding:0 2rem 3rem;text-align:center;">
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;">Secure Payment Methods</div>
-            <div style="display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;">
-                <span style="font-size:1.2rem;font-weight:700;color:var(--text-secondary);opacity:0.5;">stripe</span>
-                <span style="font-size:0.95rem;font-weight:700;color:var(--text-secondary);opacity:0.5;display:flex;align-items:center;gap:4px;">&#9889; InstaPay</span>
-                <span style="font-size:0.95rem;font-weight:700;color:var(--text-secondary);opacity:0.5;display:flex;align-items:center;gap:4px;">&#128241; Vodafone Cash</span>
+            <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
+                <div style="padding:10px 24px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <span style="font-size:1.1rem;font-weight:800;color:#635BFF;">stripe</span>
+                </div>
+                <div style="padding:10px 24px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:1.1rem;">&#9889;</span>
+                    <span style="font-size:0.95rem;font-weight:700;color:var(--text-primary);opacity:0.6;">InstaPay</span>
+                </div>
+                <div style="padding:10px 24px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:1.1rem;">&#128241;</span>
+                    <span style="font-size:0.95rem;font-weight:700;color:#E60000;opacity:0.7;">Vodafone Cash</span>
+                </div>
             </div>
         </section>
 
