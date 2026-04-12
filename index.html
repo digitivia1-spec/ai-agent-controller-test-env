@@ -6616,6 +6616,91 @@
         .lp-feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem; }
         .lp-feature-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0; }
 
+        /* Landing Pricing */
+        .lp-pricing { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
+        .lp-pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem; margin-top: 2rem;
+        }
+        .lp-price-card {
+            padding: 1.5rem; border-radius: 16px; text-align: center;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.2s, border-color 0.2s; position: relative;
+        }
+        .lp-price-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
+        .lp-price-card.popular { border-color: var(--theme-color); }
+        .lp-price-card.popular::before {
+            content: 'POPULAR'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            background: var(--theme-color); color: #fff; font-size: 0.68rem; font-weight: 700;
+            padding: 3px 12px; border-radius: 999px; letter-spacing: 0.5px;
+        }
+        .lp-price-name { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .lp-price-amount { font-size: 2rem; font-weight: 800; color: var(--theme-color); margin-bottom: 0.3rem; }
+        .lp-price-amount span { font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); }
+        .lp-price-desc { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .lp-price-features { list-style: none; padding: 0; margin: 0 0 1.2rem; text-align: left; }
+        .lp-price-features li {
+            font-size: 0.82rem; color: var(--text-secondary); padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .lp-price-features li::before { content: '✓ '; color: var(--theme-color); font-weight: 700; }
+
+        /* Landing Comparison */
+        .lp-compare { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+        .lp-compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .lp-compare-table th, .lp-compare-table td {
+            padding: 10px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .lp-compare-table th { color: var(--text-secondary); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .lp-compare-table th:first-child, .lp-compare-table td:first-child { text-align: left; }
+        .lp-compare-table td { color: var(--text-secondary); }
+        .lp-compare-table .lp-highlight { color: var(--theme-color); font-weight: 700; background: rgba(91,174,176,0.06); }
+        .lp-check { color: var(--theme-color); font-weight: 700; }
+        .lp-cross { color: rgba(255,255,255,0.2); }
+        @media (max-width: 768px) {
+            .lp-pricing-grid { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+            .lp-compare { overflow-x: auto; }
+            .lp-compare-table { min-width: 600px; }
+        }
+
+        /* Onboarding Tour */
+        .tour-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998; display: none; }
+        .tour-overlay.active { display: block; }
+        .tour-tooltip {
+            position: fixed; z-index: 9999; background: var(--bg-card, #1a1b2e); border: 1px solid var(--theme-color);
+            border-radius: 14px; padding: 1.2rem; max-width: 340px; box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .tour-tooltip h4 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--theme-color); }
+        .tour-tooltip p { margin: 0 0 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .tour-tooltip-btns { display: flex; gap: 8px; justify-content: flex-end; }
+        .tour-tooltip-btns button { padding: 6px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; }
+        .tour-btn-next { background: var(--theme-color); color: #fff; }
+        .tour-btn-skip { background: transparent; color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.1) !important; }
+        .tour-step-indicator { font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .tour-highlight { position: relative; z-index: 9999; box-shadow: 0 0 0 4px var(--theme-color), 0 0 0 5000px rgba(0,0,0,0.5); border-radius: 8px; }
+
+        /* Command Palette */
+        .cmd-palette-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; display: none; justify-content: center; align-items: flex-start; padding-top: 15vh; }
+        .cmd-palette-overlay.active { display: flex; }
+        .cmd-palette {
+            background: var(--bg-card, #1a1b2e); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px; width: 100%; max-width: 520px; overflow: hidden;
+            box-shadow: 0 16px 60px rgba(0,0,0,0.5);
+        }
+        .cmd-palette input {
+            width: 100%; padding: 14px 18px; background: transparent; border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-primary);
+            font-size: 1rem; outline: none;
+        }
+        .cmd-palette-results { max-height: 320px; overflow-y: auto; padding: 6px; }
+        .cmd-palette-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+            border-radius: 8px; cursor: pointer; color: var(--text-secondary); font-size: 0.88rem;
+        }
+        .cmd-palette-item:hover, .cmd-palette-item.active { background: rgba(91,174,176,0.12); color: var(--text-primary); }
+        .cmd-palette-item .cmd-icon { width: 20px; text-align: center; opacity: 0.6; }
+        .cmd-palette-item .cmd-shortcut { margin-left: auto; font-size: 0.72rem; opacity: 0.4; font-family: monospace; }
+
         .lp-faq { max-width: 720px; margin: 0 auto; padding: 0 2rem 4rem; }
         .lp-faq-item {
             border-bottom: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 0; cursor: pointer;
@@ -22682,6 +22767,7 @@
             <div class="lp-nav-logo">DIGITIVIA AI AGENT</div>
             <div class="lp-nav-links">
                 <a href="#lp-features">Features</a>
+                <a href="#lp-pricing">Pricing</a>
                 <a href="#lp-faq">FAQ</a>
                 <a onclick="showLandingLogin()" class="lp-btn lp-btn-outline">Log In</a>
                 <a onclick="showLandingSignup()" class="lp-btn lp-btn-primary">Start Free</a>
@@ -22782,6 +22868,91 @@
                     <p>Connect Shopify, WooCommerce, or Easy Orders. Sync your product catalog and manage orders from one place.</p>
                 </div>
             </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="lp-pricing" id="lp-pricing">
+            <h2 class="lp-section-title">Simple, Transparent Pricing</h2>
+            <p class="lp-section-sub">Start free, scale as you grow. No hidden fees.</p>
+            <div class="lp-pricing-grid">
+                <div class="lp-price-card">
+                    <div class="lp-price-name">Free</div>
+                    <div class="lp-price-amount">$0 <span>/month</span></div>
+                    <div class="lp-price-desc">Perfect to get started</div>
+                    <ul class="lp-price-features">
+                        <li>100 messages/month</li>
+                        <li>1 AI agent</li>
+                        <li>Basic analytics</li>
+                        <li>Community support</li>
+                    </ul>
+                    <button onclick="showLandingSignup()" class="lp-btn lp-btn-outline" style="width:100%;">Get Started</button>
+                </div>
+                <div class="lp-price-card">
+                    <div class="lp-price-name">Starter</div>
+                    <div class="lp-price-amount">$19 <span>/month</span></div>
+                    <div class="lp-price-desc">For small businesses</div>
+                    <ul class="lp-price-features">
+                        <li>1,000 messages/month</li>
+                        <li>2 AI agents</li>
+                        <li>Advanced analytics</li>
+                        <li>Email support</li>
+                    </ul>
+                    <button onclick="showLandingSignup()" class="lp-btn lp-btn-outline" style="width:100%;">Start Free Trial</button>
+                </div>
+                <div class="lp-price-card popular">
+                    <div class="lp-price-name">Growth</div>
+                    <div class="lp-price-amount">$49 <span>/month</span></div>
+                    <div class="lp-price-desc">For growing teams</div>
+                    <ul class="lp-price-features">
+                        <li>10,000 messages/month</li>
+                        <li>4 AI agents</li>
+                        <li>Priority analytics</li>
+                        <li>Priority support</li>
+                        <li>Custom integrations</li>
+                    </ul>
+                    <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="width:100%;">Start Free Trial</button>
+                </div>
+                <div class="lp-price-card">
+                    <div class="lp-price-name">Enterprise</div>
+                    <div class="lp-price-amount">Custom</div>
+                    <div class="lp-price-desc">For large organizations</div>
+                    <ul class="lp-price-features">
+                        <li>Unlimited messages</li>
+                        <li>Unlimited agents</li>
+                        <li>White-label options</li>
+                        <li>Dedicated manager</li>
+                        <li>SLA guarantee</li>
+                    </ul>
+                    <button onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="width:100%;">Contact Sales</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison -->
+        <section class="lp-compare" id="lp-compare">
+            <h2 class="lp-section-title">How We Compare</h2>
+            <p class="lp-section-sub">The only platform that combines AI agents, CRM, orders, and content in one.</p>
+            <table class="lp-compare-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th class="lp-highlight">Digitivia</th>
+                        <th>Intercom</th>
+                        <th>ManyChat</th>
+                        <th>Tidio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Multi-Channel AI Agents</td><td class="lp-highlight"><span class="lp-check">5 channels</span></td><td>6+</td><td>4</td><td>3</td></tr>
+                    <tr><td>Built-in CRM</td><td class="lp-highlight"><span class="lp-check">Full CRM</span></td><td>Basic</td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Order Management</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>Content Studio</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>WhatsApp Notifications</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td></tr>
+                    <tr><td>E-Commerce Integrations</td><td class="lp-highlight"><span class="lp-check">3 platforms</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
+                    <tr><td>Free Plan</td><td class="lp-highlight"><span class="lp-check">Yes</span></td><td><span class="lp-cross">--</span></td><td><span class="lp-check">Yes</span></td><td><span class="lp-check">Yes</span></td></tr>
+                    <tr><td>Starting Price</td><td class="lp-highlight"><span class="lp-check">$0/mo</span></td><td>$39/mo</td><td>$15/mo</td><td>$29/mo</td></tr>
+                </tbody>
+            </table>
         </section>
 
         <!-- FAQ -->
@@ -23316,6 +23487,26 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Onboarding Tour -->
+    <div class="tour-overlay" id="tour-overlay"></div>
+    <div class="tour-tooltip" id="tour-tooltip" style="display:none;">
+        <div class="tour-step-indicator" id="tour-step-indicator"></div>
+        <h4 id="tour-title"></h4>
+        <p id="tour-desc"></p>
+        <div class="tour-tooltip-btns">
+            <button class="tour-btn-skip" onclick="endTour()">Skip</button>
+            <button class="tour-btn-next" id="tour-next-btn" onclick="nextTourStep()">Next</button>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div class="cmd-palette-overlay" id="cmd-palette-overlay" onclick="if(event.target===this)closeCmdPalette()">
+        <div class="cmd-palette">
+            <input type="text" id="cmd-palette-input" placeholder="Type a command or search..." oninput="filterCmdPalette(this.value)" onkeydown="handleCmdKeydown(event)">
+            <div class="cmd-palette-results" id="cmd-palette-results"></div>
         </div>
     </div>
 
@@ -46783,6 +46974,220 @@ Thank you for shopping with {store_name}!</textarea>
         })();
 
     })();
+</script>
+
+<!-- Product Tour & Command Palette -->
+<script>
+(function() {
+    // ==========================================
+    //        PRODUCT ONBOARDING TOUR
+    // ==========================================
+    const TOUR_STEPS = [
+        { target: '[data-tab="dashboard"]', title: 'Dashboard', desc: 'Your command center. See KPIs, agent performance, leads, and tasks at a glance.', position: 'right' },
+        { target: '[data-tab="website"]', title: 'AI Agents', desc: 'Configure AI agents for each channel — set system prompts, tones, and knowledge base links.', position: 'right' },
+        { target: '[data-tab="inbox"]', title: 'AI Inbox', desc: 'Monitor all conversations in real-time. Toggle between AI and Human mode to take over any chat.', position: 'right' },
+        { target: '[data-tab="crm"]', title: 'CRM', desc: 'Your sales pipeline. Leads are auto-captured from conversations. Track them through table, kanban, or dashboard views.', position: 'right' },
+        { target: '[data-tab="task-manager"]', title: 'Task Manager', desc: 'Assign tasks to your team, set priorities and due dates, and track completion.', position: 'right' },
+        { target: '[data-tab="orders"]', title: 'Orders', desc: 'Track customer orders, payments, and delivery. Send WhatsApp confirmations automatically.', position: 'right' },
+        { target: '[data-tab="create-post"]', title: 'Content Studio', desc: 'Create posts with AI-generated images and captions. Schedule to Facebook and Instagram.', position: 'right' },
+    ];
+
+    let currentTourStep = 0;
+    let prevHighlighted = null;
+
+    window.startTour = function() {
+        if (localStorage.getItem('tour_completed')) return;
+        currentTourStep = 0;
+        document.getElementById('tour-overlay').classList.add('active');
+        showTourStep(0);
+    };
+
+    window.nextTourStep = function() {
+        currentTourStep++;
+        if (currentTourStep >= TOUR_STEPS.length) {
+            endTour();
+            return;
+        }
+        showTourStep(currentTourStep);
+    };
+
+    window.endTour = function() {
+        localStorage.setItem('tour_completed', '1');
+        document.getElementById('tour-overlay').classList.remove('active');
+        document.getElementById('tour-tooltip').style.display = 'none';
+        if (prevHighlighted) {
+            prevHighlighted.classList.remove('tour-highlight');
+            prevHighlighted = null;
+        }
+    };
+
+    function showTourStep(idx) {
+        const step = TOUR_STEPS[idx];
+        const el = document.querySelector(step.target);
+
+        // Remove previous highlight
+        if (prevHighlighted) prevHighlighted.classList.remove('tour-highlight');
+
+        if (!el) { nextTourStep(); return; }
+
+        // Highlight element
+        el.classList.add('tour-highlight');
+        prevHighlighted = el;
+
+        // Update tooltip content
+        document.getElementById('tour-step-indicator').textContent = `Step ${idx + 1} of ${TOUR_STEPS.length}`;
+        document.getElementById('tour-title').textContent = step.title;
+        document.getElementById('tour-desc').textContent = step.desc;
+        document.getElementById('tour-next-btn').textContent = idx === TOUR_STEPS.length - 1 ? 'Finish' : 'Next';
+
+        // Position tooltip near element
+        const tooltip = document.getElementById('tour-tooltip');
+        tooltip.style.display = 'block';
+        const rect = el.getBoundingClientRect();
+        tooltip.style.top = Math.max(10, rect.top) + 'px';
+        tooltip.style.left = (rect.right + 16) + 'px';
+
+        // If tooltip goes offscreen, place below
+        if (rect.right + 360 > window.innerWidth) {
+            tooltip.style.left = Math.max(10, rect.left) + 'px';
+            tooltip.style.top = (rect.bottom + 12) + 'px';
+        }
+    }
+
+    // Auto-start tour for new users (first time after login)
+    const origShowApp = window.showApp;
+    if (origShowApp) {
+        // Hook into showApp to trigger tour after app loads
+        const checkTourAfterLoad = function() {
+            setTimeout(function() {
+                if (!localStorage.getItem('tour_completed') && !localStorage.getItem('tour_dismissed')) {
+                    startTour();
+                }
+            }, 2000);
+        };
+        // Listen for app becoming visible
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+                if (m.target.id === 'app-container' && m.target.style.display === 'flex') {
+                    checkTourAfterLoad();
+                    observer.disconnect();
+                }
+            });
+        });
+        const appEl = document.getElementById('app-container');
+        if (appEl) observer.observe(appEl, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    // ==========================================
+    //        COMMAND PALETTE (Ctrl+K)
+    // ==========================================
+    const CMD_ITEMS = [
+        { icon: '📊', label: 'Go to Dashboard', shortcut: 'G D', action: () => switchTab('dashboard') },
+        { icon: '📨', label: 'Go to AI Inbox', shortcut: 'G I', action: () => switchTab('inbox') },
+        { icon: '📋', label: 'Go to CRM', shortcut: 'G C', action: () => switchTab('crm') },
+        { icon: '✅', label: 'Go to Task Manager', shortcut: 'G T', action: () => switchTab('task-manager') },
+        { icon: '🛒', label: 'Go to Orders', shortcut: 'G O', action: () => switchTab('orders') },
+        { icon: '🤖', label: 'Go to Website Agent', shortcut: '', action: () => switchTab('website') },
+        { icon: '💬', label: 'Go to WhatsApp Agent', shortcut: '', action: () => switchTab('whatsapp') },
+        { icon: '🎨', label: 'Go to Content Studio', shortcut: '', action: () => switchTab('create-post') },
+        { icon: '⭐', label: 'Go to Reviews', shortcut: '', action: () => switchTab('reviews') },
+        { icon: '⚡', label: 'Go to Automation Rules', shortcut: '', action: () => switchTab('followups') },
+        { icon: '👥', label: 'Go to Team', shortcut: '', action: () => switchTab('team') },
+        { icon: '💰', label: 'Open Pricing', shortcut: '', action: () => { closeCmdPalette(); if (typeof openPricingModal === 'function') openPricingModal(); } },
+        { icon: '📖', label: 'Open Documentation', shortcut: '', action: () => { closeCmdPalette(); if (typeof openDocsModal === 'function') openDocsModal(); } },
+        { icon: '🎓', label: 'Start Product Tour', shortcut: '', action: () => { closeCmdPalette(); localStorage.removeItem('tour_completed'); startTour(); } },
+    ];
+
+    let cmdActiveIdx = 0;
+    let cmdFilteredItems = [...CMD_ITEMS];
+
+    window.openCmdPalette = function() {
+        const overlay = document.getElementById('cmd-palette-overlay');
+        overlay.classList.add('active');
+        const input = document.getElementById('cmd-palette-input');
+        input.value = '';
+        cmdFilteredItems = [...CMD_ITEMS];
+        cmdActiveIdx = 0;
+        renderCmdResults();
+        setTimeout(() => input.focus(), 50);
+    };
+
+    window.closeCmdPalette = function() {
+        document.getElementById('cmd-palette-overlay').classList.remove('active');
+    };
+
+    window.filterCmdPalette = function(query) {
+        const q = query.toLowerCase().trim();
+        cmdFilteredItems = q ? CMD_ITEMS.filter(item => item.label.toLowerCase().includes(q)) : [...CMD_ITEMS];
+        cmdActiveIdx = 0;
+        renderCmdResults();
+    };
+
+    window.handleCmdKeydown = function(e) {
+        if (e.key === 'ArrowDown') { e.preventDefault(); cmdActiveIdx = Math.min(cmdActiveIdx + 1, cmdFilteredItems.length - 1); renderCmdResults(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); cmdActiveIdx = Math.max(cmdActiveIdx - 1, 0); renderCmdResults(); }
+        else if (e.key === 'Enter' && cmdFilteredItems[cmdActiveIdx]) { closeCmdPalette(); cmdFilteredItems[cmdActiveIdx].action(); }
+        else if (e.key === 'Escape') { closeCmdPalette(); }
+    };
+
+    function renderCmdResults() {
+        const container = document.getElementById('cmd-palette-results');
+        container.innerHTML = cmdFilteredItems.map((item, i) =>
+            `<div class="cmd-palette-item${i === cmdActiveIdx ? ' active' : ''}" onclick="closeCmdPalette();CMD_ITEMS.find(c=>c.label==='${item.label.replace(/'/g,"\\'")}').action()">
+                <span class="cmd-icon">${item.icon}</span>
+                <span>${item.label}</span>
+                ${item.shortcut ? `<span class="cmd-shortcut">${item.shortcut}</span>` : ''}
+            </div>`
+        ).join('');
+    }
+    // Expose for onclick
+    window.CMD_ITEMS = CMD_ITEMS;
+
+    // ==========================================
+    //        KEYBOARD SHORTCUTS
+    // ==========================================
+    let gKeyPending = false;
+    let gKeyTimer = null;
+
+    document.addEventListener('keydown', function(e) {
+        // Ignore when typing in inputs
+        const tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+
+        // Ctrl+K or Cmd+K → Command Palette
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            openCmdPalette();
+            return;
+        }
+
+        // Escape → Close modals / command palette
+        if (e.key === 'Escape') {
+            if (document.getElementById('cmd-palette-overlay').classList.contains('active')) {
+                closeCmdPalette();
+                return;
+            }
+        }
+
+        // G+key shortcuts (press G, then another key within 500ms)
+        if (e.key === 'g' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            gKeyPending = true;
+            clearTimeout(gKeyTimer);
+            gKeyTimer = setTimeout(() => { gKeyPending = false; }, 500);
+            return;
+        }
+
+        if (gKeyPending) {
+            gKeyPending = false;
+            clearTimeout(gKeyTimer);
+            const shortcuts = { d: 'dashboard', i: 'inbox', c: 'crm', t: 'task-manager', o: 'orders' };
+            if (shortcuts[e.key] && typeof switchTab === 'function') {
+                e.preventDefault();
+                switchTab(shortcuts[e.key]);
+            }
+        }
+    });
+})();
 </script>
 
 </html>
