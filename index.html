@@ -1070,7 +1070,9 @@
                 "integrations_shopify_hint": "Use your Storefront Access Token. This lets AI agents fetch and search Shopify products so they can help customers in real time.",
                 "integrations_shopify_private_note": "Storefront token",
                 "integrations_easy_order_title": "Easy Order",
-                "integrations_easy_order_hint": "Use your Easy Order API key. This lets AI agents fetch and search your Easy Order products to support customers accurately.",
+                "integrations_easy_order_hint": "Use your Easy Order store subdomain and API key. This lets AI agents fetch and search your Easy Order products to support customers accurately.",
+                "label_easy_order_store": "Store Subdomain",
+                "placeholder_easy_order_store": "mystore",
                 "label_easy_order_api_key": "API Key",
                 "placeholder_easy_order_api_key": "Your Easy Order API key",
                 "integrations_easy_order_badge": "API key",
@@ -2191,7 +2193,9 @@
                 "integrations_shopify_hint": "استخدم Storefront Access Token. هذا يسمح لوكلاء الذكاء الاصطناعي بجلب منتجات Shopify والبحث فيها لمساعدة العملاء بشكل فوري.",
                 "integrations_shopify_private_note": "رمز Storefront",
                 "integrations_easy_order_title": "Easy Order",
-                "integrations_easy_order_hint": "استخدم مفتاح API الخاص بـ Easy Order. هذا يسمح لوكلاء الذكاء الاصطناعي بجلب منتجات Easy Order والبحث فيها لخدمة العملاء بدقة.",
+                "integrations_easy_order_hint": "استخدم النطاق الفرعي لمتجر Easy Order ومفتاح API. هذا يسمح لوكلاء الذكاء الاصطناعي بجلب منتجات Easy Order والبحث فيها لخدمة العملاء بدقة.",
+                "label_easy_order_store": "النطاق الفرعي للمتجر",
+                "placeholder_easy_order_store": "mystore",
                 "label_easy_order_api_key": "مفتاح API",
                 "placeholder_easy_order_api_key": "مفتاح API الخاص بـ Easy Order",
                 "integrations_easy_order_badge": "مفتاح API",
@@ -3547,6 +3551,9 @@
                 "integrations.shopify": { mode: "popover", title: "Shopify", body: ["Connect your Shopify storefront so the AI agent can read products in real time.", "This is useful when customers ask about live catalog data."] },
                 "integrations.shopify_domain": { mode: "popover+inline", title: "Shop Domain", body: ["Enter the Shopify store name or domain used by your storefront.", "Use the shop handle for the .myshopify.com store."], inline: "Example: yourstore" },
                 "integrations.shopify_token": { mode: "popover+inline", title: "Storefront Access Token", body: ["This token lets the app read storefront product data securely.", "Paste the Storefront Access Token exactly as generated in Shopify."], inline: "Paste the Storefront Access Token here." },
+                "integrations.easy_order": { mode: "popover", title: "Easy Order", body: ["Connect your Easy Order store so the AI agent can read and search products.", "You need your store subdomain and API key from the Easy Order dashboard."] },
+                "integrations.easy_order_store": { mode: "popover+inline", title: "Store Subdomain", body: ["Enter your Easy Order store subdomain.", "This is the part before .easy-orders.net in your store URL."], inline: "Example: mystore" },
+                "integrations.easy_order_api_key": { mode: "popover+inline", title: "API Key", body: ["This API key lets the app read your Easy Order product catalog securely.", "Generate it from your Easy Order dashboard under API settings."], inline: "Paste your Easy Order API key here." },
                 "integrations.test_connection": { mode: "popover", title: "Test Connection", body: ["Check that your credentials are correct.", "A successful test confirms the app can fetch live product data."] },
                 "integrations.proof_store": { mode: "tooltip", body: "The store name that was verified during the connection test." },
                 "integrations.proof_method": { mode: "tooltip", body: "The method used to verify your connection." },
@@ -3632,6 +3639,9 @@
                 "integrations.shopify": { mode: "popover", title: "Shopify", body: ["اربط متجر Shopify ليتمكن الوكيل من قراءة المنتجات مباشرة.", "يفيد ذلك عندما يسأل العملاء عن بيانات حية من المتجر."] },
                 "integrations.shopify_domain": { mode: "popover+inline", title: "اسم المتجر", body: ["أدخل اسم أو نطاق متجر Shopify المستخدم.", "استخدم اسم المتجر الخاص بعنوان .myshopify.com."], inline: "مثال: yourstore" },
                 "integrations.shopify_token": { mode: "popover+inline", title: "Storefront Access Token", body: ["هذا الرمز يسمح للتطبيق بقراءة بيانات منتجات المتجر بشكل آمن.", "ألصق الرمز كما تم إنشاؤه داخل Shopify."], inline: "ألصق Storefront Access Token هنا." },
+                "integrations.easy_order": { mode: "popover", title: "Easy Order", body: ["اربط متجر Easy Order ليتمكن الوكيل من قراءة المنتجات والبحث فيها.", "تحتاج إلى نطاق المتجر الفرعي ومفتاح API من لوحة تحكم Easy Order."] },
+                "integrations.easy_order_store": { mode: "popover+inline", title: "نطاق المتجر الفرعي", body: ["أدخل النطاق الفرعي لمتجر Easy Order.", "هذا هو الجزء قبل .easy-orders.net في رابط متجرك."], inline: "مثال: mystore" },
+                "integrations.easy_order_api_key": { mode: "popover+inline", title: "مفتاح API", body: ["هذا المفتاح يسمح للتطبيق بقراءة كتالوج منتجات Easy Order بشكل آمن.", "أنشئه من لوحة تحكم Easy Order في إعدادات API."], inline: "ألصق مفتاح API الخاص بـ Easy Order هنا." },
                 "integrations.test_connection": { mode: "popover", title: "اختبار الاتصال", body: ["تحقق من صحة بيانات الدخول.", "نجاح الاختبار يعني أن التطبيق يستطيع جلب بيانات المنتجات الحية."] },
                 "integrations.proof_store": { mode: "tooltip", body: "اسم المتجر الذي تم التحقق منه أثناء الاختبار." },
                 "integrations.proof_method": { mode: "tooltip", body: "الطريقة التي تم بها التحقق من الاتصال." },
@@ -23930,33 +23940,46 @@
             mountHelpTrigger(wooCs?.previousElementSibling, 'integrations.woo_cs', { compact: true });
             mountHelpTrigger(shopDomain?.closest('.onb-inline-domain')?.previousElementSibling, 'integrations.shopify_domain', { compact: true });
             mountHelpTrigger(shopToken?.previousElementSibling, 'integrations.shopify_token', { compact: true });
-            mountHelpTrigger(document.getElementById('woo-test-btn') || document.getElementById('shopify-test-btn'), 'integrations.test_connection', { compact: true });
+            const eoStoreUrl = document.getElementById('eo-store-url');
+            const eoApiKey = document.getElementById('eo-api-key');
+            mountHelpTrigger(eoStoreUrl?.closest('.onb-inline-domain')?.previousElementSibling, 'integrations.easy_order_store', { compact: true });
+            mountHelpTrigger(eoApiKey?.previousElementSibling, 'integrations.easy_order_api_key', { compact: true });
+            mountHelpTrigger(document.getElementById('woo-test-btn') || document.getElementById('shopify-test-btn') || document.getElementById('eo-test-btn'), 'integrations.test_connection', { compact: true });
             mountHelpTrigger(document.querySelector('.onb-disconnect-btn'), 'integrations.disconnect', { compact: true });
             mountInlineHelp(wooDomain, 'integrations.woo_url');
             mountInlineHelp(wooCk, 'integrations.woo_ck');
             mountInlineHelp(wooCs, 'integrations.woo_cs');
             mountInlineHelp(shopDomain?.closest('.onb-inline-domain') || shopDomain, 'integrations.shopify_domain');
             mountInlineHelp(shopToken, 'integrations.shopify_token');
+            mountInlineHelp(eoStoreUrl?.closest('.onb-inline-domain') || eoStoreUrl, 'integrations.easy_order_store');
+            mountInlineHelp(eoApiKey, 'integrations.easy_order_api_key');
             document.querySelectorAll('.onb-proof-label[data-proof-help-key]').forEach((label) => mountHelpTrigger(label, label.getAttribute('data-proof-help-key'), { compact: true }));
         }
 
         function applyIntegrationsHubHelp() {
+            const providers = ['woocommerce', 'shopify', 'easy_order'];
             document.querySelectorAll('#integrations-root .ih-card').forEach((card, index) => {
-                const isWoo = index === 0;
-                mountHelpTrigger(card.querySelector('.ih-card-title'), isWoo ? 'integrations.woo' : 'integrations.shopify', { compact: true });
+                const provider = providers[index] || 'shopify';
                 const labels = card.querySelectorAll('.ih-field label');
-                if (isWoo) {
+                const inputs = card.querySelectorAll('.ih-field input');
+                if (provider === 'woocommerce') {
+                    mountHelpTrigger(card.querySelector('.ih-card-title'), 'integrations.woo', { compact: true });
                     mountHelpTrigger(labels[0], 'integrations.woo_url', { compact: true });
                     mountHelpTrigger(labels[1], 'integrations.woo_ck', { compact: true });
                     mountHelpTrigger(labels[2], 'integrations.woo_cs', { compact: true });
-                    const inputs = card.querySelectorAll('.ih-field input');
                     mountInlineHelp(inputs[0], 'integrations.woo_url');
                     mountInlineHelp(inputs[1], 'integrations.woo_ck');
                     mountInlineHelp(inputs[2], 'integrations.woo_cs');
+                } else if (provider === 'easy_order') {
+                    mountHelpTrigger(card.querySelector('.ih-card-title'), 'integrations.easy_order', { compact: true });
+                    mountHelpTrigger(labels[0], 'integrations.easy_order_store', { compact: true });
+                    mountHelpTrigger(labels[1], 'integrations.easy_order_api_key', { compact: true });
+                    mountInlineHelp(card.querySelector('.ih-inline-domain') || inputs[0], 'integrations.easy_order_store');
+                    mountInlineHelp(inputs[1], 'integrations.easy_order_api_key');
                 } else {
+                    mountHelpTrigger(card.querySelector('.ih-card-title'), 'integrations.shopify', { compact: true });
                     mountHelpTrigger(labels[0], 'integrations.shopify_domain', { compact: true });
                     mountHelpTrigger(labels[1], 'integrations.shopify_token', { compact: true });
-                    const inputs = card.querySelectorAll('.ih-field input');
                     mountInlineHelp(card.querySelector('.ih-inline-domain') || inputs[0], 'integrations.shopify_domain');
                     mountInlineHelp(inputs[1], 'integrations.shopify_token');
                 }
@@ -40755,6 +40778,7 @@ Thank you for shopping with {store_name}!</textarea>
             last_test_status: ''
         });
         const DEFAULT_EASY_ORDER_INTEGRATION = Object.freeze({
+            store_url: '',
             api_key: '',
             verified_at: '',
             verified_store: '',
@@ -40840,6 +40864,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         function normalizeEasyOrderIntegration(raw) {
             const merged = Object.assign({}, DEFAULT_EASY_ORDER_INTEGRATION, raw || {});
+            merged.store_url = String(merged.store_url || '').trim();
             merged.api_key = String(merged.api_key || '').trim();
             merged.verified_at = String(merged.verified_at || '').trim();
             merged.verified_store = String(merged.verified_store || '').trim();
@@ -41042,7 +41067,7 @@ Thank you for shopping with {store_name}!</textarea>
             onbStep = getResumeStep(onbData);
             onbFiles = [];
             onbFinishing = false;
-            onbIntegrationView = (onbData.integrations?.easy_order?.api_key) ? 'easy_order' : (onbData.integrations?.shopify?.shop_domain || onbData.integrations?.shopify?.storefront_token) ? 'shopify' : 'woocommerce';
+            onbIntegrationView = (onbData.integrations?.easy_order?.store_url || onbData.integrations?.easy_order?.api_key) ? 'easy_order' : (onbData.integrations?.shopify?.shop_domain || onbData.integrations?.shopify?.storefront_token) ? 'shopify' : 'woocommerce';
             syncConnectionStateFromData();
             syncSavedIntegrationSignature();
             renderWizard();
@@ -41364,7 +41389,7 @@ Thank you for shopping with {store_name}!</textarea>
             const canDisconnect = provider === 'woocommerce'
                 ? !!(config.website_url || config.consumer_key || config.consumer_secret || config.verified_at)
                 : provider === 'easy_order'
-                ? !!(config.api_key || config.verified_at)
+                ? !!(config.store_url || config.api_key || config.verified_at)
                 : !!(config.shop_domain || config.storefront_token || config.verified_at);
             if (provider === 'woocommerce') {
                 return `<div class="onb-platform-head">
@@ -41444,6 +41469,13 @@ Thank you for shopping with {store_name}!</textarea>
                 <span class="onb-badge">${tOnb('onboarding.integrations_easy_order_badge')}</span>
             </div>
             <div class="onb-form-grid">
+                <div class="onb-field onb-field-full">
+                    <label>${tOnb('onboarding.label_easy_order_store')}</label>
+                    <div class="onb-inline-domain">
+                        <input type="text" id="eo-store-url" value="${esc(config.store_url)}" placeholder="${tOnb('onboarding.placeholder_easy_order_store')}" oninput="updateOnbIntegrationField('easy_order','store_url',this.value)">
+                        <span class="onb-domain-suffix">.easy-orders.net</span>
+                    </div>
+                </div>
                 <div class="onb-field onb-field-full">
                     <label>${tOnb('onboarding.label_easy_order_api_key')}</label>
                     <input type="password" id="eo-api-key" value="${esc(config.api_key)}" placeholder="${tOnb('onboarding.placeholder_easy_order_api_key')}" oninput="updateOnbIntegrationField('easy_order','api_key',this.value)">
@@ -41561,6 +41593,7 @@ Thank you for shopping with {store_name}!</textarea>
                 onbData.integrations.woocommerce.consumer_key = '';
                 onbData.integrations.woocommerce.consumer_secret = '';
             } else if (provider === 'easy_order') {
+                onbData.integrations.easy_order.store_url = '';
                 onbData.integrations.easy_order.api_key = '';
             } else {
                 onbData.integrations.shopify.shop_domain = '';
@@ -41903,20 +41936,63 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
-        async function runEasyOrderConnectionTest(config) {
-            const apiKey = String(config.api_key || '').trim();
-            if (!apiKey) throw { code: 'missing', detail: '' };
+        function normalizeEasyOrderHandle(input) {
+            const raw = String(input || '').trim().toLowerCase();
+            if (!raw) return '';
+            const cleaned = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            if (cleaned.endsWith('.easy-orders.net')) {
+                return cleaned.replace(/\.easy-orders\.net$/, '');
+            }
+            if (/^[a-z0-9][a-z0-9-]*$/i.test(cleaned)) {
+                return cleaned;
+            }
+            return '';
+        }
 
-            const targetUrl = 'https://api.easy-orders.net/api/v1/external-apps/products';
-            let parsed;
+        async function directEasyOrderCheck(handle, apiKey) {
+            const targetUrl = `https://api.easy-orders.net/api/v1/external-apps/products`;
             try {
-                parsed = await requestViaProxy({
-                    targetUrl,
+                const resp = await fetch(targetUrl, {
                     method: 'GET',
                     headers: { 'Api-Key': apiKey }
                 });
+                return readProxyResponse(resp);
             } catch (e) {
-                throw { code: 'network', detail: sanitizeErrorDetail(e?.detail || e?.message || 'Could not reach Easy Order API.') };
+                return { ok: false, status: 0, data: null, text: e?.message || 'network error' };
+            }
+        }
+
+        async function proxyEasyOrderCheck(handle, apiKey) {
+            const targetUrl = `https://api.easy-orders.net/api/v1/external-apps/products`;
+            return requestViaProxy({
+                targetUrl,
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                // Pass Api-Key via custom target header encoding in the URL
+            }).catch(() => {
+                // Fallback: try with API key in URL query param
+                return requestViaProxy({
+                    targetUrl: `${targetUrl}?api_key=${encodeURIComponent(apiKey)}`,
+                    method: 'GET'
+                });
+            });
+        }
+
+        async function runEasyOrderConnectionTest(config) {
+            const apiKey = String(config.api_key || '').trim();
+            const handle = normalizeEasyOrderHandle(config.store_url);
+            if (!handle) throw { code: 'domain', detail: tOnb('onboarding.test_error_domain') };
+            if (!apiKey) throw { code: 'missing', detail: '' };
+
+            let parsed = await directEasyOrderCheck(handle, apiKey);
+            let proofSource = 'direct_api';
+            let detailKey = 'onboarding.test_detail_easy_order';
+
+            const directDetail = extractErrorDetail(parsed).toLowerCase();
+            const shouldFallbackToProxy = !parsed.ok && (!parsed.status || parsed.status === 0 || directDetail.includes('cors') || directDetail.includes('failed to fetch'));
+            if (shouldFallbackToProxy) {
+                parsed = await proxyEasyOrderCheck(handle, apiKey);
+                proofSource = 'integration-proxy';
             }
 
             if (!parsed.ok) {
@@ -41930,16 +42006,17 @@ Thank you for shopping with {store_name}!</textarea>
             const products = Array.isArray(parsed.data) ? parsed.data : (Array.isArray(parsed.data?.data) ? parsed.data.data : (Array.isArray(parsed.data?.products) ? parsed.data.products : null));
             const firstProduct = products?.[0];
             const sampleText = firstProduct ? String(firstProduct.name || firstProduct.title || '').slice(0, 120) : '';
+            const storeName = `${handle}.easy-orders.net`;
             const verifiedAt = new Date().toISOString();
             return {
                 verified_at: verifiedAt,
-                verified_store: 'Easy Order',
+                verified_store: storeName,
                 verification_method: 'api_key',
-                detailKey: 'onboarding.test_detail_easy_order',
+                detailKey,
                 verification_snapshot: {
-                    source: 'integration-proxy',
+                    source: proofSource,
                     method: 'api_key',
-                    store: 'Easy Order',
+                    store: storeName,
                     sample: sampleText,
                     verified_at: verifiedAt
                 }
@@ -41949,7 +42026,7 @@ Thank you for shopping with {store_name}!</textarea>
         window.testEasyOrderConnection = async function () {
             const eo = onbData.integrations.easy_order;
             if (onbConnectionState.easy_order.testing) return;
-            if (!eo.api_key) {
+            if (!eo.store_url || !eo.api_key) {
                 setConnectionState('easy_order', { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false });
                 return;
             }
@@ -41997,7 +42074,7 @@ Thank you for shopping with {store_name}!</textarea>
             const eo = d.integrations.easy_order;
             const hasWoo = woo.website_url && woo.consumer_key;
             const hasShop = shop.shop_domain && shop.storefront_token;
-            const hasEo = !!eo.api_key;
+            const hasEo = eo.store_url && eo.api_key;
             let intStr = '';
             if (hasWoo) intStr += buildIntegrationReviewLabel(tOnb('onboarding.review_woo_connected'), woo);
             if (hasShop) intStr += (intStr ? ', ' : '') + buildIntegrationReviewLabel(tOnb('onboarding.review_shopify_connected'), shop);
@@ -42469,6 +42546,13 @@ Thank you for shopping with {store_name}!</textarea>
             } else if (provider === 'easy_order') {
                 fields = `<div class="ih-form-grid">
                         <div class="ih-field full">
+                            <label>${tOnb('onboarding.label_easy_order_store')}</label>
+                            <div class="ih-inline-domain">
+                                <input type="text" value="${esc(cfg.store_url)}" placeholder="${tOnb('onboarding.placeholder_easy_order_store')}" oninput="updateHubIntegrationField('easy_order','store_url',this.value)" ${disabled}>
+                                <span class="ih-domain-suffix">.easy-orders.net</span>
+                            </div>
+                        </div>
+                        <div class="ih-field full">
                             <label>${tOnb('onboarding.label_easy_order_api_key')}</label>
                             <input type="password" value="${esc(cfg.api_key)}" placeholder="${tOnb('onboarding.placeholder_easy_order_api_key')}" oninput="updateHubIntegrationField('easy_order','api_key',this.value)" ${disabled}>
                         </div>
@@ -42611,6 +42695,7 @@ Thank you for shopping with {store_name}!</textarea>
                 ihData.woocommerce.consumer_key = '';
                 ihData.woocommerce.consumer_secret = '';
             } else if (provider === 'easy_order') {
+                ihData.easy_order.store_url = '';
                 ihData.easy_order.api_key = '';
             } else {
                 ihData.shopify.shop_domain = '';
@@ -42720,7 +42805,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!ihCanEdit) return;
             const eo = ihData.easy_order;
             if (ihConnectionState.easy_order.testing) return;
-            if (!eo.api_key) {
+            if (!eo.store_url || !eo.api_key) {
                 ihConnectionState.easy_order = { status: 'error', titleKey: 'onboarding.test_error_missing', detailKey: '', detailText: '', testing: false };
                 renderIntegrationsHubFromState();
                 return;
