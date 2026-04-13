@@ -23493,17 +23493,85 @@
             </div>
         </section>
 
-        <!-- See It In Action (Video Placeholder) -->
+        <!-- Try It Live -->
         <section style="max-width:800px;margin:0 auto;padding:0 2rem 4rem;text-align:center;">
-            <h2 class="lp-section-title">See It In Action</h2>
-            <p class="lp-section-sub">Watch how our AI Agent handles conversations in real-time.</p>
-            <div style="aspect-ratio:16/9;background:#0a0a0f;border-radius:16px;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;" onclick="window.open('https://wa.me/201211400092?text=I%20want%20to%20see%20a%20demo','_blank')">
-                <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            <h2 class="lp-section-title">Try It Live</h2>
+            <p class="lp-section-sub">Chat with our AI Agent right now — see how it handles real conversations.</p>
+            <div style="max-width:420px;margin:0 auto;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);background:#0a0a14;">
+                <!-- Chat Header -->
+                <div style="padding:14px 18px;background:var(--theme-color);display:flex;align-items:center;gap:10px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem;">🤖</div>
+                    <div style="flex:1;text-align:left;">
+                        <div style="font-weight:700;font-size:0.9rem;color:#fff;">Digitivia AI Agent</div>
+                        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;"></span>Online now</div>
+                    </div>
                 </div>
-                <div style="position:absolute;bottom:16px;font-size:0.78rem;color:rgba(255,255,255,0.5);">Click to request a live demo</div>
+                <!-- Chat Messages -->
+                <div id="lp-demo-messages" style="padding:16px;min-height:220px;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
+                    <div style="align-self:flex-start;background:rgba(255,255,255,0.08);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:80%;font-size:0.85rem;color:var(--text-primary);line-height:1.4;">
+                        Hi! 👋 I'm Digitivia's AI Agent. Ask me anything about our platform — pricing, features, how it works for your business.
+                    </div>
+                </div>
+                <!-- Chat Input -->
+                <div style="padding:10px 14px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;">
+                    <input type="text" id="lp-demo-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendDemoMessage()"
+                        style="flex:1;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;outline:none;">
+                    <button onclick="sendDemoMessage()" style="width:40px;height:40px;border-radius:50%;background:var(--theme-color);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">➤</button>
+                </div>
             </div>
+            <div style="margin-top:0.8rem;font-size:0.72rem;color:var(--text-secondary);">This is a demo — sign up to deploy your own AI agent</div>
         </section>
+        <script>
+        (function() {
+            const DEMO_RESPONSES = {
+                pricing: "We have 3 plans: **Starter** (5,000 conversations), **Growth** (12,000 conversations, most popular), and **Pro** (30,000 conversations). Prices start from $79/month. Would you like to see the details?",
+                features: "Our platform includes AI agents across 5+ channels (WhatsApp, Messenger, Instagram, Telegram, Website), a built-in CRM, order management, content studio, task manager, and knowledge base. What feature interests you most?",
+                whatsapp: "Yes! We support WhatsApp Business API with automated replies, order confirmations, and lead capture — all managed from one dashboard. The AI responds in seconds, 24/7.",
+                channels: "Currently we support WhatsApp, Facebook Messenger, Instagram DMs, Telegram, and Website Chat. SMS and Email are coming soon!",
+                crm: "Our CRM auto-captures leads from conversations, has pipeline views (table, kanban, dashboard), lead scoring, team assignment, and follow-up automation.",
+                ecommerce: "We integrate with Shopify, WooCommerce, and Easy Orders. Your AI agent can answer product questions, track orders, and send WhatsApp confirmations automatically.",
+                arabic: "Yes! Our platform fully supports Arabic with RTL layout. Your AI agent can respond in both Arabic and English based on the customer's language.",
+                demo: "You're chatting with me right now! 😄 To see the full dashboard, click 'Start Automating Now' above. You can also book a meeting with our team for a personalized demo.",
+                default: "Great question! I'd love to help. Our platform handles customer conversations 24/7 across multiple channels with AI. Would you like to know about pricing, features, or a specific use case?"
+            };
+
+            window.sendDemoMessage = function() {
+                const input = document.getElementById('lp-demo-input');
+                const msg = input?.value?.trim();
+                if (!msg) return;
+
+                const container = document.getElementById('lp-demo-messages');
+
+                // Add user message
+                container.innerHTML += `<div style="align-self:flex-end;background:var(--theme-color);padding:10px 14px;border-radius:14px 14px 4px 14px;max-width:80%;font-size:0.85rem;color:#fff;line-height:1.4;">${msg.replace(/</g,'&lt;')}</div>`;
+                input.value = '';
+
+                // Typing indicator
+                container.innerHTML += `<div id="lp-typing" style="align-self:flex-start;padding:10px 14px;font-size:0.82rem;color:var(--text-secondary);">Typing...</div>`;
+                container.scrollTop = container.scrollHeight;
+
+                // Find best response
+                setTimeout(() => {
+                    const q = msg.toLowerCase();
+                    let response = DEMO_RESPONSES.default;
+                    if (q.includes('price') || q.includes('cost') || q.includes('plan')) response = DEMO_RESPONSES.pricing;
+                    else if (q.includes('feature') || q.includes('what can') || q.includes('do')) response = DEMO_RESPONSES.features;
+                    else if (q.includes('whatsapp')) response = DEMO_RESPONSES.whatsapp;
+                    else if (q.includes('channel') || q.includes('platform')) response = DEMO_RESPONSES.channels;
+                    else if (q.includes('crm') || q.includes('lead')) response = DEMO_RESPONSES.crm;
+                    else if (q.includes('shop') || q.includes('ecommerce') || q.includes('order')) response = DEMO_RESPONSES.ecommerce;
+                    else if (q.includes('arabic') || q.includes('arab') || q.includes('عرب')) response = DEMO_RESPONSES.arabic;
+                    else if (q.includes('demo') || q.includes('try') || q.includes('test')) response = DEMO_RESPONSES.demo;
+
+                    const typing = document.getElementById('lp-typing');
+                    if (typing) typing.remove();
+
+                    container.innerHTML += `<div style="align-self:flex-start;background:rgba(255,255,255,0.08);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:80%;font-size:0.85rem;color:var(--text-primary);line-height:1.4;">${response}</div>`;
+                    container.scrollTop = container.scrollHeight;
+                }, 800 + Math.random() * 600);
+            };
+        })();
+        </script>
 
         <!-- How It Works -->
         <section style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
@@ -48470,6 +48538,179 @@ Thank you for shopping with {store_name}!</textarea>
         })();
 
     })();
+</script>
+
+<!-- Google Calendar + Dashboard Quick Actions -->
+<script>
+(function() {
+    // ==========================================
+    //   GOOGLE CALENDAR INTEGRATION
+    // ==========================================
+    window.connectGoogleCalendar = async function() {
+        const userId = window.currentUserObj?.id;
+        if (!userId || !currentUserOrgId) { showToast('Please login first', 'error'); return; }
+
+        try {
+            const { data, error } = await supabaseClient.functions.invoke('google-calendar', {
+                body: {},
+                headers: {},
+            });
+
+            // Build authorize URL with query params
+            const authUrl = `${window.SUPABASE_URL}/functions/v1/google-calendar?action=authorize&user_id=${userId}&org_id=${currentUserOrgId}`;
+            window.open(authUrl, '_blank');
+        } catch (e) {
+            showToast('Set up Google Calendar Edge Function first', 'info');
+        }
+    };
+
+    window.syncGoogleCalendar = async function() {
+        const userId = window.currentUserObj?.id;
+        if (!userId) return;
+
+        try {
+            const { data, error } = await supabaseClient.functions.invoke('google-calendar', {
+                body: { user_id: userId, org_id: currentUserOrgId, action: 'sync' },
+            });
+            if (error) throw error;
+            if (data?.events) {
+                showToast(`Synced ${data.count} calendar events`, 'success');
+                return data.events;
+            }
+        } catch (e) {
+            console.debug('Google Calendar sync:', e.message);
+        }
+        return [];
+    };
+
+    window.createCalendarEvent = async function(title, startTime, endTime, attendeeEmail) {
+        const userId = window.currentUserObj?.id;
+        if (!userId) return;
+
+        try {
+            const { data, error } = await supabaseClient.functions.invoke('google-calendar', {
+                body: { user_id: userId, action: 'create-event', title, start_time: startTime, end_time: endTime, attendee_email: attendeeEmail },
+            });
+            if (data?.success) showToast('Event created in Google Calendar', 'success');
+            return data;
+        } catch (e) {
+            showToast('Could not create calendar event', 'error');
+        }
+    };
+
+    // Check if connected on page load (show in settings/profile)
+    window.checkGoogleCalendarStatus = async function() {
+        const userId = window.currentUserObj?.id;
+        if (!userId) return false;
+        try {
+            const { data } = await supabaseClient.from('user_google_tokens').select('expires_at').eq('user_id', userId).maybeSingle();
+            return !!data;
+        } catch (e) { return false; }
+    };
+
+    // Handle ?gcal=connected redirect
+    if (window.location.search.includes('gcal=connected')) {
+        setTimeout(() => showToast('Google Calendar connected!', 'success'), 1500);
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    // ==========================================
+    //   DASHBOARD QUICK ACTIONS
+    // ==========================================
+    window.dashRenderQuickActions = async function() {
+        let container = document.getElementById('dash-quick-actions');
+        if (!container) {
+            // Insert before KPI cards
+            const alertsStrip = document.getElementById('dash-alerts-strip');
+            if (!alertsStrip) return;
+            container = document.createElement('div');
+            container.id = 'dash-quick-actions';
+            container.className = 'dashboard-widget';
+            container.setAttribute('data-widget', 'quick_actions');
+            alertsStrip.parentNode.insertBefore(container, alertsStrip.nextSibling);
+        }
+        if (!currentUserOrgId) return;
+
+        const actions = [];
+
+        try {
+            // 1. Unanswered conversations (AI paused but no human reply recently)
+            const { count: pausedCount } = await supabaseClient
+                .from('inbox_conversations')
+                .select('id', { count: 'exact', head: true })
+                .eq('org_id', currentUserOrgId)
+                .eq('ai_paused', true);
+            if (pausedCount > 0) {
+                actions.push({ icon: '💬', text: `${pausedCount} conversation${pausedCount > 1 ? 's' : ''} waiting for your reply`, action: "switchTab('inbox')", color: '#3b82f6' });
+            }
+
+            // 2. Stale leads (new/contacted, not updated in 7 days)
+            const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+            const { count: staleLeads } = await supabaseClient
+                .from('leads')
+                .select('id', { count: 'exact', head: true })
+                .eq('org_id', currentUserOrgId)
+                .in('status', ['new', 'contacted'])
+                .lt('updated_at', weekAgo);
+            if (staleLeads > 0) {
+                actions.push({ icon: '📋', text: `${staleLeads} lead${staleLeads > 1 ? 's' : ''} need follow-up (7+ days idle)`, action: "switchTab('crm')", color: '#f59e0b' });
+            }
+
+            // 3. Overdue tasks
+            const now = new Date().toISOString();
+            const { count: overdueTasks } = await supabaseClient
+                .from('tasks')
+                .select('id', { count: 'exact', head: true })
+                .eq('org_id', currentUserOrgId)
+                .lt('due_at', now)
+                .not('status', 'in', '("done","cancelled")');
+            if (overdueTasks > 0) {
+                actions.push({ icon: '⏰', text: `${overdueTasks} overdue task${overdueTasks > 1 ? 's' : ''}`, action: "switchTab('task-manager')", color: '#ef4444' });
+            }
+
+            // 4. Unassigned tasks
+            const { count: unassigned } = await supabaseClient
+                .from('tasks')
+                .select('id', { count: 'exact', head: true })
+                .eq('org_id', currentUserOrgId)
+                .is('assigned_to_user_id', null)
+                .not('status', 'in', '("done","cancelled")');
+            if (unassigned > 2) {
+                actions.push({ icon: '👤', text: `${unassigned} tasks need assignment`, action: "switchTab('task-manager')", color: '#8b5cf6' });
+            }
+        } catch (e) { console.debug('Quick actions:', e.message); }
+
+        if (actions.length === 0) {
+            container.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.12);">
+                    <span style="font-size:1.2rem;">✅</span>
+                    <span style="font-size:0.85rem;color:#10b981;font-weight:600;">All caught up! No pending actions right now.</span>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:6px;">
+                ${actions.map(a => `
+                    <div onclick="${a.action}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='${a.color}'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'">
+                        <span style="font-size:1.1rem;">${a.icon}</span>
+                        <span style="flex:1;font-size:0.85rem;color:var(--text-primary);">${a.text}</span>
+                        <span style="font-size:0.75rem;color:var(--text-secondary);">→</span>
+                    </div>`).join('')}
+            </div>`;
+    };
+
+    // Hook into dashboard load
+    const _origLoadDash2 = window.loadDashboard;
+    if (_origLoadDash2) {
+        setTimeout(() => {
+            const dashEl = document.getElementById('dashboard');
+            if (dashEl && dashEl.classList.contains('active')) {
+                if (typeof dashRenderQuickActions === 'function') dashRenderQuickActions();
+            }
+        }, 2500);
+    }
+})();
 </script>
 
 <!-- Usage Meter + Live Activity -->
