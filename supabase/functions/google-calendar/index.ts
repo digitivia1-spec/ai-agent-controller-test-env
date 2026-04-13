@@ -136,31 +136,58 @@ Deno.serve(async (req) => {
     }
 });
 
-async function getValidToken(supabase: any, userId: string): Promise<string | null> {
-    const { data } = await supabase.from('user_google_tokens').select('*').eq('user_id', userId).single();
-    if (!data) return null;
+async function getValidToken(supabase: any, userId: string, req?: Request): Promise<string | null> {
+    // 1. Try Supabase Auth session provider_token (Google OAuth sign-in users)
+    //    The caller can pass the user's JWT and we check their identity
+    try {
+        const { data: { user } } = await supabase.auth.admin.getUserById(userId);
+        if (user?.identities) {
+            const googleIdentity = user.identities.find((i: any) => i.provider === 'google');
+            if (googleIdentity?.identity_data?.provider_token) {
+                // Verify it's still valid by making a quick API call
+                const testRes = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=1', {
+                    headers: { Authorization: `Bearer ${googleIdentity.identity_data.provider_token}` },
+                });
+                if (testRes.ok) return googleIdentity.identity_data.provider_token;
+            }
+        }
+    } catch (e) {
+        // Identity check failed, try fallback
+    }
 
-    if (new Date(data.expires_at) > new Date()) return data.access_token;
+    // 2. Fallback: check user_google_tokens table (separate OAuth flow)
+    try {
+        const { data } = await supabase.from('user_google_tokens').select('*').eq('user_id', userId).single();
+        if (!data) return null;
 
-    // Refresh token
-    const res = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-            refresh_token: data.refresh_token,
-            client_id: GOOGLE_CLIENT_ID, client_secret: GOOGLE_CLIENT_SECRET,
-            grant_type: 'refresh_token',
-        }),
-    });
-    const tokens = await res.json();
-    if (tokens.error) return null;
+        if (new Date(data.expires_at) > new Date()) return data.access_token;
 
-    await supabase.from('user_google_tokens').update({
-        access_token: tokens.access_token,
-        expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
-    }).eq('user_id', userId);
+        // Refresh expired token
+        if (data.refresh_token) {
+            const res = await fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    refresh_token: data.refresh_token,
+                    client_id: GOOGLE_CLIENT_ID, client_secret: GOOGLE_CLIENT_SECRET,
+                    grant_type: 'refresh_token',
+                }),
+            });
+            const tokens = await res.json();
+            if (tokens.error) return null;
 
-    return tokens.access_token;
+            await supabase.from('user_google_tokens').update({
+                access_token: tokens.access_token,
+                expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
+            }).eq('user_id', userId);
+
+            return tokens.access_token;
+        }
+    } catch (e) {
+        // Table doesn't exist yet
+    }
+
+    return null;
 }
 
 function json(data: any, status = 200) {

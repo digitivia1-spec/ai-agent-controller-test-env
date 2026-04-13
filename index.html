@@ -24756,6 +24756,10 @@
                     style="width:100%; border-radius:8px; background: rgba(91, 174, 176, 0.2); border: 1px solid var(--theme-color);">
                     🔔 Enable/Test Notifications
                 </button>
+                <button id="profile-gcal-btn" class="btn-secondary" onclick="handleGoogleCalendarConnect()"
+                    style="width:100%; border-radius:8px; background: rgba(66, 133, 244, 0.15); border: 1px solid rgba(66, 133, 244, 0.4); color: var(--text-primary);">
+                    <span id="gcal-btn-text">📅 Connect Google Calendar</span>
+                </button>
                 <div class="profile-actions-spacer"></div>
                 <button class="btn-confirm" id="save-org-btn" onclick="saveOrganizationName()"
                     style="width:100%; border-radius:8px;" data-i18n="modals.profile.btn_save">Save Organization
@@ -48612,6 +48616,67 @@ Thank you for shopping with {store_name}!</textarea>
     if (window.location.search.includes('gcal=connected')) {
         setTimeout(() => showToast('Google Calendar connected!', 'success'), 1500);
         window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    // Google Calendar connect button handler
+    window.handleGoogleCalendarConnect = async function() {
+        const btn = document.getElementById('gcal-btn-text');
+        if (!btn) return;
+
+        btn.textContent = '📅 Checking...';
+
+        // 1. Check if user signed in with Google (already has Calendar access)
+        try {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user?.app_metadata?.provider === 'google' || user?.identities?.some(i => i.provider === 'google')) {
+                // User signed in with Google — try to sync directly
+                const events = await syncGoogleCalendar();
+                if (events && events.length >= 0) {
+                    btn.textContent = '✅ Google Calendar Connected';
+                    document.getElementById('profile-gcal-btn').style.borderColor = 'rgba(16,185,129,0.4)';
+                    document.getElementById('profile-gcal-btn').style.background = 'rgba(16,185,129,0.1)';
+                    showToast(`Calendar synced! ${events.length} upcoming events found.`, 'success');
+                    return;
+                }
+            }
+        } catch (e) {
+            console.debug('Google identity check:', e.message);
+        }
+
+        // 2. Fallback: separate OAuth flow
+        btn.textContent = '📅 Connecting...';
+        connectGoogleCalendar();
+    };
+
+    // Auto-check Calendar status when profile opens
+    window.updateGCalButton = async function() {
+        const btn = document.getElementById('gcal-btn-text');
+        if (!btn) return;
+
+        const connected = await checkGoogleCalendarStatus();
+        if (connected) {
+            btn.textContent = '✅ Google Calendar Connected';
+            document.getElementById('profile-gcal-btn').style.borderColor = 'rgba(16,185,129,0.4)';
+            document.getElementById('profile-gcal-btn').style.background = 'rgba(16,185,129,0.1)';
+        } else {
+            // Check if signed in with Google (might work without separate connect)
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user?.app_metadata?.provider === 'google') {
+                    btn.textContent = '📅 Sync Google Calendar';
+                }
+            } catch (e) {}
+        }
+    };
+
+    // Hook into profile modal open
+    const _origOpenProfile = window.openProfileModal;
+    if (_origOpenProfile) {
+        const _prev = window.openProfileModal;
+        window.openProfileModal = function() {
+            _prev();
+            setTimeout(() => { if (typeof updateGCalButton === 'function') updateGCalButton(); }, 500);
+        };
     }
 
     // ==========================================
