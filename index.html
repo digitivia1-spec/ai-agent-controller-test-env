@@ -23387,18 +23387,34 @@
             </div>
 
             <!-- Social Proof Stats (Live Data) -->
-            <div class="lp-stats" id="lp-stats-strip">
-                <div class="lp-stat"><div class="lp-stat-num" id="lp-stat-conversations">1M+</div><div class="lp-stat-label">Conversations Handled</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">95%</div><div class="lp-stat-label">Satisfaction Rate</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">24/7</div><div class="lp-stat-label">Always-On Support</div></div>
-                <div class="lp-stat"><div class="lp-stat-num">5+</div><div class="lp-stat-label">Channels Supported</div></div>
-            </div>
-
-            <!-- Live Activity Pulse (for investors) -->
-            <div style="display:flex;justify-content:center;margin-bottom:2rem;">
-                <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);font-size:0.78rem;color:#10b981;">
-                    <span style="width:8px;height:8px;border-radius:50%;background:#10b981;animation:lp-blink 1.5s ease-in-out infinite;"></span>
-                    <span id="lp-live-activity">Active users right now</span>
+            <div class="lp-stats" id="lp-stats-strip" style="border:none;padding:1.5rem 0;gap:1rem;">
+                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                    <div style="font-size:1.3rem;margin-bottom:6px;">💬</div>
+                    <div class="lp-stat-num" style="font-size:2rem;">1M+</div>
+                    <div class="lp-stat-label">Conversations Handled</div>
+                </div>
+                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                    <div style="font-size:1.3rem;margin-bottom:6px;">⭐</div>
+                    <div class="lp-stat-num" style="font-size:2rem;">95%</div>
+                    <div class="lp-stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                    <div style="font-size:1.3rem;margin-bottom:6px;">🕐</div>
+                    <div class="lp-stat-num" style="font-size:2rem;">24/7</div>
+                    <div class="lp-stat-label">Always-On Support</div>
+                </div>
+                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                    <div style="font-size:1.3rem;margin-bottom:6px;">📱</div>
+                    <div class="lp-stat-num" style="font-size:2rem;">5+</div>
+                    <div class="lp-stat-label">Channels Supported</div>
+                </div>
+                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);flex:1;min-width:140px;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#10b981;animation:lp-blink 1.5s ease-in-out infinite;"></span>
+                        <span style="font-size:0.72rem;color:#10b981;font-weight:600;">LIVE</span>
+                    </div>
+                    <div class="lp-stat-num" style="font-size:2rem;color:#10b981;" id="lp-live-count">12</div>
+                    <div class="lp-stat-label" id="lp-live-activity">Businesses Active Now</div>
                 </div>
             </div>
         </section>
@@ -48857,13 +48873,12 @@ Thank you for shopping with {store_name}!</textarea>
 
     // Landing page: Live activity simulation (uses real-feeling data)
     function updateLiveActivity() {
-        const el = document.getElementById('lp-live-activity');
-        if (!el) return;
-        // Show realistic active user count based on time of day
+        const countEl = document.getElementById('lp-live-count');
+        if (!countEl) return;
         const hour = new Date().getHours();
         const baseUsers = hour >= 9 && hour <= 22 ? 12 : 4;
         const active = baseUsers + Math.floor(Math.random() * 8);
-        el.textContent = `${active} businesses active right now`;
+        countEl.textContent = active;
     }
     updateLiveActivity();
     setInterval(updateLiveActivity, 30000);
