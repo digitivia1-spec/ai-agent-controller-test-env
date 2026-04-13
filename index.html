@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://*.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.posthog.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://js-de.sentry-cdn.com https://browser.sentry-cdn.com https://*.posthog.com https://us-assets.i.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.sentry.io https://*.posthog.com https://us.i.posthog.com https://ipapi.co https://cdn.jsdelivr.net https://browser.sentry-cdn.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'; media-src 'self' https://assets.mixkit.co; worker-src 'self' blob:">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Omnio by Digitivia — the all-in-one AI command center for managing intelligent agents across WhatsApp, Messenger, Instagram, Telegram, and your website. Automate customer support, capture leads, manage orders, and grow your business with AI.">
+    <meta name="description" content="Digitivia AI Agent — the all-in-one AI command center with Cartiva AI for ecommerce and Opsy AI for services. Manage intelligent agents across WhatsApp, Messenger, Instagram, Telegram, and your website. Automate customer support, capture leads, manage orders, and grow your business with AI.">
     <meta name="keywords" content="AI agent, chatbot, WhatsApp automation, customer support AI, CRM, ecommerce AI, live chat, omnichannel, Digitivia">
     <meta name="author" content="Digitivia">
     <link rel="canonical" href="https://ai-agent.digitivia.com/">
@@ -16,16 +16,16 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ai-agent.digitivia.com/">
-    <meta property="og:title" content="Omnio by Digitivia — AI-Powered Command Center">
+    <meta property="og:title" content="Digitivia AI Agent — Cartiva AI & Opsy AI">
     <meta property="og:description" content="Create, manage, and monitor AI agents across WhatsApp, Messenger, Instagram, Telegram & Web. Built-in CRM, order management, and content studio.">
     <meta property="og:image" content="https://ai-agent.digitivia.com/og-image.png">
-    <meta property="og:site_name" content="Omnio by Digitivia">
+    <meta property="og:site_name" content="Digitivia AI Agent">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://ai-agent.digitivia.com/">
-    <meta name="twitter:title" content="Omnio by Digitivia — AI-Powered Command Center">
+    <meta name="twitter:title" content="Digitivia AI Agent — Cartiva AI & Opsy AI">
     <meta name="twitter:description" content="Create, manage, and monitor AI agents across WhatsApp, Messenger, Instagram, Telegram & Web. Built-in CRM, order management, and content studio.">
     <meta name="twitter:image" content="https://ai-agent.digitivia.com/og-image.png">
 
@@ -34,8 +34,8 @@
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Omnio by Digitivia",
-        "description": "AI-powered command center for managing intelligent agents across WhatsApp, Messenger, Instagram, Telegram, and websites. Includes CRM, order management, content studio, and automation.",
+        "name": "Digitivia AI Agent",
+        "description": "AI-powered command center with Cartiva AI (ecommerce) and Opsy AI (services) for managing intelligent agents across WhatsApp, Messenger, Instagram, Telegram, and websites. Includes CRM, order management, content studio, and automation.",
         "url": "https://ai-agent.digitivia.com",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
@@ -54,38 +54,36 @@
     }
     </script>
 
-    <title>Omnio by Digitivia — AI-Powered Command Center</title>
+    <title>Digitivia AI Agent — Cartiva AI & Opsy AI</title>
     <link rel="icon" type="image/png" href="cropped-White.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#5BAEB0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
-    <!-- Sentry Error Tracking -->
-    <script src="https://browser.sentry-cdn.com/8.51.0/bundle.min.js" crossorigin="anonymous"></script>
+    <!-- Sentry Error Tracking (Loader) -->
+    <script src="https://js-de.sentry-cdn.com/a2dfe8875cb8dd3b7aa4ffdd54f69e54.min.js" crossorigin="anonymous"></script>
     <script>
-        if (window.Sentry) {
+        Sentry.onLoad(function() {
             Sentry.init({
-                dsn: "YOUR_SENTRY_DSN_HERE",  // TODO: Replace with actual Sentry DSN from https://sentry.io
-                environment: location.hostname === 'ai-agent.digitivia.com' ? 'production' : 'development',
-                release: 'digitivia-ai-agent@1.0.0',
-                sampleRate: 1.0,
-                tracesSampleRate: 0.2,
-                ignoreErrors: [
-                    'ResizeObserver loop limit exceeded',
-                    'Non-Error promise rejection captured'
-                ]
+                // Tracing
+                tracesSampleRate: 1.0,
+                // Session Replay
+                replaysSessionSampleRate: 0.1,
+                replaysOnErrorSampleRate: 1.0,
             });
-        }
+        });
     </script>
 
     <!-- PostHog Product Analytics -->
     <script>
-        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-        posthog.init('YOUR_POSTHOG_KEY_HERE', {  // TODO: Replace with actual PostHog project API key
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Ii init Di qi Sr Bi Zi Pi capture calculateEventProperties Yi register register_once register_for_session unregister unregister_for_session Xi getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync Ji identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty Wi Vi createPersonProfile setInternalOrTestUser Gi Fi tn opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing $i debug Tr Ui getPageViewId captureTraceFeedback captureTraceMetric Ri".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_xKVrQUQNCCHQngr8Ja8TrqFaPicspE3iumw4skj3bAHi', {
             api_host: 'https://us.i.posthog.com',
             person_profiles: 'identified_only',
-            autocapture: true,
-            capture_pageview: true,
-            capture_pageleave: true
         });
     </script>
     <script>
@@ -147,7 +145,7 @@
                 "nav_leads": "CRM",
                 "nav_crm": "CRM",
                 "nav_task_manager": "Task Manager",
-                "nav_orders": "Customers Area",
+                "nav_orders": "Meetings",
                 "nav_integrations": "Integrations",
                 "nav_create_post": "Content Studio",
                 "nav_reviews": "Customer Reviews",
@@ -177,6 +175,7 @@
                 "label_live": "LIVE",
                 "header_role": "Agent Role (System Prompt)",
                 "header_tone": "Agent Tone",
+                "header_personality": "AI Personality",
                 "header_kb": "Knowledge Base (Links)",
                 "header_chat_test": "Test Chat Window",
                 "warning_title": "⚠️ Caution:",
@@ -486,7 +485,7 @@
                 "btn_save": "Save"
             },
             "orders": {
-                "title": "Customers Area",
+                "title": "Meetings",
                 "btn_export_csv": "Export CSV",
                 "btn_export_excel": "Export Excel",
                 "btn_add_order": "Add Order",
@@ -789,7 +788,7 @@
                 "docs": {
                     "title": "Documentation & User Guide",
                     "sec_start_title": "🚀 Getting Started",
-                    "sec_start_text": "Welcome to Omnio by Digitivia! This platform allows you to create, manage, and monitor powerful AI agents across multiple communication channels.",
+                    "sec_start_text": "Welcome to Digitivia AI Agent! This platform allows you to create, manage, and monitor powerful AI agents across multiple communication channels.",
                     "section_roles_title": "🤖 Agent Roles & System Prompts",
                     "section_roles_text": "The <strong>System Prompt</strong> is the brain of your agent. It defines who the agent is, what it knows, and how it speaks.",
                     "list_role": "<strong>Role:</strong> Define the persona (e.g., Support Agent, Sales Rep).",
@@ -995,7 +994,8 @@
                     "7days": "Last 7 Days",
                     "30days": "Last 30 Days",
                     "month": "This Month",
-                    "all": "All Time"
+                    "all": "All Time",
+                    "custom": "Custom Range"
                 },
                 "stats": {
                     "revenue": "Total Revenue",
@@ -1040,7 +1040,7 @@
                 }
             },
             "ai_helper": {
-                "title": "Omnio",
+                "title": "Opsy AI",
                 "subtitle": "Ask anything about setup and behavior",
                 "launcher_title": "AI Help",
                 "placeholder": "Ask about prompts, tone, inbox, and testing...",
@@ -1274,7 +1274,7 @@
                 "nav_leads": "إدارة العملاء",
                 "nav_crm": "CRM",
                 "nav_task_manager": "مدير المهام",
-                "nav_orders": "منطقة العملاء",
+                "nav_orders": "الاجتماعات",
                 "nav_integrations": "التكاملات",
                 "nav_create_post": "استوديو المحتوى",
                 "nav_reviews": "آراء العملاء",
@@ -1304,6 +1304,7 @@
                 "label_live": "نشط",
                 "header_role": "دور الوكيل (توجيهات النظام)",
                 "header_tone": "نبرة المحادثة",
+                "header_personality": "شخصية الوكيل الذكي",
                 "header_kb": "قاعدة المعرفة (روابط)",
                 "header_chat_test": "نافذة اختبار المحادثة",
                 "warning_title": "⚠️ تنبيه:",
@@ -1613,7 +1614,7 @@
                 "btn_save": "حفظ"
             },
             "orders": {
-                "title": "منطقة العملاء",
+                "title": "الاجتماعات",
                 "btn_export_csv": "تصدير CSV",
                 "btn_export_excel": "تصدير Excel",
                 "btn_add_order": "إضافة طلب",
@@ -2118,7 +2119,8 @@
                     "7days": "آخر 7 أيام",
                     "30days": "آخر 30 يوم",
                     "month": "هذا الشهر",
-                    "all": "كل الوقت"
+                    "all": "كل الوقت",
+                    "custom": "نطاق مخصص"
                 },
                 "stats": {
                     "revenue": "إجمالي الإيرادات",
@@ -2163,9 +2165,9 @@
                 }
             },
             "ai_helper": {
-                "title": "Omnio",
+                "title": "Opsy AI",
                 "subtitle": "اسأل عن الإعدادات وسلوك الوكيل",
-                "launcher_title": "Omnio",
+                "launcher_title": "Opsy AI",
                 "placeholder": "اسأل عن التوجيهات والنبرة وصندوق الوارد والاختبار...",
                 "send": "إرسال",
                 "close": "إغلاق",
@@ -2374,7 +2376,7 @@
 
         Object.assign(window.LANG_EN.sidebar, {
             nav_orders_product: "Orders Area",
-            nav_orders_service: "Customers Area",
+            nav_orders_service: "Meetings",
             nav_team: "Team"
         });
         window.LANG_EN.team = {
@@ -2878,7 +2880,7 @@
             dismiss: "Dismiss"
         };
         Object.assign(window.LANG_EN.meetings, {
-            area_title: "Customers Area",
+            area_title: "Meetings",
             title: "Incoming Meetings",
             subtab_incoming: "Incoming Meetings",
             loading: "Loading meetings...",
@@ -2993,7 +2995,7 @@
 
         Object.assign(window.LANG_AR.sidebar, {
             nav_orders_product: "منطقة الطلبات",
-            nav_orders_service: "منطقة العملاء",
+            nav_orders_service: "الاجتماعات",
             nav_team: "الفريق"
         });
         window.LANG_AR.team = {
@@ -3497,7 +3499,7 @@
             dismiss: "تجاهل"
         };
         Object.assign(window.LANG_AR.meetings, {
-            area_title: "منطقة العملاء",
+            area_title: "الاجتماعات",
             title: "الاجتماعات الواردة",
             subtab_incoming: "الاجتماعات الواردة",
             loading: "جاري تحميل الاجتماعات...",
@@ -4403,6 +4405,36 @@
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.4);
             margin: 0;
+        }
+
+        /* KPI Trend Badges */
+        .kpi-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .kpi-trend.trend-up {
+            background: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+        }
+        .kpi-trend.trend-down {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+        .kpi-trend.trend-flat {
+            background: rgba(148, 163, 184, 0.12);
+            color: #94a3b8;
+        }
+
+        /* Quick Action Buttons */
+        .dash-quick-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.15);
         }
 
         /* MAIN DASHBOARD LAYOUT */
@@ -6543,14 +6575,30 @@
         }
         :root[data-theme="light"] .lp-particle { background: rgba(91,174,176,0.2); }
 
-        /* ====== OMNIO ORB BRAND ====== */
+        /* ====== AI AGENT AVATARS BRAND ====== */
         :root {
-            --omnio-primary: #8b5cf6;
-            --omnio-primary-light: #c4b5fd;
-            --omnio-primary-dark: #5b21b6;
-            --omnio-accent: #a78bfa;
-            --omnio-glow: rgba(139, 92, 246, 0.2);
-            --omnio-done-check: #10b981;
+            /* Cartiva AI palette (Ecommerce) */
+            --cartiva-primary: #f97316;
+            --cartiva-primary-light: #fbbf24;
+            --cartiva-primary-dark: #ea580c;
+            --cartiva-accent: #f59e0b;
+            --cartiva-glow: rgba(249, 115, 22, 0.2);
+            --cartiva-face: #7c2d12;
+
+            /* Opsy AI palette (Services) */
+            --opsy-primary: #3b82f6;
+            --opsy-primary-light: #93c5fd;
+            --opsy-primary-dark: #1d4ed8;
+            --opsy-accent: #60a5fa;
+            --opsy-glow: rgba(59, 130, 246, 0.2);
+            --opsy-face: #1e3a5f;
+
+            /* Shared state colors */
+            --agent-done-check: #10b981;
+            --agent-sparkle-gold: #fbbf24;
+            --agent-sparkle-green: #34d399;
+            --agent-sparkle-pink: #f472b6;
+            --agent-sparkle-blue: #60a5fa;
         }
 
         /* ====== 21ST.DEV PREMIUM UX LAYER ====== */
@@ -6835,29 +6883,33 @@
         .lp-pricing { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
         .lp-pricing-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.2rem; margin-top: 2rem;
+            gap: 1.2rem; margin-top: 2rem; padding-top: 24px;
+            overflow: visible;
         }
         .lp-price-card {
             padding: 1.5rem; border-radius: 16px; text-align: center;
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
             transition: transform 0.2s, border-color 0.2s; position: relative;
+            z-index: 1; overflow: visible;
         }
         .lp-price-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
         .lp-price-card.popular {
             border: 2px solid var(--theme-color);
             transform: scale(1.04);
             box-shadow: 0 8px 40px rgba(91,174,176,0.2);
-            z-index: 2;
+            z-index: 10;
             position: relative;
+            overflow: visible;
         }
         .lp-price-card.popular:hover { transform: scale(1.06); }
         .lp-popular-tag {
             position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
             background: linear-gradient(135deg, var(--theme-color), #a78bfa); color: #fff;
-            font-size: 0.75rem; font-weight: 800; padding: 6px 24px; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 800; padding: 8px 28px; border-radius: 999px;
             letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;
-            box-shadow: 0 4px 16px rgba(91,174,176,0.4);
-            z-index: 3;
+            box-shadow: 0 4px 20px rgba(91,174,176,0.5);
+            z-index: 20;
+            pointer-events: none;
         }
         .lp-price-name { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
         .lp-price-amount { font-size: 2rem; font-weight: 800; color: var(--theme-color); margin-bottom: 0.3rem; }
@@ -16395,17 +16447,44 @@
             text-align: center;
             color: #666;
             font-size: 0.9rem;
-
-            /* --- NOTIFICATION DROPDOWN MOBILE --- */
-            .notification-dropdown {
-                width: 90vw;
-                right: -50px;
-                /* Center it relative to bell */
-                top: 40px;
-            }
-
-            /* --- END MOBILE STYLES --- */
         }
+
+        /* --- NOTIFICATION DROPDOWN MOBILE --- */
+        @media (max-width: 768px) {
+            .notification-dropdown {
+                position: fixed !important;
+                top: 60px !important;
+                left: 8px !important;
+                right: 8px !important;
+                width: auto !important;
+                max-width: 100vw;
+                max-height: 70vh;
+                border-radius: 14px;
+                z-index: 9999;
+            }
+            .notification-list {
+                max-height: 55vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .notification-header {
+                padding: 12px 16px;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+            }
+            .notif-category-filters {
+                padding: 6px 10px;
+                position: sticky;
+                top: 48px;
+                z-index: 1;
+                background: #1a1b20;
+            }
+            :root[data-theme="light"] .notif-category-filters {
+                background: #fff;
+            }
+        }
+        /* --- END MOBILE STYLES --- */
 
         /* --- REFINED INBOX SEARCH --- */
         .hidden {
@@ -23221,37 +23300,63 @@
         })();
         </script>
 
-        <!-- Omnio Orb SVG Generator (vanilla JS) -->
+        <!-- Cartiva Bag SVG Generator (Ecommerce AI) -->
         <script>
-        window.omnioOrb = function(state, size) {
-            state = state || 'idle';
-            size = size || 80;
-            const thinkAnim = state === 'thinking';
-            const workAnim = state === 'working';
-            const doneAnim = state === 'done';
-
-            let faceHTML = '';
+        window.cartivaBag = function(state, size) {
+            state = state || 'idle'; size = size || 80;
+            var uid = 'cb-' + size + '-' + Math.random().toString(36).substr(2,4);
+            var face = '';
             if (state === 'idle') {
-                faceHTML = `<circle cx="68" cy="74" r="5" fill="white" opacity="0.95"/><circle cx="68" cy="74" r="2.5" fill="#3b0764"/><circle cx="69.5" cy="72.5" r="1" fill="white" opacity="0.7"/><circle cx="92" cy="74" r="5" fill="white" opacity="0.95"/><circle cx="92" cy="74" r="2.5" fill="#3b0764"/><circle cx="93.5" cy="72.5" r="1" fill="white" opacity="0.7"/><path d="M 71 86 Q 80 93 89 86" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>`;
+                face = '<circle cx="66" cy="82" r="4.5" fill="white" opacity="0.95"/><circle cx="66" cy="82" r="2.2" fill="#7c2d12"/><circle cx="67.5" cy="80.5" r="0.8" fill="white" opacity="0.6"/><circle cx="94" cy="82" r="4.5" fill="white" opacity="0.95"/><circle cx="94" cy="82" r="2.2" fill="#7c2d12"/><circle cx="95.5" cy="80.5" r="0.8" fill="white" opacity="0.6"/><path d="M 72 96 Q 80 103 88 96" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>';
             } else if (state === 'thinking') {
-                faceHTML = `<circle cx="68" cy="74" r="5" fill="white" opacity="0.95"/><circle cx="70" cy="72" r="2.5" fill="#3b0764"><animate attributeName="cx" values="70;66;70" dur="2s" repeatCount="indefinite"/></circle><circle cx="92" cy="74" r="5" fill="white" opacity="0.95"/><circle cx="94" cy="72" r="2.5" fill="#3b0764"><animate attributeName="cx" values="94;90;94" dur="2s" repeatCount="indefinite"/></circle><circle cx="110" cy="56" r="3" fill="#c4b5fd" opacity="0.5"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="1s" repeatCount="indefinite"/></circle><circle cx="120" cy="48" r="2.5" fill="#c4b5fd" opacity="0.4"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="1s" begin="0.3s" repeatCount="indefinite"/></circle>`;
+                face = '<circle cx="66" cy="82" r="4.5" fill="white" opacity="0.95"/><circle cx="68" cy="80" r="2.2" fill="#7c2d12"><animate attributeName="cx" values="68;64;68" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="94" cy="82" r="4.5" fill="white" opacity="0.95"/><circle cx="96" cy="80" r="2.2" fill="#7c2d12"><animate attributeName="cx" values="96;92;96" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="112" cy="52" r="3" fill="#fbbf24" opacity="0.5"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="1s" repeatCount="indefinite"/></circle><circle cx="122" cy="44" r="2.5" fill="#fbbf24" opacity="0.4"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="1s" begin="0.3s" repeatCount="indefinite"/></circle><circle cx="130" cy="38" r="2" fill="#fbbf24" opacity="0.3"><animate attributeName="opacity" values="0.1;0.4;0.1" dur="1s" begin="0.6s" repeatCount="indefinite"/></circle>';
             } else if (state === 'working') {
-                faceHTML = `<line x1="62" y1="74" x2="74" y2="74" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.9"/><line x1="86" y1="74" x2="98" y2="74" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.9"/><line x1="72" y1="88" x2="88" y2="88" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/><circle cx="30" cy="60" r="2" fill="#a78bfa" opacity="0.6"><animate attributeName="cx" values="30;25;30" dur="0.8s" repeatCount="indefinite"/></circle><circle cx="130" cy="100" r="2" fill="#a78bfa" opacity="0.5"><animate attributeName="cx" values="130;135;130" dur="0.7s" repeatCount="indefinite"/></circle>`;
+                face = '<line x1="60" y1="82" x2="72" y2="82" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.9"/><line x1="88" y1="82" x2="100" y2="82" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.9"/><line x1="73" y1="96" x2="87" y2="96" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/><circle cx="28" cy="70" r="2" fill="#fbbf24" opacity="0.5"><animate attributeName="cx" values="28;24;28" dur="0.7s" repeatCount="indefinite"/></circle><circle cx="132" cy="90" r="2" fill="#f97316" opacity="0.4"><animate attributeName="cx" values="132;136;132" dur="0.6s" repeatCount="indefinite"/></circle><circle cx="40" cy="120" r="1.5" fill="#fbbf24" opacity="0.3"><animate attributeName="cy" values="120;124;120" dur="0.8s" repeatCount="indefinite"/></circle>';
             } else if (state === 'done') {
-                faceHTML = `<path d="M 62 73 Q 68 68 74 73" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/><path d="M 86 73 Q 92 68 98 73" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/><path d="M 66 86 Q 80 96 94 86" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/><circle cx="80" cy="105" r="8" fill="#10b981" opacity="0.8"/><path d="M 76 105 L 79 108 L 85 102" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>`;
+                face = '<path d="M 60 80 Q 66 75 72 80" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/><path d="M 88 80 Q 94 75 100 80" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/><path d="M 68 96 Q 80 106 92 96" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/><path d="M 30 38 L 32 34 L 34 38 L 32 41 Z" fill="#fbbf24" opacity="0.7"><animate attributeName="opacity" values="0;0.7;0" dur="1.2s" repeatCount="indefinite"/></path><path d="M 128 42 L 130 38 L 132 42 L 130 45 Z" fill="#34d399" opacity="0.6"><animate attributeName="opacity" values="0;0.6;0" dur="1s" begin="0.2s" repeatCount="indefinite"/></path><path d="M 134 88 L 136 84 L 138 88 L 136 91 Z" fill="#f472b6" opacity="0.5"><animate attributeName="opacity" values="0;0.5;0" dur="1.1s" begin="0.5s" repeatCount="indefinite"/></path><circle cx="104" cy="112" r="8" fill="#10b981" opacity="0.85"><animate attributeName="opacity" values="0;0.85" dur="0.3s" fill="freeze"/></circle><path d="M 100 112 L 103 115 L 109 109" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>';
             }
+            return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 160 160" style="display:inline-block;vertical-align:middle;">' +
+                '<defs><linearGradient id="'+uid+'-b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f97316"/></linearGradient><radialGradient id="'+uid+'-g" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f97316" stop-opacity="'+(state==='done'?'0.35':'0.2')+'"/><stop offset="100%" stop-color="#f97316" stop-opacity="0"/></radialGradient></defs>' +
+                '<circle cx="80" cy="80" r="68" fill="url(#'+uid+'-g)">'+(state==='thinking'?'<animate attributeName="r" values="64;70;64" dur="1.5s" repeatCount="indefinite"/>':'')+'</circle>' +
+                '<rect x="44" y="58" width="72" height="68" rx="12" fill="url(#'+uid+'-b)" opacity="0.95">'+(state==='thinking'?'<animate attributeName="y" values="58;56;58" dur="1.2s" repeatCount="indefinite"/>':'')+(state==='done'?'<animate attributeName="y" values="58;56;58" dur="0.5s" repeatCount="1"/>':'')+'</rect>' +
+                '<path d="M 60 58 Q 60 36 80 36 Q 100 36 100 58" fill="none" stroke="url(#'+uid+'-b)" stroke-width="4" stroke-linecap="round"/>' +
+                face +
+            '</svg>';
+        };
+        </script>
 
-            return `<svg width="${size}" height="${size}" viewBox="0 0 160 160" style="display:inline-block;vertical-align:middle;">
-                <defs><radialGradient id="ob-${size}" cx="38%" cy="33%" r="62%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="40%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#5b21b6"/></radialGradient><radialGradient id="og-${size}" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#8b5cf6" stop-opacity="${doneAnim?'0.35':'0.2'}"/><stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient></defs>
-                <circle cx="80" cy="80" r="70" fill="url(#og-${size})">${thinkAnim?'<animate attributeName="r" values="65;73;65" dur="1.8s" repeatCount="indefinite"/>':''}</circle>
-                <ellipse cx="80" cy="80" rx="56" ry="14" fill="none" stroke="#a78bfa" stroke-width="1" opacity="0.25" transform="rotate(-15 80 80)"><animateTransform attributeName="transform" type="rotate" from="-15 80 80" to="345 80 80" dur="${workAnim?'4s':'20s'}" repeatCount="indefinite"/></ellipse>
-                <circle cx="80" cy="80" r="42" fill="url(#ob-${size})">${thinkAnim?'<animate attributeName="r" values="42;40;42" dur="1.2s" repeatCount="indefinite"/>':''}${doneAnim?'<animate attributeName="r" values="42;44;42" dur="0.5s" repeatCount="1"/>':''}</circle>
-                <ellipse cx="66" cy="62" rx="16" ry="10" fill="white" opacity="0.13" transform="rotate(-20 66 62)"/>
-                <circle cx="62" cy="58" r="5" fill="white" opacity="0.18"/>
-                ${faceHTML}
-                <path d="M 26 38 L 28 34 L 30 38 L 28 40 Z" fill="#c4b5fd" opacity="0.5"><animate attributeName="opacity" values="0.5;0.15;0.5" dur="2s" repeatCount="indefinite"/></path>
-                <path d="M 128 50 L 130 46 L 132 50 L 130 52 Z" fill="#c4b5fd" opacity="0.4"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.7s" repeatCount="indefinite"/></path>
-            </svg>`;
+        <!-- Opsy Gear Orb SVG Generator (Service AI) -->
+        <script>
+        window.opsyGearOrb = function(state, size) {
+            state = state || 'idle'; size = size || 80;
+            var uid = 'op-' + size + '-' + Math.random().toString(36).substr(2,4);
+            var gearDur = state === 'working' ? '3s' : state === 'thinking' ? '10s' : '30s';
+            var gearOp = state === 'working' ? '0.35' : '0.2';
+            var face = '';
+            if (state === 'idle') {
+                face = '<circle cx="68" cy="80" r="4.5" fill="white" opacity="0.95"/><circle cx="68" cy="80" r="2.2" fill="#1e3a5f"/><circle cx="69.5" cy="78.5" r="0.8" fill="white" opacity="0.6"/><circle cx="92" cy="80" r="4.5" fill="white" opacity="0.95"/><circle cx="92" cy="80" r="2.2" fill="#1e3a5f"/><circle cx="93.5" cy="78.5" r="0.8" fill="white" opacity="0.6"/><path d="M 73 94 Q 80 100 87 94" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>';
+            } else if (state === 'thinking') {
+                face = '<circle cx="68" cy="80" r="4.5" fill="white" opacity="0.95"/><circle cx="70" cy="78" r="2.2" fill="#1e3a5f"><animate attributeName="cx" values="70;66;70" dur="2s" repeatCount="indefinite"/></circle><circle cx="92" cy="80" r="4.5" fill="white" opacity="0.95"/><circle cx="94" cy="78" r="2.2" fill="#1e3a5f"><animate attributeName="cx" values="94;90;94" dur="2s" repeatCount="indefinite"/></circle><circle cx="114" cy="52" r="3" fill="#93c5fd" opacity="0.5"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="1s" repeatCount="indefinite"/></circle><circle cx="124" cy="44" r="2.5" fill="#93c5fd" opacity="0.4"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="1s" begin="0.3s" repeatCount="indefinite"/></circle><circle cx="132" cy="38" r="2" fill="#93c5fd" opacity="0.3"><animate attributeName="opacity" values="0.1;0.4;0.1" dur="1s" begin="0.6s" repeatCount="indefinite"/></circle>';
+            } else if (state === 'working') {
+                face = '<line x1="62" y1="80" x2="74" y2="80" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.9"/><line x1="86" y1="80" x2="98" y2="80" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.9"/><line x1="73" y1="94" x2="87" y2="94" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/><circle cx="28" cy="65" r="2" fill="#60a5fa" opacity="0.5"><animate attributeName="cx" values="28;24;28" dur="0.7s" repeatCount="indefinite"/></circle><circle cx="132" cy="95" r="2" fill="#3b82f6" opacity="0.4"><animate attributeName="cx" values="132;136;132" dur="0.6s" repeatCount="indefinite"/></circle><circle cx="40" cy="115" r="1.5" fill="#93c5fd" opacity="0.3"><animate attributeName="cy" values="115;119;115" dur="0.8s" repeatCount="indefinite"/></circle>';
+            } else if (state === 'done') {
+                face = '<path d="M 62 79 Q 68 74 74 79" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/><path d="M 86 79 Q 92 74 98 79" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/><path d="M 70 94 Q 80 104 90 94" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/><path d="M 30 42 L 32 38 L 34 42 L 32 45 Z" fill="#60a5fa" opacity="0.7"><animate attributeName="opacity" values="0;0.7;0" dur="1.2s" repeatCount="indefinite"/></path><path d="M 130 44 L 132 40 L 134 44 L 132 47 Z" fill="#34d399" opacity="0.6"><animate attributeName="opacity" values="0;0.6;0" dur="1s" begin="0.2s" repeatCount="indefinite"/></path><path d="M 136 92 L 138 88 L 140 92 L 138 95 Z" fill="#f472b6" opacity="0.5"><animate attributeName="opacity" values="0;0.5;0" dur="1.1s" begin="0.5s" repeatCount="indefinite"/></path><circle cx="80" cy="108" r="8" fill="#10b981" opacity="0.85"><animate attributeName="opacity" values="0;0.85" dur="0.3s" fill="freeze"/></circle><path d="M 76 108 L 79 111 L 85 105" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>';
+            }
+            return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 160 160" style="display:inline-block;vertical-align:middle;">' +
+                '<defs><radialGradient id="'+uid+'-b" cx="38%" cy="33%" r="62%"><stop offset="0%" stop-color="#93c5fd"/><stop offset="40%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></radialGradient><radialGradient id="'+uid+'-g" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="'+(state==='done'?'0.35':'0.2')+'"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/></radialGradient></defs>' +
+                '<circle cx="80" cy="80" r="68" fill="url(#'+uid+'-g)">'+(state==='thinking'?'<animate attributeName="r" values="64;70;64" dur="1.5s" repeatCount="indefinite"/>':'')+'</circle>' +
+                '<circle cx="80" cy="80" r="52" fill="none" stroke="#3b82f6" stroke-width="10" stroke-dasharray="14 14" opacity="'+gearOp+'"><animateTransform attributeName="transform" type="rotate" from="0 80 80" to="360 80 80" dur="'+gearDur+'" repeatCount="indefinite"/></circle>' +
+                '<circle cx="80" cy="80" r="38" fill="url(#'+uid+'-b)">'+(state==='thinking'?'<animate attributeName="r" values="38;36;38" dur="1.2s" repeatCount="indefinite"/>':'')+(state==='done'?'<animate attributeName="r" values="38;40;38" dur="0.5s" repeatCount="1"/>':'')+'</circle>' +
+                '<ellipse cx="68" cy="68" rx="12" ry="8" fill="white" opacity="0.1" transform="rotate(-15 68 68)"/><circle cx="64" cy="64" r="4" fill="white" opacity="0.15"/>' +
+                '<g transform="translate(70,50) scale(0.5)" opacity="0.4"><circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="3"/><circle cx="10" cy="10" r="3" fill="white"/></g>' +
+                face +
+            '</svg>';
+        };
+
+        // Convenience wrapper: get the right avatar by agent type
+        window.agentAvatar = function(type, state, size) {
+            if (type === 'ecommerce') return cartivaBag(state, size);
+            return opsyGearOrb(state, size);
         };
         </script>
 
@@ -23387,8 +23492,23 @@
 
         <!-- Hero -->
         <section class="lp-hero">
-            <div id="lp-hero-orb" style="margin-bottom:1rem;"></div>
-            <script>document.getElementById('lp-hero-orb').innerHTML = window.omnioOrb ? omnioOrb('idle', 100) : '';</script>
+            <div id="lp-hero-avatars" style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:1rem;">
+                <div style="text-align:center;">
+                    <div id="lp-hero-cartiva"></div>
+                    <div style="font-size:0.72rem;font-weight:700;color:#f97316;margin-top:4px;">Cartiva AI</div>
+                    <div style="font-size:0.6rem;color:var(--text-secondary);">Ecommerce</div>
+                </div>
+                <div style="font-size:1.5rem;color:var(--text-secondary);opacity:0.3;font-weight:300;">×</div>
+                <div style="text-align:center;">
+                    <div id="lp-hero-opsy"></div>
+                    <div style="font-size:0.72rem;font-weight:700;color:#3b82f6;margin-top:4px;">Opsy AI</div>
+                    <div style="font-size:0.6rem;color:var(--text-secondary);">Services</div>
+                </div>
+            </div>
+            <script>
+                var _hc=document.getElementById('lp-hero-cartiva');if(_hc&&window.cartivaBag)_hc.innerHTML=cartivaBag('idle',80);
+                var _hop=document.getElementById('lp-hero-opsy');if(_hop&&window.opsyGearOrb)_hop.innerHTML=opsyGearOrb('idle',80);
+            </script>
             <div class="lp-hero-badge">AI-Powered Customer Engagement Platform</div>
             <h1>Your AI Agents Handle <span class="lp-gradient-text">Every Customer</span><br>On Every Channel, 24/7</h1>
             <p>Deploy intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, your website — and more channels coming. Capture leads automatically, manage orders, and let AI handle support while you grow.</p>
@@ -23518,25 +23638,65 @@
             </div>
         </section>
 
-        <!-- Industry-Specific AI -->
+        <!-- Industry-Specific AI — Choose Your Agent -->
         <section style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
-            <h2 class="lp-section-title">Industry-Specific AI</h2>
-            <p class="lp-section-sub">Tailored logic for your sector. Pre-built templates to get started fast.</p>
+            <h2 class="lp-section-title">Choose Your AI Agent</h2>
+            <p class="lp-section-sub">Two specialized agents, each built for a different world. Pick the one that fits — or use both.</p>
+
+            <!-- Agent Selector Cards -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+                <!-- Cartiva AI Card -->
+                <div style="padding:2rem;border-radius:20px;background:linear-gradient(135deg,rgba(249,115,22,0.06),rgba(251,191,36,0.03));border:1px solid rgba(249,115,22,0.2);text-align:center;transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(249,115,22,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(249,115,22,0.2)';this.style.transform=''">
+                    <div id="lp-cartiva-card-avatar" style="margin-bottom:1rem;"></div>
+                    <script>var _cca=document.getElementById('lp-cartiva-card-avatar');if(_cca&&window.cartivaBag)_cca.innerHTML=cartivaBag('idle',72);</script>
+                    <h3 style="margin:0 0 4px;font-size:1.2rem;color:#f97316;font-weight:800;">Cartiva AI</h3>
+                    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:0.8rem;">Ecommerce Agent</div>
+                    <p style="margin:0 0 1rem;font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">Built for online stores. Handles product recommendations, order tracking, cart recovery, and WhatsApp confirmations.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(249,115,22,0.1);color:#f97316;border:1px solid rgba(249,115,22,0.2);">Shopify</span>
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(249,115,22,0.1);color:#f97316;border:1px solid rgba(249,115,22,0.2);">WooCommerce</span>
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(249,115,22,0.1);color:#f97316;border:1px solid rgba(249,115,22,0.2);">Easy Orders</span>
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(249,115,22,0.1);color:#f97316;border:1px solid rgba(249,115,22,0.2);">Order Mgmt</span>
+                    </div>
+                </div>
+
+                <!-- Opsy AI Card -->
+                <div style="padding:2rem;border-radius:20px;background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(147,197,253,0.03));border:1px solid rgba(59,130,246,0.2);text-align:center;transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(59,130,246,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(59,130,246,0.2)';this.style.transform=''">
+                    <div id="lp-opsy-card-avatar" style="margin-bottom:1rem;"></div>
+                    <script>var _oca=document.getElementById('lp-opsy-card-avatar');if(_oca&&window.opsyGearOrb)_oca.innerHTML=opsyGearOrb('idle',72);</script>
+                    <h3 style="margin:0 0 4px;font-size:1.2rem;color:#3b82f6;font-weight:800;">Opsy AI</h3>
+                    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:0.8rem;">Service Agent</div>
+                    <p style="margin:0 0 1rem;font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">Built for service businesses. Handles appointments, support tickets, patient triage, lead qualification, and CRM automation.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);">Healthcare</span>
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);">Real Estate</span>
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);">Hospitality</span>
+                        <span style="padding:4px 10px;border-radius:999px;font-size:0.7rem;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);">Consulting</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Industry-Specific Templates -->
+            <h3 style="text-align:center;font-size:1rem;color:var(--text-primary);margin-bottom:1rem;">Industry Templates</h3>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;">
-                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
-                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🛒</div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(249,115,22,0.12);">
+                    <div id="lp-ind-ecom" style="width:40px;height:40px;flex-shrink:0;"></div>
+                    <script>var _ie=document.getElementById('lp-ind-ecom');if(_ie&&window.cartivaBag)_ie.innerHTML=cartivaBag('idle',40);</script>
                     <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">E-Commerce</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Product recommendations, order tracking, and automated support.</p></div>
                 </div>
-                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
-                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🏠</div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(59,130,246,0.12);">
+                    <div id="lp-ind-realestate" style="width:40px;height:40px;flex-shrink:0;"></div>
+                    <script>var _ir=document.getElementById('lp-ind-realestate');if(_ir&&window.opsyGearOrb)_ir.innerHTML=opsyGearOrb('idle',40);</script>
                     <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">Real Estate</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Property matching, viewing coordination, and lead qualification.</p></div>
                 </div>
-                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
-                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🏥</div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(59,130,246,0.12);">
+                    <div id="lp-ind-health" style="width:40px;height:40px;flex-shrink:0;"></div>
+                    <script>var _ih=document.getElementById('lp-ind-health');if(_ih&&window.opsyGearOrb)_ih.innerHTML=opsyGearOrb('idle',40);</script>
                     <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">Healthcare</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Patient triage, appointment management, and follow-up reminders.</p></div>
                 </div>
-                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
-                    <div style="width:40px;height:40px;border-radius:10px;background:rgba(91,174,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🍽️</div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:1.2rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(59,130,246,0.12);">
+                    <div id="lp-ind-restaurant" style="width:40px;height:40px;flex-shrink:0;"></div>
+                    <script>var _irs=document.getElementById('lp-ind-restaurant');if(_irs&&window.opsyGearOrb)_irs.innerHTML=opsyGearOrb('idle',40);</script>
                     <div><h3 style="margin:0 0 4px;font-size:0.95rem;color:var(--text-primary);">Restaurants & Hospitality</h3><p style="margin:0;font-size:0.82rem;color:var(--text-secondary);">Table booking, menu inquiries, and guest experience management.</p></div>
                 </div>
             </div>
@@ -23546,17 +23706,25 @@
         <section style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
             <h2 class="lp-section-title">What Can Our AI Agents Do?</h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:1.5rem;">
-                <div style="padding:1.5rem;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                <div style="padding:1.5rem;border-radius:16px;background:rgba(249,115,22,0.03);border:1px solid rgba(249,115,22,0.12);">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
-                        <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">💰 Sales Agent</span>
-                        <span style="padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:600;border:1px solid #10b981;color:#10b981;">Revenue</span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span id="lp-agent-sales-av" style="width:32px;height:32px;flex-shrink:0;"></span>
+                            <script>var _as=document.getElementById('lp-agent-sales-av');if(_as&&window.cartivaBag)_as.innerHTML=cartivaBag('idle',32);</script>
+                            <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Sales Agent</span>
+                        </div>
+                        <span style="padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:600;border:1px solid #f97316;color:#f97316;">Cartiva</span>
                     </div>
                     <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;margin:0;">Qualify leads and close deals automatically. Engage prospects 24/7, answer product questions, and push them through your pipeline.</p>
                 </div>
-                <div style="padding:1.5rem;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                <div style="padding:1.5rem;border-radius:16px;background:rgba(59,130,246,0.03);border:1px solid rgba(59,130,246,0.12);">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
-                        <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">🎧 Support Agent</span>
-                        <span style="padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:600;border:1px solid var(--theme-color);color:var(--theme-color);">Retention</span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span id="lp-agent-support-av" style="width:32px;height:32px;flex-shrink:0;"></span>
+                            <script>var _asup=document.getElementById('lp-agent-support-av');if(_asup&&window.opsyGearOrb)_asup.innerHTML=opsyGearOrb('idle',32);</script>
+                            <span style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">Support Agent</span>
+                        </div>
+                        <span style="padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:600;border:1px solid #3b82f6;color:#3b82f6;">Opsy</span>
                     </div>
                     <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;margin:0;">Instant 24/7 support in Arabic & English. Handle complaints, track orders, and resolve issues before customers leave.</p>
                 </div>
@@ -23569,25 +23737,25 @@
             <p class="lp-section-sub">Chat with our AI Agent right now — see how it handles real conversations.</p>
             <div style="max-width:420px;margin:0 auto;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);background:#0a0a14;">
                 <!-- Chat Header -->
-                <div style="padding:14px 18px;background:var(--theme-color);display:flex;align-items:center;gap:10px;">
+                <div style="padding:14px 18px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;gap:10px;">
                     <div id="demo-orb-header" style="width:36px;height:36px;flex-shrink:0;"></div>
-                    <script>var _doh=document.getElementById('demo-orb-header');if(_doh&&window.omnioOrb)_doh.innerHTML=omnioOrb('idle',36);</script>
+                    <script>var _doh=document.getElementById('demo-orb-header');if(_doh&&window.opsyGearOrb)_doh.innerHTML=opsyGearOrb('idle',36);</script>
                     <div style="flex:1;text-align:left;">
-                        <div style="font-weight:700;font-size:0.9rem;color:#fff;">Omnio</div>
+                        <div style="font-weight:700;font-size:0.9rem;color:#fff;">Opsy AI</div>
                         <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;"></span>Online now</div>
                     </div>
                 </div>
                 <!-- Chat Messages -->
                 <div id="lp-demo-messages" style="padding:16px;min-height:220px;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
                     <div style="align-self:flex-start;background:rgba(255,255,255,0.08);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:80%;font-size:0.85rem;color:var(--text-primary);line-height:1.4;">
-                        Hi! 👋 I'm Digitivia's AI Agent. Ask me anything about our platform — pricing, features, how it works for your business.
+                        Hi! 👋 I'm Opsy, your AI service agent by Digitivia. Ask me anything about our platform — pricing, features, how it works for your business.
                     </div>
                 </div>
                 <!-- Chat Input -->
                 <div style="padding:10px 14px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;">
-                    <input type="text" id="lp-demo-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendDemoMessage()"
+                    <input type="text" id="lp-demo-input" placeholder="Type a message..." aria-label="Type a message" onkeydown="if(event.key==='Enter')sendDemoMessage()"
                         style="flex:1;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;outline:none;">
-                    <button onclick="sendDemoMessage()" style="width:40px;height:40px;border-radius:50%;background:var(--theme-color);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">➤</button>
+                    <button onclick="sendDemoMessage()" aria-label="Send message" style="width:40px;height:40px;border-radius:50%;background:var(--theme-color);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">➤</button>
                 </div>
             </div>
             <div style="margin-top:0.8rem;font-size:0.72rem;color:var(--text-secondary);">This is a demo — sign up to deploy your own AI agent</div>
@@ -23595,7 +23763,7 @@
         <script>
         (function() {
             const DEMO_RESPONSES = {
-                greeting: "Hey there! 👋 Welcome to Digitivia. I'm your AI assistant. I can help you with:\n\n• 💰 Pricing & plans\n• 🤖 How our AI agents work\n• 📱 Supported channels\n• 🛒 E-commerce features\n• 📊 CRM & analytics\n\nWhat would you like to know?",
+                greeting: "Hey there! 👋 I'm Opsy, your service AI by Digitivia. I can help you with:\n\n• 💰 Pricing & plans\n• 🤖 Meet Cartiva AI (ecommerce) & Opsy AI (services)\n• 📱 Supported channels\n• 🛒 E-commerce features\n• 📊 CRM & analytics\n\nWhat would you like to know?",
                 pricing: "We have 3 plans:\n\n🚀 **Starter** — 5,000 conversations, 24/7 auto replies, lead qualification\n📈 **Growth** (Most Popular) — 12,000 conversations, advanced lead qualify, order confirmation\n🏛️ **Pro** — 30,000 conversations, CRM integration, priority support\n\nPrices start from $79/month. Would you like to get started?",
                 features: "Our platform includes:\n\n• 🤖 AI agents across 5+ channels\n• 📨 Unified inbox with AI/Human toggle\n• 📋 Built-in CRM with pipeline\n• 🛒 Order management + WhatsApp alerts\n• 🎨 Content Studio for social media\n• 📊 Real-time analytics\n\nWhat interests you most?",
                 whatsapp: "Yes! We support WhatsApp Business API with:\n\n• Automated 24/7 replies\n• Order confirmation messages\n• Lead capture from conversations\n• Human takeover anytime\n\nAll managed from one dashboard. Want to see it in action?",
@@ -23615,7 +23783,7 @@
                 const container = document.getElementById('lp-demo-messages');
 
                 // Add user message
-                container.innerHTML += `<div style="align-self:flex-end;background:var(--theme-color);padding:10px 14px;border-radius:14px 14px 4px 14px;max-width:80%;font-size:0.85rem;color:#fff;line-height:1.4;">${msg.replace(/</g,'&lt;')}</div>`;
+                container.innerHTML += `<div style="align-self:flex-end;background:var(--theme-color);padding:10px 14px;border-radius:14px 14px 4px 14px;max-width:80%;font-size:0.85rem;color:#fff;line-height:1.4;">${msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
                 input.value = '';
 
                 // Typing indicator
@@ -23817,7 +23985,7 @@
 
                     return `
                     <div class="lp-price-card ${plan.popular ? 'popular' : ''}" style="border-color:${borderColor};padding-top:${plan.popular ? '2rem' : '1.5rem'};">
-                        ${plan.popular ? '<div class="lp-popular-tag">MOST POPULAR</div>' : ''}
+                        ${plan.popular ? '<div class="lp-popular-tag" aria-label="Most popular plan">MOST POPULAR</div>' : ''}
                         <div style="font-size:2rem;margin-bottom:0.5rem;">${plan.icon}</div>
                         <div class="lp-price-name" style="font-size:1.2rem;">${plan.name}</div>
                         <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:${plan.popular ? 'var(--theme-color)' : plan.name === 'Pro' ? '#f59e0b' : 'var(--text-secondary)'};font-weight:700;margin-bottom:0.3rem;">${plan.tagline}</div>
@@ -23895,11 +24063,11 @@
         <!-- FAQ -->
         <section class="lp-faq" id="lp-faq">
             <h2 class="lp-section-title">Frequently Asked Questions</h2>
-            <p class="lp-section-sub">Everything you need to know about Omnio by Digitivia.</p>
+            <p class="lp-section-sub">Everything you need to know about Digitivia AI Agent.</p>
 
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
                 <div class="lp-faq-q">What channels does the AI agent support?<span>+</span></div>
-                <div class="lp-faq-a">Omnio by Digitivia supports WhatsApp, Facebook Messenger, Instagram DMs, Telegram, and a website chat widget. All conversations appear in a unified inbox so you never miss a message.</div>
+                <div class="lp-faq-a">Digitivia AI Agent supports WhatsApp, Facebook Messenger, Instagram DMs, Telegram, and a website chat widget. All conversations appear in a unified inbox so you never miss a message.</div>
             </div>
             <div class="lp-faq-item" onclick="this.classList.toggle('open')">
                 <div class="lp-faq-q">How does the AI agent learn about my business?<span>+</span></div>
@@ -24026,6 +24194,13 @@
                     </div>
                 </div>
                 <div>
+                    <div style="font-weight:600;font-size:0.85rem;color:var(--text-primary);margin-bottom:0.8rem;">Legal</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <a href="/privacy.html" target="_blank" style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;">Privacy Policy</a>
+                        <a href="/terms.html" target="_blank" style="font-size:0.8rem;color:var(--text-secondary);text-decoration:none;">Terms of Service</a>
+                    </div>
+                </div>
+                <div>
                     <div style="font-weight:600;font-size:0.85rem;color:var(--text-primary);margin-bottom:0.8rem;">Contact Us</div>
                     <div style="display:flex;flex-direction:column;gap:6px;font-size:0.8rem;color:var(--text-secondary);">
                         <span>info@digitivia.com</span>
@@ -24035,7 +24210,7 @@
                 </div>
             </div>
             <div style="max-width:1200px;margin:1.5rem auto 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                <p style="font-size:0.75rem;color:var(--text-secondary);">&copy; 2026 Digitivia. All rights reserved. Tax ID: 773-847-731</p>
+                <p style="font-size:0.75rem;color:var(--text-secondary);">&copy; 2026 Digitivia. All rights reserved. Tax ID: 773-847-731 · <a href="/privacy.html" style="color:var(--text-secondary);text-decoration:underline;">Privacy</a> · <a href="/terms.html" style="color:var(--text-secondary);text-decoration:underline;">Terms</a></p>
                 <div style="display:flex;gap:12px;">
                     <a href="https://x.com/digitivia" target="_blank" style="color:var(--text-secondary);font-size:0.9rem;">X</a>
                     <a href="https://www.instagram.com/digitivia_/" target="_blank" style="color:var(--text-secondary);font-size:0.9rem;">IG</a>
@@ -24638,7 +24813,7 @@
             <div class="docs-content">
                 <div class="docs-section">
                     <h3 data-i18n="modals.docs.sec_start_title">🚀 Getting Started</h3>
-                    <p data-i18n="modals.docs.sec_start_text">Welcome to Omnio by Digitivia! This platform allows you to
+                    <p data-i18n="modals.docs.sec_start_text">Welcome to Digitivia AI Agent! This platform allows you to
                         create, manage, and monitor
                         powerful
                         AI agents across multiple communication channels.</p>
@@ -26179,7 +26354,9 @@
                 page: 'Messenger',
                 messenger: 'Messenger',
                 telegram: 'Telegram',
-                website: 'Website'
+                website: 'Website',
+                google_calendar: '📅 Google Calendar',
+                manual: 'Manual'
             };
             return labelMap[normalized] || source;
         }
@@ -27529,9 +27706,12 @@
                         </div>
                 </div>
                 <div class="dashboard-header-new">
-                    <div class="header-left">
-                        <h1 class="welcome-text" id="dashboard-welcome-msg">Welcome...</h1>
-                        <p class="header-subtitle" data-i18n="dashboard.subtitle">Here is your performance overview</p>
+                    <div class="header-left" style="display:flex;align-items:center;gap:14px;">
+                        <div id="dash-greeting-avatar" style="width:48px;height:48px;flex-shrink:0;"></div>
+                        <div>
+                            <h1 class="welcome-text" id="dashboard-welcome-msg">Welcome...</h1>
+                            <p class="header-subtitle" id="dashboard-subtitle" data-i18n="dashboard.subtitle">Here is what's happening with your agents today.</p>
+                        </div>
                     </div>
                     <div class="header-right" style="display:flex; gap:10px; align-items:center;">
                         <select id="dashboard-date-filter" class="date-select glass" onchange="setDashboardPeriod(this.value)">
@@ -27540,7 +27720,13 @@
                             <option value="30days" data-i18n="dashboard.filter.30days">Last 30 Days</option>
                             <option value="month" data-i18n="dashboard.filter.month">This Month</option>
                             <option value="all" data-i18n="dashboard.filter.all">All Time</option>
+                            <option value="custom" data-i18n="dashboard.filter.custom">Custom Range</option>
                         </select>
+                        <div id="dashboard-custom-date-range" style="display:none;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+                            <input type="date" id="dash-date-from" style="padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--text-primary);font-size:0.8rem;" onchange="applyCustomDateRange()">
+                            <span style="color:var(--text-secondary);font-size:0.8rem;">→</span>
+                            <input type="date" id="dash-date-to" style="padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--text-primary);font-size:0.8rem;" onchange="applyCustomDateRange()">
+                        </div>
                         <button class="dash-customize-btn" onclick="dashToggleCustomizeDrawer()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.36 6.36l-.7-.7M6.34 6.34l-.7-.7m12.72 0l-.7.7M6.34 17.66l-.7.7M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></svg>
                             <span data-i18n="dashboard.widgets.title">Customize</span>
@@ -27550,6 +27736,26 @@
 
                 <!-- Alerts Strip -->
                 <div class="dashboard-widget" data-widget="alerts_strip" id="dash-alerts-strip"></div>
+
+                <!-- Quick Actions -->
+                <div id="dash-quick-actions" class="dashboard-widget" data-widget="kpi_cards" style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;">
+                    <button class="dash-quick-btn" onclick="navigateToTab('inbox')" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                        Open Inbox
+                    </button>
+                    <button class="dash-quick-btn" onclick="navigateToTab('crm')" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z"/></svg>
+                        View Leads
+                    </button>
+                    <button class="dash-quick-btn" onclick="navigateToTab('orders')" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);color:#8b5cf6;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9z"/></svg>
+                        Meetings
+                    </button>
+                    <button class="dash-quick-btn" onclick="navigateToTab('tasks')" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#f59e0b;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Tasks
+                    </button>
+                </div>
 
                 <!-- KPI CARDS -->
                 <div class="kpi-grid dashboard-widget" data-widget="kpi_cards">
@@ -27561,7 +27767,10 @@
                         <div class="kpi-info">
                             <div class="kpi-label" id="kpi-primary-label" data-i18n="dashboard.stats.revenue">Total Revenue</div>
                             <div class="kpi-value" id="kpi-primary">--</div>
-                            <div class="kpi-subtext" id="kpi-primary-sub">0 Orders</div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="kpi-subtext" id="kpi-primary-sub">0 Orders</div>
+                                <span class="kpi-trend" id="kpi-primary-trend"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -27573,7 +27782,10 @@
                          <div class="kpi-info">
                             <div class="kpi-label" data-i18n="dashboard.stats.leads">Total Leads</div>
                             <div class="kpi-value" id="kpi-leads">--</div>
-                             <div class="kpi-subtext" id="kpi-leads-sub">-- New</div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="kpi-subtext" id="kpi-leads-sub">-- New</div>
+                                <span class="kpi-trend" id="kpi-leads-trend"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -27585,7 +27797,10 @@
                          <div class="kpi-info">
                             <div class="kpi-label" data-i18n="dashboard.stats.conversations">Active Chats</div>
                             <div class="kpi-value" id="kpi-conversations">--</div>
-                             <div class="kpi-subtext" id="kpi-conversations-sub">-- Total Messages</div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="kpi-subtext" id="kpi-conversations-sub">-- Total Messages</div>
+                                <span class="kpi-trend" id="kpi-conversations-trend"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -27632,6 +27847,12 @@
 
                 <!-- CRM Pipeline Snapshot Widget -->
                 <div class="dashboard-widget" data-widget="crm_pipeline" id="dash-pipeline-widget"></div>
+
+                <!-- Response Time Performance Widget -->
+                <div class="dashboard-widget dashboard-panel glass" data-widget="response_time" id="dash-response-time-widget" style="margin-bottom:24px;"></div>
+
+                <!-- AI Business Insights Widget -->
+                <div class="dashboard-widget dashboard-panel glass" data-widget="ai_insights" id="dash-ai-insights" style="margin-bottom:24px;"></div>
 
                 <!-- MAIN DASHBOARD GRID -->
                 <div class="dashboard-grid-new">
@@ -27688,12 +27909,40 @@
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
                                     <span id="usage-wa-outbound-label" style="color: #e2e8f0; font-size: 0.85rem;">📲 WhatsApp Outbound <span style="font-size:0.7em; opacity:0.7;">(Billing Cycle)</span></span>
                                     <span style="color: #94a3b8; font-size: 0.8rem;">
-                                        <span id="usage-wa-outbound-used" style="color: white; font-weight: 600;">0</span> / 
+                                        <span id="usage-wa-outbound-used" style="color: white; font-weight: 600;">0</span> /
                                         <span id="usage-wa-outbound-limit">No limit</span>
                                     </span>
                                 </div>
                                 <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
                                     <div id="usage-wa-outbound-bar" style="height: 100%; background: linear-gradient(90deg, #25D366, #128C7E); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
+                                </div>
+                            </div>
+
+                            <!-- SMS Outbound Usage -->
+                            <div style="margin-bottom: 12px; opacity: 0.6;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+                                    <span style="color: #e2e8f0; font-size: 0.85rem;">💬 SMS Outbound <span style="font-size:0.7em; opacity:0.7;">(Billing Cycle)</span> <span style="font-size:0.6em; padding:2px 6px; border-radius:4px; background:rgba(249,115,22,0.15); color:#f97316; font-weight:600; margin-left:4px;">COMING SOON</span></span>
+                                    <span style="color: #94a3b8; font-size: 0.8rem;">
+                                        <span id="usage-sms-outbound-used" style="color: white; font-weight: 600;">0</span> /
+                                        <span id="usage-sms-outbound-limit">—</span>
+                                    </span>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                                    <div id="usage-sms-outbound-bar" style="height: 100%; background: linear-gradient(90deg, #f97316, #ea580c); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Email Outbound Usage -->
+                            <div style="margin-bottom: 12px; opacity: 0.6;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+                                    <span style="color: #e2e8f0; font-size: 0.85rem;">📧 Email Outbound <span style="font-size:0.7em; opacity:0.7;">(Billing Cycle)</span> <span style="font-size:0.6em; padding:2px 6px; border-radius:4px; background:rgba(59,130,246,0.15); color:#3b82f6; font-weight:600; margin-left:4px;">COMING SOON</span></span>
+                                    <span style="color: #94a3b8; font-size: 0.8rem;">
+                                        <span id="usage-email-outbound-used" style="color: white; font-weight: 600;">0</span> /
+                                        <span id="usage-email-outbound-limit">—</span>
+                                    </span>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                                    <div id="usage-email-outbound-bar" style="height: 100%; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 10px; width: 0%; transition: width 0.5s ease;"></div>
                                 </div>
                             </div>
 
@@ -27831,6 +28080,63 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- AI Personality Settings -->
+                        <div class="section-wrapper">
+                            ${renderAgentSectionHeaderMarkup({
+                                sectionId: `${agent.id}-personality-sec`,
+                                labelKey: 'agent_config.header_personality',
+                                fallbackText: 'AI Personality',
+                                helpKey: 'agent.personality'
+                            })}
+                            <div id="${agent.id}-personality-sec" class="section-content">
+                                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+                                    <!-- Gender -->
+                                    <div>
+                                        <label style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:6px;display:block;">
+                                            ${currentLang === 'ar' ? 'الجنس' : 'Gender'}
+                                        </label>
+                                        <select id="persona-gender-${agent.id}" onchange="checkDirty('${agent.id}')" style="width:100%;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;">
+                                            <option value="">${currentLang === 'ar' ? 'اختر...' : 'Select...'}</option>
+                                            <option value="male">${currentLang === 'ar' ? 'ذكر' : 'Male'}</option>
+                                            <option value="female">${currentLang === 'ar' ? 'أنثى' : 'Female'}</option>
+                                            <option value="neutral">${currentLang === 'ar' ? 'محايد' : 'Neutral'}</option>
+                                        </select>
+                                    </div>
+                                    <!-- Age -->
+                                    <div>
+                                        <label style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:6px;display:block;">
+                                            ${currentLang === 'ar' ? 'العمر / المرحلة' : 'Age / Stage'}
+                                        </label>
+                                        <select id="persona-age-${agent.id}" onchange="checkDirty('${agent.id}')" style="width:100%;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;">
+                                            <option value="">${currentLang === 'ar' ? 'اختر...' : 'Select...'}</option>
+                                            <option value="young">${currentLang === 'ar' ? 'شاب (18-25)' : 'Young (18-25)'}</option>
+                                            <option value="adult">${currentLang === 'ar' ? 'بالغ (26-40)' : 'Adult (26-40)'}</option>
+                                            <option value="mature">${currentLang === 'ar' ? 'ناضج (40+)' : 'Mature (40+)'}</option>
+                                        </select>
+                                    </div>
+                                    <!-- Dialect -->
+                                    <div>
+                                        <label style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:6px;display:block;">
+                                            ${currentLang === 'ar' ? 'اللهجة / أسلوب الكلام' : 'Dialect / Speaking Style'}
+                                        </label>
+                                        <select id="persona-dialect-${agent.id}" onchange="checkDirty('${agent.id}')" style="width:100%;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;">
+                                            <option value="">${currentLang === 'ar' ? 'اختر...' : 'Select...'}</option>
+                                            <option value="formal_en">${currentLang === 'ar' ? 'إنجليزي رسمي' : 'Formal English'}</option>
+                                            <option value="casual_en">${currentLang === 'ar' ? 'إنجليزي عامي' : 'Casual English'}</option>
+                                            <option value="formal_ar">${currentLang === 'ar' ? 'عربي فصحى' : 'Formal Arabic (MSA)'}</option>
+                                            <option value="egyptian_ar">${currentLang === 'ar' ? 'مصري عامي' : 'Egyptian Arabic'}</option>
+                                            <option value="gulf_ar">${currentLang === 'ar' ? 'خليجي' : 'Gulf Arabic'}</option>
+                                            <option value="levantine_ar">${currentLang === 'ar' ? 'شامي' : 'Levantine Arabic'}</option>
+                                            <option value="moroccan_ar">${currentLang === 'ar' ? 'مغربي' : 'Moroccan Arabic'}</option>
+                                            <option value="franco">${currentLang === 'ar' ? 'فرانكو' : 'Franco-Arabic'}</option>
+                                            <option value="bilingual">${currentLang === 'ar' ? 'ثنائي اللغة (عربي + إنجليزي)' : 'Bilingual (Arabic + English)'}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="section-wrapper">
                             ${renderAgentSectionHeaderMarkup({
                                 sectionId: `${agent.id}-links-sec`,
@@ -28030,7 +28336,11 @@
                             </div>
                             <div id="inbox-human-composer" class="inbox-human-composer hidden">
                                 <div id="inbox-human-composer-hint" class="inbox-human-composer-hint"></div>
+                                <!-- Canned Responses Quick Bar -->
+                                <div id="inbox-canned-bar" style="display:none;padding:6px 10px;overflow-x:auto;display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,0.06);">
+                                </div>
                                 <div class="inbox-human-composer-row">
+                                    <button onclick="toggleCannedResponses()" title="Quick Replies" style="background:none;border:none;cursor:pointer;font-size:1.1rem;padding:4px 8px;color:var(--text-secondary);flex-shrink:0;">⚡</button>
                                     <textarea id="inbox-human-reply-input" class="inbox-human-reply-input" rows="2" data-i18n-placeholder="agent_config.chat_placeholder" placeholder="Type a message..." oninput="autoResizeInboxComposerInput(this)" onkeydown="handleInboxComposerKeydown(event)"></textarea>
                                     <button id="inbox-human-send-btn" class="inbox-human-send-btn" onclick="sendHumanReply()">Send</button>
                                 </div>
@@ -28324,6 +28634,21 @@
                         </div>
                         </div>
                         <div id="meetings-service-view" style="display:none;">
+                            <!-- Google Calendar Connection Strip -->
+                            <div id="meetings-gcal-strip" style="display:none;padding:12px 16px;margin-bottom:12px;border-radius:12px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <span style="font-size:1.2rem;">📅</span>
+                                    <div>
+                                        <div id="meetings-gcal-status" style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Google Calendar</div>
+                                        <div id="meetings-gcal-sub" style="font-size:0.72rem;color:var(--text-secondary);">Connect to sync your meetings</div>
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:8px;">
+                                    <button id="meetings-gcal-connect-btn" onclick="handleGoogleCalendarConnect()" style="padding:6px 14px;border-radius:8px;background:#3b82f6;color:#fff;border:none;font-size:0.78rem;font-weight:600;cursor:pointer;">Connect Calendar</button>
+                                    <button id="meetings-gcal-sync-btn" onclick="syncGoogleCalendarToMeetings()" style="display:none;padding:6px 14px;border-radius:8px;background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3);font-size:0.78rem;font-weight:600;cursor:pointer;">🔄 Sync Now</button>
+                                </div>
+                            </div>
+
                             <div class="meetings-toolbar">
                                 <div class="meetings-toolbar-search">
                                     <input type="text" id="meetings-search" class="leads-filter-input" data-i18n-placeholder="meetings.search_placeholder" placeholder="Search meetings..." oninput="renderMeetings()">
@@ -29257,7 +29582,7 @@ Thank you for shopping with {store_name}!</textarea>
                     <h2 data-i18n="legal.privacy.title">Privacy Policy</h2>
                     <div class="legal-updated" data-i18n="legal.last_updated">Last updated: April 12, 2026</div>
                     <section class="legal-section"><h3 data-i18n="legal.privacy.controller_title">Data Controller</h3><p data-i18n="legal.privacy.controller_text">The data controller is Digitivia, a company registered in Egypt (Commercial Register 272529, Cairo Investment Court; Tax ID 773-847-731), located at Building No.1, Chillout Lotus Maxim, 3rd Floor, Fifth Settlement, New Cairo, Egypt. For privacy inquiries, contact privacy@digitivia.com.</p></section>
-                    <section class="legal-section"><h3 data-i18n="legal.privacy.intro_title">Overview</h3><p data-i18n="legal.privacy.intro_text">This policy explains how Omnio by Digitivia collects, uses, stores, and protects personal and operational data processed through the platform, in compliance with Egypt's Personal Data Protection Law (Law 151/2020) and aligned with the EU General Data Protection Regulation (GDPR).</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.privacy.intro_title">Overview</h3><p data-i18n="legal.privacy.intro_text">This policy explains how Digitivia AI Agent collects, uses, stores, and protects personal and operational data processed through the platform, in compliance with Egypt's Personal Data Protection Law (Law 151/2020) and aligned with the EU General Data Protection Regulation (GDPR).</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.privacy.collect_title">Data We Collect</h3><p data-i18n="legal.privacy.collect_text">We process: (a) account data — name, email, password hash, organization name; (b) communication data — messages, conversation metadata, contact details from connected channels (WhatsApp, Messenger, Instagram, Telegram); (c) operational data — agent configurations, knowledge base content, CRM leads, orders; (d) usage data — login timestamps, feature usage, platform metrics; (e) billing data — plan selections, payment metadata (card details are processed directly by Stripe and never stored on our servers).</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.privacy.legal_basis_title">Legal Bases for Processing</h3><p data-i18n="legal.privacy.legal_basis_text">We process data based on: (a) contract performance — to deliver the AI Agent service you subscribed to; (b) legitimate interest — to improve service reliability, prevent abuse, and generate aggregated analytics; (c) legal obligation — to retain invoices and tax records as required by Egyptian law; (d) consent — for optional features such as push notifications and email alerts, which you can withdraw at any time.</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.privacy.use_title">How We Use Data</h3><p data-i18n="legal.privacy.use_text">Data is used to deliver services, maintain account security, generate analytics, support automations, troubleshoot issues, and comply with applicable legal obligations.</p></section>
@@ -29288,7 +29613,7 @@ Thank you for shopping with {store_name}!</textarea>
                     <div class="legal-retention-banner" data-i18n="legal.retention_notice">We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.</div>
                     <h2 data-i18n="legal.terms.title">Terms of Service</h2>
                     <div class="legal-updated" data-i18n="legal.last_updated">Last updated: April 12, 2026</div>
-                    <section class="legal-section"><h3 data-i18n="legal.terms.intro_title">Service Scope</h3><p data-i18n="legal.terms.intro_text">These terms govern access to and use of Omnio by Digitivia, including connected channels, dashboards, analytics, and automation features. The service is provided by Digitivia, Building No.1, Chillout Lotus Maxim, 3rd Floor, Fifth Settlement, New Cairo, Egypt (CR 272529).</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.terms.intro_title">Service Scope</h3><p data-i18n="legal.terms.intro_text">These terms govern access to and use of Digitivia AI Agent, including connected channels, dashboards, analytics, and automation features. The service is provided by Digitivia, Building No.1, Chillout Lotus Maxim, 3rd Floor, Fifth Settlement, New Cairo, Egypt (CR 272529).</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.terms.accept_title">Acceptance</h3><p data-i18n="legal.terms.accept_text">By using the service, you agree to these terms and confirm that you have authority to act on behalf of your organization.</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.terms.use_title">Permitted Use</h3><p data-i18n="legal.terms.use_text">You must use the platform lawfully, avoid abusive or harmful content, and follow channel-provider requirements and local regulations.</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.terms.account_title">Account Responsibility</h3><p data-i18n="legal.terms.account_text">You are responsible for account credentials, workspace access, connected integrations, and activity performed by authorized users.</p></section>
@@ -29346,7 +29671,7 @@ Thank you for shopping with {store_name}!</textarea>
                     <div class="legal-retention-banner" data-i18n="legal.retention_notice">We keep customer data for one year only. After one year, data is permanently deleted from active systems and backups according to retention controls.</div>
                     <h2 data-i18n="legal.security.title">Security & Compliance</h2>
                     <div class="legal-updated" data-i18n="legal.last_updated">Last updated: April 12, 2026</div>
-                    <section class="legal-section"><h3 data-i18n="legal.security.intro_title">Security Program</h3><p data-i18n="legal.security.intro_text">Omnio by Digitivia applies layered security controls to protect data confidentiality, integrity, and service availability.</p></section>
+                    <section class="legal-section"><h3 data-i18n="legal.security.intro_title">Security Program</h3><p data-i18n="legal.security.intro_text">Digitivia AI Agent applies layered security controls to protect data confidentiality, integrity, and service availability.</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.security.controls_title">Access and Monitoring Controls</h3><p data-i18n="legal.security.controls_text">We enforce role-based access, audit logging, credential safeguards, and monitoring to detect unauthorized actions and service anomalies.</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.security.encryption_title">Encryption and Data Protection</h3><p data-i18n="legal.security.encryption_text">Data is protected in transit and at rest through provider-supported encryption controls and secure operational practices.</p></section>
                     <section class="legal-section"><h3 data-i18n="legal.security.incidents_title">Incident Response</h3><p data-i18n="legal.security.incidents_text">Security events are triaged, investigated, and remediated using incident-response procedures with documented corrective actions.</p></section>
@@ -31729,10 +32054,20 @@ Thank you for shopping with {store_name}!</textarea>
                     document.getElementById(`tone-${agent.id}`).value = config.tone || "";
                     document.getElementById(`status-${agent.id}`).checked = config.is_active || false;
 
+                    // Populate Personality fields
+                    const persona = config.persona || {};
+                    const genderEl = document.getElementById(`persona-gender-${agent.id}`);
+                    const ageEl = document.getElementById(`persona-age-${agent.id}`);
+                    const dialectEl = document.getElementById(`persona-dialect-${agent.id}`);
+                    if (genderEl) genderEl.value = persona.gender || '';
+                    if (ageEl) ageEl.value = persona.age || '';
+                    if (dialectEl) dialectEl.value = persona.dialect || '';
+
                     // Store Initial State (removed links)
                     initialStates[agent.id] = {
                         prompt: config.system_prompt || "",
-                        tone: config.tone || ""
+                        tone: config.tone || "",
+                        persona: JSON.stringify(persona)
                     };
                     isDirtyState[agent.id] = false;
                 });
@@ -31751,6 +32086,11 @@ Thank you for shopping with {store_name}!</textarea>
 
             const prompt = document.getElementById(`prompt-${agentId}`).value;
             const tone = document.getElementById(`tone-${agentId}`).value;
+            const persona = {
+                gender: document.getElementById(`persona-gender-${agentId}`)?.value || '',
+                age: document.getElementById(`persona-age-${agentId}`)?.value || '',
+                dialect: document.getElementById(`persona-dialect-${agentId}`)?.value || ''
+            };
             const btn = document.querySelector(`#${agentId} .save-btn`);
             const originalText = btn.innerText;
             btn.innerText = t('agent_config.btn_saving');
@@ -31761,6 +32101,7 @@ Thank you for shopping with {store_name}!</textarea>
                     agent: agentId,
                     system_prompt: prompt,
                     tone: tone,
+                    persona: persona,
                     updated_at: new Date().toISOString()
                 };
 
@@ -31779,7 +32120,8 @@ Thank you for shopping with {store_name}!</textarea>
                 // Update Initial State (removed links)
                 initialStates[agentId] = {
                     prompt: prompt,
-                    tone: tone
+                    tone: tone,
+                    persona: JSON.stringify(persona)
                 };
                 checkDirty(agentId); // Will clear dirty state
 
@@ -32109,6 +32451,10 @@ Thank you for shopping with {store_name}!</textarea>
             // Set start to midnight by default for consistent overlapping
             start.setHours(0, 0, 0, 0);
 
+            // Toggle custom date range picker visibility
+            const customEl = document.getElementById('dashboard-custom-date-range');
+            if (customEl) customEl.style.display = val === 'custom' ? 'flex' : 'none';
+
             if (val === 'today') {
                 // Already set to midnight
             } else if (val === '7days') {
@@ -32117,10 +32463,12 @@ Thank you for shopping with {store_name}!</textarea>
                 start.setDate(now.getDate() - 30);
             } else if (val === 'month') {
                 start.setDate(1); // First day of current month
+            } else if (val === 'custom') {
+                // Don't reload yet — wait for user to pick dates
+                return;
             } else if (val === 'all') {
                 dashboardDateRange.start = null; // No filter
                 dashboardDateRange.end = null;
-                // Important: Even for 'all', we might want to check org usage, so loadDashboard handles it
                 loadDashboard();
                 return;
             }
@@ -32128,6 +32476,21 @@ Thank you for shopping with {store_name}!</textarea>
             dashboardDateRange.start = start.toISOString();
             dashboardDateRange.end = now.toISOString();
             loadDashboard(); // Reload data
+        }
+
+        function applyCustomDateRange() {
+            const fromEl = document.getElementById('dash-date-from');
+            const toEl = document.getElementById('dash-date-to');
+            if (!fromEl?.value || !toEl?.value) return;
+            const from = new Date(fromEl.value);
+            from.setHours(0, 0, 0, 0);
+            const to = new Date(toEl.value);
+            to.setHours(23, 59, 59, 999);
+            if (from > to) return;
+            dashboardDateRange.label = 'custom';
+            dashboardDateRange.start = from.toISOString();
+            dashboardDateRange.end = to.toISOString();
+            loadDashboard();
         }
 
         // ============================================================
@@ -32145,7 +32508,9 @@ Thank you for shopping with {store_name}!</textarea>
             { key: 'crm_pipeline',      label: () => t('dashboard.widgets.crm_pipeline'),      default: true },
             { key: 'activity_feed',     label: () => t('dashboard.widgets.activity_feed'),     default: true },
             { key: 'plan_usage',        label: () => t('dashboard.widgets.plan_usage'),        default: true },
-            { key: 'platform_stats',    label: () => t('dashboard.widgets.platform_stats'),    default: true }
+            { key: 'platform_stats',    label: () => t('dashboard.widgets.platform_stats'),    default: true },
+            { key: 'ai_insights',       label: () => '🧠 AI Insights',                       default: true },
+            { key: 'response_time',     label: () => '⚡ Response Time',                     default: true }
         ];
 
         function _dashWidgetPrefsKey() {
@@ -32701,7 +33066,32 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function loadDashboard() {
             const userName = currentUserProfile?.full_name || currentUserProfile?.email || 'User';
-            document.getElementById('dashboard-welcome-msg').innerText = t('dashboard.welcome', { name: userName });
+            const firstName = userName.split(' ')[0];
+
+            // Time-aware greeting
+            const hour = new Date().getHours();
+            let greeting;
+            if (currentLang === 'ar') {
+                greeting = hour < 12 ? 'صباح الخير' : hour < 17 ? 'مساء الخير' : 'مساء النور';
+                greeting += `، ${firstName}`;
+            } else {
+                greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+                greeting += `, ${firstName}`;
+            }
+            document.getElementById('dashboard-welcome-msg').innerText = greeting;
+
+            // Contextual subtitle
+            const subEl = document.getElementById('dashboard-subtitle');
+            if (subEl) {
+                const dayName = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'long' });
+                subEl.textContent = currentLang === 'ar'
+                    ? `هذا ما يحدث مع وكلائك اليوم — ${dayName}`
+                    : `Here is what's happening with your agents today — ${dayName}`;
+            }
+
+            // Opsy avatar in greeting
+            const avatarEl = document.getElementById('dash-greeting-avatar');
+            if (avatarEl && typeof opsyGearOrb === 'function') avatarEl.innerHTML = opsyGearOrb('idle', 48);
 
             if (!currentUserOrgId) return;
             applyOfferTypeUI();
@@ -32733,7 +33123,8 @@ Thank you for shopping with {store_name}!</textarea>
                 dashRenderPipelineSnapshot(),
                 dashRenderAlertsStrip(),
                 dashRenderSentimentWidget(),
-                typeof dashRenderCSATWidget === 'function' ? dashRenderCSATWidget() : Promise.resolve()
+                typeof dashRenderCSATWidget === 'function' ? dashRenderCSATWidget() : Promise.resolve(),
+                typeof dashRenderAIInsights === 'function' ? dashRenderAIInsights() : Promise.resolve()
             ]);
             if (typeof applyDashboardHelp === 'function') applyDashboardHelp();
         }
@@ -32835,8 +33226,55 @@ Thank you for shopping with {store_name}!</textarea>
                 document.getElementById('kpi-rating').innerText = avgRating > 0 ? avgRating : '--';
                 document.getElementById('kpi-reviews-sub').innerText = t('dashboard.stats.rating_subtext', { count: reviewCount });
 
+                // Calculate trend comparisons (current period vs previous period)
+                if (dashboardDateRange.start && dashboardDateRange.label !== 'all') {
+                    try {
+                        const currentStart = new Date(dashboardDateRange.start);
+                        const currentEnd = new Date(dashboardDateRange.end || new Date());
+                        const periodMs = currentEnd - currentStart;
+                        const prevStart = new Date(currentStart - periodMs);
+                        const prevEnd = currentStart;
+
+                        const [prevLeads, prevConvs] = await Promise.all([
+                            supabaseClient.from('leads').select('id', { count: 'exact', head: true })
+                                .eq('org_id', currentUserOrgId)
+                                .gte('created_at', prevStart.toISOString())
+                                .lt('created_at', prevEnd.toISOString()),
+                            supabaseClient.from('inbox_conversations').select('id', { count: 'exact', head: true })
+                                .eq('org_id', currentUserOrgId)
+                                .gte('created_at', prevStart.toISOString())
+                                .lt('created_at', prevEnd.toISOString())
+                        ]);
+
+                        renderTrendBadge('kpi-leads-trend', leadsCount, prevLeads.count || 0);
+                        renderTrendBadge('kpi-conversations-trend', convCount, prevConvs.count || 0);
+                    } catch (e) { console.debug('Trend calc:', e.message); }
+                }
+
             } catch (e) {
                 console.error("Error fetching dashboard stats:", e);
+            }
+        }
+
+        function renderTrendBadge(elementId, current, previous) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (previous === 0 && current === 0) { el.innerHTML = ''; return; }
+            if (previous === 0) {
+                el.className = 'kpi-trend trend-up';
+                el.innerHTML = '↑ new';
+                return;
+            }
+            const change = Math.round(((current - previous) / previous) * 100);
+            if (change > 0) {
+                el.className = 'kpi-trend trend-up';
+                el.innerHTML = `↑ ${change}%`;
+            } else if (change < 0) {
+                el.className = 'kpi-trend trend-down';
+                el.innerHTML = `↓ ${Math.abs(change)}%`;
+            } else {
+                el.className = 'kpi-trend trend-flat';
+                el.innerHTML = '→ 0%';
             }
         }
 
@@ -33221,7 +33659,9 @@ Thank you for shopping with {store_name}!</textarea>
                     'page': '#1877F2',
                     'instagram': '#E1306C',
                     'telegram': '#2AABEE',
-                    'website': '#5BAEB0'
+                    'website': '#5BAEB0',
+                    'sms': '#f97316',
+                    'email': '#3b82f6'
                 };
 
                 let html = '';
@@ -33232,6 +33672,8 @@ Thank you for shopping with {store_name}!</textarea>
                     if (platform === 'whatsapp_outbound') label = 'WhatsApp Outbound';
                     if (platform === 'page') label = 'Messenger';
                     if (platform === 'telegram') label = 'Telegram';
+                    if (platform === 'sms') label = 'SMS';
+                    if (platform === 'email') label = 'Email';
 
                     html += `
                         <div style="margin-bottom:12px;">
@@ -33575,6 +34017,44 @@ Thank you for shopping with {store_name}!</textarea>
                     waBarEl.style.width = `${waPercent}%`;
                 }
 
+                // SMS Outbound (coming soon — ready for future activation)
+                let smsUsed = 0, smsLimit = '—';
+                if (currentUserOrgId) {
+                    try {
+                        const { count: smsCount } = await supabaseClient
+                            .from('sms_outbound_logs')
+                            .select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId)
+                            .gte('created_at', new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString());
+                        smsUsed = smsCount || 0;
+                    } catch (e) { /* table may not exist yet */ }
+                }
+                const smsUsedEl = document.getElementById('usage-sms-outbound-used');
+                const smsLimitEl = document.getElementById('usage-sms-outbound-limit');
+                const smsBarEl = document.getElementById('usage-sms-outbound-bar');
+                if (smsUsedEl) smsUsedEl.innerText = smsUsed.toLocaleString();
+                if (smsLimitEl) smsLimitEl.innerText = smsLimit;
+                if (smsBarEl) smsBarEl.style.width = '0%';
+
+                // Email Outbound (coming soon — ready for future activation)
+                let emailUsed = 0, emailLimit = '—';
+                if (currentUserOrgId) {
+                    try {
+                        const { count: emailCount } = await supabaseClient
+                            .from('email_outbound_logs')
+                            .select('id', { count: 'exact', head: true })
+                            .eq('org_id', currentUserOrgId)
+                            .gte('created_at', new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString());
+                        emailUsed = emailCount || 0;
+                    } catch (e) { /* table may not exist yet */ }
+                }
+                const emailUsedEl = document.getElementById('usage-email-outbound-used');
+                const emailLimitEl = document.getElementById('usage-email-outbound-limit');
+                const emailBarEl = document.getElementById('usage-email-outbound-bar');
+                if (emailUsedEl) emailUsedEl.innerText = emailUsed.toLocaleString();
+                if (emailLimitEl) emailLimitEl.innerText = emailLimit;
+                if (emailBarEl) emailBarEl.style.width = '0%';
+
                 if (daysEl) daysEl.innerText = daysRemaining;
 
                 const showExpiry = status !== 'NO PLAN' && subscriptionEnd;
@@ -33873,6 +34353,9 @@ Thank you for shopping with {store_name}!</textarea>
                 console.error('Error fetching meetings:', e);
                 if (loadingEl) loadingEl.innerHTML = `<p style="color:var(--error);">${t('meetings.error_loading')}</p>`;
             }
+
+            // Update Google Calendar strip status
+            if (typeof updateMeetingsGCalStrip === 'function') updateMeetingsGCalStrip();
         }
 
         function getFilteredMeetings() {
@@ -35922,7 +36405,7 @@ Thank you for shopping with {store_name}!</textarea>
             aiWidget.root?.setAttribute('dir', detectLangDir().dir);
             aiWidget.launcherEl.title = launcherTitle;
             aiWidget.launcherEl.setAttribute('aria-label', launcherTitle);
-            aiWidget.titleEl.textContent = i18n.title || 'Omnio';
+            aiWidget.titleEl.textContent = i18n.title || 'Opsy AI';
             aiWidget.subtitleEl.textContent = i18n.subtitle || 'Ask anything about setup and behavior';
             aiWidget.faqLabelEl.textContent = i18n.faq_label || 'Quick Questions';
             aiWidget.inputEl.placeholder = i18n.placeholder || 'Ask a question...';
@@ -38036,14 +38519,14 @@ Thank you for shopping with {store_name}!</textarea>
     </div>
 
     <div class="aiw-root" id="aiw-root">
-        <button type="button" class="aiw-launcher" id="aiw-launcher" title="Omnio" aria-label="Omnio" style="padding:0;overflow:visible;background:transparent;border:none;width:52px;height:52px;">
-            <span id="aiw-omnio-orb"></span>
-            <script>var _aob=document.getElementById('aiw-omnio-orb');if(_aob&&window.omnioOrb)_aob.innerHTML=omnioOrb('idle',52);</script>
+        <button type="button" class="aiw-launcher" id="aiw-launcher" title="Opsy AI" aria-label="Opsy AI" style="padding:0;overflow:visible;background:transparent;border:none;width:52px;height:52px;">
+            <span id="aiw-opsy-orb"></span>
+            <script>var _aob=document.getElementById('aiw-opsy-orb');if(_aob&&window.opsyGearOrb)_aob.innerHTML=opsyGearOrb('idle',52);</script>
         </button>
         <section class="aiw-panel" id="aiw-panel" role="dialog" aria-modal="false" aria-labelledby="aiw-title">
             <div class="aiw-header">
                 <div class="aiw-title-wrap">
-                    <h3 class="aiw-title" id="aiw-title">Omnio</h3>
+                    <h3 class="aiw-title" id="aiw-title">Opsy AI</h3>
                     <p class="aiw-subtitle" id="aiw-subtitle">Ask anything about setup and behavior</p>
                 </div>
                 <div class="aiw-header-actions">
@@ -42683,7 +43166,7 @@ Thank you for shopping with {store_name}!</textarea>
                 privacy: {
                     title: "Privacy Policy",
                     intro_title: "Overview",
-                    intro_text: "This policy explains how Omnio by Digitivia collects, uses, stores, and protects personal and operational data processed through the platform.",
+                    intro_text: "This policy explains how Digitivia AI Agent collects, uses, stores, and protects personal and operational data processed through the platform.",
                     collect_title: "Data We Collect",
                     collect_text: "We may process profile data, organization settings, contact details, message content, usage logs, and integration metadata required to operate AI agents and communication channels.",
                     use_title: "How We Use Data",
@@ -42696,7 +43179,7 @@ Thank you for shopping with {store_name}!</textarea>
                 terms: {
                     title: "Terms of Service",
                     intro_title: "Service Scope",
-                    intro_text: "These terms govern access to and use of Omnio by Digitivia, including connected channels, dashboards, analytics, and automation features.",
+                    intro_text: "These terms govern access to and use of Digitivia AI Agent, including connected channels, dashboards, analytics, and automation features.",
                     accept_title: "Acceptance",
                     accept_text: "By using the service, you agree to these terms and confirm that you have authority to act on behalf of your organization.",
                     use_title: "Permitted Use",
@@ -42724,7 +43207,7 @@ Thank you for shopping with {store_name}!</textarea>
                 security: {
                     title: "Security & Compliance",
                     intro_title: "Security Program",
-                    intro_text: "Omnio by Digitivia applies layered security controls to protect data confidentiality, integrity, and service availability.",
+                    intro_text: "Digitivia AI Agent applies layered security controls to protect data confidentiality, integrity, and service availability.",
                     controls_title: "Access and Monitoring Controls",
                     controls_text: "We enforce role-based access, audit logging, credential safeguards, and monitoring to detect unauthorized actions and service anomalies.",
                     encryption_title: "Encryption and Data Protection",
@@ -42753,7 +43236,7 @@ Thank you for shopping with {store_name}!</textarea>
                 privacy: {
                     title: "سياسة الخصوصية",
                     intro_title: "نظرة عامة",
-                    intro_text: "توضح هذه السياسة كيفية جمع Omnio by Digitivia للبيانات الشخصية والتشغيلية واستخدامها وتخزينها وحمايتها داخل المنصة.",
+                    intro_text: "توضح هذه السياسة كيفية جمع Digitivia AI Agent للبيانات الشخصية والتشغيلية واستخدامها وتخزينها وحمايتها داخل المنصة.",
                     collect_title: "البيانات التي نجمعها",
                     collect_text: "قد نعالج بيانات الملف الشخصي وإعدادات المؤسسة وبيانات التواصل ومحتوى الرسائل وسجلات الاستخدام وبيانات التكامل اللازمة لتشغيل الوكلاء وقنوات التواصل.",
                     use_title: "كيف نستخدم البيانات",
@@ -42766,7 +43249,7 @@ Thank you for shopping with {store_name}!</textarea>
                 terms: {
                     title: "شروط الخدمة",
                     intro_title: "نطاق الخدمة",
-                    intro_text: "تنظم هذه الشروط استخدام Omnio by Digitivia بما يشمل القنوات المرتبطة ولوحات التحكم والتحليلات وميزات الأتمتة.",
+                    intro_text: "تنظم هذه الشروط استخدام Digitivia AI Agent بما يشمل القنوات المرتبطة ولوحات التحكم والتحليلات وميزات الأتمتة.",
                     accept_title: "القبول",
                     accept_text: "باستخدامك للخدمة فإنك توافق على هذه الشروط وتؤكد أن لديك صلاحية التمثيل عن مؤسستك.",
                     use_title: "الاستخدام المسموح",
@@ -42794,7 +43277,7 @@ Thank you for shopping with {store_name}!</textarea>
                 security: {
                     title: "الأمن والامتثال",
                     intro_title: "برنامج الأمان",
-                    intro_text: "تطبق Omnio by Digitivia ضوابط أمنية متعددة الطبقات لحماية سرية البيانات وسلامتها وتوفر الخدمة.",
+                    intro_text: "تطبق Digitivia AI Agent ضوابط أمنية متعددة الطبقات لحماية سرية البيانات وسلامتها وتوفر الخدمة.",
                     controls_title: "ضوابط الوصول والمراقبة",
                     controls_text: "نطبق صلاحيات مبنية على الأدوار وسجلات تدقيق وحماية للاعتمادات ومراقبة لاكتشاف أي نشاط غير مصرح به أو أعطال تشغيلية.",
                     encryption_title: "التشفير وحماية البيانات",
@@ -44679,6 +45162,24 @@ Thank you for shopping with {store_name}!</textarea>
             </div>`;
         }
 
+        function renderComingSoonIntegration(key, name, logoUrl, description, color) {
+            return `<div class="ih-card" style="opacity:0.6;position:relative;">
+                <div style="position:absolute;top:12px;right:12px;padding:3px 10px;border-radius:6px;background:rgba(${color === '#6C3BAA' ? '108,59,170' : color === '#FF9900' ? '255,153,0' : '249,115,22'},0.15);color:${color};font-size:0.65rem;font-weight:700;letter-spacing:0.5px;">COMING SOON</div>
+                <div class="ih-card-head">
+                    <div class="ih-brand">
+                        <img class="ih-logo" src="${logoUrl}" alt="${name}" loading="lazy" decoding="async" style="width:48px;height:48px;border-radius:10px;">
+                        <div>
+                            <h3 class="ih-card-title">${name}</h3>
+                            <p class="ih-card-subtitle">${description}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ih-actions">
+                    <button class="ih-btn" disabled style="opacity:0.5;cursor:not-allowed;">Connect ${name}</button>
+                </div>
+            </div>`;
+        }
+
         function renderIntegrationsHubFromState() {
             const root = document.getElementById('integrations-root');
             const note = document.getElementById('ih-readonly-note');
@@ -44690,6 +45191,9 @@ Thank you for shopping with {store_name}!</textarea>
                     ${renderHubProviderCard('woocommerce')}
                     ${renderHubProviderCard('shopify')}
                     ${renderHubProviderCard('easy_order')}
+                    ${renderComingSoonIntegration('zed', 'Zed', 'https://cdn.simpleicons.org/z/FF6600', 'Connect your Zed store to sync products and manage orders through AI agents.', '#f97316')}
+                    ${renderComingSoonIntegration('salla', 'Salla', 'https://cdn.simpleicons.org/salla/6C3BAA', 'Integrate with Salla to automate e-commerce operations and customer support in Arabic.', '#6C3BAA')}
+                    ${renderComingSoonIntegration('amazon_fba', 'Amazon FBA', 'https://cdn.simpleicons.org/amazon/FF9900', 'Connect Amazon FBA to track inventory, orders, and provide AI-powered seller support.', '#FF9900')}
                 </div>
                 <div class="ih-save-all">
                     <button class="ih-btn" onclick="saveIntegrationsHub()" ${!ihCanEdit || ihSaving ? 'disabled' : ''}>${t('integrations_hub.btn_save')}</button>
@@ -45379,13 +45883,22 @@ Thank you for shopping with {store_name}!</textarea>
             // Extended fields section
             renderLeadExtendedFields(leadData);
 
-            // AI Summary
+            // AI Summary — check lead data first, then crmState fallback
             const aiEl = document.getElementById('lead-profile-ai-summary');
-            if (crmState?.ai_summary) {
-                aiEl.innerHTML = `<div>${esc(crmState.ai_summary)}</div>` +
-                    (crmState.ai_summary_updated_at
-                        ? `<div style="font-size:0.75rem;color:var(--text-muted,#888);margin-top:8px;">Updated ${formatDate(new Date(crmState.ai_summary_updated_at))}</div>`
+            const summaryText = leadData?.ai_summary || crmState?.ai_summary;
+            const summaryDate = leadData?.ai_summary_updated_at || crmState?.ai_summary_updated_at;
+            if (summaryText) {
+                const formatted = summaryText
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\n/g, '<br>');
+                aiEl.innerHTML = `<div style="font-size:0.85rem;line-height:1.6;">${formatted}</div>` +
+                    (summaryDate
+                        ? `<div style="font-size:0.72rem;color:var(--text-muted,#888);margin-top:8px;">Updated ${formatDate(new Date(summaryDate))}</div>`
                         : '');
+                // Auto-expand the section when summary exists
+                aiEl.classList.add('open');
+                const aiHeader = aiEl.closest('.profile-section')?.querySelector('.section-header-toggle');
+                if (aiHeader) aiHeader.classList.add('active');
             } else {
                 aiEl.innerHTML = `<span style="color:var(--text-muted,#888);font-size:0.875rem;">No AI summary yet. Tap 🤖 to generate.</span>`;
             }
@@ -45812,29 +46325,96 @@ Thank you for shopping with {store_name}!</textarea>
         window.refreshAISummary = async function() {
             if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
 
+            const aiEl = document.getElementById('lead-profile-ai-summary');
+            if (aiEl) {
+                aiEl.innerHTML = '<span style="color:var(--text-muted,#888);font-size:0.85rem;">⏳ Generating AI summary...</span>';
+                aiEl.classList.add('open');
+            }
+
             try {
-                const {data, error} = await supabaseClient.rpc('patch_lead_crm_state', {
-                    p_lead_id: window.currentLeadProfileId,
-                    p_org_id: window.currentLeadProfileOrgId,
-                    p_crm_patch: {ai_summary_updated_at: new Date().toISOString()}
-                });
+                const lead = window.currentLeadProfileData;
+                if (!lead) throw new Error('No lead data');
 
-                if (error) throw error;
+                // 1. Fetch recent conversations for this lead
+                let messages = [];
+                try {
+                    const phone = lead.phone || lead.customer_phone || '';
+                    const email = lead.email || '';
+                    let convQuery = supabaseClient.from('inbox_conversations')
+                        .select('id')
+                        .eq('org_id', window.currentLeadProfileOrgId);
 
-                const crmState = await supabaseClient.rpc('get_lead_crm_state', {
-                    p_lead_id: window.currentLeadProfileId,
-                    p_org_id: window.currentLeadProfileOrgId
-                });
+                    if (phone) convQuery = convQuery.or(`contact_phone.eq.${phone},contact_identifier.eq.${phone}`);
 
-                if (window.currentLeadProfileData) {
-                    renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
+                    const { data: convs } = await convQuery.limit(3);
+                    if (convs && convs.length > 0) {
+                        const convIds = convs.map(c => c.id);
+                        const { data: msgs } = await supabaseClient.from('inbox_messages')
+                            .select('content, direction, created_at')
+                            .in('conversation_id', convIds)
+                            .order('created_at', { ascending: false })
+                            .limit(20);
+                        messages = msgs || [];
+                    }
+                } catch (e) { console.debug('Messages fetch for summary:', e.message); }
+
+                // 2. Build summary from available data
+                const name = lead.full_name || lead.customer_name || 'Unknown';
+                const status = lead.status || 'new';
+                const source = lead.source || lead.platform || 'unknown';
+                const category = lead.category || '';
+                const notes = lead.notes || '';
+                const createdAt = lead.created_at ? new Date(lead.created_at).toLocaleDateString() : '';
+                const msgCount = messages.length;
+                const lastMsg = messages[0]?.content?.substring(0, 150) || '';
+
+                let summary = `**${name}** — ${status.toUpperCase()} lead`;
+                if (source) summary += ` from ${source}`;
+                if (category) summary += ` (${category})`;
+                summary += `.`;
+                if (createdAt) summary += ` First captured ${createdAt}.`;
+                if (msgCount > 0) summary += ` ${msgCount} recent messages.`;
+                if (lastMsg) summary += ` Latest: "${lastMsg}..."`;
+                if (notes) summary += ` Notes: ${notes.substring(0, 100)}`;
+
+                // 3. Determine engagement level
+                let engagement = '🟡 Low engagement';
+                if (msgCount > 10) engagement = '🟢 High engagement';
+                else if (msgCount > 3) engagement = '🔵 Medium engagement';
+
+                let suggestion = '';
+                if (status === 'new') suggestion = '💡 Suggested action: Send initial follow-up message.';
+                else if (status === 'contacted') suggestion = '💡 Suggested action: Schedule a meeting or demo.';
+                else if (status === 'qualified') suggestion = '💡 Suggested action: Send proposal or pricing.';
+                else if (status === 'negotiation' || status === 'proposal') suggestion = '💡 Suggested action: Follow up on offer and close deal.';
+
+                // 4. Save summary to lead
+                const summaryText = `${summary}\n${engagement}\n${suggestion}`.trim();
+                await supabaseClient.from('leads')
+                    .update({ ai_summary: summaryText, ai_summary_updated_at: new Date().toISOString() })
+                    .eq('id', window.currentLeadProfileId)
+                    .eq('org_id', window.currentLeadProfileOrgId);
+
+                // 5. Display the summary and expand the section
+                if (aiEl) {
+                    const formatted = summaryText
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\n/g, '<br>');
+                    aiEl.innerHTML = `<div style="font-size:0.85rem;line-height:1.6;color:var(--text-primary);">${formatted}</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted,#888);margin-top:8px;">Updated ${new Date().toLocaleString()}</div>`;
+                    // Expand the section so user can see the summary
+                    aiEl.classList.add('open');
+                    // Also toggle the header arrow if present
+                    const header = aiEl.closest('.profile-section')?.querySelector('.section-header-toggle');
+                    if (header) header.classList.add('active');
                 }
 
                 logLeadActivity('ai_summary_refreshed', 'AI summary refreshed', {});
-                showToast('AI Summary refreshed');
+                showToast('AI Summary generated', 'success');
             } catch (err) {
                 console.error('Refresh AI failed:', err);
-                showToast('Failed to refresh AI summary');
+                if (aiEl) aiEl.innerHTML = '<span style="color:#f87171;font-size:0.85rem;">Could not generate summary. Check lead data.</span>';
+                showToast('Failed to generate AI summary', 'error');
             }
         };
 
@@ -48666,6 +49246,96 @@ Thank you for shopping with {store_name}!</textarea>
         }
     };
 
+    // Sync Google Calendar events INTO the meetings table
+    window.syncGoogleCalendarToMeetings = async function() {
+        const syncBtn = document.getElementById('meetings-gcal-sync-btn');
+        if (syncBtn) { syncBtn.textContent = '⏳ Syncing...'; syncBtn.disabled = true; }
+
+        try {
+            const events = await syncGoogleCalendar();
+            if (!events || events.length === 0) {
+                showToast('No upcoming events found in Google Calendar', 'info');
+                if (syncBtn) { syncBtn.textContent = '🔄 Sync Now'; syncBtn.disabled = false; }
+                return;
+            }
+
+            let inserted = 0;
+            for (const event of events) {
+                const startDt = event.start?.dateTime || event.start?.date;
+                const endDt = event.end?.dateTime || event.end?.date;
+                if (!startDt) continue;
+
+                const start = new Date(startDt);
+                const end = endDt ? new Date(endDt) : new Date(start.getTime() + 3600000);
+                const durationMin = Math.round((end - start) / 60000);
+
+                // Extract attendee info
+                const attendees = event.attendees || [];
+                const attendee = attendees.find(a => !a.self) || {};
+
+                // Upsert by google_event_id to avoid duplicates
+                const { error } = await supabaseClient.from('meetings').upsert({
+                    org_id: currentUserOrgId,
+                    customer_name: attendee.displayName || event.summary || 'Calendar Event',
+                    customer_email: attendee.email || '',
+                    topic: event.summary || '',
+                    service_name: event.description ? event.description.substring(0, 100) : '',
+                    scheduled_at: start.toISOString(),
+                    duration: durationMin > 0 ? durationMin : 60,
+                    status: event.status === 'cancelled' ? 'cancelled' : 'confirmed',
+                    source: 'google_calendar',
+                    google_event_id: event.id,
+                    google_event_link: event.htmlLink || '',
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'org_id, google_event_id', ignoreDuplicates: false });
+
+                if (!error) inserted++;
+            }
+
+            showToast(`Synced ${inserted} meetings from Google Calendar`, 'success');
+            if (typeof fetchMeetings === 'function') fetchMeetings();
+            if (typeof loadDashboard === 'function') loadDashboard();
+        } catch (e) {
+            console.error('Calendar sync error:', e);
+            showToast('Failed to sync calendar events', 'error');
+        }
+
+        if (syncBtn) { syncBtn.textContent = '🔄 Sync Now'; syncBtn.disabled = false; }
+    };
+
+    // Update the Google Calendar strip in meetings tab
+    window.updateMeetingsGCalStrip = async function() {
+        const strip = document.getElementById('meetings-gcal-strip');
+        if (!strip) return;
+        strip.style.display = 'flex';
+
+        const statusEl = document.getElementById('meetings-gcal-status');
+        const subEl = document.getElementById('meetings-gcal-sub');
+        const connectBtn = document.getElementById('meetings-gcal-connect-btn');
+        const syncBtn = document.getElementById('meetings-gcal-sync-btn');
+
+        const connected = await checkGoogleCalendarStatus();
+        if (connected) {
+            if (statusEl) statusEl.textContent = '✅ Google Calendar Connected';
+            if (subEl) subEl.textContent = 'Sync events to see them as meetings';
+            if (connectBtn) connectBtn.style.display = 'none';
+            if (syncBtn) syncBtn.style.display = 'inline-flex';
+            strip.style.borderColor = 'rgba(16,185,129,0.3)';
+            strip.style.background = 'rgba(16,185,129,0.06)';
+        } else {
+            // Check if Google OAuth user
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user?.app_metadata?.provider === 'google') {
+                    if (statusEl) statusEl.textContent = '📅 Google Calendar Available';
+                    if (subEl) subEl.textContent = 'Click sync to import your calendar events';
+                    if (connectBtn) connectBtn.style.display = 'none';
+                    if (syncBtn) syncBtn.style.display = 'inline-flex';
+                }
+            } catch (e) {}
+        }
+    };
+
     // Hook into profile modal open
     const _origOpenProfile = window.openProfileModal;
     if (_origOpenProfile) {
@@ -49625,7 +50295,7 @@ Thank you for shopping with {store_name}!</textarea>
     window.renderSLAPolicies = async function(container) {
         if (!container || !currentUserOrgId) return;
 
-aragraph        try {
+        try {
             let { data: policies, error } = await supabaseClient.from('sla_policies').select('*').eq('org_id', currentUserOrgId).order('priority');
 
             // If no policies, seed defaults
@@ -49914,15 +50584,7 @@ aragraph        try {
     // ==========================================
     window.dashRenderAIInsights = async function() {
         let container = document.getElementById('dash-ai-insights');
-        if (!container) {
-            const secondary = document.getElementById('dash-secondary-section') || document.getElementById('dashboard');
-            if (!secondary) return;
-            container = document.createElement('div');
-            container.id = 'dash-ai-insights';
-            container.className = 'dash-trend-widget';
-            container.style.cssText = 'margin-top:1rem;';
-            secondary.appendChild(container);
-        }
+        if (!container) return;
 
         if (!currentUserOrgId) { container.style.display = 'none'; return; }
 
@@ -50796,6 +51458,312 @@ aragraph        try {
             }
         }
     });
+})();
+</script>
+
+<!-- ============================================================
+     FEATURE PACK: 12 Premium Features
+     ============================================================ -->
+<script>
+(function() {
+    'use strict';
+
+    // ==========================================
+    // 1. CANNED RESPONSES / QUICK REPLIES
+    // ==========================================
+    const DEFAULT_CANNED = [
+        { id: 'greet', label: '👋 Greeting', text: 'Hi! Thank you for reaching out. How can I help you today?' },
+        { id: 'thanks', label: '🙏 Thanks', text: 'Thank you for your patience! Is there anything else I can help with?' },
+        { id: 'hold', label: '⏳ Hold', text: 'Let me check that for you. Please give me a moment.' },
+        { id: 'followup', label: '📋 Follow-up', text: 'Just following up on our conversation. Do you have any questions?' },
+        { id: 'close', label: '✅ Close', text: 'Thank you for contacting us! If you need anything else, don\'t hesitate to reach out.' },
+        { id: 'hours', label: '🕐 Hours', text: 'Our business hours are Sunday–Thursday, 9 AM – 6 PM (Cairo time). We\'ll get back to you first thing!' },
+        { id: 'pricing', label: '💰 Pricing', text: 'I\'d be happy to discuss pricing! Could you share a bit about your business needs so I can recommend the best plan?' },
+        { id: 'meeting', label: '📅 Meeting', text: 'Would you like to schedule a meeting to discuss this further? I can set that up for you.' }
+    ];
+
+    window.toggleCannedResponses = function() {
+        const bar = document.getElementById('inbox-canned-bar');
+        if (!bar) return;
+        const isVisible = bar.style.display === 'flex';
+        bar.style.display = isVisible ? 'none' : 'flex';
+        if (!isVisible) renderCannedBar();
+    };
+
+    function renderCannedBar() {
+        const bar = document.getElementById('inbox-canned-bar');
+        if (!bar) return;
+        const cannedList = JSON.parse(localStorage.getItem('digi_canned_responses') || 'null') || DEFAULT_CANNED;
+        bar.innerHTML = cannedList.map(c =>
+            `<button onclick="insertCannedResponse('${c.id}')" style="padding:4px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.72rem;white-space:nowrap;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--theme-color)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">${c.label}</button>`
+        ).join('') + `<button onclick="manageCannedResponses()" style="padding:4px 10px;border-radius:8px;background:none;border:1px dashed rgba(255,255,255,0.15);color:var(--text-secondary);font-size:0.72rem;white-space:nowrap;cursor:pointer;">+ Edit</button>`;
+    }
+
+    window.insertCannedResponse = function(id) {
+        const cannedList = JSON.parse(localStorage.getItem('digi_canned_responses') || 'null') || DEFAULT_CANNED;
+        const canned = cannedList.find(c => c.id === id);
+        if (!canned) return;
+        const input = document.getElementById('inbox-human-reply-input');
+        if (input) { input.value = canned.text; input.focus(); if (typeof autoResizeInboxComposerInput === 'function') autoResizeInboxComposerInput(input); }
+    };
+
+    window.manageCannedResponses = function() {
+        const cannedList = JSON.parse(localStorage.getItem('digi_canned_responses') || 'null') || DEFAULT_CANNED;
+        const text = prompt('Edit quick replies (JSON format):\n\nFormat: [{"id":"name","label":"emoji Label","text":"Message text"}]', JSON.stringify(cannedList, null, 2));
+        if (!text) return;
+        try { const parsed = JSON.parse(text); localStorage.setItem('digi_canned_responses', JSON.stringify(parsed)); renderCannedBar(); showToast('Quick replies updated', 'success'); }
+        catch (e) { showToast('Invalid JSON format', 'error'); }
+    };
+
+    // ==========================================
+    // 2. AVERAGE RESPONSE TIME WIDGET
+    // ==========================================
+    window.dashRenderResponseTime = async function() {
+        const widget = document.getElementById('dash-response-time-widget');
+        if (!widget || !currentUserOrgId) return;
+
+        try {
+            const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+            const { data: convs } = await supabaseClient
+                .from('inbox_conversations')
+                .select('created_at, first_response_at')
+                .eq('org_id', currentUserOrgId)
+                .gte('created_at', weekAgo)
+                .not('first_response_at', 'is', null)
+                .limit(100);
+
+            let avgSeconds = 0;
+            let fastest = Infinity;
+            let count = 0;
+
+            if (convs && convs.length > 0) {
+                let totalMs = 0;
+                convs.forEach(c => {
+                    const diff = new Date(c.first_response_at) - new Date(c.created_at);
+                    if (diff > 0 && diff < 86400000) { totalMs += diff; count++; if (diff < fastest) fastest = diff; }
+                });
+                avgSeconds = count > 0 ? Math.round(totalMs / count / 1000) : 0;
+            }
+
+            const avgDisplay = avgSeconds > 3600 ? `${Math.round(avgSeconds / 3600)}h` : avgSeconds > 60 ? `${Math.round(avgSeconds / 60)}m` : avgSeconds > 0 ? `${avgSeconds}s` : '--';
+            const fastDisplay = fastest < Infinity ? (fastest > 60000 ? `${Math.round(fastest / 60000)}m` : `${Math.round(fastest / 1000)}s`) : '--';
+
+            widget.innerHTML = `<div style="padding:1.2rem;">
+                <div style="font-weight:700;font-size:0.95rem;margin-bottom:1rem;color:var(--text-primary);">⚡ Response Performance <span style="font-size:0.7rem;color:var(--text-secondary);font-weight:400;">Last 7 days</span></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;">
+                    <div>
+                        <div style="font-size:1.8rem;font-weight:700;color:#10b981;">${avgDisplay}</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Avg Response</div>
+                    </div>
+                    <div>
+                        <div style="font-size:1.8rem;font-weight:700;color:#3b82f6;">${fastDisplay}</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Fastest</div>
+                    </div>
+                    <div>
+                        <div style="font-size:1.8rem;font-weight:700;color:#8b5cf6;">${count}</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Responded</div>
+                    </div>
+                </div>
+            </div>`;
+        } catch (e) { console.debug('Response time widget:', e.message); }
+    };
+
+    // ==========================================
+    // 4. INTERNAL NOTES (enhance existing notes with @mention + type)
+    // ==========================================
+    const _origOpenAddNote = window.openAddNoteModal;
+    window.openAddNoteModal = function() {
+        if (_origOpenAddNote) _origOpenAddNote();
+        // Add internal toggle if not already present
+        setTimeout(() => {
+            const modal = document.querySelector('#add-note-modal, [id*="note-modal"]');
+            if (modal && !modal.querySelector('.note-type-toggle')) {
+                const textarea = modal.querySelector('textarea');
+                if (textarea) {
+                    const toggle = document.createElement('div');
+                    toggle.className = 'note-type-toggle';
+                    toggle.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;';
+                    toggle.innerHTML = `
+                        <label style="display:flex;align-items:center;gap:4px;font-size:0.78rem;color:var(--text-secondary);cursor:pointer;">
+                            <input type="checkbox" id="note-internal-toggle" style="accent-color:var(--theme-color);"> 🔒 Internal only (not visible to customer)
+                        </label>
+                        <span style="font-size:0.68rem;color:var(--text-muted);">Tip: Use @name to mention a teammate</span>
+                    `;
+                    textarea.parentNode.insertBefore(toggle, textarea);
+                }
+            }
+        }, 100);
+    };
+
+    // ==========================================
+    // 5. CONVERSATION AUTO-TAGS
+    // ==========================================
+    window.autoTagConversation = function(messages) {
+        if (!messages || messages.length === 0) return [];
+        const allText = messages.map(m => (m.content || '').toLowerCase()).join(' ');
+        const tags = [];
+        if (/price|cost|plan|pricing|how much|كم|سعر/.test(allText)) tags.push('pricing');
+        if (/order|track|delivery|ship|شحن|طلب/.test(allText)) tags.push('order');
+        if (/help|issue|problem|bug|broken|مشكل/.test(allText)) tags.push('support');
+        if (/book|appoint|meeting|schedule|موعد|حجز/.test(allText)) tags.push('booking');
+        if (/complain|angry|unhappy|worst|شكوى/.test(allText)) tags.push('complaint');
+        if (/refund|cancel|return|إرجاع|إلغاء/.test(allText)) tags.push('refund');
+        if (/thank|great|love|amazing|ممتاز|شكر/.test(allText)) tags.push('positive');
+        if (/demo|trial|test|تجربة/.test(allText)) tags.push('demo');
+        return tags;
+    };
+
+    // ==========================================
+    // 6. LEAD SCORING
+    // ==========================================
+    window.calculateLeadScore = function(lead, messageCount) {
+        let score = 0;
+        // Recency
+        if (lead.created_at) {
+            const daysSince = (Date.now() - new Date(lead.created_at)) / 86400000;
+            if (daysSince < 1) score += 30;
+            else if (daysSince < 3) score += 25;
+            else if (daysSince < 7) score += 15;
+            else if (daysSince < 30) score += 5;
+        }
+        // Engagement
+        const msgs = messageCount || 0;
+        if (msgs > 20) score += 30;
+        else if (msgs > 10) score += 25;
+        else if (msgs > 5) score += 15;
+        else if (msgs > 0) score += 5;
+        // Status progression
+        const statusScores = { won: 40, proposal: 30, negotiation: 25, qualified: 20, contacted: 10, new: 5 };
+        score += statusScores[lead.status] || 0;
+        // Has email
+        if (lead.email) score += 5;
+        // Has category
+        if (lead.category) score += 5;
+        return Math.min(100, score);
+    };
+
+    window.getLeadScoreColor = function(score) {
+        if (score >= 70) return '#10b981';
+        if (score >= 40) return '#f59e0b';
+        return '#ef4444';
+    };
+
+    window.getLeadScoreLabel = function(score) {
+        if (score >= 70) return 'Hot';
+        if (score >= 40) return 'Warm';
+        return 'Cold';
+    };
+
+    // ==========================================
+    // 7. WEBHOOK DELIVERY LOGS (render in settings)
+    // ==========================================
+    window.renderWebhookLogs = async function(container) {
+        if (!container || !currentUserOrgId) return;
+        try {
+            const { data: logs } = await supabaseClient
+                .from('webhook_deliveries')
+                .select('event, url, status_code, success, attempts, created_at')
+                .eq('org_id', currentUserOrgId)
+                .order('created_at', { ascending: false })
+                .limit(20);
+
+            if (!logs || logs.length === 0) {
+                container.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-secondary);font-size:0.82rem;">No webhook deliveries yet.</div>';
+                return;
+            }
+            container.innerHTML = `<div style="max-height:300px;overflow-y:auto;">
+                ${logs.map(l => `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78rem;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:${l.success ? '#10b981' : '#ef4444'};flex-shrink:0;"></span>
+                    <span style="flex:1;color:var(--text-primary);">${l.event}</span>
+                    <span style="color:${l.success ? '#10b981' : '#ef4444'};font-weight:600;">${l.status_code || 'ERR'}</span>
+                    <span style="color:var(--text-secondary);font-size:0.68rem;">${new Date(l.created_at).toLocaleString()}</span>
+                </div>`).join('')}
+            </div>`;
+        } catch (e) { container.innerHTML = '<div style="padding:0.8rem;color:var(--text-secondary);font-size:0.8rem;">Run webhook migration to activate logs.</div>'; }
+    };
+
+    // ==========================================
+    // 8. PDF EXPORT
+    // ==========================================
+    window.exportTableAsPDF = function(title, headers, rows) {
+        // Generates a printable HTML table and triggers browser print dialog
+        const style = `<style>body{font-family:Arial,sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:20px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px;}th{background:#f0f0f0;font-weight:bold;}h1{font-size:18px;color:#333;}.meta{color:#888;font-size:11px;margin-top:4px;}</style>`;
+        const html = `<!DOCTYPE html><html><head><title>${title}</title>${style}</head><body>
+            <h1>${title}</h1>
+            <div class="meta">Exported ${new Date().toLocaleString()} | Digitivia AI Agent</div>
+            <table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+            <tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>
+        </body></html>`;
+        const win = window.open('', '_blank');
+        win.document.write(html);
+        win.document.close();
+        setTimeout(() => { win.print(); }, 500);
+    };
+
+    // ==========================================
+    // 11. TYPING INDICATOR IN INBOX
+    // ==========================================
+    window.showTypingIndicator = function() {
+        const container = document.getElementById('inbox-messages');
+        if (!container || container.querySelector('.typing-indicator')) return;
+        const div = document.createElement('div');
+        div.className = 'typing-indicator message msg-ai';
+        div.innerHTML = `<div class="msg-content" style="display:flex;gap:4px;padding:8px 14px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--text-secondary);animation:lp-blink 1s infinite;"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--text-secondary);animation:lp-blink 1s 0.2s infinite;"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--text-secondary);animation:lp-blink 1s 0.4s infinite;"></span>
+        </div>`;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    };
+
+    window.hideTypingIndicator = function() {
+        const el = document.querySelector('.typing-indicator');
+        if (el) el.remove();
+    };
+
+    // ==========================================
+    // 12. KEYBOARD SHORTCUT HINTS
+    // ==========================================
+    function addShortcutHints() {
+        // Add subtle hints to sidebar nav items
+        const hints = { dashboard: 'G D', inbox: 'G I', crm: 'G C', 'task-manager': 'G T', orders: 'G O' };
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const onclick = item.getAttribute('onclick') || '';
+            Object.entries(hints).forEach(([tab, keys]) => {
+                if (onclick.includes(`'${tab}'`) && !item.querySelector('.shortcut-hint')) {
+                    const hint = document.createElement('span');
+                    hint.className = 'shortcut-hint';
+                    hint.textContent = keys;
+                    hint.style.cssText = 'font-size:0.6rem;color:var(--text-secondary);opacity:0.5;margin-left:auto;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.05);font-family:monospace;';
+                    item.appendChild(hint);
+                }
+            });
+        });
+
+        // Add Ctrl+K hint to search
+        const searchInputs = document.querySelectorAll('.global-search-input, #meetings-search');
+        searchInputs.forEach(input => {
+            if (!input.dataset.hinted) {
+                input.placeholder = (input.placeholder || 'Search') + '  (Ctrl+K)';
+                input.dataset.hinted = '1';
+            }
+        });
+    }
+    setTimeout(addShortcutHints, 3000);
+
+    // ==========================================
+    // Hook Response Time into Dashboard
+    // ==========================================
+    const _origLoadDash2 = window.loadDashboard;
+    if (_origLoadDash2) {
+        const _patchedDash = window.loadDashboard;
+        window.loadDashboard = async function() {
+            await _patchedDash.apply(this, arguments);
+            if (typeof dashRenderResponseTime === 'function') dashRenderResponseTime();
+        };
+    }
+
 })();
 </script>
 
