@@ -6833,13 +6833,21 @@
             transition: transform 0.2s, border-color 0.2s; position: relative;
         }
         .lp-price-card:hover { transform: translateY(-3px); border-color: rgba(91,174,176,0.3); }
-        .lp-price-card.popular { border: 2px solid var(--theme-color); }
+        .lp-price-card.popular {
+            border: 2px solid var(--theme-color);
+            transform: scale(1.04);
+            box-shadow: 0 8px 40px rgba(91,174,176,0.2);
+            z-index: 2;
+            position: relative;
+        }
+        .lp-price-card.popular:hover { transform: scale(1.06); }
         .lp-popular-tag {
-            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
             background: linear-gradient(135deg, var(--theme-color), #a78bfa); color: #fff;
-            font-size: 0.72rem; font-weight: 700; padding: 5px 20px; border-radius: 999px;
-            letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(91,174,176,0.3);
+            font-size: 0.75rem; font-weight: 800; padding: 6px 24px; border-radius: 999px;
+            letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;
+            box-shadow: 0 4px 16px rgba(91,174,176,0.4);
+            z-index: 3;
         }
         .lp-price-name { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
         .lp-price-amount { font-size: 2rem; font-weight: 800; color: var(--theme-color); margin-bottom: 0.3rem; }
@@ -23346,23 +23354,23 @@
             <!-- Channel Chips -->
             <div class="lp-channels">
                 <div class="lp-channel-chip">
-                    <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                    <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp" width="18" height="18">
                     WhatsApp
                 </div>
                 <div class="lp-channel-chip">
-                    <svg viewBox="0 0 24 24" fill="#0084FF"><path d="M12 2C6.477 2 2 6.477 2 12c0 3.163 1.466 5.981 3.758 7.827L4.5 22.5l2.872-1.26A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                    <img src="https://cdn.simpleicons.org/messenger/0084FF" alt="Messenger" width="18" height="18">
                     Messenger
                 </div>
                 <div class="lp-channel-chip">
-                    <svg viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" width="18" height="18">
                     Instagram
                 </div>
                 <div class="lp-channel-chip">
-                    <svg viewBox="0 0 24 24" fill="#26A5E4"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <img src="https://cdn.simpleicons.org/telegram/26A5E4" alt="Telegram" width="18" height="18">
                     Telegram
                 </div>
                 <div class="lp-channel-chip">
-                    <svg viewBox="0 0 24 24" fill="var(--theme-color)"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 4l-6 3.5L6 8V6l6 3.5L18 6v2z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="var(--theme-color)" width="18" height="18"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 4l-6 3.5L6 8V6l6 3.5L18 6v2z"/></svg>
                     Website Chat
                 </div>
                 <div class="lp-channel-chip" style="opacity:0.5;border-style:dashed;">
@@ -23407,7 +23415,7 @@
             <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/anthropic/D97757" alt="Anthropic" width="24" height="24"><span style="font-size:1rem;font-weight:700;color:#D97757;">Anthropic</span></div>
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="Meta" width="28" height="28"><span style="font-size:1rem;font-weight:700;color:#0082FB;">Meta</span></div>
-                <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/openai/10A37F" alt="OpenAI" width="22" height="22"><span style="font-size:1rem;font-weight:700;color:#10A37F;">OpenAI</span></div>
+                <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/openai/ffffff" alt="OpenAI" width="22" height="22"><span style="font-size:1rem;font-weight:700;color:var(--text-primary);">OpenAI</span></div>
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/shopify/95BF47" alt="Shopify" width="24" height="24"><span style="font-size:1rem;font-weight:700;color:#95BF47;">Shopify</span></div>
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/googlegemini/8E75B2" alt="Gemini" width="22" height="22"><span style="font-size:1rem;font-weight:700;color:#8E75B2;">Gemini</span></div>
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt="Stripe" width="22" height="22"><span style="font-size:1rem;font-weight:700;color:#635BFF;">Stripe</span></div>
@@ -23524,15 +23532,16 @@
         <script>
         (function() {
             const DEMO_RESPONSES = {
-                pricing: "We have 3 plans: **Starter** (5,000 conversations), **Growth** (12,000 conversations, most popular), and **Pro** (30,000 conversations). Prices start from $79/month. Would you like to see the details?",
-                features: "Our platform includes AI agents across 5+ channels (WhatsApp, Messenger, Instagram, Telegram, Website), a built-in CRM, order management, content studio, task manager, and knowledge base. What feature interests you most?",
-                whatsapp: "Yes! We support WhatsApp Business API with automated replies, order confirmations, and lead capture — all managed from one dashboard. The AI responds in seconds, 24/7.",
-                channels: "Currently we support WhatsApp, Facebook Messenger, Instagram DMs, Telegram, and Website Chat. SMS and Email are coming soon!",
-                crm: "Our CRM auto-captures leads from conversations, has pipeline views (table, kanban, dashboard), lead scoring, team assignment, and follow-up automation.",
-                ecommerce: "We integrate with Shopify, WooCommerce, and Easy Orders. Your AI agent can answer product questions, track orders, and send WhatsApp confirmations automatically.",
-                arabic: "Yes! Our platform fully supports Arabic with RTL layout. Your AI agent can respond in both Arabic and English based on the customer's language.",
-                demo: "You're chatting with me right now! 😄 To see the full dashboard, click 'Start Automating Now' above. You can also book a meeting with our team for a personalized demo.",
-                default: "Great question! I'd love to help. Our platform handles customer conversations 24/7 across multiple channels with AI. Would you like to know about pricing, features, or a specific use case?"
+                greeting: "Hey there! 👋 Welcome to Digitivia. I'm your AI assistant. I can help you with:\n\n• 💰 Pricing & plans\n• 🤖 How our AI agents work\n• 📱 Supported channels\n• 🛒 E-commerce features\n• 📊 CRM & analytics\n\nWhat would you like to know?",
+                pricing: "We have 3 plans:\n\n🚀 **Starter** — 5,000 conversations, 24/7 auto replies, lead qualification\n📈 **Growth** (Most Popular) — 12,000 conversations, advanced lead qualify, order confirmation\n🏛️ **Pro** — 30,000 conversations, CRM integration, priority support\n\nPrices start from $79/month. Would you like to get started?",
+                features: "Our platform includes:\n\n• 🤖 AI agents across 5+ channels\n• 📨 Unified inbox with AI/Human toggle\n• 📋 Built-in CRM with pipeline\n• 🛒 Order management + WhatsApp alerts\n• 🎨 Content Studio for social media\n• 📊 Real-time analytics\n\nWhat interests you most?",
+                whatsapp: "Yes! We support WhatsApp Business API with:\n\n• Automated 24/7 replies\n• Order confirmation messages\n• Lead capture from conversations\n• Human takeover anytime\n\nAll managed from one dashboard. Want to see it in action?",
+                channels: "Currently live: WhatsApp, Messenger, Instagram DMs, Telegram, Website Chat.\n\nComing soon: SMS & Email.\n\nOne AI agent handles all channels — your customers get instant responses everywhere.",
+                crm: "Our CRM auto-captures leads from conversations and includes:\n\n• Pipeline view (table, kanban, dashboard)\n• Lead scoring & assignment\n• Follow-up automation\n• Team collaboration\n\nNo need for a separate CRM tool!",
+                ecommerce: "We integrate with Shopify, WooCommerce & Easy Orders:\n\n• AI answers product questions\n• Automated order tracking\n• WhatsApp order confirmations\n• Cart recovery assistance\n\nPerfect for online stores.",
+                arabic: "نعم! Our platform fully supports Arabic with RTL layout. Your AI agent responds in both Arabic & English based on the customer's language automatically.",
+                demo: "You're chatting with me right now! 😄\n\nTo see the full dashboard with all features, click 'Start Automating Now' above.\n\nOr book a free consultation with our team — we offer 2 free sessions with every plan!",
+                default: "Thanks for reaching out! I can help you with pricing, features, or finding the right plan for your business.\n\nTry asking about:\n• Our pricing plans\n• WhatsApp automation\n• CRM features\n• E-commerce integrations"
             };
 
             window.sendDemoMessage = function() {
@@ -23547,28 +23556,34 @@
                 input.value = '';
 
                 // Typing indicator
-                container.innerHTML += `<div id="lp-typing" style="align-self:flex-start;padding:10px 14px;font-size:0.82rem;color:var(--text-secondary);">Typing...</div>`;
+                container.innerHTML += `<div id="lp-typing" style="align-self:flex-start;padding:10px 14px;font-size:0.82rem;color:var(--text-secondary);">
+                    <span style="display:inline-flex;gap:3px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--text-secondary);animation:lp-blink 1s infinite;"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--text-secondary);animation:lp-blink 1s 0.2s infinite;"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--text-secondary);animation:lp-blink 1s 0.4s infinite;"></span></span>
+                </div>`;
                 container.scrollTop = container.scrollHeight;
 
                 // Find best response
                 setTimeout(() => {
                     const q = msg.toLowerCase();
                     let response = DEMO_RESPONSES.default;
-                    if (q.includes('price') || q.includes('cost') || q.includes('plan')) response = DEMO_RESPONSES.pricing;
-                    else if (q.includes('feature') || q.includes('what can') || q.includes('do')) response = DEMO_RESPONSES.features;
+                    if (/^(hi|hello|hey|hola|salut|مرحبا|اهلا|bonjour|yo|sup)/.test(q)) response = DEMO_RESPONSES.greeting;
+                    else if (q.includes('price') || q.includes('cost') || q.includes('plan') || q.includes('how much')) response = DEMO_RESPONSES.pricing;
+                    else if (q.includes('feature') || q.includes('what can') || q.includes('what do')) response = DEMO_RESPONSES.features;
                     else if (q.includes('whatsapp')) response = DEMO_RESPONSES.whatsapp;
-                    else if (q.includes('channel') || q.includes('platform')) response = DEMO_RESPONSES.channels;
-                    else if (q.includes('crm') || q.includes('lead')) response = DEMO_RESPONSES.crm;
-                    else if (q.includes('shop') || q.includes('ecommerce') || q.includes('order')) response = DEMO_RESPONSES.ecommerce;
-                    else if (q.includes('arabic') || q.includes('arab') || q.includes('عرب')) response = DEMO_RESPONSES.arabic;
-                    else if (q.includes('demo') || q.includes('try') || q.includes('test')) response = DEMO_RESPONSES.demo;
+                    else if (q.includes('channel') || q.includes('platform') || q.includes('where')) response = DEMO_RESPONSES.channels;
+                    else if (q.includes('crm') || q.includes('lead') || q.includes('pipeline')) response = DEMO_RESPONSES.crm;
+                    else if (q.includes('shop') || q.includes('ecommerce') || q.includes('order') || q.includes('store')) response = DEMO_RESPONSES.ecommerce;
+                    else if (q.includes('arabic') || q.includes('arab') || q.includes('عرب') || q.includes('rtl')) response = DEMO_RESPONSES.arabic;
+                    else if (q.includes('demo') || q.includes('try') || q.includes('test') || q.includes('show')) response = DEMO_RESPONSES.demo;
 
                     const typing = document.getElementById('lp-typing');
                     if (typing) typing.remove();
 
-                    container.innerHTML += `<div style="align-self:flex-start;background:rgba(255,255,255,0.08);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:80%;font-size:0.85rem;color:var(--text-primary);line-height:1.4;">${response}</div>`;
+                    // Format: replace \n with <br> and **text** with <strong>
+                    const formatted = response.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                    container.innerHTML += `<div style="align-self:flex-start;background:rgba(255,255,255,0.08);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:80%;font-size:0.85rem;color:var(--text-primary);line-height:1.5;">${formatted}</div>`;
                     container.scrollTop = container.scrollHeight;
-                }, 800 + Math.random() * 600);
+                }, 1000 + Math.random() * 500);
             };
         })();
         </script>
@@ -23652,7 +23667,7 @@
         <section class="lp-pricing" id="lp-pricing">
             <h2 class="lp-section-title">Simple, Transparent Pricing</h2>
             <p class="lp-section-sub">Scale your AI agents with the perfect plan. Prices include VAT.</p>
-            <div class="lp-pricing-grid" id="lp-pricing-grid"></div>
+            <div class="lp-pricing-grid" id="lp-pricing-grid" style="padding-top:20px;"></div>
         </section>
         <script>
         (function() {
