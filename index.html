@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
@@ -22547,6 +22547,22 @@
         .import-progress-bar { height:6px; border-radius:3px; background:rgba(255,255,255,.08); overflow:hidden; margin:12px 0; }
         .import-progress-fill { height:100%; background:linear-gradient(90deg,#6366f1,#818cf8); border-radius:3px; transition:width .3s; }
 
+        /* Modals 📱 slide up from bottom on mobile */
+        @media (max-width: 640px) {
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal-box {
+                border-radius: 20px 20px 0 0 !important;
+                max-height: 92dvh !important;
+                height: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .modal-body { padding: 16px; }
+        }
+
         /* Lead detail extended form */
         .lead-detail-form { display:flex; flex-direction:column; gap:16px; }
         .lead-detail-section { border-top:1px solid rgba(255,255,255,.07); padding-top:14px; }
@@ -22932,7 +22948,7 @@
         .tm-empty-icon { font-size: 2.5rem; opacity: .5; }
 
         /* Task modals */
-        .modal-box { background: var(--bg-surface, #0f172a); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; width: 100%; padding: 0; overflow: hidden; }
+        .modal-box { background: var(--bg-surface, #0f172a); border: 1px solid rgba(255,255,255,.1); border-radius: 20px; width: 100%; padding: 0; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
         .modal-header h3 { margin: 0; font-size: 1rem; font-weight: 700; }
         .modal-close-btn { background: rgba(255,255,255,.07); border: none; color: inherit; width: 30px; height: 30px; border-radius: 7px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
@@ -46944,8 +46960,13 @@ Thank you for shopping with {store_name}!</textarea>
             const inner = document.getElementById('tm-drawer-inner');
             if (!drawer || !inner) return;
 
-            drawer.style.width = '380px';
+            const isMobile = window.innerWidth <= 768;
+            drawer.style.width = isMobile ? '100%' : '380px';
             drawer.style.borderInlineStartWidth = '1px';
+            if (isMobile) {
+                inner.style.width = '100%';
+                inner.style.padding = '1rem';
+            }
             inner.innerHTML = '<div style="text-align:center;padding:2rem;"><div class="spinner" style="width:20px;height:20px;margin:0 auto;"></div></div>';
 
             // Highlight active row
