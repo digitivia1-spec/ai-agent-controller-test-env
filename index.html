@@ -149,7 +149,7 @@
                 "nav_integrations": "Integrations",
                 "nav_create_post": "Content Studio",
                 "nav_reviews": "Customer Reviews",
-                "nav_followups": "Automation Rules",
+                "nav_followups": "Follow-ups",
                 "nav_plans": "Plans",
                 "nav_logout": "Logout",
                 "nav_group_agents": "AI Agents",
@@ -663,7 +663,7 @@
                 "status_pending": "Pending"
             },
             "followups": {
-                "title": "Automation Rules",
+                "title": "Follow-ups",
                 "subtitle": "Schedule + control follow-ups for AI Inbox conversations",
                 "refresh_btn": "⟳ Refresh",
                 "tab_queue": "Queue",
@@ -690,6 +690,11 @@
                 "config_save": "Save Configuration",
                 "config_save_ok": "Configuration saved",
                 "logs_event_all": "All Events",
+                "logs_time_all": "All Time",
+                "logs_time_today": "Today",
+                "logs_time_7d": "Last 7 days",
+                "logs_time_30d": "Last 30 days",
+                "logs_time_custom": "Custom range",
                 "logs_search": "Search details...",
                 "loading_logs": "Loading logs...",
                 "logs_empty_text": "No logs available yet.",
@@ -1287,7 +1292,7 @@
                 "nav_integrations": "التكاملات",
                 "nav_create_post": "استوديو المحتوى",
                 "nav_reviews": "آراء العملاء",
-                "nav_followups": "قواعد الأتمتة",
+                "nav_followups": "المتابعات",
                 "nav_plans": "الخطط",
                 "nav_logout": "تسجيل خروج",
                 "nav_group_agents": "وكلاء AI",
@@ -1823,7 +1828,7 @@
                 "empty_text": "اربط ملف Google التجاري الخاص بك لمراقبة المراجعات والرد عليها هنا."
             },
             "followups": {
-                "title": "قواعد الأتمتة",
+                "title": "المتابعات",
                 "subtitle": "جدولة + التحكم في المتابعات لمحادثات صندوق AI",
                 "refresh_btn": "⟳ تحديث",
                 "tab_queue": "الطابور",
@@ -1850,6 +1855,11 @@
                 "config_save": "حفظ الإعدادات",
                 "config_save_ok": "تم حفظ الإعدادات",
                 "logs_event_all": "كل الأحداث",
+                "logs_time_all": "كل الأوقات",
+                "logs_time_today": "اليوم",
+                "logs_time_7d": "آخر 7 أيام",
+                "logs_time_30d": "آخر 30 يوماً",
+                "logs_time_custom": "نطاق مخصّص",
                 "logs_search": "ابحث في التفاصيل...",
                 "loading_logs": "جاري تحميل السجلات...",
                 "logs_empty_text": "لا توجد سجلات بعد.",
@@ -24040,7 +24050,7 @@
                 </div>
                 <div class="lp-feature-card">
                     <div class="lp-feature-icon">&#x26A1;</div>
-                    <h3>Automation Rules</h3>
+                    <h3>Follow-ups</h3>
                     <p>Set up follow-up scheduling, automated notifications, and trigger-based actions for customer interactions.</p>
                 </div>
                 <div class="lp-feature-card">
@@ -29473,7 +29483,7 @@ Thank you for shopping with {store_name}!</textarea>
             <div id="followups" class="tab-content">
                 <div class="fu-header">
                     <div>
-                        <h2 data-i18n="followups.title">Automation Rules</h2>
+                        <h2 data-i18n="followups.title">Follow-ups</h2>
                         <p class="fu-subtitle" data-i18n="followups.subtitle">Schedule + control follow-ups for AI Inbox conversations</p>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;">
@@ -29488,35 +29498,11 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                 </div>
                 <div class="fu-subtabs">
-                    <button class="fu-subtab active" onclick="fuSwitchSubtab('queue', this)" data-i18n="followups.tab_queue">Queue</button>
-                    <button class="fu-subtab" onclick="fuSwitchSubtab('config', this)" data-i18n="followups.tab_config">Configuration</button>
+                    <button class="fu-subtab active" onclick="fuSwitchSubtab('config', this)" data-i18n="followups.tab_config">Configuration</button>
                     <button class="fu-subtab" onclick="fuSwitchSubtab('logs', this)" data-i18n="followups.tab_logs">Logs</button>
                     <button class="fu-subtab" onclick="fuSwitchSubtab('template', this)" data-i18n="followups.tab_template">Template Policy</button>
                 </div>
-                <div id="fu-queue-panel" class="fu-panel active">
-                    <div class="fu-filters">
-                        <select id="fu-queue-status" onchange="fuLoadQueue()">
-                            <option value="all" data-i18n="followups.status_all">All Statuses</option>
-                            <option value="scheduled" data-i18n="followups.status_scheduled">Scheduled</option>
-                            <option value="claimed" data-i18n="followups.status_claimed">Claimed</option>
-                            <option value="waiting_template_approval" data-i18n="followups.status_waiting_template">Waiting template</option>
-                            <option value="sent" data-i18n="followups.status_sent">Sent</option>
-                            <option value="failed" data-i18n="followups.status_failed">Failed</option>
-                            <option value="cancelled" data-i18n="followups.status_cancelled">Cancelled</option>
-                            <option value="skipped" data-i18n="followups.status_skipped">Skipped</option>
-                        </select>
-                        <select id="fu-queue-platform" onchange="fuLoadQueue()">
-                            <option value="all" data-i18n="followups.platform_all">All Platforms</option>
-                            <option value="whatsapp">WhatsApp</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="page">Messenger</option>
-                        </select>
-                        <input type="text" id="fu-queue-search" oninput="fuLoadQueue()" placeholder="Search contact..." data-i18n-placeholder="followups.search_contact">
-                        <button class="pill-btn primary" style="margin-inline-start:auto;" onclick="fuOpenCreateModal()" data-i18n="followups.create_btn">+ Create Follow-up</button>
-                    </div>
-                    <div id="fu-queue-content"><div style="padding:40px;text-align:center;color:#888;" data-i18n="followups.loading_queue">Loading queue...</div></div>
-                </div>
-                <div id="fu-config-panel" class="fu-panel">
+                <div id="fu-config-panel" class="fu-panel active">
                     <div class="fu-config-layout">
                         <div class="fu-config-card">
                             <div class="fu-setting-group">
@@ -29682,6 +29668,18 @@ Thank you for shopping with {store_name}!</textarea>
                             <option value="template_rejected">template_rejected</option>
                             <option value="waiting_template_approval">waiting_template_approval</option>
                         </select>
+                        <select id="fu-logs-time" onchange="fuToggleLogsCustomRange();fuLoadLogs()">
+                            <option value="all" data-i18n="followups.logs_time_all">All Time</option>
+                            <option value="today" data-i18n="followups.logs_time_today">Today</option>
+                            <option value="7d" data-i18n="followups.logs_time_7d">Last 7 days</option>
+                            <option value="30d" data-i18n="followups.logs_time_30d">Last 30 days</option>
+                            <option value="custom" data-i18n="followups.logs_time_custom">Custom range</option>
+                        </select>
+                        <div id="fu-logs-custom-range" style="display:none;gap:6px;align-items:center;flex-wrap:wrap;">
+                            <input type="date" id="fu-logs-date-from" onchange="fuLoadLogs()" style="background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);color:var(--text-color);border-radius:8px;padding:6px 10px;">
+                            <span style="opacity:.6;">→</span>
+                            <input type="date" id="fu-logs-date-to" onchange="fuLoadLogs()" style="background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);color:var(--text-color);border-radius:8px;padding:6px 10px;">
+                        </div>
                         <input type="text" id="fu-logs-search" oninput="fuLoadLogs()" placeholder="Search details..." data-i18n="followups.logs_search">
                     </div>
                     <div id="fu-logs-content"><div style="padding:40px;text-align:center;color:#888;" data-i18n="followups.loading_logs">Loading logs...</div></div>
@@ -42885,7 +42883,7 @@ Thank you for shopping with {store_name}!</textarea>
             page: "مرحباً {name}، متابعة ودية من {business_name}. رد هنا وسأساعدك مباشرة."
         }
     };
-    let fuCurrentSubtab = 'queue';
+    let fuCurrentSubtab = 'config';
     let fuIsInitialized = false;
     let fuCurrentMsgLang = 'en';
     let fuCurrentMessageChannel = 'whatsapp';
@@ -42967,10 +42965,15 @@ Thank you for shopping with {store_name}!</textarea>
     }
     async function fuInit() { if (!fuIsInitialized) { fuIsInitialized = true; try { fuStartPolling(); } catch (e) {} } fuLoadCurrentTab(); }
     function fuLoadCurrentTab() {
-        if (fuCurrentSubtab === 'queue') fuLoadQueue();
-        else if (fuCurrentSubtab === 'config') fuLoadSettings();
+        if (fuCurrentSubtab === 'config') fuLoadSettings();
         else if (fuCurrentSubtab === 'template') fuLoadTemplatePolicy();
         else fuLoadLogs();
+    }
+    function fuToggleLogsCustomRange() {
+        const val = document.getElementById('fu-logs-time')?.value;
+        const wrap = document.getElementById('fu-logs-custom-range');
+        if (!wrap) return;
+        wrap.style.display = val === 'custom' ? 'flex' : 'none';
     }
     function fuCaptureEditorToState() {
         const en = document.getElementById('fu-setting-message'); const ar = document.getElementById('fu-setting-message-ar');
@@ -43245,7 +43248,7 @@ Thank you for shopping with {store_name}!</textarea>
         fuBellPollTimer = setInterval(fuLoadNotifications, 30000);
         fuQueuePollTimer = setInterval(() => {
             const fu = document.getElementById('followups');
-            if (fu && fu.classList.contains('active') && fuCurrentSubtab === 'queue') fuLoadQueue();
+            if (fu && fu.classList.contains('active') && fuCurrentSubtab === 'logs') fuLoadLogs();
         }, 30000);
     }
 
@@ -43350,9 +43353,9 @@ Thank you for shopping with {store_name}!</textarea>
         if (mins > 1440) mins = 1440;
         if (mins < 1 || Number.isNaN(mins)) mins = 1;
         try {
-            const { data: conv } = await supabaseClient.from('inbox_conversations').select('platform, last_inbound_at, last_message_at, created_at').eq('id', cid).maybeSingle();
+            const { data: conv } = await supabaseClient.from('inbox_conversations').select('platform, last_inbound_at, last_message_at, created_at, contact_id').eq('id', cid).maybeSingle();
             const latestInboundAt = conv?.last_inbound_at || conv?.last_message_at || conv?.created_at || new Date().toISOString();
-            await supabaseClient.from('followup_tasks').insert([{ org_id: currentUserOrgId, conversation_id: cid, platform: conv?.platform || 'whatsapp', due_at: new Date(Date.now() + mins * 60000).toISOString(), status: 'scheduled', latest_inbound_at: latestInboundAt }]);
+            await supabaseClient.from('followup_tasks').insert([{ org_id: currentUserOrgId, conversation_id: cid, contact_id: conv?.contact_id || null, platform: conv?.platform || 'whatsapp', due_at: new Date(Date.now() + mins * 60000).toISOString(), status: 'scheduled', latest_inbound_at: latestInboundAt }]);
             document.getElementById('fu-create-modal')?.remove();
             fuLoadQueue();
             showToast(t('followups.toast_task_created') || 'Created', 'success');
@@ -43362,8 +43365,28 @@ Thank you for shopping with {store_name}!</textarea>
         const content = document.getElementById('fu-logs-content'); if (!content) return;
         content.innerHTML = `<div style="padding:40px;text-align:center;color:#888;">${t('followups.loading_logs')}</div>`;
         try {
-            let q = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(100);
+            let q = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(200);
             const ev = document.getElementById('fu-logs-event')?.value; if (ev && ev !== 'all') q = q.eq('event_type', ev);
+            const timeRange = document.getElementById('fu-logs-time')?.value || 'all';
+            if (timeRange !== 'all') {
+                let fromDate = null, toDate = null;
+                const now = new Date();
+                if (timeRange === 'today') {
+                    fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+                    toDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).toISOString();
+                } else if (timeRange === '7d') {
+                    fromDate = new Date(Date.now() - 7 * 86400000).toISOString();
+                } else if (timeRange === '30d') {
+                    fromDate = new Date(Date.now() - 30 * 86400000).toISOString();
+                } else if (timeRange === 'custom') {
+                    const fromVal = document.getElementById('fu-logs-date-from')?.value;
+                    const toVal = document.getElementById('fu-logs-date-to')?.value;
+                    if (fromVal) fromDate = new Date(fromVal).toISOString();
+                    if (toVal) toDate = new Date(toVal + 'T23:59:59').toISOString();
+                }
+                if (fromDate) q = q.gte('created_at', fromDate);
+                if (toDate) q = q.lte('created_at', toDate);
+            }
             const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
             const rows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
             if (!rows.length) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; return; }
@@ -51869,7 +51892,7 @@ Thank you for shopping with {store_name}!</textarea>
         { icon: '💬', label: 'Go to WhatsApp Agent', shortcut: '', action: () => switchTab('whatsapp') },
         { icon: '🎨', label: 'Go to Content Studio', shortcut: '', action: () => switchTab('create-post') },
         { icon: '⭐', label: 'Go to Reviews', shortcut: '', action: () => switchTab('reviews') },
-        { icon: '⚡', label: 'Go to Automation Rules', shortcut: '', action: () => switchTab('followups') },
+        { icon: '⚡', label: 'Go to Follow-ups', shortcut: '', action: () => switchTab('followups') },
         { icon: '👥', label: 'Go to Team', shortcut: '', action: () => switchTab('team') },
         { icon: '💰', label: 'Open Pricing', shortcut: '', action: () => { closeCmdPalette(); if (typeof openPricingModal === 'function') openPricingModal(); } },
         { icon: '📖', label: 'Open Documentation', shortcut: '', action: () => { closeCmdPalette(); if (typeof openDocsModal === 'function') openDocsModal(); } },
