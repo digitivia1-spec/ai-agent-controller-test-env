@@ -706,7 +706,16 @@
                 "empty_text": "When your agents schedule callbacks or followups, they will appear here.",
                 "btn_setup": "Set Up Automations",
                 "config_timing_title": "Timing",
-                "config_delay_label": "Default delay (minutes)",
+                "config_delay_label": "Default delay",
+                "timing_custom": "Custom",
+                "tpl_field_name": "Template name",
+                "tpl_field_category": "Category",
+                "tpl_field_language": "Language",
+                "tpl_field_header": "Header (optional)",
+                "tpl_field_samples": "Variable samples (one per detected {{n}})",
+                "tpl_preview": "Preview",
+                "tpl_add_button": "Buttons (optional, up to 3)",
+                "go_template_policy": "Template Policy",
                 "config_max_label": "Max per conversation",
                 "config_bh_enable": "Respect business hours",
                 "config_bh_start": "Start",
@@ -1857,7 +1866,16 @@
                 "empty_text": "عندما يقوم الوكلاء بجدولة مكالمات أو متابعات، ستظهر هنا.",
                 "btn_setup": "إعداد الأتمتة",
                 "config_timing_title": "التوقيت",
-                "config_delay_label": "التأخير الافتراضي (بالدقائق)",
+                "config_delay_label": "التأخير الافتراضي",
+                "timing_custom": "مخصّص",
+                "tpl_field_name": "اسم القالب",
+                "tpl_field_category": "الفئة",
+                "tpl_field_language": "اللغة",
+                "tpl_field_header": "الترويسة (اختياري)",
+                "tpl_field_samples": "عيّنات المتغيرات (واحدة لكل {{n}})",
+                "tpl_preview": "معاينة",
+                "tpl_add_button": "أزرار (اختياري، حتى 3)",
+                "go_template_policy": "سياسة القالب",
                 "config_max_label": "الحد الأقصى لكل محادثة",
                 "config_bh_enable": "احترام ساعات العمل",
                 "config_bh_start": "البداية",
@@ -4104,6 +4122,129 @@
             font-size: 0.9rem;
             text-align: start;
             padding-inline: 10px;
+        }
+
+        .fu-delay-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .fu-delay-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+        .fu-delay-btn:hover { background: rgba(255, 255, 255, 0.08); }
+        .fu-delay-btn.active {
+            background: var(--brand-primary, #5b6cff);
+            border-color: var(--brand-primary, #5b6cff);
+            color: #fff;
+        }
+        .fu-delay-summary { font-size: 12px; opacity: .7; }
+
+        .fu-tpl-preview { margin-top: 6px; }
+        .fu-tpl-preview-bubble {
+            background: #dcf8c6; color: #111; padding: 10px 12px;
+            border-radius: 12px 12px 12px 2px; max-width: 320px;
+            box-shadow: 0 1px 2px rgba(0,0,0,.15); font-size: 13px;
+        }
+        html[data-theme="dark"] .fu-tpl-preview-bubble,
+        body.dark .fu-tpl-preview-bubble { background: #056162; color: #f1f1f1; }
+        .fu-tpl-prev-header { font-weight: 700; margin-bottom: 4px; }
+        .fu-tpl-prev-body { white-space: pre-wrap; }
+        .fu-tpl-prev-footer { margin-top: 6px; opacity: .7; font-size: 11px; }
+        .fu-tpl-prev-buttons { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; max-width: 320px; }
+        .fu-event-pill {
+            display: inline-block; padding: 3px 9px; border-radius: 999px;
+            font-size: 11px; font-weight: 600; background: rgba(255,255,255,.06);
+            color: var(--text-color);
+        }
+        .fu-event-sent { background: rgba(46,160,67,.18); color: #4ade80; }
+        .fu-event-failed, .fu-event-template_rejected { background: rgba(229,57,53,.18); color: #ff7b7b; }
+        .fu-event-scheduled, .fu-event-claimed { background: rgba(59,130,246,.18); color: #60a5fa; }
+        .fu-event-cancelled, .fu-event-skipped { background: rgba(140,140,140,.2); color: #ccc; }
+        .fu-event-template_approved { background: rgba(20,184,166,.18); color: #5eead4; }
+        .fu-event-waiting_template_approval, .fu-event-template_required, .fu-event-template_submission_pending, .fu-event-template_submission_requested { background: rgba(245,158,11,.18); color: #fbbf24; }
+        .fu-log-toggle {
+            background: transparent; border: none; color: var(--brand-primary, #5b6cff);
+            cursor: pointer; font-size: 11px; padding: 0; margin-inline-start: 4px;
+        }
+        .fu-log-row { display: grid; grid-template-columns: 1.2fr .8fr 1.2fr 2fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 13px; }
+        @media (max-width: 768px) {
+            .fu-log-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 12px; background: rgba(255,255,255,.03); border-radius: 8px; margin-bottom: 6px; border-bottom: none; }
+            .fu-subtabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+            .fu-subtab { white-space: nowrap; }
+            .fu-template-layout { grid-template-columns: 1fr !important; }
+            .fu-field-row { flex-direction: column; gap: 8px; }
+            .fu-header { flex-direction: column; align-items: stretch !important; gap: 10px; }
+        }
+
+        .fu-bell-btn {
+            position: relative; background: transparent; border: 1px solid rgba(255,255,255,.12);
+            color: var(--text-color); width: 38px; height: 38px; border-radius: 50%;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .fu-bell-btn:hover { background: rgba(255,255,255,.05); }
+        .fu-bell-badge {
+            position: absolute; top: -4px; right: -4px;
+            background: #e53935; color: #fff; min-width: 18px; height: 18px;
+            border-radius: 9px; padding: 0 5px; font-size: 11px; font-weight: 700;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .fu-bell-dropdown {
+            position: absolute; top: 46px; inset-inline-end: 0;
+            width: 340px; max-height: 420px; overflow: auto;
+            background: var(--card-bg, #1c1f2a); border: 1px solid rgba(255,255,255,.12);
+            border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.4); z-index: 200;
+        }
+        .fu-bell-head {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.08);
+            font-weight: 600; font-size: 13px;
+        }
+        .fu-bell-head button {
+            background: transparent; border: none; color: var(--brand-primary, #5b6cff);
+            cursor: pointer; font-size: 12px;
+        }
+        .fu-bell-empty { padding: 24px; text-align: center; opacity: .6; font-size: 13px; }
+        .fu-bell-list { display: flex; flex-direction: column; }
+        .fu-bell-item { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 13px; }
+        .fu-bell-item.unread { background: rgba(91,108,255,.08); }
+        .fu-bell-item-title { font-weight: 600; }
+        .fu-bell-item-time { font-size: 11px; opacity: .6; margin-top: 2px; }
+        @media (max-width: 768px) {
+            .fu-bell-dropdown { width: calc(100vw - 24px); inset-inline-end: -8px; }
+        }
+
+        .fu-row-expandable { border-bottom: 1px solid rgba(255,255,255,.06); padding: 8px 0; }
+        .fu-row-main { display: grid; grid-template-columns: 24px 1.5fr 1fr 1.4fr .8fr 1fr; align-items: center; gap: 8px; }
+        .fu-row-toggle {
+            background: transparent; border: none; color: var(--text-color);
+            cursor: pointer; font-size: 14px; padding: 2px 4px;
+        }
+        .fu-row-details {
+            margin-top: 8px; padding: 10px 12px;
+            background: rgba(0,0,0,.18); border-radius: 8px;
+            font-size: 13px; line-height: 1.6;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .fu-row-details code { background: rgba(255,255,255,.06); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+        @media (max-width: 768px) {
+            .fu-row-main { grid-template-columns: 24px 1fr; grid-auto-flow: row; }
+            .fu-row-main > div:not(.fu-contact-main):not(.fu-actions) { grid-column: 2; font-size: 12px; opacity: .85; }
+            .fu-row-main .fu-actions { grid-column: 1 / -1; justify-content: flex-end; display: flex; gap: 6px; }
+        }
+
+        .fu-tpl-prev-btn {
+            background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+            color: var(--brand-primary, #5b6cff); padding: 8px; text-align: center;
+            border-radius: 8px; font-size: 13px; font-weight: 600;
         }
 
         .fu-toggle-row {
@@ -24355,6 +24496,11 @@
                 <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_inbox">AI Inbox</span>
             </li>
+            <!-- 3. Follow-ups (Live Operations — adjacent to Inbox) -->
+            <li class="nav-item" onclick="switchTab('followups', this)">
+                <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="16" r="3"/><path d="M12 14v2l1.5 1"/></svg></div>
+                <span class="nav-label" data-i18n="sidebar.nav_followups">Follow-ups</span>
+            </li>
 
             <div class="nav-group-divider"></div>
 
@@ -24431,10 +24577,6 @@
                     <li class="nav-item" onclick="switchTab('reviews', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_reviews">Reviews</span>
-                    </li>
-                    <li class="nav-item" onclick="switchTab('followups', this)">
-                        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div>
-                        <span class="nav-label" data-i18n="sidebar.nav_followups">Automations</span>
                     </li>
                     <li class="nav-item" onclick="switchTab('insights', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z"/></svg></div>
@@ -29334,7 +29476,16 @@ Thank you for shopping with {store_name}!</textarea>
                         <h2 data-i18n="followups.title">Automation Rules</h2>
                         <p class="fu-subtitle" data-i18n="followups.subtitle">Schedule + control follow-ups for AI Inbox conversations</p>
                     </div>
-                    <button class="pill-btn primary" onclick="fuLoadCurrentTab()"><span data-i18n="followups.refresh_btn">⟳ Refresh</span></button>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="fu-bell-wrap" id="fu-bell-wrap" style="position:relative;">
+                            <button class="fu-bell-btn" id="fu-bell-btn" onclick="fuToggleBell(event)" aria-label="Notifications">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                                <span class="fu-bell-badge" id="fu-bell-badge" style="display:none;">0</span>
+                            </button>
+                            <div class="fu-bell-dropdown" id="fu-bell-dropdown" style="display:none;"></div>
+                        </div>
+                        <button class="pill-btn primary" onclick="fuLoadCurrentTab()"><span data-i18n="followups.refresh_btn">⟳ Refresh</span></button>
+                    </div>
                 </div>
                 <div class="fu-subtabs">
                     <button class="fu-subtab active" onclick="fuSwitchSubtab('queue', this)" data-i18n="followups.tab_queue">Queue</button>
@@ -29359,7 +29510,6 @@ Thank you for shopping with {store_name}!</textarea>
                             <option value="whatsapp">WhatsApp</option>
                             <option value="instagram">Instagram</option>
                             <option value="page">Messenger</option>
-                            <option value="telegram">Telegram</option>
                         </select>
                         <input type="text" id="fu-queue-search" oninput="fuLoadQueue()" placeholder="Search contact..." data-i18n-placeholder="followups.search_contact">
                         <button class="pill-btn primary" style="margin-inline-start:auto;" onclick="fuOpenCreateModal()" data-i18n="followups.create_btn">+ Create Follow-up</button>
@@ -29379,7 +29529,6 @@ Thank you for shopping with {store_name}!</textarea>
                                     <button class="fu-msg-channel-tab active" id="fu-ctab-whatsapp" onclick="fuSwitchMessageChannel('whatsapp')">WhatsApp</button>
                                     <button class="fu-msg-channel-tab" id="fu-ctab-instagram" onclick="fuSwitchMessageChannel('instagram')">Instagram</button>
                                     <button class="fu-msg-channel-tab" id="fu-ctab-page" onclick="fuSwitchMessageChannel('page')">Messenger</button>
-                                    <button class="fu-msg-channel-tab" id="fu-ctab-telegram" onclick="fuSwitchMessageChannel('telegram')">Telegram</button>
                                 </div>
                                 <div class="fu-lang-tabs">
                                     <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en">English</button>
@@ -29394,16 +29543,27 @@ Thank you for shopping with {store_name}!</textarea>
                                     <label class="fu-channel-check"><input type="checkbox" id="fu-ch-whatsapp" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>WhatsApp</span></div></label>
                                     <label class="fu-channel-check"><input type="checkbox" id="fu-ch-instagram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Instagram</span></div></label>
                                     <label class="fu-channel-check"><input type="checkbox" id="fu-ch-page" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Messenger</span></div></label>
-                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-telegram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Telegram</span></div></label>
                                 </div>
                             </div>
                             <div class="fu-setting-group">
                                 <span class="fu-label" data-i18n="followups.config_timing_title">Timing</span>
                                 <div class="fu-field-row">
-                                    <label class="fu-inline-field">
-                                        <span data-i18n="followups.config_delay_label">Default delay (minutes)</span>
-                                        <input type="number" id="fu-setting-delay" min="1" max="1440" value="120">
-                                    </label>
+                                    <div class="fu-inline-field fu-delay-presets-wrap">
+                                        <span data-i18n="followups.config_delay_label">Default delay</span>
+                                        <div class="fu-delay-presets" id="fu-delay-presets">
+                                            <button type="button" class="fu-delay-btn" data-delay="30" onclick="fuPickDelay(30)">30m</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="60" onclick="fuPickDelay(60)">1h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="120" onclick="fuPickDelay(120)">2h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="240" onclick="fuPickDelay(240)">4h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="360" onclick="fuPickDelay(360)">6h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="720" onclick="fuPickDelay(720)">12h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="1440" onclick="fuPickDelay(1440)">24h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="custom" onclick="fuPickDelay('custom')" data-i18n="followups.timing_custom">Custom</button>
+                                        </div>
+                                        <input type="number" id="fu-setting-delay" min="1" max="1440" value="120" style="display:none;">
+                                        <input type="number" id="fu-setting-delay-custom" min="1" max="1440" placeholder="min" style="display:none;width:90px;margin-top:6px;" oninput="document.getElementById('fu-setting-delay').value=this.value;fuUpdateDelaySummary();">
+                                        <div id="fu-delay-summary" class="fu-delay-summary" style="margin-top:6px;font-size:12px;opacity:.75;"></div>
+                                    </div>
                                     <label class="fu-inline-field">
                                         <span data-i18n="followups.config_max_label">Max per conversation</span>
                                         <input type="number" id="fu-setting-max" min="1" max="20" value="1">
@@ -29468,7 +29628,6 @@ Thank you for shopping with {store_name}!</textarea>
                                 <button class="fu-preview-tab active" id="fu-ptab-wa" onclick="fuSwitchPreview('wa')">WhatsApp</button>
                                 <button class="fu-preview-tab" id="fu-ptab-ig" onclick="fuSwitchPreview('ig')">Instagram</button>
                                 <button class="fu-preview-tab" id="fu-ptab-fb" onclick="fuSwitchPreview('fb')">Messenger</button>
-                                <button class="fu-preview-tab" id="fu-ptab-tg" onclick="fuSwitchPreview('tg')">Telegram</button>
                             </div>
                             <div class="fu-preview-screen">
                                 <div id="fu-prev-wa" class="fu-phone-frame fu-prev-platform active">
@@ -29498,15 +29657,6 @@ Thank you for shopping with {store_name}!</textarea>
                                         </div>
                                         <div class="fu-platform-chat"><div class="fu-msg-bubble"><div id="fu-prev-msg-fb"></div><small id="fu-fb-time">Just now</small></div></div>
                                         <div class="fu-platform-footer"><span>👍 GIF</span><span>+</span></div>
-                                    </div>
-                                </div>
-                                <div id="fu-prev-tg" class="fu-phone-frame fu-prev-platform">
-                                    <div class="fu-platform-shell fu-wa-shell">
-                                        <div class="fu-platform-head">
-                                            <div class="fu-platform-avatar">JD</div>
-                                            <div class="fu-platform-headtext"><strong>John Doe</strong><span class="fu-platform-status" id="fu-tg-status">online</span></div>
-                                        </div>
-                                        <div class="fu-platform-chat"><div class="fu-msg-bubble"><div id="fu-prev-msg-tg"></div><small id="fu-tg-time">Just now</small></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -29553,19 +29703,70 @@ Thank you for shopping with {store_name}!</textarea>
                             <p class="fu-help-text" data-i18n="followups.template_submit_hint">If no approved template exists yet, open a submission request. The WhatsApp team reviews and updates the status.</p>
                             <div class="fu-field-row">
                                 <label class="fu-inline-field">
-                                    <span data-i18n="followups.config_template_name">Template name</span>
-                                    <input type="text" id="fu-submit-name" placeholder="welcome_followup">
+                                    <span data-i18n="followups.tpl_field_name">Template name</span>
+                                    <input type="text" id="fu-submit-name" placeholder="welcome_followup" oninput="fuRenderTemplatePreview()">
                                 </label>
                                 <label class="fu-inline-field">
-                                    <span data-i18n="followups.config_template_lang">Language</span>
-                                    <input type="text" id="fu-submit-lang" placeholder="en_US">
+                                    <span data-i18n="followups.tpl_field_category">Category</span>
+                                    <select id="fu-submit-category" onchange="fuRenderTemplatePreview()">
+                                        <option value="UTILITY">UTILITY</option>
+                                        <option value="MARKETING">MARKETING</option>
+                                        <option value="AUTHENTICATION">AUTHENTICATION</option>
+                                    </select>
+                                </label>
+                                <label class="fu-inline-field">
+                                    <span data-i18n="followups.tpl_field_language">Language</span>
+                                    <select id="fu-submit-lang" onchange="fuRenderTemplatePreview()">
+                                        <option value="en_US">English (US)</option>
+                                        <option value="en_GB">English (UK)</option>
+                                        <option value="en">English</option>
+                                        <option value="ar">العربية</option>
+                                        <option value="fr">Français</option>
+                                        <option value="de">Deutsch</option>
+                                        <option value="es">Español</option>
+                                        <option value="tr">Türkçe</option>
+                                        <option value="pt_BR">Português (BR)</option>
+                                        <option value="id">Bahasa Indonesia</option>
+                                        <option value="it">Italiano</option>
+                                        <option value="nl">Nederlands</option>
+                                        <option value="ru">Русский</option>
+                                        <option value="zh_CN">简体中文</option>
+                                        <option value="zh_TW">繁體中文</option>
+                                        <option value="ja">日本語</option>
+                                        <option value="ko">한국어</option>
+                                        <option value="hi">हिन्दी</option>
+                                        <option value="ur">اردو</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="fu-field-row">
+                                <label class="fu-inline-field" style="flex:1;">
+                                    <span data-i18n="followups.tpl_field_header">Header (optional)</span>
+                                    <select id="fu-submit-header-type" onchange="fuToggleHeaderText();fuRenderTemplatePreview()">
+                                        <option value="NONE">None</option>
+                                        <option value="TEXT">Text</option>
+                                    </select>
+                                    <input type="text" id="fu-submit-header-text" placeholder="Header text (max 60 chars)" maxlength="60" style="display:none;margin-top:6px;" oninput="fuRenderTemplatePreview()">
                                 </label>
                             </div>
                             <label class="fu-inline-field" style="display:block;">
-                                <span data-i18n="followups.template_submit_body">Body</span>
-                                <textarea id="fu-submit-body" class="fu-msg-textarea" placeholder="Hi {{1}}, just following up on our chat..."></textarea>
+                                <span data-i18n="followups.template_submit_body">Body <small id="fu-submit-body-count" style="opacity:.6;">(0 / 1024)</small></span>
+                                <textarea id="fu-submit-body" class="fu-msg-textarea" maxlength="1024" placeholder="Hi {{1}}, just following up on our chat with {{2}}..." oninput="fuOnTemplateBodyInput()"></textarea>
                             </label>
-                            <button class="pill-btn primary" style="width:100%;margin-top:12px;" onclick="fuSubmitTemplate()" data-i18n="followups.template_submit_btn">Open submission request</button>
+                            <div id="fu-submit-vars-wrap" style="display:none;">
+                                <div class="fu-help-text" data-i18n="followups.tpl_field_samples">Variable samples (one per detected {{n}})</div>
+                                <div id="fu-submit-vars" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;"></div>
+                            </div>
+                            <label class="fu-inline-field" style="display:block;">
+                                <span>Footer (optional) <small id="fu-submit-footer-count" style="opacity:.6;">(0 / 60)</small></span>
+                                <input type="text" id="fu-submit-footer" maxlength="60" placeholder="Footer text" oninput="fuOnTemplateFooterInput()">
+                            </label>
+                            <div class="fu-help-text" data-i18n="followups.tpl_add_button">Buttons (optional, up to 3)</div>
+                            <div id="fu-submit-buttons" style="display:flex;flex-direction:column;gap:6px;margin-top:4px;"></div>
+                            <button type="button" class="pill-btn" style="margin-top:6px;" onclick="fuAddTemplateButton()">+ Add button</button>
+                            <div class="fu-help-text" style="margin-top:14px;font-weight:600;" data-i18n="followups.tpl_preview">Preview</div>
+                            <div id="fu-submit-preview" class="fu-tpl-preview"></div>
+                            <button class="pill-btn primary" style="width:100%;margin-top:12px;" onclick="fuSubmitTemplate()" data-i18n="followups.template_submit_btn">Submit for approval</button>
                         </div>
                         <div class="fu-template-card">
                             <h3 class="fu-label" data-i18n="followups.template_submissions_title">Submission history</h3>
@@ -29722,7 +29923,8 @@ Thank you for shopping with {store_name}!</textarea>
             page: 'group-agents', instagram: 'group-agents', telegram: 'group-agents',
             insights: 'group-live', inbox: 'group-live',
             leads: 'group-data', crm: 'group-data', 'task-manager': 'group-data', orders: 'group-data',
-            'create-post': 'group-content', reviews: 'group-content', followups: 'group-content'
+            'create-post': 'group-content', reviews: 'group-content',
+            followups: 'group-live'
         };
 
         function isMobileBackNavMode() {
@@ -42668,21 +42870,19 @@ Thank you for shopping with {store_name}!</textarea>
     // ==========================================
     //        FOLLOW-UPS LOGIC (RESTORED)
     // ==========================================
-    const FU_CHANNELS = ['whatsapp', 'instagram', 'page', 'telegram'];
-    const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page', tg: 'telegram' };
-    const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb', telegram: 'tg' };
+    const FU_CHANNELS = ['whatsapp', 'instagram', 'page'];
+    const fuPreviewToChannelMap = { wa: 'whatsapp', ig: 'instagram', fb: 'page' };
+    const fuChannelToPreviewMap = { whatsapp: 'wa', instagram: 'ig', page: 'fb' };
     const FU_MOCK_MESSAGES = {
         en: {
             whatsapp: "Hi {name}, just checking in on your request. I can share pricing or next steps.",
             instagram: "Hey {name}! Quick follow-up on our chat. Want matching options?",
-            page: "Hello {name}, friendly follow-up from {business_name}. Reply and I'll help right away.",
-            telegram: "Hi {name}, quick Telegram follow-up from {business_name}. Reply and I will help immediately."
+            page: "Hello {name}, friendly follow-up from {business_name}. Reply and I'll help right away."
         },
         ar: {
             whatsapp: "مرحباً {name}، متابعة سريعة على طلبك. أستطيع إرسال الأسعار أو الخطوة التالية.",
             instagram: "أهلاً {name}! متابعة سريعة لمحادثتنا. هل ترغب بإرسال الخيارات المناسبة؟",
-            page: "مرحباً {name}، متابعة ودية من {business_name}. رد هنا وسأساعدك مباشرة.",
-            telegram: "مرحباً {name}، متابعة سريعة عبر تيليجرام من {business_name}. رد هنا وسأساعدك مباشرة."
+            page: "مرحباً {name}، متابعة ودية من {business_name}. رد هنا وسأساعدك مباشرة."
         }
     };
     let fuCurrentSubtab = 'queue';
@@ -42690,9 +42890,58 @@ Thank you for shopping with {store_name}!</textarea>
     let fuCurrentMsgLang = 'en';
     let fuCurrentMessageChannel = 'whatsapp';
     let fuCurrentPreviewPlatform = 'wa';
-    let fuMessageByChannel = { whatsapp: '', instagram: '', page: '', telegram: '' };
-    let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '', telegram: '' };
+    let fuMessageByChannel = { whatsapp: '', instagram: '', page: '' };
+    let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '' };
     let fuConversationDisplayMap = new Map();
+    window.FU_N8N_BASE_URL = window.FU_N8N_BASE_URL || 'https://n8n.srv1174105.hstgr.cloud';
+
+    function fuToggleRow(id) {
+        const det = document.getElementById(`fu-row-details-${id}`);
+        const row = document.querySelector(`.fu-row-expandable[data-fu-row="${id}"]`);
+        if (!det || !row) return;
+        const open = det.style.display !== 'none';
+        det.style.display = open ? 'none' : 'block';
+        const tog = row.querySelector('.fu-row-toggle');
+        if (tog) tog.textContent = open ? '▾' : '▴';
+    }
+
+    function fuPickDelay(value) {
+        const presetWrap = document.getElementById('fu-delay-presets');
+        const customInput = document.getElementById('fu-setting-delay-custom');
+        const hidden = document.getElementById('fu-setting-delay');
+        if (!presetWrap || !hidden) return;
+        Array.from(presetWrap.querySelectorAll('.fu-delay-btn')).forEach(b => b.classList.remove('active'));
+        const btn = presetWrap.querySelector(`[data-delay="${value}"]`);
+        if (btn) btn.classList.add('active');
+        if (value === 'custom') {
+            if (customInput) { customInput.style.display = 'inline-block'; customInput.focus(); }
+        } else {
+            if (customInput) { customInput.style.display = 'none'; customInput.value = ''; }
+            hidden.value = value;
+        }
+        fuUpdateDelaySummary();
+    }
+    function fuUpdateDelaySummary() {
+        const hidden = document.getElementById('fu-setting-delay');
+        const out = document.getElementById('fu-delay-summary');
+        if (!hidden || !out) return;
+        const m = parseInt(hidden.value || '0', 10);
+        if (!m) { out.textContent = ''; return; }
+        const isAr = currentLang === 'ar';
+        let txt;
+        if (m < 60) txt = isAr ? `سيُرسل بعد ${m} دقيقة` : `Sends ~${m} min after last reply`;
+        else if (m % 60 === 0) txt = isAr ? `سيُرسل بعد ${m / 60} ساعة` : `Sends ~${m / 60}h after last reply`;
+        else txt = isAr ? `سيُرسل بعد ${m} دقيقة` : `Sends ~${m} min after last reply`;
+        out.textContent = txt;
+    }
+    function fuSyncDelayPresetFromValue() {
+        const hidden = document.getElementById('fu-setting-delay');
+        if (!hidden) return;
+        const v = parseInt(hidden.value || '0', 10);
+        const presets = [30, 60, 120, 240, 360, 720, 1440];
+        if (presets.includes(v)) fuPickDelay(v);
+        else { fuPickDelay('custom'); const c = document.getElementById('fu-setting-delay-custom'); if (c) c.value = v; fuUpdateDelaySummary(); }
+    }
 
     function fuEscapeHtml(value) {
         return String(value || '').replace(/[&<>"']/g, function (m) {
@@ -42716,7 +42965,7 @@ Thank you for shopping with {store_name}!</textarea>
         document.getElementById(`fu-${tabName}-panel`)?.classList.add('active');
         fuLoadCurrentTab();
     }
-    async function fuInit() { if (!fuIsInitialized) fuIsInitialized = true; fuLoadCurrentTab(); }
+    async function fuInit() { if (!fuIsInitialized) { fuIsInitialized = true; try { fuStartPolling(); } catch (e) {} } fuLoadCurrentTab(); }
     function fuLoadCurrentTab() {
         if (fuCurrentSubtab === 'queue') fuLoadQueue();
         else if (fuCurrentSubtab === 'config') fuLoadSettings();
@@ -42762,8 +43011,8 @@ Thank you for shopping with {store_name}!</textarea>
         fuSetEditorValuesFromState(); fuUpdatePreview();
     }
     function fuSyncPreviewTabAvailability() {
-        const enabled = { whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked, instagram: !!document.getElementById('fu-ch-instagram')?.checked, page: !!document.getElementById('fu-ch-page')?.checked, telegram: !!document.getElementById('fu-ch-telegram')?.checked };
-        [['wa', 'whatsapp'], ['ig', 'instagram'], ['fb', 'page'], ['tg', 'telegram']].forEach(([k, ch]) => {
+        const enabled = { whatsapp: !!document.getElementById('fu-ch-whatsapp')?.checked, instagram: !!document.getElementById('fu-ch-instagram')?.checked, page: !!document.getElementById('fu-ch-page')?.checked };
+        [['wa', 'whatsapp'], ['ig', 'instagram'], ['fb', 'page']].forEach(([k, ch]) => {
             const el = document.getElementById(`fu-ptab-${k}`); if (!el) return;
             el.disabled = !enabled[ch]; el.style.opacity = enabled[ch] ? '1' : '.65';
         });
@@ -42774,14 +43023,13 @@ Thank you for shopping with {store_name}!</textarea>
         const statusText = {
             wa: isAr ? 'متصل الآن' : 'online',
             ig: isAr ? 'نشط الآن' : 'Active now',
-            fb: isAr ? 'نشط' : 'Active',
-            tg: isAr ? 'متصل الآن' : 'online'
+            fb: isAr ? 'نشط' : 'Active'
         };
-        [['wa', 'fu-wa-status'], ['ig', 'fu-ig-status'], ['fb', 'fu-fb-status'], ['tg', 'fu-tg-status']].forEach(([k, id]) => {
+        [['wa', 'fu-wa-status'], ['ig', 'fu-ig-status'], ['fb', 'fu-fb-status']].forEach(([k, id]) => {
             const el = document.getElementById(id);
             if (el) el.textContent = statusText[k];
         });
-        ['wa', 'ig', 'fb', 'tg'].forEach(k => {
+        ['wa', 'ig', 'fb'].forEach(k => {
             const ch = fuPreviewToChannelMap[k];
             const raw = isAr ? (fuMessageByChannelAr[ch] || FU_MOCK_MESSAGES.ar[ch]) : (fuMessageByChannel[ch] || FU_MOCK_MESSAGES.en[ch]);
             const txt = raw.replace(/\{name\}/g, name).replace(/\{agent_name\}/g, isAr ? 'الوكيل' : 'Agent').replace(/\{business_name\}/g, isAr ? 'الشركة' : 'Business');
@@ -42836,11 +43084,12 @@ Thank you for shopping with {store_name}!</textarea>
                 fuSetCheckboxValue('fu-setting-enabled', data.enabled);
                 const m = data.followup_message_by_channel || {};
                 const ma = data.followup_message_ar_by_channel || {};
-                fuMessageByChannel = { whatsapp: m.whatsapp || data.followup_message || '', instagram: m.instagram || m.whatsapp || data.followup_message || '', page: m.page || data.followup_message || '', telegram: m.telegram || m.whatsapp || data.followup_message || '' };
-                fuMessageByChannelAr = { whatsapp: ma.whatsapp || data.followup_message_ar || '', instagram: ma.instagram || ma.whatsapp || data.followup_message_ar || '', page: ma.page || data.followup_message_ar || '', telegram: ma.telegram || ma.whatsapp || data.followup_message_ar || '' };
+                fuMessageByChannel = { whatsapp: m.whatsapp || data.followup_message || '', instagram: m.instagram || m.whatsapp || data.followup_message || '', page: m.page || data.followup_message || '' };
+                fuMessageByChannelAr = { whatsapp: ma.whatsapp || data.followup_message_ar || '', instagram: ma.instagram || ma.whatsapp || data.followup_message_ar || '', page: ma.page || data.followup_message_ar || '' };
                 const channels = data.active_channels || FU_CHANNELS;
                 FU_CHANNELS.forEach(ch => { const el = document.getElementById(`fu-ch-${ch}`); if (el) el.checked = channels.includes(ch); });
                 fuSetFieldValue('fu-setting-delay', data.default_delay_minutes ?? 120);
+                try { fuSyncDelayPresetFromValue(); } catch (e) {}
                 fuSetFieldValue('fu-setting-max', data.max_per_conversation ?? 1);
                 fuSetCheckboxValue('fu-setting-bh-enabled', data.business_hours_enabled);
                 if (data.business_start) fuSetFieldValue('fu-setting-bh-start', String(data.business_start).slice(0, 5));
@@ -42911,6 +43160,95 @@ Thank you for shopping with {store_name}!</textarea>
             fuRenderTemplateStatusPill(status);
         } catch (e) { console.warn('fuRefreshTemplateStatusFromCatalog', e); }
     }
+    let fuBellPollTimer = null;
+    let fuQueuePollTimer = null;
+    const FU_BELL_EVENT_KEYS = ['template_submission_requested', 'template_approved', 'template_rejected'];
+
+    async function fuLoadNotifications() {
+        if (!currentUserOrgId) return;
+        try {
+            const { data, error } = await supabaseClient
+                .from('notifications')
+                .select('id, event_key, payload, is_read, created_at')
+                .eq('org_id', currentUserOrgId)
+                .in('event_key', FU_BELL_EVENT_KEYS)
+                .order('created_at', { ascending: false })
+                .limit(20);
+            if (error) throw error;
+            fuRenderBell(data || []);
+        } catch (e) { /* silent */ }
+    }
+    function fuRenderBell(items) {
+        const badge = document.getElementById('fu-bell-badge');
+        const dd = document.getElementById('fu-bell-dropdown');
+        const unread = items.filter(i => !i.is_read).length;
+        if (badge) {
+            badge.textContent = unread > 99 ? '99+' : String(unread);
+            badge.style.display = unread ? 'inline-flex' : 'none';
+        }
+        if (!dd) return;
+        if (!items.length) {
+            dd.innerHTML = `<div class="fu-bell-empty">${currentLang === 'ar' ? 'لا إشعارات' : 'No notifications'}</div>`;
+            return;
+        }
+        const isAr = currentLang === 'ar';
+        const labelMap = {
+            template_submission_requested: isAr ? 'مطلوب إرسال قالب' : 'Template submission requested',
+            template_approved: isAr ? 'تمت الموافقة على القالب' : 'Template approved',
+            template_rejected: isAr ? 'تم رفض القالب' : 'Template rejected'
+        };
+        dd.innerHTML = `
+            <div class="fu-bell-head">
+                <span>${isAr ? 'إشعارات المتابعات' : 'Follow-up notifications'}</span>
+                <button onclick="fuMarkAllNotificationsRead()">${isAr ? 'تعيين الكل كمقروء' : 'Mark all read'}</button>
+            </div>
+            <div class="fu-bell-list">
+                ${items.map(n => {
+                    const p = n.payload || {};
+                    const tpl = p.template_name ? ` (${fuEscapeHtml(p.template_name)})` : '';
+                    const time = n.created_at ? new Date(n.created_at).toLocaleString(isAr ? 'ar-EG' : 'en-US') : '';
+                    return `<div class="fu-bell-item ${n.is_read ? '' : 'unread'}">
+                        <div class="fu-bell-item-title">${fuEscapeHtml(labelMap[n.event_key] || n.event_key)}${tpl}</div>
+                        <div class="fu-bell-item-time">${time}</div>
+                    </div>`;
+                }).join('')}
+            </div>
+        `;
+    }
+    async function fuMarkAllNotificationsRead() {
+        if (!currentUserOrgId) return;
+        try {
+            await supabaseClient.from('notifications').update({ is_read: true }).eq('org_id', currentUserOrgId).in('event_key', FU_BELL_EVENT_KEYS).eq('is_read', false);
+            fuLoadNotifications();
+        } catch (e) { console.warn(e); }
+    }
+    function fuToggleBell(ev) {
+        if (ev) ev.stopPropagation();
+        const dd = document.getElementById('fu-bell-dropdown');
+        if (!dd) return;
+        const open = dd.style.display !== 'none';
+        dd.style.display = open ? 'none' : 'block';
+        if (!open) fuLoadNotifications();
+    }
+    document.addEventListener('click', function (e) {
+        const wrap = document.getElementById('fu-bell-wrap');
+        if (!wrap) return;
+        if (!wrap.contains(e.target)) {
+            const dd = document.getElementById('fu-bell-dropdown');
+            if (dd) dd.style.display = 'none';
+        }
+    });
+    function fuStartPolling() {
+        if (fuBellPollTimer) clearInterval(fuBellPollTimer);
+        if (fuQueuePollTimer) clearInterval(fuQueuePollTimer);
+        fuLoadNotifications();
+        fuBellPollTimer = setInterval(fuLoadNotifications, 30000);
+        fuQueuePollTimer = setInterval(() => {
+            const fu = document.getElementById('followups');
+            if (fu && fu.classList.contains('active') && fuCurrentSubtab === 'queue') fuLoadQueue();
+        }, 30000);
+    }
+
     async function fuLoadQueue() {
         const content = document.getElementById('fu-queue-content'); if (!content) return;
         content.innerHTML = `<div style="padding:40px;text-align:center;color:#888;">${t('followups.loading_queue')}</div>`;
@@ -42944,12 +43282,27 @@ Thank you for shopping with {store_name}!</textarea>
                 const badgesHtml = badges.length ? `<div class="fu-badges">${badges.join('')}</div>` : '';
                 const isTerminal = ['sent', 'failed', 'cancelled', 'skipped'].includes(r.status);
                 const cancelBtn = isTerminal ? '' : `<button onclick="fuUpdateTaskStatus('${r.id}','cancelled')">${t('followups.action_cancel') || 'Cancel'}</button>`;
-                return `<div class="fu-row">
-                    <div class="fu-contact-main"><b>${fuEscapeHtml(d.label)}</b>${phoneHtml}</div>
-                    <div>${fuEscapeHtml(r.platform || '-')}</div>
-                    <div>${dueStr}${badgesHtml}${blockedHtml}</div>
-                    <div><span class="fu-status-pill fu-status-${r.status || 'scheduled'}">${r.status || 'scheduled'}</span></div>
-                    <div class="fu-actions">${cancelBtn}</div>
+                const isWaiting = r.status === 'waiting_template_approval' || r.waiting_for_template_approval;
+                const policyBtn = isWaiting ? `<button onclick="fuSwitchSubtab('template')">→ ${fuSafeT('followups.go_template_policy', currentLang === 'ar' ? 'سياسة القالب' : 'Template Policy')}</button>` : '';
+                const detailRows = [
+                    r.blocked_reason ? `<div><b>${currentLang === 'ar' ? 'سبب الحظر' : 'Blocked reason'}:</b> ${fuEscapeHtml(r.blocked_reason)}</div>` : '',
+                    r.error_message ? `<div><b>Error:</b> ${fuEscapeHtml(r.error_message)}</div>` : '',
+                    r.resolved_message ? `<div><b>${currentLang === 'ar' ? 'الرسالة المرسلة' : 'Resolved message'}:</b> ${fuEscapeHtml(r.resolved_message)}</div>` : '',
+                    r.latest_inbound_at ? `<div><b>${currentLang === 'ar' ? 'آخر رد عميل' : 'Latest inbound'}:</b> ${new Date(r.latest_inbound_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')}</div>` : '',
+                    r.template_name ? `<div><b>Template:</b> ${fuEscapeHtml(r.template_name)} (${fuEscapeHtml(r.template_language || '-')}) — <em>${fuEscapeHtml(r.template_status || 'none')}</em></div>` : '',
+                    r.provider_message_id ? `<div><b>Provider msg id:</b> <code>${fuEscapeHtml(r.provider_message_id)}</code></div>` : '',
+                    r.created_at ? `<div><b>Created:</b> ${new Date(r.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')}</div>` : ''
+                ].filter(Boolean).join('');
+                return `<div class="fu-row fu-row-expandable" data-fu-row="${r.id}">
+                    <div class="fu-row-main">
+                        <button class="fu-row-toggle" onclick="fuToggleRow('${r.id}')" aria-label="expand">▾</button>
+                        <div class="fu-contact-main"><b>${fuEscapeHtml(d.label)}</b>${phoneHtml}</div>
+                        <div>${fuEscapeHtml(r.platform || '-')}</div>
+                        <div>${dueStr}${badgesHtml}${blockedHtml}</div>
+                        <div><span class="fu-status-pill fu-status-${r.status || 'scheduled'}">${r.status || 'scheduled'}</span></div>
+                        <div class="fu-actions">${policyBtn}${cancelBtn}</div>
+                    </div>
+                    <div class="fu-row-details" id="fu-row-details-${r.id}" style="display:none;">${detailRows || `<div style="opacity:.6;">${currentLang === 'ar' ? 'لا تفاصيل إضافية' : 'No extra details'}</div>`}</div>
                 </div>`;
             }).join('')}</div>`;
         } catch (e) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.empty_text')}</div>`; }
@@ -42997,8 +43350,9 @@ Thank you for shopping with {store_name}!</textarea>
         if (mins > 1440) mins = 1440;
         if (mins < 1 || Number.isNaN(mins)) mins = 1;
         try {
-            const { data: conv } = await supabaseClient.from('inbox_conversations').select('platform').eq('id', cid).maybeSingle();
-            await supabaseClient.from('followup_tasks').insert([{ org_id: currentUserOrgId, conversation_id: cid, platform: conv?.platform || 'whatsapp', due_at: new Date(Date.now() + mins * 60000).toISOString(), status: 'scheduled', triggered_at: new Date().toISOString() }]);
+            const { data: conv } = await supabaseClient.from('inbox_conversations').select('platform, last_inbound_at, last_message_at, created_at').eq('id', cid).maybeSingle();
+            const latestInboundAt = conv?.last_inbound_at || conv?.last_message_at || conv?.created_at || new Date().toISOString();
+            await supabaseClient.from('followup_tasks').insert([{ org_id: currentUserOrgId, conversation_id: cid, platform: conv?.platform || 'whatsapp', due_at: new Date(Date.now() + mins * 60000).toISOString(), status: 'scheduled', latest_inbound_at: latestInboundAt }]);
             document.getElementById('fu-create-modal')?.remove();
             fuLoadQueue();
             showToast(t('followups.toast_task_created') || 'Created', 'success');
@@ -43013,18 +43367,38 @@ Thank you for shopping with {store_name}!</textarea>
             const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
             const rows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
             if (!rows.length) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; return; }
+            const conversationIds = rows.map(r => r.conversation_id).filter(Boolean);
+            const convMap = await fuLoadConversationDisplayMap(conversationIds);
             content.innerHTML = `<div class="fu-list">${rows.map(l => {
                 const dateStr = new Date(l.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
-                const detailsStr = typeof l.details === 'object' ? JSON.stringify(l.details) : (l.details || '-');
-                const convShort = l.conversation_id ? String(l.conversation_id).slice(0, 8) : '-';
-                return `<div class="fu-row">
+                const detailsRaw = typeof l.details === 'object' ? JSON.stringify(l.details) : String(l.details || '-');
+                const truncated = detailsRaw.length > 80 ? detailsRaw.slice(0, 80) + '…' : detailsRaw;
+                const conv = convMap.get(l.conversation_id) || {};
+                const contact = conv.contact || {};
+                const contactLabel = (contact.display_name || contact.phone || contact.external_contact_id || (l.conversation_id ? String(l.conversation_id).slice(0, 8) : '-')).trim() || '-';
+                const ev = l.event_type || '-';
+                const evClass = `fu-event-${ev.replace(/[^a-z0-9_]/gi, '-')}`;
+                const detailsHtml = detailsRaw.length > 80
+                    ? `<span class="fu-log-trunc">${fuEscapeHtml(truncated)}</span><span class="fu-log-full" style="display:none;">${fuEscapeHtml(detailsRaw)}</span> <button class="fu-log-toggle" onclick="fuToggleLogDetail(this)">${currentLang === 'ar' ? 'المزيد' : 'more'}</button>`
+                    : fuEscapeHtml(detailsRaw);
+                return `<div class="fu-row fu-log-row">
                     <div>${dateStr}</div>
-                    <div><span class="fu-event-pill">${fuEscapeHtml(l.event_type || '-')}</span></div>
-                    <div><code class="fu-mono">${fuEscapeHtml(convShort)}</code></div>
-                    <div class="fu-log-details">${fuEscapeHtml(detailsStr)}</div>
+                    <div><span class="fu-event-pill ${evClass}">${fuEscapeHtml(ev)}</span></div>
+                    <div>${fuEscapeHtml(contactLabel)}</div>
+                    <div class="fu-log-details">${detailsHtml}</div>
                 </div>`;
             }).join('')}</div>`;
         } catch (e) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; }
+    }
+    function fuToggleLogDetail(btn) {
+        const row = btn.parentElement; if (!row) return;
+        const trunc = row.querySelector('.fu-log-trunc');
+        const full = row.querySelector('.fu-log-full');
+        if (!trunc || !full) return;
+        const open = full.style.display !== 'none';
+        full.style.display = open ? 'none' : 'inline';
+        trunc.style.display = open ? 'inline' : 'none';
+        btn.textContent = open ? (currentLang === 'ar' ? 'المزيد' : 'more') : (currentLang === 'ar' ? 'أقل' : 'less');
     }
     async function fuLoadTemplatePolicy() {
         if (!currentUserOrgId) return;
@@ -43117,23 +43491,135 @@ Thank you for shopping with {store_name}!</textarea>
             fuLoadTemplatePolicy();
         } catch (e) { console.warn(e); showToast('Error', 'error'); }
     }
+    function fuToggleHeaderText() {
+        const sel = document.getElementById('fu-submit-header-type');
+        const txt = document.getElementById('fu-submit-header-text');
+        if (!sel || !txt) return;
+        txt.style.display = sel.value === 'TEXT' ? 'block' : 'none';
+        if (sel.value !== 'TEXT') txt.value = '';
+    }
+    function fuOnTemplateBodyInput() {
+        const ta = document.getElementById('fu-submit-body');
+        const cnt = document.getElementById('fu-submit-body-count');
+        if (cnt && ta) cnt.textContent = `(${ta.value.length} / 1024)`;
+        fuRebuildVarSamples();
+        fuRenderTemplatePreview();
+    }
+    function fuOnTemplateFooterInput() {
+        const inp = document.getElementById('fu-submit-footer');
+        const cnt = document.getElementById('fu-submit-footer-count');
+        if (cnt && inp) cnt.textContent = `(${inp.value.length} / 60)`;
+        fuRenderTemplatePreview();
+    }
+    function fuDetectVars(body) {
+        const matches = String(body || '').match(/\{\{(\d+)\}\}/g) || [];
+        const nums = [...new Set(matches.map(m => parseInt(m.replace(/[^\d]/g, ''), 10)))].sort((a, b) => a - b);
+        return nums;
+    }
+    function fuRebuildVarSamples() {
+        const body = document.getElementById('fu-submit-body')?.value || '';
+        const nums = fuDetectVars(body);
+        const wrap = document.getElementById('fu-submit-vars-wrap');
+        const list = document.getElementById('fu-submit-vars');
+        if (!wrap || !list) return;
+        if (nums.length === 0) { wrap.style.display = 'none'; list.innerHTML = ''; return; }
+        wrap.style.display = 'block';
+        const existing = {};
+        list.querySelectorAll('input[data-var]').forEach(i => { existing[i.dataset.var] = i.value; });
+        list.innerHTML = nums.map(n =>
+            `<input type="text" data-var="${n}" placeholder="{{${n}}} sample" value="${fuEscapeHtml(existing[n] || '')}" oninput="fuRenderTemplatePreview()" style="flex:1;min-width:120px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);color:var(--text-color);border-radius:8px;padding:6px 10px;">`
+        ).join('');
+    }
+    function fuAddTemplateButton() {
+        const wrap = document.getElementById('fu-submit-buttons');
+        if (!wrap) return;
+        if (wrap.children.length >= 3) return showToast('Max 3 buttons', 'error');
+        const idx = wrap.children.length;
+        const row = document.createElement('div');
+        row.className = 'fu-tpl-btn-row';
+        row.style.cssText = 'display:flex;gap:6px;';
+        row.innerHTML = `
+            <select data-tpl-btn-type onchange="fuRenderTemplatePreview()" style="background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);color:var(--text-color);border-radius:8px;padding:6px;">
+                <option value="QUICK_REPLY">Quick reply</option>
+                <option value="URL">URL</option>
+                <option value="PHONE_NUMBER">Phone</option>
+            </select>
+            <input type="text" data-tpl-btn-text placeholder="Button text" maxlength="25" oninput="fuRenderTemplatePreview()" style="flex:1;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);color:var(--text-color);border-radius:8px;padding:6px 10px;">
+            <input type="text" data-tpl-btn-value placeholder="URL or +9665..." oninput="fuRenderTemplatePreview()" style="flex:1;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);color:var(--text-color);border-radius:8px;padding:6px 10px;">
+            <button type="button" class="pill-btn" onclick="this.parentElement.remove();fuRenderTemplatePreview()" aria-label="remove">×</button>
+        `;
+        wrap.appendChild(row);
+        fuRenderTemplatePreview();
+    }
+    function fuCollectButtons() {
+        const rows = Array.from(document.querySelectorAll('#fu-submit-buttons .fu-tpl-btn-row'));
+        return rows.map(r => ({
+            type: r.querySelector('[data-tpl-btn-type]')?.value || 'QUICK_REPLY',
+            text: (r.querySelector('[data-tpl-btn-text]')?.value || '').trim(),
+            value: (r.querySelector('[data-tpl-btn-value]')?.value || '').trim()
+        })).filter(b => b.text);
+    }
+    function fuCollectVarSamples() {
+        return Array.from(document.querySelectorAll('#fu-submit-vars input[data-var]')).map(i => ({ index: parseInt(i.dataset.var, 10), value: i.value }));
+    }
+    function fuRenderTemplatePreview() {
+        const out = document.getElementById('fu-submit-preview'); if (!out) return;
+        const ht = document.getElementById('fu-submit-header-type')?.value || 'NONE';
+        const hx = document.getElementById('fu-submit-header-text')?.value || '';
+        let body = document.getElementById('fu-submit-body')?.value || '';
+        const ft = document.getElementById('fu-submit-footer')?.value || '';
+        const samples = fuCollectVarSamples();
+        samples.forEach(s => { body = body.replace(new RegExp(`\\{\\{${s.index}\\}\\}`, 'g'), s.value || `{{${s.index}}}`); });
+        const btns = fuCollectButtons();
+        out.innerHTML = `
+            <div class="fu-tpl-preview-bubble">
+                ${ht === 'TEXT' && hx ? `<div class="fu-tpl-prev-header">${fuEscapeHtml(hx)}</div>` : ''}
+                <div class="fu-tpl-prev-body">${fuEscapeHtml(body).replace(/\n/g, '<br>')}</div>
+                ${ft ? `<div class="fu-tpl-prev-footer">${fuEscapeHtml(ft)}</div>` : ''}
+            </div>
+            ${btns.length ? `<div class="fu-tpl-prev-buttons">${btns.map(b => `<div class="fu-tpl-prev-btn">${fuEscapeHtml(b.text)}</div>`).join('')}</div>` : ''}
+        `;
+    }
+
     async function fuSubmitTemplate() {
         if (!currentUserOrgId) return;
         const name = (document.getElementById('fu-submit-name')?.value || '').trim();
         const lang = (document.getElementById('fu-submit-lang')?.value || '').trim();
+        const category = (document.getElementById('fu-submit-category')?.value || 'UTILITY').trim();
         const body = (document.getElementById('fu-submit-body')?.value || '').trim();
+        const headerType = document.getElementById('fu-submit-header-type')?.value || 'NONE';
+        const headerText = (document.getElementById('fu-submit-header-text')?.value || '').trim();
+        const footer = (document.getElementById('fu-submit-footer')?.value || '').trim();
+        const buttons = fuCollectButtons();
+        const samples = fuCollectVarSamples();
         if (!name || !lang || !body) return showToast(fuSafeT('followups.template_submit_missing', currentLang === 'ar' ? 'املأ الحقول المطلوبة' : 'Fill required fields'), 'error');
+        if (!/^[a-z0-9_]+$/.test(name)) return showToast(currentLang === 'ar' ? 'اسم القالب: حروف صغيرة وأرقام و _ فقط' : 'Template name: lowercase, digits, underscore only', 'error');
         try {
-            const { error } = await supabaseClient.from('whatsapp_template_submissions').insert([{
+            const payload = {
                 org_id: currentUserOrgId,
                 template_name: name,
                 template_language: lang,
-                body: body,
+                category,
+                body,
+                header_type: headerType === 'NONE' ? null : headerType,
+                header_text: headerType === 'TEXT' ? headerText : null,
+                footer_text: footer || null,
+                buttons: buttons.length ? buttons : null,
+                variable_samples: samples.length ? samples : null,
                 status: 'pending',
                 submitted_at: new Date().toISOString()
-            }]);
+            };
+            const { data: ins, error } = await supabaseClient.from('whatsapp_template_submissions').insert([payload]).select().single();
             if (error) throw error;
-            document.getElementById('fu-submit-body').value = '';
+            try {
+                await fetch(`${window.FU_N8N_BASE_URL}/webhook/wa-template-submit`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ submission_id: ins?.id, ...payload })
+                });
+            } catch (whErr) { console.warn('wa-template-submit webhook', whErr); }
+            ['fu-submit-name', 'fu-submit-body', 'fu-submit-header-text', 'fu-submit-footer'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            const btnsWrap = document.getElementById('fu-submit-buttons'); if (btnsWrap) btnsWrap.innerHTML = '';
+            fuRebuildVarSamples(); fuRenderTemplatePreview();
             showToast(fuSafeT('followups.template_submit_ok', currentLang === 'ar' ? 'تم إرسال الطلب' : 'Submission created'), 'success');
             fuLoadTemplatePolicy();
         } catch (e) { console.warn(e); showToast('Error', 'error'); }
