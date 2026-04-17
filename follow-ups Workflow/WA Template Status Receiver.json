@@ -1,0 +1,1095 @@
+{
+  "name": "WA Template Status Receiver",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wa-template-submit",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "74ce9c8e-e4b6-4099-838d-8a7cb1f3c08a",
+      "name": "Template Submit Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -6512,
+        656
+      ],
+      "webhookId": "c754e0ee-8aba-46cb-915c-f08d54f2bdc1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst payload = $json ?? {};\nconst body = (payload.body && typeof payload.body === 'object') ? payload.body : payload;\n\nconst orgId        = String(body.org_id        || '').trim();\nconst submissionId = String(body.submission_id || '').trim();\nconst rawName      = String(body.template_name || '').trim();\nconst templateName = rawName.toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/^_+|_+$/g, '');\nconst templateLang = String(body.template_language || '').trim();\nconst category     = String(body.category     || '').trim().toUpperCase();\nconst bodyText     = String(body.body_text || body.body || '').trim();\nconst headerType   = String(body.header_type  || 'none').trim().toLowerCase();\nconst headerText   = String(body.header_text  || '').trim();\nconst footerText   = String(body.footer_text  || '').trim();\nconst buttons      = Array.isArray(body.buttons) ? body.buttons : null;\nconst varSamples   = (body.variable_samples && typeof body.variable_samples === 'object') ? body.variable_samples : null;\n\nconst errors = [];\nif (!orgId)        errors.push('missing_org_id');\nif (!templateName) errors.push('missing_template_name');\nif (!templateLang) errors.push('missing_template_language');\nif (!['MARKETING','UTILITY','AUTHENTICATION'].includes(category)) errors.push('invalid_category: must be MARKETING, UTILITY, or AUTHENTICATION');\nif (!bodyText)     errors.push('missing_body_text');\nif (!submissionId) errors.push('missing_submission_id');\n\nreturn [{ json: {\n  valid: errors.length === 0,\n  validation_error: errors.length ? errors.join(' | ') : null,\n  org_id: orgId,\n  submission_id: submissionId,\n  template_name: templateName,\n  template_language: templateLang,\n  category: category,\n  body_text: bodyText,\n  header_type: headerType,\n  header_text: headerText,\n  footer_text: footerText,\n  buttons: buttons,\n  variable_samples: varSamples,\n  now_iso: new Date().toISOString()\n}}];\n"
+      },
+      "id": "15a25dff-6d17-44f7-b0a4-d44f26101c98",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6288,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "org_channel_accounts",
+        "limit": 1,
+        "filterType": "string",
+        "filterString": "={{ 'org_id=eq.' + encodeURIComponent($json.org_id) + '&platform=eq.whatsapp&is_active=eq.true&order=created_at.asc' }}"
+      },
+      "id": "d172e2a5-6350-46d7-83b3-a5c726baeaa1",
+      "name": "Load WhatsApp Account",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -6064,
+        656
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst input = $('Normalize Input').item.json;\nconst accountRows = $input.all().map(i => i.json).filter(r => r && r.id);\nconst account = accountRows[0] || null;\n\nif (!account) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'no_active_whatsapp_channel_account_found_for_this_org' }}];\n}\n\nconst wabaId      = account.waba_id || account.external_account_id || null;\nconst accessToken = account.access_token || null;\n\nif (!wabaId) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'waba_id_missing_in_org_channel_accounts — add waba_id column or ensure external_account_id is the WABA ID' }}];\n}\nif (!accessToken) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'access_token_missing_in_org_channel_accounts — system user token required' }}];\n}\n\n// Build Meta components array\nconst components = [];\n\n// HEADER (optional)\nif (input.header_type && input.header_type !== 'none') {\n  const fmt = input.header_type.toUpperCase();\n  const hdr = { type: 'HEADER', format: fmt };\n  if (fmt === 'TEXT' && input.header_text) {\n    hdr.text = input.header_text;\n    if (/\\{\\{1\\}\\}/.test(input.header_text)) {\n      hdr.example = { header_text: ['Sample value'] };\n    }\n  }\n  components.push(hdr);\n}\n\n// BODY (required)\nconst bodyComp = { type: 'BODY', text: input.body_text };\nconst samples = input.variable_samples || {};\nconst varNums = [...new Set(\n  (input.body_text.match(/\\{\\{(\\d+)\\}\\}/g) || []).map(m => parseInt(m.replace(/\\D/g,''), 10))\n)].sort((a,b) => a-b);\n\nif (varNums.length > 0) {\n  const exampleRow = varNums.map(n => String(samples[n] || samples[String(n)] || `sample_${n}`));\n  bodyComp.example = { body_text: [exampleRow] };\n}\ncomponents.push(bodyComp);\n\n// FOOTER (optional)\nif (input.footer_text) {\n  components.push({ type: 'FOOTER', text: input.footer_text });\n}\n\n// BUTTONS (optional)\nif (Array.isArray(input.buttons) && input.buttons.length > 0) {\n  const metaBtns = input.buttons\n    .filter(b => b && b.text)\n    .slice(0, 3)\n    .map(b => {\n      const btn = { type: b.type || 'QUICK_REPLY', text: String(b.text).slice(0, 25) };\n      if (btn.type === 'URL'          && b.value) btn.url          = b.value;\n      if (btn.type === 'PHONE_NUMBER' && b.value) btn.phone_number = b.value;\n      return btn;\n    });\n  if (metaBtns.length) components.push({ type: 'BUTTONS', buttons: metaBtns });\n}\n\nconst metaBody = {\n  name: input.template_name,\n  language: input.template_language,\n  category: input.category,\n  components: components\n};\n\nreturn [{ json: {\n  ...input,\n  submission_valid: true,\n  waba_id: wabaId,\n  access_token: accessToken,\n  org_channel_account_id: account.id,\n  components: components,\n  meta_request_body: metaBody,\n  meta_api_url: 'https://graph.facebook.com/v23.0/' + wabaId + '/message_templates'\n}}];\n"
+      },
+      "id": "06434eca-d249-433e-998f-64f783883e36",
+      "name": "Build Submission Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5840,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bef089a6-9cdb-4139-8340-0754e520b679",
+              "leftValue": "={{ String($json.submission_valid) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b272b733-c424-489f-84c8-cc13576e1556",
+      "name": "Input Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -5616,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.meta_api_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.meta_request_body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "ed2747a3-e084-4031-95be-34c259308960",
+      "name": "Submit to Meta API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -5392,
+        560
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst ctx = $('Build Submission Context').item.json;\nconst raw = $input.all()[0]?.json || {};\nconst statusCode = raw.statusCode ?? 200;\nconst body = raw.body ?? raw;\n\n// Meta success response contains { id, status, category, name, language, ... }\nconst metaId     = body.id ? String(body.id) : null;\nconst metaStatus = body.status ? String(body.status).toLowerCase() : null;\nconst success    = statusCode >= 200 && statusCode < 300 && !!metaId && !body.error;\n\nlet errMsg = null;\nif (!success) {\n  if (body.error) {\n    errMsg = body.error.error_user_msg || body.error.message || JSON.stringify(body.error);\n  } else {\n    errMsg = `HTTP_${statusCode}: template creation failed`;\n  }\n}\n\nreturn [{ json: {\n  ...ctx,\n  meta_success: success,\n  meta_template_id: metaId,\n  meta_status: metaStatus || (success ? 'pending' : null),\n  meta_response: body,\n  meta_error: errMsg\n}}];\n"
+      },
+      "id": "8bfbca5f-3e0b-4936-bbdd-3da65b426559",
+      "name": "Interpret Meta Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5168,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6b0c78bb-3561-4201-9192-93957dd22171",
+              "leftValue": "={{ String($json.meta_success) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "860f1ac1-7450-49de-a628-3ddda9252a86",
+      "name": "Meta Call Succeeded?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -4944,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "whatsapp_message_templates"
+      },
+      "id": "8fc8351c-083c-471d-a632-e1779d858350",
+      "name": "Insert Template Record",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        464
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "whatsapp_template_submissions",
+        "filterType": "string",
+        "filterString": "={{ 'id=eq.' + encodeURIComponent($('Interpret Meta Response').item.json.submission_id) }}"
+      },
+      "id": "3ed05dcf-c635-446e-a5da-726a424e4719",
+      "name": "Mark Submission Submitted",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4496,
+        464
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ success: true, meta_template_id: $('Interpret Meta Response').item.json.meta_template_id, status: 'pending', message: 'Template submitted to Meta for review. Status will update automatically.' }) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "3189bade-b22b-432a-80f9-f31e117a06cb",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -4272,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "whatsapp_template_submissions",
+        "filterType": "string",
+        "filterString": "={{ 'id=eq.' + encodeURIComponent($json.submission_id) }}"
+      },
+      "id": "f7498a21-672a-49ca-95f2-3adb29ae9cb2",
+      "name": "Mark Submission Failed",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        656
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ success: false, error: $json.meta_error }) }}",
+        "options": {
+          "responseCode": 422,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5878803c-270d-4f5a-998b-f1c28f757807",
+      "name": "Respond Meta Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -4496,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ success: false, error: $('Normalize Input').item.json.validation_error || $('Build Submission Context').item.json.submission_error }) }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "cb05b424-7197-4d81-95bf-c01f0c476047",
+      "name": "Respond Validation Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -5392,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wa-template-status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "7b798673-0e25-4fe3-92dc-3b77685c24e2",
+      "name": "Meta Status Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -6512,
+        48
+      ],
+      "webhookId": "02bdf464-a7f9-4369-9fb1-cb98985c503d"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n// For GET verification requests, Meta sends query params: hub.mode, hub.verify_token, hub.challenge\n// For POST events, Meta sends JSON body with entry array\nconst q = $query || {};\nconst hubMode      = q['hub.mode']         || q.hub_mode        || '';\nconst hubChallenge = q['hub.challenge']    || q.hub_challenge   || '';\nconst hubVerify    = q['hub.verify_token'] || q.hub_verify_token || '';\n\nif (hubMode === 'subscribe' || hubChallenge) {\n  return [{ json: {\n    is_verification: true,\n    hub_challenge:    hubChallenge,\n    hub_verify_token: hubVerify\n  }}];\n}\n\n// POST event — parse Meta webhook payload\nconst body = $json || {};\nconst entries = Array.isArray(body.entry) ? body.entry : [];\n\nlet change = null;\nlet eventWabaId = null;\n\nfor (const entry of entries) {\n  eventWabaId = entry.id || null;\n  for (const ch of (entry.changes || [])) {\n    if (ch.field === 'message_template_status_update') {\n      const v = ch.value || {};\n      change = {\n        event:              String(v.event || '').toUpperCase(),\n        meta_template_id:   v.message_template_id ? String(v.message_template_id) : null,\n        template_name:      v.message_template_name      || null,\n        template_language:  v.message_template_language  || null,\n        reason:             v.reason                     || null,\n        waba_id:            eventWabaId\n      };\n      break;\n    }\n  }\n  if (change) break;\n}\n\nreturn [{ json: {\n  is_verification:     false,\n  has_template_change: change !== null,\n  template_change:     change\n}}];\n"
+      },
+      "id": "14286b02-2e7d-441b-967b-84dbf1b014ec",
+      "name": "Detect Request Type",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6288,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ddf3682b-001e-477f-983b-343b886f0733",
+              "leftValue": "={{ String($json.is_verification) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e66c35ff-d8a2-424a-8270-cefca1763732",
+      "name": "Is Verification?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -6064,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.hub_challenge }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/plain"
+              }
+            ]
+          }
+        }
+      },
+      "id": "00c7d940-3fe5-4540-b077-b00042756d8f",
+      "name": "Respond Verification",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -5840,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5bddc5ce-036d-4dea-b20c-f8ce54406be7",
+              "leftValue": "={{ String($json.has_template_change) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "31685e43-ed25-452d-9277-10ca4626de35",
+      "name": "Has Template Change?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -5840,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({received: true, note: \"no_template_status_update_field\"}) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f69d2750-f5a8-4ccc-9ea0-a330d793ef7d",
+      "name": "Respond No Change",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -5616,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "whatsapp_message_templates",
+        "limit": 1,
+        "filterType": "string",
+        "filterString": "={{ 'meta_template_id=eq.' + encodeURIComponent($json.template_change.meta_template_id || '__none__') }}"
+      },
+      "id": "65f66faa-714d-4dda-b6f7-f0a93e2728ae",
+      "name": "Find Template by Meta ID",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -5616,
+        48
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "59de010f-ecb3-407a-a20c-f42a15b66a24",
+              "leftValue": "={{ String($input.all().filter(i => i.json && i.json.id).length > 0) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6a9daac2-9e01-4219-b9d4-8ba193cad0ca",
+      "name": "Template Found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -5392,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({received: true, note: \"template_not_in_db\"}) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "edec24ca-6493-4233-a668-d587f9b2d2b1",
+      "name": "Respond Template Not Found",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -5168,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst detected   = $('Detect Request Type').item.json;\nconst change     = detected.template_change || {};\nconst tplRows    = $input.all().map(i => i.json).filter(r => r && r.id);\nconst tpl        = tplRows[0] || null;\nconst now        = new Date().toISOString();\n\nconst event = String(change.event || '').toUpperCase();\n\n// Map Meta events to our status values\nconst statusMap = {\n  APPROVED:   'approved',\n  REJECTED:   'rejected',\n  DISABLED:   'rejected',\n  PAUSED:     'paused',\n  FLAGGED:    'flagged',\n  PENDING:    'pending',\n  IN_APPEAL:  'in_appeal',\n  REINSTATED: 'approved'\n};\nconst newStatus = statusMap[event] || 'pending';\n\n// Build notification data\nconst isApproved = newStatus === 'approved';\nconst isRejected = ['rejected', 'paused', 'flagged'].includes(newStatus);\n\nlet notifEventKey = null;\nlet notifTitle    = null;\nlet notifMessage  = null;\nif (isApproved) {\n  notifEventKey = 'template_approved';\n  notifTitle    = 'WhatsApp template approved';\n  notifMessage  = `Template \"${change.template_name}\" has been approved by Meta and is ready to use.`;\n} else if (isRejected) {\n  notifEventKey = 'template_rejected';\n  notifTitle    = 'WhatsApp template rejected';\n  notifMessage  = `Template \"${change.template_name}\" was rejected by Meta.` + (change.reason ? ` Reason: ${change.reason}` : '');\n}\n\nreturn [{ json: {\n  template_db_id:      tpl?.id          || null,\n  org_id:              tpl?.org_id      || null,\n  template_name:       change.template_name     || tpl?.name     || null,\n  template_language:   change.template_language || tpl?.language || null,\n  meta_template_id:    change.meta_template_id  || null,\n  new_status:          newStatus,\n  is_approved:         isApproved,\n  is_terminal:         isApproved || isRejected,\n  should_notify:       isApproved || isRejected,\n  rejection_reason:    change.reason || null,\n  notif_event_key:     notifEventKey,\n  notif_title:         notifTitle,\n  notif_message:       notifMessage,\n  notif_payload: {\n    template_name:     change.template_name,\n    template_language: change.template_language,\n    status:            newStatus,\n    meta_template_id:  change.meta_template_id,\n    entity:            'whatsapp_template'\n  },\n  now_iso: now\n}}];\n"
+      },
+      "id": "372116a2-1a6e-4615-8a55-3a08a6dae19e",
+      "name": "Process Status Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5168,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "whatsapp_message_templates",
+        "filterType": "string",
+        "filterString": "={{ 'id=eq.' + encodeURIComponent($json.template_db_id) }}"
+      },
+      "id": "16664b0f-6f5e-4cb4-8226-8832a4834676",
+      "name": "Update Template Status",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4944,
+        -64
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "whatsapp_template_submissions",
+        "filterType": "string",
+        "filterString": "={{ 'template_name=eq.' + encodeURIComponent($json.template_name || '') + '&template_language=eq.' + encodeURIComponent($json.template_language || '') + '&org_id=eq.' + encodeURIComponent($json.org_id || '') }}"
+      },
+      "id": "5324abb1-2592-4393-acda-a2624bd69c5a",
+      "name": "Update Submission Status",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        -64
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "followup_settings",
+        "limit": 1,
+        "filterType": "string",
+        "filterString": "={{ 'org_id=eq.' + encodeURIComponent($json.org_id || '__none__') }}"
+      },
+      "id": "00cac700-033c-42e3-bdc6-91f36b73d8e2",
+      "name": "Load Followup Settings",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4496,
+        -64
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\n// Load followup_settings to see if this template is the assigned follow-up template\n// and whether notifications are enabled\nconst ctx          = $('Process Status Update').item.json;\nconst settingsRows = $input.all().map(i => i.json).filter(r => r && (r.id || r.org_id));\nconst settings     = settingsRows[0] || null;\n\nconst assignedName = settings?.whatsapp_template_name     || null;\nconst assignedLang = settings?.whatsapp_template_language || null;\nconst isAssigned   = assignedName && assignedLang &&\n  String(assignedName).toLowerCase() === String(ctx.template_name || '').toLowerCase() &&\n  String(assignedLang).toLowerCase() === String(ctx.template_language || '').toLowerCase();\n\nconst notifApproved = settings?.notification_on_template_approved !== false;\nconst notifRejected = settings?.notification_on_template_rejected !== false;\n\nconst shouldNotify = ctx.should_notify &&\n  ((ctx.is_approved && notifApproved) || (!ctx.is_approved && notifRejected));\n\nreturn [{ json: {\n  ...ctx,\n  is_assigned_followup_template: isAssigned,\n  should_update_followup_settings: isAssigned,\n  should_create_notification: shouldNotify\n}}];\n"
+      },
+      "id": "a3aef7f7-6b95-4b03-8440-36487a765a69",
+      "name": "Check Settings and Notify",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4272,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "followup_settings",
+        "filterType": "string",
+        "filterString": "={{ 'org_id=eq.' + encodeURIComponent($json.org_id || '') }}"
+      },
+      "id": "c4b50c2c-533f-469f-8078-f87a040fc37a",
+      "name": "Update Followup Settings Status",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4048,
+        -64
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "be20c696-6745-4b2c-b48f-f11ab37ee965",
+              "leftValue": "={{ String($json.should_create_notification) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "93e1a7d3-993a-48c3-95ff-19f62ab005a5",
+      "name": "Should Create Notification?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3824,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "notifications"
+      },
+      "id": "fdc21cb4-52d3-4c53-bc21-5e70720dd80e",
+      "name": "Create Template Notification",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3600,
+        -128
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "z847CjHeGhdoNe6y",
+          "name": "digitivia AI agent supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({received: true, status_updated: $json.new_status}) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "d628994b-cbe1-4f2f-8931-81fff715492f",
+      "name": "Respond Event OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -3376,
+        -64
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Template Submit Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Input": {
+      "main": [
+        [
+          {
+            "node": "Load WhatsApp Account",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load WhatsApp Account": {
+      "main": [
+        [
+          {
+            "node": "Build Submission Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Submission Context": {
+      "main": [
+        [
+          {
+            "node": "Input Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Valid?": {
+      "main": [
+        [
+          {
+            "node": "Submit to Meta API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Validation Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit to Meta API": {
+      "main": [
+        [
+          {
+            "node": "Interpret Meta Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interpret Meta Response": {
+      "main": [
+        [
+          {
+            "node": "Meta Call Succeeded?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meta Call Succeeded?": {
+      "main": [
+        [
+          {
+            "node": "Insert Template Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Submission Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Template Record": {
+      "main": [
+        [
+          {
+            "node": "Mark Submission Submitted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Submission Submitted": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Submission Failed": {
+      "main": [
+        [
+          {
+            "node": "Respond Meta Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meta Status Webhook": {
+      "main": [
+        [
+          {
+            "node": "Detect Request Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Request Type": {
+      "main": [
+        [
+          {
+            "node": "Is Verification?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Verification?": {
+      "main": [
+        [
+          {
+            "node": "Respond Verification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has Template Change?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Template Change?": {
+      "main": [
+        [
+          {
+            "node": "Find Template by Meta ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond No Change",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Template by Meta ID": {
+      "main": [
+        [
+          {
+            "node": "Template Found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Template Found?": {
+      "main": [
+        [
+          {
+            "node": "Process Status Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Template Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Status Update": {
+      "main": [
+        [
+          {
+            "node": "Update Template Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Template Status": {
+      "main": [
+        [
+          {
+            "node": "Update Submission Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Submission Status": {
+      "main": [
+        [
+          {
+            "node": "Load Followup Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Followup Settings": {
+      "main": [
+        [
+          {
+            "node": "Check Settings and Notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Settings and Notify": {
+      "main": [
+        [
+          {
+            "node": "Update Followup Settings Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Followup Settings Status": {
+      "main": [
+        [
+          {
+            "node": "Should Create Notification?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Should Create Notification?": {
+      "main": [
+        [
+          {
+            "node": "Create Template Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Event OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Template Notification": {
+      "main": [
+        [
+          {
+            "node": "Respond Event OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b0822490-e63a-4347-9538-59a860c54d1b",
+  "meta": {
+    "instanceId": "fe981de90885f0d8a56f8e4f927b3ee33d1f994a1f11c74c559401477c4f2136"
+  },
+  "id": "vZG6AL6r7ad7AiY3",
+  "tags": []
+}
