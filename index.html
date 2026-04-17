@@ -42963,7 +42963,7 @@ Thank you for shopping with {store_name}!</textarea>
         document.getElementById(`fu-${tabName}-panel`)?.classList.add('active');
         fuLoadCurrentTab();
     }
-    async function fuInit() { if (!fuIsInitialized) { fuIsInitialized = true; try { fuStartPolling(); } catch (e) {} } fuLoadCurrentTab(); }
+    async function fuInit() { if (!fuIsInitialized) { fuIsInitialized = true; try { fuStartPolling(); } catch (e) {} } if (!currentUserOrgId) { setTimeout(function(){ try { fuLoadCurrentTab(); } catch(e){} }, 900); return; } fuLoadCurrentTab(); }
     function fuLoadCurrentTab() {
         if (fuCurrentSubtab === 'config') fuLoadSettings();
         else if (fuCurrentSubtab === 'template') fuLoadTemplatePolicy();
