@@ -682,7 +682,17 @@
                 "create_btn": "+ Create Follow-up",
                 "search_contact": "Search contact...",
                 "loading_queue": "Loading queue...",
-                "config_enable": "Enable Automations",
+                "config_enable": "Enable Follow-ups",
+                "tip_enable": "Master switch. Off = scheduler stops creating new follow-up tasks for this org.",
+                "tip_message": "Default outbound text per channel + language. Used when no template is required.",
+                "tip_delay": "Wait time after the latest customer reply before the follow-up fires.",
+                "tip_max": "Cap on follow-ups per conversation across its lifetime.",
+                "tip_business_hours": "Defer the send to your business window if it falls outside.",
+                "tip_template_required": "WhatsApp blocks freeform after 24h — switch to an approved template instead.",
+                "tip_channel_tab": "Edit the message used for this channel.",
+                "tip_lang_tab": "Edit the message in this language.",
+                "tip_refresh": "Reload the current panel from the server.",
+                "tip_bell": "Template approvals + follow-up notifications.",
                 "config_message_template": "Message Template",
                 "config_lang_en": "English",
                 "config_lang_ar": "Arabic",
@@ -709,7 +719,7 @@
                 "toast_task_created": "Follow-up created",
                 "empty_title": "No Scheduled Tasks",
                 "empty_text": "When your agents schedule callbacks or followups, they will appear here.",
-                "btn_setup": "Set Up Automations",
+                "btn_setup": "Set Up Follow-ups",
                 "config_timing_title": "Timing",
                 "config_delay_label": "Default delay",
                 "timing_custom": "Custom",
@@ -741,7 +751,7 @@
                 "template_assigned_title": "Assigned template",
                 "template_assigned_hint": "This template is used automatically whenever a follow-up is scheduled to fire more than 24 hours after the latest customer message.",
                 "template_available_title": "Available approved templates",
-                "template_available_hint": "Templates synced from WhatsApp Business. Pick one to assign it to the automation.",
+                "template_available_hint": "Templates synced from WhatsApp Business. Pick one to assign it to the follow-up.",
                 "template_submit_title": "Submit a new template",
                 "template_submit_hint": "If no approved template exists yet, open a submission request. The WhatsApp team reviews and updates the status.",
                 "template_submit_body": "Body",
@@ -1847,7 +1857,17 @@
                 "create_btn": "+ إنشاء متابعة",
                 "search_contact": "ابحث عن جهة اتصال...",
                 "loading_queue": "جاري تحميل الطابور...",
-                "config_enable": "تفعيل الأتمتة",
+                "config_enable": "تفعيل المتابعات",
+                "tip_enable": "مفتاح رئيسي. عند الإيقاف، لا تُنشأ مهام متابعة جديدة لهذه المؤسسة.",
+                "tip_message": "النص الافتراضي لكل قناة ولغة. يُستخدم عندما لا يلزم قالب.",
+                "tip_delay": "مدة الانتظار بعد آخر رد من العميل قبل إرسال المتابعة.",
+                "tip_max": "الحد الأقصى لعدد المتابعات لكل محادثة.",
+                "tip_business_hours": "تأجيل الإرسال إلى وقت العمل إن كان خارجه.",
+                "tip_template_required": "واتساب يمنع الإرسال الحر بعد 24 ساعة — استخدم قالبًا معتمدًا.",
+                "tip_channel_tab": "تعديل الرسالة لهذه القناة.",
+                "tip_lang_tab": "تعديل الرسالة بهذه اللغة.",
+                "tip_refresh": "إعادة تحميل اللوحة الحالية من الخادم.",
+                "tip_bell": "إشعارات اعتماد القوالب والمتابعات.",
                 "config_message_template": "قالب الرسالة",
                 "config_lang_en": "English",
                 "config_lang_ar": "العربية",
@@ -1874,7 +1894,7 @@
                 "toast_task_created": "تم إنشاء المتابعة",
                 "empty_title": "لا توجد مهام مجدولة",
                 "empty_text": "عندما يقوم الوكلاء بجدولة مكالمات أو متابعات، ستظهر هنا.",
-                "btn_setup": "إعداد الأتمتة",
+                "btn_setup": "إعداد المتابعات",
                 "config_timing_title": "التوقيت",
                 "config_delay_label": "التأخير الافتراضي",
                 "timing_custom": "مخصّص",
@@ -1906,7 +1926,7 @@
                 "template_assigned_title": "القالب المخصّص",
                 "template_assigned_hint": "يُستخدم هذا القالب تلقائيًا عندما تُجدول متابعة لتُرسل بعد أكثر من 24 ساعة من آخر رسالة من العميل.",
                 "template_available_title": "القوالب المعتمدة المتاحة",
-                "template_available_hint": "قوالب متزامنة من واتساب للأعمال. اختر واحدًا لتخصيصه للأتمتة.",
+                "template_available_hint": "قوالب متزامنة من واتساب للأعمال. اختر واحدًا لربطه بالمتابعة.",
                 "template_submit_title": "إرسال قالب جديد",
                 "template_submit_hint": "إذا لم يوجد قالب معتمد بعد، افتح طلب إرسال ليراجعه فريق واتساب.",
                 "template_submit_body": "النص",
@@ -2435,7 +2455,7 @@
             tab_permissions: "Permissions",
             perm_group_crm: "CRM",
             perm_group_tasks: "Task Manager",
-            perm_group_followups: "Automation",
+            perm_group_followups: "Follow-ups",
             perm_group_inbox: "Inbox",
             perm_group_insights: "Insights",
             perm_group_orders: "Orders",
@@ -3054,7 +3074,7 @@
             tab_permissions: "الصلاحيات",
             perm_group_crm: "إدارة العملاء",
             perm_group_tasks: "مدير المهام",
-            perm_group_followups: "الأتمتة",
+            perm_group_followups: "المتابعات",
             perm_group_inbox: "البريد الوارد",
             perm_group_insights: "التحليلات",
             perm_group_orders: "الطلبات",
@@ -4164,6 +4184,7 @@
             border-radius: 12px 12px 12px 2px; max-width: 320px;
             box-shadow: 0 1px 2px rgba(0,0,0,.15); font-size: 13px;
         }
+        [dir="rtl"] .fu-tpl-preview-bubble { border-radius: 12px 12px 2px 12px; }
         html[data-theme="dark"] .fu-tpl-preview-bubble,
         body.dark .fu-tpl-preview-bubble { background: #056162; color: #f1f1f1; }
         .fu-tpl-prev-header { font-weight: 700; margin-bottom: 4px; }
@@ -4186,23 +4207,50 @@
             cursor: pointer; font-size: 11px; padding: 0; margin-inline-start: 4px;
         }
         .fu-log-row { display: grid; grid-template-columns: 1.2fr .8fr 1.2fr 2fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 13px; }
+        .fu-log-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 999px; padding: 3px 10px; font-size: 12px; margin: 2px 4px 2px 0; max-width: 100%; }
+        .fu-log-chip b { font-weight: 600; opacity: .65; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; margin-inline-end: 2px; }
+        .fu-log-chip-val { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+        .fu-log-raw-toggle { background: transparent; border: 1px dashed rgba(255,255,255,.18); color: var(--text-secondary, #9ca3af); font-size: 11px; padding: 2px 8px; border-radius: 6px; cursor: pointer; margin-inline-start: 6px; }
+        .fu-log-raw { display: none; margin-top: 6px; padding: 8px; background: rgba(0,0,0,.25); border-radius: 6px; font-family: ui-monospace, monospace; font-size: 11px; color: #c7d2fe; white-space: pre-wrap; word-break: break-all; }
+        .fu-log-raw.open { display: block; }
         @media (max-width: 768px) {
             .fu-log-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 12px; background: rgba(255,255,255,.03); border-radius: 8px; margin-bottom: 6px; border-bottom: none; }
-            .fu-subtabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+            .fu-subtabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .fu-subtabs::-webkit-scrollbar { display: none; }
             .fu-subtab { white-space: nowrap; }
             .fu-template-layout { grid-template-columns: 1fr !important; }
             .fu-field-row { flex-direction: column; gap: 8px; }
             .fu-header { flex-direction: column; align-items: stretch !important; gap: 10px; }
+            .fu-msg-channel-tabs, .fu-lang-tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .fu-msg-channel-tabs::-webkit-scrollbar, .fu-lang-tabs::-webkit-scrollbar { display: none; }
+            .fu-msg-channel-tab, .fu-lang-tab { white-space: nowrap; flex: 0 0 auto; min-height: 40px; padding-inline: 14px; }
+            .fu-delay-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+            .fu-delay-btn { flex: 0 0 auto; min-height: 36px; min-width: 56px; }
+            .fu-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+            .fu-setting-group { margin-bottom: 18px; }
+            .fu-config-card, .fu-preview-card { padding: 12px; border-radius: 12px; }
+            .fu-bell-dropdown { position: fixed !important; inset-inline: 8px !important; inset-block-start: 64px !important; width: auto !important; max-width: none !important; max-height: 70vh; overflow-y: auto; }
+            .fu-inline-field { width: 100%; }
+            .fu-inline-field input, .fu-inline-field select { width: 100%; min-height: 40px; }
+            .fu-filters { flex-direction: column; gap: 8px; }
+            .fu-filters > * { width: 100%; }
+            .fu-filters select, .fu-filters input { min-width: 0 !important; width: 100%; min-height: 40px; }
+            .fu-actions button, .fu-row .fu-actions button { min-height: 40px; padding-block: 10px; }
+        }
+        @media (max-width: 380px) {
+            .fu-header h2 { font-size: 1.1rem; }
+            .fu-subtitle { font-size: 0.78rem; }
+            .fu-delay-btn { min-width: 48px; padding-inline: 8px; font-size: 12px; }
         }
 
         .fu-bell-btn {
             position: relative; background: transparent; border: 1px solid rgba(255,255,255,.12);
-            color: var(--text-color); width: 38px; height: 38px; border-radius: 50%;
+            color: var(--text-color); width: 40px; height: 40px; border-radius: 50%;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
         }
         .fu-bell-btn:hover { background: rgba(255,255,255,.05); }
         .fu-bell-badge {
-            position: absolute; top: -4px; right: -4px;
+            position: absolute; inset-block-start: -4px; inset-inline-end: -4px;
             background: #e53935; color: #fff; min-width: 18px; height: 18px;
             border-radius: 9px; padding: 0 5px; font-size: 11px; font-weight: 700;
             display: inline-flex; align-items: center; justify-content: center;
@@ -4220,7 +4268,7 @@
         }
         .fu-bell-head button {
             background: transparent; border: none; color: var(--brand-primary, #5b6cff);
-            cursor: pointer; font-size: 12px;
+            cursor: pointer; font-size: 12px; padding: 6px 10px; min-height: 36px; border-radius: 6px;
         }
         .fu-bell-empty { padding: 24px; text-align: center; opacity: .6; font-size: 13px; }
         .fu-bell-list { display: flex; flex-direction: column; }
@@ -4228,16 +4276,16 @@
         .fu-bell-item.unread { background: rgba(91,108,255,.08); }
         .fu-bell-item-title { font-weight: 600; }
         .fu-bell-item-time { font-size: 11px; opacity: .6; margin-top: 2px; }
-        @media (max-width: 768px) {
-            .fu-bell-dropdown { width: calc(100vw - 24px); inset-inline-end: -8px; }
-        }
+        /* dropdown mobile sizing handled by earlier @media block via position:fixed */
 
         .fu-row-expandable { border-bottom: 1px solid rgba(255,255,255,.06); padding: 8px 0; }
         .fu-row-main { display: grid; grid-template-columns: 24px 1.5fr 1fr 1.4fr .8fr 1fr; align-items: center; gap: 8px; }
         .fu-row-toggle {
             background: transparent; border: none; color: var(--text-color);
             cursor: pointer; font-size: 14px; padding: 2px 4px;
+            min-width: 32px; min-height: 32px;
         }
+        @media (max-width: 768px) { .fu-row-toggle { min-width: 40px; min-height: 40px; } }
         .fu-row-details {
             margin-top: 8px; padding: 10px 12px;
             background: rgba(0,0,0,.18); border-radius: 8px;
@@ -4308,9 +4356,7 @@
             transform: translateX(16px);
         }
 
-        html[dir="rtl"] .fu-toggle input:checked + .fu-slider::before {
-            transform: translateX(-16px);
-        }
+        /* RTL toggle slider override consolidated into single rule below (line ~17222) */
 
         .fu-template-status-row {
             display: flex;
@@ -4450,6 +4496,8 @@
             border-radius: 8px;
             z-index: 100;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: min(96vw, 420px);
+            overflow: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -9088,6 +9136,19 @@
             background: rgba(16, 185, 129, 0.22);
             border: 1px solid rgba(52, 211, 153, 0.35);
             color: #d1fae5;
+        }
+
+        .msg-sender-badge.badge-followup {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(244, 114, 182, 0.22));
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            color: #fde68a;
+            gap: 4px;
+        }
+
+        .msg-sender-badge.badge-followup svg {
+            width: 11px;
+            height: 11px;
+            fill: currentColor;
         }
 
         /* --- Image Message Styles --- */
@@ -26390,6 +26451,16 @@
                     el.placeholder = translated;
                 }
             });
+
+            // Update title (tooltip) attributes
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                const translated = t(key);
+                if (translated && translated !== key) {
+                    el.setAttribute('title', translated);
+                    el.setAttribute('aria-label', translated);
+                }
+            });
         }
 
         // Initialize language on page load
@@ -29488,13 +29559,13 @@ Thank you for shopping with {store_name}!</textarea>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div class="fu-bell-wrap" id="fu-bell-wrap" style="position:relative;">
-                            <button class="fu-bell-btn" id="fu-bell-btn" onclick="fuToggleBell(event)" aria-label="Notifications">
+                            <button class="fu-bell-btn" id="fu-bell-btn" onclick="fuToggleBell(event)" aria-label="Notifications" data-i18n-title="followups.tip_bell" title="Template approvals + follow-up notifications.">
                                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                                 <span class="fu-bell-badge" id="fu-bell-badge" style="display:none;">0</span>
                             </button>
                             <div class="fu-bell-dropdown" id="fu-bell-dropdown" style="display:none;"></div>
                         </div>
-                        <button class="pill-btn primary" onclick="fuLoadCurrentTab()"><span data-i18n="followups.refresh_btn">⟳ Refresh</span></button>
+                        <button class="pill-btn primary" onclick="fuLoadCurrentTab()" data-i18n-title="followups.tip_refresh" title="Reload the current panel from the server."><span data-i18n="followups.refresh_btn">⟳ Refresh</span></button>
                     </div>
                 </div>
                 <div class="fu-subtabs">
@@ -29505,20 +29576,20 @@ Thank you for shopping with {store_name}!</textarea>
                 <div id="fu-config-panel" class="fu-panel active">
                     <div class="fu-config-layout">
                         <div class="fu-config-card">
-                            <div class="fu-setting-group">
-                                <span class="fu-label" data-i18n="followups.config_enable">Enable Automations</span>
+                            <div class="fu-setting-group" data-i18n-title="followups.tip_enable" title="Master switch. Off = scheduler stops creating new follow-up tasks for this org.">
+                                <span class="fu-label" data-i18n="followups.config_enable">Enable Follow-ups</span>
                                 <label class="fu-toggle"><input type="checkbox" id="fu-setting-enabled"><span class="fu-slider"></span></label>
                             </div>
                             <div class="fu-setting-group">
-                                <span class="fu-label" data-i18n="followups.config_message_template">Message Template</span>
+                                <span class="fu-label" data-i18n-title="followups.tip_message" data-i18n="followups.config_message_template" title="Default outbound text per channel + language.">Message Template</span>
                                 <div class="fu-msg-channel-tabs">
-                                    <button class="fu-msg-channel-tab active" id="fu-ctab-whatsapp" onclick="fuSwitchMessageChannel('whatsapp')">WhatsApp</button>
-                                    <button class="fu-msg-channel-tab" id="fu-ctab-instagram" onclick="fuSwitchMessageChannel('instagram')">Instagram</button>
-                                    <button class="fu-msg-channel-tab" id="fu-ctab-page" onclick="fuSwitchMessageChannel('page')">Messenger</button>
+                                    <button class="fu-msg-channel-tab active" id="fu-ctab-whatsapp" onclick="fuSwitchMessageChannel('whatsapp')" data-i18n-title="followups.tip_channel_tab" title="Edit the message used for this channel.">WhatsApp</button>
+                                    <button class="fu-msg-channel-tab" id="fu-ctab-instagram" onclick="fuSwitchMessageChannel('instagram')" data-i18n-title="followups.tip_channel_tab" title="Edit the message used for this channel.">Instagram</button>
+                                    <button class="fu-msg-channel-tab" id="fu-ctab-page" onclick="fuSwitchMessageChannel('page')" data-i18n-title="followups.tip_channel_tab" title="Edit the message used for this channel.">Messenger</button>
                                 </div>
                                 <div class="fu-lang-tabs">
-                                    <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en">English</button>
-                                    <button class="fu-lang-tab" id="fu-ltab-ar" onclick="fuSwitchMsgLang('ar')" data-i18n="followups.config_lang_ar">Arabic</button>
+                                    <button class="fu-lang-tab active" id="fu-ltab-en" onclick="fuSwitchMsgLang('en')" data-i18n="followups.config_lang_en" data-i18n-title="followups.tip_lang_tab" title="Edit the message in this language.">English</button>
+                                    <button class="fu-lang-tab" id="fu-ltab-ar" onclick="fuSwitchMsgLang('ar')" data-i18n="followups.config_lang_ar" data-i18n-title="followups.tip_lang_tab" title="Edit the message in this language.">Arabic</button>
                                 </div>
                                 <textarea id="fu-setting-message" class="fu-msg-textarea" oninput="fuUpdatePreview()" placeholder="Enter message..."></textarea>
                                 <textarea id="fu-setting-message-ar" class="fu-msg-textarea" style="display:none;" oninput="fuUpdatePreview()" dir="rtl" placeholder="اكتب الرسالة هنا..."></textarea>
@@ -29534,7 +29605,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <div class="fu-setting-group">
                                 <span class="fu-label" data-i18n="followups.config_timing_title">Timing</span>
                                 <div class="fu-field-row">
-                                    <div class="fu-inline-field fu-delay-presets-wrap">
+                                    <div class="fu-inline-field fu-delay-presets-wrap" data-i18n-title="followups.tip_delay" title="Wait time after the latest customer reply before the follow-up fires.">
                                         <span data-i18n="followups.config_delay_label">Default delay</span>
                                         <div class="fu-delay-presets" id="fu-delay-presets">
                                             <button type="button" class="fu-delay-btn" data-delay="30" onclick="fuPickDelay(30)">30m</button>
@@ -29550,12 +29621,12 @@ Thank you for shopping with {store_name}!</textarea>
                                         <input type="number" id="fu-setting-delay-custom" min="1" max="1440" placeholder="min" style="display:none;width:90px;margin-top:6px;" oninput="document.getElementById('fu-setting-delay').value=this.value;fuUpdateDelaySummary();">
                                         <div id="fu-delay-summary" class="fu-delay-summary" style="margin-top:6px;font-size:12px;opacity:.75;"></div>
                                     </div>
-                                    <label class="fu-inline-field">
+                                    <label class="fu-inline-field" data-i18n-title="followups.tip_max" title="Cap on follow-ups per conversation across its lifetime.">
                                         <span data-i18n="followups.config_max_label">Max per conversation</span>
                                         <input type="number" id="fu-setting-max" min="1" max="20" value="1">
                                     </label>
                                 </div>
-                                <label class="fu-toggle-row">
+                                <label class="fu-toggle-row" data-i18n-title="followups.tip_business_hours" title="Defer the send to your business window if it falls outside.">
                                     <span data-i18n="followups.config_bh_enable">Respect business hours</span>
                                     <label class="fu-toggle"><input type="checkbox" id="fu-setting-bh-enabled"><span class="fu-slider"></span></label>
                                 </label>
@@ -29573,7 +29644,7 @@ Thank you for shopping with {store_name}!</textarea>
                             <div class="fu-setting-group">
                                 <span class="fu-label" data-i18n="followups.config_template_title">WhatsApp 24-hour policy</span>
                                 <p class="fu-help-text" data-i18n="followups.config_template_hint">If a follow-up fires more than 24 hours after the latest inbound message, WhatsApp requires an approved template. Configure which template to use.</p>
-                                <label class="fu-toggle-row">
+                                <label class="fu-toggle-row" data-i18n-title="followups.tip_template_required" title="WhatsApp blocks freeform after 24h — switch to an approved template instead.">
                                     <span data-i18n="followups.config_template_required">Require approved template after 24h</span>
                                     <label class="fu-toggle"><input type="checkbox" id="fu-setting-template-required" checked><span class="fu-slider"></span></label>
                                 </label>
@@ -29693,7 +29764,7 @@ Thank you for shopping with {store_name}!</textarea>
                         </div>
                         <div class="fu-template-card">
                             <h3 class="fu-label" data-i18n="followups.template_available_title">Available approved templates</h3>
-                            <p class="fu-help-text" data-i18n="followups.template_available_hint">Templates synced from WhatsApp Business. Pick one to assign it to the automation.</p>
+                            <p class="fu-help-text" data-i18n="followups.template_available_hint">Templates synced from WhatsApp Business. Pick one to assign it to the follow-up.</p>
                             <div id="fu-template-available"><div class="fu-help-text" data-i18n="followups.loading_template">Loading...</div></div>
                         </div>
                         <div class="fu-template-card">
@@ -31465,11 +31536,23 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function getSenderBadgeLabel(senderType) {
-            if (String(senderType || '').toLowerCase() === 'human') return currentLang === 'ar' ? 'بشري' : 'Human';
+            const s = String(senderType || '').toLowerCase();
+            if (s === 'followup') return currentLang === 'ar' ? 'متابعة' : 'Follow-up';
+            if (s === 'human') return currentLang === 'ar' ? 'بشري' : 'Human';
             return 'AI';
         }
 
+        function isFollowupMessage(msg) {
+            try {
+                const meta = msg?.meta;
+                if (!meta) return false;
+                const m = typeof meta === 'string' ? JSON.parse(meta) : meta;
+                return m && (m.is_followup === true || m.source === 'followup_dispatcher' || !!m.followup_task_id);
+            } catch (_) { return false; }
+        }
+
         function getOutboundSenderType(msg) {
+            if (isFollowupMessage(msg)) return 'followup';
             const senderType = String(msg?.sender_type || '').toLowerCase();
             if (senderType === 'human') return 'human';
             return 'ai'; // backward-compatible fallback for older rows
@@ -32098,9 +32181,13 @@ Thank you for shopping with {store_name}!</textarea>
         function buildSenderBadgeHTML(msg) {
             if (msg.direction !== 'outbound') return '';
             const senderType = getOutboundSenderType(msg);
-            const badgeClass = senderType === 'human' ? 'badge-human' : 'badge-ai';
+            const badgeClass = senderType === 'followup' ? 'badge-followup'
+                : (senderType === 'human' ? 'badge-human' : 'badge-ai');
             const label = getSenderBadgeLabel(senderType);
-            return `<div class="msg-sender-row"><span class="msg-sender-badge ${badgeClass}">${label}</span></div>`;
+            const icon = senderType === 'followup'
+                ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/></svg>'
+                : '';
+            return `<div class="msg-sender-row"><span class="msg-sender-badge ${badgeClass}" title="${label}">${icon}${label}</span></div>`;
         }
 
         async function appendInboxMessage(container, msg, { allowScroll = true } = {}) {
@@ -43375,8 +43462,8 @@ Thank you for shopping with {store_name}!</textarea>
             let q = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(200);
             const ev = document.getElementById('fu-logs-event')?.value; if (ev && ev !== 'all') q = q.eq('event_type', ev);
             const timeRange = document.getElementById('fu-logs-time')?.value || 'all';
+            let fromDate = null, toDate = null;
             if (timeRange !== 'all') {
-                let fromDate = null, toDate = null;
                 const now = new Date();
                 if (timeRange === 'today') {
                     fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
@@ -43396,8 +43483,17 @@ Thank you for shopping with {store_name}!</textarea>
             }
             const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
             const rows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
+            // Counters: source of truth = followup_tasks.status (not log events — logs may miss terminal events)
             const counts = { sent:0, failed:0, scheduled:0, cancelled:0, waiting_template_approval:0 };
-            rows.forEach(r => { const k = r.event_type; if (counts[k] !== undefined) counts[k]++; });
+            try {
+                let taskQ = supabaseClient.from('followup_tasks').select('status,created_at').eq('org_id', currentUserOrgId).limit(2000);
+                if (fromDate) taskQ = taskQ.gte('created_at', fromDate);
+                if (toDate) taskQ = taskQ.lte('created_at', toDate);
+                const { data: taskRows } = await taskQ;
+                (taskRows || []).forEach(t => { if (counts[t.status] !== undefined) counts[t.status]++; });
+            } catch (_) { /* fallback to event-based count below */
+                rows.forEach(r => { const k = r.event_type; if (counts[k] !== undefined) counts[k]++; });
+            }
             const counterLabels = currentLang === 'ar'
                 ? { sent:'تم الإرسال', failed:'فشل', scheduled:'مجدول', cancelled:'ملغي', waiting_template_approval:'بانتظار قالب' }
                 : { sent:'Sent', failed:'Failed', scheduled:'Scheduled', cancelled:'Cancelled', waiting_template_approval:'Waiting template' };
@@ -43412,25 +43508,59 @@ Thank you for shopping with {store_name}!</textarea>
             const conversationIds = rows.map(r => r.conversation_id).filter(Boolean);
             const convMap = await fuLoadConversationDisplayMap(conversationIds);
             content.innerHTML = counterHtml + `<div class="fu-list">${rows.map(l => {
-                const dateStr = new Date(l.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
-                const detailsRaw = typeof l.details === 'object' ? JSON.stringify(l.details) : String(l.details || '-');
-                const truncated = detailsRaw.length > 80 ? detailsRaw.slice(0, 80) + '…' : detailsRaw;
+                const dateStr = new Date(l.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { dateStyle: 'short', timeStyle: 'short' });
                 const conv = convMap.get(l.conversation_id) || {};
                 const contact = conv.contact || {};
                 const contactLabel = (contact.display_name || contact.phone || contact.external_contact_id || (l.conversation_id ? String(l.conversation_id).slice(0, 8) : '-')).trim() || '-';
                 const ev = l.event_type || '-';
                 const evClass = `fu-event-${ev.replace(/[^a-z0-9_]/gi, '-')}`;
-                const detailsHtml = detailsRaw.length > 80
-                    ? `<span class="fu-log-trunc">${fuEscapeHtml(truncated)}</span><span class="fu-log-full" style="display:none;">${fuEscapeHtml(detailsRaw)}</span> <button class="fu-log-toggle" onclick="fuToggleLogDetail(this)">${currentLang === 'ar' ? 'المزيد' : 'more'}</button>`
-                    : fuEscapeHtml(detailsRaw);
+                const evLabel = (currentLang === 'ar'
+                    ? { sent:'تم الإرسال', failed:'فشل', scheduled:'مجدول', cancelled:'ملغي', claimed:'قيد التنفيذ', waiting_template_approval:'بانتظار قالب', template_required:'يحتاج قالب', template_approved:'تم الاعتماد', template_rejected:'مرفوض', template_submission_requested:'طلب تقديم', template_submission_pending:'قيد المراجعة', skipped:'تم التخطي' }
+                    : { sent:'Sent', failed:'Failed', scheduled:'Scheduled', cancelled:'Cancelled', claimed:'In progress', waiting_template_approval:'Waiting template', template_required:'Needs template', template_approved:'Template approved', template_rejected:'Template rejected', template_submission_requested:'Submission requested', template_submission_pending:'Submission pending', skipped:'Skipped' })[ev] || ev.replace(/_/g, ' ');
+                const prettyDetails = fuPrettifyLogDetails(l.details);
+                const rawJson = typeof l.details === 'object' ? JSON.stringify(l.details, null, 2) : String(l.details || '');
+                const rawToggle = rawJson && rawJson !== '{}' && rawJson !== '-'
+                    ? `<button class="fu-log-raw-toggle" onclick="fuToggleLogRaw(this)">${currentLang === 'ar' ? 'JSON خام' : 'raw JSON'}</button><pre class="fu-log-raw">${fuEscapeHtml(rawJson)}</pre>`
+                    : '';
                 return `<div class="fu-row fu-log-row">
-                    <div>${dateStr}</div>
-                    <div><span class="fu-event-pill ${evClass}">${fuEscapeHtml(ev)}</span></div>
-                    <div>${fuEscapeHtml(contactLabel)}</div>
-                    <div class="fu-log-details">${detailsHtml}</div>
+                    <div style="opacity:.85;">${dateStr}</div>
+                    <div><span class="fu-event-pill ${evClass}">${fuEscapeHtml(evLabel)}</span></div>
+                    <div style="font-weight:500;">${fuEscapeHtml(contactLabel)}</div>
+                    <div class="fu-log-details">${prettyDetails}${rawToggle}</div>
                 </div>`;
             }).join('')}</div>`;
         } catch (e) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; }
+    }
+    function fuPrettifyLogDetails(d) {
+        let obj = d;
+        if (typeof d === 'string') { try { obj = JSON.parse(d); } catch (_) { return fuEscapeHtml(d); } }
+        if (!obj || typeof obj !== 'object') return '<span style="opacity:.5;">—</span>';
+        const isAr = currentLang === 'ar';
+        const labels = isAr
+            ? { provider_message_id:'معرّف الرسالة', send_mode:'الوضع', blocked_reason:'سبب الحجب', error_message:'الخطأ', due_at:'الاستحقاق', latest_inbound_at:'آخر رد', template_name:'القالب', template_language:'لغة القالب', template_status:'حالة القالب', org_channel_account_id:'الحساب', reason:'السبب', platform:'القناة', message_id:'الرسالة', conversation_id:'المحادثة', requires_template:'يتطلب قالب', waiting_for_template_approval:'ينتظر اعتماد', cancelled_task_ids:'مهام ملغاة' }
+            : { provider_message_id:'Msg ID', send_mode:'Mode', blocked_reason:'Blocked', error_message:'Error', due_at:'Due', latest_inbound_at:'Last reply', template_name:'Template', template_language:'Tpl lang', template_status:'Tpl status', org_channel_account_id:'Account', reason:'Reason', platform:'Channel', message_id:'Message', conversation_id:'Conversation', requires_template:'Needs template', waiting_for_template_approval:'Awaiting approval', cancelled_task_ids:'Cancelled tasks' };
+        const chips = [];
+        Object.keys(obj).forEach(k => {
+            const v = obj[k];
+            if (v == null || v === '' || (Array.isArray(v) && !v.length) || (typeof v === 'object' && !Array.isArray(v) && !Object.keys(v).length)) return;
+            const label = labels[k] || k.replace(/_/g, ' ');
+            let val;
+            if (Array.isArray(v)) val = v.length === 1 ? String(v[0]).slice(0, 12) : (isAr ? v.length + ' عناصر' : v.length + ' items');
+            else if (typeof v === 'boolean') val = v ? (isAr ? 'نعم' : 'Yes') : (isAr ? 'لا' : 'No');
+            else if (typeof v === 'object') val = JSON.stringify(v).slice(0, 60);
+            else val = String(v);
+            if (k.endsWith('_at') && val) { try { val = new Date(v).toLocaleString(isAr ? 'ar-EG' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }); } catch(_) {} }
+            if ((k === 'provider_message_id' || k === 'org_channel_account_id' || k === 'conversation_id' || k === 'message_id') && val.length > 12) val = val.slice(0, 8) + '…';
+            chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(label)}</b><span class="fu-log-chip-val">${fuEscapeHtml(val)}</span></span>`);
+        });
+        if (!chips.length) return '<span style="opacity:.5;">—</span>';
+        return chips.join('');
+    }
+    function fuToggleLogRaw(btn) {
+        const raw = btn.parentElement.querySelector('.fu-log-raw');
+        if (!raw) return;
+        raw.classList.toggle('open');
+        btn.textContent = raw.classList.contains('open') ? (currentLang === 'ar' ? 'إخفاء' : 'hide') : (currentLang === 'ar' ? 'JSON خام' : 'raw JSON');
     }
     function fuToggleLogDetail(btn) {
         const row = btn.parentElement; if (!row) return;
