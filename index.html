@@ -4206,13 +4206,30 @@
             background: transparent; border: none; color: var(--brand-primary, #5b6cff);
             cursor: pointer; font-size: 11px; padding: 0; margin-inline-start: 4px;
         }
-        .fu-log-row { display: grid; grid-template-columns: 1.2fr .8fr 1.2fr 2fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 13px; }
+        .fu-log-row { display: grid; grid-template-columns: 92px 110px 1fr 2.4fr; gap: 10px; align-items: start; padding: 10px 4px; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 13px; }
+        .fu-log-date { display: flex; flex-direction: column; gap: 2px; font-size: 11px; opacity: .8; line-height: 1.2; white-space: nowrap; }
+        .fu-log-date .fu-log-date-d { font-weight: 600; opacity: .9; }
+        .fu-log-date .fu-log-date-t { opacity: .6; font-size: 10px; }
+        @media (max-width: 1024px) { .fu-log-row { grid-template-columns: 80px 100px 1fr 2fr; gap: 8px; } }
         .fu-log-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 999px; padding: 3px 10px; font-size: 12px; margin: 2px 4px 2px 0; max-width: 100%; }
         .fu-log-chip b { font-weight: 600; opacity: .65; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; margin-inline-end: 2px; }
         .fu-log-chip-val { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
         .fu-log-raw-toggle { background: transparent; border: 1px dashed rgba(255,255,255,.18); color: var(--text-secondary, #9ca3af); font-size: 11px; padding: 2px 8px; border-radius: 6px; cursor: pointer; margin-inline-start: 6px; }
         .fu-log-raw { display: none; margin-top: 6px; padding: 8px; background: rgba(0,0,0,.25); border-radius: 6px; font-family: ui-monospace, monospace; font-size: 11px; color: #c7d2fe; white-space: pre-wrap; word-break: break-all; }
         .fu-log-raw.open { display: block; }
+
+        /* Visible help tooltip — ⓘ icon w/ click+hover popover */
+        .fu-help { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: rgba(91, 174, 176, 0.18); color: var(--theme-color, #5BAEB0); border: 1px solid rgba(91, 174, 176, 0.35); font-size: 10px; font-weight: 700; cursor: pointer; margin-inline-start: 6px; vertical-align: middle; user-select: none; position: relative; flex-shrink: 0; }
+        .fu-help:hover, .fu-help:focus, .fu-help.open { background: rgba(91, 174, 176, 0.4); outline: none; }
+        .fu-help-pop { position: absolute; bottom: calc(100% + 8px); inset-inline-start: 50%; transform: translateX(-50%); background: #1c1f2a; color: #e5e7eb; border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 8px 10px; font-size: 12px; font-weight: 400; line-height: 1.4; width: max-content; max-width: 240px; box-shadow: 0 6px 20px rgba(0,0,0,.5); z-index: 500; text-transform: none; letter-spacing: 0; pointer-events: none; opacity: 0; transition: opacity .12s ease; white-space: normal; text-align: start; }
+        [dir="rtl"] .fu-help-pop { transform: translateX(50%); }
+        .fu-help:hover .fu-help-pop, .fu-help:focus .fu-help-pop, .fu-help.open .fu-help-pop { opacity: 1; }
+        .fu-help-pop::after { content: ''; position: absolute; top: 100%; inset-inline-start: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1c1f2a; }
+        @media (max-width: 768px) {
+            .fu-help-pop { position: fixed; inset-inline: 12px; inset-block-end: 16px; bottom: 16px; top: auto; transform: none; max-width: none; width: auto; }
+            .fu-help-pop::after { display: none; }
+            [dir="rtl"] .fu-help-pop { transform: none; }
+        }
         @media (max-width: 768px) {
             .fu-log-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 12px; background: rgba(255,255,255,.03); border-radius: 8px; margin-bottom: 6px; border-bottom: none; }
             .fu-subtabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -26452,16 +26469,37 @@
                 }
             });
 
-            // Update title (tooltip) attributes
+            // Update title (tooltip) attributes + inject visible ⓘ help icon
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
                 const translated = t(key);
                 if (translated && translated !== key) {
                     el.setAttribute('title', translated);
                     el.setAttribute('aria-label', translated);
+                    // Inject visible help icon once
+                    let icon = el.querySelector('.fu-help[data-help-injected="1"]');
+                    if (!icon) {
+                        icon = document.createElement('span');
+                        icon.className = 'fu-help';
+                        icon.setAttribute('tabindex', '0');
+                        icon.setAttribute('data-help-injected', '1');
+                        icon.setAttribute('role', 'button');
+                        icon.setAttribute('aria-label', translated);
+                        icon.innerHTML = 'i<span class="fu-help-pop"></span>';
+                        icon.addEventListener('click', (e) => { e.stopPropagation(); icon.classList.toggle('open'); document.querySelectorAll('.fu-help.open').forEach(o => { if (o !== icon) o.classList.remove('open'); }); });
+                        // append to first non-input child or el itself
+                        const target = el.querySelector('.fu-label, span, label') || el;
+                        target.appendChild(icon);
+                    }
+                    const pop = icon.querySelector('.fu-help-pop');
+                    if (pop) pop.textContent = translated;
                 }
             });
         }
+        // Close help popovers on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.fu-help')) document.querySelectorAll('.fu-help.open').forEach(o => o.classList.remove('open'));
+        });
 
         // Initialize language on page load
         function initLanguage() {
@@ -43508,10 +43546,13 @@ Thank you for shopping with {store_name}!</textarea>
             const conversationIds = rows.map(r => r.conversation_id).filter(Boolean);
             const convMap = await fuLoadConversationDisplayMap(conversationIds);
             content.innerHTML = counterHtml + `<div class="fu-list">${rows.map(l => {
-                const dateStr = new Date(l.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { dateStyle: 'short', timeStyle: 'short' });
+                const dObj = new Date(l.created_at);
+                const isAr2 = currentLang === 'ar';
+                const dateD = dObj.toLocaleDateString(isAr2 ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
+                const dateT = dObj.toLocaleTimeString(isAr2 ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
                 const conv = convMap.get(l.conversation_id) || {};
                 const contact = conv.contact || {};
-                const contactLabel = (contact.display_name || contact.phone || contact.external_contact_id || (l.conversation_id ? String(l.conversation_id).slice(0, 8) : '-')).trim() || '-';
+                const contactLabel = (contact.display_name || contact.phone || contact.external_contact_id || '').trim() || (isAr2 ? 'عميل' : 'Customer');
                 const ev = l.event_type || '-';
                 const evClass = `fu-event-${ev.replace(/[^a-z0-9_]/gi, '-')}`;
                 const evLabel = (currentLang === 'ar'
@@ -43523,9 +43564,9 @@ Thank you for shopping with {store_name}!</textarea>
                     ? `<button class="fu-log-raw-toggle" onclick="fuToggleLogRaw(this)">${currentLang === 'ar' ? 'JSON خام' : 'raw JSON'}</button><pre class="fu-log-raw">${fuEscapeHtml(rawJson)}</pre>`
                     : '';
                 return `<div class="fu-row fu-log-row">
-                    <div style="opacity:.85;">${dateStr}</div>
+                    <div class="fu-log-date"><span class="fu-log-date-d">${fuEscapeHtml(dateD)}</span><span class="fu-log-date-t">${fuEscapeHtml(dateT)}</span></div>
                     <div><span class="fu-event-pill ${evClass}">${fuEscapeHtml(evLabel)}</span></div>
-                    <div style="font-weight:500;">${fuEscapeHtml(contactLabel)}</div>
+                    <div style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fuEscapeHtml(contactLabel)}</div>
                     <div class="fu-log-details">${prettyDetails}${rawToggle}</div>
                 </div>`;
             }).join('')}</div>`;
@@ -43536,21 +43577,42 @@ Thank you for shopping with {store_name}!</textarea>
         if (typeof d === 'string') { try { obj = JSON.parse(d); } catch (_) { return fuEscapeHtml(d); } }
         if (!obj || typeof obj !== 'object') return '<span style="opacity:.5;">—</span>';
         const isAr = currentLang === 'ar';
-        const labels = isAr
-            ? { provider_message_id:'معرّف الرسالة', send_mode:'الوضع', blocked_reason:'سبب الحجب', error_message:'الخطأ', due_at:'الاستحقاق', latest_inbound_at:'آخر رد', template_name:'القالب', template_language:'لغة القالب', template_status:'حالة القالب', org_channel_account_id:'الحساب', reason:'السبب', platform:'القناة', message_id:'الرسالة', conversation_id:'المحادثة', requires_template:'يتطلب قالب', waiting_for_template_approval:'ينتظر اعتماد', cancelled_task_ids:'مهام ملغاة' }
-            : { provider_message_id:'Msg ID', send_mode:'Mode', blocked_reason:'Blocked', error_message:'Error', due_at:'Due', latest_inbound_at:'Last reply', template_name:'Template', template_language:'Tpl lang', template_status:'Tpl status', org_channel_account_id:'Account', reason:'Reason', platform:'Channel', message_id:'Message', conversation_id:'Conversation', requires_template:'Needs template', waiting_for_template_approval:'Awaiting approval', cancelled_task_ids:'Cancelled tasks' };
+        // Customer-friendly fields only — drop technical IDs (org_id, conversation_id, message_id, *_message_id, *_account_id, triggered_by_*, cancelled_task_ids, request_metadata, scheduler_source, etc.)
+        const allow = {
+            reason: isAr ? 'السبب' : 'Reason',
+            blocked_reason: isAr ? 'سبب الحجب' : 'Blocked',
+            error_message: isAr ? 'الخطأ' : 'Error',
+            send_mode: isAr ? 'الوضع' : 'Mode',
+            platform: isAr ? 'القناة' : 'Channel',
+            channel: isAr ? 'القناة' : 'Channel',
+            template_name: isAr ? 'القالب' : 'Template',
+            template_language: isAr ? 'لغة القالب' : 'Template lang',
+            template_status: isAr ? 'حالة القالب' : 'Template status',
+            requires_template: isAr ? 'يتطلب قالب' : 'Needs template',
+            waiting_for_template_approval: isAr ? 'ينتظر اعتماد' : 'Awaiting approval',
+            due_at: isAr ? 'موعد الإرسال' : 'Sends at',
+            latest_inbound_at: isAr ? 'آخر رد' : 'Last reply',
+            sent_at: isAr ? 'أُرسل' : 'Sent at',
+            enabled: isAr ? 'مُفعَّل' : 'Enabled',
+            trigger_condition: isAr ? 'الشرط' : 'Trigger',
+            active_channels: isAr ? 'القنوات النشطة' : 'Active channels',
+            max_per_conversation: isAr ? 'الحد الأقصى' : 'Max per chat',
+            effective_task_count: isAr ? 'العدد الحالي' : 'Current count',
+            policy_timezone: isAr ? 'المنطقة الزمنية' : 'Timezone'
+        };
         const chips = [];
-        Object.keys(obj).forEach(k => {
+        Object.keys(allow).forEach(k => {
+            if (!(k in obj)) return;
             const v = obj[k];
             if (v == null || v === '' || (Array.isArray(v) && !v.length) || (typeof v === 'object' && !Array.isArray(v) && !Object.keys(v).length)) return;
-            const label = labels[k] || k.replace(/_/g, ' ');
+            const label = allow[k];
             let val;
-            if (Array.isArray(v)) val = v.length === 1 ? String(v[0]).slice(0, 12) : (isAr ? v.length + ' عناصر' : v.length + ' items');
+            if (Array.isArray(v)) val = v.join(', ');
             else if (typeof v === 'boolean') val = v ? (isAr ? 'نعم' : 'Yes') : (isAr ? 'لا' : 'No');
             else if (typeof v === 'object') val = JSON.stringify(v).slice(0, 60);
             else val = String(v);
             if (k.endsWith('_at') && val) { try { val = new Date(v).toLocaleString(isAr ? 'ar-EG' : 'en-US', { dateStyle: 'short', timeStyle: 'short' }); } catch(_) {} }
-            if ((k === 'provider_message_id' || k === 'org_channel_account_id' || k === 'conversation_id' || k === 'message_id') && val.length > 12) val = val.slice(0, 8) + '…';
+            if (val.length > 60) val = val.slice(0, 60) + '…';
             chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(label)}</b><span class="fu-log-chip-val">${fuEscapeHtml(val)}</span></span>`);
         });
         if (!chips.length) return '<span style="opacity:.5;">—</span>';
