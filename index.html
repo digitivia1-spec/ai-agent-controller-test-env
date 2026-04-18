@@ -43377,11 +43377,8 @@ Thank you for shopping with {store_name}!</textarea>
         if (fuBellPollTimer) clearInterval(fuBellPollTimer);
         if (fuQueuePollTimer) clearInterval(fuQueuePollTimer);
         fuLoadNotifications();
-        fuBellPollTimer = setInterval(fuLoadNotifications, 30000);
-        fuQueuePollTimer = setInterval(() => {
-            const fu = document.getElementById('followups');
-            if (fu && fu.classList.contains('active') && fuCurrentSubtab === 'logs') fuLoadLogs();
-        }, 30000);
+        // Bell stays polling (quiet, no visible DOM churn). Logs + queue = manual refresh only.
+        fuBellPollTimer = setInterval(fuLoadNotifications, 60000);
     }
 
     async function fuLoadQueue() {
@@ -43520,7 +43517,16 @@ Thank you for shopping with {store_name}!</textarea>
                 if (toDate) q = q.lte('created_at', toDate);
             }
             const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
-            const rows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
+            const rawRows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
+            // Dedupe: one row per task (latest event wins). Rows w/o task_id keep all.
+            const seenTask = new Set();
+            const rows = [];
+            for (const r of rawRows) { // already ordered desc by created_at
+                if (!r.task_id) { rows.push(r); continue; }
+                if (seenTask.has(r.task_id)) continue;
+                seenTask.add(r.task_id);
+                rows.push(r);
+            }
             // Counters: source of truth = followup_tasks.status (not log events — logs may miss terminal events)
             const counts = { sent:0, failed:0, scheduled:0, cancelled:0, waiting_template_approval:0 };
             try {
