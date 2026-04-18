@@ -42890,6 +42890,7 @@ Thank you for shopping with {store_name}!</textarea>
     let fuCurrentPreviewPlatform = 'wa';
     let fuMessageByChannel = { whatsapp: '', instagram: '', page: '' };
     let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '' };
+    let fuSuppressCapture = false;
     let fuConversationDisplayMap = new Map();
     window.FU_N8N_BASE_URL = window.FU_N8N_BASE_URL || 'https://n8n.srv1174105.hstgr.cloud';
 
@@ -42976,6 +42977,7 @@ Thank you for shopping with {store_name}!</textarea>
         wrap.style.display = val === 'custom' ? 'flex' : 'none';
     }
     function fuCaptureEditorToState() {
+        if (fuSuppressCapture) return;
         const en = document.getElementById('fu-setting-message'); const ar = document.getElementById('fu-setting-message-ar');
         if (en) fuMessageByChannel[fuCurrentMessageChannel] = en.value || '';
         if (ar) fuMessageByChannelAr[fuCurrentMessageChannel] = ar.value || '';
@@ -43106,7 +43108,12 @@ Thank you for shopping with {store_name}!</textarea>
                 fuSetCheckboxValue('fu-setting-notif-rejected',  data.notification_on_template_rejected  !== false);
             }
         } catch (e) { console.warn('fuLoadSettings', e); }
-        fuSwitchMessageChannel('whatsapp'); fuSwitchMsgLang(currentLang === 'ar' ? 'ar' : 'en'); fuSyncPreviewTabAvailability(); fuUpdatePreview();
+        fuSuppressCapture = true;
+        try {
+            fuSwitchMessageChannel('whatsapp');
+            fuSwitchMsgLang(currentLang === 'ar' ? 'ar' : 'en');
+        } finally { fuSuppressCapture = false; }
+        fuSyncPreviewTabAvailability(); fuUpdatePreview();
     }
     async function fuSaveSettings() {
         if (!currentUserOrgId) return;
@@ -43389,10 +43396,22 @@ Thank you for shopping with {store_name}!</textarea>
             }
             const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
             const rows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
-            if (!rows.length) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; return; }
+            const counts = { sent:0, failed:0, scheduled:0, cancelled:0, waiting_template_approval:0 };
+            rows.forEach(r => { const k = r.event_type; if (counts[k] !== undefined) counts[k]++; });
+            const counterLabels = currentLang === 'ar'
+                ? { sent:'تم الإرسال', failed:'فشل', scheduled:'مجدول', cancelled:'ملغي', waiting_template_approval:'بانتظار قالب' }
+                : { sent:'Sent', failed:'Failed', scheduled:'Scheduled', cancelled:'Cancelled', waiting_template_approval:'Waiting template' };
+            const counterColors = { sent:'#1ec96b', failed:'#ef4444', scheduled:'#3b82f6', cancelled:'#9ca3af', waiting_template_approval:'#f59e0b' };
+            const counterHtml = `<div class="fu-log-counters" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px;">
+                ${Object.keys(counts).map(k => `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;">
+                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:4px;">${counterLabels[k]}</div>
+                    <div style="font-size:22px;font-weight:600;color:${counterColors[k]};">${counts[k]}</div>
+                </div>`).join('')}
+            </div>`;
+            if (!rows.length) { content.innerHTML = counterHtml + `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; return; }
             const conversationIds = rows.map(r => r.conversation_id).filter(Boolean);
             const convMap = await fuLoadConversationDisplayMap(conversationIds);
-            content.innerHTML = `<div class="fu-list">${rows.map(l => {
+            content.innerHTML = counterHtml + `<div class="fu-list">${rows.map(l => {
                 const dateStr = new Date(l.created_at).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
                 const detailsRaw = typeof l.details === 'object' ? JSON.stringify(l.details) : String(l.details || '-');
                 const truncated = detailsRaw.length > 80 ? detailsRaw.slice(0, 80) + '…' : detailsRaw;
