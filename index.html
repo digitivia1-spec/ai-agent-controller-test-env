@@ -723,6 +723,41 @@
                 "config_timing_title": "Timing",
                 "config_delay_label": "Default delay",
                 "timing_custom": "Custom",
+                "time_30m": "30m",
+                "time_1h": "1h",
+                "time_2h": "2h",
+                "time_4h": "4h",
+                "time_6h": "6h",
+                "time_12h": "12h",
+                "time_24h": "24h",
+                "channel_whatsapp": "WhatsApp",
+                "channel_instagram": "Instagram",
+                "channel_messenger": "Messenger",
+                "log_status_sent": "Sent",
+                "log_status_failed": "Failed",
+                "log_status_scheduled": "Scheduled",
+                "log_status_cancelled": "Cancelled",
+                "log_status_claimed": "Sending…",
+                "log_status_waiting_template": "Waiting template",
+                "log_status_skipped": "Skipped",
+                "log_field_channel": "Channel",
+                "log_field_sent_at": "Sent at",
+                "log_field_due_at": "Due at",
+                "log_field_note": "Note",
+                "log_field_template": "Template",
+                "log_field_message": "Message",
+                "log_reason_newer_reply": "Customer replied again — follow-up cancelled.",
+                "log_reason_closed": "Conversation closed.",
+                "log_reason_ai_paused": "AI paused for this conversation.",
+                "log_reason_not_found": "Conversation not found.",
+                "log_reason_no_message": "No follow-up message configured.",
+                "log_reason_no_sender": "No active channel account.",
+                "log_reason_no_recipient": "No customer contact found.",
+                "log_reason_no_wa_phone": "No active WhatsApp number.",
+                "log_reason_unsupported": "Channel not supported.",
+                "log_reason_timeout": "Dispatch timed out — retry.",
+                "log_reason_template_not_approved": "Template not yet approved.",
+                "log_reason_duplicate": "Already scheduled for this message.",
                 "tpl_field_name": "Template name",
                 "tpl_field_category": "Category",
                 "tpl_field_language": "Language",
@@ -1898,6 +1933,41 @@
                 "config_timing_title": "التوقيت",
                 "config_delay_label": "التأخير الافتراضي",
                 "timing_custom": "مخصّص",
+                "time_30m": "٣٠ د",
+                "time_1h": "ساعة",
+                "time_2h": "ساعتان",
+                "time_4h": "٤ س",
+                "time_6h": "٦ س",
+                "time_12h": "١٢ س",
+                "time_24h": "٢٤ س",
+                "channel_whatsapp": "واتساب",
+                "channel_instagram": "إنستجرام",
+                "channel_messenger": "ماسنجر",
+                "log_status_sent": "تم الإرسال",
+                "log_status_failed": "فشل",
+                "log_status_scheduled": "مجدول",
+                "log_status_cancelled": "ملغي",
+                "log_status_claimed": "جاري الإرسال…",
+                "log_status_waiting_template": "بانتظار القالب",
+                "log_status_skipped": "تم التخطي",
+                "log_field_channel": "القناة",
+                "log_field_sent_at": "أُرسل في",
+                "log_field_due_at": "الموعد",
+                "log_field_note": "الملاحظة",
+                "log_field_template": "القالب",
+                "log_field_message": "النص",
+                "log_reason_newer_reply": "العميل رد مجدداً — تم إلغاء المتابعة.",
+                "log_reason_closed": "المحادثة مغلقة.",
+                "log_reason_ai_paused": "الذكاء الاصطناعي موقوف لهذه المحادثة.",
+                "log_reason_not_found": "المحادثة غير موجودة.",
+                "log_reason_no_message": "لم يتم ضبط نص المتابعة.",
+                "log_reason_no_sender": "لم يتم ربط حساب القناة.",
+                "log_reason_no_recipient": "لم يتم العثور على بيانات العميل.",
+                "log_reason_no_wa_phone": "لا يوجد رقم واتساب نشط.",
+                "log_reason_unsupported": "القناة غير مدعومة.",
+                "log_reason_timeout": "انتهت مهلة الإرسال — سيُعاد المحاولة.",
+                "log_reason_template_not_approved": "القالب غير معتمد بعد.",
+                "log_reason_duplicate": "تم جدولة متابعة سابقاً لنفس الرسالة.",
                 "tpl_field_name": "اسم القالب",
                 "tpl_field_category": "الفئة",
                 "tpl_field_language": "اللغة",
@@ -29635,9 +29705,9 @@ Thank you for shopping with {store_name}!</textarea>
                             <div class="fu-setting-group">
                                 <span class="fu-label" data-i18n="followups.config_channels_title">Channel Monitoring</span>
                                 <div class="fu-channels-grid">
-                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-whatsapp" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>WhatsApp</span></div></label>
-                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-instagram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Instagram</span></div></label>
-                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-page" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span>Messenger</span></div></label>
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-whatsapp" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span data-i18n="followups.channel_whatsapp">WhatsApp</span></div></label>
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-instagram" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span data-i18n="followups.channel_instagram">Instagram</span></div></label>
+                                    <label class="fu-channel-check"><input type="checkbox" id="fu-ch-page" checked onchange="fuSyncPreviewTabAvailability()"><div class="fu-channel-pill"><span data-i18n="followups.channel_messenger">Messenger</span></div></label>
                                 </div>
                             </div>
                             <div class="fu-setting-group">
@@ -29646,13 +29716,13 @@ Thank you for shopping with {store_name}!</textarea>
                                     <div class="fu-inline-field fu-delay-presets-wrap" data-i18n-title="followups.tip_delay" title="Wait time after the latest customer reply before the follow-up fires.">
                                         <span data-i18n="followups.config_delay_label">Default delay</span>
                                         <div class="fu-delay-presets" id="fu-delay-presets">
-                                            <button type="button" class="fu-delay-btn" data-delay="30" onclick="fuPickDelay(30)">30m</button>
-                                            <button type="button" class="fu-delay-btn" data-delay="60" onclick="fuPickDelay(60)">1h</button>
-                                            <button type="button" class="fu-delay-btn" data-delay="120" onclick="fuPickDelay(120)">2h</button>
-                                            <button type="button" class="fu-delay-btn" data-delay="240" onclick="fuPickDelay(240)">4h</button>
-                                            <button type="button" class="fu-delay-btn" data-delay="360" onclick="fuPickDelay(360)">6h</button>
-                                            <button type="button" class="fu-delay-btn" data-delay="720" onclick="fuPickDelay(720)">12h</button>
-                                            <button type="button" class="fu-delay-btn" data-delay="1440" onclick="fuPickDelay(1440)">24h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="30" onclick="fuPickDelay(30)" data-i18n="followups.time_30m">30m</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="60" onclick="fuPickDelay(60)" data-i18n="followups.time_1h">1h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="120" onclick="fuPickDelay(120)" data-i18n="followups.time_2h">2h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="240" onclick="fuPickDelay(240)" data-i18n="followups.time_4h">4h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="360" onclick="fuPickDelay(360)" data-i18n="followups.time_6h">6h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="720" onclick="fuPickDelay(720)" data-i18n="followups.time_12h">12h</button>
+                                            <button type="button" class="fu-delay-btn" data-delay="1440" onclick="fuPickDelay(1440)" data-i18n="followups.time_24h">24h</button>
                                             <button type="button" class="fu-delay-btn" data-delay="custom" onclick="fuPickDelay('custom')" data-i18n="followups.timing_custom">Custom</button>
                                         </div>
                                         <input type="number" id="fu-setting-delay" min="1" max="1440" value="120" style="display:none;">
@@ -29762,20 +29832,12 @@ Thank you for shopping with {store_name}!</textarea>
                     <div class="fu-filters">
                         <select id="fu-logs-event" onchange="fuLoadLogs()">
                             <option value="all" data-i18n="followups.logs_event_all">All Events</option>
-                            <option value="scheduled">scheduled</option>
-                            <option value="claimed">claimed</option>
-                            <option value="sent">sent</option>
-                            <option value="failed">failed</option>
-                            <option value="cancelled">cancelled</option>
-                            <option value="cancelled_previous_open">cancelled_previous_open</option>
-                            <option value="schedule_skipped">schedule_skipped</option>
-                            <option value="deferred_business_hours">deferred_business_hours</option>
-                            <option value="template_required">template_required</option>
-                            <option value="template_submission_requested">template_submission_requested</option>
-                            <option value="template_submission_pending">template_submission_pending</option>
-                            <option value="template_approved">template_approved</option>
-                            <option value="template_rejected">template_rejected</option>
-                            <option value="waiting_template_approval">waiting_template_approval</option>
+                            <option value="scheduled" data-i18n="followups.log_status_scheduled">Scheduled</option>
+                            <option value="claimed" data-i18n="followups.log_status_claimed">Sending</option>
+                            <option value="sent" data-i18n="followups.log_status_sent">Sent</option>
+                            <option value="failed" data-i18n="followups.log_status_failed">Failed</option>
+                            <option value="cancelled" data-i18n="followups.log_status_cancelled">Cancelled</option>
+                            <option value="waiting_template_approval" data-i18n="followups.log_status_waiting_template">Waiting template</option>
                         </select>
                         <select id="fu-logs-time" onchange="fuToggleLogsCustomRange();fuLoadLogs()">
                             <option value="all" data-i18n="followups.logs_time_all">All Time</option>
@@ -43494,8 +43556,14 @@ Thank you for shopping with {store_name}!</textarea>
         const content = document.getElementById('fu-logs-content'); if (!content) return;
         content.innerHTML = `<div style="padding:40px;text-align:center;color:#888;">${t('followups.loading_logs')}</div>`;
         try {
-            let q = supabaseClient.from('followup_logs').select('*').eq('org_id', currentUserOrgId).order('created_at', { ascending: false }).limit(200);
-            const ev = document.getElementById('fu-logs-event')?.value; if (ev && ev !== 'all') q = q.eq('event_type', ev);
+            // Source of truth = followup_tasks (authoritative status). One row per task, no log-event duplication, no raw JSON.
+            let q = supabaseClient.from('followup_tasks')
+                .select('id,conversation_id,platform,status,due_at,claimed_at,sent_at,cancelled_at,created_at,error_message,resolved_message,blocked_reason,template_name,template_language')
+                .eq('org_id', currentUserOrgId)
+                .order('created_at', { ascending: false })
+                .limit(200);
+            const statusFilter = document.getElementById('fu-logs-event')?.value;
+            if (statusFilter && statusFilter !== 'all') q = q.eq('status', statusFilter);
             const timeRange = document.getElementById('fu-logs-time')?.value || 'all';
             let fromDate = null, toDate = null;
             if (timeRange !== 'all') {
@@ -43516,64 +43584,77 @@ Thank you for shopping with {store_name}!</textarea>
                 if (fromDate) q = q.gte('created_at', fromDate);
                 if (toDate) q = q.lte('created_at', toDate);
             }
-            const { data } = await q; const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
-            const rawRows = (data || []).filter(l => !s || JSON.stringify(l).toLowerCase().includes(s));
-            // Dedupe: one row per task (latest event wins). Rows w/o task_id keep all.
-            const seenTask = new Set();
-            const rows = [];
-            for (const r of rawRows) { // already ordered desc by created_at
-                if (!r.task_id) { rows.push(r); continue; }
-                if (seenTask.has(r.task_id)) continue;
-                seenTask.add(r.task_id);
-                rows.push(r);
-            }
-            // Counters: source of truth = followup_tasks.status (not log events — logs may miss terminal events)
+            const { data } = await q;
+            const s = (document.getElementById('fu-logs-search')?.value || '').toLowerCase();
+            const rows = (data || []).filter(r => !s || JSON.stringify(r).toLowerCase().includes(s));
+            const isAr = currentLang === 'ar';
+            const statusLabels = {
+                sent: t('followups.log_status_sent'),
+                failed: t('followups.log_status_failed'),
+                scheduled: t('followups.log_status_scheduled'),
+                cancelled: t('followups.log_status_cancelled'),
+                claimed: t('followups.log_status_claimed'),
+                waiting_template_approval: t('followups.log_status_waiting_template'),
+                skipped: t('followups.log_status_skipped')
+            };
+            const statusColors = { sent:'#1ec96b', failed:'#ef4444', scheduled:'#3b82f6', cancelled:'#9ca3af', claimed:'#f59e0b', waiting_template_approval:'#f59e0b', skipped:'#9ca3af' };
             const counts = { sent:0, failed:0, scheduled:0, cancelled:0, waiting_template_approval:0 };
-            try {
-                let taskQ = supabaseClient.from('followup_tasks').select('status,created_at').eq('org_id', currentUserOrgId).limit(2000);
-                if (fromDate) taskQ = taskQ.gte('created_at', fromDate);
-                if (toDate) taskQ = taskQ.lte('created_at', toDate);
-                const { data: taskRows } = await taskQ;
-                (taskRows || []).forEach(t => { if (counts[t.status] !== undefined) counts[t.status]++; });
-            } catch (_) { /* fallback to event-based count below */
-                rows.forEach(r => { const k = r.event_type; if (counts[k] !== undefined) counts[k]++; });
-            }
-            const counterLabels = currentLang === 'ar'
-                ? { sent:'تم الإرسال', failed:'فشل', scheduled:'مجدول', cancelled:'ملغي', waiting_template_approval:'بانتظار قالب' }
-                : { sent:'Sent', failed:'Failed', scheduled:'Scheduled', cancelled:'Cancelled', waiting_template_approval:'Waiting template' };
-            const counterColors = { sent:'#1ec96b', failed:'#ef4444', scheduled:'#3b82f6', cancelled:'#9ca3af', waiting_template_approval:'#f59e0b' };
+            rows.forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++; });
             const counterHtml = `<div class="fu-log-counters" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px;">
                 ${Object.keys(counts).map(k => `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;">
-                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:4px;">${counterLabels[k]}</div>
-                    <div style="font-size:22px;font-weight:600;color:${counterColors[k]};">${counts[k]}</div>
+                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:4px;">${fuEscapeHtml(statusLabels[k] || k)}</div>
+                    <div style="font-size:22px;font-weight:600;color:${statusColors[k]};">${counts[k]}</div>
                 </div>`).join('')}
             </div>`;
             if (!rows.length) { content.innerHTML = counterHtml + `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; return; }
             const conversationIds = rows.map(r => r.conversation_id).filter(Boolean);
             const convMap = await fuLoadConversationDisplayMap(conversationIds);
-            content.innerHTML = counterHtml + `<div class="fu-list">${rows.map(l => {
-                const dObj = new Date(l.created_at);
-                const isAr2 = currentLang === 'ar';
-                const dateD = dObj.toLocaleDateString(isAr2 ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
-                const dateT = dObj.toLocaleTimeString(isAr2 ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
-                const conv = convMap.get(l.conversation_id) || {};
+            const channelLabels = {
+                whatsapp: t('followups.channel_whatsapp'),
+                instagram: t('followups.channel_instagram'),
+                page: t('followups.channel_messenger'),
+                messenger: t('followups.channel_messenger')
+            };
+            const fmtTs = ts => { if (!ts) return ''; try { return new Date(ts).toLocaleString(isAr ? 'ar-EG' : 'en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); } catch(_) { return ts; } };
+            const reasonText = (r) => {
+                const key = r.blocked_reason || null;
+                if (key) {
+                    const i18nKey = 'followups.log_reason_' + key;
+                    const txt = t(i18nKey);
+                    if (txt && txt !== i18nKey) return txt;
+                }
+                if (r.error_message) return r.error_message;
+                if (r.resolved_message) return r.resolved_message;
+                return '';
+            };
+            content.innerHTML = counterHtml + `<div class="fu-list">${rows.map(r => {
+                const refTs = r.sent_at || r.cancelled_at || r.claimed_at || r.due_at || r.created_at;
+                const dObj = new Date(refTs);
+                const dateD = dObj.toLocaleDateString(isAr ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
+                const dateT = dObj.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+                const conv = convMap.get(r.conversation_id) || {};
                 const contact = conv.contact || {};
-                const contactLabel = (contact.display_name || contact.phone || contact.external_contact_id || '').trim() || (isAr2 ? 'عميل' : 'Customer');
-                const ev = l.event_type || '-';
-                const evClass = `fu-event-${ev.replace(/[^a-z0-9_]/gi, '-')}`;
-                const evLabel = (currentLang === 'ar'
-                    ? { sent:'تم الإرسال', failed:'فشل', scheduled:'مجدول', cancelled:'ملغي', claimed:'قيد التنفيذ', waiting_template_approval:'بانتظار قالب', template_required:'يحتاج قالب', template_approved:'تم الاعتماد', template_rejected:'مرفوض', template_submission_requested:'طلب تقديم', template_submission_pending:'قيد المراجعة', skipped:'تم التخطي' }
-                    : { sent:'Sent', failed:'Failed', scheduled:'Scheduled', cancelled:'Cancelled', claimed:'In progress', waiting_template_approval:'Waiting template', template_required:'Needs template', template_approved:'Template approved', template_rejected:'Template rejected', template_submission_requested:'Submission requested', template_submission_pending:'Submission pending', skipped:'Skipped' })[ev] || ev.replace(/_/g, ' ');
-                const prettyDetails = fuPrettifyLogDetails(l.details);
-                const rawJson = typeof l.details === 'object' ? JSON.stringify(l.details, null, 2) : String(l.details || '');
-                const rawToggle = rawJson && rawJson !== '{}' && rawJson !== '-'
-                    ? `<button class="fu-log-raw-toggle" onclick="fuToggleLogRaw(this)">${currentLang === 'ar' ? 'JSON خام' : 'raw JSON'}</button><pre class="fu-log-raw">${fuEscapeHtml(rawJson)}</pre>`
-                    : '';
+                const contactLabel = (contact.display_name || contact.phone || contact.external_contact_id || '').trim() || (isAr ? 'عميل' : 'Customer');
+                const st = r.status || 'scheduled';
+                const evClass = `fu-event-${st}`;
+                const evLabel = statusLabels[st] || st.replace(/_/g, ' ');
+                const chips = [];
+                const chanLabel = channelLabels[r.platform];
+                if (chanLabel) chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(t('followups.log_field_channel'))}</b><span class="fu-log-chip-val">${fuEscapeHtml(chanLabel)}</span></span>`);
+                if (st === 'sent' && r.sent_at) chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(t('followups.log_field_sent_at'))}</b><span class="fu-log-chip-val">${fuEscapeHtml(fmtTs(r.sent_at))}</span></span>`);
+                else if ((st === 'scheduled' || st === 'waiting_template_approval' || st === 'claimed') && r.due_at) chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(t('followups.log_field_due_at'))}</b><span class="fu-log-chip-val">${fuEscapeHtml(fmtTs(r.due_at))}</span></span>`);
+                if (r.template_name) chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(t('followups.log_field_template'))}</b><span class="fu-log-chip-val">${fuEscapeHtml(r.template_name)}${r.template_language ? ' ('+fuEscapeHtml(r.template_language)+')' : ''}</span></span>`);
+                const rTxt = reasonText(r);
+                if (rTxt) {
+                    const short = rTxt.length > 120 ? rTxt.slice(0, 120) + '…' : rTxt;
+                    chips.push(`<span class="fu-log-chip"><b>${fuEscapeHtml(t('followups.log_field_note'))}</b><span class="fu-log-chip-val">${fuEscapeHtml(short)}</span></span>`);
+                }
+                const details = chips.length ? chips.join('') : '<span style="opacity:.5;">—</span>';
                 return `<div class="fu-row fu-log-row">
                     <div class="fu-log-date"><span class="fu-log-date-d">${fuEscapeHtml(dateD)}</span><span class="fu-log-date-t">${fuEscapeHtml(dateT)}</span></div>
                     <div><span class="fu-event-pill ${evClass}">${fuEscapeHtml(evLabel)}</span></div>
                     <div style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fuEscapeHtml(contactLabel)}</div>
-                    <div class="fu-log-details">${prettyDetails}${rawToggle}</div>
+                    <div class="fu-log-details">${details}</div>
                 </div>`;
             }).join('')}</div>`;
         } catch (e) { content.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">${t('followups.logs_empty_text')}</div>`; }
