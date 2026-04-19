@@ -40,20 +40,23 @@
       margin: 0;
       min-height: 100%;
       font-family: var(--chat-font);
-      background:
-        radial-gradient(circle at 15% 20%, rgba(44, 113, 138, 0.10), transparent 30%),
-        radial-gradient(circle at 85% 15%, rgba(15, 118, 110, 0.10), transparent 26%),
-        linear-gradient(180deg, #edf5f6 0%, #eaf0f3 100%);
+      background: transparent;
+      background-color: transparent;
       color: var(--chat-text);
     }
 
     body.hs-preview-surface {
       min-height: 100vh;
       overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(44, 113, 138, 0.10), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(15, 118, 110, 0.10), transparent 26%),
+        linear-gradient(180deg, #edf5f6 0%, #eaf0f3 100%);
     }
 
     body.hs-embed-surface {
       background: transparent;
+      background-color: transparent;
       min-height: 100vh;
       overflow: hidden;
       --chat-launcher-size: 58px;
@@ -74,6 +77,10 @@
 
     body.hs-embed-surface .hs-chat-panel {
       min-block-size: min(520px, calc(100dvh - 20px));
+    }
+
+    body.hs-embed-surface .hs-chat-backdrop {
+      display: none;
     }
 
     .hs-chat-widget,
@@ -871,6 +878,13 @@
     (function initDigitiviaChatWidget() {
       "use strict";
 
+      const EMBED_MESSAGE_TYPES = {
+        ready: "DIGITIVIA_CHAT_READY",
+        init: "DIGITIVIA_CHAT_INIT",
+        toggled: "DIGITIVIA_CHAT_TOGGLED"
+      };
+      let trustedParentOrigin = "";
+
       const DigitiviaChatWidget = {
         config: {
           webhookUrl: "https://n8n.srv1174105.hstgr.cloud/webhook/website_chat_digitivia",
@@ -929,7 +943,7 @@
             "--chat-shadow": ""
           },
           previewMode: false,
-          embeddedFrame: false,
+          embeddedFrame: window.parent !== window,
           previewBlocked: false,
           forcedDir: "",
           onStateChange: null
@@ -961,6 +975,7 @@
         getState: () => JSON.parse(JSON.stringify(DigitiviaChatWidget.state))
       };
 
+      window.addEventListener("message", onParentMessage);
       mountWidget();
 
       function mountWidget() {
@@ -971,11 +986,13 @@
         bindEvents();
         renderMessages();
         syncRootState();
+        notifyParentReady();
         notifyStateChange();
       }
 
       function setConfig(nextConfig) {
         deepMerge(DigitiviaChatWidget.config, nextConfig || {});
+        document.body.classList.toggle("hs-embed-surface", !!DigitiviaChatWidget.config.embeddedFrame);
         applyThemeOverrides();
         if (DigitiviaChatWidget.refs.root) {
           DigitiviaChatWidget.refs.root.setAttribute("data-position", normalizePosition(DigitiviaChatWidget.config.position));
@@ -1174,12 +1191,14 @@
         DigitiviaChatWidget.state.isOpen = true;
         DigitiviaChatWidget.refs.root.classList.add("is-open");
         onOpenPanel();
+        notifyParentToggle();
         notifyStateChange();
       }
 
       function closePanel() {
         DigitiviaChatWidget.state.isOpen = false;
         DigitiviaChatWidget.refs.root.classList.remove("is-open");
+        notifyParentToggle();
         notifyStateChange();
       }
 
@@ -1686,6 +1705,35 @@
             DigitiviaChatWidget.config.onStateChange(JSON.parse(JSON.stringify(DigitiviaChatWidget.state)));
           } catch (_err) {}
         }
+      }
+
+      function onParentMessage(event) {
+        if (window.parent === window || event.source !== window.parent) return;
+        if (!event.data || typeof event.data !== "object") return;
+        if (event.data.type !== EMBED_MESSAGE_TYPES.init) return;
+
+        trustedParentOrigin = typeof event.origin === "string" ? event.origin : "";
+        if (event.data.config && typeof event.data.config === "object") {
+          setConfig(event.data.config);
+        }
+      }
+
+      function notifyParentReady() {
+        postMessageToParent({ type: EMBED_MESSAGE_TYPES.ready });
+      }
+
+      function notifyParentToggle() {
+        postMessageToParent({
+          type: EMBED_MESSAGE_TYPES.toggled,
+          isOpen: !!DigitiviaChatWidget.state.isOpen
+        });
+      }
+
+      function postMessageToParent(message) {
+        if (window.parent === window) return;
+        try {
+          window.parent.postMessage(message, trustedParentOrigin || "*");
+        } catch (_err) {}
       }
 
       function deepMerge(target, source) {
