@@ -27975,7 +27975,7 @@
             if (typeof renderWhatsAppConnectState === 'function') renderWhatsAppConnectState();
             hydrateSidebarSocialIcons();
             fetchCurrentConfigurations();
-            loadWebsiteWidgetSettings();
+            await loadWebsiteWidgetSettings();
             document.getElementById('loader-overlay').style.display = 'none';
             // Note: startAutoRefresh is less critical now with Realtime, but good for contacts list updates
             startAutoRefresh();
@@ -37739,8 +37739,8 @@ Thank you for shopping with {store_name}!</textarea>
                                     <p>This snippet is ready for plain HTML websites. The widget key and the hosted asset URL are inserted automatically from your workspace settings.</p>
                                     <textarea id="wws-snippet" class="wws-code" readonly></textarea>
                                     <div class="wws-actions">
-                                        <button class="wws-btn primary" type="button" onclick="copyWebsiteWidgetSnippet()">Copy snippet</button>
-                                        <button class="wws-btn subtle" type="button" onclick="renderWebsiteWidgetSnippet()">Refresh code</button>
+                                        <button id="wws-copy-btn" class="wws-btn primary" type="button" onclick="copyWebsiteWidgetSnippet()">Copy snippet</button>
+                                        <button id="wws-refresh-btn" class="wws-btn subtle" type="button" onclick="renderWebsiteWidgetSnippet()">Refresh code</button>
                                     </div>
                                 </section>
 
@@ -37859,8 +37859,19 @@ Thank you for shopping with {store_name}!</textarea>
                 });
             });
 
-            renderWebsiteWidgetSnippet();
+            setWebsiteWidgetSnippetAvailability(false);
             loadWebsiteWidgetPreview();
+        }
+
+        function setWebsiteWidgetSnippetAvailability(ready) {
+            const snippetEl = document.getElementById('wws-snippet');
+            const copyBtn = document.getElementById('wws-copy-btn');
+            const refreshBtn = document.getElementById('wws-refresh-btn');
+            if (snippetEl && !ready) {
+                snippetEl.value = 'Loading saved widget settings...';
+            }
+            if (copyBtn) copyBtn.disabled = !ready;
+            if (refreshBtn) refreshBtn.disabled = !ready;
         }
 
         function getWebsiteWidgetScriptBase() {
@@ -37937,6 +37948,7 @@ Thank you for shopping with {store_name}!</textarea>
             });
             const keyStat = document.getElementById('wws-stat-key');
             if (keyStat) keyStat.textContent = state.widget_public_key;
+            setWebsiteWidgetSnippetAvailability(true);
             renderWebsiteWidgetSnippet();
             applyWebsiteWidgetPreview();
         }
@@ -38011,6 +38023,10 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function renderWebsiteWidgetSnippet() {
+            if (!websiteWidgetSettings?.widget_public_key) {
+                setWebsiteWidgetSnippetAvailability(false);
+                return;
+            }
             const state = collectWebsiteWidgetFormState();
             websiteWidgetSettings = state;
             const base = getWebsiteWidgetScriptBase();
@@ -38024,13 +38040,17 @@ Thank you for shopping with {store_name}!</textarea>
                 `  data-first-message="${escapeHtmlAttr(state.first_message)}"`,
                 `  data-theme="${escapeHtmlAttr(state.theme_mode)}"`,
                 `  data-position="${escapeHtmlAttr(state.position)}"`,
+                `  data-primary-color="${escapeHtmlAttr(state.primary_color)}"`,
                 `  data-cta-label="${escapeHtmlAttr(state.cta_label)}"`,
                 `  data-cta-url="https://digitivia.com"`,
                 `  data-powered-by="Powered by Digitivia"`,
-                '><\\/script>'
+                `  data-blocked-title="${escapeHtmlAttr(state.blocked_title)}"`,
+                `  data-blocked-message="${escapeHtmlAttr(state.blocked_message)}"`,
+                '></scr' + 'ipt>'
             ].join('\n');
             const el = document.getElementById('wws-snippet');
             if (el) el.value = snippet;
+            setWebsiteWidgetSnippetAvailability(true);
             const scriptStat = document.getElementById('wws-stat-script');
             if (scriptStat) scriptStat.textContent = `${base}/website-widget.js`;
         }
@@ -38140,6 +38160,8 @@ Thank you for shopping with {store_name}!</textarea>
         function escapeHtmlAttr(value) {
             return String(value ?? '')
                 .replace(/&/g, '&amp;')
+                .replace(/\r\n|\r|\n/g, '&#10;')
+                .replace(/\t/g, '&#9;')
                 .replace(/"/g, '&quot;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');

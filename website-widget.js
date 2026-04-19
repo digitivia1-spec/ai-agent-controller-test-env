@@ -20,6 +20,7 @@
   var srcBase = script && script.src ? new URL(script.src, window.location.href) : new URL(window.location.href);
   var widgetUrl = new URL('chatwindow.html', srcBase.href);
   var widgetOrigin = widgetUrl.origin;
+  var primaryColor = script && script.dataset ? String(script.dataset.primaryColor || '').trim() : '';
   var config = {
     widgetKey: widgetKey,
     webhookUrl: script.dataset.webhookUrl || new URL('webhook/website_chat_digitivia', srcBase.origin + '/').href,
@@ -31,8 +32,11 @@
     position: script.dataset.position || '',
     forcedDir: script.dataset.dir || '',
     ctaLabel: script.dataset.ctaLabel || '',
-    ctaUrl: script.dataset.ctaUrl || 'https://digitivia.com',
-    poweredByLabel: script.dataset.poweredBy || 'Powered by Digitivia',
+    ctaUrl: 'https://digitivia.com',
+    poweredByLabel: 'Powered by Digitivia',
+    blockedTitle: script.dataset.blockedTitle || '',
+    blockedMessage: script.dataset.blockedMessage || '',
+    theme: buildThemeConfig(primaryColor),
     hostOrigin: window.location.origin || '',
     hostPageUrl: window.location.href || '',
     embeddedFrame: true,
@@ -173,6 +177,14 @@
       return '*';
     }
     return origin;
+  }
+
+  function buildThemeConfig(color) {
+    if (!color) return {};
+    return {
+      '--chat-accent': color,
+      '--chat-accent-strong': color
+    };
   }
 
   function readRequestTimeoutMs(dataset) {
