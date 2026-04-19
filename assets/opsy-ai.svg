@@ -1,0 +1,43 @@
+<svg width="512" height="512" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="opsy-body" cx="38%" cy="33%" r="62%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="40%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+    <radialGradient id="opsy-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient glow -->
+  <circle cx="80" cy="80" r="68" fill="url(#opsy-glow)"/>
+
+  <!-- Rotating gear (static for file) -->
+  <circle cx="80" cy="80" r="52" fill="none" stroke="#3b82f6" stroke-width="10" stroke-dasharray="14 14" opacity="0.2"/>
+
+  <!-- Main orb body -->
+  <circle cx="80" cy="80" r="38" fill="url(#opsy-body)"/>
+
+  <!-- Highlight reflection -->
+  <ellipse cx="68" cy="68" rx="12" ry="8" fill="white" opacity="0.1" transform="rotate(-15 68 68)"/>
+  <circle cx="64" cy="64" r="4" fill="white" opacity="0.15"/>
+
+  <!-- Gear icon on forehead -->
+  <g transform="translate(70, 50) scale(0.5)" opacity="0.4">
+    <circle cx="10" cy="10" r="8" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="10" cy="10" r="3" fill="white"/>
+  </g>
+
+  <!-- Eyes -->
+  <circle cx="68" cy="80" r="4.5" fill="white" opacity="0.95"/>
+  <circle cx="68" cy="80" r="2.2" fill="#1e3a5f"/>
+  <circle cx="69.5" cy="78.5" r="0.8" fill="white" opacity="0.6"/>
+  <circle cx="92" cy="80" r="4.5" fill="white" opacity="0.95"/>
+  <circle cx="92" cy="80" r="2.2" fill="#1e3a5f"/>
+  <circle cx="93.5" cy="78.5" r="0.8" fill="white" opacity="0.6"/>
+
+  <!-- Smile -->
+  <path d="M 73 94 Q 80 100 87 94" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+</svg>

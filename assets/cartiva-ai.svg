@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cartiva-body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <radialGradient id="cartiva-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient glow -->
+  <circle cx="80" cy="80" r="68" fill="url(#cartiva-glow)"/>
+
+  <!-- Bag body -->
+  <rect x="44" y="58" width="72" height="68" rx="12" fill="url(#cartiva-body)" opacity="0.95"/>
+
+  <!-- Bag handle -->
+  <path d="M 60 58 Q 60 36 80 36 Q 100 36 100 58" fill="none" stroke="url(#cartiva-body)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Eyes -->
+  <circle cx="66" cy="82" r="4.5" fill="white" opacity="0.95"/>
+  <circle cx="66" cy="82" r="2.2" fill="#7c2d12"/>
+  <circle cx="67.5" cy="80.5" r="0.8" fill="white" opacity="0.6"/>
+  <circle cx="94" cy="82" r="4.5" fill="white" opacity="0.95"/>
+  <circle cx="94" cy="82" r="2.2" fill="#7c2d12"/>
+  <circle cx="95.5" cy="80.5" r="0.8" fill="white" opacity="0.6"/>
+
+  <!-- Smile -->
+  <path d="M 72 96 Q 80 103 88 96" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+</svg>
