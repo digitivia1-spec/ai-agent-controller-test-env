@@ -37465,6 +37465,28 @@ Thank you for shopping with {store_name}!</textarea>
                     white-space: pre;
                     overflow-wrap: normal;
                 }
+                .wws-input[type="color"] {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    min-height: 48px;
+                    height: 48px;
+                    padding: 6px;
+                    cursor: pointer;
+                    overflow: hidden;
+                }
+                .wws-input[type="color"]::-webkit-color-swatch-wrapper {
+                    padding: 0;
+                }
+                .wws-input[type="color"]::-webkit-color-swatch {
+                    border: 0;
+                    border-radius: 10px;
+                    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+                }
+                .wws-input[type="color"]::-moz-color-swatch {
+                    border: 0;
+                    border-radius: 10px;
+                    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+                }
                 .wws-input:focus,
                 .wws-select:focus,
                 .wws-textarea:focus,
