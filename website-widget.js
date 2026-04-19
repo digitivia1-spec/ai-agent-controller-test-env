@@ -9,6 +9,7 @@
   var OPEN_WIDTH = 400;
   var OPEN_HEIGHT = 750;
   var VIEWPORT_MARGIN = 16;
+  var DEFAULT_REQUEST_TIMEOUT_MS = 360000;
 
   var script = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
@@ -22,6 +23,7 @@
   var config = {
     widgetKey: widgetKey,
     webhookUrl: script.dataset.webhookUrl || new URL('webhook/website_chat_digitivia', srcBase.origin + '/').href,
+    requestTimeoutMs: readRequestTimeoutMs(script && script.dataset ? script.dataset : {}),
     title: script.dataset.title || '',
     subtitle: script.dataset.subtitle || '',
     firstMessage: script.dataset.firstMessage || '',
@@ -171,6 +173,29 @@
       return '*';
     }
     return origin;
+  }
+
+  function readRequestTimeoutMs(dataset) {
+    var candidates = [
+      toMilliseconds(dataset.requestTimeoutMs, 1),
+      toMilliseconds(dataset.timeoutMs, 1),
+      toMilliseconds(dataset.requestTimeoutSeconds, 1000),
+      toMilliseconds(dataset.timeoutSeconds, 1000),
+      toMilliseconds(dataset.requestTimeoutMinutes, 60000),
+      toMilliseconds(dataset.timeoutMinutes, 60000)
+    ];
+
+    for (var i = 0; i < candidates.length; i += 1) {
+      if (candidates[i] > 0) return candidates[i];
+    }
+
+    return DEFAULT_REQUEST_TIMEOUT_MS;
+  }
+
+  function toMilliseconds(value, multiplier) {
+    var parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed <= 0) return 0;
+    return Math.round(parsed * multiplier);
   }
 
   if (document.body) {
