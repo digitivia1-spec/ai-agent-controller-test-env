@@ -39,6 +39,7 @@
 
   var frame = null;
   var isOpen = false;
+  var hasRevealedFrame = false;
 
   function mountWidgetFrame() {
     if (frame || !document.body) return;
@@ -58,6 +59,9 @@
     frame.style.colorScheme = 'normal';
     frame.style.maxWidth = '100vw';
     frame.style.maxHeight = '100vh';
+    frame.style.opacity = '0';
+    frame.style.pointerEvents = 'none';
+    frame.style.transition = 'opacity 120ms ease';
     applyFramePosition(frame);
     applyFrameSize(false);
 
@@ -91,11 +95,12 @@
   }
 
   function onWidgetMessage(event) {
-    if (!frame || event.source !== frame.contentWindow || event.origin !== widgetOrigin) return;
+    if (!frame || event.source !== frame.contentWindow || !isAllowedWidgetOrigin(event.origin)) return;
     if (!event.data || typeof event.data !== 'object') return;
 
     if (event.data.type === MESSAGE_READY) {
       postInitConfig();
+      revealFrame();
       applyFrameSize(isOpen);
       return;
     }
@@ -111,7 +116,7 @@
     frame.contentWindow.postMessage({
       type: MESSAGE_INIT,
       config: config
-    }, widgetOrigin);
+    }, getMessageTargetOrigin(widgetOrigin, widgetUrl.protocol));
   }
 
   function onViewportResize() {
@@ -145,6 +150,27 @@
   function clampDimension(target, maxValue, minValue) {
     var upperBound = Math.max(minValue, maxValue);
     return Math.max(minValue, Math.min(target, upperBound));
+  }
+
+  function revealFrame() {
+    if (!frame || hasRevealedFrame) return;
+    hasRevealedFrame = true;
+    frame.style.opacity = '1';
+    frame.style.pointerEvents = 'auto';
+  }
+
+  function isAllowedWidgetOrigin(origin) {
+    if (widgetUrl.protocol === 'file:') {
+      return origin === 'null' || origin === '';
+    }
+    return origin === widgetOrigin;
+  }
+
+  function getMessageTargetOrigin(origin, protocol) {
+    if (protocol === 'file:' || !origin || origin === 'null') {
+      return '*';
+    }
+    return origin;
   }
 
   if (document.body) {
