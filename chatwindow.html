@@ -873,7 +873,7 @@
     }
   </style>
 </head>
-<body class="hs-preview-surface">
+<body>
   <script>
     (function initDigitiviaChatWidget() {
       "use strict";
@@ -884,6 +884,7 @@
         toggled: "DIGITIVIA_CHAT_TOGGLED"
       };
       let trustedParentOrigin = "";
+      let pendingOpenFrame = 0;
 
       const DigitiviaChatWidget = {
         config: {
@@ -979,7 +980,7 @@
       mountWidget();
 
       function mountWidget() {
-        document.body.classList.toggle("hs-embed-surface", !!DigitiviaChatWidget.config.embeddedFrame);
+        syncSurfaceMode();
         applyThemeOverrides();
         hydrateState();
         renderShell();
@@ -992,7 +993,7 @@
 
       function setConfig(nextConfig) {
         deepMerge(DigitiviaChatWidget.config, nextConfig || {});
-        document.body.classList.toggle("hs-embed-surface", !!DigitiviaChatWidget.config.embeddedFrame);
+        syncSurfaceMode();
         applyThemeOverrides();
         if (DigitiviaChatWidget.refs.root) {
           DigitiviaChatWidget.refs.root.setAttribute("data-position", normalizePosition(DigitiviaChatWidget.config.position));
@@ -1000,6 +1001,7 @@
         }
         rerenderShellText();
         applyTheme(resolveThemeMode(), false);
+        syncOpenState();
         setBlockedState(!!DigitiviaChatWidget.config.previewBlocked, {
           title: DigitiviaChatWidget.config.blockedTitle,
           message: DigitiviaChatWidget.config.blockedMessage,
@@ -1077,7 +1079,7 @@
         root.setAttribute("data-position", normalizePosition(DigitiviaChatWidget.config.position));
         root.setAttribute("dir", detectDir());
         root.innerHTML = `
-          <button type="button" class="hs-chat-backdrop" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.outsideClose)}"></button>
+          <button type="button" class="hs-chat-backdrop" hidden aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.outsideClose)}"></button>
           <button type="button" class="hs-chat-launcher" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.launcher)}">
             <span class="hs-chat-launcher-ping" aria-hidden="true"></span>
             <svg class="hs-chat-launcher-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1085,7 +1087,7 @@
               <path d="M7 9h10M7 12h7" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
             </svg>
           </button>
-          <section class="hs-chat-panel" aria-label="${escapeHtml(DigitiviaChatWidget.config.title)}">
+          <section class="hs-chat-panel" hidden aria-label="${escapeHtml(DigitiviaChatWidget.config.title)}">
             <header class="hs-chat-header">
               <div class="hs-chat-title-wrap">
                 <div class="hs-chat-kicker"><span class="hs-chat-kicker-dot" aria-hidden="true"></span><span class="hs-chat-kicker-text">${escapeHtml(DigitiviaChatWidget.config.kicker)}</span></div>
@@ -1136,6 +1138,7 @@
         DigitiviaChatWidget.refs.themeToggle = root.querySelector(".hs-chat-theme-toggle");
         DigitiviaChatWidget.refs.resetBtn = root.querySelector(".hs-chat-reset");
         applyTheme(DigitiviaChatWidget.state.theme, false);
+        syncOpenState();
       }
 
       function bindEvents() {
@@ -1188,16 +1191,17 @@
       }
 
       function openPanel() {
+        if (DigitiviaChatWidget.state.isOpen) return;
         DigitiviaChatWidget.state.isOpen = true;
-        DigitiviaChatWidget.refs.root.classList.add("is-open");
-        onOpenPanel();
         notifyParentToggle();
-        notifyStateChange();
+        scheduleOpenStateSync();
       }
 
       function closePanel() {
+        if (!DigitiviaChatWidget.state.isOpen) return;
         DigitiviaChatWidget.state.isOpen = false;
-        DigitiviaChatWidget.refs.root.classList.remove("is-open");
+        clearPendingOpenSync();
+        syncOpenState();
         notifyParentToggle();
         notifyStateChange();
       }
@@ -1699,6 +1703,36 @@
         return lang.startsWith("ar") ? "rtl" : "ltr";
       }
 
+      function syncSurfaceMode() {
+        const isEmbedded = !!DigitiviaChatWidget.config.embeddedFrame;
+        document.body.classList.toggle("hs-embed-surface", isEmbedded);
+        document.body.classList.toggle("hs-preview-surface", !isEmbedded);
+      }
+
+      function scheduleOpenStateSync() {
+        clearPendingOpenSync();
+        pendingOpenFrame = window.requestAnimationFrame(() => {
+          pendingOpenFrame = 0;
+          syncOpenState();
+          onOpenPanel();
+          notifyStateChange();
+        });
+      }
+
+      function clearPendingOpenSync() {
+        if (!pendingOpenFrame) return;
+        window.cancelAnimationFrame(pendingOpenFrame);
+        pendingOpenFrame = 0;
+      }
+
+      function syncOpenState() {
+        if (!DigitiviaChatWidget.refs.root) return;
+        const isOpen = !!DigitiviaChatWidget.state.isOpen;
+        DigitiviaChatWidget.refs.root.classList.toggle("is-open", isOpen);
+        DigitiviaChatWidget.refs.panel.hidden = !isOpen;
+        DigitiviaChatWidget.refs.backdrop.hidden = !isOpen || !!DigitiviaChatWidget.config.embeddedFrame;
+      }
+
       function notifyStateChange() {
         if (typeof DigitiviaChatWidget.config.onStateChange === "function") {
           try {
@@ -1732,8 +1766,15 @@
       function postMessageToParent(message) {
         if (window.parent === window) return;
         try {
-          window.parent.postMessage(message, trustedParentOrigin || "*");
+          window.parent.postMessage(message, getParentTargetOrigin());
         } catch (_err) {}
+      }
+
+      function getParentTargetOrigin() {
+        if (!trustedParentOrigin || trustedParentOrigin === "null") {
+          return "*";
+        }
+        return trustedParentOrigin;
       }
 
       function deepMerge(target, source) {
