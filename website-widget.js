@@ -1,6 +1,15 @@
 (function () {
   'use strict';
 
+  var MESSAGE_READY = 'DIGITIVIA_CHAT_READY';
+  var MESSAGE_INIT = 'DIGITIVIA_CHAT_INIT';
+  var MESSAGE_TOGGLED = 'DIGITIVIA_CHAT_TOGGLED';
+  var CLOSED_WIDTH = 120;
+  var CLOSED_HEIGHT = 120;
+  var OPEN_WIDTH = 400;
+  var OPEN_HEIGHT = 750;
+  var VIEWPORT_MARGIN = 16;
+
   var script = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
     return scripts[scripts.length - 1];
@@ -9,7 +18,7 @@
   var widgetKey = script && script.dataset ? (script.dataset.widgetKey || '') : '';
   var srcBase = script && script.src ? new URL(script.src, window.location.href) : new URL(window.location.href);
   var widgetUrl = new URL('chatwindow.html', srcBase.href);
-
+  var widgetOrigin = widgetUrl.origin;
   var config = {
     widgetKey: widgetKey,
     webhookUrl: script.dataset.webhookUrl || new URL('webhook/website_chat_digitivia', srcBase.origin + '/').href,
@@ -28,119 +37,119 @@
     previewMode: false
   };
 
-  function injectFrame(html) {
-    var frame = document.createElement('iframe');
+  var frame = null;
+  var isOpen = false;
+
+  function mountWidgetFrame() {
+    if (frame || !document.body) return;
+
+    frame = document.createElement('iframe');
     frame.setAttribute('title', 'Digitivia Website Widget');
     frame.setAttribute('aria-label', 'Digitivia Website Widget');
-    
-    var position = config.position || 'bottom-right';
-    
+    frame.setAttribute('scrolling', 'no');
+    frame.setAttribute('allowtransparency', 'true');
+    frame.src = widgetUrl.href;
     frame.style.position = 'fixed';
     frame.style.zIndex = '2147483000';
+    frame.style.display = 'block';
     frame.style.border = '0';
     frame.style.background = 'transparent';
+    frame.style.overflow = 'hidden';
     frame.style.colorScheme = 'normal';
-    
-    // Start small so it only covers the launcher button
-    frame.style.width = '120px';
-    frame.style.height = '120px';
     frame.style.maxWidth = '100vw';
     frame.style.maxHeight = '100vh';
+    applyFramePosition(frame);
+    applyFrameSize(false);
 
-    if (position.includes('left')) {
-      frame.style.left = '0px';
-    } else {
-      frame.style.right = '0px';
-    }
-    
-    if (position.includes('top')) {
-      frame.style.top = '0px';
-    } else {
-      frame.style.bottom = '0px';
-    }
+    window.addEventListener('message', onWidgetMessage);
+    window.addEventListener('resize', onViewportResize);
+    frame.addEventListener('load', function () {
+      applyFrameSize(isOpen);
+    });
 
-    // 1. Inject Config
-    var configScript = '<script>window.DigitiviaChatWidgetConfig = ' + JSON.stringify(config) + ';<\/script>';
-    
-    // 2. Inject Dynamic Resizer & Background Fix into the Widget DOM
-    var autoResizerScript = `
-    <style>
-      /* Force the ugly blurred background to be transparent */
-      html, body {
-        background: transparent !important;
-        background-color: transparent !important;
-        backdrop-filter: none !important;
-        box-shadow: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-    </style>
-    <script>
-      (function() {
-        function updateParentIframe() {
-          try {
-            var parentFrame = window.parent.document.querySelector('iframe[title="Digitivia Website Widget"]');
-            if (!parentFrame) return;
-
-            var maxWidth = 0;
-            var maxHeight = 0;
-
-            // Measure only the ACTUAL visible elements (launcher button, chat box, etc.)
-            var children = document.body.children;
-            for (var i = 0; i < children.length; i++) {
-              var el = children[i];
-              if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') continue;
-              
-              var style = window.getComputedStyle(el);
-              if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
-                var rect = el.getBoundingClientRect();
-                if (rect.width > maxWidth) maxWidth = rect.width;
-                if (rect.height > maxHeight) maxHeight = rect.height;
-              }
-            }
-
-            // Shrink or expand the parent iframe dynamically!
-            if (maxWidth > 0 && maxHeight > 0) {
-              parentFrame.style.width = (maxWidth + 25) + 'px';
-              parentFrame.style.height = (maxHeight + 25) + 'px';
-            }
-          } catch(err) {
-            console.warn('Digitivia Widget Auto-Resize Error:', err);
-          }
-        }
-
-        window.addEventListener('load', updateParentIframe);
-        
-        // Monitor the DOM so when the chat opens, it resizes instantly
-        document.addEventListener('DOMContentLoaded', function() {
-          var observer = new MutationObserver(updateParentIframe);
-          observer.observe(document.body, { 
-            childList: true, 
-            subtree: true, 
-            attributes: true, 
-            attributeFilter: ['style', 'class'] 
-          });
-          
-          updateParentIframe();
-          setTimeout(updateParentIframe, 500); // Catch delayed rendering
-        });
-      })();
-    <\/script>
-    `;
-
-    // Safely inject our config and resizer scripts
-    var srcdoc = html.replace('<script>', configScript + '\\n' + autoResizerScript + '\\n<script>');
-    frame.srcdoc = srcdoc;
     document.body.appendChild(frame);
   }
 
-  fetch(widgetUrl.href, { credentials: 'same-origin' })
-    .then(function (res) {
-      if (!res.ok) throw new Error('Failed to load widget UI');
-      return res.text();
-    })
-    .then(injectFrame)
-    .catch(function (err) {
-      console.error('Digitivia widget bootstrap failed:', err);
-    });
+  function applyFramePosition(targetFrame) {
+    var position = config.position || 'bottom-right';
+
+    if (position.indexOf('left') !== -1) {
+      targetFrame.style.left = '0px';
+      targetFrame.style.right = 'auto';
+    } else {
+      targetFrame.style.right = '0px';
+      targetFrame.style.left = 'auto';
+    }
+
+    if (position.indexOf('top') !== -1) {
+      targetFrame.style.top = '0px';
+      targetFrame.style.bottom = 'auto';
+    } else {
+      targetFrame.style.bottom = '0px';
+      targetFrame.style.top = 'auto';
+    }
+  }
+
+  function onWidgetMessage(event) {
+    if (!frame || event.source !== frame.contentWindow || event.origin !== widgetOrigin) return;
+    if (!event.data || typeof event.data !== 'object') return;
+
+    if (event.data.type === MESSAGE_READY) {
+      postInitConfig();
+      applyFrameSize(isOpen);
+      return;
+    }
+
+    if (event.data.type === MESSAGE_TOGGLED) {
+      isOpen = !!event.data.isOpen;
+      applyFrameSize(isOpen);
+    }
+  }
+
+  function postInitConfig() {
+    if (!frame || !frame.contentWindow) return;
+    frame.contentWindow.postMessage({
+      type: MESSAGE_INIT,
+      config: config
+    }, widgetOrigin);
+  }
+
+  function onViewportResize() {
+    applyFrameSize(isOpen);
+  }
+
+  function applyFrameSize(openState) {
+    if (!frame) return;
+    var size = openState ? getOpenFrameSize() : getClosedFrameSize();
+    frame.style.width = size.width + 'px';
+    frame.style.height = size.height + 'px';
+  }
+
+  function getClosedFrameSize() {
+    return {
+      width: CLOSED_WIDTH,
+      height: CLOSED_HEIGHT
+    };
+  }
+
+  function getOpenFrameSize() {
+    var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
+    return {
+      width: clampDimension(OPEN_WIDTH, viewportWidth - VIEWPORT_MARGIN, CLOSED_WIDTH),
+      height: clampDimension(OPEN_HEIGHT, viewportHeight - VIEWPORT_MARGIN, CLOSED_HEIGHT)
+    };
+  }
+
+  function clampDimension(target, maxValue, minValue) {
+    var upperBound = Math.max(minValue, maxValue);
+    return Math.max(minValue, Math.min(target, upperBound));
+  }
+
+  if (document.body) {
+    mountWidgetFrame();
+  } else {
+    document.addEventListener('DOMContentLoaded', mountWidgetFrame, { once: true });
+  }
 })();
