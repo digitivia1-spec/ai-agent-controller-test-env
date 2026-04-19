@@ -334,10 +334,12 @@
     }
 
     .hs-chat-icon {
-      inline-size: 18px;
-      block-size: 18px;
+      inline-size: 19px;
+      block-size: 19px;
       display: block;
+      flex: 0 0 auto;
       pointer-events: none;
+      vector-effect: non-scaling-stroke;
     }
 
     .hs-chat-close-icon {
@@ -890,7 +892,7 @@
         config: {
           webhookUrl: "https://n8n.srv1174105.hstgr.cloud/webhook/website_chat_digitivia",
           bootstrapUrl: "",
-          requestTimeoutMs: 16000,
+          requestTimeoutMs: 360000,
           storagePrefix: "digitiviaWebsiteChat",
           source: "website-chat",
           widgetKey: "",
@@ -1097,13 +1099,15 @@
               <div class="hs-chat-header-actions">
                 <button type="button" class="hs-chat-action hs-chat-theme-toggle" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}">
                   <svg class="hs-chat-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M12 3.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 .75-.75Zm0 13.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 .75-.75Zm8.25-6a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-13.5 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm9.01-4.76a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 0 1-1.06-1.06l1.06-1.06Zm-7.52 7.52a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06Zm8.58 2.12a.75.75 0 0 1 0 1.06.75.75 0 0 1-1.06 0l-1.06-1.06a.75.75 0 1 1 1.06-1.06l1.06 1.06Zm-7.52-7.52a.75.75 0 0 1 0 1.06.75.75 0 0 1-1.06 0L6.18 7.55a.75.75 0 1 1 1.06-1.06l1.06 1.06ZM12 8.25a3.75 3.75 0 1 1 0 7.5a3.75 3.75 0 0 1 0-7.5Z" fill="currentColor"/>
+                    <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M12 3.5v2.25M12 18.25v2.25M20.5 12h-2.25M5.75 12H3.5M18.01 5.99l-1.59 1.59M7.58 16.42l-1.59 1.59M18.01 18.01l-1.59-1.59M7.58 7.58 5.99 5.99" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.toggleTheme)}</span>
                 </button>
                 <button type="button" class="hs-chat-action hs-chat-reset" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}" title="${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}">
                   <svg class="hs-chat-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M6.75 7.5V4.5m0 0h3m-3 0l3.3 3.3M18 12a6 6 0 1 1-2.05-4.52" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 3v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 8a9 9 0 1 1-3.2-6.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <span class="hs-chat-visually-hidden">${escapeHtml(DigitiviaChatWidget.config.labels.newConversation)}</span>
                 </button>
