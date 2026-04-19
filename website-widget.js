@@ -33,44 +33,103 @@
     frame.setAttribute('title', 'Digitivia Website Widget');
     frame.setAttribute('aria-label', 'Digitivia Website Widget');
     
-    // --- FIXED STYLING ---
-    // Instead of taking up the whole screen, we bound the iframe to a corner 
-    // using a standard chat window size, so the main website stays visible.
     var position = config.position || 'bottom-right';
     
     frame.style.position = 'fixed';
     frame.style.zIndex = '2147483000';
     frame.style.border = '0';
     frame.style.background = 'transparent';
-    frame.style.pointerEvents = 'auto';
-    frame.allow = 'clipboard-write';
-
-    // Standard chat widget dimensions
-    frame.style.width = '400px'; 
-    frame.style.height = '750px';
+    frame.style.colorScheme = 'normal';
     
-    // Responsive constraints so it doesn't break on mobile screens
-    frame.style.maxWidth = 'calc(100vw - 40px)';
-    frame.style.maxHeight = 'calc(100vh - 40px)';
+    // Start small so it only covers the launcher button
+    frame.style.width = '120px';
+    frame.style.height = '120px';
+    frame.style.maxWidth = '100vw';
+    frame.style.maxHeight = '100vh';
 
-    // Dynamic Positioning based on configuration
     if (position.includes('left')) {
-      frame.style.left = '20px';
+      frame.style.left = '0px';
     } else {
-      frame.style.right = '20px';
+      frame.style.right = '0px';
     }
     
     if (position.includes('top')) {
-      frame.style.top = '20px';
+      frame.style.top = '0px';
     } else {
-      frame.style.bottom = '20px';
+      frame.style.bottom = '0px';
     }
-    // ---------------------
 
-    var configScript = '<script>window.DigitiviaChatWidgetConfig = ' + JSON.stringify(config) + ';</script>';
+    // 1. Inject Config
+    var configScript = '<script>window.DigitiviaChatWidgetConfig = ' + JSON.stringify(config) + ';<\/script>';
     
-    // Fix: Ensure the closing script tag uses the proper format when injecting
-    var srcdoc = html.replace('<script>', configScript + '\n<script>');
+    // 2. Inject Dynamic Resizer & Background Fix into the Widget DOM
+    var autoResizerScript = `
+    <style>
+      /* Force the ugly blurred background to be transparent */
+      html, body {
+        background: transparent !important;
+        background-color: transparent !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+    </style>
+    <script>
+      (function() {
+        function updateParentIframe() {
+          try {
+            var parentFrame = window.parent.document.querySelector('iframe[title="Digitivia Website Widget"]');
+            if (!parentFrame) return;
+
+            var maxWidth = 0;
+            var maxHeight = 0;
+
+            // Measure only the ACTUAL visible elements (launcher button, chat box, etc.)
+            var children = document.body.children;
+            for (var i = 0; i < children.length; i++) {
+              var el = children[i];
+              if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') continue;
+              
+              var style = window.getComputedStyle(el);
+              if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+                var rect = el.getBoundingClientRect();
+                if (rect.width > maxWidth) maxWidth = rect.width;
+                if (rect.height > maxHeight) maxHeight = rect.height;
+              }
+            }
+
+            // Shrink or expand the parent iframe dynamically!
+            if (maxWidth > 0 && maxHeight > 0) {
+              parentFrame.style.width = (maxWidth + 25) + 'px';
+              parentFrame.style.height = (maxHeight + 25) + 'px';
+            }
+          } catch(err) {
+            console.warn('Digitivia Widget Auto-Resize Error:', err);
+          }
+        }
+
+        window.addEventListener('load', updateParentIframe);
+        
+        // Monitor the DOM so when the chat opens, it resizes instantly
+        document.addEventListener('DOMContentLoaded', function() {
+          var observer = new MutationObserver(updateParentIframe);
+          observer.observe(document.body, { 
+            childList: true, 
+            subtree: true, 
+            attributes: true, 
+            attributeFilter: ['style', 'class'] 
+          });
+          
+          updateParentIframe();
+          setTimeout(updateParentIframe, 500); // Catch delayed rendering
+        });
+      })();
+    <\/script>
+    `;
+
+    // Safely inject our config and resizer scripts
+    var srcdoc = html.replace('<script>', configScript + '\\n' + autoResizerScript + '\\n<script>');
     frame.srcdoc = srcdoc;
     document.body.appendChild(frame);
   }
