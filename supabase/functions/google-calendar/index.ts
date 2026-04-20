@@ -35,10 +35,42 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID') || '';
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET') || '';
-const GOOGLE_REDIRECT_URI = Deno.env.get('GOOGLE_REDIRECT_URI')
+// Both production and staging callbacks are registered in Google Cloud Console.
+// The edge function can receive traffic from either, and each half of the flow
+// (authorize URL + token exchange) must use the SAME redirect_uri string that
+// Google sees first, so we thread the chosen origin through the signed state.
+const DEFAULT_REDIRECT_URI = Deno.env.get('GOOGLE_REDIRECT_URI')
     || 'https://ai-agent.digitivia.com/api/google-calendar/callback';
-const APP_BASE_URL = Deno.env.get('APP_BASE_URL')
+const ALLOWED_REDIRECT_URIS = (Deno.env.get('GOOGLE_REDIRECT_URIS')
+    || [
+        'https://ai-agent.digitivia.com/api/google-calendar/callback',
+        'https://testaienv.digitivia.com/api/google-calendar/callback',
+    ].join(','))
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+const DEFAULT_APP_BASE_URL = Deno.env.get('APP_BASE_URL')
     || 'https://ai-agent.digitivia.com';
+const ALLOWED_APP_BASE_URLS = (Deno.env.get('APP_BASE_URLS')
+    || [
+        'https://ai-agent.digitivia.com',
+        'https://testaienv.digitivia.com',
+    ].join(','))
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+function pickRedirectUri(candidate: string | null | undefined): string {
+    if (!candidate) return DEFAULT_REDIRECT_URI;
+    return ALLOWED_REDIRECT_URIS.includes(candidate) ? candidate : DEFAULT_REDIRECT_URI;
+}
+function pickAppBaseUrl(candidate: string | null | undefined): string {
+    if (!candidate) return DEFAULT_APP_BASE_URL;
+    return ALLOWED_APP_BASE_URLS.includes(candidate) ? candidate : DEFAULT_APP_BASE_URL;
+}
+function deriveRedirectFromAppBase(appBase: string): string {
+    return `${appBase.replace(/\/+$/, '')}/api/google-calendar/callback`;
+}
 const STATE_SECRET = Deno.env.get('GOOGLE_OAUTH_STATE_SECRET')
     || Deno.env.get('SUPABASE_JWT_SECRET')
     || 'change-me-in-production';
@@ -221,10 +253,32 @@ Deno.serve(async (req) => {
             const userId = url.searchParams.get('user_id') || null;
             if (!orgId) return json({ error: 'org_id is required' }, 400);
 
-            const state = await signState({ org_id: orgId, user_id: userId });
+            // Let the caller pick which approved origin should be used. Accept
+            // either an explicit redirect_uri/app_base_url, or the Origin header
+            // (the demo page and in-app button both arrive with one).
+            const explicitRedirect = url.searchParams.get('redirect_uri');
+            const explicitAppBase = url.searchParams.get('app_base_url');
+            const originHeader = req.headers.get('origin');
+            const redirectUri = explicitRedirect
+                ? pickRedirectUri(explicitRedirect)
+                : explicitAppBase
+                    ? pickRedirectUri(deriveRedirectFromAppBase(pickAppBaseUrl(explicitAppBase)))
+                    : originHeader
+                        ? pickRedirectUri(deriveRedirectFromAppBase(pickAppBaseUrl(originHeader)))
+                        : DEFAULT_REDIRECT_URI;
+            const appBaseUrl = pickAppBaseUrl(
+                explicitAppBase || originHeader || new URL(redirectUri).origin,
+            );
+
+            const state = await signState({
+                org_id: orgId,
+                user_id: userId,
+                redirect_uri: redirectUri,
+                app_base_url: appBaseUrl,
+            });
             const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
             authUrl.searchParams.set('client_id', GOOGLE_CLIENT_ID);
-            authUrl.searchParams.set('redirect_uri', GOOGLE_REDIRECT_URI);
+            authUrl.searchParams.set('redirect_uri', redirectUri);
             authUrl.searchParams.set('response_type', 'code');
             authUrl.searchParams.set('scope', SCOPES);
             authUrl.searchParams.set('access_type', 'offline');
@@ -232,8 +286,8 @@ Deno.serve(async (req) => {
             authUrl.searchParams.set('include_granted_scopes', 'true');
             authUrl.searchParams.set('state', state);
 
-            await logEvent(orgId, userId, 'connect_started', { redirect_uri: GOOGLE_REDIRECT_URI });
-            return json({ authorize_url: authUrl.toString() });
+            await logEvent(orgId, userId, 'connect_started', { redirect_uri: redirectUri });
+            return json({ authorize_url: authUrl.toString(), redirect_uri: redirectUri });
         }
 
         // ------------------------------------------------------------------
@@ -251,6 +305,16 @@ Deno.serve(async (req) => {
             const userId = (payload.user_id as string | null) || null;
             if (!orgId) return json({ error: 'state missing org_id' }, 400);
 
+            // Use the exact redirect_uri that was sent to Google in the authorize
+            // step — Google rejects the token exchange otherwise. Fall back to the
+            // default only if the state was minted before this change rolled out.
+            const redirectUri = pickRedirectUri(
+                (payload.redirect_uri as string | null) || null,
+            );
+            const appBaseUrl = pickAppBaseUrl(
+                (payload.app_base_url as string | null) || null,
+            );
+
             const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -258,7 +322,7 @@ Deno.serve(async (req) => {
                     code,
                     client_id: GOOGLE_CLIENT_ID,
                     client_secret: GOOGLE_CLIENT_SECRET,
-                    redirect_uri: GOOGLE_REDIRECT_URI,
+                    redirect_uri: redirectUri,
                     grant_type: 'authorization_code',
                 }),
             });
@@ -299,7 +363,7 @@ Deno.serve(async (req) => {
                 ok: true,
                 org_id: orgId,
                 google_email: googleEmail,
-                redirect: `${APP_BASE_URL}/?gcal=connected`,
+                redirect: `${appBaseUrl.replace(/\/+$/, '')}/?gcal=connected`,
             });
         }
 
@@ -423,10 +487,21 @@ Deno.serve(async (req) => {
             const orgId = url.searchParams.get('org_id');
             const userId = url.searchParams.get('user_id') || null;
             if (!orgId) return json({ error: 'org_id is required' }, 400);
-            const state = await signState({ org_id: orgId, user_id: userId });
+            const originHeader = req.headers.get('origin');
+            const redirectUri = pickRedirectUri(
+                url.searchParams.get('redirect_uri')
+                    || (originHeader ? deriveRedirectFromAppBase(pickAppBaseUrl(originHeader)) : null),
+            );
+            const appBaseUrl = pickAppBaseUrl(originHeader || new URL(redirectUri).origin);
+            const state = await signState({
+                org_id: orgId,
+                user_id: userId,
+                redirect_uri: redirectUri,
+                app_base_url: appBaseUrl,
+            });
             const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
             authUrl.searchParams.set('client_id', GOOGLE_CLIENT_ID);
-            authUrl.searchParams.set('redirect_uri', GOOGLE_REDIRECT_URI);
+            authUrl.searchParams.set('redirect_uri', redirectUri);
             authUrl.searchParams.set('response_type', 'code');
             authUrl.searchParams.set('scope', SCOPES);
             authUrl.searchParams.set('access_type', 'offline');

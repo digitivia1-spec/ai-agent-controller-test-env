@@ -555,7 +555,11 @@
             }
             setBusy(els.connectBtn, true, 'Redirecting…');
             try {
-                const data = await callFn(`?action=connect&org_id=${encodeURIComponent(orgId)}`);
+                const appBase = window.location.origin;
+                const data = await callFn(
+                    `?action=connect&org_id=${encodeURIComponent(orgId)}`
+                    + `&app_base_url=${encodeURIComponent(appBase)}`,
+                );
                 if (!data.authorize_url) throw new Error('No authorize URL returned by backend.');
                 window.location.assign(data.authorize_url);
             } catch (err) {

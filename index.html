@@ -26509,6 +26509,13 @@
             }
             if (typeof updateNotificationUI === 'function') updateNotificationUI();
             if (typeof renderEmailNotificationTestPanel === 'function') renderEmailNotificationTestPanel();
+            // Re-sync Follow-ups configuration with the new UI language so saved
+            // values stay populated and the correct message tab is active.
+            if (typeof fuSettingsLoadedOnce !== 'undefined' && fuSettingsLoadedOnce
+                && document.getElementById('followups')?.classList.contains('active')
+                && typeof fuLoadSettings === 'function') {
+                fuLoadSettings();
+            }
             updateThemeToggleUI();
             if (typeof applyContextualHelp === 'function') applyContextualHelp(document);
             if (typeof refreshOpenHelp === 'function') refreshOpenHelp();
@@ -43129,6 +43136,7 @@ Thank you for shopping with {store_name}!</textarea>
     let fuMessageByChannel = { whatsapp: '', instagram: '', page: '' };
     let fuMessageByChannelAr = { whatsapp: '', instagram: '', page: '' };
     let fuSuppressCapture = false;
+    let fuSettingsLoadedOnce = false;
     let fuConversationDisplayMap = new Map();
     window.FU_N8N_BASE_URL = window.FU_N8N_BASE_URL || 'https://n8n.srv1174105.hstgr.cloud';
 
@@ -43321,14 +43329,26 @@ Thank you for shopping with {store_name}!</textarea>
     }
     async function fuLoadSettings() {
         if (!currentUserOrgId) return;
+        let loaded = false;
         try {
-            const { data } = await supabaseClient.from('followup_settings').select('*').eq('org_id', currentUserOrgId).maybeSingle();
+            const { data, error } = await supabaseClient.from('followup_settings').select('*').eq('org_id', currentUserOrgId).maybeSingle();
+            if (error) throw error;
             if (data) {
+                loaded = true;
                 fuSetCheckboxValue('fu-setting-enabled', data.enabled);
                 const m = data.followup_message_by_channel || {};
                 const ma = data.followup_message_ar_by_channel || {};
-                fuMessageByChannel = { whatsapp: m.whatsapp || data.followup_message || '', instagram: m.instagram || m.whatsapp || data.followup_message || '', page: m.page || data.followup_message || '' };
-                fuMessageByChannelAr = { whatsapp: ma.whatsapp || data.followup_message_ar || '', instagram: ma.instagram || ma.whatsapp || data.followup_message_ar || '', page: ma.page || data.followup_message_ar || '' };
+                // Build both language maps, falling back to whichever language has
+                // content so users with legacy (English-only) settings still see
+                // their saved message in Arabic mode, and vice versa.
+                const enWa = m.whatsapp || data.followup_message || '';
+                const enIg = m.instagram || m.whatsapp || data.followup_message || '';
+                const enPg = m.page || data.followup_message || '';
+                const arWa = ma.whatsapp || data.followup_message_ar || '';
+                const arIg = ma.instagram || ma.whatsapp || data.followup_message_ar || '';
+                const arPg = ma.page || data.followup_message_ar || '';
+                fuMessageByChannel   = { whatsapp: enWa || arWa, instagram: enIg || arIg, page: enPg || arPg };
+                fuMessageByChannelAr = { whatsapp: arWa || enWa, instagram: arIg || enIg, page: arPg || enPg };
                 const channels = data.active_channels || FU_CHANNELS;
                 FU_CHANNELS.forEach(ch => { const el = document.getElementById(`fu-ch-${ch}`); if (el) el.checked = channels.includes(ch); });
                 fuSetFieldValue('fu-setting-delay', data.default_delay_minutes ?? 120);
@@ -43345,21 +43365,17 @@ Thank you for shopping with {store_name}!</textarea>
                 fuSetCheckboxValue('fu-setting-notif-approved',  data.notification_on_template_approved  !== false);
                 fuSetCheckboxValue('fu-setting-notif-rejected',  data.notification_on_template_rejected  !== false);
             }
-        } catch (e) { console.warn('fuLoadSettings', e); }
+        } catch (e) { console.warn('fuLoadSettings failed:', e); }
         fuSuppressCapture = true;
         try {
             fuSwitchMessageChannel('whatsapp');
-            // Prefer the UI language, but if its message is empty and the other has content,
-            // show the language that actually has saved content so users see their saved settings.
-            const preferred = currentLang === 'ar' ? 'ar' : 'en';
-            const arHasContent = Object.values(fuMessageByChannelAr).some(v => (v || '').trim());
-            const enHasContent = Object.values(fuMessageByChannel).some(v => (v || '').trim());
-            let lang = preferred;
-            if (preferred === 'ar' && !arHasContent && enHasContent) lang = 'en';
-            else if (preferred === 'en' && !enHasContent && arHasContent) lang = 'ar';
-            fuSwitchMsgLang(lang);
+            // Default tab follows UI language; users can still toggle freely.
+            fuSwitchMsgLang(currentLang === 'ar' ? 'ar' : 'en');
         } finally { fuSuppressCapture = false; }
         fuSyncPreviewTabAvailability(); fuUpdatePreview();
+        // Remember that settings were loaded so we can restore them when the
+        // user switches the UI language without triggering another DB fetch.
+        if (loaded) fuSettingsLoadedOnce = true;
     }
     async function fuSaveSettings() {
         if (!currentUserOrgId) return;
@@ -50019,12 +50035,14 @@ Thank you for shopping with {store_name}!</textarea>
         if (!userId || !currentUserOrgId) { showToast('Please login first', 'error'); return; }
 
         try {
-            // Ask the backend for a signed authorize URL. The backend owns the
-            // OAuth client config + state signing; we just redirect the user.
+            // Pass the current origin so the backend picks the matching approved
+            // redirect_uri (ai-agent.digitivia.com vs testaienv.digitivia.com).
+            const appBase = window.location.origin;
             const res = await fetch(
                 `${window.SUPABASE_URL}/functions/v1/google-calendar?action=connect`
                 + `&org_id=${encodeURIComponent(currentUserOrgId)}`
-                + `&user_id=${encodeURIComponent(userId)}`,
+                + `&user_id=${encodeURIComponent(userId)}`
+                + `&app_base_url=${encodeURIComponent(appBase)}`,
                 { headers: { apikey: window.SUPABASE_ANON_KEY, Authorization: `Bearer ${window.SUPABASE_ANON_KEY}` } }
             );
             const data = await res.json();
@@ -50486,12 +50504,11 @@ Thank you for shopping with {store_name}!</textarea>
                     <div>
                         <label style="font-size:0.75rem;color:var(--text-secondary);display:block;margin-bottom:3px;">Source</label>
                         <select id="al-source" style="width:100%;padding:9px 12px;border-radius:8px;background:var(--bg-input,rgba(255,255,255,0.06));border:1px solid rgba(255,255,255,0.12);color:var(--text-primary);font-size:0.85rem;">
-                            <option value="manual">Manual</option>
+                            <option value="website" selected>Website</option>
                             <option value="whatsapp">WhatsApp</option>
                             <option value="instagram">Instagram</option>
                             <option value="page">Messenger</option>
                             <option value="telegram">Telegram</option>
-                            <option value="website">Website</option>
                         </select>
                     </div>
                     <div>
@@ -50549,6 +50566,11 @@ Thank you for shopping with {store_name}!</textarea>
         setTimeout(() => document.getElementById('al-full_name')?.focus(), 100);
     };
 
+    // `leads.source` is typed as the `agent_type` Postgres enum, which only
+    // accepts the five AI-agent channel names. Keep the dropdown aligned with
+    // that enum, and defensively strip any value that would blow up the insert.
+    const AGENT_TYPE_VALUES = ['website', 'whatsapp', 'instagram', 'page', 'telegram'];
+
     window.submitAddLead = async function() {
         const name = document.getElementById('al-full_name')?.value?.trim();
         if (!name) { showToast('Name is required', 'error'); return; }
@@ -50556,6 +50578,8 @@ Thank you for shopping with {store_name}!</textarea>
 
         const dueRaw = document.getElementById('al-due_at')?.value || '';
         const assignedTo = document.getElementById('al-assigned_to')?.value || '';
+        const sourceRaw = document.getElementById('al-source')?.value || '';
+        const source = AGENT_TYPE_VALUES.includes(sourceRaw) ? sourceRaw : 'website';
 
         const lead = {
             org_id: currentUserOrgId,
@@ -50563,7 +50587,7 @@ Thank you for shopping with {store_name}!</textarea>
             phone: document.getElementById('al-phone')?.value?.trim() || null,
             email: document.getElementById('al-email')?.value?.trim() || null,
             status: document.getElementById('al-status')?.value || 'new',
-            source: document.getElementById('al-source')?.value || 'manual',
+            source,
             category: document.getElementById('al-category')?.value?.trim() || null,
             priority: document.getElementById('al-priority')?.value || null,
             service_required: document.getElementById('al-service_required')?.value?.trim() || null,
@@ -50574,19 +50598,30 @@ Thank you for shopping with {store_name}!</textarea>
         };
 
         // Strip null/empty optional values so PostgreSQL uses column defaults
-        // and we don't trigger constraint errors (e.g. priority enum, source enum).
+        // and we don't trigger constraint errors (e.g. priority enum).
         Object.keys(lead).forEach((k) => {
             if (lead[k] === null || lead[k] === '') delete lead[k];
         });
-        // org_id and full_name are required - put them back if they got removed.
+        // org_id and full_name are required — make sure they survive the prune.
         lead.org_id = currentUserOrgId;
         lead.full_name = name;
 
+        async function attemptInsert(payload) {
+            return supabaseClient.from('leads').insert(payload).select().single();
+        }
+
         try {
-            const { data: inserted, error } = await supabaseClient.from('leads').insert(lead).select().single();
+            let { data: inserted, error } = await attemptInsert(lead);
+            // If the DB rejects the source value (enum mismatch on a server
+            // that hasn't had the dropdown in sync yet), retry once without it.
+            if (error && String(error.message || '').toLowerCase().includes('enum') && lead.source) {
+                console.warn('Retrying lead insert without source:', error.message);
+                const fallback = { ...lead };
+                delete fallback.source;
+                ({ data: inserted, error } = await attemptInsert(fallback));
+            }
             if (error) throw error;
 
-            // Fire notification if assigned
             if (lead.assigned_to_user_id && typeof insertCrmNotification === 'function') {
                 insertCrmNotification({ orgId: currentUserOrgId, entityId: inserted?.id || null, eventKey: 'crm_lead_assigned', title: 'Lead Assigned', body: `Lead "${name}" has been assigned to you.`, recipientUserId: lead.assigned_to_user_id });
             }
@@ -50594,7 +50629,6 @@ Thank you for shopping with {store_name}!</textarea>
             document.getElementById('add-lead-overlay')?.remove();
             showToast('Lead created successfully', 'success');
 
-            // Refresh CRM data
             if (typeof initCrmTab === 'function') initCrmTab();
             else if (typeof fetchLeads === 'function') fetchLeads();
         } catch (e) {
