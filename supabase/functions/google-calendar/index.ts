@@ -1,10 +1,31 @@
 /**
  * Edge Function: google-calendar
  *
- * Handles Google Calendar OAuth + sync for meetings.
- * Actions: authorize, callback, sync, create-event
+ * Backend-owned Google Calendar OAuth + event creation, scoped per `org_id`.
  *
- * Env vars needed: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_URL
+ * Endpoints (selected via ?action=... query param):
+ *   GET  ?action=connect&org_id=...        Returns Google OAuth authorize URL with signed state.
+ *   GET  ?action=token-exchange&code=...&state=...
+ *                                          Called by the static `/api/google-calendar/callback`
+ *                                          relay after Google redirects the user back.
+ *                                          Validates state, exchanges code for tokens,
+ *                                          stores them server-side, and returns success.
+ *   GET  ?action=status&org_id=...         Returns whether the org has a live connection.
+ *   POST ?action=create-event              Body: { org_id, summary, description, start, end,
+ *                                                   timeZone, attendees? }. Creates a Google
+ *                                                   Calendar event in the connected org's
+ *                                                   primary calendar. Refreshes the access token
+ *                                                   automatically when expired.
+ *   POST ?action=disconnect                Body: { org_id }. Removes the stored connection.
+ *
+ * Env vars (set via `supabase secrets set ...`):
+ *   GOOGLE_CLIENT_ID           OAuth client ID
+ *   GOOGLE_CLIENT_SECRET       OAuth client secret
+ *   GOOGLE_REDIRECT_URI        e.g. https://ai-agent.digitivia.com/api/google-calendar/callback
+ *   GOOGLE_OAUTH_STATE_SECRET  HMAC secret used to sign/verify the OAuth `state` parameter
+ *   APP_BASE_URL               Where to redirect after a successful connect
+ *                              (e.g. https://ai-agent.digitivia.com)
+ *
  * Deploy: supabase functions deploy google-calendar
  */
 
@@ -14,10 +35,17 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID') || '';
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET') || '';
-const APP_URL = Deno.env.get('APP_URL') || 'https://ai-agent.digitivia.com';
+const GOOGLE_REDIRECT_URI = Deno.env.get('GOOGLE_REDIRECT_URI')
+    || 'https://ai-agent.digitivia.com/api/google-calendar/callback';
+const APP_BASE_URL = Deno.env.get('APP_BASE_URL')
+    || 'https://ai-agent.digitivia.com';
+const STATE_SECRET = Deno.env.get('GOOGLE_OAUTH_STATE_SECRET')
+    || Deno.env.get('SUPABASE_JWT_SECRET')
+    || 'change-me-in-production';
 
-const SCOPES = 'https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly';
-const REDIRECT_URI = `${SUPABASE_URL}/functions/v1/google-calendar?action=callback`;
+// Calendar event scope only — minimum required for the demo.
+const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+const STATE_TTL_SECONDS = 10 * 60; // 10 minutes to complete the consent flow
 
 const CORS = {
     'Access-Control-Allow-Origin': '*',
@@ -26,170 +54,391 @@ const CORS = {
     'Content-Type': 'application/json',
 };
 
+function json(data: unknown, status = 200, extraHeaders: Record<string, string> = {}) {
+    return new Response(JSON.stringify(data), { status, headers: { ...CORS, ...extraHeaders } });
+}
+
+function getSupabase() {
+    return createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+    });
+}
+
+// --- HMAC-signed OAuth `state` --------------------------------------------------
+// Format: base64url(payloadJson) + '.' + base64url(hmacSha256(payloadJson))
+async function hmac(secret: string, message: string): Promise<string> {
+    const key = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(secret),
+        { name: 'HMAC', hash: 'SHA-256' },
+        false,
+        ['sign'],
+    );
+    const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message));
+    return base64UrlEncode(new Uint8Array(sig));
+}
+
+function base64UrlEncode(input: Uint8Array | string): string {
+    const bytes = typeof input === 'string' ? new TextEncoder().encode(input) : input;
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function base64UrlDecode(input: string): string {
+    const padded = input.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((input.length + 3) % 4);
+    return atob(padded);
+}
+
+async function signState(payload: Record<string, unknown>): Promise<string> {
+    const json = JSON.stringify({ ...payload, iat: Math.floor(Date.now() / 1000), nonce: crypto.randomUUID() });
+    const encoded = base64UrlEncode(json);
+    const sig = await hmac(STATE_SECRET, encoded);
+    return `${encoded}.${sig}`;
+}
+
+async function verifyState(state: string): Promise<Record<string, unknown> | null> {
+    if (!state || typeof state !== 'string') return null;
+    const [encoded, sig] = state.split('.');
+    if (!encoded || !sig) return null;
+    const expected = await hmac(STATE_SECRET, encoded);
+    if (expected !== sig) return null;
+    try {
+        const payload = JSON.parse(base64UrlDecode(encoded)) as Record<string, unknown>;
+        const iat = typeof payload.iat === 'number' ? payload.iat : 0;
+        if (Math.floor(Date.now() / 1000) - iat > STATE_TTL_SECONDS) return null;
+        return payload;
+    } catch {
+        return null;
+    }
+}
+
+// --- Audit log helper -----------------------------------------------------------
+async function logEvent(orgId: string | null, userId: string | null, eventKind: string, detail: unknown = {}) {
+    try {
+        const supabase = getSupabase();
+        await supabase.from('google_calendar_events_log').insert({
+            org_id: orgId,
+            user_id: userId,
+            event_kind: eventKind,
+            detail: detail ?? {},
+        });
+    } catch (_err) {
+        // Logging failures must not break the OAuth flow.
+    }
+}
+
+// --- Token storage / refresh ----------------------------------------------------
+async function storeConnection(opts: {
+    orgId: string;
+    userId?: string | null;
+    googleEmail?: string | null;
+    accessToken: string;
+    refreshToken?: string | null;
+    expiresInSeconds: number;
+    scope?: string | null;
+    tokenType?: string | null;
+}) {
+    const supabase = getSupabase();
+    const expiresAt = new Date(Date.now() + opts.expiresInSeconds * 1000).toISOString();
+    const upsertPayload: Record<string, unknown> = {
+        org_id: opts.orgId,
+        provider: 'google',
+        google_email: opts.googleEmail || null,
+        access_token: opts.accessToken,
+        expires_at: expiresAt,
+        scope: opts.scope || SCOPES,
+        token_type: opts.tokenType || 'Bearer',
+        status: 'connected',
+        connected_by_user_id: opts.userId || null,
+        updated_at: new Date().toISOString(),
+    };
+    // Only overwrite the refresh_token when Google returned one (it does on the
+    // first consent and any time `prompt=consent` is forced).
+    if (opts.refreshToken) upsertPayload.refresh_token = opts.refreshToken;
+    const { error } = await supabase
+        .from('google_calendar_connections')
+        .upsert(upsertPayload, { onConflict: 'org_id' });
+    if (error) throw new Error(`storeConnection: ${error.message}`);
+}
+
+async function getValidAccessToken(orgId: string): Promise<{ token: string; email: string | null } | null> {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+        .from('google_calendar_connections')
+        .select('*')
+        .eq('org_id', orgId)
+        .maybeSingle();
+    if (error || !data) return null;
+
+    // Refresh ~60s before expiry to absorb clock skew.
+    const expiresAt = new Date(data.expires_at).getTime();
+    if (expiresAt - Date.now() > 60_000) {
+        return { token: data.access_token, email: data.google_email };
+    }
+    if (!data.refresh_token) return null;
+
+    const refreshRes = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            refresh_token: data.refresh_token,
+            client_id: GOOGLE_CLIENT_ID,
+            client_secret: GOOGLE_CLIENT_SECRET,
+            grant_type: 'refresh_token',
+        }),
+    });
+    const refreshed = await refreshRes.json();
+    if (!refreshRes.ok || refreshed.error) {
+        await logEvent(orgId, null, 'error', { stage: 'refresh', body: refreshed });
+        return null;
+    }
+
+    await storeConnection({
+        orgId,
+        accessToken: refreshed.access_token,
+        expiresInSeconds: refreshed.expires_in,
+        scope: refreshed.scope,
+        tokenType: refreshed.token_type,
+    });
+    await logEvent(orgId, null, 'token_refreshed', {});
+    return { token: refreshed.access_token, email: data.google_email };
+}
+
+// --- Request handler ------------------------------------------------------------
 Deno.serve(async (req) => {
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 
     const url = new URL(req.url);
-    const action = url.searchParams.get('action') || 'authorize';
+    const action = url.searchParams.get('action') || '';
 
     try {
-        // ========== AUTHORIZE: Redirect user to Google OAuth ==========
-        if (action === 'authorize') {
-            const userId = url.searchParams.get('user_id');
+        // ------------------------------------------------------------------
+        // 1. Begin connect flow → return Google authorize URL with signed state
+        // ------------------------------------------------------------------
+        if (action === 'connect') {
             const orgId = url.searchParams.get('org_id');
-            if (!userId || !orgId) return json({ error: 'user_id and org_id required' }, 400);
+            const userId = url.searchParams.get('user_id') || null;
+            if (!orgId) return json({ error: 'org_id is required' }, 400);
 
-            const state = btoa(JSON.stringify({ user_id: userId, org_id: orgId }));
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(SCOPES)}&access_type=offline&prompt=consent&state=${state}`;
+            const state = await signState({ org_id: orgId, user_id: userId });
+            const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+            authUrl.searchParams.set('client_id', GOOGLE_CLIENT_ID);
+            authUrl.searchParams.set('redirect_uri', GOOGLE_REDIRECT_URI);
+            authUrl.searchParams.set('response_type', 'code');
+            authUrl.searchParams.set('scope', SCOPES);
+            authUrl.searchParams.set('access_type', 'offline');
+            authUrl.searchParams.set('prompt', 'consent');
+            authUrl.searchParams.set('include_granted_scopes', 'true');
+            authUrl.searchParams.set('state', state);
 
-            return json({ url: authUrl });
+            await logEvent(orgId, userId, 'connect_started', { redirect_uri: GOOGLE_REDIRECT_URI });
+            return json({ authorize_url: authUrl.toString() });
         }
 
-        // ========== CALLBACK: Exchange code for tokens ==========
-        if (action === 'callback') {
+        // ------------------------------------------------------------------
+        // 2. Exchange the authorization code (called from the static callback page)
+        // ------------------------------------------------------------------
+        if (action === 'token-exchange') {
             const code = url.searchParams.get('code');
-            const stateRaw = url.searchParams.get('state');
-            if (!code || !stateRaw) return json({ error: 'Missing code or state' }, 400);
+            const state = url.searchParams.get('state');
+            if (!code || !state) return json({ error: 'code and state are required' }, 400);
 
-            const { user_id, org_id } = JSON.parse(atob(stateRaw));
-            const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+            const payload = await verifyState(state);
+            if (!payload) return json({ error: 'Invalid or expired state' }, 400);
 
-            // Exchange code for tokens
+            const orgId = String(payload.org_id || '');
+            const userId = (payload.user_id as string | null) || null;
+            if (!orgId) return json({ error: 'state missing org_id' }, 400);
+
             const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({
-                    code, client_id: GOOGLE_CLIENT_ID, client_secret: GOOGLE_CLIENT_SECRET,
-                    redirect_uri: REDIRECT_URI, grant_type: 'authorization_code',
+                    code,
+                    client_id: GOOGLE_CLIENT_ID,
+                    client_secret: GOOGLE_CLIENT_SECRET,
+                    redirect_uri: GOOGLE_REDIRECT_URI,
+                    grant_type: 'authorization_code',
                 }),
             });
             const tokens = await tokenRes.json();
-            if (tokens.error) return json({ error: tokens.error_description }, 400);
+            if (!tokenRes.ok || tokens.error) {
+                await logEvent(orgId, userId, 'error', { stage: 'token_exchange', body: tokens });
+                return json({ error: tokens.error_description || tokens.error || 'token exchange failed' }, 400);
+            }
 
-            // Store tokens
-            await supabase.from('user_google_tokens').upsert({
-                user_id, org_id,
-                access_token: tokens.access_token,
-                refresh_token: tokens.refresh_token,
-                expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
-                updated_at: new Date().toISOString(),
-            }, { onConflict: 'user_id' });
+            // Best-effort: read the connected Google account email so the UI
+            // can show "Connected as foo@example.com".
+            let googleEmail: string | null = null;
+            try {
+                const profileRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+                    headers: { Authorization: `Bearer ${tokens.access_token}` },
+                });
+                if (profileRes.ok) {
+                    const profile = await profileRes.json();
+                    googleEmail = profile.email || null;
+                }
+            } catch (_err) {
+                // Ignore — email is decorative.
+            }
 
-            // Redirect back to app
-            return new Response(null, {
-                status: 302,
-                headers: { Location: `${APP_URL}?gcal=connected` },
+            await storeConnection({
+                orgId,
+                userId,
+                googleEmail,
+                accessToken: tokens.access_token,
+                refreshToken: tokens.refresh_token,
+                expiresInSeconds: tokens.expires_in,
+                scope: tokens.scope,
+                tokenType: tokens.token_type,
+            });
+            await logEvent(orgId, userId, 'connected', { google_email: googleEmail });
+
+            return json({
+                ok: true,
+                org_id: orgId,
+                google_email: googleEmail,
+                redirect: `${APP_BASE_URL}/?gcal=connected`,
             });
         }
 
-        // ========== SYNC: Fetch upcoming events ==========
-        if (action === 'sync') {
-            const body = await req.json();
-            const { user_id, org_id } = body;
-            const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+        // ------------------------------------------------------------------
+        // 3. Status — does this org have a live connection?
+        // ------------------------------------------------------------------
+        if (action === 'status') {
+            const orgId = url.searchParams.get('org_id');
+            if (!orgId) return json({ error: 'org_id is required' }, 400);
 
-            const accessToken = await getValidToken(supabase, user_id);
-            if (!accessToken) return json({ error: 'Not connected to Google Calendar' }, 401);
-
-            const now = new Date().toISOString();
-            const maxTime = new Date(Date.now() + 30 * 86400000).toISOString();
-
-            const eventsRes = await fetch(
-                `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${now}&timeMax=${maxTime}&singleEvents=true&orderBy=startTime&maxResults=50`,
-                { headers: { Authorization: `Bearer ${accessToken}` } }
-            );
-            const eventsData = await eventsRes.json();
-
-            return json({ events: eventsData.items || [], count: (eventsData.items || []).length });
+            const supabase = getSupabase();
+            const { data } = await supabase
+                .from('google_calendar_connections')
+                .select('org_id, google_email, status, expires_at, calendar_id, updated_at')
+                .eq('org_id', orgId)
+                .maybeSingle();
+            return json({
+                connected: !!data && data.status === 'connected',
+                google_email: data?.google_email || null,
+                calendar_id: data?.calendar_id || 'primary',
+                updated_at: data?.updated_at || null,
+            });
         }
 
-        // ========== CREATE-EVENT: Create a calendar event from meeting ==========
+        // ------------------------------------------------------------------
+        // 4. Create a calendar event in the connected org's primary calendar
+        // ------------------------------------------------------------------
         if (action === 'create-event') {
-            const body = await req.json();
-            const { user_id, title, description, start_time, end_time, attendee_email } = body;
-            const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+            if (req.method !== 'POST') return json({ error: 'POST required' }, 405);
+            const body = await req.json().catch(() => ({}));
+            const {
+                org_id: orgId,
+                summary,
+                description = '',
+                start,
+                end,
+                timeZone = 'UTC',
+                attendees,
+            } = body || {};
+            if (!orgId || !summary || !start || !end) {
+                return json({ error: 'org_id, summary, start, end are required' }, 400);
+            }
 
-            const accessToken = await getValidToken(supabase, user_id);
-            if (!accessToken) return json({ error: 'Not connected to Google Calendar' }, 401);
+            const tokenInfo = await getValidAccessToken(orgId);
+            if (!tokenInfo) {
+                return json({ error: 'This organization is not connected to Google Calendar.' }, 401);
+            }
 
-            const event = {
-                summary: title,
-                description: description || '',
-                start: { dateTime: start_time, timeZone: 'UTC' },
-                end: { dateTime: end_time || new Date(new Date(start_time).getTime() + 3600000).toISOString(), timeZone: 'UTC' },
-                attendees: attendee_email ? [{ email: attendee_email }] : [],
+            const event: Record<string, unknown> = {
+                summary,
+                description,
+                start: { dateTime: start, timeZone },
+                end: { dateTime: end, timeZone },
             };
+            if (Array.isArray(attendees) && attendees.length) {
+                event.attendees = attendees
+                    .filter((email: unknown) => typeof email === 'string' && email.includes('@'))
+                    .map((email: string) => ({ email }));
+            }
 
-            const createRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all', {
-                method: 'POST',
-                headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify(event),
-            });
+            const createRes = await fetch(
+                'https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all',
+                {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${tokenInfo.token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(event),
+                },
+            );
             const created = await createRes.json();
+            if (!createRes.ok || created.error) {
+                await logEvent(orgId, null, 'error', { stage: 'create_event', body: created });
+                return json({ error: created.error?.message || 'Failed to create event' }, 400);
+            }
 
-            return json({ event: created, success: !created.error });
+            await logEvent(orgId, null, 'event_created', {
+                event_id: created.id,
+                html_link: created.htmlLink,
+                summary,
+            });
+            return json({
+                ok: true,
+                event: {
+                    id: created.id,
+                    summary: created.summary,
+                    start: created.start,
+                    end: created.end,
+                    htmlLink: created.htmlLink,
+                    hangoutLink: created.hangoutLink,
+                    attendees: created.attendees,
+                },
+            });
         }
 
-        return json({ error: 'Unknown action' }, 400);
+        // ------------------------------------------------------------------
+        // 5. Disconnect — remove stored credentials for the org
+        // ------------------------------------------------------------------
+        if (action === 'disconnect') {
+            if (req.method !== 'POST') return json({ error: 'POST required' }, 405);
+            const body = await req.json().catch(() => ({}));
+            const orgId = body?.org_id;
+            if (!orgId) return json({ error: 'org_id is required' }, 400);
+            const supabase = getSupabase();
+            const { error } = await supabase
+                .from('google_calendar_connections')
+                .delete()
+                .eq('org_id', orgId);
+            if (error) return json({ error: error.message }, 500);
+            await logEvent(orgId, null, 'disconnected', {});
+            return json({ ok: true });
+        }
+
+        // ------------------------------------------------------------------
+        // Legacy compatibility: keep the old `authorize` action working so the
+        // existing index.html buttons that haven't been migrated still work.
+        // It reuses the new connect path under the hood.
+        // ------------------------------------------------------------------
+        if (action === 'authorize') {
+            const orgId = url.searchParams.get('org_id');
+            const userId = url.searchParams.get('user_id') || null;
+            if (!orgId) return json({ error: 'org_id is required' }, 400);
+            const state = await signState({ org_id: orgId, user_id: userId });
+            const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+            authUrl.searchParams.set('client_id', GOOGLE_CLIENT_ID);
+            authUrl.searchParams.set('redirect_uri', GOOGLE_REDIRECT_URI);
+            authUrl.searchParams.set('response_type', 'code');
+            authUrl.searchParams.set('scope', SCOPES);
+            authUrl.searchParams.set('access_type', 'offline');
+            authUrl.searchParams.set('prompt', 'consent');
+            authUrl.searchParams.set('state', state);
+            return new Response(null, { status: 302, headers: { Location: authUrl.toString() } });
+        }
+
+        return json({ error: `Unknown action: ${action}` }, 400);
     } catch (err) {
-        return json({ error: err.message }, 500);
+        const message = err instanceof Error ? err.message : String(err);
+        await logEvent(null, null, 'error', { stage: 'unhandled', message });
+        return json({ error: message }, 500);
     }
 });
-
-async function getValidToken(supabase: any, userId: string, req?: Request): Promise<string | null> {
-    // 1. Try Supabase Auth session provider_token (Google OAuth sign-in users)
-    //    The caller can pass the user's JWT and we check their identity
-    try {
-        const { data: { user } } = await supabase.auth.admin.getUserById(userId);
-        if (user?.identities) {
-            const googleIdentity = user.identities.find((i: any) => i.provider === 'google');
-            if (googleIdentity?.identity_data?.provider_token) {
-                // Verify it's still valid by making a quick API call
-                const testRes = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=1', {
-                    headers: { Authorization: `Bearer ${googleIdentity.identity_data.provider_token}` },
-                });
-                if (testRes.ok) return googleIdentity.identity_data.provider_token;
-            }
-        }
-    } catch (e) {
-        // Identity check failed, try fallback
-    }
-
-    // 2. Fallback: check user_google_tokens table (separate OAuth flow)
-    try {
-        const { data } = await supabase.from('user_google_tokens').select('*').eq('user_id', userId).single();
-        if (!data) return null;
-
-        if (new Date(data.expires_at) > new Date()) return data.access_token;
-
-        // Refresh expired token
-        if (data.refresh_token) {
-            const res = await fetch('https://oauth2.googleapis.com/token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({
-                    refresh_token: data.refresh_token,
-                    client_id: GOOGLE_CLIENT_ID, client_secret: GOOGLE_CLIENT_SECRET,
-                    grant_type: 'refresh_token',
-                }),
-            });
-            const tokens = await res.json();
-            if (tokens.error) return null;
-
-            await supabase.from('user_google_tokens').update({
-                access_token: tokens.access_token,
-                expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
-            }).eq('user_id', userId);
-
-            return tokens.access_token;
-        }
-    } catch (e) {
-        // Table doesn't exist yet
-    }
-
-    return null;
-}
-
-function json(data: any, status = 200) {
-    return new Response(JSON.stringify(data), { status, headers: CORS });
-}

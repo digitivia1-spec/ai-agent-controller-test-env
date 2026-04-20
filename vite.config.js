@@ -10,7 +10,9 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html'),
-                chatwindow: resolve(__dirname, 'chatwindow.html')
+                chatwindow: resolve(__dirname, 'chatwindow.html'),
+                gcalDemo: resolve(__dirname, 'demo/google-calendar/index.html'),
+                gcalCallback: resolve(__dirname, 'api/google-calendar/callback/index.html')
             }
         },
         // Keep readable for now — enable minification when tests are stable

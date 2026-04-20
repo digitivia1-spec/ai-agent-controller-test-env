@@ -37868,17 +37868,22 @@ Thank you for shopping with {store_name}!</textarea>
             actionContainer.parentNode.insertBefore(wrapper, actionContainer);
             tab.dataset.widgetStudioReady = 'true';
 
+            // Debounce preview/snippet updates so rapid typing doesn't cause heavy
+            // iframe re-renders that can steal focus or block keystrokes.
+            let wwsInputTimer = null;
+            const scheduleWebsiteWidgetUpdate = () => {
+                if (wwsInputTimer) clearTimeout(wwsInputTimer);
+                wwsInputTimer = setTimeout(() => {
+                    wwsInputTimer = null;
+                    renderWebsiteWidgetSnippet();
+                    applyWebsiteWidgetPreview();
+                }, 280);
+            };
             ['wws-enabled', 'wws-title', 'wws-subtitle', 'wws-theme', 'wws-position', 'wws-color', 'wws-cta-label', 'wws-first-message', 'wws-domains', 'wws-blocked-title', 'wws-blocked-message'].forEach((id) => {
                 const el = document.getElementById(id);
                 if (!el) return;
-                el.addEventListener('input', () => {
-                    renderWebsiteWidgetSnippet();
-                    applyWebsiteWidgetPreview();
-                });
-                el.addEventListener('change', () => {
-                    renderWebsiteWidgetSnippet();
-                    applyWebsiteWidgetPreview();
-                });
+                el.addEventListener('input', scheduleWebsiteWidgetUpdate);
+                el.addEventListener('change', scheduleWebsiteWidgetUpdate);
             });
 
             setWebsiteWidgetSnippetAvailability(false);
@@ -38146,7 +38151,9 @@ Thank you for shopping with {store_name}!</textarea>
                 previewApi.setConfig(getWebsiteWidgetPreviewConfig());
                 if (websiteWidgetPreviewState.blocked) previewApi.setBlockedState(true);
                 else previewApi.setBlockedState(false);
-                if (previewApi.open) previewApi.open();
+                // Do not call previewApi.open() here. The widget is opened explicitly via
+                // openWebsiteWidgetPreview() / loadWebsiteWidgetPreview() to avoid the
+                // iframe stealing focus from settings inputs while the user is typing.
             }
             renderWebsiteWidgetSnippet();
         }
@@ -43342,7 +43349,15 @@ Thank you for shopping with {store_name}!</textarea>
         fuSuppressCapture = true;
         try {
             fuSwitchMessageChannel('whatsapp');
-            fuSwitchMsgLang(currentLang === 'ar' ? 'ar' : 'en');
+            // Prefer the UI language, but if its message is empty and the other has content,
+            // show the language that actually has saved content so users see their saved settings.
+            const preferred = currentLang === 'ar' ? 'ar' : 'en';
+            const arHasContent = Object.values(fuMessageByChannelAr).some(v => (v || '').trim());
+            const enHasContent = Object.values(fuMessageByChannel).some(v => (v || '').trim());
+            let lang = preferred;
+            if (preferred === 'ar' && !arHasContent && enHasContent) lang = 'en';
+            else if (preferred === 'en' && !enHasContent && arHasContent) lang = 'ar';
+            fuSwitchMsgLang(lang);
         } finally { fuSuppressCapture = false; }
         fuSyncPreviewTabAvailability(); fuUpdatePreview();
     }
@@ -50004,17 +50019,30 @@ Thank you for shopping with {store_name}!</textarea>
         if (!userId || !currentUserOrgId) { showToast('Please login first', 'error'); return; }
 
         try {
-            const { data, error } = await supabaseClient.functions.invoke('google-calendar', {
-                body: {},
-                headers: {},
-            });
-
-            // Build authorize URL with query params
-            const authUrl = `${window.SUPABASE_URL}/functions/v1/google-calendar?action=authorize&user_id=${userId}&org_id=${currentUserOrgId}`;
-            window.open(authUrl, '_blank');
+            // Ask the backend for a signed authorize URL. The backend owns the
+            // OAuth client config + state signing; we just redirect the user.
+            const res = await fetch(
+                `${window.SUPABASE_URL}/functions/v1/google-calendar?action=connect`
+                + `&org_id=${encodeURIComponent(currentUserOrgId)}`
+                + `&user_id=${encodeURIComponent(userId)}`,
+                { headers: { apikey: window.SUPABASE_ANON_KEY, Authorization: `Bearer ${window.SUPABASE_ANON_KEY}` } }
+            );
+            const data = await res.json();
+            if (!res.ok || !data.authorize_url) {
+                throw new Error(data.error || 'Could not start Google sign-in');
+            }
+            window.location.assign(data.authorize_url);
         } catch (e) {
-            showToast('Set up Google Calendar Edge Function first', 'info');
+            console.error('connectGoogleCalendar error', e);
+            showToast(e.message || 'Could not start Google Calendar connect', 'error');
         }
+    };
+
+    // Open the standalone demo page (used for the Google verification demo video).
+    window.openGoogleCalendarDemo = function() {
+        const base = window.location.origin || '';
+        const orgParam = currentUserOrgId ? `?org_id=${encodeURIComponent(currentUserOrgId)}` : '';
+        window.open(`${base}/demo/google-calendar/${orgParam}`, '_blank', 'noopener');
     };
 
     window.syncGoogleCalendar = async function() {
@@ -50051,12 +50079,26 @@ Thank you for shopping with {store_name}!</textarea>
         }
     };
 
-    // Check if connected on page load (show in settings/profile)
+    // Check if connected on page load (show in settings/profile).
+    // Prefers the new org-level connection, falls back to the legacy per-user
+    // table so existing installs keep working until they re-auth.
     window.checkGoogleCalendarStatus = async function() {
         const userId = window.currentUserObj?.id;
         if (!userId) return false;
         try {
-            const { data } = await supabaseClient.from('user_google_tokens').select('expires_at').eq('user_id', userId).maybeSingle();
+            if (currentUserOrgId) {
+                const { data: orgConn } = await supabaseClient
+                    .from('google_calendar_connections')
+                    .select('status, expires_at')
+                    .eq('org_id', currentUserOrgId)
+                    .maybeSingle();
+                if (orgConn && orgConn.status === 'connected') return true;
+            }
+            const { data } = await supabaseClient
+                .from('user_google_tokens')
+                .select('expires_at')
+                .eq('user_id', userId)
+                .maybeSingle();
             return !!data;
         } catch (e) { return false; }
     };
@@ -50510,6 +50552,10 @@ Thank you for shopping with {store_name}!</textarea>
     window.submitAddLead = async function() {
         const name = document.getElementById('al-full_name')?.value?.trim();
         if (!name) { showToast('Name is required', 'error'); return; }
+        if (!currentUserOrgId) { showToast('Organization missing', 'error'); return; }
+
+        const dueRaw = document.getElementById('al-due_at')?.value || '';
+        const assignedTo = document.getElementById('al-assigned_to')?.value || '';
 
         const lead = {
             org_id: currentUserOrgId,
@@ -50522,18 +50568,27 @@ Thank you for shopping with {store_name}!</textarea>
             priority: document.getElementById('al-priority')?.value || null,
             service_required: document.getElementById('al-service_required')?.value?.trim() || null,
             persona: document.getElementById('al-persona')?.value?.trim() || null,
-            assigned_to_user_id: document.getElementById('al-assigned_to')?.value || null,
-            due_at: document.getElementById('al-due_at')?.value || null,
+            assigned_to_user_id: assignedTo || null,
+            due_at: dueRaw ? new Date(dueRaw).toISOString() : null,
             notes: document.getElementById('al-notes')?.value?.trim() || null,
         };
 
+        // Strip null/empty optional values so PostgreSQL uses column defaults
+        // and we don't trigger constraint errors (e.g. priority enum, source enum).
+        Object.keys(lead).forEach((k) => {
+            if (lead[k] === null || lead[k] === '') delete lead[k];
+        });
+        // org_id and full_name are required - put them back if they got removed.
+        lead.org_id = currentUserOrgId;
+        lead.full_name = name;
+
         try {
-            const { error } = await supabaseClient.from('leads').insert(lead);
+            const { data: inserted, error } = await supabaseClient.from('leads').insert(lead).select().single();
             if (error) throw error;
 
             // Fire notification if assigned
             if (lead.assigned_to_user_id && typeof insertCrmNotification === 'function') {
-                insertCrmNotification({ orgId: currentUserOrgId, entityId: null, eventKey: 'crm_lead_assigned', title: 'Lead Assigned', body: `Lead "${name}" has been assigned to you.`, recipientUserId: lead.assigned_to_user_id });
+                insertCrmNotification({ orgId: currentUserOrgId, entityId: inserted?.id || null, eventKey: 'crm_lead_assigned', title: 'Lead Assigned', body: `Lead "${name}" has been assigned to you.`, recipientUserId: lead.assigned_to_user_id });
             }
 
             document.getElementById('add-lead-overlay')?.remove();
@@ -50543,7 +50598,9 @@ Thank you for shopping with {store_name}!</textarea>
             if (typeof initCrmTab === 'function') initCrmTab();
             else if (typeof fetchLeads === 'function') fetchLeads();
         } catch (e) {
-            showToast('Failed: ' + (e.message || 'Unknown error'), 'error');
+            console.error('submitAddLead error:', e);
+            const msg = e?.message || e?.details || e?.hint || 'Unknown error';
+            showToast('Failed: ' + msg, 'error');
         }
     };
 

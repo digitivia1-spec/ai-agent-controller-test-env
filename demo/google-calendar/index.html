@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Google Calendar Demo · Digitivia</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg-deep: #04080f;
+            --bg-card: rgba(13, 26, 42, 0.8);
+            --border: rgba(91, 174, 176, 0.25);
+            --text: #e8eef6;
+            --text-muted: #8ea2b6;
+            --accent: #5BAEB0;
+            --accent-strong: #2b8a86;
+            --green: #34d399;
+            --red: #f87171;
+            --amber: #fbbf24;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; min-height: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, sans-serif;
+            background: radial-gradient(circle at 25% -10%, #1a3149 0%, #0b1a2a 55%, #04080f 100%);
+            color: var(--text);
+            padding: 32px 18px 80px;
+        }
+        .shell {
+            max-width: 920px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+        header.intro {
+            text-align: center;
+            padding: 8px 0 4px;
+        }
+        header.intro h1 {
+            margin: 0 0 6px;
+            font-size: 1.6rem;
+            letter-spacing: -0.01em;
+        }
+        header.intro p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px 22px 20px;
+            backdrop-filter: blur(18px);
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+        }
+        .card h2 {
+            margin: 0 0 4px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        }
+        .card .desc {
+            margin: 0 0 16px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .row.full { grid-template-columns: 1fr; }
+        @media (max-width: 560px) {
+            .row { grid-template-columns: 1fr; }
+        }
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        label.required::after {
+            content: ' *';
+            color: var(--red);
+        }
+        input[type="text"], input[type="email"], input[type="date"],
+        input[type="time"], input[type="url"], select, textarea {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            padding: 10px 12px;
+            font: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(91, 174, 176, 0.18);
+        }
+        textarea { min-height: 72px; resize: vertical; }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            margin-top: 18px;
+        }
+        button.btn {
+            cursor: pointer;
+            border: 1px solid rgba(91, 174, 176, 0.4);
+            background: rgba(91, 174, 176, 0.16);
+            color: var(--text);
+            padding: 10px 18px;
+            border-radius: 11px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button.btn:hover { background: rgba(91, 174, 176, 0.24); }
+        button.btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #04080f;
+        }
+        button.btn.primary:hover { background: #6cc1c3; }
+        button.btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button.btn.ghost {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .status .who {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+        .status.connected { border-color: rgba(52, 211, 153, 0.3); background: rgba(52, 211, 153, 0.08); }
+        .status.connected .dot { background: var(--green); box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18); }
+        .status .label {
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+        .status .sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .alert {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 11px;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            display: none;
+        }
+        .alert.show { display: block; }
+        .alert.success {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            color: #a7f3d0;
+        }
+        .alert.error {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.35);
+            color: #fecaca;
+        }
+        .alert.info {
+            background: rgba(91, 174, 176, 0.08);
+            border: 1px solid rgba(91, 174, 176, 0.3);
+            color: #b9e6e7;
+        }
+
+        .event-summary {
+            margin-top: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            background: rgba(52, 211, 153, 0.07);
+            padding: 16px 18px;
+            display: none;
+        }
+        .event-summary.show { display: block; }
+        .event-summary h3 {
+            margin: 0 0 4px;
+            font-size: 1rem;
+            color: #a7f3d0;
+        }
+        .event-summary .meta {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin-top: 4px;
+        }
+        .event-summary .actions {
+            justify-content: flex-start;
+            margin-top: 12px;
+        }
+        .footer-note {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-top: 6px;
+        }
+        .org-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+        .org-line code {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+        .spinner-inline {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(4, 8, 15, 0.4);
+            border-top-color: rgba(4, 8, 15, 0.9);
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <header class="intro">
+            <h1>Google Calendar — Connection Demo</h1>
+            <p>Connect a Google Calendar to your organization, then create a real event from this page. Tokens are stored securely on the backend.</p>
+        </header>
+
+        <div class="org-line">
+            <span>Demo organization:</span>
+            <code id="org-pill">loading…</code>
+            <button class="btn ghost" id="change-org-btn" type="button" style="padding:4px 10px;font-size:0.75rem;">Change</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- Card A: Google Calendar connection                           -->
+        <!-- ============================================================ -->
+        <section class="card">
+            <h2><span class="icon" aria-hidden="true">📅</span>Google Calendar</h2>
+            <p class="desc">
+                Connect your Google Calendar so the AI agent can schedule meetings automatically
+                on your behalf. We only request the
+                <code>calendar.events</code> scope.
+            </p>
+
+            <div class="status" id="conn-status">
+                <div class="who">
+                    <span class="dot"></span>
+                    <div>
+                        <div class="label" id="conn-label">Not connected</div>
+                        <div class="sub" id="conn-sub">Click connect to authorize Google Calendar access for this organization.</div>
+                    </div>
+                </div>
+                <div class="actions" style="margin:0;">
+                    <button class="btn primary" id="connect-btn" type="button">Connect Google Calendar</button>
+                    <button class="btn ghost" id="disconnect-btn" type="button" hidden>Disconnect</button>
+                </div>
+            </div>
+
+            <div class="alert" id="conn-alert"></div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Card B: Create a demo meeting                                -->
+        <!-- ============================================================ -->
+        <section class="card">
+            <h2><span class="icon" aria-hidden="true">📝</span>Create Demo Meeting</h2>
+            <p class="desc">
+                Fill in the meeting details and we will create an event in the connected
+                Google Calendar. Smart defaults are pre-filled so you can record a demo
+                video in a single click.
+            </p>
+
+            <form id="event-form" autocomplete="off">
+                <div class="row full">
+                    <label class="required">Event title
+                        <input type="text" id="ev-title" value="AI Agent Demo Meeting" required />
+                    </label>
+                </div>
+                <div class="row full">
+                    <label>Description
+                        <textarea id="ev-description">Demonstrating end-to-end Google Calendar integration for the Digitivia AI Agent verification review.</textarea>
+                    </label>
+                </div>
+                <div class="row">
+                    <label class="required">Date
+                        <input type="date" id="ev-date" required />
+                    </label>
+                    <label>Time zone
+                        <select id="ev-tz"></select>
+                    </label>
+                </div>
+                <div class="row">
+                    <label class="required">Start time
+                        <input type="time" id="ev-start" value="10:00" required />
+                    </label>
+                    <label class="required">End time
+                        <input type="time" id="ev-end" value="10:30" required />
+                    </label>
+                </div>
+                <div class="row full">
+                    <label>Optional attendee email
+                        <input type="email" id="ev-attendee" placeholder="reviewer@example.com" />
+                    </label>
+                </div>
+                <div class="actions">
+                    <button class="btn primary" id="create-btn" type="submit">Create Test Meeting</button>
+                </div>
+            </form>
+
+            <div class="alert" id="event-alert"></div>
+
+            <div class="event-summary" id="event-summary">
+                <h3 id="es-title">Meeting created successfully</h3>
+                <div class="meta" id="es-when"></div>
+                <div class="meta" id="es-attendees"></div>
+                <div class="actions">
+                    <a class="btn primary" id="es-link" href="#" target="_blank" rel="noopener">Open in Google Calendar</a>
+                </div>
+            </div>
+        </section>
+
+        <p class="footer-note">
+            Backend route: <code>/functions/v1/google-calendar?action=create-event</code> ·
+            Callback: <code>/api/google-calendar/callback</code>
+        </p>
+    </main>
+
+    <script>
+        // -------------------------------------------------------------------
+        // Configuration — uses the same Supabase project the rest of the app
+        // already uses.
+        // -------------------------------------------------------------------
+        const SUPABASE_URL = 'https://xrycghxaxqzvkmzqzzkx.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeWNnaHhheHF6dmttenF6emt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxMjg3NjIsImV4cCI6MjA4MzcwNDc2Mn0.-03VhRZ6ok6Z6NykuJxNLnoHmO2SSv1JSm8VM18yVgU';
+        const FN_URL = `${SUPABASE_URL}/functions/v1/google-calendar`;
+        const STORAGE_ORG_KEY = 'gcal_demo_org_id';
+
+        const els = {
+            orgPill: document.getElementById('org-pill'),
+            changeOrgBtn: document.getElementById('change-org-btn'),
+            connStatus: document.getElementById('conn-status'),
+            connLabel: document.getElementById('conn-label'),
+            connSub: document.getElementById('conn-sub'),
+            connectBtn: document.getElementById('connect-btn'),
+            disconnectBtn: document.getElementById('disconnect-btn'),
+            connAlert: document.getElementById('conn-alert'),
+            eventForm: document.getElementById('event-form'),
+            evTitle: document.getElementById('ev-title'),
+            evDesc: document.getElementById('ev-description'),
+            evDate: document.getElementById('ev-date'),
+            evStart: document.getElementById('ev-start'),
+            evEnd: document.getElementById('ev-end'),
+            evTz: document.getElementById('ev-tz'),
+            evAttendee: document.getElementById('ev-attendee'),
+            createBtn: document.getElementById('create-btn'),
+            eventAlert: document.getElementById('event-alert'),
+            eventSummary: document.getElementById('event-summary'),
+            esTitle: document.getElementById('es-title'),
+            esWhen: document.getElementById('es-when'),
+            esAttendees: document.getElementById('es-attendees'),
+            esLink: document.getElementById('es-link'),
+        };
+
+        // -------------------------------------------------------------------
+        // Org id handling — for the demo we let the reviewer set it.
+        // -------------------------------------------------------------------
+        function getOrgId() {
+            const fromUrl = new URLSearchParams(window.location.search).get('org_id');
+            if (fromUrl) {
+                localStorage.setItem(STORAGE_ORG_KEY, fromUrl);
+                return fromUrl;
+            }
+            return localStorage.getItem(STORAGE_ORG_KEY) || '';
+        }
+        function setOrgId(value) {
+            localStorage.setItem(STORAGE_ORG_KEY, value);
+            renderOrgPill();
+            refreshStatus();
+        }
+        function renderOrgPill() {
+            const id = getOrgId();
+            els.orgPill.textContent = id || '— not set —';
+        }
+        els.changeOrgBtn.addEventListener('click', () => {
+            const next = window.prompt(
+                'Enter the org_id (UUID) to use for this demo session.',
+                getOrgId() || ''
+            );
+            if (next && next.trim()) setOrgId(next.trim());
+        });
+
+        // -------------------------------------------------------------------
+        // Smart defaults — populate date / time zone for an easy first demo.
+        // -------------------------------------------------------------------
+        function populateTimeZones() {
+            const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+            const common = [
+                browserTz, 'UTC', 'Africa/Cairo', 'Europe/London', 'Europe/Paris',
+                'America/New_York', 'America/Los_Angeles', 'Asia/Dubai', 'Asia/Tokyo',
+            ];
+            const seen = new Set();
+            els.evTz.innerHTML = '';
+            for (const tz of common) {
+                if (seen.has(tz)) continue;
+                seen.add(tz);
+                const opt = document.createElement('option');
+                opt.value = tz;
+                opt.textContent = tz;
+                if (tz === browserTz) opt.selected = true;
+                els.evTz.appendChild(opt);
+            }
+        }
+        function populateDefaultDate() {
+            const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+            const yyyy = tomorrow.getFullYear();
+            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const dd = String(tomorrow.getDate()).padStart(2, '0');
+            els.evDate.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        // -------------------------------------------------------------------
+        // UI helpers
+        // -------------------------------------------------------------------
+        function showAlert(el, type, message) {
+            el.className = `alert show ${type}`;
+            el.textContent = message;
+        }
+        function clearAlert(el) {
+            el.className = 'alert';
+            el.textContent = '';
+        }
+        function setBusy(btn, busy, busyLabel) {
+            if (busy) {
+                btn.dataset.originalText = btn.textContent;
+                btn.disabled = true;
+                btn.innerHTML = `<span class="spinner-inline"></span><span>${busyLabel || 'Working…'}</span>`;
+            } else {
+                btn.disabled = false;
+                btn.textContent = btn.dataset.originalText || btn.textContent;
+            }
+        }
+        function fmtDateTime(value, tz) {
+            try {
+                return new Intl.DateTimeFormat(undefined, {
+                    dateStyle: 'medium', timeStyle: 'short', timeZone: tz,
+                }).format(new Date(value));
+            } catch (_e) { return value; }
+        }
+
+        // -------------------------------------------------------------------
+        // Backend calls
+        // -------------------------------------------------------------------
+        async function callFn(path, init = {}) {
+            const headers = Object.assign({
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+            }, init.headers || {});
+            const res = await fetch(`${FN_URL}${path}`, { ...init, headers });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || data.error) {
+                const message = data.error || `Request failed (HTTP ${res.status})`;
+                const error = new Error(message);
+                error.payload = data;
+                throw error;
+            }
+            return data;
+        }
+
+        async function refreshStatus() {
+            const orgId = getOrgId();
+            if (!orgId) {
+                els.connStatus.classList.remove('connected');
+                els.connLabel.textContent = 'Not connected';
+                els.connSub.textContent = 'Set the demo organization first, then click connect.';
+                els.connectBtn.disabled = true;
+                els.disconnectBtn.hidden = true;
+                return;
+            }
+            els.connectBtn.disabled = false;
+            try {
+                const data = await callFn(`?action=status&org_id=${encodeURIComponent(orgId)}`);
+                if (data.connected) {
+                    els.connStatus.classList.add('connected');
+                    els.connLabel.textContent = 'Connected to Google Calendar';
+                    els.connSub.textContent = data.google_email
+                        ? `Connected as ${data.google_email}`
+                        : `Calendar: ${data.calendar_id || 'primary'}`;
+                    els.connectBtn.textContent = 'Reconnect';
+                    els.disconnectBtn.hidden = false;
+                } else {
+                    els.connStatus.classList.remove('connected');
+                    els.connLabel.textContent = 'Not connected';
+                    els.connSub.textContent = 'Click connect to authorize Google Calendar access for this organization.';
+                    els.connectBtn.textContent = 'Connect Google Calendar';
+                    els.disconnectBtn.hidden = true;
+                }
+            } catch (err) {
+                showAlert(els.connAlert, 'error', `Could not load connection status: ${err.message}`);
+            }
+        }
+
+        async function startConnect() {
+            clearAlert(els.connAlert);
+            const orgId = getOrgId();
+            if (!orgId) {
+                showAlert(els.connAlert, 'error', 'Set the demo org_id first.');
+                return;
+            }
+            setBusy(els.connectBtn, true, 'Redirecting…');
+            try {
+                const data = await callFn(`?action=connect&org_id=${encodeURIComponent(orgId)}`);
+                if (!data.authorize_url) throw new Error('No authorize URL returned by backend.');
+                window.location.assign(data.authorize_url);
+            } catch (err) {
+                setBusy(els.connectBtn, false);
+                showAlert(els.connAlert, 'error', `Could not start Google sign-in: ${err.message}`);
+            }
+        }
+
+        async function disconnect() {
+            clearAlert(els.connAlert);
+            const orgId = getOrgId();
+            if (!orgId) return;
+            if (!confirm('Disconnect Google Calendar for this organization?')) return;
+            setBusy(els.disconnectBtn, true, 'Removing…');
+            try {
+                await callFn('?action=disconnect', {
+                    method: 'POST',
+                    body: JSON.stringify({ org_id: orgId }),
+                });
+                showAlert(els.connAlert, 'info', 'Google Calendar disconnected for this organization.');
+                await refreshStatus();
+            } catch (err) {
+                showAlert(els.connAlert, 'error', `Disconnect failed: ${err.message}`);
+            } finally {
+                setBusy(els.disconnectBtn, false);
+            }
+        }
+
+        async function submitEvent(e) {
+            e.preventDefault();
+            clearAlert(els.eventAlert);
+            els.eventSummary.classList.remove('show');
+
+            const orgId = getOrgId();
+            if (!orgId) {
+                showAlert(els.eventAlert, 'error', 'Set the demo org_id and connect Google Calendar first.');
+                return;
+            }
+            const summary = els.evTitle.value.trim();
+            const description = els.evDesc.value.trim();
+            const date = els.evDate.value;
+            const startT = els.evStart.value;
+            const endT = els.evEnd.value;
+            const timeZone = els.evTz.value || 'UTC';
+            const attendee = els.evAttendee.value.trim();
+            if (!summary || !date || !startT || !endT) {
+                showAlert(els.eventAlert, 'error', 'Title, date, start and end times are required.');
+                return;
+            }
+            // Build ISO-like datetime strings without timezone offset; Google
+            // interprets them per the supplied `timeZone` parameter.
+            const startIso = `${date}T${startT}:00`;
+            const endIso = `${date}T${endT}:00`;
+            if (endIso <= startIso) {
+                showAlert(els.eventAlert, 'error', 'End time must be after start time.');
+                return;
+            }
+
+            setBusy(els.createBtn, true, 'Creating event…');
+            try {
+                const data = await callFn('?action=create-event', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        org_id: orgId,
+                        summary, description,
+                        start: startIso,
+                        end: endIso,
+                        timeZone,
+                        attendees: attendee ? [attendee] : [],
+                    }),
+                });
+                const ev = data.event || {};
+                els.esTitle.textContent = `✅ ${ev.summary || summary}`;
+                els.esWhen.textContent = `When: ${fmtDateTime(ev.start?.dateTime || startIso, timeZone)}`
+                    + ` → ${fmtDateTime(ev.end?.dateTime || endIso, timeZone)} (${timeZone})`;
+                if (ev.attendees && ev.attendees.length) {
+                    els.esAttendees.textContent = 'Attendees: '
+                        + ev.attendees.map(a => a.email).join(', ');
+                } else {
+                    els.esAttendees.textContent = '';
+                }
+                if (ev.htmlLink) {
+                    els.esLink.href = ev.htmlLink;
+                    els.esLink.style.display = 'inline-flex';
+                } else {
+                    els.esLink.style.display = 'none';
+                }
+                els.eventSummary.classList.add('show');
+            } catch (err) {
+                if (/not connected/i.test(err.message)) {
+                    showAlert(els.eventAlert, 'error',
+                        'This organization is not connected to Google Calendar yet. Click "Connect Google Calendar" above to authorize first.');
+                } else {
+                    showAlert(els.eventAlert, 'error', `Could not create event: ${err.message}`);
+                }
+            } finally {
+                setBusy(els.createBtn, false);
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // Wire up + handle the ?gcal=connected redirect after consent.
+        // -------------------------------------------------------------------
+        els.connectBtn.addEventListener('click', startConnect);
+        els.disconnectBtn.addEventListener('click', disconnect);
+        els.eventForm.addEventListener('submit', submitEvent);
+
+        function handleReturnFlags() {
+            const sp = new URLSearchParams(window.location.search);
+            if (sp.get('gcal') === 'connected') {
+                showAlert(els.connAlert, 'success', 'Google Calendar connected successfully.');
+                window.history.replaceState({}, '', window.location.pathname);
+            } else if (sp.get('gcal') === 'error') {
+                showAlert(els.connAlert, 'error', 'Google Calendar connection failed. Please try again.');
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+        }
+
+        populateTimeZones();
+        populateDefaultDate();
+        renderOrgPill();
+        handleReturnFlags();
+        refreshStatus();
+    </script>
+</body>
+</html>

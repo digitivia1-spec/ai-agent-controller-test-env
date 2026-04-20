@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Connecting Google Calendar… · Digitivia</title>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, sans-serif;
+            background: radial-gradient(circle at 30% 10%, #1a3149 0%, #0b1a2a 55%, #04080f 100%);
+            color: #e8eef6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(13, 26, 42, 0.85);
+            border: 1px solid rgba(91, 174, 176, 0.25);
+            border-radius: 18px;
+            padding: 32px 28px 28px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(18px);
+            text-align: center;
+        }
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #5BAEB0, #2b8a86);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+        h1 {
+            font-size: 1.15rem;
+            margin: 0 0 8px;
+        }
+        p {
+            margin: 0;
+            color: #b9c8d6;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 3px solid rgba(91, 174, 176, 0.25);
+            border-top-color: #5BAEB0;
+            margin: 18px auto 6px;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .ok    { color: #34d399; }
+        .err   { color: #f87171; }
+        .actions { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-block;
+            padding: 9px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(91, 174, 176, 0.4);
+            background: rgba(91, 174, 176, 0.18);
+            color: #e8eef6;
+            cursor: pointer;
+        }
+        .btn.primary {
+            background: #5BAEB0;
+            border-color: #5BAEB0;
+            color: #04080f;
+        }
+        details { margin-top: 14px; text-align: left; }
+        summary { cursor: pointer; color: #8ea2b6; font-size: 0.78rem; }
+        pre {
+            margin-top: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            color: #c8d4e2;
+            font-size: 0.72rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <main class="card" id="card">
+        <div class="logo" aria-hidden="true">📅</div>
+        <h1 id="title">Connecting your Google Calendar…</h1>
+        <div class="spinner" id="spinner"></div>
+        <p id="message">Hang tight while we finish authorizing access. This usually takes a couple of seconds.</p>
+        <div class="actions" id="actions" hidden></div>
+        <details id="details" hidden>
+            <summary>Show technical details</summary>
+            <pre id="details-body"></pre>
+        </details>
+    </main>
+
+    <!--
+        This page is served from /api/google-calendar/callback as a static
+        artifact (GitHub Pages). Google redirects the user here with
+        ?code=...&state=.... We forward those parameters to the Supabase
+        edge function, which performs the secure server-side token exchange
+        and stores tokens scoped to the org. The refresh token never touches
+        this browser-side relay.
+    -->
+    <script>
+        (async function () {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const state = params.get('state');
+            const errorParam = params.get('error');
+
+            const titleEl = document.getElementById('title');
+            const messageEl = document.getElementById('message');
+            const spinner = document.getElementById('spinner');
+            const actions = document.getElementById('actions');
+            const details = document.getElementById('details');
+            const detailsBody = document.getElementById('details-body');
+
+            // The Supabase project URL is hard-coded for the deployed environments.
+            // (Same project ID used everywhere else in the repo.)
+            const SUPABASE_URL = 'https://xrycghxaxqzvkmzqzzkx.supabase.co';
+            const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeWNnaHhheHF6dmttenF6emt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxMjg3NjIsImV4cCI6MjA4MzcwNDc2Mn0.-03VhRZ6ok6Z6NykuJxNLnoHmO2SSv1JSm8VM18yVgU';
+            const APP_BASE = window.location.origin;
+
+            function showError(title, message, debug) {
+                spinner.style.display = 'none';
+                titleEl.textContent = title;
+                titleEl.classList.add('err');
+                messageEl.textContent = message;
+                actions.hidden = false;
+                actions.innerHTML = `
+                    <a class="btn primary" href="${APP_BASE}/?gcal=error">Back to app</a>
+                    <button class="btn" onclick="window.location.reload()">Try again</button>
+                `;
+                if (debug) {
+                    details.hidden = false;
+                    detailsBody.textContent = typeof debug === 'string'
+                        ? debug
+                        : JSON.stringify(debug, null, 2);
+                }
+            }
+
+            function showSuccess(redirectUrl, email) {
+                spinner.style.display = 'none';
+                titleEl.textContent = 'Google Calendar connected';
+                titleEl.classList.add('ok');
+                messageEl.textContent = email
+                    ? `Connected as ${email}. Redirecting you back to the app…`
+                    : 'You can return to the app — we will redirect you in a moment.';
+                actions.hidden = false;
+                actions.innerHTML = `
+                    <a class="btn primary" href="${redirectUrl}">Continue</a>
+                `;
+                setTimeout(() => { window.location.replace(redirectUrl); }, 1800);
+            }
+
+            if (errorParam) {
+                showError(
+                    'Google sign-in cancelled',
+                    'Google reported an error during the consent step. You can close this tab and try again from the app.',
+                    { error: errorParam, description: params.get('error_description') }
+                );
+                return;
+            }
+            if (!code || !state) {
+                showError(
+                    'Missing authorization data',
+                    'This page expects to be opened by Google after you approve calendar access. Please start the flow again from the app.',
+                    Object.fromEntries(params.entries())
+                );
+                return;
+            }
+
+            try {
+                const url = `${SUPABASE_URL}/functions/v1/google-calendar?action=token-exchange`
+                    + `&code=${encodeURIComponent(code)}`
+                    + `&state=${encodeURIComponent(state)}`;
+                const res = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': ANON_KEY,
+                        'Authorization': 'Bearer ' + ANON_KEY,
+                    },
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || data.error) {
+                    showError(
+                        'Could not finish connecting',
+                        data.error || `Token exchange failed (HTTP ${res.status}).`,
+                        data,
+                    );
+                    return;
+                }
+                const redirect = data.redirect || `${APP_BASE}/?gcal=connected`;
+                showSuccess(redirect, data.google_email || null);
+            } catch (err) {
+                showError(
+                    'Network error',
+                    'We could not reach the Digitivia backend to finish the connection. Please retry from the app.',
+                    String(err && err.message || err)
+                );
+            }
+        })();
+    </script>
+</body>
+</html>
