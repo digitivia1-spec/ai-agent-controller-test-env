@@ -64,7 +64,15 @@
       "retention_title": "Retention and Deletion",
       "retention_text": "Customer-related data is retained for a maximum of one year, then removed permanently under scheduled deletion policies, unless longer retention is required by law.",
       "rights_title": "Access and Contact",
-      "rights_text": "You can request data correction or deletion, and ask privacy questions through official support channels listed by your organization administrator."
+      "rights_text": "You can request data correction or deletion, and ask privacy questions through official support channels listed by your organization administrator.",
+      "controller_title": "Data Controller",
+      "controller_text": "Digitivia is the data controller responsible for your personal data. For any privacy-related question, contact privacy@digitivia.com.",
+      "legal_basis_title": "Legal Basis for Processing",
+      "legal_basis_text": "We process your data on the basis of contract performance (providing the service), your explicit consent, and our legitimate interests in securing and improving the service.",
+      "processors_title": "Sub-processors",
+      "processors_text": "We rely on vetted sub-processors (hosting, email delivery, AI inference). The full list is available on request and is updated whenever it changes.",
+      "authority_title": "Supervisory Authority",
+      "authority_text": "If you believe your rights have been infringed, you may lodge a complaint with your local data-protection authority."
     },
     "terms": {
       "title": "Terms of Service",
@@ -79,7 +87,9 @@
       "liability_title": "Availability and Liability",
       "liability_text": "The service is provided on a commercially reasonable basis. We continuously improve reliability but cannot guarantee uninterrupted availability in all cases.",
       "changes_title": "Updates to Terms",
-      "changes_text": "We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance."
+      "changes_text": "We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance.",
+      "governing_title": "Governing Law",
+      "governing_text": "These terms are governed by the laws of the jurisdiction in which Digitivia is established, without regard to conflict-of-laws principles. Any disputes will be resolved by the competent courts of that jurisdiction."
     },
     "cookies": {
       "title": "Cookie Policy",
@@ -475,7 +485,9 @@
       "pass_mismatch": "Passwords do not match.",
       "pass_short": "Password must be at least 6 characters.",
       "pass_updated_success": "Password updated successfully!",
-      "pass_updating": "Updating..."
+      "pass_updating": "Updating...",
+      "btn_download": "Download my data",
+      "btn_delete": "Delete my account"
     },
     "help": {
       "title": "Free Consultation Meeting",
@@ -528,7 +540,9 @@
       "btn_contact": "Contact Sales",
       "tab_plans": "Plans",
       "tab_addons": "Add-ons"
-    }
+    },
+    "btn_cancel": "Cancel",
+    "btn_save": "Save"
   },
   "orders": {
     "title": "Customers Area",
@@ -1761,5 +1775,116 @@
       "assigned_to": "Assigned To",
       "reschedule_label": "Reschedule Meeting"
     }
+  },
+  "prompt_assistant": {
+    "bar_label": "Prompt Assistant",
+    "improve": "Improve current prompt",
+    "create": "Create new prompt",
+    "use_current": "Use current prompt",
+    "use_current_hint": "Preview your current prompt side-by-side so you can copy or re-apply it.",
+    "remaining_today": "{n} generations left today",
+    "permission_required": "You need Configure permission to use this",
+    "drawer_title": "Prompt Assistant",
+    "title_improve": "Improve this prompt",
+    "title_create": "Create a new prompt",
+    "title_use": "Preview current prompt",
+    "label_goal": "Goal",
+    "label_business": "What does your business do?",
+    "label_tone": "Tone",
+    "label_language": "Primary language",
+    "label_advanced": "Advanced (optional)",
+    "label_collect": "Info to collect",
+    "label_avoid": "Topics to avoid",
+    "label_note": "Additional notes",
+    "ph_business": "e.g. Selling handmade soap in Cairo",
+    "ph_note": "Anything else we should know (optional)",
+    "generate_btn": "Generate",
+    "generating": "Generating…",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "close": "Close",
+    "regenerate": "Regenerate",
+    "apply": "Apply",
+    "replace": "Replace current",
+    "copy": "Copy",
+    "diff_current": "Current",
+    "diff_suggested": "Suggested",
+    "applied_chip": "Prompt updated",
+    "undo": "Undo",
+    "copy_success": "Copied to clipboard",
+    "lock_blocked": "Unlock the prompt to apply the suggestion",
+    "empty_prompt_hint": "(empty)",
+    "goal_opts": {
+      "qualify_leads": "Qualify leads",
+      "book_meetings": "Book meetings",
+      "answer_faq": "Answer FAQ",
+      "drive_sales": "Drive sales",
+      "collect_contact": "Collect contact info"
+    },
+    "tone_opts": {
+      "friendly": "Friendly",
+      "professional": "Professional",
+      "helpful": "Helpful",
+      "concise": "Concise",
+      "playful": "Playful"
+    },
+    "language_opts": {
+      "en": "English",
+      "ar": "Arabic",
+      "fr": "French",
+      "es": "Spanish"
+    },
+    "collect_opts": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "company": "Company",
+      "budget": "Budget",
+      "timeframe": "Timeframe"
+    },
+    "avoid_opts": {
+      "prices": "Prices",
+      "personal_data": "Personal data",
+      "competitors": "Competitors",
+      "promises": "Promises/guarantees"
+    },
+    "errors": {
+      "missing_required": "Please fill goal, business, tone, and language",
+      "rate_limited": "You've hit today's generation limit. Try again tomorrow.",
+      "quota_exceeded": "Your plan's prompt quota is exceeded.",
+      "permission_denied": "You don't have permission for this action.",
+      "network": "Network error. Check your connection and retry.",
+      "timeout": "The generator took too long. Try again.",
+      "generation_failed": "Couldn't generate a prompt. Try again.",
+      "no_org": "Could not resolve your organization.",
+      "no_version": "Nothing to undo.",
+      "internal": "Something went wrong on our side.",
+      "missing_goal": "Pick a goal",
+      "missing_tone": "Pick a tone",
+      "missing_language": "Pick a language",
+      "missing_business": "Describe your business",
+      "business_too_short": "Add a bit more detail — at least {n} characters."
+    },
+    "optional_badge": "Optional",
+    "hint_goal": "What outcome should the agent drive toward?",
+    "hint_business": "2–3 sentences — what you sell and who you serve.",
+    "hint_tone": "How should the agent sound?",
+    "hint_language": "The language the agent should reply in.",
+    "hint_collect": "Data the agent should ask customers for.",
+    "hint_avoid": "Things the agent must not discuss.",
+    "hint_note": "Edge cases, policies, or tone calls the agent should honor.",
+    "hint_fast_path": "These four are all we need — the Generate button lights up as soon as you fill them in.",
+    "followup_title": "A few more details",
+    "followup_intro": "The assistant needs a bit more info before it can draft a prompt.",
+    "followup_submit": "Send answers",
+    "locked_badge": "Locked",
+    "locked_hint": "This prompt is locked. Unlock it to apply."
+  },
+  "cookie_banner": {
+    "title": "Cookie Notice",
+    "text": " — We use essential cookies for authentication and localStorage for your preferences (theme, language). We do not use tracking or advertising cookies.",
+    "learn_more": "Learn more",
+    "accept_all": "Accept All",
+    "essential_only": "Essential Only"
   }
 }

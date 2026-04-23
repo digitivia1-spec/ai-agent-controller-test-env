@@ -1,52 +1,9 @@
-const CACHE_NAME = 'digitivia-v2';
-const OFFLINE_URLS = [
-  '/',
-  '/index.html',
-  '/privacy.html',
-  '/terms.html',
-  '/icon.png',
-  '/cropped-White.png',
-  '/manifest.json'
-];
-
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(OFFLINE_URLS))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
-});
-
-// Network-first with cache fallback for navigation, cache-first for static assets
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-
-  // Skip non-GET and cross-origin requests
-  if (event.request.method !== 'GET' || url.origin !== self.location.origin) return;
-
-  // Skip API/Supabase requests
-  if (url.pathname.startsWith('/functions/') || url.pathname.startsWith('/rest/') || url.pathname.startsWith('/auth/')) return;
-
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // Cache successful responses for static assets
-        if (response.ok && (url.pathname.endsWith('.html') || url.pathname.endsWith('.png') || url.pathname.endsWith('.json') || url.pathname === '/')) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request).then(cached => cached || caches.match('/index.html')))
-  );
+  event.waitUntil(self.clients.claim());
 });
 
 function resolveTargetUrl(rawLink) {
