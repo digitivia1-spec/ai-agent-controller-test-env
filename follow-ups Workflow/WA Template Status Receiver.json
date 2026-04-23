@@ -57,7 +57,7 @@
     },
     {
       "parameters": {
-        "jsCode": "\nconst input = $('Normalize Input').item.json;\nconst accountRows = $input.all().map(i => i.json).filter(r => r && r.id);\nconst account = accountRows[0] || null;\n\nif (!account) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'no_active_whatsapp_channel_account_found_for_this_org' }}];\n}\n\nconst wabaId      = account.waba_id || account.external_account_id || null;\nconst accessToken = account.access_token || null;\n\nif (!wabaId) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'waba_id_missing_in_org_channel_accounts — add waba_id column or ensure external_account_id is the WABA ID' }}];\n}\nif (!accessToken) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'access_token_missing_in_org_channel_accounts — system user token required' }}];\n}\n\n// Build Meta components array\nconst components = [];\n\n// HEADER (optional)\nif (input.header_type && input.header_type !== 'none') {\n  const fmt = input.header_type.toUpperCase();\n  const hdr = { type: 'HEADER', format: fmt };\n  if (fmt === 'TEXT' && input.header_text) {\n    hdr.text = input.header_text;\n    if (/\\{\\{1\\}\\}/.test(input.header_text)) {\n      hdr.example = { header_text: ['Sample value'] };\n    }\n  }\n  components.push(hdr);\n}\n\n// BODY (required)\nconst bodyComp = { type: 'BODY', text: input.body_text };\nconst samples = input.variable_samples || {};\nconst varNums = [...new Set(\n  (input.body_text.match(/\\{\\{(\\d+)\\}\\}/g) || []).map(m => parseInt(m.replace(/\\D/g,''), 10))\n)].sort((a,b) => a-b);\n\nif (varNums.length > 0) {\n  const exampleRow = varNums.map(n => String(samples[n] || samples[String(n)] || `sample_${n}`));\n  bodyComp.example = { body_text: [exampleRow] };\n}\ncomponents.push(bodyComp);\n\n// FOOTER (optional)\nif (input.footer_text) {\n  components.push({ type: 'FOOTER', text: input.footer_text });\n}\n\n// BUTTONS (optional)\nif (Array.isArray(input.buttons) && input.buttons.length > 0) {\n  const metaBtns = input.buttons\n    .filter(b => b && b.text)\n    .slice(0, 3)\n    .map(b => {\n      const btn = { type: b.type || 'QUICK_REPLY', text: String(b.text).slice(0, 25) };\n      if (btn.type === 'URL'          && b.value) btn.url          = b.value;\n      if (btn.type === 'PHONE_NUMBER' && b.value) btn.phone_number = b.value;\n      return btn;\n    });\n  if (metaBtns.length) components.push({ type: 'BUTTONS', buttons: metaBtns });\n}\n\nconst metaBody = {\n  name: input.template_name,\n  language: input.template_language,\n  category: input.category,\n  components: components\n};\n\nreturn [{ json: {\n  ...input,\n  submission_valid: true,\n  waba_id: wabaId,\n  access_token: accessToken,\n  org_channel_account_id: account.id,\n  components: components,\n  meta_request_body: metaBody,\n  meta_api_url: 'https://graph.facebook.com/v23.0/' + wabaId + '/message_templates'\n}}];\n"
+        "jsCode": "\nconst input = $('Normalize Input').item.json;\nconst accountRows = $input.all().map(i => i.json).filter(r => r && r.id);\nconst account = accountRows[0] || null;\n\nif (!account) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'no_active_whatsapp_channel_account_found_for_this_org' }}];\n}\n\nconst wabaId      = account.waba_id || account.external_account_id || null;\nconst accessToken = account.access_token || null;\n\nif (!wabaId) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'waba_id_missing_in_org_channel_accounts \u00e2\u20ac\u201d add waba_id column or ensure external_account_id is the WABA ID' }}];\n}\nif (!accessToken) {\n  return [{ json: { ...input, submission_valid: false,\n    submission_error: 'access_token_missing_in_org_channel_accounts \u00e2\u20ac\u201d system user token required' }}];\n}\n\n// Build Meta components array\nconst components = [];\n\n// HEADER (optional)\nif (input.header_type && input.header_type !== 'none') {\n  const fmt = input.header_type.toUpperCase();\n  const hdr = { type: 'HEADER', format: fmt };\n  if (fmt === 'TEXT' && input.header_text) {\n    hdr.text = input.header_text;\n    if (/\\{\\{1\\}\\}/.test(input.header_text)) {\n      hdr.example = { header_text: ['Sample value'] };\n    }\n  }\n  components.push(hdr);\n}\n\n// BODY (required)\nconst bodyComp = { type: 'BODY', text: input.body_text };\nconst samples = input.variable_samples || {};\nconst varNums = [...new Set(\n  (input.body_text.match(/\\{\\{(\\d+)\\}\\}/g) || []).map(m => parseInt(m.replace(/\\D/g,''), 10))\n)].sort((a,b) => a-b);\n\nif (varNums.length > 0) {\n  const exampleRow = varNums.map(n => String(samples[n] || samples[String(n)] || `sample_${n}`));\n  bodyComp.example = { body_text: [exampleRow] };\n}\ncomponents.push(bodyComp);\n\n// FOOTER (optional)\nif (input.footer_text) {\n  components.push({ type: 'FOOTER', text: input.footer_text });\n}\n\n// BUTTONS (optional)\nif (Array.isArray(input.buttons) && input.buttons.length > 0) {\n  const metaBtns = input.buttons\n    .filter(b => b && b.text)\n    .slice(0, 3)\n    .map(b => {\n      const btn = { type: b.type || 'QUICK_REPLY', text: String(b.text).slice(0, 25) };\n      if (btn.type === 'URL'          && b.value) btn.url          = b.value;\n      if (btn.type === 'PHONE_NUMBER' && b.value) btn.phone_number = b.value;\n      return btn;\n    });\n  if (metaBtns.length) components.push({ type: 'BUTTONS', buttons: metaBtns });\n}\n\nconst metaBody = {\n  name: input.template_name,\n  language: input.template_language,\n  category: input.category,\n  components: components\n};\n\nreturn [{ json: {\n  ...input,\n  submission_valid: true,\n  waba_id: wabaId,\n  access_token: accessToken,\n  org_channel_account_id: account.id,\n  components: components,\n  meta_request_body: metaBody,\n  meta_api_url: 'https://graph.facebook.com/v23.0/' + wabaId + '/message_templates'\n}}];\n"
       },
       "id": "06434eca-d249-433e-998f-64f783883e36",
       "name": "Build Submission Context",
@@ -191,7 +191,73 @@
     },
     {
       "parameters": {
-        "tableId": "whatsapp_message_templates"
+        "operation": "create",
+        "tableId": "whatsapp_message_templates",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "org_channel_account_id",
+              "fieldValue": "={{ $json.org_channel_account_id }}"
+            },
+            {
+              "fieldId": "name",
+              "fieldValue": "={{ $json.template_name }}"
+            },
+            {
+              "fieldId": "language",
+              "fieldValue": "={{ $json.template_language }}"
+            },
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $json.category }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.meta_status || 'pending' }}"
+            },
+            {
+              "fieldId": "body",
+              "fieldValue": "={{ $json.body_text }}"
+            },
+            {
+              "fieldId": "components",
+              "fieldValue": "={{ $json.components }}"
+            },
+            {
+              "fieldId": "meta_template_id",
+              "fieldValue": "={{ $json.meta_template_id }}"
+            },
+            {
+              "fieldId": "header_type",
+              "fieldValue": "={{ $json.header_type }}"
+            },
+            {
+              "fieldId": "header_text",
+              "fieldValue": "={{ $json.header_text }}"
+            },
+            {
+              "fieldId": "footer_text",
+              "fieldValue": "={{ $json.footer_text }}"
+            },
+            {
+              "fieldId": "buttons",
+              "fieldValue": "={{ $json.buttons }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "8fc8351c-083c-471d-a632-e1779d858350",
       "name": "Insert Template Record",
@@ -214,7 +280,28 @@
         "operation": "update",
         "tableId": "whatsapp_template_submissions",
         "filterType": "string",
-        "filterString": "={{ 'id=eq.' + encodeURIComponent($('Interpret Meta Response').item.json.submission_id) }}"
+        "filterString": "={{ 'id=eq.' + $json.submission_id }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ 'submitted' }}"
+            },
+            {
+              "fieldId": "meta_template_id",
+              "fieldValue": "={{ $json.meta_template_id }}"
+            },
+            {
+              "fieldId": "submitted_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "3ed05dcf-c635-446e-a5da-726a424e4719",
       "name": "Mark Submission Submitted",
@@ -262,7 +349,24 @@
         "operation": "update",
         "tableId": "whatsapp_template_submissions",
         "filterType": "string",
-        "filterString": "={{ 'id=eq.' + encodeURIComponent($json.submission_id) }}"
+        "filterString": "={{ 'id=eq.' + $json.submission_id }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ 'failed' }}"
+            },
+            {
+              "fieldId": "rejection_reason",
+              "fieldValue": "={{ $json.meta_error }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "f7498a21-672a-49ca-95f2-3adb29ae9cb2",
       "name": "Mark Submission Failed",
@@ -349,7 +453,7 @@
     },
     {
       "parameters": {
-        "jsCode": "\n// For GET verification requests, Meta sends query params: hub.mode, hub.verify_token, hub.challenge\n// For POST events, Meta sends JSON body with entry array\nconst q = $query || {};\nconst hubMode      = q['hub.mode']         || q.hub_mode        || '';\nconst hubChallenge = q['hub.challenge']    || q.hub_challenge   || '';\nconst hubVerify    = q['hub.verify_token'] || q.hub_verify_token || '';\n\nif (hubMode === 'subscribe' || hubChallenge) {\n  return [{ json: {\n    is_verification: true,\n    hub_challenge:    hubChallenge,\n    hub_verify_token: hubVerify\n  }}];\n}\n\n// POST event — parse Meta webhook payload\nconst body = $json || {};\nconst entries = Array.isArray(body.entry) ? body.entry : [];\n\nlet change = null;\nlet eventWabaId = null;\n\nfor (const entry of entries) {\n  eventWabaId = entry.id || null;\n  for (const ch of (entry.changes || [])) {\n    if (ch.field === 'message_template_status_update') {\n      const v = ch.value || {};\n      change = {\n        event:              String(v.event || '').toUpperCase(),\n        meta_template_id:   v.message_template_id ? String(v.message_template_id) : null,\n        template_name:      v.message_template_name      || null,\n        template_language:  v.message_template_language  || null,\n        reason:             v.reason                     || null,\n        waba_id:            eventWabaId\n      };\n      break;\n    }\n  }\n  if (change) break;\n}\n\nreturn [{ json: {\n  is_verification:     false,\n  has_template_change: change !== null,\n  template_change:     change\n}}];\n"
+        "jsCode": "\n// For GET verification requests, Meta sends query params: hub.mode, hub.verify_token, hub.challenge\n// For POST events, Meta sends JSON body with entry array\nconst q = $query || {};\nconst hubMode      = q['hub.mode']         || q.hub_mode        || '';\nconst hubChallenge = q['hub.challenge']    || q.hub_challenge   || '';\nconst hubVerify    = q['hub.verify_token'] || q.hub_verify_token || '';\n\nif (hubMode === 'subscribe' || hubChallenge) {\n  return [{ json: {\n    is_verification: true,\n    hub_challenge:    hubChallenge,\n    hub_verify_token: hubVerify\n  }}];\n}\n\n// POST event \u00e2\u20ac\u201d parse Meta webhook payload\nconst body = $json || {};\nconst entries = Array.isArray(body.entry) ? body.entry : [];\n\nlet change = null;\nlet eventWabaId = null;\n\nfor (const entry of entries) {\n  eventWabaId = entry.id || null;\n  for (const ch of (entry.changes || [])) {\n    if (ch.field === 'message_template_status_update') {\n      const v = ch.value || {};\n      change = {\n        event:              String(v.event || '').toUpperCase(),\n        meta_template_id:   v.message_template_id ? String(v.message_template_id) : null,\n        template_name:      v.message_template_name      || null,\n        template_language:  v.message_template_language  || null,\n        reason:             v.reason                     || null,\n        waba_id:            eventWabaId\n      };\n      break;\n    }\n  }\n  if (change) break;\n}\n\nreturn [{ json: {\n  is_verification:     false,\n  has_template_change: change !== null,\n  template_change:     change\n}}];\n"
       },
       "id": "14286b02-2e7d-441b-967b-84dbf1b014ec",
       "name": "Detect Request Type",
@@ -579,7 +683,20 @@
         "operation": "update",
         "tableId": "whatsapp_message_templates",
         "filterType": "string",
-        "filterString": "={{ 'id=eq.' + encodeURIComponent($json.template_db_id) }}"
+        "filterString": "={{ 'id=eq.' + $json.template_db_id }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.new_status }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "16664b0f-6f5e-4cb4-8226-8832a4834676",
       "name": "Update Template Status",
@@ -602,7 +719,28 @@
         "operation": "update",
         "tableId": "whatsapp_template_submissions",
         "filterType": "string",
-        "filterString": "={{ 'template_name=eq.' + encodeURIComponent($json.template_name || '') + '&template_language=eq.' + encodeURIComponent($json.template_language || '') + '&org_id=eq.' + encodeURIComponent($json.org_id || '') }}"
+        "filterString": "={{ 'meta_template_id=eq.' + $json.meta_template_id + '&org_id=eq.' + $json.org_id }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.new_status }}"
+            },
+            {
+              "fieldId": "rejection_reason",
+              "fieldValue": "={{ $json.rejection_reason }}"
+            },
+            {
+              "fieldId": "reviewed_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "5324abb1-2592-4393-acda-a2624bd69c5a",
       "name": "Update Submission Status",
@@ -662,7 +800,20 @@
         "operation": "update",
         "tableId": "followup_settings",
         "filterType": "string",
-        "filterString": "={{ 'org_id=eq.' + encodeURIComponent($json.org_id || '') }}"
+        "filterString": "={{ 'org_id=eq.' + $json.org_id }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "whatsapp_template_status",
+              "fieldValue": "={{ $json.new_status }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "c4b50c2c-533f-469f-8078-f87a040fc37a",
       "name": "Update Followup Settings Status",
@@ -716,7 +867,45 @@
     },
     {
       "parameters": {
-        "tableId": "notifications"
+        "operation": "create",
+        "tableId": "notifications",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "type",
+              "fieldValue": "={{ 'whatsapp_template' }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $json.notif_title }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ $json.notif_message }}"
+            },
+            {
+              "fieldId": "event_key",
+              "fieldValue": "={{ $json.notif_event_key }}"
+            },
+            {
+              "fieldId": "payload",
+              "fieldValue": "={{ $json.notif_payload }}"
+            },
+            {
+              "fieldId": "is_read",
+              "fieldValue": "=false"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.now_iso }}"
+            }
+          ]
+        }
       },
       "id": "fdc21cb4-52d3-4c53-bc21-5e70720dd80e",
       "name": "Create Template Notification",

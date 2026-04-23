@@ -19,7 +19,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const payload = $json ?? {};\nconst body = payload.body && typeof payload.body === 'object' ? payload.body : payload;\n\nconst messageIdRaw =\n  body.message_id ??\n  body.messageId ??\n  body.inbox_message_id ??\n  body.data?.message_id ??\n  null;\n\nconst messageId = messageIdRaw ? String(messageIdRaw).trim() : '';\n\nconst receivedAtRaw =\n  body.received_at ??\n  body.receivedAt ??\n  body.event_at ??\n  body.created_at ??\n  null;\n\nconst receivedAt = receivedAtRaw ? new Date(receivedAtRaw).toISOString() : new Date().toISOString();\n\nconst requestMetadata = {\n  headers: $headers ?? {},\n  query: $query ?? {},\n  params: $params ?? {},\n  webhook_body_keys: Object.keys(body ?? {}),\n};\n\nreturn [\n  {\n    json: {\n      message_id: messageId || null,\n      received_at: receivedAt,\n      request_metadata: requestMetadata,\n      trigger_valid: Boolean(messageId),\n      trigger_invalid_reason: messageId ? null : 'missing_message_id',\n      scheduler_source: 'followup_scheduler_webhook',\n    },\n  },\n];"
+        "jsCode": "const payload = $json ?? {};\nconst body = payload.body && typeof payload.body === 'object' ? payload.body : payload;\n\nconst messageIdRaw =\n  body.message_id ??\n  body.messageId ??\n  body.inbox_message_id ??\n  body.data?.message_id ??\n  null;\n\nconst messageId = messageIdRaw ? String(messageIdRaw).trim() : '';\n\nconst receivedAtRaw =\n  body.received_at ??\n  body.receivedAt ??\n  body.event_at ??\n  body.created_at ??\n  null;\n\nconst receivedAt = receivedAtRaw ? new Date(receivedAtRaw).toISOString() : new Date().toISOString();\n\nconst webhookItem = $input.first()?.json ?? {};\nconst requestMetadata = {\n  headers: webhookItem.headers ?? {},\n  query: webhookItem.query ?? {},\n  params: webhookItem.params ?? {},\n  webhook_body_keys: Object.keys(body ?? {}),\n};\n\nreturn [\n  {\n    json: {\n      message_id: messageId || null,\n      received_at: receivedAt,\n      request_metadata: requestMetadata,\n      trigger_valid: Boolean(messageId),\n      trigger_invalid_reason: messageId ? null : 'missing_message_id',\n      scheduler_source: 'followup_scheduler_webhook',\n    },\n  },\n];"
       },
       "id": "25a2a421-87ab-44a8-97c0-97fd7e02736f",
       "name": "Normalize Trigger Input",
@@ -270,7 +270,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const conversationCtx = $('Build Conversation Context').item.json;\nconst contactRows = $('Load Contact').all().map((item) => item.json).filter((row) => row && row.id);\nconst settingsRows = $('Load Followup Settings').all().map((item) => item.json).filter((row) => row && (row.id || row.org_id));\nconst taskRows = $('Load Existing Followup Tasks').all().map((item) => item.json).filter((row) => row && row.id);\nconst accountRows = $input.all().map((item) => item.json).filter((row) => row && row.id);\n\nconst normalizePlatform = (value) => {\n  const v = String(value ?? '').trim().toLowerCase();\n  if (['facebook', 'facebook_page', 'facebook-messenger', 'facebook_messenger', 'messenger'].includes(v)) {\n    return 'page';\n  }\n  return v;\n};\n\nconst normalizeChannels = (value) => {\n  if (Array.isArray(value)) {\n    return value.map((entry) => normalizePlatform(entry)).filter(Boolean);\n  }\n  if (typeof value === 'string' && value.trim()) {\n    return value\n      .replace(/[{}]/g, '')\n      .split(',')\n      .map((entry) => normalizePlatform(entry.replace(/\"/g, '').trim()))\n      .filter(Boolean);\n  }\n  return [];\n};\n\nconst safeInt = (value, fallback) => {\n  const parsed = Number.parseInt(value, 10);\n  return Number.isFinite(parsed) ? parsed : fallback;\n};\n\nconst parseTimeParts = (value, fallback) => {\n  const raw = String(value ?? fallback).trim();\n  const match = raw.match(/^(\\d{1,2}):(\\d{2})(?::(\\d{2}))?$/);\n  if (!match) {\n    const fb = String(fallback);\n    const fbMatch = fb.match(/^(\\d{1,2}):(\\d{2})(?::(\\d{2}))?$/);\n    return fbMatch ? { hour: Number(fbMatch[1]), minute: Number(fbMatch[2]), second: Number(fbMatch[3] || 0) } : { hour: 9, minute: 0, second: 0 };\n  }\n  return { hour: Number(match[1]), minute: Number(match[2]), second: Number(match[3] || 0) };\n};\n\nconst adjustToBusinessWindowUtc = (dueAtIso, startTime, endTime) => {\n  const dueDate = new Date(dueAtIso);\n  const start = parseTimeParts(startTime, '09:00:00');\n  const end = parseTimeParts(endTime, '18:00:00');\n\n  let adjusted = new Date(dueDate);\n  const overnight = (start.hour * 3600 + start.minute * 60 + start.second) >= (end.hour * 3600 + end.minute * 60 + end.second);\n\n  const setToWindow = (baseDate, parts) => {\n    const next = new Date(baseDate);\n    next.setUTCHours(parts.hour, parts.minute, parts.second, 0);\n    return next;\n  };\n\n  const windowStart = setToWindow(adjusted, start);\n  let windowEnd = setToWindow(adjusted, end);\n  if (overnight) {\n    windowEnd.setUTCDate(windowEnd.getUTCDate() + 1);\n  }\n\n  if (!overnight) {\n    if (adjusted < windowStart) {\n      adjusted = windowStart;\n    } else if (adjusted >= windowEnd) {\n      const nextDay = new Date(windowStart);\n      nextDay.setUTCDate(nextDay.getUTCDate() + 1);\n      adjusted = nextDay;\n    }\n  } else {\n    const inWindow = adjusted >= windowStart || adjusted < windowEnd;\n    if (!inWindow) {\n      adjusted = windowStart;\n    }\n  }\n\n  return adjusted.toISOString();\n};\n\nconst pickAccount = (rows) => {\n  if (!rows.length) return null;\n  return [...rows].sort((a, b) => {\n    const aCreated = a.created_at ? new Date(a.created_at).getTime() : 0;\n    const bCreated = b.created_at ? new Date(b.created_at).getTime() : 0;\n    if (aCreated !== bCreated) return aCreated - bCreated;\n    return String(a.id).localeCompare(String(b.id));\n  })[0];\n};\n\nconst settings = settingsRows.length > 0 ? settingsRows[0] : null;\nconst contact = contactRows.length > 0 ? contactRows[0] : null;\nconst account = pickAccount(accountRows);\nconst nowIso = new Date().toISOString();\n\nlet shouldSkip = false;\nlet skipReason = null;\n\nif (!conversationCtx.message_valid) {\n  shouldSkip = true;\n  skipReason = conversationCtx.message_skip_reason || 'invalid_inbound_message';\n} else if (!conversationCtx.conversation_valid) {\n  shouldSkip = true;\n  skipReason = conversationCtx.conversation_skip_reason || 'conversation_not_eligible';\n}\n\nconst platform = normalizePlatform(conversationCtx.platform);\nconst activeChannels = normalizeChannels(settings?.active_channels);\nconst enabled = settings?.enabled === true;\nconst triggerCondition = String(settings?.trigger_condition ?? 'no_customer_reply');\nconst maxPerConversation = Math.max(1, safeInt(settings?.max_per_conversation, 1));\nconst effectiveTaskCount = taskRows.filter((task) => ['sent', 'failed'].includes(String(task.status ?? '').toLowerCase())).length;\n\nif (!shouldSkip && !enabled) {\n  shouldSkip = true;\n  skipReason = settings ? 'followup_disabled' : 'followup_settings_missing';\n}\nif (!shouldSkip && triggerCondition !== 'no_customer_reply') {\n  shouldSkip = true;\n  skipReason = 'unsupported_trigger_condition';\n}\nif (!shouldSkip && !['whatsapp', 'page', 'instagram'].includes(platform)) {\n  shouldSkip = true;\n  skipReason = 'unsupported_platform';\n}\nif (!shouldSkip && !activeChannels.includes(platform)) {\n  shouldSkip = true;\n  skipReason = 'platform_not_active_in_followup_settings';\n}\nif (!shouldSkip && effectiveTaskCount >= maxPerConversation) {\n  shouldSkip = true;\n  skipReason = 'max_per_conversation_exceeded';\n}\nif (!shouldSkip && !account) {\n  shouldSkip = true;\n  skipReason = 'no_active_org_channel_account';\n}\n\nconst scheduledOpenCount = taskRows.filter((task) => String(task.status ?? '').toLowerCase() === 'scheduled').length;\nconst claimedOpenCount = taskRows.filter((task) => String(task.status ?? '').toLowerCase() === 'claimed').length;\nconst waitingTemplateOpenCount = taskRows.filter((task) => String(task.status ?? '').toLowerCase() === 'waiting_template_approval').length;\nconst cancelledTaskIds = taskRows\n  .filter((task) => ['scheduled', 'claimed', 'waiting_template_approval'].includes(String(task.status ?? '').toLowerCase()))\n  .map((task) => task.id);\n\nconst latestInboundAt = conversationCtx.latest_inbound_at || conversationCtx.inbound_message_created_at || nowIso;\nconst defaultDelayMinutes = Math.max(1, safeInt(settings?.default_delay_minutes, 60));\nconst dueAtBase = new Date(latestInboundAt);\ndueAtBase.setUTCMinutes(dueAtBase.getUTCMinutes() + defaultDelayMinutes);\n\nlet dueAt = dueAtBase.toISOString();\nlet dueAdjustedForBusinessHours = false;\n\nif (!shouldSkip && settings?.business_hours_enabled === true) {\n  const adjusted = adjustToBusinessWindowUtc(dueAt, settings?.business_start ?? '09:00:00', settings?.business_end ?? '18:00:00');\n  dueAdjustedForBusinessHours = adjusted !== dueAt;\n  dueAt = adjusted;\n}\n\nlet requiresTemplate = false;\nlet templateName = settings?.whatsapp_template_name ?? null;\nlet templateLanguage = settings?.whatsapp_template_language ?? null;\nlet templateStatus = settings?.whatsapp_template_status ?? null;\nlet waitingForTemplateApproval = false;\nlet blockedReason = null;\nlet taskStatus = 'scheduled';\n\nif (!shouldSkip && platform === 'whatsapp' && settings?.whatsapp_template_required_after_24h === true) {\n  const dueMs = new Date(dueAt).getTime();\n  const inboundMs = new Date(latestInboundAt).getTime();\n  requiresTemplate = Number.isFinite(dueMs) && Number.isFinite(inboundMs) && (dueMs - inboundMs) > (24 * 60 * 60 * 1000);\n  if (requiresTemplate) {\n    const approved = String(templateStatus ?? '').trim().toLowerCase() === 'approved';\n    if (!templateName || !templateLanguage) {\n      waitingForTemplateApproval = true;\n      blockedReason = 'missing_whatsapp_template_assignment';\n      taskStatus = 'waiting_template_approval';\n    } else if (!approved) {\n      waitingForTemplateApproval = true;\n      blockedReason = 'whatsapp_template_not_approved';\n      taskStatus = 'waiting_template_approval';\n    }\n  }\n}\n\nconst scheduleSkipLogDetails = {\n  reason: skipReason,\n  platform,\n  message_id: conversationCtx.triggered_by_message_id,\n  conversation_id: conversationCtx.conversation_id,\n  org_id: conversationCtx.org_id,\n  enabled,\n  trigger_condition: triggerCondition,\n  active_channels: activeChannels,\n  effective_task_count: effectiveTaskCount,\n  max_per_conversation: maxPerConversation,\n};\n\nconst cancelledPreviousOpenLogDetails = {\n  cancelled_task_ids: cancelledTaskIds,\n  cancelled_counts: {\n    scheduled: scheduledOpenCount,\n    claimed: claimedOpenCount,\n    waiting_template_approval: waitingTemplateOpenCount,\n  },\n  reason: 'new_inbound_message_for_conversation',\n  message_id: conversationCtx.triggered_by_message_id,\n  conversation_id: conversationCtx.conversation_id,\n};\n\nconst scheduledLogDetails = {\n  due_at: dueAt,\n  requires_template: requiresTemplate,\n  template_name: templateName,\n  template_language: templateLanguage,\n  template_status: templateStatus,\n  latest_inbound_at: latestInboundAt,\n  platform,\n  message_id: conversationCtx.triggered_by_message_id,\n  conversation_id: conversationCtx.conversation_id,\n  org_channel_account_id: account?.id ?? null,\n};\n\nconst templateRequiredLogDetails = {\n  due_at: dueAt,\n  latest_inbound_at: latestInboundAt,\n  template_name: templateName,\n  template_language: templateLanguage,\n  template_status: templateStatus,\n  blocked_reason: blockedReason,\n  platform,\n  conversation_id: conversationCtx.conversation_id,\n  message_id: conversationCtx.triggered_by_message_id,\n};\n\nconst waitingTemplateLogDetails = {\n  due_at: dueAt,\n  waiting_for_template_approval: waitingForTemplateApproval,\n  blocked_reason: blockedReason,\n  template_name: templateName,\n  template_language: templateLanguage,\n  template_status: templateStatus,\n};\n\nconst deferredBusinessHoursLogDetails = {\n  original_due_at: dueAtBase.toISOString(),\n  adjusted_due_at: dueAt,\n  business_start: settings?.business_start ?? '09:00:00',\n  business_end: settings?.business_end ?? '18:00:00',\n  policy_timezone: 'UTC',\n};\n\nreturn [\n  {\n    json: {\n      org_id: conversationCtx.org_id,\n      conversation_id: conversationCtx.conversation_id,\n      contact_id: conversationCtx.contact_id ?? contact?.id ?? null,\n      platform,\n      triggered_by_message_id: conversationCtx.triggered_by_message_id,\n      latest_inbound_at: latestInboundAt,\n      org_channel_account_id: account?.id ?? null,\n      should_skip: shouldSkip,\n      should_log_skip: shouldSkip && Boolean(conversationCtx.org_id && conversationCtx.conversation_id),\n      skip_reason: skipReason,\n      has_scheduled_open: scheduledOpenCount > 0,\n      has_claimed_open: claimedOpenCount > 0,\n      has_waiting_template_open: waitingTemplateOpenCount > 0,\n      any_open_to_cancel: cancelledTaskIds.length > 0,\n      due_at: dueAt,\n      due_adjusted_for_business_hours: dueAdjustedForBusinessHours,\n      requires_template: requiresTemplate,\n      template_name: templateName,\n      template_language: templateLanguage,\n      template_status: templateStatus,\n      waiting_for_template_approval: waitingForTemplateApproval,\n      blocked_reason: blockedReason,\n      task_status: taskStatus,\n      schedule_skip_log_details: scheduleSkipLogDetails,\n      cancelled_previous_open_log_details: cancelledPreviousOpenLogDetails,\n      scheduled_log_details: scheduledLogDetails,\n      template_required_log_details: templateRequiredLogDetails,\n      waiting_template_log_details: waitingTemplateLogDetails,\n      deferred_business_hours_log_details: deferredBusinessHoursLogDetails,\n      created_at: nowIso,\n      updated_at: nowIso,\n      claimed_at: null,\n      sent_at: null,\n      cancelled_at: null,\n      failed_at: null,\n      resolved_message: null,\n      resolved_language: null,\n      provider_message_id: null,\n      provider_response: null,\n      error_message: null,\n      notification_state: null,\n    },\n  },\n];"
+        "jsCode": "const conversationCtx = $('Build Conversation Context').item.json;\nconst contactRows = $('Load Contact').all().map((item) => item.json).filter((row) => row && row.id);\nconst settingsRows = $('Load Followup Settings').all().map((item) => item.json).filter((row) => row && (row.id || row.org_id));\nconst taskRows = $('Load Existing Followup Tasks').all().map((item) => item.json).filter((row) => row && row.id);\nconst accountRows = $input.all().map((item) => item.json).filter((row) => row && row.id);\n\nconst normalizePlatform = (value) => {\n  const v = String(value ?? '').trim().toLowerCase();\n  if (['facebook', 'facebook_page', 'facebook-messenger', 'facebook_messenger', 'messenger'].includes(v)) {\n    return 'page';\n  }\n  return v;\n};\n\nconst normalizeChannels = (value) => {\n  if (Array.isArray(value)) {\n    return value.map((entry) => normalizePlatform(entry)).filter(Boolean);\n  }\n  if (typeof value === 'string' && value.trim()) {\n    return value\n      .replace(/[{}]/g, '')\n      .split(',')\n      .map((entry) => normalizePlatform(entry.replace(/\"/g, '').trim()))\n      .filter(Boolean);\n  }\n  return [];\n};\n\nconst safeInt = (value, fallback) => {\n  const parsed = Number.parseInt(value, 10);\n  return Number.isFinite(parsed) ? parsed : fallback;\n};\n\nconst parseTimeParts = (value, fallback) => {\n  const raw = String(value ?? fallback).trim();\n  const match = raw.match(/^(\\d{1,2}):(\\d{2})(?::(\\d{2}))?$/);\n  if (!match) {\n    const fb = String(fallback);\n    const fbMatch = fb.match(/^(\\d{1,2}):(\\d{2})(?::(\\d{2}))?$/);\n    return fbMatch ? { hour: Number(fbMatch[1]), minute: Number(fbMatch[2]), second: Number(fbMatch[3] || 0) } : { hour: 9, minute: 0, second: 0 };\n  }\n  return { hour: Number(match[1]), minute: Number(match[2]), second: Number(match[3] || 0) };\n};\n\nconst adjustToBusinessWindowUtc = (dueAtIso, startTime, endTime) => {\n  const dueDate = new Date(dueAtIso);\n  const start = parseTimeParts(startTime, '09:00:00');\n  const end = parseTimeParts(endTime, '18:00:00');\n\n  let adjusted = new Date(dueDate);\n  const overnight = (start.hour * 3600 + start.minute * 60 + start.second) >= (end.hour * 3600 + end.minute * 60 + end.second);\n\n  const setToWindow = (baseDate, parts) => {\n    const next = new Date(baseDate);\n    next.setUTCHours(parts.hour, parts.minute, parts.second, 0);\n    return next;\n  };\n\n  const windowStart = setToWindow(adjusted, start);\n  let windowEnd = setToWindow(adjusted, end);\n  if (overnight) {\n    windowEnd.setUTCDate(windowEnd.getUTCDate() + 1);\n  }\n\n  if (!overnight) {\n    if (adjusted < windowStart) {\n      adjusted = windowStart;\n    } else if (adjusted >= windowEnd) {\n      const nextDay = new Date(windowStart);\n      nextDay.setUTCDate(nextDay.getUTCDate() + 1);\n      adjusted = nextDay;\n    }\n  } else {\n    const inWindow = adjusted >= windowStart || adjusted < windowEnd;\n    if (!inWindow) {\n      adjusted = windowStart;\n    }\n  }\n\n  return adjusted.toISOString();\n};\n\nconst pickAccount = (rows) => {\n  if (!rows.length) return null;\n  return [...rows].sort((a, b) => {\n    const aCreated = a.created_at ? new Date(a.created_at).getTime() : 0;\n    const bCreated = b.created_at ? new Date(b.created_at).getTime() : 0;\n    if (aCreated !== bCreated) return aCreated - bCreated;\n    return String(a.id).localeCompare(String(b.id));\n  })[0];\n};\n\nconst settings = settingsRows.length > 0 ? settingsRows[0] : null;\nconst contact = contactRows.length > 0 ? contactRows[0] : null;\nconst account = pickAccount(accountRows);\nconst nowIso = new Date().toISOString();\n\nlet shouldSkip = false;\nlet skipReason = null;\n\nif (!conversationCtx.message_valid) {\n  shouldSkip = true;\n  skipReason = conversationCtx.message_skip_reason || 'invalid_inbound_message';\n} else if (!conversationCtx.conversation_valid) {\n  shouldSkip = true;\n  skipReason = conversationCtx.conversation_skip_reason || 'conversation_not_eligible';\n}\n\nconst platform = normalizePlatform(conversationCtx.platform);\nconst activeChannels = normalizeChannels(settings?.active_channels);\nconst enabled = settings?.enabled === true;\nconst triggerCondition = String(settings?.trigger_condition ?? 'no_customer_reply');\nconst maxPerConversation = Math.max(1, safeInt(settings?.max_per_conversation, 1));\nconst effectiveTaskCount = taskRows.filter((task) => ['sent', 'failed'].includes(String(task.status ?? '').toLowerCase())).length;\n\nif (!shouldSkip && !enabled) {\n  shouldSkip = true;\n  skipReason = settings ? 'followup_disabled' : 'followup_settings_missing';\n}\nif (!shouldSkip && triggerCondition !== 'no_customer_reply') {\n  shouldSkip = true;\n  skipReason = 'unsupported_trigger_condition';\n}\nif (!shouldSkip && !['whatsapp', 'page', 'instagram'].includes(platform)) {\n  shouldSkip = true;\n  skipReason = 'unsupported_platform';\n}\nif (!shouldSkip && !activeChannels.includes(platform)) {\n  shouldSkip = true;\n  skipReason = 'platform_not_active_in_followup_settings';\n}\nif (!shouldSkip && effectiveTaskCount >= maxPerConversation) {\n  shouldSkip = true;\n  skipReason = 'max_per_conversation_exceeded';\n}\nif (!shouldSkip && conversationCtx.triggered_by_message_id) {\n  const dupTask = taskRows.find((task) => String(task.triggered_by_message_id ?? '') === String(conversationCtx.triggered_by_message_id));\n  if (dupTask) {\n    shouldSkip = true;\n    skipReason = 'duplicate_trigger_message_already_scheduled';\n  }\n}\nif (!shouldSkip && !account) {\n  shouldSkip = true;\n  skipReason = 'no_active_org_channel_account';\n}\n\nconst scheduledOpenCount = taskRows.filter((task) => String(task.status ?? '').toLowerCase() === 'scheduled').length;\nconst claimedOpenCount = taskRows.filter((task) => String(task.status ?? '').toLowerCase() === 'claimed').length;\nconst waitingTemplateOpenCount = taskRows.filter((task) => String(task.status ?? '').toLowerCase() === 'waiting_template_approval').length;\nconst cancelledTaskIds = taskRows\n  .filter((task) => ['scheduled', 'claimed', 'waiting_template_approval'].includes(String(task.status ?? '').toLowerCase()))\n  .map((task) => task.id);\n\nconst latestInboundAt = conversationCtx.latest_inbound_at || conversationCtx.inbound_message_created_at || nowIso;\nconst defaultDelayMinutes = Math.max(1, safeInt(settings?.default_delay_minutes, 60));\nconst dueAtBase = new Date(latestInboundAt);\ndueAtBase.setUTCMinutes(dueAtBase.getUTCMinutes() + defaultDelayMinutes);\n\nlet dueAt = dueAtBase.toISOString();\nlet dueAdjustedForBusinessHours = false;\n\nif (!shouldSkip && settings?.business_hours_enabled === true) {\n  const adjusted = adjustToBusinessWindowUtc(dueAt, settings?.business_start ?? '09:00:00', settings?.business_end ?? '18:00:00');\n  dueAdjustedForBusinessHours = adjusted !== dueAt;\n  dueAt = adjusted;\n}\n\nlet requiresTemplate = false;\nlet templateName = settings?.whatsapp_template_name ?? null;\nlet templateLanguage = settings?.whatsapp_template_language ?? null;\nlet templateStatus = settings?.whatsapp_template_status ?? null;\nlet waitingForTemplateApproval = false;\nlet blockedReason = null;\nlet taskStatus = 'scheduled';\n\nif (!shouldSkip && platform === 'whatsapp' && settings?.whatsapp_template_required_after_24h === true) {\n  const dueMs = new Date(dueAt).getTime();\n  const inboundMs = new Date(latestInboundAt).getTime();\n  requiresTemplate = Number.isFinite(dueMs) && Number.isFinite(inboundMs) && (dueMs - inboundMs) > (24 * 60 * 60 * 1000);\n  if (requiresTemplate) {\n    const approved = String(templateStatus ?? '').trim().toLowerCase() === 'approved';\n    if (!templateName || !templateLanguage) {\n      waitingForTemplateApproval = true;\n      blockedReason = 'missing_whatsapp_template_assignment';\n      taskStatus = 'waiting_template_approval';\n    } else if (!approved) {\n      waitingForTemplateApproval = true;\n      blockedReason = 'whatsapp_template_not_approved';\n      taskStatus = 'waiting_template_approval';\n    }\n  }\n}\n\nconst scheduleSkipLogDetails = {\n  reason: skipReason,\n  platform,\n  message_id: conversationCtx.triggered_by_message_id,\n  conversation_id: conversationCtx.conversation_id,\n  org_id: conversationCtx.org_id,\n  enabled,\n  trigger_condition: triggerCondition,\n  active_channels: activeChannels,\n  effective_task_count: effectiveTaskCount,\n  max_per_conversation: maxPerConversation,\n};\n\nconst cancelledPreviousOpenLogDetails = {\n  cancelled_task_ids: cancelledTaskIds,\n  cancelled_counts: {\n    scheduled: scheduledOpenCount,\n    claimed: claimedOpenCount,\n    waiting_template_approval: waitingTemplateOpenCount,\n  },\n  reason: 'new_inbound_message_for_conversation',\n  message_id: conversationCtx.triggered_by_message_id,\n  conversation_id: conversationCtx.conversation_id,\n};\n\nconst scheduledLogDetails = {\n  due_at: dueAt,\n  requires_template: requiresTemplate,\n  template_name: templateName,\n  template_language: templateLanguage,\n  template_status: templateStatus,\n  latest_inbound_at: latestInboundAt,\n  platform,\n  message_id: conversationCtx.triggered_by_message_id,\n  conversation_id: conversationCtx.conversation_id,\n  org_channel_account_id: account?.id ?? null,\n};\n\nconst templateRequiredLogDetails = {\n  due_at: dueAt,\n  latest_inbound_at: latestInboundAt,\n  template_name: templateName,\n  template_language: templateLanguage,\n  template_status: templateStatus,\n  blocked_reason: blockedReason,\n  platform,\n  conversation_id: conversationCtx.conversation_id,\n  message_id: conversationCtx.triggered_by_message_id,\n};\n\nconst waitingTemplateLogDetails = {\n  due_at: dueAt,\n  waiting_for_template_approval: waitingForTemplateApproval,\n  blocked_reason: blockedReason,\n  template_name: templateName,\n  template_language: templateLanguage,\n  template_status: templateStatus,\n};\n\nconst deferredBusinessHoursLogDetails = {\n  original_due_at: dueAtBase.toISOString(),\n  adjusted_due_at: dueAt,\n  business_start: settings?.business_start ?? '09:00:00',\n  business_end: settings?.business_end ?? '18:00:00',\n  policy_timezone: 'UTC',\n};\n\nreturn [\n  {\n    json: {\n      org_id: conversationCtx.org_id,\n      conversation_id: conversationCtx.conversation_id,\n      contact_id: conversationCtx.contact_id ?? contact?.id ?? null,\n      platform,\n      triggered_by_message_id: conversationCtx.triggered_by_message_id,\n      latest_inbound_at: latestInboundAt,\n      org_channel_account_id: account?.id ?? null,\n      should_skip: shouldSkip,\n      should_log_skip: shouldSkip && Boolean(conversationCtx.org_id && conversationCtx.conversation_id),\n      skip_reason: skipReason,\n      has_scheduled_open: scheduledOpenCount > 0,\n      has_claimed_open: claimedOpenCount > 0,\n      has_waiting_template_open: waitingTemplateOpenCount > 0,\n      any_open_to_cancel: cancelledTaskIds.length > 0,\n      due_at: dueAt,\n      due_adjusted_for_business_hours: dueAdjustedForBusinessHours,\n      requires_template: requiresTemplate,\n      template_name: templateName,\n      template_language: templateLanguage,\n      template_status: templateStatus,\n      waiting_for_template_approval: waitingForTemplateApproval,\n      blocked_reason: blockedReason,\n      task_status: taskStatus,\n      schedule_skip_log_details: scheduleSkipLogDetails,\n      cancelled_previous_open_log_details: cancelledPreviousOpenLogDetails,\n      scheduled_log_details: scheduledLogDetails,\n      template_required_log_details: templateRequiredLogDetails,\n      waiting_template_log_details: waitingTemplateLogDetails,\n      deferred_business_hours_log_details: deferredBusinessHoursLogDetails,\n      created_at: nowIso,\n      updated_at: nowIso,\n      claimed_at: null,\n      sent_at: null,\n      cancelled_at: null,\n      failed_at: null,\n      resolved_message: null,\n      resolved_language: null,\n      provider_message_id: null,\n      provider_response: null,\n      error_message: null,\n      notification_state: null,\n    },\n  },\n];"
       },
       "id": "e25903fd-bb03-487a-93a5-e0fff61ac76a",
       "name": "Build Scheduling Decision",
@@ -317,7 +317,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'schedule_skipped' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.schedule_skip_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "9ff6fd49-6349-444c-93f2-315982011099",
       "name": "Create Schedule Skipped Log",
@@ -373,7 +403,24 @@
         "operation": "update",
         "tableId": "followup_tasks",
         "filterType": "string",
-        "filterString": "={{ 'conversation_id=eq.' + encodeURIComponent($('Build Scheduling Decision').item.json.conversation_id) + '&status=eq.scheduled' }}"
+        "filterString": "={{ 'conversation_id=eq.' + $('Build Scheduling Decision').item.json.conversation_id + '&org_id=eq.' + $('Build Scheduling Decision').item.json.org_id + '&status=eq.scheduled' }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ 'cancelled' }}"
+            },
+            {
+              "fieldId": "cancelled_at",
+              "fieldValue": "={{ $('Build Scheduling Decision').item.json.created_at }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $('Build Scheduling Decision').item.json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "f4e33950-093f-4fcd-917b-1e08926ad37d",
       "name": "Cancel Scheduled Open Tasks",
@@ -429,7 +476,24 @@
         "operation": "update",
         "tableId": "followup_tasks",
         "filterType": "string",
-        "filterString": "={{ 'conversation_id=eq.' + encodeURIComponent($('Build Scheduling Decision').item.json.conversation_id) + '&status=eq.claimed' }}"
+        "filterString": "={{ 'conversation_id=eq.' + $('Build Scheduling Decision').item.json.conversation_id + '&org_id=eq.' + $('Build Scheduling Decision').item.json.org_id + '&status=eq.claimed' }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ 'cancelled' }}"
+            },
+            {
+              "fieldId": "cancelled_at",
+              "fieldValue": "={{ $('Build Scheduling Decision').item.json.created_at }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $('Build Scheduling Decision').item.json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "224f8ecc-75e2-4798-8404-4f9a814a1326",
       "name": "Cancel Claimed Open Tasks",
@@ -485,7 +549,24 @@
         "operation": "update",
         "tableId": "followup_tasks",
         "filterType": "string",
-        "filterString": "={{ 'conversation_id=eq.' + encodeURIComponent($('Build Scheduling Decision').item.json.conversation_id) + '&status=eq.waiting_template_approval' }}"
+        "filterString": "={{ 'conversation_id=eq.' + $('Build Scheduling Decision').item.json.conversation_id + '&org_id=eq.' + $('Build Scheduling Decision').item.json.org_id + '&status=eq.waiting_template_approval' }}",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ 'cancelled' }}"
+            },
+            {
+              "fieldId": "cancelled_at",
+              "fieldValue": "={{ $('Build Scheduling Decision').item.json.created_at }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $('Build Scheduling Decision').item.json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "6a680c26-a215-4bc3-b8b8-63fabef92856",
       "name": "Cancel Waiting Template Open Tasks",
@@ -538,7 +619,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'cancelled_previous_open' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.cancelled_previous_open_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "6545f753-8b24-4bba-8ba2-4134e7febf2c",
       "name": "Create Cancel Previous Open Log",
@@ -591,7 +702,85 @@
     },
     {
       "parameters": {
-        "tableId": "followup_tasks"
+        "operation": "create",
+        "tableId": "followup_tasks",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "platform",
+              "fieldValue": "={{ $json.platform }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.task_status }}"
+            },
+            {
+              "fieldId": "triggered_at",
+              "fieldValue": "={{ $json.created_at }}"
+            },
+            {
+              "fieldId": "due_at",
+              "fieldValue": "={{ $json.due_at }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.updated_at }}"
+            },
+            {
+              "fieldId": "triggered_by_message_id",
+              "fieldValue": "={{ $json.triggered_by_message_id }}"
+            },
+            {
+              "fieldId": "org_channel_account_id",
+              "fieldValue": "={{ $json.org_channel_account_id }}"
+            },
+            {
+              "fieldId": "latest_inbound_at",
+              "fieldValue": "={{ $json.latest_inbound_at }}"
+            },
+            {
+              "fieldId": "requires_template",
+              "fieldValue": "={{ $json.requires_template }}"
+            },
+            {
+              "fieldId": "template_name",
+              "fieldValue": "={{ $json.template_name }}"
+            },
+            {
+              "fieldId": "template_language",
+              "fieldValue": "={{ $json.template_language }}"
+            },
+            {
+              "fieldId": "template_status",
+              "fieldValue": "={{ $json.template_status }}"
+            },
+            {
+              "fieldId": "waiting_for_template_approval",
+              "fieldValue": "={{ $json.waiting_for_template_approval }}"
+            },
+            {
+              "fieldId": "blocked_reason",
+              "fieldValue": "={{ $json.blocked_reason }}"
+            }
+          ]
+        }
       },
       "id": "fdfe6c3c-4a5c-4994-b962-5fad86bff9a0",
       "name": "Create Waiting Template Task",
@@ -610,7 +799,85 @@
     },
     {
       "parameters": {
-        "tableId": "followup_tasks"
+        "operation": "create",
+        "tableId": "followup_tasks",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "platform",
+              "fieldValue": "={{ $json.platform }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.task_status }}"
+            },
+            {
+              "fieldId": "triggered_at",
+              "fieldValue": "={{ $json.created_at }}"
+            },
+            {
+              "fieldId": "due_at",
+              "fieldValue": "={{ $json.due_at }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.updated_at }}"
+            },
+            {
+              "fieldId": "triggered_by_message_id",
+              "fieldValue": "={{ $json.triggered_by_message_id }}"
+            },
+            {
+              "fieldId": "org_channel_account_id",
+              "fieldValue": "={{ $json.org_channel_account_id }}"
+            },
+            {
+              "fieldId": "latest_inbound_at",
+              "fieldValue": "={{ $json.latest_inbound_at }}"
+            },
+            {
+              "fieldId": "requires_template",
+              "fieldValue": "={{ $json.requires_template }}"
+            },
+            {
+              "fieldId": "template_name",
+              "fieldValue": "={{ $json.template_name }}"
+            },
+            {
+              "fieldId": "template_language",
+              "fieldValue": "={{ $json.template_language }}"
+            },
+            {
+              "fieldId": "template_status",
+              "fieldValue": "={{ $json.template_status }}"
+            },
+            {
+              "fieldId": "waiting_for_template_approval",
+              "fieldValue": "={{ $json.waiting_for_template_approval }}"
+            },
+            {
+              "fieldId": "blocked_reason",
+              "fieldValue": "={{ $json.blocked_reason }}"
+            }
+          ]
+        }
       },
       "id": "fbdb5a08-0ea1-416d-a1b9-83e843598aa9",
       "name": "Create Scheduled Followup Task",
@@ -629,7 +896,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'template_required' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.template_required_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "e56e462d-d229-4f02-995d-b477bf389bea",
       "name": "Create Template Required Log",
@@ -648,7 +945,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'waiting_template_approval' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.waiting_template_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "778467c1-1df0-48e3-a139-83e2c5210fa1",
       "name": "Create Waiting Template Log",
@@ -667,7 +994,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'scheduled' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.scheduled_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "ca43aef5-dc6f-4d69-b847-bdbea81a91a4",
       "name": "Create Scheduled Log",
@@ -720,7 +1077,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'deferred_business_hours' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.deferred_business_hours_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "069dd9a4-b5f9-4876-85e7-a764b10c3bd7",
       "name": "Create Deferred Business Hours Log",
@@ -797,7 +1184,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'schedule_skipped' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.schedule_skip_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "ddf80925-3657-471b-a905-9f344e2e4bf5",
       "name": "Create Message Schedule Skipped Log",
@@ -863,7 +1280,37 @@
     },
     {
       "parameters": {
-        "tableId": "followup_logs"
+        "operation": "create",
+        "tableId": "followup_logs",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "org_id",
+              "fieldValue": "={{ $json.org_id }}"
+            },
+            {
+              "fieldId": "conversation_id",
+              "fieldValue": "={{ $json.conversation_id }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $json.contact_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "={{ 'schedule_skipped' }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json.schedule_skip_log_details }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
       },
       "id": "2e3f133a-d3d5-46e3-a4d0-600da6bc7334",
       "name": "Create Conversation Schedule Skipped Log",
