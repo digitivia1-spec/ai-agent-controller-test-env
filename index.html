@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://*.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.posthog.com https://ipapi.co; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; media-src 'self' https://assets.mixkit.co data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://*.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.posthog.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <!-- SEO Meta Tags -->
@@ -70,45 +70,31 @@
     <!-- Sentry Error Tracking -->
     <script src="https://browser.sentry-cdn.com/8.51.0/bundle.min.js" crossorigin="anonymous"></script>
     <script>
-        (function () {
-            var SENTRY_DSN = "YOUR_SENTRY_DSN_HERE"; // TODO: Replace with actual Sentry DSN from https://sentry.io
-            var isRealDsn = typeof SENTRY_DSN === 'string'
-                && SENTRY_DSN.indexOf('YOUR_') !== 0
-                && /^https?:\/\//.test(SENTRY_DSN);
-            if (window.Sentry && isRealDsn) {
-                Sentry.init({
-                    dsn: SENTRY_DSN,
-                    environment: location.hostname === 'ai-agent.digitivia.com' ? 'production' : 'development',
-                    release: 'digitivia-ai-agent@1.0.0',
-                    sampleRate: 1.0,
-                    tracesSampleRate: 0.2,
-                    ignoreErrors: [
-                        'ResizeObserver loop limit exceeded',
-                        'Non-Error promise rejection captured'
-                    ]
-                });
-            }
-        })();
+        if (window.Sentry) {
+            Sentry.init({
+                dsn: "YOUR_SENTRY_DSN_HERE",  // TODO: Replace with actual Sentry DSN from https://sentry.io
+                environment: location.hostname === 'ai-agent.digitivia.com' ? 'production' : 'development',
+                release: 'digitivia-ai-agent@1.0.0',
+                sampleRate: 1.0,
+                tracesSampleRate: 0.2,
+                ignoreErrors: [
+                    'ResizeObserver loop limit exceeded',
+                    'Non-Error promise rejection captured'
+                ]
+            });
+        }
     </script>
 
     <!-- PostHog Product Analytics -->
     <script>
         !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-        (function () {
-            var POSTHOG_KEY = 'YOUR_POSTHOG_KEY_HERE'; // TODO: Replace with actual PostHog project API key
-            var isRealKey = typeof POSTHOG_KEY === 'string'
-                && POSTHOG_KEY.indexOf('YOUR_') !== 0
-                && POSTHOG_KEY.length > 0;
-            if (isRealKey) {
-                posthog.init(POSTHOG_KEY, {
-                    api_host: 'https://us.i.posthog.com',
-                    person_profiles: 'identified_only',
-                    autocapture: true,
-                    capture_pageview: true,
-                    capture_pageleave: true
-                });
-            }
-        })();
+        posthog.init('YOUR_POSTHOG_KEY_HERE', {  // TODO: Replace with actual PostHog project API key
+            api_host: 'https://us.i.posthog.com',
+            person_profiles: 'identified_only',
+            autocapture: true,
+            capture_pageview: true,
+            capture_pageleave: true
+        });
     </script>
     <script>
         (function initSavedTheme() {
@@ -49734,7 +49720,7 @@ Thank you for shopping with {store_name}!</textarea>
     window.renderSLAPolicies = async function(container) {
         if (!container || !currentUserOrgId) return;
 
-        try {
+aragraph        try {
             let { data: policies, error } = await supabaseClient.from('sla_policies').select('*').eq('org_id', currentUserOrgId).order('priority');
 
             // If no policies, seed defaults
