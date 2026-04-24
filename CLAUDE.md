@@ -2,20 +2,22 @@
 
 This file is loaded automatically at session start. It exists to keep Claude
 fast and token-efficient in a codebase whose main file (`index.html`) is
-**1.56 MB / ~28,745 lines**. Follow these rules strictly.
+**1.08 MB / ~19,880 lines**. Follow these rules strictly.
 
 ---
 
 ## 1. Token-efficiency rules (read first)
 
-1. **Never read `index.html` in full.** It is 28,745 lines. Always:
+1. **Never read `index.html` in full.** It is 19,882 lines. Always:
    - Use `Grep` (the built-in tool) first to locate the symbol / string / selector.
    - Then `Read` with `offset` + `limit` (≤ 500 lines) around the hit.
 2. **Never read these files in full either** — grep first, then read a window:
    | File | Size | Why avoid |
    | --- | --- | --- |
-   | `index.html` | 1.56 MB / 28,745 L | Main app JS + body markup still inlined |
+   | `index.html` | 1.08 MB / 19,882 L | Main app JS + body markup still inlined |
    | `src/styles/main.css` | 599 KB / ~19k L | Whole live stylesheet (auto-bundled by Vite) |
+   | `public/modules/onboarding-wizard.js` | 326 KB | Extracted IIFE — 5.7k lines |
+   | `public/modules/prompt-assistant.js` | 37 KB | Extracted IIFE |
    | `public/i18n/ar.json` | 110 KB | Translation data — not logic |
    | `public/i18n/en.json` | 87 KB | Translation data — not logic |
    | `package-lock.json` | 84 KB | Generated lockfile — do not edit |
@@ -38,6 +40,12 @@ fast and token-efficient in a codebase whose main file (`index.html`) is
    `index.html:160`). The modular files under `src/styles/{layout,
    components,modules}/` are aspirational snapshots — not wired in. Edit
    `main.css` for now; reconcile into modules in a later PR.
+9. **Late-loaded feature IIFEs live in `public/modules/*.js`** — edit the
+   file for that feature (see §4 table). These are classic scripts (NOT
+   ES modules), included via `<script src="/modules/<name>.js">` tags at
+   `index.html:19,736–19,881`. Classic-script scope means they can read
+   `window.*` globals defined by the main app script and use bare
+   identifier lookup through the window (same as when they were inlined).
 
 ---
 
@@ -47,8 +55,9 @@ fast and token-efficient in a codebase whose main file (`index.html`) is
   Instagram / Telegram / Web) with CRM, orders, content studio.
 - **Stack**: Vanilla JS + Supabase + n8n workflows. Vite builds it.
 - **Architecture reality**: mostly single-page app with body markup +
-  app-logic JS still inlined in `index.html`. **i18n and CSS have been
-  extracted** — see §6 for remaining steps.
+  main app-logic JS still inlined in `index.html`. **i18n, CSS, and the
+  13 late-loaded feature IIFEs have been extracted** — see §6 for the
+  remaining step.
 - **Scripts**: `npm run dev` (vite), `npm run build`, `npm test` (vitest),
   `npm run lint`.
 
@@ -57,7 +66,8 @@ fast and token-efficient in a codebase whose main file (`index.html`) is
 ## 3. `index.html` navigation map
 
 The file is organised as: HTML `<head>` (with i18n loader shim + CSS link) →
-body markup → many `<script>` IIFE modules. Use these ranges with
+body markup → main app `<script>` IIFE → 14 `<script src>` tags that load
+extracted feature modules from `/modules/`. Use these ranges with
 `Read offset:N limit:M` instead of scanning.
 
 ### Head + landing page (1 – 1,830)
@@ -82,7 +92,8 @@ body markup → many `<script>` IIFE modules. Use these ranges with
 | 1,180 – 1,830 | Sidebar nav + top bar + modals (templates, onboarding, command palette, lead profile, notes, follow-up, documentation, profile, help, onboarding banner) |
 
 ### Main application script (1,874 – 19,734)
-One giant `<script>` block — **~17,900 lines** of app logic.
+One giant `<script>` block — **~17,860 lines** of app logic. This is still
+the biggest surface.
 | Lines | What it is |
 | --- | --- |
 | 1,874 – 2,189 | Supabase config + client (`supabaseClient`, chat-proxy headers) |
@@ -97,38 +108,49 @@ One giant `<script>` block — **~17,900 lines** of app logic.
 | 15,169 – 16,665 | AI helper logic (sending, streaming, UI) |
 | 16,668 – 19,734 | Notifications system (real-time, push, unread count) |
 
-### Late-loaded feature modules (19,736 – 28,715)
-Each is an IIFE — independent, safe to edit in isolation.
-| Lines | Module |
-| --- | --- |
-| 19,736 – 19,906 | Password-change translations inject |
-| 19,908 – 25,651 | **Onboarding wizard (owner-only)** — 5.7k lines, largest module |
-| 25,654 – 25,885 | Google Calendar integration |
-| 25,888 – 25,961 | Sidebar usage meter (`loadUsageMeter`) |
-| 25,964 – 26,239 | Add Lead modal |
-| 26,242 – 26,569 | Sprint 26: saved filters |
-| 26,572 – 26,857 | Sprint 22: CSAT rating |
-| 26,860 – 27,181 | Sprint 18: outbound webhooks |
-| 27,184 – 27,399 | Support tickets (`cachedTickets`, status/priority) |
-| 27,402 – 27,514 | Agent templates browser |
-| 27,517 – 27,622 | A/B test panel (`openABTestPanel`) |
-| 27,625 – 27,695 | AI/Human override tracking (inbox) |
-| 27,698 – 27,909 | Product onboarding tour |
-| 28,019 – 28,715 | Prompt Assistant module (`window.openPromptAssistant`) |
+### Extracted feature module `<script src>` tags (19,736 – 19,881)
+14 classic-script tags that load the IIFEs from `/modules/`. Each file
+is self-contained — safe to edit in isolation. Source files live in
+`public/modules/` (copied to `dist/modules/` at build).
+
+| HTML line | `/modules/` file | What it does |
+| --- | --- | --- |
+| 19,736 | `password-translations.js` | Injects password-change strings into `window.LANG_EN/AR` |
+| 19,738 | `onboarding-wizard.js` | **Owner-only onboarding wizard** — 5.7k lines, largest module |
+| 19,741 | `google-calendar.js` | Google Calendar integration + dashboard quick actions |
+| 19,744 | `usage-meter.js` | Sidebar usage meter (`loadUsageMeter`) + live activity |
+| 19,747 | `add-lead.js` | CRM: Add Lead modal, date filter, sort |
+| 19,750 | `saved-filters.js` | Sprint 26-30: saved filters, bulk actions, presence, global search |
+| 19,753 | `csat-rating.js` | Sprint 22-25: CSAT, export, SLA, audit log |
+| 19,756 | `outbound-webhooks.js` | Sprint 18-21: webhooks, API keys, insights, multi-language |
+| 19,759 | `support-tickets.js` | Sprint 17: support ticket system (`cachedTickets`) |
+| 19,762 | `agent-templates.js` | Sprint 11: agent templates browser |
+| 19,765 | `ab-test-panel.js` | Sprint 12: A/B testing UI (`openABTestPanel`) |
+| 19,768 | `ai-override-tracking.js` | Sprint 13: conversation learning / AI override |
+| 19,771 | `onboarding-tour.js` | Product tour + command palette |
+| 19,881 | `prompt-assistant.js` | Prompt Assistant singleton drawer (`window.openPromptAssistant`) |
+
+### Prompt Assistant scaffold (19,774 – 19,880)
+Inline HTML preamble + `<style>` block + `#pa-root` panel skeleton for the
+Prompt Assistant. Paired with `public/modules/prompt-assistant.js` above.
+Small (~100 lines of scoped CSS) so left inline for now.
 
 ### Common-task lookup
 
-| To work on… | Grep for… | Then read around line… |
+| To work on… | Grep for… | Then read around… |
 | --- | --- | --- |
-| Supabase auth / session | `SUPABASE_URL` or `supabaseClient` | 1,874 – 2,190 |
+| Supabase auth / session | `SUPABASE_URL` or `supabaseClient` | `index.html:1,874–2,190` |
 | Login/signup flow | `performLogin\|performSignUp\|performOAuthLogin` | grep then window |
-| Dashboard widgets | `loadDashboard\|renderDashboard` | 4,539 – 6,344 |
+| Dashboard widgets | `loadDashboard\|renderDashboard` | `index.html:4,539–6,344` |
 | Inbox / messages | `loadInbox\|loadInboxMessages\|sendMessage` | grep then window |
-| CRM leads | `initCrmTab\|renderCrmGrid\|openLeadProfile` | ~22,015 area |
+| CRM leads | `initCrmTab\|renderCrmGrid\|openLeadProfile` | `index.html:~7,300` area (in main script) |
 | Tasks | `loadTaskManager\|openCreateTaskModal` | grep then window |
-| Pricing / Stripe | `initiateStripeCheckout\|detectCurrency` | 14,359 – 15,028 |
-| Notifications | `notificationsChannel\|insertTaskNotification` | 16,668 – 19,734 |
-| Onboarding wizard | section marker `ONBOARDING WIZARD (Owner-Only)` | 19,908 – 25,651 |
+| Pricing / Stripe | `initiateStripeCheckout\|detectCurrency` | `index.html:14,359–15,028` |
+| Notifications | `notificationsChannel\|insertTaskNotification` | `index.html:16,668–19,734` |
+| Onboarding wizard | whole file | `public/modules/onboarding-wizard.js` |
+| Add Lead / CRM enhancements | whole file | `public/modules/add-lead.js` |
+| Support tickets | whole file | `public/modules/support-tickets.js` |
+| Prompt Assistant | whole file | `public/modules/prompt-assistant.js` |
 | i18n key | `"key.path":` in `public/i18n/en.json` |
 | CSS selector | `Grep` the class name in `src/styles/main.css` |
 
@@ -147,6 +169,7 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
 | `demo/google-calendar/` | Demo page |
 | `supabase/migrations/*.sql` | DB schema. Phase migrations at repo root (`phase{1,2,3}_migration.sql`) are the canonical reference. |
 | `public/i18n/{en,ar}.json` | **Live i18n dictionaries** — single source of truth |
+| `public/modules/*.js` | **Live feature-IIFE modules** — 14 classic scripts loaded from `index.html:19,736–19,881` |
 | `src/i18n/loader.js` | Async loader (future migration path; not used at runtime) |
 | `src/styles/main.css` | **Live stylesheet** — single source of truth (linked from `index.html:160`) |
 | `src/styles/{layout,components,modules}/*.css` | Aspirational modular CSS (not wired up — see `src/styles/README.md`) |
@@ -165,10 +188,12 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
 - ✅ **CSS extracted** — `src/styles/main.css` is the single source of
   truth (Vite bundles to `dist/assets/main-<hash>.css`); `index.html`
   dropped from 48,061 → 28,745 lines (step 2).
-- ⚠️ `index.html` is still 1.56 MB / 28,745 lines — main app JS block
-  (~17.9k lines) + late feature IIFEs still inlined. See **§6**.
-- ⚠️ `src/` JS decomposition is started but unfinished — the main app
-  script still lives inside `index.html`.
+- ✅ **Late-loaded feature IIFEs extracted** — 14 modules now live in
+  `public/modules/*.js` (copied as-is to `dist/modules/`); `index.html`
+  dropped from 28,745 → 19,882 lines (step 3).
+- ⚠️ `index.html` is still 1.08 MB / 19,882 lines — the main
+  1,874–19,734 app-script block (~17.9k lines) is the last big
+  remaining surface. See **§6**.
 - ⚠️ Hard-coded `SUPABASE_KEY` is present in `index.html` around line
   1,877. That's an anon key (safe to ship), but rotate + move to env for
   the Vite build anyway.
@@ -178,23 +203,27 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
 - ⚠️ `src/styles/main.css` has a pre-existing stray `;` after the first
   `}` block (original inline CSS typo) — ESBuild logs a warning during
   build but the output is correct. Trivial to fix in a followup cleanup.
+- ⚠️ Prompt Assistant `<style>` block (~86 lines) is still inline at
+  `index.html:19,780–19,867`. Small enough to ignore; extract in a
+  followup if desired.
 
 ## 6. Recommended next optimization (requires approval)
 
-Biggest remaining token win is **extracting the inlined JS**. Done/pending:
+Only the main app script remains. Done/pending:
 
 1. ✅ **i18n extract** — completed (step 1). ~7% reduction.
 2. ✅ **CSS extract** (`<link>` to `src/styles/main.css`) — completed
    (step 2). ~40% reduction.
-3. ⬜ **Late feature IIFEs** (19,736 – 28,715) — each is self-contained,
-   so moving them to `src/modules/<name>.js` is low-risk. Estimated ~6%
-   reduction on top of what's already done.
+3. ✅ **Late feature IIFEs** → `public/modules/*.js` — completed (step
+   3). ~31% reduction (on top of step 2).
 4. ⬜ **Main app script** (1,874 – 19,734) — peel into
    `src/modules/{auth,dashboard,inbox,crm,tasks,billing,notifications}.js`
-   per the targets in `src/README.md`. Highest-risk step; ~35%
-   reduction.
+   per the targets in `src/README.md`. Highest-risk step because these
+   modules are tightly interconnected (shared `let`/`const` script
+   scope, routing, auth state). Estimated ~45% reduction — after this
+   `index.html` lands under ~2k lines (just HTML body + tiny bootstrap
+   shims).
 
-Cumulative progress: **51,731 → 28,745 lines (−44.4%)**. After step 3
-the file drops below ~27k lines; after step 4 it falls to under ~10k
-lines — essentially just HTML body markup + a handful of thin
-bootstrap scripts.
+Cumulative progress: **51,731 → 19,882 lines (−61.6%)**. After step 4
+the file falls under ~2k lines — essentially just HTML body markup +
+the loader shims at the top.
