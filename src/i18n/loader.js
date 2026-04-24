@@ -1,19 +1,24 @@
 /**
- * i18n Loader — loads language JSON files and exposes them as window.LANG_EN / window.LANG_AR.
+ * i18n Loader — async loader for future migration path.
  *
- * Usage (after migrating off inline dictionaries):
- *   import { loadLanguages } from './src/i18n/loader.js';
+ * The runtime currently uses a blocking sync-XHR loader inlined in index.html
+ * that fetches the same files (see §3 of CLAUDE.md). This module is the
+ * async replacement to be used once all call sites that reach into
+ * window.LANG_EN / window.LANG_AR are moved onto a t() function that waits
+ * for the load promise.
+ *
+ * Usage:
+ *   import { loadLanguages } from '/src/i18n/loader.js';
  *   await loadLanguages();
- *
- * For now, the inline dictionaries in index.html still take precedence.
- * This module is ready to replace them when the migration is complete.
  */
-
 export async function loadLanguages() {
-    const [enModule, arModule] = await Promise.all([
-        import('./en.json', { assert: { type: 'json' } }),
-        import('./ar.json', { assert: { type: 'json' } }),
+    const [enResp, arResp] = await Promise.all([
+        fetch('/i18n/en.json'),
+        fetch('/i18n/ar.json'),
     ]);
-    window.LANG_EN = enModule.default;
-    window.LANG_AR = arModule.default;
+    if (!enResp.ok || !arResp.ok) {
+        throw new Error('i18n fetch failed: ' + enResp.status + '/' + arResp.status);
+    }
+    window.LANG_EN = await enResp.json();
+    window.LANG_AR = await arResp.json();
 }
