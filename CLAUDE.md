@@ -168,6 +168,9 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
 | `api/google-calendar/callback/` | OAuth return page |
 | `demo/google-calendar/` | Demo page |
 | `supabase/migrations/*.sql` | DB schema. Phase migrations at repo root (`phase{1,2,3}_migration.sql`) are the canonical reference. |
+| `supabase/functions/prompt-assistant/` | **Prompt Assistant backend** — Edge Function (`index.ts`), deploy notes. Landed via merge 2026-04-24 from main. UI side is a separate rebuild (see `docs/prompt-assistant-ui-brief.md`). |
+| `Prompt Assistant API v1.json` | n8n workflow reference for the Prompt Assistant API contract |
+| `docs/prompt-assistant-plan.md` | Design plan for the PA feature (authored before the UI rebuild) |
 | `public/i18n/{en,ar}.json` | **Live i18n dictionaries** — single source of truth |
 | `public/modules/*.js` | **Live feature-IIFE modules** — 14 classic scripts loaded from `index.html:19,736–19,881` |
 | `src/i18n/loader.js` | Async loader (future migration path; not used at runtime) |
@@ -206,6 +209,15 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
 - ⚠️ Prompt Assistant `<style>` block (~86 lines) is still inline at
   `index.html:19,780–19,867`. Small enough to ignore; extract in a
   followup if desired.
+- ⚠️ **Prompt Assistant UI is not wired up yet.** The backend landed on
+  main (Edge Function at `supabase/functions/prompt-assistant/index.ts`,
+  migration `20260421_prompt_assistant_phase5.sql`, workflow JSON, plan
+  doc). The inline UI code that an earlier session tried to add to
+  `index.html` was dropped during the 2026-04-24 merge because it
+  duplicated the extracted `public/modules/prompt-assistant.js`. The UI
+  will be rebuilt cleanly against the extracted module structure — see
+  `docs/prompt-assistant-ui-brief.md` for the spec to hand to a fresh
+  session.
 
 ## 6. Recommended next optimization (requires approval)
 
