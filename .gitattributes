@@ -7,7 +7,7 @@
 index.html                    linguist-generated=true -diff
 src/styles/main.css           linguist-generated=true -diff
 src/styles/modules/*.css      linguist-generated=true
-src/i18n/*.json               linguist-generated=true
+public/i18n/*.json            linguist-generated=true
 package-lock.json             linguist-generated=true -diff
 # Note: `follow-ups Workflow/*.json` cannot be matched here — git's
 # .gitattributes parser does not support spaces in path patterns. Treat

@@ -1,61 +1,76 @@
-# CSS Modular Structure
+# CSS Source Layout
 
-## Current State
-All CSS (~18,683 lines) is embedded in `index.html` inside a single `<style>` tag.
+## Live code path
 
-## Target Structure
+The app loads **one** stylesheet — `src/styles/main.css` — wired from
+`index.html` via:
+
+```html
+<link rel="stylesheet" href="./src/styles/main.css">
+```
+
+Vite processes this link at build time (minifies, hashes, outputs to
+`dist/assets/main-<hash>.css`).
+
+## Authoritative file
+
+- `src/styles/main.css` (~19k lines, ~600 KB unminified, ~354 KB after
+  Vite CSS minify) — the full stylesheet, extracted verbatim from the
+  inline `<style>` block that previously lived in `index.html`. This is
+  the single source of truth.
+
+Do **not** edit this file to add/fix module-specific styles without
+thinking about the cascade order — it is flat and global.
+
+## Aspirational modular structure (not yet wired)
+
+The files below were extracted earlier as part of an in-progress
+decomposition, but **none of them are currently loaded by the app**:
+
 ```
 src/styles/
-├── variables.css       # CSS custom properties (--bg-dark, --theme-color, etc.)
-├── base.css            # Reset, typography, scrollbars, global styles
-├── layout.css          # App layout, sidebar, topbar, mobile-top-bar
+├── index.css               # @import orchestrator (not linked from HTML)
+├── variables.css
+├── base.css
+├── layout/
+│   ├── sidebar.css
+│   ├── main.css
+│   └── mobile-topbar.css
 ├── components/
-│   ├── buttons.css     # .login-btn, .lp-btn, social-btn, etc.
-│   ├── cards.css       # .card, .glass, feature cards, stat cards
-│   ├── modals.css      # Modal overlays, dialogs, drawers
-│   ├── forms.css       # Inputs, selects, textareas, toggles
-│   ├── tables.css      # Data tables, lead tables
-│   ├── chips.css       # Status chips, badges, tags
-│   └── toasts.css      # Toast notifications
-├── modules/
-│   ├── landing.css     # #landing-page and all lp-* classes
-│   ├── login.css       # #login-container, .login-card, auth styles
-│   ├── dashboard.css   # Dashboard widgets, KPI cards, charts
-│   ├── inbox.css       # AI Inbox, message bubbles, conversation list
-│   ├── agents.css      # Agent config, test chat, knowledge base
-│   ├── crm.css         # CRM views (table, grid, pipeline, dashboard)
-│   ├── orders.css      # Order management, status tracking
-│   ├── tasks.css       # Task manager, .tm-* classes
-│   ├── content.css     # Content Studio, post scheduling
-│   ├── reviews.css     # Reviews management
-│   ├── automation.css  # Automation rules
-│   ├── team.css        # Team management, RBAC, permissions
-│   ├── billing.css     # Pricing modal, plan cards, addons
-│   └── settings.css    # Organization settings, integrations
-└── responsive.css      # All @media queries consolidated
+│   ├── glass.css
+│   └── toggle.css
+└── modules/
+    ├── landing.css
+    ├── login.css
+    ├── billing.css
+    ├── billing-toggle.css
+    ├── cards.css
+    ├── automation.css
+    ├── insights.css
+    ├── knowledge-base.css
+    ├── content-studio.css
+    ├── chat.css
+    ├── inbox.css
+    ├── inbox-search.css
+    ├── export.css
+    ├── notifications.css
+    └── ai-helper.css
 ```
 
-## How to extract (for developer)
-1. Search `index.html` for CSS section markers like `/* --- SIDEBAR NAVIGATION --- */`
-2. Key CSS boundaries in index.html:
-   - Variables/theme: lines ~3715-3800
-   - Login styles: lines ~6187-6518
-   - Landing page: lines ~6519-6680
-   - Sidebar: lines ~6680-7200
-   - Dashboard: lines ~7200-8500
-   - Inbox: lines ~8500-9000
-   - CRM/Leads: lines ~9000-9200
-   - Task Manager (.tm-*): lines ~22075-22340
-   - General components: scattered throughout
-3. Extract each section into its matching file
-4. Create a main.css that imports all:
-   ```css
-   @import './variables.css';
-   @import './base.css';
-   @import './layout.css';
-   /* ...etc */
-   ```
-5. In index.html, replace the `<style>` block with:
-   ```html
-   <link rel="stylesheet" href="./src/styles/main.css">
-   ```
+Notes:
+- `src/styles/index.css` imports a `modules/crm.css` that doesn't exist —
+  another drift signal from the earlier partial extract.
+- The combined line count of the modules (~16k) is smaller than
+  `main.css` (~19k) — they're stale snapshots missing the additions that
+  accumulated in the inline block over time.
+
+### To finish the decomposition
+1. Pick one module (e.g. `modules/billing.css`) and diff its rules
+   against the matching section of `main.css`. Reconcile drift.
+2. Add `@import './modules/billing.css';` to `index.css`.
+3. Remove the corresponding rules from `main.css`.
+4. Ship + smoke-test.
+5. Repeat for the next module.
+
+When all modules are reconciled, flip `index.html`'s `<link>` to point
+at `./src/styles/index.css` and delete `main.css`.
