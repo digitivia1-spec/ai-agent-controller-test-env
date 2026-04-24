@@ -1,2 +1,14 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Mark large generated/concatenated files so GitHub collapses diffs & search
+# skips them. These are not hand-edited module-by-module; they are the output
+# of the in-progress decomposition (see CLAUDE.md §6 and src/README.md).
+index.html                    linguist-generated=true -diff
+src/styles/main.css           linguist-generated=true -diff
+src/styles/modules/*.css      linguist-generated=true
+src/i18n/*.json               linguist-generated=true
+package-lock.json             linguist-generated=true -diff
+# Note: `follow-ups Workflow/*.json` cannot be matched here — git's
+# .gitattributes parser does not support spaces in path patterns. Treat
+# those n8n exports as data per CLAUDE.md §1.
