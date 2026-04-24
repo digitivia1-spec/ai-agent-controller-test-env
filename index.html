@@ -25459,6 +25459,8 @@
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeWNnaHhheHF6dmttenF6emt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxMjg3NjIsImV4cCI6MjA4MzcwNDc2Mn0.-03VhRZ6ok6Z6NykuJxNLnoHmO2SSv1JSm8VM18yVgU";
         window.SUPABASE_URL = SUPABASE_URL;
         window.SUPABASE_KEY = SUPABASE_KEY;
+        const PA_WEBHOOK_URL = 'https://n8n.srv1174105.hstgr.cloud/webhook/prompt-imporve';
+        window.PA_WEBHOOK_URL = PA_WEBHOOK_URL;
         const PUSH_VAPID_PUBLIC_KEY = "BKc68-GOg13z1Hng83tJbrldQKKouTaGyyZ2ZtYG9wXS94Sw9ofcPj2SYTiyfwJiN0B1XmUMCNMWchhZqJD4FiY";
         const PUSH_SERVICE_WORKER_PATH = "./sw.js";
         const PUSH_LOG_PREFIX = "[Push]";
@@ -41038,18 +41040,51 @@ Thank you for shopping with {store_name}!</textarea>
     setTimeout(() => { root.hidden = true; }, 220);
   };
 
-  async function callEdge(body){
-    const client = (window.supabaseClient || window.supabase);
-    if (!client || !client.functions || typeof client.functions.invoke !== 'function')
-      throw Object.assign(new Error('Supabase client not available'), { code:'network' });
-    const { data, error } = await client.functions.invoke('prompt-assistant', { body });
-    if (error){
-      let code = 'generation_failed', msg = error.message || 'Unknown error';
-      try { if (error.context && error.context.json){ code = error.context.json?.error?.code || code; msg = error.context.json?.error?.message || msg; } } catch(_){}
+  async function callWebhookDirect(body){
+    const url = window.PA_WEBHOOK_URL || 'https://n8n.srv1174105.hstgr.cloud/webhook/prompt-imporve';
+    let res;
+    try {
+      res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(90000)
+      });
+    } catch (err) {
+      const code = (err && err.name === 'TimeoutError') ? 'timeout' : 'network';
+      throw Object.assign(new Error(code === 'timeout' ? 'Generation timed out — please try again' : 'Network error'), { code });
+    }
+    let parsed = null;
+    const raw = await res.text().catch(() => '');
+    if (raw) {
+      try { parsed = JSON.parse(raw); } catch (_) {
+        const m = raw.match(/\{[\s\S]*\}/);
+        if (m) try { parsed = JSON.parse(m[0]); } catch (__) {}
+      }
+    }
+    if (typeof parsed === 'string') parsed = { finalPrompt: parsed };
+    if (!res.ok) {
+      const code = (parsed && parsed.errorCode) || (res.status === 429 ? 'rate_limited' : 'generation_failed');
+      const msg  = (parsed && parsed.message)   || ('Webhook returned ' + res.status);
       throw Object.assign(new Error(msg), { code });
     }
-    if (data && data.ok === false) throw Object.assign(new Error(data.error?.message || 'Failed'), { code: data.error?.code || 'generation_failed' });
-    return data;
+    if (!parsed) throw Object.assign(new Error('Empty response from webhook'), { code: 'generation_failed' });
+    return {
+      ok: parsed.success !== false,
+      data: parsed,
+      remaining: (parsed.limit && typeof parsed.limit.dailyRemaining === 'number') ? parsed.limit.dailyRemaining : null
+    };
+  }
+
+  function handleLocalAction(body){
+    if (body.action === 'apply')  return { ok: true, data: { success: true } };
+    if (body.action === 'undo')   return { ok: true, data: { success: true } };
+    throw Object.assign(new Error('Unknown action'), { code: 'unknown_action' });
+  }
+
+  async function callEdge(body){
+    if (body.action === 'generate') return await callWebhookDirect(body);
+    return handleLocalAction(body);
   }
 
   // --- Phase 4: canonical contract helpers ----------------------------------
@@ -41400,11 +41435,14 @@ Thank you for shopping with {store_name}!</textarea>
 
   window.paUndoApplied = async function(agentId){
     try {
-      const data = await callEdge({ action:'undo', agent:agentId });
-      const restored = data?.data?.config?.system_prompt;
+      const d = PA.drafts[agentId];
       const ta = $(`prompt-${agentId}`);
-      if (ta && typeof restored === 'string'){
-        ta.value = restored; ta.dispatchEvent(new Event('input', { bubbles:true }));
+      const original = d && (d.originalPrompt || d.current_prompt || '');
+      if (ta && typeof original === 'string' && original){
+        ta.value = original;
+        ta.dispatchEvent(new Event('input', { bubbles:true }));
+        ta.dispatchEvent(new Event('change', { bubbles:true }));
+        try { if (typeof window.checkDirty === 'function') window.checkDirty(agentId); } catch(_){}
         safeToast(I18N('prompt_assistant.undo','Reverted'), 'success');
       }
       setState(agentId, 'normal');
