@@ -8055,11 +8055,23 @@ Thank you for shopping with {store_name}!</textarea>
         }
 
         function getSenderBadgeLabel(senderType) {
-            if (String(senderType || '').toLowerCase() === 'human') return currentLang === 'ar' ? 'بشري' : 'Human';
+            const s = String(senderType || '').toLowerCase();
+            if (s === 'followup') return currentLang === 'ar' ? 'متابعة' : 'Follow-up';
+            if (s === 'human') return currentLang === 'ar' ? 'بشري' : 'Human';
             return 'AI';
         }
 
+        function isFollowupMessage(msg) {
+            try {
+                const meta = msg?.meta;
+                if (!meta) return false;
+                const m = typeof meta === 'string' ? JSON.parse(meta) : meta;
+                return m && (m.is_followup === true || m.source === 'followup_dispatcher' || !!m.followup_task_id);
+            } catch (_) { return false; }
+        }
+
         function getOutboundSenderType(msg) {
+            if (isFollowupMessage(msg)) return 'followup';
             const senderType = String(msg?.sender_type || '').toLowerCase();
             if (senderType === 'human') return 'human';
             return 'ai'; // backward-compatible fallback for older rows
@@ -8688,9 +8700,13 @@ Thank you for shopping with {store_name}!</textarea>
         function buildSenderBadgeHTML(msg) {
             if (msg.direction !== 'outbound') return '';
             const senderType = getOutboundSenderType(msg);
-            const badgeClass = senderType === 'human' ? 'badge-human' : 'badge-ai';
+            const badgeClass = senderType === 'followup' ? 'badge-followup'
+                : (senderType === 'human' ? 'badge-human' : 'badge-ai');
             const label = getSenderBadgeLabel(senderType);
-            return `<div class="msg-sender-row"><span class="msg-sender-badge ${badgeClass}">${label}</span></div>`;
+            const icon = senderType === 'followup'
+                ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/></svg>'
+                : '';
+            return `<div class="msg-sender-row"><span class="msg-sender-badge ${badgeClass}" title="${label}">${icon}${label}</span></div>`;
         }
 
         async function appendInboxMessage(container, msg, { allowScroll = true } = {}) {
