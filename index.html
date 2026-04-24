@@ -58,6 +58,7 @@
     <link rel="icon" type="image/png" href="cropped-White.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#5BAEB0">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon.png">
@@ -23530,16 +23531,30 @@
             .crm-dash-chart-title { font-size: 0.7rem; }
         }
         /* ── Prompt Assistant ───────────────────────────────────────────── */
-        .pa-bar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;padding:.5rem .65rem;margin:.5rem 0 .4rem;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:rgba(255,255,255,.03)}
-        .pa-bar-ctas{display:flex;flex-wrap:wrap;gap:.4rem}
-        .pa-cta{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;padding:.38rem .65rem;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text-primary);cursor:pointer;transition:background .15s,transform .1s}
-        .pa-cta:hover:not(:disabled){background:rgba(255,255,255,.08)}
-        .pa-cta:active:not(:disabled){transform:translateY(1px)}
-        .pa-cta:disabled{opacity:.45;cursor:not-allowed}
-        .pa-cta-improve{border-color:rgba(99,179,237,.35)}
-        .pa-cta-create{border-color:rgba(129,230,180,.35)}
-        .pa-cta-use{border-color:rgba(255,193,120,.35)}
+        .pa-bar{display:flex;flex-direction:column;gap:.55rem;padding:.7rem .85rem;margin:.55rem 0 .5rem;border:1px solid rgba(99,179,237,.18);border-radius:12px;background:linear-gradient(135deg,rgba(99,179,237,.07) 0%,rgba(129,230,180,.05) 100%);position:relative;overflow:hidden}
+        .pa-bar::before{content:"";position:absolute;inset:0;border-radius:12px;pointer-events:none;background:radial-gradient(ellipse 180px 80px at 15% 0%,rgba(99,179,237,.18) 0%,transparent 70%);opacity:.6}
+        .pa-bar-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;position:relative;z-index:1}
+        .pa-bar-title{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;letter-spacing:.01em;color:var(--text-primary)}
+        .pa-bar-spark{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#63b3ed,#81e6b4);color:#0b1020;font-size:.7rem;box-shadow:0 2px 8px rgba(99,179,237,.35)}
         .pa-bar-meta{font-size:.72rem;color:var(--text-secondary);opacity:.85}
+        .pa-bar-meta:empty{display:none}
+        .pa-bar-ctas{display:flex;flex-wrap:wrap;gap:.45rem;position:relative;z-index:1}
+        .pa-cta{display:inline-flex;align-items:center;gap:.45rem;font-size:.8rem;font-weight:500;padding:.5rem .85rem;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text-primary);cursor:pointer;transition:all .18s ease;white-space:nowrap}
+        .pa-cta:hover:not(:disabled){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+        .pa-cta:active:not(:disabled){transform:translateY(0)}
+        .pa-cta:disabled{opacity:.45;cursor:not-allowed}
+        .pa-cta-ico{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;font-size:.9rem;opacity:.9}
+        .pa-cta-label{font-size:.78rem}
+        .pa-cta-improve{border-color:rgba(99,179,237,.4);background:rgba(99,179,237,.08)}
+        .pa-cta-improve:hover:not(:disabled){background:rgba(99,179,237,.16);border-color:rgba(99,179,237,.6)}
+        .pa-cta-create{border-color:rgba(129,230,180,.4);background:rgba(129,230,180,.08)}
+        .pa-cta-create:hover:not(:disabled){background:rgba(129,230,180,.16);border-color:rgba(129,230,180,.6)}
+        .pa-cta-use{border-color:rgba(255,193,120,.35);background:rgba(255,193,120,.06)}
+        .pa-cta-use:hover:not(:disabled){background:rgba(255,193,120,.14);border-color:rgba(255,193,120,.55)}
+        @media (max-width:480px){
+            .pa-bar-ctas{flex-direction:column}
+            .pa-cta{width:100%;justify-content:center}
+        }
         .pa-editor-slot{position:relative}
         .pa-editor-slot[data-state="loading"] textarea,
         .pa-editor-slot[data-state="draft"]   textarea{filter:blur(.5px) grayscale(.3);pointer-events:none}
@@ -23573,13 +23588,21 @@
         #pa-root.open{display:block;pointer-events:auto}
         #pa-root .pa-scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .18s ease}
         #pa-root.open .pa-scrim{opacity:1}
-        #pa-root .pa-panel{position:absolute;background:#161a22;color:var(--text-primary);border-left:1px solid rgba(255,255,255,.08);box-shadow:-8px 0 30px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;width:min(420px,100vw);top:0;bottom:0;right:0;transform:translateX(100%);transition:transform .22s ease}
-        #pa-root[dir="rtl"] .pa-panel{right:auto;left:0;border-left:0;border-right:1px solid rgba(255,255,255,.08);transform:translateX(-100%);box-shadow:8px 0 30px rgba(0,0,0,.5)}
+        #pa-root .pa-panel{position:absolute;background:linear-gradient(180deg,#1a2030 0%,#141823 100%);color:var(--text-primary);border-left:1px solid rgba(99,179,237,.18);box-shadow:-12px 0 40px rgba(0,0,0,.55);display:flex;flex-direction:column;overflow:hidden;width:min(460px,100vw);top:0;bottom:0;right:0;transform:translateX(100%);transition:transform .24s cubic-bezier(.4,0,.2,1)}
+        #pa-root[dir="rtl"] .pa-panel{right:auto;left:0;border-left:0;border-right:1px solid rgba(99,179,237,.18);transform:translateX(-100%);box-shadow:12px 0 40px rgba(0,0,0,.55)}
         #pa-root.open .pa-panel{transform:translateX(0)}
-        .pa-panel-head{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);font-weight:600}
-        .pa-panel-head .pa-close{background:none;border:0;color:var(--text-secondary);font-size:1.25rem;cursor:pointer}
-        .pa-panel-body{flex:1;overflow-y:auto;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.9rem}
-        .pa-panel-foot{padding:.7rem 1rem;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:.5rem;justify-content:flex-end}
+        .pa-panel-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.06);font-weight:600;font-size:.95rem;background:linear-gradient(135deg,rgba(99,179,237,.08),rgba(129,230,180,.04));position:relative}
+        .pa-panel-head::before{content:"✨";margin-inline-end:.5rem;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#63b3ed,#81e6b4);color:#0b1020;font-size:.8rem;box-shadow:0 2px 10px rgba(99,179,237,.4)}
+        .pa-panel-head > span#pa-panel-title{flex:1}
+        .pa-panel-head .pa-close{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+        .pa-panel-head .pa-close:hover{background:rgba(255,255,255,.12);color:var(--text-primary)}
+        .pa-panel-body{flex:1;overflow-y:auto;padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:1rem}
+        .pa-panel-body::-webkit-scrollbar{width:8px}
+        .pa-panel-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
+        .pa-panel-body::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.15)}
+        .pa-panel-foot{padding:.85rem 1.1rem;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:.55rem;justify-content:flex-end;background:rgba(0,0,0,.2)}
+        .pa-panel-foot .pill-btn.primary{background:linear-gradient(135deg,#63b3ed,#4a9fdc);color:#0b1020;font-weight:600;border:0;padding:.55rem 1.2rem;border-radius:8px;cursor:pointer;transition:all .18s;box-shadow:0 2px 10px rgba(99,179,237,.3)}
+        .pa-panel-foot .pill-btn.primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(99,179,237,.45)}
         @media (max-width:900px),(hover:none) and (pointer:coarse){
           #pa-root .pa-panel{top:auto;right:0;left:0;bottom:0;width:100%;height:85vh;max-height:85vh;border-left:0;border-top:1px solid rgba(255,255,255,.08);border-top-left-radius:16px;border-top-right-radius:16px;transform:translateY(100%)}
           #pa-root[dir="rtl"] .pa-panel{left:0;right:0;transform:translateY(100%)}
@@ -23589,14 +23612,17 @@
           .pa-draft-wrap[data-active-tab="current"]   .pa-diff-col-suggested{display:none}
           .pa-draft-wrap[data-active-tab="suggested"] .pa-diff-col-current{display:none}
         }
-        .pa-form-field{display:flex;flex-direction:column;gap:.4rem}
-        .pa-form-label{font-size:.8rem;color:var(--text-secondary)}
+        .pa-form-field{display:flex;flex-direction:column;gap:.45rem}
+        .pa-form-label{font-size:.82rem;color:var(--text-primary);font-weight:500}
         .pa-form-field input[type="text"],
-        .pa-form-field textarea{width:100%;background:var(--bg-input,rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.08);border-radius:8px;color:var(--text-primary);padding:.5rem .65rem;font-size:.85rem;font-family:inherit}
-        .pa-form-field textarea{min-height:64px;resize:vertical}
-        .pa-chip-row{display:flex;flex-wrap:wrap;gap:.35rem}
-        .pa-chip{font-size:.75rem;padding:.3rem .6rem;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:var(--text-primary)}
-        .pa-chip.active{background:rgba(99,179,237,.22);border-color:rgba(99,179,237,.5)}
+        .pa-form-field textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:var(--text-primary);padding:.6rem .75rem;font-size:.88rem;font-family:inherit;transition:border-color .15s,background .15s}
+        .pa-form-field input[type="text"]:focus,
+        .pa-form-field textarea:focus{outline:none;border-color:rgba(99,179,237,.5);background:rgba(255,255,255,.07);box-shadow:0 0 0 3px rgba(99,179,237,.12)}
+        .pa-form-field textarea{min-height:72px;resize:vertical;line-height:1.5}
+        .pa-chip-row{display:flex;flex-wrap:wrap;gap:.4rem}
+        .pa-chip{font-size:.78rem;padding:.4rem .75rem;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text-primary);transition:all .15s ease}
+        .pa-chip:hover:not(.active){background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+        .pa-chip.active{background:linear-gradient(135deg,rgba(99,179,237,.28),rgba(99,179,237,.18));border-color:rgba(99,179,237,.6);color:#fff;box-shadow:0 2px 8px rgba(99,179,237,.18)}
         .pa-form-advanced{border-top:1px dashed rgba(255,255,255,.08);padding-top:.6rem}
         .pa-form-advanced summary{cursor:pointer;font-size:.78rem;color:var(--text-secondary);padding:.1rem 0;user-select:none;list-style:none}
         .pa-form-advanced summary::before{content:'›';display:inline-block;margin-right:.35rem;transition:transform .15s}
@@ -28494,18 +28520,24 @@
 
                                 <!-- Prompt Assistant bar (reusable, rendered once per agent tab) -->
                                 <div class="pa-bar" id="pa-bar-${agent.id}" data-agent="${agent.id}" role="toolbar" aria-label="${(typeof t==='function'&&t('prompt_assistant.bar_label'))||'Prompt Assistant'}">
+                                    <div class="pa-bar-head">
+                                        <span class="pa-bar-title"><span class="pa-bar-spark">✨</span><span data-i18n="prompt_assistant.bar_label">Prompt Assistant</span></span>
+                                        <span class="pa-bar-meta"><span class="pa-remaining" id="pa-remaining-${agent.id}"></span></span>
+                                    </div>
                                     <div class="pa-bar-ctas">
                                         <button type="button" class="pa-cta pa-cta-improve" data-pa-action="improve" onclick="openPromptAssistant('${agent.id}','improve')" ${!window.hasPermission('agents.configure') ? 'disabled title="'+ ((typeof t==='function'&&t('prompt_assistant.permission_required'))||'Permission required') +'"' : ''}>
-                                            <span>✨</span><span data-i18n="prompt_assistant.improve">Improve current prompt</span>
+                                            <span class="pa-cta-ico" aria-hidden="true">✨</span>
+                                            <span class="pa-cta-label" data-i18n="prompt_assistant.improve">Improve current prompt</span>
                                         </button>
                                         <button type="button" class="pa-cta pa-cta-create" data-pa-action="create" onclick="openPromptAssistant('${agent.id}','create')" ${!window.hasPermission('agents.configure') ? 'disabled title="'+ ((typeof t==='function'&&t('prompt_assistant.permission_required'))||'Permission required') +'"' : ''}>
-                                            <span>＋</span><span data-i18n="prompt_assistant.create">Create new prompt</span>
+                                            <span class="pa-cta-ico" aria-hidden="true">＋</span>
+                                            <span class="pa-cta-label" data-i18n="prompt_assistant.create">Create new prompt</span>
                                         </button>
                                         <button type="button" class="pa-cta pa-cta-use" data-pa-action="use" onclick="openPromptAssistant('${agent.id}','use')">
-                                            <span>↗</span><span data-i18n="prompt_assistant.use_current">Use current prompt</span>
+                                            <span class="pa-cta-ico" aria-hidden="true">👁</span>
+                                            <span class="pa-cta-label" data-i18n="prompt_assistant.use_current">Use current prompt</span>
                                         </button>
                                     </div>
-                                    <div class="pa-bar-meta"><span class="pa-remaining" id="pa-remaining-${agent.id}"></span></div>
                                 </div>
 
                                 <div class="pa-editor-slot" id="pa-editor-slot-${agent.id}" data-state="normal">
@@ -45059,6 +45091,296 @@ Thank you for shopping with {store_name}!</textarea>
         if (typeof applyTranslations === 'function') applyTranslations();
     })();
 </script>
+
+<script>
+    // --- INJECT TRANSLATIONS: Prompt Assistant + cookie banner + legal fill-in ---
+    (function injectPromptAssistantAndCookieTranslations() {
+        if (window.LANG_EN) {
+            window.LANG_EN.prompt_assistant = {
+                    "bar_label": "Prompt Assistant",
+                    "improve": "Improve current prompt",
+                    "create": "Create new prompt",
+                    "use_current": "Use current prompt",
+                    "use_current_hint": "Preview your current prompt side-by-side so you can copy or re-apply it.",
+                    "remaining_today": "{n} generations left today",
+                    "permission_required": "You need Configure permission to use this",
+                    "drawer_title": "Prompt Assistant",
+                    "title_improve": "Improve this prompt",
+                    "title_create": "Create a new prompt",
+                    "title_use": "Preview current prompt",
+                    "label_goal": "Goal",
+                    "label_business": "What does your business do?",
+                    "label_tone": "Tone",
+                    "label_language": "Primary language",
+                    "label_advanced": "Advanced (optional)",
+                    "label_collect": "Info to collect",
+                    "label_avoid": "Topics to avoid",
+                    "label_note": "Additional notes",
+                    "ph_business": "e.g. Selling handmade soap in Cairo",
+                    "ph_note": "Anything else we should know (optional)",
+                    "generate_btn": "Generate",
+                    "generating": "Generating…",
+                    "cancel": "Cancel",
+                    "retry": "Retry",
+                    "close": "Close",
+                    "regenerate": "Regenerate",
+                    "apply": "Apply",
+                    "replace": "Replace current",
+                    "copy": "Copy",
+                    "diff_current": "Current",
+                    "diff_suggested": "Suggested",
+                    "applied_chip": "Prompt updated",
+                    "undo": "Undo",
+                    "copy_success": "Copied to clipboard",
+                    "lock_blocked": "Unlock the prompt to apply the suggestion",
+                    "empty_prompt_hint": "(empty)",
+                    "goal_opts": {
+                        "qualify_leads": "Qualify leads",
+                        "book_meetings": "Book meetings",
+                        "answer_faq": "Answer FAQ",
+                        "drive_sales": "Drive sales",
+                        "collect_contact": "Collect contact info"
+                    },
+                    "tone_opts": {
+                        "friendly": "Friendly",
+                        "professional": "Professional",
+                        "helpful": "Helpful",
+                        "concise": "Concise",
+                        "playful": "Playful"
+                    },
+                    "language_opts": {
+                        "en": "English",
+                        "ar": "Arabic",
+                        "fr": "French",
+                        "es": "Spanish"
+                    },
+                    "collect_opts": {
+                        "name": "Name",
+                        "phone": "Phone",
+                        "email": "Email",
+                        "company": "Company",
+                        "budget": "Budget",
+                        "timeframe": "Timeframe"
+                    },
+                    "avoid_opts": {
+                        "prices": "Prices",
+                        "personal_data": "Personal data",
+                        "competitors": "Competitors",
+                        "promises": "Promises/guarantees"
+                    },
+                    "errors": {
+                        "missing_required": "Please fill goal, business, tone, and language",
+                        "rate_limited": "You've hit today's generation limit. Try again tomorrow.",
+                        "quota_exceeded": "Your plan's prompt quota is exceeded.",
+                        "permission_denied": "You don't have permission for this action.",
+                        "network": "Network error. Check your connection and retry.",
+                        "timeout": "The generator took too long. Try again.",
+                        "generation_failed": "Couldn't generate a prompt. Try again.",
+                        "no_org": "Could not resolve your organization.",
+                        "no_version": "Nothing to undo.",
+                        "internal": "Something went wrong on our side.",
+                        "missing_goal": "Pick a goal",
+                        "missing_tone": "Pick a tone",
+                        "missing_language": "Pick a language",
+                        "missing_business": "Describe your business",
+                        "business_too_short": "Add a bit more detail — at least {n} characters."
+                    },
+                    "optional_badge": "Optional",
+                    "hint_goal": "What outcome should the agent drive toward?",
+                    "hint_business": "2–3 sentences — what you sell and who you serve.",
+                    "hint_tone": "How should the agent sound?",
+                    "hint_language": "The language the agent should reply in.",
+                    "hint_collect": "Data the agent should ask customers for.",
+                    "hint_avoid": "Things the agent must not discuss.",
+                    "hint_note": "Edge cases, policies, or tone calls the agent should honor.",
+                    "hint_fast_path": "These four are all we need — the Generate button lights up as soon as you fill them in.",
+                    "followup_title": "A few more details",
+                    "followup_intro": "The assistant needs a bit more info before it can draft a prompt.",
+                    "followup_submit": "Send answers",
+                    "locked_badge": "Locked",
+                    "locked_hint": "This prompt is locked. Unlock it to apply."
+                };
+            window.LANG_EN.cookie_banner = {
+                    "title": "Cookie Notice",
+                    "text": " — We use essential cookies for authentication and localStorage for your preferences (theme, language). We do not use tracking or advertising cookies.",
+                    "learn_more": "Learn more",
+                    "accept_all": "Accept All",
+                    "essential_only": "Essential Only"
+                };
+            window.LANG_EN.legal = window.LANG_EN.legal || {};
+            window.LANG_EN.legal.privacy = window.LANG_EN.legal.privacy || {};
+            window.LANG_EN.legal.terms = window.LANG_EN.legal.terms || {};
+            Object.assign(window.LANG_EN.legal.privacy, {
+                    "controller_title": "Data Controller",
+                    "controller_text": "Digitivia is the data controller responsible for your personal data. For any privacy-related question, contact privacy@digitivia.com.",
+                    "legal_basis_title": "Legal Basis for Processing",
+                    "legal_basis_text": "We process your data on the basis of contract performance (providing the service), your explicit consent, and our legitimate interests in securing and improving the service.",
+                    "processors_title": "Sub-processors",
+                    "processors_text": "We rely on vetted sub-processors (hosting, email delivery, AI inference). The full list is available on request and is updated whenever it changes.",
+                    "authority_title": "Supervisory Authority",
+                    "authority_text": "If you believe your rights have been infringed, you may lodge a complaint with your local data-protection authority."
+                });
+            Object.assign(window.LANG_EN.legal.terms,   {
+                    "governing_title": "Governing Law",
+                    "governing_text": "These terms are governed by the laws of the jurisdiction in which Digitivia is established, without regard to conflict-of-laws principles. Any disputes will be resolved by the competent courts of that jurisdiction.",
+                    "changes_title": "Updates to Terms",
+                    "changes_text": "We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance."
+                });
+            // Backfill modals keys (btn_cancel/btn_save overwritten by later block; profile missing download/delete)
+            window.LANG_EN.modals = window.LANG_EN.modals || {};
+            window.LANG_EN.modals.btn_cancel = window.LANG_EN.modals.btn_cancel || "Cancel";
+            window.LANG_EN.modals.btn_save   = window.LANG_EN.modals.btn_save   || "Save";
+            window.LANG_EN.modals.profile = window.LANG_EN.modals.profile || {};
+            Object.assign(window.LANG_EN.modals.profile, {
+                "btn_download": "Download my data",
+                "btn_delete":   "Delete my account"
+            });
+        }
+        if (window.LANG_AR) {
+            window.LANG_AR.prompt_assistant = {
+                    "bar_label": "مساعد الـ Prompt",
+                    "improve": "تحسين الـ Prompt الحالي",
+                    "create": "إنشاء Prompt جديد",
+                    "use_current": "استخدام الـ Prompt الحالي",
+                    "use_current_hint": "عرض الـ Prompt الحالي جنبًا إلى جنب حتى يمكنك نسخه أو إعادة تطبيقه.",
+                    "remaining_today": "{n} محاولات متبقية اليوم",
+                    "permission_required": "تحتاج صلاحية التعديل لاستخدام هذا",
+                    "drawer_title": "مساعد الـ Prompt",
+                    "title_improve": "تحسين هذا الـ Prompt",
+                    "title_create": "إنشاء Prompt جديد",
+                    "title_use": "معاينة الـ Prompt الحالي",
+                    "label_goal": "الهدف",
+                    "label_business": "ما الذي تقدمه شركتك؟",
+                    "label_tone": "الأسلوب",
+                    "label_language": "اللغة الأساسية",
+                    "label_advanced": "متقدم (اختياري)",
+                    "label_collect": "معلومات يجب جمعها",
+                    "label_avoid": "مواضيع يجب تجنبها",
+                    "label_note": "ملاحظات إضافية",
+                    "ph_business": "مثال: بيع صابون يدوي في القاهرة",
+                    "ph_note": "أي شيء آخر يجب أن نعرفه (اختياري)",
+                    "generate_btn": "توليد",
+                    "generating": "جاري التوليد…",
+                    "cancel": "إلغاء",
+                    "retry": "إعادة المحاولة",
+                    "close": "إغلاق",
+                    "regenerate": "توليد مرة أخرى",
+                    "apply": "تطبيق",
+                    "replace": "استبدال الحالي",
+                    "copy": "نسخ",
+                    "diff_current": "الحالي",
+                    "diff_suggested": "المقترح",
+                    "applied_chip": "تم تحديث الـ Prompt",
+                    "undo": "تراجع",
+                    "copy_success": "تم النسخ إلى الحافظة",
+                    "lock_blocked": "افتح القفل لتطبيق الاقتراح",
+                    "empty_prompt_hint": "(فارغ)",
+                    "goal_opts": {
+                        "qualify_leads": "تأهيل العملاء المحتملين",
+                        "book_meetings": "حجز اجتماعات",
+                        "answer_faq": "الإجابة على الأسئلة الشائعة",
+                        "drive_sales": "دفع المبيعات",
+                        "collect_contact": "جمع معلومات الاتصال"
+                    },
+                    "tone_opts": {
+                        "friendly": "ودود",
+                        "professional": "احترافي",
+                        "helpful": "مفيد",
+                        "concise": "مختصر",
+                        "playful": "مرح"
+                    },
+                    "language_opts": {
+                        "en": "إنجليزي",
+                        "ar": "عربي",
+                        "fr": "فرنسي",
+                        "es": "إسباني"
+                    },
+                    "collect_opts": {
+                        "name": "الاسم",
+                        "phone": "الهاتف",
+                        "email": "البريد الإلكتروني",
+                        "company": "الشركة",
+                        "budget": "الميزانية",
+                        "timeframe": "الجدول الزمني"
+                    },
+                    "avoid_opts": {
+                        "prices": "الأسعار",
+                        "personal_data": "البيانات الشخصية",
+                        "competitors": "المنافسون",
+                        "promises": "الوعود/الضمانات"
+                    },
+                    "errors": {
+                        "missing_required": "يرجى ملء الهدف والنشاط والأسلوب واللغة",
+                        "rate_limited": "لقد استنفدت حصة اليوم. حاول مجددًا غدًا.",
+                        "quota_exceeded": "تم استنفاد حصة خطتك.",
+                        "permission_denied": "ليس لديك صلاحية لهذا الإجراء.",
+                        "network": "خطأ في الشبكة. تحقق من الاتصال وأعد المحاولة.",
+                        "timeout": "استغرق المولّد وقتًا طويلًا. حاول مجددًا.",
+                        "generation_failed": "تعذر توليد Prompt. حاول مجددًا.",
+                        "no_org": "تعذر تحديد مؤسستك.",
+                        "no_version": "لا شيء للتراجع عنه.",
+                        "internal": "حدث خطأ من جانبنا.",
+                        "missing_goal": "اختر هدفاً",
+                        "missing_tone": "اختر نبرة",
+                        "missing_language": "اختر لغة",
+                        "missing_business": "صف نشاطك التجاري",
+                        "business_too_short": "أضف تفاصيل أكثر — على الأقل {n} حرفاً."
+                    },
+                    "optional_badge": "اختياري",
+                    "hint_goal": "ما الهدف الذي يجب أن يسعى إليه المساعد؟",
+                    "hint_business": "جملتان أو ثلاث — ماذا تبيع ومن تخدم.",
+                    "hint_tone": "كيف ينبغي أن تكون نبرة المساعد؟",
+                    "hint_language": "اللغة التي يرد بها المساعد.",
+                    "hint_collect": "البيانات التي يطلبها المساعد من العملاء.",
+                    "hint_avoid": "المواضيع التي يجب على المساعد تجنبها.",
+                    "hint_note": "حالات خاصة أو سياسات أو أمور على المساعد مراعاتها.",
+                    "hint_fast_path": "هذه الحقول الأربعة كافية — زر «أنشئ» سيُفعَّل حين تملأها.",
+                    "followup_title": "نحتاج بعض التفاصيل",
+                    "followup_intro": "يحتاج المساعد إلى مزيد من المعلومات قبل أن يصوغ موجّهاً لك.",
+                    "followup_submit": "إرسال الإجابات",
+                    "locked_badge": "مقفل",
+                    "locked_hint": "هذا الموجّه مقفل. ألغِ القفل قبل تطبيقه."
+                };
+            window.LANG_AR.cookie_banner = {
+                    "title": "إشعار ملفات تعريف الارتباط",
+                    "text": " — نستخدم ملفات تعريف ارتباط أساسية للمصادقة، وتخزينًا محليًا لتفضيلاتك (السمة، اللغة). لا نستخدم ملفات تعقّب أو إعلانات.",
+                    "learn_more": "معرفة المزيد",
+                    "accept_all": "قبول الكل",
+                    "essential_only": "الأساسية فقط"
+                };
+            window.LANG_AR.legal = window.LANG_AR.legal || {};
+            window.LANG_AR.legal.privacy = window.LANG_AR.legal.privacy || {};
+            window.LANG_AR.legal.terms = window.LANG_AR.legal.terms || {};
+            Object.assign(window.LANG_AR.legal.privacy, {
+                    "controller_title": "المسؤول عن البيانات",
+                    "controller_text": "شركة Digitivia هي المسؤولة عن بياناتك الشخصية. لأي سؤال يتعلق بالخصوصية، تواصل معنا عبر privacy@digitivia.com.",
+                    "legal_basis_title": "الأساس القانوني للمعالجة",
+                    "legal_basis_text": "نعالج بياناتك استنادًا إلى تنفيذ العقد (تقديم الخدمة)، وموافقتك الصريحة، ومصالحنا المشروعة في تأمين الخدمة وتحسينها.",
+                    "processors_title": "المعالجون الفرعيون",
+                    "processors_text": "نعتمد على معالجين فرعيين موثوقين (الاستضافة، إرسال البريد، الاستدلال بالذكاء الاصطناعي). القائمة الكاملة متاحة عند الطلب وتُحدَّث عند أي تغيير.",
+                    "authority_title": "الجهة الرقابية",
+                    "authority_text": "إذا رأيت أن حقوقك قد انتُهكت، يمكنك تقديم شكوى إلى الهيئة المحلية لحماية البيانات."
+                });
+            Object.assign(window.LANG_AR.legal.terms,   {
+                    "governing_title": "القانون الحاكم",
+                    "governing_text": "تخضع هذه الشروط لقوانين الجهة التي تأسست فيها Digitivia دون اعتبار لمبادئ تنازع القوانين. وتُحَل أي نزاعات أمام المحاكم المختصة في تلك الجهة.",
+                    "changes_title": "تحديث الشروط",
+                    "changes_text": "قد نقوم بتحديث هذه الشروط عند تغير الميزات أو المتطلبات القانونية أو سياسات المزودين. الاستمرار في الاستخدام يعني قبول التحديثات."
+                });
+            // Backfill modals keys in Arabic
+            window.LANG_AR.modals = window.LANG_AR.modals || {};
+            window.LANG_AR.modals.btn_cancel = window.LANG_AR.modals.btn_cancel || "إلغاء";
+            window.LANG_AR.modals.btn_save   = window.LANG_AR.modals.btn_save   || "حفظ";
+            window.LANG_AR.modals.profile = window.LANG_AR.modals.profile || {};
+            Object.assign(window.LANG_AR.modals.profile, {
+                "btn_download": "تنزيل بياناتي",
+                "btn_delete":   "حذف حسابي"
+            });
+        }
+        if (typeof applyTranslations === 'function') applyTranslations();
+    })();
+</script>
+
 
     <script>
         // ==========================================
