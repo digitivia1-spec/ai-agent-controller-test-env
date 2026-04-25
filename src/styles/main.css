@@ -1482,18 +1482,6 @@
 
         }
 
-        
-
-        /* RTL toggle slider override consolidated into single rule below (line ~17222) */
-
-        max-width: min(96vw, 420px);
-
-        overflow: auto;
-
-        }
-
-        
-
         /* KPI Trend Badges */
 
         .kpi-trend {
