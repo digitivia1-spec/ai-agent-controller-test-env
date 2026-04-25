@@ -1482,6 +1482,14 @@
 
         }
 
+        .fu-inline-modal {
+        position: absolute; background: #2a2a2a;
+        border: 1px solid rgba(255,255,255,.1); padding: 15px;
+        border-radius: 8px; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,.5);
+        max-width: min(96vw, 420px); overflow: auto;
+        display: flex; flex-direction: column; gap: 10px; width: 200px;
+        }
+
         /* KPI Trend Badges */
 
         .kpi-trend {
@@ -1537,6 +1545,8 @@
         transform: translateY(-2px);
 
         filter: brightness(1.15);
+
+        }
 
         /* --- END NEW STYLES --- */
         /* --- ORIGINAL STYLES FOLLOW --- */
