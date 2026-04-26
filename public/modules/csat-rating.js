@@ -162,7 +162,7 @@
     window.renderSLAPolicies = async function(container) {
         if (!container || !currentUserOrgId) return;
 
-aragraph        try {
+        try {
             let { data: policies, error } = await supabaseClient.from('sla_policies').select('*').eq('org_id', currentUserOrgId).order('priority');
 
             // If no policies, seed defaults

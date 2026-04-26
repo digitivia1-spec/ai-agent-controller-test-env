@@ -646,7 +646,10 @@
       "no_triggers": "لا يوجد مشغلات إشعارات مفعلة. يرجى تفعيل واحدة على الأقل.",
       "preview_order_received": "تم استلام الطلب",
       "preview_order_enroute": "طلبك في الطريق!",
-      "preview_order_cancelled": "تم إلغاء الطلب"
+      "preview_order_cancelled": "تم إلغاء الطلب",
+      "logs": {
+        "action_error": "خطأ"
+      }
     },
     "subtab_incoming": "الطلبات الواردة",
     "subtab_whatsapp": "تأكيد واتساب",
@@ -831,64 +834,64 @@
     "template_assigned_ok": "تم تخصيص القالب",
     "template_submit_missing": "املأ الحقول المطلوبة",
     "template_submit_ok": "تم إنشاء الطلب",
-    "tip_enable": "مفتاح رئيسي. عند الإيقاف، لا تُنشأ مهام متابعة جديدة لهذه المؤسسة."
-    "tip_message": "النص الافتراضي لكل قناة ولغة. يُستخدم عندما لا يلزم قالب."
-    "tip_delay": "مدة الانتظار بعد آخر رد من العميل قبل إرسال المتابعة."
-    "tip_max": "الحد الأقصى لعدد المتابعات لكل محادثة."
-    "tip_business_hours": "تأجيل الإرسال إلى وقت العمل إن كان خارجه."
-    "tip_template_required": "واتساب يمنع الإرسال الحر بعد 24 ساعة — استخدم قالبًا معتمدًا."
-    "tip_channel_tab": "تعديل الرسالة لهذه القناة."
-    "tip_lang_tab": "تعديل الرسالة بهذه اللغة."
-    "tip_refresh": "إعادة تحميل اللوحة الحالية من الخادم."
-    "tip_bell": "إشعارات اعتماد القوالب والمتابعات."
-    "logs_time_all": "كل الأوقات"
-    "logs_time_today": "اليوم"
-    "logs_time_7d": "آخر 7 أيام"
-    "logs_time_30d": "آخر 30 يومًا"
-    "logs_time_custom": "نطاق مخصّص"
-    "timing_custom": "مخصّص"
-    "time_30m": "٣٠ د"
-    "time_1h": "ساعة"
-    "time_2h": "ساعتان"
-    "time_4h": "٤ س"
-    "time_6h": "٦ س"
-    "time_12h": "١٢ س"
-    "time_24h": "٢٤ س"
-    "channel_whatsapp": "واتساب"
-    "channel_instagram": "إنستجرام"
-    "channel_messenger": "ماسنجر"
-    "log_status_sent": "تم الإرسال"
-    "log_status_failed": "فشل"
-    "log_status_scheduled": "مجدول"
-    "log_status_cancelled": "ملغي"
-    "log_status_claimed": "جاري الإرسال…"
-    "log_status_waiting_template": "بانتظار القالب"
-    "log_status_skipped": "تم التخطي"
-    "log_field_channel": "القناة"
-    "log_field_sent_at": "أُرسل في"
-    "log_field_due_at": "الموعد"
-    "log_field_note": "الملاحظة"
-    "log_field_template": "القالب"
-    "log_field_message": "النص"
-    "log_reason_newer_reply": "العميل رد مجددًا — تم إلغاء المتابعة."
-    "log_reason_closed": "المحادثة مغلقة."
-    "log_reason_ai_paused": "الذكاء الاصطناعي موقوف لهذه المحادثة."
-    "log_reason_not_found": "المحادثة غير موجودة."
-    "log_reason_no_message": "لم يتم ضبط نص المتابعة."
-    "log_reason_no_sender": "لم يتم ربط حساب القناة."
-    "log_reason_no_recipient": "لم يتم العثور على بيانات العميل."
-    "log_reason_no_wa_phone": "لا يوجد رقم واتساب نشط."
-    "log_reason_unsupported": "القناة غير مدعومة."
-    "log_reason_timeout": "انتهت مهلة الإرسال — سيُعاد المحاولة."
-    "log_reason_template_not_approved": "القالب غير معتمد بعد."
-    "log_reason_duplicate": "تم جدولة متابعة سابقًا لنفس الرسالة."
-    "tpl_field_name": "اسم القالب"
-    "tpl_field_category": "الفئة"
-    "tpl_field_language": "اللغة"
-    "tpl_field_header": "الترويسة (اختياري)"
-    "tpl_field_samples": "عيّنات المتغيرات (واحدة لكل {{n}})"
-    "tpl_preview": "معاينة"
-    "tpl_add_button": "أزرار (اختياري، حتى 3)"
+    "tip_enable": "مفتاح رئيسي. عند الإيقاف، لا تُنشأ مهام متابعة جديدة لهذه المؤسسة.",
+    "tip_message": "النص الافتراضي لكل قناة ولغة. يُستخدم عندما لا يلزم قالب.",
+    "tip_delay": "مدة الانتظار بعد آخر رد من العميل قبل إرسال المتابعة.",
+    "tip_max": "الحد الأقصى لعدد المتابعات لكل محادثة.",
+    "tip_business_hours": "تأجيل الإرسال إلى وقت العمل إن كان خارجه.",
+    "tip_template_required": "واتساب يمنع الإرسال الحر بعد 24 ساعة — استخدم قالبًا معتمدًا.",
+    "tip_channel_tab": "تعديل الرسالة لهذه القناة.",
+    "tip_lang_tab": "تعديل الرسالة بهذه اللغة.",
+    "tip_refresh": "إعادة تحميل اللوحة الحالية من الخادم.",
+    "tip_bell": "إشعارات اعتماد القوالب والمتابعات.",
+    "logs_time_all": "كل الأوقات",
+    "logs_time_today": "اليوم",
+    "logs_time_7d": "آخر 7 أيام",
+    "logs_time_30d": "آخر 30 يومًا",
+    "logs_time_custom": "نطاق مخصّص",
+    "timing_custom": "مخصّص",
+    "time_30m": "٣٠ د",
+    "time_1h": "ساعة",
+    "time_2h": "ساعتان",
+    "time_4h": "٤ س",
+    "time_6h": "٦ س",
+    "time_12h": "١٢ س",
+    "time_24h": "٢٤ س",
+    "channel_whatsapp": "واتساب",
+    "channel_instagram": "إنستجرام",
+    "channel_messenger": "ماسنجر",
+    "log_status_sent": "تم الإرسال",
+    "log_status_failed": "فشل",
+    "log_status_scheduled": "مجدول",
+    "log_status_cancelled": "ملغي",
+    "log_status_claimed": "جاري الإرسال…",
+    "log_status_waiting_template": "بانتظار القالب",
+    "log_status_skipped": "تم التخطي",
+    "log_field_channel": "القناة",
+    "log_field_sent_at": "أُرسل في",
+    "log_field_due_at": "الموعد",
+    "log_field_note": "الملاحظة",
+    "log_field_template": "القالب",
+    "log_field_message": "النص",
+    "log_reason_newer_reply": "العميل رد مجددًا — تم إلغاء المتابعة.",
+    "log_reason_closed": "المحادثة مغلقة.",
+    "log_reason_ai_paused": "الذكاء الاصطناعي موقوف لهذه المحادثة.",
+    "log_reason_not_found": "المحادثة غير موجودة.",
+    "log_reason_no_message": "لم يتم ضبط نص المتابعة.",
+    "log_reason_no_sender": "لم يتم ربط حساب القناة.",
+    "log_reason_no_recipient": "لم يتم العثور على بيانات العميل.",
+    "log_reason_no_wa_phone": "لا يوجد رقم واتساب نشط.",
+    "log_reason_unsupported": "القناة غير مدعومة.",
+    "log_reason_timeout": "انتهت مهلة الإرسال — سيُعاد المحاولة.",
+    "log_reason_template_not_approved": "القالب غير معتمد بعد.",
+    "log_reason_duplicate": "تم جدولة متابعة سابقًا لنفس الرسالة.",
+    "tpl_field_name": "اسم القالب",
+    "tpl_field_category": "الفئة",
+    "tpl_field_language": "اللغة",
+    "tpl_field_header": "الترويسة (اختياري)",
+    "tpl_field_samples": "عيّنات المتغيرات (واحدة لكل {{n}})",
+    "tpl_preview": "معاينة",
+    "tpl_add_button": "أزرار (اختياري، حتى 3)",
     "go_template_policy": "سياسة القالب"
   },
   "export": {
