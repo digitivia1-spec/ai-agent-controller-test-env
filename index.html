@@ -1247,6 +1247,10 @@
                         <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_orders">Meetings</span>
                     </li>
+                    <li class="nav-item" onclick="switchTab('product-library', this)">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zM6 10h8v2H6zm0 4h8v2H6zm10-4h2v6h-2z"/></svg></div>
+                        <span class="nav-label" data-i18n="productLibrary.nav_label">Product Library</span>
+                    </li>
                 </div>
             </div>
 
@@ -5768,6 +5772,13 @@ Thank you for shopping with {store_name}!</textarea>
                 </div>
             </div>
 
+            <!-- PRODUCT LIBRARY TAB (multi-source product sync + manual products; rendered by /modules/product-library.js) -->
+            <div id="product-library" class="tab-content">
+                <div id="product-library-root" class="product-library">
+                    <!-- Populated by window.initProductLibraryTab() defined in /modules/product-library.js -->
+                </div>
+            </div>
+
             <!-- E. CREATE POST STUDIO TAB -->
             <div id="create-post" class="tab-content">
                 <div class="card glass">
@@ -6766,6 +6777,10 @@ Thank you for shopping with {store_name}!</textarea>
                 } else {
                     fetchOrders();
                 }
+            }
+            if (tabId === 'product-library') {
+                color = '#5BAEB0';
+                if (typeof window.initProductLibraryTab === 'function') window.initProductLibraryTab();
             }
             if (tabId === 'insights') {
                 color = '#7C4DFF';
@@ -20360,5 +20375,6 @@ Thank you for shopping with {store_name}!</textarea>
   </aside>
 </div>
 
+    <script src="/modules/product-library.js"></script>
     <script src="/modules/prompt-assistant.js"></script>
 </html>

@@ -12,6 +12,78 @@
         const MAX_TOTAL_SIZE = 10 * 1024 * 1024;
         const SHOPIFY_STOREFRONT_API_VERSION = '2026-01';
         const INTEGRATION_PROXY_URL = `${SUPABASE_URL}/functions/v1/integration-proxy`;
+        const PRODUCT_SYNC_URL = `${SUPABASE_URL}/functions/v1/product-sync`;
+
+        // Trigger a product sync after a successful integration test.
+        // - Pass 'initial_after_credentials_save' on first save (no prior verified_at)
+        //   or 'credentials_updated' on a re-save. See doc 09 section 6.
+        // - We POST fire-and-forget (the wizard keeps moving) but then poll
+        //   product_sync_runs for the matching row's terminal status, so the
+        //   merchant sees a completed/failed toast a few seconds later.
+        async function triggerProductSync(source, trigger) {
+            const t = trigger || 'credentials_updated';
+            try {
+                if (!currentUserOrgId) return;
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                const token = session?.access_token;
+                if (!token) { console.warn('triggerProductSync: no session token'); return; }
+                if (typeof showToast === 'function') {
+                    showToast(tOnb('productSync.toast.starting'), 'info');
+                }
+                const baseline = new Date().toISOString();
+                fetch(PRODUCT_SYNC_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'apikey': SUPABASE_KEY
+                    },
+                    body: JSON.stringify({ org_id: currentUserOrgId, source, trigger: t })
+                }).then((r) => {
+                    if (!r.ok) console.warn('product-sync HTTP', r.status, source);
+                }).catch((e) => console.warn('product-sync failed', source, e?.message || e));
+                pollProductSyncOutcome(source, baseline);
+            } catch (e) {
+                console.warn('triggerProductSync wrapper failed', e?.message || e);
+            }
+        }
+
+        // Poll product_sync_runs until we see a terminal status for (source, started_at >= baseline)
+        // or until ~2 minutes pass. Best-effort, never throws.
+        async function pollProductSyncOutcome(source, baselineIso) {
+            const POLL_MS = 4000;
+            const MAX_TRIES = 30;
+            const TERMINAL = ['completed', 'completed_with_warnings', 'failed', 'cancelled'];
+            for (let attempt = 0; attempt < MAX_TRIES; attempt += 1) {
+                await new Promise((r) => setTimeout(r, POLL_MS));
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('product_sync_runs')
+                        .select('status, summary, error_code')
+                        .eq('org_id', currentUserOrgId)
+                        .eq('source', source)
+                        .gte('started_at', baselineIso)
+                        .order('started_at', { ascending: false })
+                        .limit(1);
+                    if (error) { console.warn('poll error', error.message); continue; }
+                    const row = (data || [])[0];
+                    if (!row || !TERMINAL.includes(row.status)) continue;
+                    const tone = row.status === 'failed' ? 'error'
+                        : row.status === 'completed_with_warnings' ? 'info' : 'success';
+                    let key = 'productSync.toast.completed';
+                    if (row.status === 'completed_with_warnings') key = 'productSync.toast.completed_with_warnings';
+                    else if (row.status === 'failed') key = 'productSync.toast.failed';
+                    else if (row.status === 'completed' && (row.summary?.products_found ?? 0) === 0) {
+                        key = 'productSync.toast.no_products_found';
+                    }
+                    if (typeof showToast === 'function') showToast(tOnb(key), tone);
+                    return;
+                } catch (e) {
+                    console.warn('poll exception', e?.message || e);
+                }
+            }
+        }
+
         const PLATFORM_LOGOS = Object.freeze({
             wordpress: {
                 primary: 'https://upload.wikimedia.org/wikipedia/commons/9/98/WordPress_blue_logo.svg',
@@ -1054,6 +1126,7 @@
                 return;
             }
 
+            const __wooPriorVerifiedAt = w?.verified_at || '';
             setConnectionState('woocommerce', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
@@ -1073,6 +1146,7 @@
                     testing: false
                 });
                 await saveOnbProgress();
+                triggerProductSync('woocommerce', __wooPriorVerifiedAt ? 'credentials_updated' : 'initial_after_credentials_save');
             } catch (err) {
                 console.warn('Woo test failed:', err);
                 clearIntegrationVerification('woocommerce');
@@ -1173,6 +1247,7 @@
                 return;
             }
 
+            const __shopPriorVerifiedAt = s?.verified_at || '';
             setConnectionState('shopify', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
@@ -1195,6 +1270,7 @@
                     testing: false
                 });
                 await saveOnbProgress();
+                triggerProductSync('shopify', __shopPriorVerifiedAt ? 'credentials_updated' : 'initial_after_credentials_save');
             } catch (err) {
                 console.warn('Shopify test failed:', err);
                 clearIntegrationVerification('shopify');
@@ -1301,6 +1377,7 @@
                 return;
             }
 
+            const __eoPriorVerifiedAt = eo?.verified_at || '';
             setConnectionState('easy_order', { status: 'loading', titleKey: 'onboarding.test_loading', detailKey: '', detailText: '', testing: true });
 
             try {
@@ -1320,6 +1397,7 @@
                     testing: false
                 });
                 await saveOnbProgress();
+                triggerProductSync('easyorders', __eoPriorVerifiedAt ? 'credentials_updated' : 'initial_after_credentials_save');
             } catch (err) {
                 console.warn('Easy Order test failed:', err);
                 clearIntegrationVerification('easy_order');

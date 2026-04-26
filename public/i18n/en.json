@@ -2083,5 +2083,132 @@
       "missing_required": "Please fill goal, business, tone, and language",
       "network": "Connection error. Please try again."
     }
+  },
+  "productSync": {
+    "toast": {
+      "starting": "Connection saved successfully. We're syncing your products now.",
+      "completed": "Product Library is up to date.",
+      "completed_with_warnings": "Products synced with warnings. Some products are missing media or have broken/unsupported media URLs.",
+      "failed": "Product sync failed. Please check the connection details and try again.",
+      "no_products_found": "Connected successfully, but no products were found."
+    }
+  },
+  "productLibrary": {
+    "nav_label": "Product Library",
+    "title": "Product Library",
+    "subtitle": "Manage the products your AI agents can search, recommend, and use later.",
+    "loading": "Loading your products...",
+    "last_synced": "Last synced {when}",
+    "actions": {
+      "addManualProduct": "Add Manual Product",
+      "refresh": "Refresh",
+      "retry": "Retry sync"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "no_runs_yet": "No syncs yet. Connect a store from Integrations to import your products automatically."
+    },
+    "runStatus": {
+      "queued": "Queued",
+      "running": "Syncing...",
+      "completed": "Synced",
+      "completed_with_warnings": "Synced with warnings",
+      "failed": "Sync failed",
+      "cancelled": "Cancelled"
+    },
+    "summary": {
+      "detail": "{found} found, {saved} saved, {images} images, {videos} videos, {missing} missing media, {broken} broken media"
+    },
+    "filters": {
+      "searchPlaceholder": "Search products...",
+      "source": {
+        "all": "All sources",
+        "manual": "Manual"
+      },
+      "status": {
+        "all": "All statuses"
+      },
+      "media": {
+        "all": "All media",
+        "has_image": "Has image",
+        "has_video": "Has video",
+        "missing_media": "Missing media",
+        "broken_media": "Broken media",
+        "unsupported_media": "Unsupported media"
+      }
+    },
+    "empty": {
+      "title": "No products yet.",
+      "subtitle": "Connect Shopify, WooCommerce, or EasyOrders from Integrations to import your products automatically, or add a manual product.",
+      "no_match": "No products match these filters."
+    },
+    "errors": {
+      "load_failed": "We couldn't load your Product Library."
+    }
+  },
+  "productMedia": {
+    "type": {
+      "image": "Image",
+      "video": "Video"
+    },
+    "state": {
+      "valid": "Valid",
+      "missing": "Missing media",
+      "broken": "Broken media",
+      "unsupported": "Unsupported media",
+      "unverified": "Unverified"
+    },
+    "missing_short": "No media"
+  },
+  "manualProduct": {
+    "success": "Product added successfully.",
+    "coming_soon": "Manual product creation lands in the next update.",
+    "modal": {
+      "title": "Add manual product",
+      "close": "Close",
+      "cancel": "Cancel",
+      "save": "Save product",
+      "saving": "Saving...",
+      "editTitle": "Edit manual product"
+    },
+    "field": {
+      "title": "Title",
+      "price": "Price",
+      "currency": "Currency",
+      "status": "Status",
+      "description": "Description",
+      "product_url": "Product link (optional)",
+      "media": "Media"
+    },
+    "media": {
+      "upload_image": "Upload Image",
+      "url_image": "Paste Image URL",
+      "upload_video": "Upload Video",
+      "url_video": "Paste Video URL",
+      "helper_image": "Use a direct image URL, not a post URL or webpage link.",
+      "helper_video": "Use a direct video URL or a supported video link. Avoid webpage links that do not point to playable video content.",
+      "prompt_image_url": "Paste a direct image URL (https://...)",
+      "prompt_video_url": "Paste a direct video URL (https://...)",
+      "remove": "Remove",
+      "none_yet": "No media added yet. Add at least one image or video."
+    },
+    "validation": {
+      "titleRequired": "Title is required.",
+      "priceRequired": "A valid price (0 or more) is required.",
+      "mediaRequired": "Add at least one image or video."
+    },
+    "error": {
+      "save_failed": "Couldn't save the product. Please try again.",
+      "not_signed_in": "You need to be signed in to save a product.",
+      "delete_failed": "Couldn't delete the product. Please try again."
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "delete_confirm": "Delete this product? This cannot be undone.",
+    "success_updated": "Product updated.",
+    "success_deleted": "Product deleted."
   }
 }

@@ -108,8 +108,8 @@ the biggest surface.
 | 15,169 – 16,665 | AI helper logic (sending, streaming, UI) |
 | 16,668 – 19,734 | Notifications system (real-time, push, unread count) |
 
-### Extracted feature module `<script src>` tags (19,736 – 19,881)
-14 classic-script tags that load the IIFEs from `/modules/`. Each file
+### Extracted feature module `<script src>` tags (19,736 – 20,378)
+15 classic-script tags that load the IIFEs from `/modules/`. Each file
 is self-contained — safe to edit in isolation. Source files live in
 `public/modules/` (copied to `dist/modules/` at build).
 
@@ -128,7 +128,8 @@ is self-contained — safe to edit in isolation. Source files live in
 | 19,765 | `ab-test-panel.js` | Sprint 12: A/B testing UI (`openABTestPanel`) |
 | 19,768 | `ai-override-tracking.js` | Sprint 13: conversation learning / AI override |
 | 19,771 | `onboarding-tour.js` | Product tour + command palette |
-| 19,881 | `prompt-assistant.js` | Prompt Assistant singleton drawer (`window.openPromptAssistant`) |
+| 20,378 | `product-library.js` | **Product Library + manual product CRUD** (`window.initProductLibraryTab`, `window.openManualProductModal`); reads `products` + `product_media`; uploads to `product_media` bucket |
+| 20,380 | `prompt-assistant.js` | Prompt Assistant singleton drawer (`window.openPromptAssistant`) |
 
 ### Prompt Assistant scaffold (19,774 – 19,880)
 Inline HTML preamble + `<style>` block + `#pa-root` panel skeleton for the
@@ -150,6 +151,7 @@ Small (~100 lines of scoped CSS) so left inline for now.
 | Onboarding wizard | whole file | `public/modules/onboarding-wizard.js` |
 | Add Lead / CRM enhancements | whole file | `public/modules/add-lead.js` |
 | Support tickets | whole file | `public/modules/support-tickets.js` |
+| Product Library / sync | whole file | `public/modules/product-library.js` (UI), `supabase/functions/product-sync/` (Edge Function), migrations `20260426*` + `20260427*` |
 | Prompt Assistant | whole file | `public/modules/prompt-assistant.js` |
 | i18n key | `"key.path":` in `public/i18n/en.json` |
 | CSS selector | `Grep` the class name in `src/styles/main.css` |
@@ -169,6 +171,10 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
 | `demo/google-calendar/` | Demo page |
 | `supabase/migrations/*.sql` | DB schema. Phase migrations at repo root (`phase{1,2,3}_migration.sql`) are the canonical reference. |
 | `supabase/functions/prompt-assistant/` | **Prompt Assistant backend** — Edge Function (`index.ts`), deploy notes. Landed via merge 2026-04-24 from main. UI side is a separate rebuild (see `docs/prompt-assistant-ui-brief.md`). |
+| `supabase/functions/product-sync/` | **Product sync backend** — Edge Function (`index.ts` + `normalize.ts` + `media.ts` + `sources/{shopify,woocommerce,easyorders}.ts`). Reads creds from `organizations.external_onboarding_data.integrations.*`, writes `product_sync_runs` + upserts `products` + `product_media`. `verify_jwt=false` because it accepts EITHER a user JWT (manually verified) OR `x-product-sync-secret` matching the `PRODUCT_SYNC_INTERNAL_SECRET` env var (used by the every-3-days `pg_cron` job). |
+| `supabase/migrations/20260426_product_library_phase_a.sql` | New unified `products` + `product_media` + `product_sync_runs` schema, RLS, plus the private `product_media` storage bucket. Reuses the existing `public.is_org_member(p_org_id uuid)` helper -- DO NOT redeclare it. |
+| `supabase/migrations/20260427_product_library_phase_d.sql` | Adds `enqueue_scheduled_product_syncs()` (uses `pg_net.http_post`) + `reap_stuck_product_sync_runs()`, plus two `cron.schedule()` jobs: `product-sync-every-3-days` (`0 3 */3 * *`) and `product-sync-reaper` (`*/5 * * * *`). |
+| `tests/unit/migrations.test.js` + `tests/unit/csp.test.js` | Migration regression test (locks the canonical names from doc 09) + CSP regression test (locks Supabase Storage in `media-src`). |
 | `Prompt Assistant API v1.json` | n8n workflow reference for the Prompt Assistant API contract |
 | `docs/prompt-assistant-plan.md` | Design plan for the PA feature (authored before the UI rebuild) |
 | `public/i18n/{en,ar}.json` | **Live i18n dictionaries** — single source of truth |
@@ -218,6 +224,17 @@ If a symbol isn't here, **grep first**. Do not scroll through the file.
   will be rebuilt cleanly against the extracted module structure — see
   `docs/prompt-assistant-ui-brief.md` for the spec to hand to a fresh
   session.
+
+- ✅ **Product Library + auto product sync** -- shipped 2026-04-26.
+  Migrations `20260426`/`20260427`, Edge Function `product-sync`, new
+  `public/modules/product-library.js` IIFE, sidebar entry + `<div
+  id="product-library">` tab. Wizard now fires a sync after a
+  successful credential verification (`triggerProductSync()` in
+  `public/modules/onboarding-wizard.js`). Plan in
+  `docs/product-library-plan.md`. **Manual one-time setup:** add
+  Vault secrets `product_sync_internal_secret` (matching the Edge
+  Function env var of the same name) and `project_url` for the
+  scheduled cron path; the wizard-triggered path works without them.
 
 ## 6. Recommended next optimization (requires approval)
 
