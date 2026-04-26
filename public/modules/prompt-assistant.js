@@ -331,18 +331,55 @@
     setTimeout(() => { root.hidden = true; }, 220);
   };
 
-  async function callEdge(body){
-    const client = (window.supabaseClient || window.supabase);
-    if (!client || !client.functions || typeof client.functions.invoke !== 'function')
-      throw Object.assign(new Error('Supabase client not available'), { code:'network' });
-    const { data, error } = await client.functions.invoke('prompt-assistant', { body });
-    if (error){
-      let code = 'generation_failed', msg = error.message || 'Unknown error';
-      try { if (error.context && error.context.json){ code = error.context.json?.error?.code || code; msg = error.context.json?.error?.message || msg; } } catch(_){}
-      throw Object.assign(new Error(msg), { code });
+  async function callWebhookDirect(body){
+    const url = window.PA_WEBHOOK_URL || 'https://n8n.srv1174105.hstgr.cloud/webhook/prompt-imporve';
+    let res;
+    try {
+      res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(90000)
+      });
+    } catch (err) {
+      const code = (err && err.name === 'TimeoutError') ? 'timeout' : 'network';
+      throw Object.assign(new Error(err.message || 'Network error'), { code });
     }
-    if (data && data.ok === false) throw Object.assign(new Error(data.error?.message || 'Failed'), { code: data.error?.code || 'generation_failed' });
-    return data;
+    const text = await res.text();
+    let parsed = null;
+    if (text && text.trim()) {
+      try {
+        parsed = JSON.parse(text);
+      } catch (_) {
+        const m = text.match(/\{[\s\S]*\}/);
+        if (m) { try { parsed = JSON.parse(m[0]); } catch(_){} }
+        if (!parsed) parsed = { finalPrompt: text.trim() };
+      }
+    }
+    if (!res.ok) {
+      const code = res.status === 429 ? 'rate_limited' : 'generation_failed';
+      const msg = (parsed && parsed.message) || ('HTTP ' + res.status);
+      throw Object.assign(new Error(msg), { code: (parsed && parsed.errorCode) || code });
+    }
+    if (!parsed || (!parsed.finalPrompt && parsed.success === false)) {
+      throw Object.assign(new Error('Empty response from AI'), { code: 'generation_failed' });
+    }
+    return {
+      ok: parsed.success !== false,
+      data: parsed,
+      remaining: (parsed.limit && typeof parsed.limit.dailyRemaining === 'number') ? parsed.limit.dailyRemaining : null
+    };
+  }
+
+  function handleLocalAction(body){
+    if (body.action === 'apply') return { ok: true, data: { success: true } };
+    if (body.action === 'undo')  return { ok: true, data: { success: true } };
+    throw Object.assign(new Error('Unknown action'), { code: 'unknown_action' });
+  }
+
+  async function callEdge(body){
+    if (body.action === 'generate') return await callWebhookDirect(body);
+    return handleLocalAction(body);
   }
 
   // --- Phase 4: canonical contract helpers ----------------------------------
@@ -693,16 +730,19 @@
 
   window.paUndoApplied = async function(agentId){
     try {
-      const data = await callEdge({ action:'undo', agent:agentId });
-      const restored = data?.data?.config?.system_prompt;
-      const ta = $(`prompt-${agentId}`);
-      if (ta && typeof restored === 'string'){
-        ta.value = restored; ta.dispatchEvent(new Event('input', { bubbles:true }));
-        safeToast(I18N('prompt_assistant.undo','Reverted'), 'success');
+      const d = PA.drafts[agentId];
+      const ta = $('prompt-' + agentId);
+      const restored = (d && (d.originalPrompt || d.current_prompt)) || null;
+      if (ta && typeof restored === 'string') {
+        ta.value = restored;
+        ta.dispatchEvent(new Event('input',  { bubbles: true }));
+        ta.dispatchEvent(new Event('change', { bubbles: true }));
+        if (typeof window.checkDirty === 'function') window.checkDirty(agentId);
       }
+      safeToast(I18N('prompt_assistant.undo', 'Reverted'), 'success');
       setState(agentId, 'normal');
-    } catch (err){
-      safeToast(I18N('prompt_assistant.errors.'+(err.code||'generation_failed'), err.message || 'Undo failed'), 'error');
+    } catch (err) {
+      safeToast(I18N('prompt_assistant.errors.' + (err.code || 'generation_failed'), err.message || 'Undo failed'), 'error');
     }
   };
 
