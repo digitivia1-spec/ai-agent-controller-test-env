@@ -20273,6 +20273,8 @@ Thank you for shopping with {store_name}!</textarea>
 .pa-editor-slot[data-state="draft"]   textarea{filter:blur(.5px) grayscale(.3);pointer-events:none}
 .pa-editor-slot[data-state="draft"] .pa-draft-wrap{display:block}
 .pa-editor-slot[data-state="loading"] .pa-loading-wrap{display:flex}
+.pa-editor-slot[data-state="applied"] .pa-applied-chip{display:inline-flex}
+.pa-editor-slot[data-state="error"] .pa-error-strip{display:flex}
 .pa-loading-wrap{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:.6rem;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);border-radius:10px;z-index:2}
 .pa-skeleton{width:90%;max-width:480px;height:8px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.18) 50%,rgba(255,255,255,.06) 100%);background-size:200% 100%;animation:pa-shimmer 1.3s infinite linear}
 .pa-skeleton + .pa-skeleton{margin-top:.45rem}
@@ -20292,9 +20294,9 @@ Thank you for shopping with {store_name}!</textarea>
 .pa-diff-del{background:rgba(245,101,101,.18);text-decoration:line-through;border-radius:3px;padding:0 2px;opacity:.85}
 .pa-draft-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
 .pa-draft-actions .pill-btn{font-size:.75rem}
-.pa-applied-chip{display:inline-flex;align-items:center;gap:.35rem;margin-top:.4rem;padding:.3rem .55rem;border-radius:999px;background:rgba(72,187,120,.15);color:#9ae6b4;font-size:.75rem}
+.pa-applied-chip{display:none;align-items:center;gap:.35rem;margin-top:.4rem;padding:.3rem .55rem;border-radius:999px;background:rgba(72,187,120,.15);color:#9ae6b4;font-size:.75rem}
 .pa-applied-chip button{background:transparent;border:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit;padding:0 .1rem}
-.pa-error-strip{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:8px;background:rgba(245,101,101,.12);border:1px solid rgba(245,101,101,.3);color:#feb2b2;font-size:.78rem}
+.pa-error-strip{display:none;justify-content:space-between;align-items:center;gap:.5rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:8px;background:rgba(245,101,101,.12);border:1px solid rgba(245,101,101,.3);color:#feb2b2;font-size:.78rem}
 .pa-error-strip .pa-err-actions{display:flex;gap:.3rem}
 .pa-error-strip button{background:transparent;border:1px solid rgba(255,255,255,.12);color:inherit;font-size:.72rem;border-radius:6px;padding:.2rem .55rem;cursor:pointer}
 #pa-root{position:fixed;inset:0;pointer-events:none;z-index:1400;display:none}

@@ -317,6 +317,12 @@
 
   window.openPromptAssistant = function(agentId, action){
     PA.currentAgent = agentId; PA.currentAction = action || 'improve';
+    // Reset stale error state (e.g. empty error strip from a previous session)
+    if (PA.state[agentId] === 'error') {
+      const strip = $('pa-error-' + agentId);
+      const hasMsg = strip && strip.querySelector('.pa-err-msg') && strip.querySelector('.pa-err-msg').textContent.trim();
+      if (!hasMsg) setState(agentId, PA.drafts[agentId] ? 'draft' : 'normal');
+    }
     const root = $('pa-root'); if (!root) return;
     root.hidden = false;
     try { root.setAttribute('dir', (typeof window.detectLangDir === 'function' ? window.detectLangDir() : document.documentElement.getAttribute('dir') || 'ltr')); } catch(_){}
