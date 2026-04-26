@@ -20377,4 +20377,13 @@ Thank you for shopping with {store_name}!</textarea>
 
     <script src="/modules/product-library.js"></script>
     <script src="/modules/prompt-assistant.js"></script>
+    <script src="/modules/meta-connect.js"></script>
+    <script>
+        // Tiny shim used by the Meta-review screencast flow. Kept inline so
+        // the flag flips even before /modules/meta-connect.js loads.
+        window.enableScreencastMode = function() {
+            try { localStorage.setItem('digitivia_screencast_mode', '1'); } catch (e) {}
+            location.reload();
+        };
+    </script>
 </html>
