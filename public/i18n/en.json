@@ -27,7 +27,7 @@
     "nav_integrations": "Integrations",
     "nav_create_post": "Content Studio",
     "nav_reviews": "Customer Reviews",
-    "nav_followups": "Automation Rules",
+    "nav_followups": "Follow-ups",
     "nav_plans": "Plans",
     "nav_logout": "Logout",
     "nav_group_agents": "AI Agents",
@@ -64,7 +64,15 @@
       "retention_title": "Retention and Deletion",
       "retention_text": "Customer-related data is retained for a maximum of one year, then removed permanently under scheduled deletion policies, unless longer retention is required by law.",
       "rights_title": "Access and Contact",
-      "rights_text": "You can request data correction or deletion, and ask privacy questions through official support channels listed by your organization administrator."
+      "rights_text": "You can request data correction or deletion, and ask privacy questions through official support channels listed by your organization administrator.",
+      "controller_title": "Data Controller",
+      "controller_text": "Digitivia operates as the data controller for information processed through Omnio.",
+      "legal_basis_title": "Legal Basis",
+      "legal_basis_text": "Processing is based on contractual necessity for service delivery and legitimate interests for platform security and improvement.",
+      "processors_title": "Sub-processors",
+      "processors_text": "Core infrastructure and integrations include Supabase, OpenAI, GitHub, Meta Developer Platform, and WhatsApp Business Platform.",
+      "authority_title": "Supervisory Authority",
+      "authority_text": "You have the right to lodge a complaint with your local data protection authority if you believe your rights have been violated."
     },
     "terms": {
       "title": "Terms of Service",
@@ -79,7 +87,9 @@
       "liability_title": "Availability and Liability",
       "liability_text": "The service is provided on a commercially reasonable basis. We continuously improve reliability but cannot guarantee uninterrupted availability in all cases.",
       "changes_title": "Updates to Terms",
-      "changes_text": "We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance."
+      "changes_text": "We may update these terms when features, legal requirements, or provider rules change. Continued use after updates indicates acceptance.",
+      "governing_title": "Governing Law",
+      "governing_text": "These terms are governed by applicable law in the jurisdiction where Digitivia operates."
     },
     "cookies": {
       "title": "Cookie Policy",
@@ -475,7 +485,9 @@
       "pass_mismatch": "Passwords do not match.",
       "pass_short": "Password must be at least 6 characters.",
       "pass_updated_success": "Password updated successfully!",
-      "pass_updating": "Updating..."
+      "pass_updating": "Updating...",
+      "btn_download": "Download My Data",
+      "btn_delete": "Delete Account"
     },
     "help": {
       "title": "Free Consultation Meeting",
@@ -528,7 +540,9 @@
       "btn_contact": "Contact Sales",
       "tab_plans": "Plans",
       "tab_addons": "Add-ons"
-    }
+    },
+    "btn_cancel": "Cancel",
+    "btn_save": "Save"
   },
   "orders": {
     "title": "Customers Area",
@@ -733,7 +747,7 @@
     "status_pending": "Pending"
   },
   "followups": {
-    "title": "Automation Rules",
+    "title": "Follow-ups",
     "subtitle": "Schedule + control follow-ups for AI Inbox conversations",
     "refresh_btn": "⟳ Refresh",
     "tab_queue": "Queue",
@@ -1971,5 +1985,103 @@
     "log_cancelled": "Embedded Signup was cancelled.",
     "log_error": "Embedded Signup returned an error.",
     "log_cleared": "Saved connection state cleared for testing."
+  },
+  "cookie_banner": {
+    "title": "Cookie Notice",
+    "text": " — We use essential cookies for authentication and localStorage for your preferences (theme, language). We do not use tracking or advertising cookies.",
+    "learn_more": "Learn more",
+    "accept_all": "Accept All",
+    "essential_only": "Essential Only"
+  },
+  "prompt_assistant": {
+    "bar_label": "Prompt Assistant",
+    "drawer_title": "Prompt Assistant",
+    "improve": "Improve current prompt",
+    "create": "Create new prompt",
+    "use_current": "Use current prompt",
+    "use_current_hint": "Preview your current prompt side-by-side.",
+    "generating": "Generating…",
+    "cancel": "Cancel",
+    "diff_current": "Current",
+    "diff_suggested": "Suggested",
+    "apply": "Apply",
+    "replace": "Replace",
+    "copy": "Copy",
+    "regenerate": "Regenerate",
+    "applied_chip": "Prompt updated",
+    "undo": "Undo",
+    "retry": "Retry",
+    "close": "Close",
+    "title_improve": "Improve Prompt",
+    "title_create": "Create Prompt",
+    "title_use_current": "Use Current Prompt",
+    "label_goal": "Goal",
+    "hint_goal": "What should the AI agent accomplish?",
+    "goal_opts": {
+      "qualify_leads": "Qualify leads",
+      "book_meetings": "Book meetings",
+      "answer_faq": "Answer FAQ",
+      "drive_sales": "Drive sales",
+      "collect_contact": "Collect contact"
+    },
+    "ph_business": "e.g. Selling handmade soap in Cairo",
+    "label_business": "Business",
+    "hint_business": "What does your business do?",
+    "label_tone": "Tone",
+    "hint_tone": "How should the agent speak?",
+    "tone_opts": {
+      "friendly": "Friendly",
+      "professional": "Professional",
+      "helpful": "Helpful",
+      "concise": "Concise",
+      "playful": "Playful"
+    },
+    "label_language": "Language",
+    "hint_language": "Which language for the agent?",
+    "language_opts": {
+      "en": "English",
+      "ar": "Arabic",
+      "fr": "French",
+      "es": "Spanish"
+    },
+    "hint_fast_path": "These four are all we need — the Generate button lights up as soon as you fill them in.",
+    "label_advanced": "Advanced (optional)",
+    "optional_badge": "Optional",
+    "label_collect": "Collect",
+    "hint_collect": "What info should the agent collect?",
+    "collect_opts": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "company": "Company",
+      "budget": "Budget",
+      "timeframe": "Timeframe"
+    },
+    "label_avoid": "Avoid",
+    "hint_avoid": "What topics should the agent avoid?",
+    "avoid_opts": {
+      "prices": "Prices",
+      "personal_data": "Personal data",
+      "competitors": "Competitors",
+      "promises": "Promises"
+    },
+    "ph_note": "Edge cases, policies, anything else worth knowing.",
+    "label_note": "Notes",
+    "hint_note": "Any additional context for the AI",
+    "generate_btn": "Generate",
+    "empty_prompt_hint": "(empty)",
+    "locked_badge": "Locked",
+    "locked_hint": "This prompt is locked. Unlock it to apply.",
+    "lock_blocked": "Unlock to apply",
+    "copy_success": "Copied to clipboard",
+    "remaining_today": "{n} left today",
+    "followup_title": "A few more details",
+    "followup_intro": "The assistant needs a bit more info before it can draft a prompt.",
+    "followup_submit": "Send answers",
+    "errors": {
+      "business_too_short": "Add at least {n} characters",
+      "missing_required": "Please fill goal, business, tone, and language",
+      "network": "Connection error. Please try again."
+    }
   }
 }
