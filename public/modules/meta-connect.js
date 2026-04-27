@@ -307,19 +307,50 @@
     // ============================================================
 
     async function fetchActiveChannelRow(platform) {
+        // Guard: do not query before the user/org is resolved. The tab
+        // observer can fire during early app boot when currentUserOrgId
+        // is still undefined, which would issue org_id=eq.undefined and
+        // 400 from PostgREST.
+        if (!window.currentUserOrgId || !window.supabaseClient) return null;
+        if (typeof window.currentUserOrgId !== 'string' || window.currentUserOrgId === 'undefined') return null;
+
         try {
-            const sel = platform === 'instagram'
-                ? 'account_name, account_id, instagram_username, is_active'
-                : 'account_name, account_id, is_active';
-            const { data, error } = await window.supabaseClient
+            // Phase-1 schema may not be applied yet on this DB. Select
+            // only the universally-present columns; the optional fields
+            // (account_name, instagram_username) get hydrated below if
+            // the columns exist.
+            const base = await window.supabaseClient
                 .from('org_channel_accounts')
-                .select(sel)
+                .select('account_id, external_account_id, is_active')
                 .eq('org_id', window.currentUserOrgId)
                 .eq('platform', platform)
                 .eq('is_active', true)
                 .maybeSingle();
-            if (error) console.warn('[meta-connect] fetch row', platform, error.message);
-            return data || null;
+            if (base.error) {
+                console.warn('[meta-connect] fetch row', platform, base.error.message);
+                return null;
+            }
+            if (!base.data) return null;
+
+            const row = { ...base.data, account_name: null, instagram_username: null };
+
+            // Try to hydrate the optional phase-1 columns. We do this in
+            // a separate query so a missing column on one platform does
+            // not poison the whole call.
+            const optionalCols = platform === 'instagram'
+                ? 'account_name, instagram_username'
+                : 'account_name';
+            const enrich = await window.supabaseClient
+                .from('org_channel_accounts')
+                .select(optionalCols)
+                .eq('org_id', window.currentUserOrgId)
+                .eq('platform', platform)
+                .eq('is_active', true)
+                .maybeSingle();
+            if (!enrich.error && enrich.data) {
+                Object.assign(row, enrich.data);
+            }
+            return row;
         } catch (e) {
             console.warn('[meta-connect] fetch row threw', e);
             return null;

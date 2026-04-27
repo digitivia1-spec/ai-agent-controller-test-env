@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://js-de.sentry-cdn.com https://browser.sentry-cdn.com https://*.posthog.com https://us-assets.i.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.sentry.io https://*.posthog.com https://us.i.posthog.com https://ipapi.co https://cdn.jsdelivr.net https://browser.sentry-cdn.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; media-src 'self' https://*.supabase.co https://assets.mixkit.co data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'; worker-src 'self' blob:">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.sheetjs.com https://*.supabase.co https://connect.facebook.net https://*.sentry-cdn.com https://js-de.sentry-cdn.com https://browser.sentry-cdn.com https://*.posthog.com https://us-assets.i.posthog.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://n8n.srv1174105.hstgr.cloud https://graph.facebook.com https://www.facebook.com https://*.facebook.com https://*.myshopify.com https://*.ingest.sentry.io https://*.sentry.io https://*.posthog.com https://us.i.posthog.com https://us-assets.i.posthog.com https://ipapi.co https://cdn.jsdelivr.net https://browser.sentry-cdn.com; img-src 'self' https://*.supabase.co https://i.ibb.co https://img.icons8.com https://cdn.simpleicons.org https://upload.wikimedia.org https://easy-orders.net data: blob:; media-src 'self' https://*.supabase.co https://assets.mixkit.co data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self'; worker-src 'self' blob:">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <!-- SEO Meta Tags -->
@@ -70,31 +70,45 @@
     <!-- Sentry Error Tracking -->
     <script src="https://browser.sentry-cdn.com/8.51.0/bundle.min.js" crossorigin="anonymous"></script>
     <script>
-        if (window.Sentry) {
-            Sentry.init({
-                dsn: "YOUR_SENTRY_DSN_HERE",  // TODO: Replace with actual Sentry DSN from https://sentry.io
-                environment: location.hostname === 'ai-agent.digitivia.com' ? 'production' : 'development',
-                release: 'digitivia-ai-agent@1.0.0',
-                sampleRate: 1.0,
-                tracesSampleRate: 0.2,
-                ignoreErrors: [
-                    'ResizeObserver loop limit exceeded',
-                    'Non-Error promise rejection captured'
-                ]
-            });
-        }
+        // Only initialise Sentry when a real DSN has been wired in. The
+        // placeholder string from the template otherwise spams an
+        // "Invalid Sentry Dsn" warning on every page load.
+        (function () {
+            var SENTRY_DSN = "YOUR_SENTRY_DSN_HERE"; // TODO: Replace with actual Sentry DSN from https://sentry.io
+            var hasRealDsn = SENTRY_DSN && SENTRY_DSN.indexOf('YOUR_') !== 0 && /^https?:\/\//.test(SENTRY_DSN);
+            if (window.Sentry && hasRealDsn) {
+                Sentry.init({
+                    dsn: SENTRY_DSN,
+                    environment: location.hostname === 'ai-agent.digitivia.com' ? 'production' : 'development',
+                    release: 'digitivia-ai-agent@1.0.0',
+                    sampleRate: 1.0,
+                    tracesSampleRate: 0.2,
+                    ignoreErrors: [
+                        'ResizeObserver loop limit exceeded',
+                        'Non-Error promise rejection captured'
+                    ]
+                });
+            }
+        })();
     </script>
 
     <!-- PostHog Product Analytics -->
     <script>
-        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-        posthog.init('YOUR_POSTHOG_KEY_HERE', {  // TODO: Replace with actual PostHog project API key
-            api_host: 'https://us.i.posthog.com',
-            person_profiles: 'identified_only',
-            autocapture: true,
-            capture_pageview: true,
-            capture_pageleave: true
-        });
+        // Only load PostHog when a real project key is configured. The
+        // placeholder otherwise causes 404s on /array/<key>/config.js
+        // and 401s on /flags every page load.
+        (function () {
+            var POSTHOG_KEY = 'YOUR_POSTHOG_KEY_HERE'; // TODO: Replace with actual PostHog project API key
+            if (!POSTHOG_KEY || POSTHOG_KEY.indexOf('YOUR_') === 0) return;
+            !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+            posthog.init(POSTHOG_KEY, {
+                api_host: 'https://us.i.posthog.com',
+                person_profiles: 'identified_only',
+                autocapture: true,
+                capture_pageview: true,
+                capture_pageleave: true
+            });
+        })();
     </script>
     <script>
         (function initSavedTheme() {
@@ -1247,7 +1261,7 @@
                         <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_orders">Meetings</span>
                     </li>
-                    <li class="nav-item" onclick="switchTab('product-library', this)">
+                    <li class="nav-item" id="nav-product-library" onclick="switchTab('product-library', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zM6 10h8v2H6zm0 4h8v2H6zm10-4h2v6h-2z"/></svg></div>
                         <span class="nav-label" data-i18n="productLibrary.nav_label">Product Library</span>
                     </li>
@@ -3273,6 +3287,22 @@
             }
             if (typeof renderEmailNotificationTestPanel === 'function') {
                 renderEmailNotificationTestPanel();
+            }
+
+            // Product Library is product-only. Hide the sidebar entry for
+            // service orgs and bounce them to the dashboard if they're
+            // currently sitting on the tab.
+            const productLibNav = document.getElementById('nav-product-library');
+            const productLibTab = document.getElementById('product-library');
+            if (productLibNav) productLibNav.style.display = usingService ? 'none' : '';
+            if (productLibTab) {
+                if (usingService && productLibTab.classList.contains('active')) {
+                    productLibTab.classList.remove('active');
+                    const dashTab = document.getElementById('dashboard');
+                    const dashNav = document.querySelector('.nav-item[onclick*="switchTab(\'dashboard\'"]');
+                    if (dashTab) dashTab.classList.add('active');
+                    if (dashNav) dashNav.classList.add('active');
+                }
             }
         }
 
@@ -6779,6 +6809,10 @@ Thank you for shopping with {store_name}!</textarea>
                 }
             }
             if (tabId === 'product-library') {
+                // Hard guard: Product Library is product-orgs only.
+                if (typeof isServiceOrg === 'function' && isServiceOrg()) {
+                    return switchTab('dashboard');
+                }
                 color = '#5BAEB0';
                 if (typeof window.initProductLibraryTab === 'function') window.initProductLibraryTab();
             }
