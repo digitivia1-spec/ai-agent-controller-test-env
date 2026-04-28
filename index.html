@@ -3860,6 +3860,7 @@
                 // Get current profile to know org_id
                 if (!currentUserOrgId && currentUserProfile) {
                     currentUserOrgId = currentUserProfile.org_id;
+                    window.currentUserOrgId = currentUserOrgId;
                 }
 
                 if (currentUserOrgId) {
@@ -3928,6 +3929,7 @@
 
                 if (profile) {
                     currentUserOrgId = profile.org_id;
+                    window.currentUserOrgId = currentUserOrgId;
                     currentUserProfile = profile;
 
                     // Fetch organization data if org_id exists
@@ -3986,6 +3988,7 @@
 
                     if (!insertError && newProfile) {
                         currentUserOrgId = newProfile.org_id;
+                        window.currentUserOrgId = currentUserOrgId;
                         currentUserProfile = newProfile;
 
                         // EXTRACT ORG NAME FROM EMAIL
