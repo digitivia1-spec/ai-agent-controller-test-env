@@ -6846,7 +6846,13 @@ Thank you for shopping with {store_name}!</textarea>
                 if (typeof initTeamTab === 'function') initTeamTab();
             }
             if (tabId === 'ai-usage') {
-                if (typeof window.loadAiUsageTab === 'function') window.loadAiUsageTab();
+                console.log('[switchTab] ai-usage hit, loadAiUsageTab type:', typeof window.loadAiUsageTab);
+                if (typeof window.loadAiUsageTab === 'function') {
+                    window.loadAiUsageTab();
+                } else {
+                    const r = document.getElementById('ai-usage-root');
+                    if (r) r.innerHTML = '<p style="color:red;padding:2rem">loadAiUsageTab not defined — module may not have loaded</p>';
+                }
             }
             if (tabId === 'create-post') {
                 color = '#9C27B0'; // Purple for Content Studio

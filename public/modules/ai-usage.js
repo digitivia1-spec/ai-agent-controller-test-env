@@ -26,6 +26,7 @@
      PUBLIC API
   ══════════════════════════════════════════════════════════ */
   window.loadAiUsageTab = async function () {
+    console.log('[ai-usage] loadAiUsageTab called, orgId:', window.currentUserOrgId);
     _canEdit = window.hasPermission ? window.hasPermission('org.billing') : false;
     await _fetchAndRender();
     _bindEvents();
@@ -36,6 +37,7 @@
   ══════════════════════════════════════════════════════════ */
   async function _fetchAndRender () {
     const root = document.getElementById('ai-usage-root');
+    console.log('[ai-usage] _fetchAndRender, root:', !!root, 'orgId:', window.currentUserOrgId);
     if (!root || !window.currentUserOrgId) return;
 
     root.innerHTML = _skeletonHTML();
@@ -45,6 +47,7 @@
         p_org_id: window.currentUserOrgId,
       });
       if (error) throw error;
+      console.log('[ai-usage] RPC raw data:', data);
       // get_coin_status is RETURNS TABLE → PostgREST returns an array; unwrap first row
       _status = (Array.isArray(data) ? data[0] : data) || {};
     } catch (e) {
