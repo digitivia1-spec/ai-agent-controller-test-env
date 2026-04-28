@@ -45,7 +45,8 @@
         p_org_id: window.currentUserOrgId,
       });
       if (error) throw error;
-      _status = data || {};
+      // get_coin_status is RETURNS TABLE → PostgREST returns an array; unwrap first row
+      _status = (Array.isArray(data) ? data[0] : data) || {};
     } catch (e) {
       console.warn('[ai-usage] fetch error', e);
       root.innerHTML = _errorHTML();

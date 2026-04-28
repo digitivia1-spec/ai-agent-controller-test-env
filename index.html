@@ -6866,6 +6866,7 @@ Thank you for shopping with {store_name}!</textarea>
             }
             return true;
         }
+        window.switchTab = switchTab; // expose for late-loaded modules (ai-usage.js etc.)
 
 
         function switchOrdersSubtabLegacy(subtabId, element) {
