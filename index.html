@@ -6845,6 +6845,9 @@ Thank you for shopping with {store_name}!</textarea>
                 color = '#6366f1'; // Indigo for Team
                 if (typeof initTeamTab === 'function') initTeamTab();
             }
+            if (tabId === 'ai-usage') {
+                if (typeof window.loadAiUsageTab === 'function') window.loadAiUsageTab();
+            }
             if (tabId === 'create-post') {
                 color = '#9C27B0'; // Purple for Content Studio
                 loadScheduledQueue(); // Refresh queue on tab open
@@ -6866,7 +6869,6 @@ Thank you for shopping with {store_name}!</textarea>
             }
             return true;
         }
-        window.switchTab = switchTab; // expose for late-loaded modules (ai-usage.js etc.)
 
 
         function switchOrdersSubtabLegacy(subtabId, element) {

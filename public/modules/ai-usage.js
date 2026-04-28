@@ -405,16 +405,7 @@
     setTimeout(() => { el.classList.remove('aiu-toast--visible'); setTimeout(() => el.remove(), 300); }, 3000);
   }
 
-  /* ══════════════════════════════════════════════════════════
-     AUTO-LOAD hook  (called by switchTab infrastructure)
-  ══════════════════════════════════════════════════════════ */
-  const _origSwitchTab = window.switchTab;
-  if (typeof _origSwitchTab === 'function') {
-    window.switchTab = function (tabId, ...rest) {
-      const result = _origSwitchTab(tabId, ...rest);
-      if (tabId === TAB_ID) window.loadAiUsageTab();
-      return result;
-    };
-  }
+  // loadAiUsageTab is called directly from switchTab in index.html
+  // (same pattern as initTeamTab, fuInit, etc.)
 
 })();
