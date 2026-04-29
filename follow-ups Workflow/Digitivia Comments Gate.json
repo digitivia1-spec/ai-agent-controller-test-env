@@ -1303,20 +1303,24 @@
                                                       },
                         "Get Org Balance Msg For Comment":  {
                                                                 "main":  [
-                                                                             {
-                                                                                 "node":  "Build Comment Balance Msg",
-                                                                                 "type":  "main",
-                                                                                 "index":  0
-                                                                             }
+                                                                             [
+                                                                                 {
+                                                                                     "node":  "Build Comment Balance Msg",
+                                                                                     "type":  "main",
+                                                                                     "index":  0
+                                                                                 }
+                                                                             ]
                                                                          ]
                                                             },
                         "Build Comment Balance Msg":  {
                                                           "main":  [
-                                                                       {
-                                                                           "node":  "Send Comment Balance Reply",
-                                                                           "type":  "main",
-                                                                           "index":  0
-                                                                       }
+                                                                       [
+                                                                           {
+                                                                               "node":  "Send Comment Balance Reply",
+                                                                               "type":  "main",
+                                                                               "index":  0
+                                                                           }
+                                                                       ]
                                                                    ]
                                                       }
                     },

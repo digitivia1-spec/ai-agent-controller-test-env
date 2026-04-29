@@ -16024,15 +16024,25 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     async function exchangeWhatsAppSignupCodeOnBackend(payload) {
-        if (!payload.auth_code && !whatsappRuntimeAuthCode) {
-            return { ok: false, status: 'pending', reason: 'no_auth_code' };
+        // The edge function's "exchange" action expects a short-lived
+        // FB access token (from FB.getAuthResponse().accessToken), NOT the
+        // auth code. It exchanges it for a long-lived token via
+        // fb_exchange_token and stores it in meta_channel_tokens.
+        const shortToken = getBrowserMetaAccessToken();
+        if (!shortToken) {
+            return { ok: false, status: 'pending', reason: 'no_browser_access_token' };
+        }
+        const state = getWhatsAppConnectionState();
+        const wabaId = state?.waba_id || '';
+        if (!wabaId) {
+            return { ok: false, status: 'pending', reason: 'no_waba_id' };
         }
         const result = await callMetaTokenManager('exchange', {
-            code: payload.auth_code || whatsappRuntimeAuthCode,
-            app_id: payload.app_id || WHATSAPP_EMBEDDED_SIGNUP_APP_ID,
-            waba_id: getWhatsAppConnectionState()?.waba_id || '',
-            phone_number_id: getWhatsAppConnectionState()?.phone_number_id || '',
-            business_id: getWhatsAppConnectionState()?.business_id || ''
+            short_token: shortToken,
+            platform: 'whatsapp',
+            account_id: wabaId,
+            account_name: state?.verified_name || state?.display_phone_number || '',
+            meta_user_id: state?.business_id || ''
         });
         return result;
     }
@@ -16322,14 +16332,14 @@ Thank you for shopping with {store_name}!</textarea>
         }
         try {
             const headers = await getMetaTokenManagerHeaders();
+            const wabaId = payload.waba_id || '';
             const { data, error } = await supabaseClient
                 .from('org_channel_accounts')
                 .upsert({
                     org_id: currentUserOrgId,
                     platform: 'whatsapp',
                     is_active: true,
-                    account_id: payload.waba_id || '',
-                    external_account_id: payload.waba_id || '',
+                    external_account_id: wabaId,
                     account_name: payload.verified_name || payload.display_phone_number || '',
                     connected_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
@@ -16343,7 +16353,7 @@ Thank you for shopping with {store_name}!</textarea>
                         verified_name: payload.verified_name,
                         auth_code_received: payload.auth_code_received
                     })
-                }, { onConflict: 'org_id,platform' });
+                }, { onConflict: 'org_id,platform,external_account_id' });
             if (error) {
                 console.warn('submitWhatsAppEmbeddedSignupResultToBackend upsert error:', error);
                 return { ok: false, status: 'error', reason: error.message || 'upsert_failed' };

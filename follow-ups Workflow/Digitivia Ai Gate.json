@@ -2917,7 +2917,7 @@
                   },
                   {
                       "parameters":  {
-                                         "jsCode":  "const item = $input.first().json || {};\n\nconst assignments = $(\u0027Pricing Constants\u0027).params.assignments.assignments || [];\nconst toNum = (value) =\u003e {\n  const num = Number(value ?? 0);\n  return Number.isFinite(num) ? num : 0;\n};\nconst round = (value, places = 12) =\u003e Number((toNum(value)).toFixed(places));\nconst pricing = Object.fromEntries(assignments.map(entry =\u003e [entry.name, toNum(entry.value)]));\n\nconst pick = (...values) =\u003e values.find(value =\u003e value !== undefined \u0026\u0026 value !== null);\n\nconst promptTokens = toNum(\n  pick(\n    item.tokenUsage?.promptTokens,\n    item.usage?.promptTokens,\n    item.usage?.prompt_tokens,\n    item.response?.tokenUsage?.promptTokens,\n    item.response?.usage?.promptTokens,\n  )\n);\n\nconst completionTokens = toNum(\n  pick(\n    item.tokenUsage?.completionTokens,\n    item.usage?.completionTokens,\n    item.usage?.completion_tokens,\n    item.response?.tokenUsage?.completionTokens,\n    item.response?.usage?.completionTokens,\n  )\n);\n\nconst totalTokens = toNum(\n  pick(\n    item.tokenUsage?.totalTokens,\n    item.usage?.totalTokens,\n    item.usage?.total_tokens,\n    item.response?.tokenUsage?.totalTokens,\n    item.response?.usage?.totalTokens,\n    promptTokens + completionTokens,\n  )\n);\n\nconst promptCostUsd = round((promptTokens / 1_000_000) * toNum(pricing.VISION_INPUT_USD_PER_1M), 12);\nconst completionCostUsd = round((completionTokens / 1_000_000) * toNum(pricing.VISION_OUTPUT_USD_PER_1M), 12);\nconst totalCostUsd = round(promptCostUsd + completionCostUsd, 12);\nconst coinsSpent = round(totalCostUsd * 100, 6);\nconst nowIso = item.now_iso || new Date().toISOString();\n\nreturn [\n  {\n    json: {\n      ...item,\n      now_iso: nowIso,\n      ai_cost_usd: totalCostUsd,\n      ai_coins_spent: coinsSpent,\n      ai_usage_type: \u0027vision\u0027,\n      _ai_usage_delta: {\n        promptTokens,\n        completionTokens,\n        totalTokens,\n        totalCostUsd,\n        coinsSpent,\n        audioSeconds: 0,\n        now_iso: nowIso,\n      },\n    },\n  },\n];"
+                                         "jsCode":  "const item = $input.item().json || {};\nconst toNum = (v) =\u003e { const n = Number(v ?? 0); return Number.isFinite(n) ? n : 0; };\nconst pick = (...vs) =\u003e vs.find(v =\u003e v !== undefined \u0026\u0026 v !== null);\n\nconst promptTokens = toNum(pick(\n  item.tokenUsage?.promptTokens,\n  item.usage?.promptTokens,\n  item.usage?.prompt_tokens,\n  item.response?.tokenUsage?.promptTokens,\n  item.response?.usage?.promptTokens\n));\n\nconst completionTokens = toNum(pick(\n  item.tokenUsage?.completionTokens,\n  item.usage?.completionTokens,\n  item.usage?.completion_tokens,\n  item.response?.tokenUsage?.completionTokens,\n  item.response?.usage?.completionTokens\n));\n\nreturn [{\n  json: {\n    ...item,\n    _ai_usage_delta: { promptTokens, completionTokens, audioSeconds: 0 },\n  },\n}];"
                                      },
                       "id":  "33921f42-8133-4e15-bfbb-13710213ee1c",
                       "name":  "G3 Calculate Image AI Cost1",
@@ -2927,201 +2927,6 @@
                                        15280,
                                        6400
                                    ]
-                  },
-                  {
-                      "parameters":  {
-                                         "operation":  "get",
-                                         "tableId":  "org_usage",
-                                         "filters":  {
-                                                         "conditions":  [
-                                                                            {
-                                                                                "keyName":  "org_id",
-                                                                                "keyValue":  "={{ $(\u0027Update Inbound Message (Image)1\u0027).item.json.org_id }}"
-                                                                            }
-                                                                        ]
-                                                     }
-                                     },
-                      "id":  "e242fd3e-0b6d-449b-b6a3-2c7f7b0c0407",
-                      "name":  "G3 Get Org Usage1",
-                      "type":  "n8n-nodes-base.supabase",
-                      "typeVersion":  1,
-                      "position":  [
-                                       15504,
-                                       6400
-                                   ],
-                      "alwaysOutputData":  true,
-                      "credentials":  {
-                                          "supabaseApi":  {
-                                                              "id":  "z847CjHeGhdoNe6y",
-                                                              "name":  "digitivia AI agent supabase"
-                                                          }
-                                      }
-                  },
-                  {
-                      "parameters":  {
-                                         "jsCode":  "const base = $(\u0027G3 Calculate Image AI Cost1\u0027).first().json || {};\nconst usageRows = $input.all().map(item =\u003e item.json).filter(row =\u003e row \u0026\u0026 Object.keys(row).length \u003e 0);\nconst usageRow = usageRows[0] || null;\n\nconst toNum = (value) =\u003e {\n  const num = Number(value ?? 0);\n  return Number.isFinite(num) ? num : 0;\n};\n\nconst round = (value, places = 12) =\u003e Number((toNum(value)).toFixed(places));\n\nconst delta = base._ai_usage_delta || {};\n\nconst payload = {\n  org_id: base.org_id,\n  coins_used: round(toNum(usageRow?.coins_used) + toNum(delta.coinsSpent), 6),\n  usd_spent: round(toNum(usageRow?.usd_spent) + toNum(delta.totalCostUsd), 12),\n  prompt_tokens_used: round(toNum(usageRow?.prompt_tokens_used) + toNum(delta.promptTokens), 6),\n  completion_tokens_used: round(toNum(usageRow?.completion_tokens_used) + toNum(delta.completionTokens), 6),\n  total_tokens_used: round(toNum(usageRow?.total_tokens_used) + toNum(delta.totalTokens), 6),\n  audio_seconds_used: round(toNum(usageRow?.audio_seconds_used) + toNum(delta.audioSeconds), 6),\n  updated_at: delta.now_iso || base.now_iso || new Date().toISOString(),\n};\n\nreturn [\n  {\n    json: {\n      ...base,\n      usage_row_exists: Boolean(usageRow),\n      _org_usage_upsert: payload,\n    },\n  },\n];"
-                                     },
-                      "id":  "f6711a77-e940-4e37-8eb6-321e67f2c243",
-                      "name":  "G3 Prepare Org Usage Upsert1",
-                      "type":  "n8n-nodes-base.code",
-                      "typeVersion":  2,
-                      "position":  [
-                                       15728,
-                                       6400
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "conditions":  {
-                                                            "options":  {
-                                                                            "version":  2,
-                                                                            "leftValue":  "",
-                                                                            "caseSensitive":  true,
-                                                                            "typeValidation":  "strict"
-                                                                        },
-                                                            "conditions":  [
-                                                                               {
-                                                                                   "id":  "b7a39198-f994-449d-808c-bdc8b374a01c",
-                                                                                   "leftValue":  "={{ $json.usage_row_exists }}",
-                                                                                   "rightValue":  true,
-                                                                                   "operator":  {
-                                                                                                    "type":  "boolean",
-                                                                                                    "operation":  "true",
-                                                                                                    "singleValue":  true
-                                                                                                }
-                                                                               }
-                                                                           ],
-                                                            "combinator":  "and"
-                                                        },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "83c15bbe-f4da-4893-a661-f9892409f303",
-                      "name":  "G3 Usage Row Exists?1",
-                      "type":  "n8n-nodes-base.if",
-                      "typeVersion":  2.2,
-                      "position":  [
-                                       15952,
-                                       6400
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "operation":  "update",
-                                         "tableId":  "org_usage",
-                                         "matchType":  "allFilters",
-                                         "filters":  {
-                                                         "conditions":  [
-                                                                            {
-                                                                                "keyName":  "org_id",
-                                                                                "condition":  "eq",
-                                                                                "keyValue":  "={{ $(\u0027Attach Tenant + Secrets1\u0027).item.json.org_id }}"
-                                                                            }
-                                                                        ]
-                                                     },
-                                         "fieldsUi":  {
-                                                          "fieldValues":  [
-                                                                              {
-                                                                                  "fieldId":  "coins_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.coins_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "usd_spent",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.usd_spent }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "prompt_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.prompt_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "completion_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.completion_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "total_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.total_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "audio_seconds_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.audio_seconds_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "updated_at",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.updated_at }}"
-                                                                              }
-                                                                          ]
-                                                      }
-                                     },
-                      "id":  "fcc90e17-466a-4b0b-aada-bc71307759eb",
-                      "name":  "G3 Update Org Usage1",
-                      "type":  "n8n-nodes-base.supabase",
-                      "typeVersion":  1,
-                      "position":  [
-                                       16176,
-                                       6304
-                                   ],
-                      "credentials":  {
-                                          "supabaseApi":  {
-                                                              "id":  "z847CjHeGhdoNe6y",
-                                                              "name":  "digitivia AI agent supabase"
-                                                          }
-                                      }
-                  },
-                  {
-                      "parameters":  {
-                                         "tableId":  "org_usage",
-                                         "fieldsUi":  {
-                                                          "fieldValues":  [
-                                                                              {
-                                                                                  "fieldId":  "org_id",
-                                                                                  "fieldValue":  "={{ $(\u0027Update Inbound Message (Image)1\u0027).item.json.org_id }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "coins_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.coins_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "usd_spent",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.usd_spent }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "prompt_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.prompt_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "completion_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.completion_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "total_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.total_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "audio_seconds_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.audio_seconds_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "updated_at",
-                                                                                  "fieldValue":  "={{ $(\u0027G3 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.updated_at }}"
-                                                                              }
-                                                                          ]
-                                                      }
-                                     },
-                      "id":  "3282db1a-6087-4c97-97bb-7afbf3016173",
-                      "name":  "G3 Create Org Usage1",
-                      "type":  "n8n-nodes-base.supabase",
-                      "typeVersion":  1,
-                      "position":  [
-                                       16176,
-                                       6688
-                                   ],
-                      "credentials":  {
-                                          "supabaseApi":  {
-                                                              "id":  "z847CjHeGhdoNe6y",
-                                                              "name":  "digitivia AI agent supabase"
-                                                          }
-                                      }
                   },
                   {
                       "parameters":  {
@@ -3138,7 +2943,7 @@
                   },
                   {
                       "parameters":  {
-                                         "jsCode":  "const item = $input.first().json || {};\n\nconst assignments = $(\u0027Pricing Constants\u0027).params.assignments.assignments || [];\nconst toNum = (value) =\u003e {\n  const num = Number(value ?? 0);\n  return Number.isFinite(num) ? num : 0;\n};\nconst round = (value, places = 12) =\u003e Number((toNum(value)).toFixed(places));\nconst pricing = Object.fromEntries(assignments.map(entry =\u003e [entry.name, toNum(entry.value)]));\n\nconst pick = (...values) =\u003e values.find(value =\u003e value !== undefined \u0026\u0026 value !== null);\n\nconst seconds = toNum(\n  pick(\n    item.usage?.seconds,\n    item.usage?.audioSeconds,\n    item.audio_seconds,\n    item.seconds,\n    item.transcription?.usage?.seconds,\n  )\n);\n\nconst totalCostUsd = round((seconds / 60) * toNum(pricing.AUDIO_USD_PER_MINUTE), 12);\nconst coinsSpent = round(totalCostUsd * 100, 6);\nconst nowIso = item.now_iso || new Date().toISOString();\n\nreturn [\n  {\n    json: {\n      ...item,\n      now_iso: nowIso,\n      ai_cost_usd: totalCostUsd,\n      ai_coins_spent: coinsSpent,\n      ai_usage_type: \u0027transcription\u0027,\n      _ai_usage_delta: {\n        promptTokens: 0,\n        completionTokens: 0,\n        totalTokens: 0,\n        totalCostUsd,\n        coinsSpent,\n        audioSeconds: seconds,\n        now_iso: nowIso,\n      },\n    },\n  },\n];"
+                                         "jsCode":  "const item = $input.item().json || {};\nconst toNum = (v) =\u003e { const n = Number(v ?? 0); return Number.isFinite(n) ? n : 0; };\nconst pick = (...vs) =\u003e vs.find(v =\u003e v !== undefined \u0026\u0026 v !== null);\n\nconst seconds = toNum(pick(\n  item.usage?.seconds,\n  item.usage?.audioSeconds,\n  item.audio_seconds,\n  item.seconds,\n  item.transcription?.usage?.seconds\n));\n\nreturn [{\n  json: {\n    ...item,\n    _ai_usage_delta: { promptTokens: 0, completionTokens: 0, audioSeconds: seconds },\n  },\n}];"
                                      },
                       "id":  "4e646b53-bc73-4122-816e-2e38ec5ddf94",
                       "name":  "G4 Calculate Audio AI Cost1",
@@ -3146,84 +2951,6 @@
                       "typeVersion":  2,
                       "position":  [
                                        15280,
-                                       6976
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "operation":  "get",
-                                         "tableId":  "org_usage",
-                                         "filters":  {
-                                                         "conditions":  [
-                                                                            {
-                                                                                "keyName":  "org_id",
-                                                                                "keyValue":  "={{ $(\u0027Attach Tenant + Secrets1\u0027).item.json.org_id }}"
-                                                                            }
-                                                                        ]
-                                                     }
-                                     },
-                      "id":  "982eacd0-e8d2-4fe6-a30a-c25ee1c85b4f",
-                      "name":  "G4 Get Org Usage1",
-                      "type":  "n8n-nodes-base.supabase",
-                      "typeVersion":  1,
-                      "position":  [
-                                       15504,
-                                       6976
-                                   ],
-                      "alwaysOutputData":  true,
-                      "credentials":  {
-                                          "supabaseApi":  {
-                                                              "id":  "z847CjHeGhdoNe6y",
-                                                              "name":  "digitivia AI agent supabase"
-                                                          }
-                                      }
-                  },
-                  {
-                      "parameters":  {
-                                         "jsCode":  "const base = $(\u0027G4 Calculate Audio AI Cost1\u0027).first().json || {};\nconst usageRows = $input.all().map(item =\u003e item.json).filter(row =\u003e row \u0026\u0026 Object.keys(row).length \u003e 0);\nconst usageRow = usageRows[0] || null;\n\nconst toNum = (value) =\u003e {\n  const num = Number(value ?? 0);\n  return Number.isFinite(num) ? num : 0;\n};\n\nconst round = (value, places = 12) =\u003e Number((toNum(value)).toFixed(places));\n\nconst delta = base._ai_usage_delta || {};\n\nconst payload = {\n  org_id: base.org_id,\n  coins_used: round(toNum(usageRow?.coins_used) + toNum(delta.coinsSpent), 6),\n  usd_spent: round(toNum(usageRow?.usd_spent) + toNum(delta.totalCostUsd), 12),\n  prompt_tokens_used: round(toNum(usageRow?.prompt_tokens_used) + toNum(delta.promptTokens), 6),\n  completion_tokens_used: round(toNum(usageRow?.completion_tokens_used) + toNum(delta.completionTokens), 6),\n  total_tokens_used: round(toNum(usageRow?.total_tokens_used) + toNum(delta.totalTokens), 6),\n  audio_seconds_used: round(toNum(usageRow?.audio_seconds_used) + toNum(delta.audioSeconds), 6),\n  updated_at: delta.now_iso || base.now_iso || new Date().toISOString(),\n};\n\nreturn [\n  {\n    json: {\n      ...base,\n      usage_row_exists: Boolean(usageRow),\n      _org_usage_upsert: payload,\n    },\n  },\n];"
-                                     },
-                      "id":  "482531a0-0eb2-440e-98e2-bf2cbc7bcf59",
-                      "name":  "G4 Prepare Org Usage Upsert1",
-                      "type":  "n8n-nodes-base.code",
-                      "typeVersion":  2,
-                      "position":  [
-                                       15728,
-                                       6976
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "conditions":  {
-                                                            "options":  {
-                                                                            "version":  2,
-                                                                            "leftValue":  "",
-                                                                            "caseSensitive":  true,
-                                                                            "typeValidation":  "strict"
-                                                                        },
-                                                            "conditions":  [
-                                                                               {
-                                                                                   "id":  "c6999179-629d-48b4-b3e9-bd50aa8068d1",
-                                                                                   "leftValue":  "={{ $json.usage_row_exists }}",
-                                                                                   "rightValue":  true,
-                                                                                   "operator":  {
-                                                                                                    "type":  "boolean",
-                                                                                                    "operation":  "true",
-                                                                                                    "singleValue":  true
-                                                                                                }
-                                                                               }
-                                                                           ],
-                                                            "combinator":  "and"
-                                                        },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "bba3cd4f-378c-4bd2-b0cd-bc05ba285fdc",
-                      "name":  "G4 Usage Row Exists?1",
-                      "type":  "n8n-nodes-base.if",
-                      "typeVersion":  2.2,
-                      "position":  [
-                                       15952,
                                        6976
                                    ]
                   },
@@ -3758,123 +3485,6 @@
                   },
                   {
                       "parameters":  {
-                                         "operation":  "update",
-                                         "tableId":  "org_usage",
-                                         "matchType":  "allFilters",
-                                         "filters":  {
-                                                         "conditions":  [
-                                                                            {
-                                                                                "keyName":  "org_id",
-                                                                                "condition":  "eq",
-                                                                                "keyValue":  "={{ $(\u0027Attach Tenant + Secrets1\u0027).item.json.org_id }}"
-                                                                            }
-                                                                        ]
-                                                     },
-                                         "fieldsUi":  {
-                                                          "fieldValues":  [
-                                                                              {
-                                                                                  "fieldId":  "coins_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.coins_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "usd_spent",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.usd_spent }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "prompt_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.prompt_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "completion_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.completion_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "total_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.total_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "audio_seconds_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.audio_seconds_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "updated_at",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.updated_at }}"
-                                                                              }
-                                                                          ]
-                                                      }
-                                     },
-                      "id":  "5189cc91-5549-42b0-bf1f-f2fb2c3e463a",
-                      "name":  "G4 Update Org Usage1",
-                      "type":  "n8n-nodes-base.supabase",
-                      "typeVersion":  1,
-                      "position":  [
-                                       16176,
-                                       6880
-                                   ],
-                      "credentials":  {
-                                          "supabaseApi":  {
-                                                              "id":  "z847CjHeGhdoNe6y",
-                                                              "name":  "digitivia AI agent supabase"
-                                                          }
-                                      }
-                  },
-                  {
-                      "parameters":  {
-                                         "tableId":  "org_usage",
-                                         "fieldsUi":  {
-                                                          "fieldValues":  [
-                                                                              {
-                                                                                  "fieldId":  "org_id",
-                                                                                  "fieldValue":  "={{ $(\u0027Attach Tenant + Secrets1\u0027).item.json.org_id }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "coins_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.coins_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "usd_spent",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.usd_spent }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "prompt_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.prompt_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "completion_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.completion_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "total_tokens_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.total_tokens_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "audio_seconds_used",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.audio_seconds_used }}"
-                                                                              },
-                                                                              {
-                                                                                  "fieldId":  "updated_at",
-                                                                                  "fieldValue":  "={{ $(\u0027G4 Prepare Org Usage Upsert1\u0027).item.json._org_usage_upsert.updated_at }}"
-                                                                              }
-                                                                          ]
-                                                      }
-                                     },
-                      "id":  "a2d20748-ec08-4ce9-8cf8-f4ab6117e8d2",
-                      "name":  "G4 Create Org Usage1",
-                      "type":  "n8n-nodes-base.supabase",
-                      "typeVersion":  1,
-                      "position":  [
-                                       16176,
-                                       7072
-                                   ],
-                      "credentials":  {
-                                          "supabaseApi":  {
-                                                              "id":  "z847CjHeGhdoNe6y",
-                                                              "name":  "digitivia AI agent supabase"
-                                                          }
-                                      }
-                  },
-                  {
-                      "parameters":  {
                                          "jsCode":  "const current = $input.first() || { json: {} };\nconst j = current.json || {};\n\nfunction safePart(value, fallback = \u0027na\u0027) {\n  const out = String(value ?? \u0027\u0027).trim().replace(/[^a-zA-Z0-9._-]+/g, \u0027-\u0027).replace(/-+/g, \u0027-\u0027).replace(/^-|-$/g, \u0027\u0027);\n  return out || fallback;\n}\n\nfunction pickExt(mime, contentType) {\n  const m = String(mime || \u0027\u0027).toLowerCase();\n  const ct = String(contentType || \u0027\u0027).toLowerCase();\n\n  if (m === \u0027image/jpeg\u0027) return \u0027jpg\u0027;\n  if (m === \u0027image/png\u0027) return \u0027png\u0027;\n  if (m === \u0027image/webp\u0027) return \u0027webp\u0027;\n  if (m === \u0027audio/ogg\u0027) return \u0027ogg\u0027;\n  if (m === \u0027audio/mpeg\u0027) return \u0027mp3\u0027;\n  if (m === \u0027audio/mp4\u0027) return \u0027m4a\u0027;\n  if (m === \u0027video/mp4\u0027) return \u0027mp4\u0027;\n  if (m.startsWith(\u0027image/\u0027)) return \u0027jpg\u0027;\n  if (m.startsWith(\u0027audio/\u0027)) return \u0027ogg\u0027;\n  if (m.startsWith(\u0027video/\u0027)) return \u0027mp4\u0027;\n\n  if (ct === \u0027image\u0027) return \u0027jpg\u0027;\n  if (ct === \u0027audio\u0027) return \u0027ogg\u0027;\n  if (ct === \u0027video\u0027) return \u0027mp4\u0027;\n\n  return \u0027bin\u0027;\n}\n\nconst media = j.media || {};\nconst ext = pickExt(media.mime_type, j.content_type);\nconst bucket = \u0027inbox_media\u0027;\nconst createdAtSafe = safePart(String(j.created_at_iso || new Date().toISOString()).replace(/[:.]/g, \u0027-\u0027));\nconst messageKey = safePart(\n  j.provider_message_id ||\n  media.wa_media_id ||\n  media.url ||\n  `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`\n);\n\nconst media_path = [\n  safePart(j.org_id),\n  safePart(j.conversation_id),\n  `${createdAtSafe}_${safePart(j.platform)}_${safePart(j.sender_external_id)}_${messageKey}.${ext}`,\n].join(\u0027/\u0027);\n\nreturn [{\n  json: {\n    ...j,\n    bucket,\n    ext,\n    randomSuffix: Math.random().toString(36).slice(2, 10),\n    media_path,\n  }\n}];"
                                      },
                       "type":  "n8n-nodes-base.code",
@@ -4119,84 +3729,6 @@
                                                               "name":  "digitivia AI agent supabase"
                                                           }
                                       }
-                  },
-                  {
-                      "parameters":  {
-
-                                     },
-                      "id":  "2b0c0c2b-1bcb-4ba3-8211-dda051dcbbe9",
-                      "name":  "Pricing Constants Start",
-                      "type":  "n8n-nodes-base.noOp",
-                      "typeVersion":  1,
-                      "position":  [
-                                       7088,
-                                       7376
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "assignments":  {
-                                                             "assignments":  [
-                                                                                 {
-                                                                                     "id":  "d5e1ee1b-a699-4695-bdbf-dde955771988",
-                                                                                     "name":  "TEXT_INPUT_USD_PER_1M",
-                                                                                     "type":  "number",
-                                                                                     "value":  0
-                                                                                 },
-                                                                                 {
-                                                                                     "id":  "caad4992-6fd9-43c8-a57e-c4ddefd50d71",
-                                                                                     "name":  "TEXT_OUTPUT_USD_PER_1M",
-                                                                                     "type":  "number",
-                                                                                     "value":  0
-                                                                                 },
-                                                                                 {
-                                                                                     "id":  "fee60e53-3cdf-41f3-80c1-74280cda35d9",
-                                                                                     "name":  "VISION_INPUT_USD_PER_1M",
-                                                                                     "type":  "number",
-                                                                                     "value":  0
-                                                                                 },
-                                                                                 {
-                                                                                     "id":  "37f85f6b-ab76-4300-ada2-cd890e8cda73",
-                                                                                     "name":  "VISION_OUTPUT_USD_PER_1M",
-                                                                                     "type":  "number",
-                                                                                     "value":  0
-                                                                                 },
-                                                                                 {
-                                                                                     "id":  "c92962d9-870e-4abb-a92b-417e2aaa3be6",
-                                                                                     "name":  "AUDIO_USD_PER_MINUTE",
-                                                                                     "type":  "number",
-                                                                                     "value":  0
-                                                                                 }
-                                                                             ],
-                                                             "options":  {
-
-                                                                         }
-                                                         },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "fc12ea0a-aec9-44e3-a245-d55840397280",
-                      "name":  "Pricing Constants",
-                      "type":  "n8n-nodes-base.set",
-                      "typeVersion":  3.4,
-                      "position":  [
-                                       7312,
-                                       7376
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-
-                                     },
-                      "id":  "44f99dc4-33d4-4b8c-9a30-6923213d397b",
-                      "name":  "Pricing Constants End",
-                      "type":  "n8n-nodes-base.noOp",
-                      "typeVersion":  1,
-                      "position":  [
-                                       7536,
-                                       7376
-                                   ]
                   },
                   {
                       "parameters":  {
@@ -5829,68 +5361,6 @@
                                                                    ]
                                                                ]
                                                   },
-                        "G3 Get Org Usage1":  {
-                                                  "main":  [
-                                                               [
-                                                                   {
-                                                                       "node":  "G3 Prepare Org Usage Upsert1",
-                                                                       "type":  "main",
-                                                                       "index":  0
-                                                                   }
-                                                               ]
-                                                           ]
-                                              },
-                        "G3 Prepare Org Usage Upsert1":  {
-                                                             "main":  [
-                                                                          [
-                                                                              {
-                                                                                  "node":  "G3 Usage Row Exists?1",
-                                                                                  "type":  "main",
-                                                                                  "index":  0
-                                                                              }
-                                                                          ]
-                                                                      ]
-                                                         },
-                        "G3 Usage Row Exists?1":  {
-                                                      "main":  [
-                                                                   [
-                                                                       {
-                                                                           "node":  "G3 Update Org Usage1",
-                                                                           "type":  "main",
-                                                                           "index":  0
-                                                                       }
-                                                                   ],
-                                                                   [
-                                                                       {
-                                                                           "node":  "G3 Create Org Usage1",
-                                                                           "type":  "main",
-                                                                           "index":  0
-                                                                       }
-                                                                   ]
-                                                               ]
-                                                  },
-                        "G3 Update Org Usage1":  {
-                                                     "main":  [
-                                                                  [
-                                                                      {
-                                                                          "node":  "G3 Restore Pass-Through Item1",
-                                                                          "type":  "main",
-                                                                          "index":  0
-                                                                      }
-                                                                  ]
-                                                              ]
-                                                 },
-                        "G3 Create Org Usage1":  {
-                                                     "main":  [
-                                                                  [
-                                                                      {
-                                                                          "node":  "G3 Restore Pass-Through Item1",
-                                                                          "type":  "main",
-                                                                          "index":  0
-                                                                      }
-                                                                  ]
-                                                              ]
-                                                 },
                         "G3 Restore Pass-Through Item1":  {
                                                               "main":  [
                                                                            [
@@ -5918,46 +5388,6 @@
                                                                    [
                                                                        {
                                                                            "node":  "G4 Restore Pass-Through Item1",
-                                                                           "type":  "main",
-                                                                           "index":  0
-                                                                       }
-                                                                   ]
-                                                               ]
-                                                  },
-                        "G4 Get Org Usage1":  {
-                                                  "main":  [
-                                                               [
-                                                                   {
-                                                                       "node":  "G4 Prepare Org Usage Upsert1",
-                                                                       "type":  "main",
-                                                                       "index":  0
-                                                                   }
-                                                               ]
-                                                           ]
-                                              },
-                        "G4 Prepare Org Usage Upsert1":  {
-                                                             "main":  [
-                                                                          [
-                                                                              {
-                                                                                  "node":  "G4 Usage Row Exists?1",
-                                                                                  "type":  "main",
-                                                                                  "index":  0
-                                                                              }
-                                                                          ]
-                                                                      ]
-                                                         },
-                        "G4 Usage Row Exists?1":  {
-                                                      "main":  [
-                                                                   [
-                                                                       {
-                                                                           "node":  "G4 Update Org Usage1",
-                                                                           "type":  "main",
-                                                                           "index":  0
-                                                                       }
-                                                                   ],
-                                                                   [
-                                                                       {
-                                                                           "node":  "G4 Create Org Usage1",
                                                                            "type":  "main",
                                                                            "index":  0
                                                                        }
@@ -6085,28 +5515,6 @@
                                                                ]
                                                            ]
                                            },
-                        "G4 Update Org Usage1":  {
-                                                     "main":  [
-                                                                  [
-                                                                      {
-                                                                          "node":  "G4 Restore Pass-Through Item1",
-                                                                          "type":  "main",
-                                                                          "index":  0
-                                                                      }
-                                                                  ]
-                                                              ]
-                                                 },
-                        "G4 Create Org Usage1":  {
-                                                     "main":  [
-                                                                  [
-                                                                      {
-                                                                          "node":  "G4 Restore Pass-Through Item1",
-                                                                          "type":  "main",
-                                                                          "index":  0
-                                                                      }
-                                                                  ]
-                                                              ]
-                                                 },
                         "Compute Media Path1":  {
                                                     "main":  [
                                                                  [
@@ -6180,28 +5588,6 @@
                                                                              ]
                                                                          ]
                                                             },
-                        "Pricing Constants Start":  {
-                                                        "main":  [
-                                                                     [
-                                                                         {
-                                                                             "node":  "Pricing Constants",
-                                                                             "type":  "main",
-                                                                             "index":  0
-                                                                         }
-                                                                     ]
-                                                                 ]
-                                                    },
-                        "Pricing Constants":  {
-                                                  "main":  [
-                                                               [
-                                                                   {
-                                                                       "node":  "Pricing Constants End",
-                                                                       "type":  "main",
-                                                                       "index":  0
-                                                                   }
-                                                               ]
-                                                           ]
-                                              },
                         "IF Is Template Status?":  {
                                                        "main":  [
                                                                     [
@@ -6258,20 +5644,24 @@
                                                      },
                         "Get Org Balance Message":  {
                                                         "main":  [
-                                                                     {
-                                                                         "node":  "Build Balance Outbound",
-                                                                         "type":  "main",
-                                                                         "index":  0
-                                                                     }
+                                                                     [
+                                                                         {
+                                                                             "node":  "Build Balance Outbound",
+                                                                             "type":  "main",
+                                                                             "index":  0
+                                                                         }
+                                                                     ]
                                                                  ]
                                                     },
                         "Build Balance Outbound":  {
                                                        "main":  [
-                                                                    {
-                                                                        "node":  "Send Balance Finished Reply",
-                                                                        "type":  "main",
-                                                                        "index":  0
-                                                                    }
+                                                                    [
+                                                                        {
+                                                                            "node":  "Send Balance Finished Reply",
+                                                                            "type":  "main",
+                                                                            "index":  0
+                                                                        }
+                                                                    ]
                                                                 ]
                                                    }
                     },
