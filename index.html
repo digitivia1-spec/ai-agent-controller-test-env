@@ -15300,7 +15300,7 @@ Thank you for shopping with {store_name}!</textarea>
     // WHATSAPP EMBEDDED SIGNUP: START
     const WHATSAPP_EMBEDDED_SIGNUP_APP_ID = '875686618745863';
     const WHATSAPP_EMBEDDED_SIGNUP_CONFIG_ID = '1239600244448047';
-    const WHATSAPP_GRAPH_API_VERSION = 'v20.0';
+    const WHATSAPP_GRAPH_API_VERSION = 'v22.0';
     const WHATSAPP_REVIEW_LOG_LIMIT = 30;
     const WHATSAPP_TRUSTED_HOST_PATTERNS = ['facebook.com', 'facebook.net', 'fb.com', 'meta.com', 'instagram.com'];
 
@@ -15869,20 +15869,33 @@ Thank you for shopping with {store_name}!</textarea>
             }
         };
 
-        const wabaFetch = await tryFetch(`https://graph.facebook.com/${WHATSAPP_GRAPH_API_VERSION}/${encodeURIComponent(wabaId)}/phone_numbers?fields=${encodeURIComponent(fields)}`);
-        attempts.push({ method: 'fetch_waba_phone_numbers', result: wabaFetch.payload || { reason: wabaFetch.reason } });
-        if (wabaFetch.ok) {
-            const matched = findMatchedPhoneNumberRecord(wabaFetch.payload?.data, phoneNumberId);
+        // Try SDK methods first — they don't produce noisy console 400/500 errors.
+        // Direct fetch() to graph.facebook.com is a last resort since browser
+        // console logs the HTTP error even when caught.
+        const sdkWaba = await callGraphApiWithSdk(`/${wabaId}/phone_numbers`, { fields });
+        attempts.push({ method: 'sdk_waba_phone_numbers', result: sdkWaba.payload || { reason: sdkWaba.reason } });
+        if (sdkWaba.ok) {
+            const matched = findMatchedPhoneNumberRecord(sdkWaba.payload?.data, phoneNumberId);
             const phoneDetails = normalizePhonePreviewRecord(matched);
             if (phoneDetails) {
                 return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
             }
         }
 
-        const sdkWaba = await callGraphApiWithSdk(`/${wabaId}/phone_numbers`, { fields });
-        attempts.push({ method: 'sdk_waba_phone_numbers', result: sdkWaba.payload || { reason: sdkWaba.reason } });
-        if (sdkWaba.ok) {
-            const matched = findMatchedPhoneNumberRecord(sdkWaba.payload?.data, phoneNumberId);
+        const sdkDirect = await callGraphApiWithSdk(`/${phoneNumberId}`, { fields });
+        attempts.push({ method: 'sdk_phone_number_node', result: sdkDirect.payload || { reason: sdkDirect.reason } });
+        if (sdkDirect.ok) {
+            const phoneDetails = normalizePhonePreviewRecord(sdkDirect.payload);
+            if (phoneDetails) {
+                return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
+            }
+        }
+
+        // Fallback: direct fetch (may log 400/500 in console — acceptable for preview)
+        const wabaFetch = await tryFetch(`https://graph.facebook.com/${WHATSAPP_GRAPH_API_VERSION}/${encodeURIComponent(wabaId)}/phone_numbers?fields=${encodeURIComponent(fields)}`);
+        attempts.push({ method: 'fetch_waba_phone_numbers', result: wabaFetch.payload || { reason: wabaFetch.reason } });
+        if (wabaFetch.ok) {
+            const matched = findMatchedPhoneNumberRecord(wabaFetch.payload?.data, phoneNumberId);
             const phoneDetails = normalizePhonePreviewRecord(matched);
             if (phoneDetails) {
                 return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
@@ -15898,19 +15911,10 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
-        const sdkDirect = await callGraphApiWithSdk(`/${phoneNumberId}`, { fields });
-        attempts.push({ method: 'sdk_phone_number_node', result: sdkDirect.payload || { reason: sdkDirect.reason } });
-        if (sdkDirect.ok) {
-            const phoneDetails = normalizePhonePreviewRecord(sdkDirect.payload);
-            if (phoneDetails) {
-                return { ok: true, status: 'success', payload: { attempts }, phone_details: phoneDetails };
-            }
-        }
-
         return {
             ok: false,
             status: 'error',
-            reason: extractGraphErrorMessage(directFetch.payload) || extractGraphErrorMessage(wabaFetch.payload) || extractGraphErrorMessage(sdkDirect.payload) || extractGraphErrorMessage(sdkWaba.payload) || 'phone_preview_unavailable',
+            reason: extractGraphErrorMessage(sdkWaba.payload) || extractGraphErrorMessage(sdkDirect.payload) || extractGraphErrorMessage(wabaFetch.payload) || extractGraphErrorMessage(directFetch.payload) || 'phone_preview_unavailable',
             payload: sanitizeWhatsAppPayload({ attempts })
         }
     }
@@ -15918,6 +15922,17 @@ Thank you for shopping with {store_name}!</textarea>
     async function enrichWhatsAppConnectionFromClientFetch() {
         const current = getWhatsAppConnectionState();
         if (!current.waba_id || !current.phone_number_id) return current;
+        // If backend already fetched phone details successfully, skip client-side fetch
+        const backendStatus = Object.assign(createDefaultBackendStatus(), current.backend_status || {});
+        if (backendStatus.phone_details_fetch === 'success' && current.display_phone_number) {
+            appendWhatsAppReviewLog('preview', 'Skipping client-side fetch — backend already has phone details.');
+            return updateWhatsAppConnectionState({
+                preview_status: Object.assign(createDefaultPreviewStatus(), current.preview_status || {}, {
+                    browser_phone_details_fetch: 'skipped'
+                }),
+                updated_at: new Date().toISOString()
+            });
+        }
         appendWhatsAppReviewLog('preview', t('whatsapp_connect.log_client_phone_fetch_started'), {
             waba_id: current.waba_id,
             phone_number_id: current.phone_number_id
@@ -15975,40 +15990,91 @@ Thank you for shopping with {store_name}!</textarea>
         return next;
     }
 
+    async function getMetaTokenManagerHeaders() {
+        const headers = { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY };
+        try {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`;
+        } catch (e) {
+            console.warn('getMetaTokenManagerHeaders: no session', e);
+        }
+        return headers;
+    }
+
+    async function callMetaTokenManager(action, body) {
+        const url = `${SUPABASE_URL}/functions/v1/meta-token-manager`;
+        try {
+            const headers = await getMetaTokenManagerHeaders();
+            const response = await fetch(url, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(Object.assign({ action, org_id: currentUserOrgId }, body))
+            });
+            const json = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                const errMsg = json?.error || json?.message || `HTTP ${response.status}`;
+                console.warn(`meta-token-manager/${action} failed:`, errMsg);
+                return { ok: false, status: 'error', reason: errMsg, payload: sanitizeWhatsAppPayload(json) };
+            }
+            return { ok: true, status: 'success', payload: sanitizeWhatsAppPayload(json) };
+        } catch (error) {
+            console.warn(`meta-token-manager/${action} network error:`, error);
+            return { ok: false, status: 'error', reason: error?.message || String(error) };
+        }
+    }
+
     async function exchangeWhatsAppSignupCodeOnBackend(payload) {
-        return {
-            ok: false,
-            status: 'pending',
-            reason: 'backend_not_configured',
-            payload: sanitizeWhatsAppPayload(payload)
-        };
+        if (!payload.auth_code && !whatsappRuntimeAuthCode) {
+            return { ok: false, status: 'pending', reason: 'no_auth_code' };
+        }
+        const result = await callMetaTokenManager('exchange', {
+            code: payload.auth_code || whatsappRuntimeAuthCode,
+            app_id: payload.app_id || WHATSAPP_EMBEDDED_SIGNUP_APP_ID,
+            waba_id: getWhatsAppConnectionState()?.waba_id || '',
+            phone_number_id: getWhatsAppConnectionState()?.phone_number_id || '',
+            business_id: getWhatsAppConnectionState()?.business_id || ''
+        });
+        return result;
     }
 
     async function fetchWhatsAppPhoneDetailsOnBackend(payload) {
-        return {
-            ok: false,
-            status: 'pending',
-            reason: 'backend_not_configured',
-            payload: sanitizeWhatsAppPayload(payload)
-        };
+        if (!payload.waba_id || !payload.phone_number_id) {
+            return { ok: false, status: 'pending', reason: 'missing_waba_or_phone' };
+        }
+        const result = await callMetaTokenManager('phone_details', {
+            waba_id: payload.waba_id,
+            phone_number_id: payload.phone_number_id
+        });
+        if (result.ok && result.payload) {
+            return {
+                ok: true,
+                status: 'success',
+                display_phone_number: result.payload.display_phone_number || '',
+                verified_name: result.payload.verified_name || '',
+                quality_rating: result.payload.quality_rating || ''
+            };
+        }
+        return result;
     }
 
     async function subscribeAppToWabaOnBackend(payload) {
-        return {
-            ok: false,
-            status: 'pending',
-            reason: 'backend_not_configured',
-            payload: sanitizeWhatsAppPayload(payload)
-        };
+        if (!payload.waba_id) {
+            return { ok: false, status: 'pending', reason: 'missing_waba_id' };
+        }
+        return callMetaTokenManager('subscribe', {
+            waba_id: payload.waba_id,
+            business_id: payload.business_id || ''
+        });
     }
 
     async function verifyWebhookReadyOnBackend(payload) {
-        return {
-            ok: false,
-            status: 'pending',
-            reason: 'backend_not_configured',
-            payload: sanitizeWhatsAppPayload(payload)
-        };
+        if (!payload.waba_id) {
+            return { ok: false, status: 'pending', reason: 'missing_waba_id' };
+        }
+        return callMetaTokenManager('verify_webhook', {
+            waba_id: payload.waba_id,
+            phone_number_id: payload.phone_number_id || ''
+        });
     }
 
     async function finalizeWhatsAppConnection() {
@@ -16250,11 +16316,43 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     async function submitWhatsAppEmbeddedSignupResultToBackend(payload) {
-        return {
-            ok: true,
-            received_at: new Date().toISOString(),
-            payload: sanitizeWhatsAppPayload(payload)
-        };
+        if (!currentUserOrgId) {
+            console.warn('submitWhatsAppEmbeddedSignupResultToBackend: no org_id');
+            return { ok: false, status: 'error', reason: 'no_org_id' };
+        }
+        try {
+            const headers = await getMetaTokenManagerHeaders();
+            const { data, error } = await supabaseClient
+                .from('org_channel_accounts')
+                .upsert({
+                    org_id: currentUserOrgId,
+                    platform: 'whatsapp',
+                    is_active: true,
+                    account_id: payload.waba_id || '',
+                    external_account_id: payload.waba_id || '',
+                    account_name: payload.verified_name || payload.display_phone_number || '',
+                    connected_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    meta: sanitizeWhatsAppPayload({
+                        app_id: payload.app_id,
+                        config_id: payload.config_id,
+                        business_id: payload.business_id,
+                        waba_id: payload.waba_id,
+                        phone_number_id: payload.phone_number_id,
+                        display_phone_number: payload.display_phone_number,
+                        verified_name: payload.verified_name,
+                        auth_code_received: payload.auth_code_received
+                    })
+                }, { onConflict: 'org_id,platform' });
+            if (error) {
+                console.warn('submitWhatsAppEmbeddedSignupResultToBackend upsert error:', error);
+                return { ok: false, status: 'error', reason: error.message || 'upsert_failed' };
+            }
+            return { ok: true, received_at: new Date().toISOString(), payload: sanitizeWhatsAppPayload(payload) };
+        } catch (error) {
+            console.warn('submitWhatsAppEmbeddedSignupResultToBackend error:', error);
+            return { ok: false, status: 'error', reason: error?.message || String(error) };
+        }
     }
 
     function buildWhatsAppJsonForDisplay() {
@@ -16544,7 +16642,7 @@ Thank you for shopping with {store_name}!</textarea>
                             appId: WHATSAPP_EMBEDDED_SIGNUP_APP_ID,
                             cookie: true,
                             xfbml: true,
-                            version: 'v20.0'
+                            version: 'v22.0'
                         });
                         whatsappSdkInitialized = true;
                     }
