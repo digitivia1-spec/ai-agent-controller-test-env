@@ -1163,9 +1163,7 @@
                                                                              "node":  "Normalize Comment Reply1",
                                                                              "type":  "main",
                                                                              "index":  0
-                                                                         }
-                                                                     ],
-                                                                     [
+                                                                         },
                                                                          {
                                                                              "node":  "GC5 Calculate Comment AI Cost",
                                                                              "type":  "main",

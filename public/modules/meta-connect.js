@@ -321,7 +321,7 @@
             // the columns exist.
             const base = await window.supabaseClient
                 .from('org_channel_accounts')
-                .select('account_id, external_account_id, is_active')
+                .select('external_account_id, is_active')
                 .eq('org_id', window.currentUserOrgId)
                 .eq('platform', platform)
                 .eq('is_active', true)
@@ -416,8 +416,8 @@
 
         if (row) {
             const label = isIG
-                ? `@${row.instagram_username || row.account_name || row.account_id}`
-                : (row.account_name || row.account_id);
+                ? `@${row.instagram_username || row.account_name || row.external_account_id}`
+                : (row.account_name || row.external_account_id);
             status.innerHTML = `
               <span style="color:#10b981;font-size:1rem;">●</span>
               ${isIG ? tr('instagram_connect.status_connected_prefix', 'Connected — ')

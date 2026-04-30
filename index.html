@@ -16341,6 +16341,7 @@ Thank you for shopping with {store_name}!</textarea>
                     is_active: true,
                     external_account_id: wabaId,
                     account_name: payload.verified_name || payload.display_phone_number || '',
+                    access_token: 'pending_exchange',
                     connected_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
                     meta: sanitizeWhatsAppPayload({

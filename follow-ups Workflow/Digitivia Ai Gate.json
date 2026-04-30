@@ -5002,9 +5002,7 @@
                                                                            "node":  "Build Outbound Request1",
                                                                            "type":  "main",
                                                                            "index":  0
-                                                                       }
-                                                                   ],
-                                                                   [
+                                                                       },
                                                                        {
                                                                            "node":  "G5 Calculate Text AI Cost",
                                                                            "type":  "main",

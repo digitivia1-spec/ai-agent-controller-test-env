@@ -176,7 +176,6 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
     const ocaRow: Record<string, unknown> = {
         org_id,
         platform,
-        account_id,
         external_account_id: account_id,
         account_name: account_name ?? null,
         access_token: finalToken,
@@ -186,7 +185,7 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
     };
     const ocaUpsert = await supabase
         .from("org_channel_accounts")
-        .upsert(ocaRow, { onConflict: "org_id,platform" });
+        .upsert(ocaRow, { onConflict: "org_id,platform,external_account_id" });
     if (ocaUpsert.error) {
         return jsonResponse({ error: `org_channel_accounts upsert: ${ocaUpsert.error.message}` }, 500);
     }
@@ -365,7 +364,7 @@ Deno.serve(async (req) => {
     const orgId = body?.org_id as string | undefined;
     if (orgId) {
         const member = await supabase
-            .from("org_members")
+            .from("organization_members")
             .select("org_id")
             .eq("org_id", orgId)
             .eq("user_id", userData.user.id)
