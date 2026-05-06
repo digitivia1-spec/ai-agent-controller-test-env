@@ -13,7 +13,8 @@
       "Bash(npm run *)",
       "Bash(npx vite *)",
       "Bash(node_modules/.bin/vite build *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "mcp__2c6656fa-f4a6-4ff9-880b-8ebe232ef84b__execute_sql"
     ]
   }
 }
