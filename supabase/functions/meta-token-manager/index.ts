@@ -2,7 +2,8 @@
 //
 // Single POST endpoint for all Meta token operations. Body must include
 // `action`, one of: "exchange" | "validate" | "refresh" | "disconnect" |
-//                   "phone_details" | "subscribe" | "verify_webhook".
+//                   "phone_details" | "subscribe" | "verify_webhook" |
+//                   "request_code" | "verify_code" | "register_number".
 //
 // Credentials are read ONLY from environment variables:
 //   - META_APP_ID, META_APP_SECRET
@@ -10,9 +11,9 @@
 //
 // Auth: callers must include a valid Supabase user JWT for org-scoped
 // actions ("exchange", "validate", "disconnect", "phone_details",
-// "subscribe", "verify_webhook"). The "refresh" action is intended to be
-// triggered server-side (cron / admin) and verifies an internal secret
-// instead. We deploy with verify_jwt=false because "refresh" carries no
+// "subscribe", "verify_webhook", "request_code", "verify_code",
+// "register_number"). The "refresh" action is intended to be triggered
+// server-side (cron / admin) and verifies an internal secret instead. We deploy with verify_jwt=false because "refresh" carries no
 // user JWT, but every other branch verifies the JWT in code via
 // supabase.auth.getUser().
 
@@ -371,6 +372,128 @@ async function handleVerifyWebhook(supabase: ReturnType<typeof createClient>, bo
     return jsonResponse({ ready: subscribed || apps.length > 0, waba_id, app_count: apps.length });
 }
 
+// Phone-number registration: Embedded Signup hands you a phone_number_id
+// but the WhatsApp Business API will not deliver phone_details, send, or
+// receive messages until the number completes a 3-step registration:
+//   1. request_code   POST /{phone_number_id}/request_code
+//   2. verify_code    POST /{phone_number_id}/verify_code
+//   3. register       POST /{phone_number_id}/register   (sets a 6-digit PIN)
+// All three calls require the org's long-lived WhatsApp token.
+
+async function loadWhatsAppToken(
+    supabase: ReturnType<typeof createClient>,
+    org_id: string,
+): Promise<{ token: string } | { error: string; status: number }> {
+    const { data: tokenRow, error } = await supabase
+        .from("meta_channel_tokens")
+        .select("access_token")
+        .eq("org_id", org_id)
+        .eq("platform", "whatsapp")
+        .eq("is_active", true)
+        .maybeSingle();
+    if (error) return { error: `token lookup: ${error.message}`, status: 500 };
+    const token = (tokenRow?.access_token ?? "") as string;
+    if (!token || token.startsWith("pending")) {
+        return { error: "token not yet exchanged", status: 400 };
+    }
+    return { token };
+}
+
+interface RequestCodeBody {
+    action: "request_code";
+    org_id: string;
+    phone_number_id: string;
+    code_method?: "SMS" | "VOICE";
+    language?: string;
+}
+
+async function handleRequestCode(supabase: ReturnType<typeof createClient>, body: RequestCodeBody) {
+    const { org_id, phone_number_id } = body;
+    if (!org_id || !phone_number_id) return jsonResponse({ error: "missing required fields" }, 400);
+    const t = await loadWhatsAppToken(supabase, org_id);
+    if ("error" in t) return jsonResponse({ error: t.error }, t.status);
+
+    const params = new URLSearchParams({
+        code_method: body.code_method ?? "SMS",
+        language:    body.language    ?? "en_US",
+    });
+    const r = await fetch(`${GRAPH}/${encodeURIComponent(phone_number_id)}/request_code`, {
+        method: "POST",
+        headers: {
+            "Content-Type":  "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${t.token}`,
+        },
+        body: params.toString(),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) {
+        console.error("request_code graph error:", r.status, JSON.stringify(j));
+        return jsonResponse({ error: j?.error?.message ?? `graph_api: ${r.status}`, detail: j }, 502);
+    }
+    return jsonResponse({ success: true, result: j });
+}
+
+interface VerifyCodeBody {
+    action: "verify_code";
+    org_id: string;
+    phone_number_id: string;
+    code: string;
+}
+
+async function handleVerifyCode(supabase: ReturnType<typeof createClient>, body: VerifyCodeBody) {
+    const { org_id, phone_number_id, code } = body;
+    if (!org_id || !phone_number_id || !code) return jsonResponse({ error: "missing required fields" }, 400);
+    const t = await loadWhatsAppToken(supabase, org_id);
+    if ("error" in t) return jsonResponse({ error: t.error }, t.status);
+
+    const params = new URLSearchParams({ code });
+    const r = await fetch(`${GRAPH}/${encodeURIComponent(phone_number_id)}/verify_code`, {
+        method: "POST",
+        headers: {
+            "Content-Type":  "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${t.token}`,
+        },
+        body: params.toString(),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) {
+        console.error("verify_code graph error:", r.status, JSON.stringify(j));
+        return jsonResponse({ error: j?.error?.message ?? `graph_api: ${r.status}`, detail: j }, 502);
+    }
+    return jsonResponse({ success: true, result: j });
+}
+
+interface RegisterNumberBody {
+    action: "register_number";
+    org_id: string;
+    phone_number_id: string;
+    pin: string;
+}
+
+async function handleRegisterNumber(supabase: ReturnType<typeof createClient>, body: RegisterNumberBody) {
+    const { org_id, phone_number_id, pin } = body;
+    if (!org_id || !phone_number_id || !pin) return jsonResponse({ error: "missing required fields" }, 400);
+    if (!/^\d{6}$/.test(pin)) return jsonResponse({ error: "pin must be 6 digits" }, 400);
+    const t = await loadWhatsAppToken(supabase, org_id);
+    if ("error" in t) return jsonResponse({ error: t.error }, t.status);
+
+    const params = new URLSearchParams({ messaging_product: "whatsapp", pin });
+    const r = await fetch(`${GRAPH}/${encodeURIComponent(phone_number_id)}/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type":  "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${t.token}`,
+        },
+        body: params.toString(),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) {
+        console.error("register graph error:", r.status, JSON.stringify(j));
+        return jsonResponse({ error: j?.error?.message ?? `graph_api: ${r.status}`, detail: j }, 502);
+    }
+    return jsonResponse({ success: true, result: j });
+}
+
 interface RefreshBody { action: "refresh"; }
 
 async function handleRefresh(supabase: ReturnType<typeof createClient>) {
@@ -509,6 +632,9 @@ Deno.serve(async (req) => {
         case "phone_details": return await handlePhoneDetails(supabase, body as PhoneDetailsBody);
         case "subscribe":     return await handleSubscribe(supabase, body as SubscribeBody);
         case "verify_webhook":return await handleVerifyWebhook(supabase, body as VerifyWebhookBody);
+        case "request_code":  return await handleRequestCode(supabase, body as RequestCodeBody);
+        case "verify_code":   return await handleVerifyCode(supabase, body as VerifyCodeBody);
+        case "register_number": return await handleRegisterNumber(supabase, body as RegisterNumberBody);
         case "disconnect":    return await handleDisconnect(supabase, body as DisconnectBody);
         default:              return jsonResponse({ error: `unknown action: ${action}` }, 400);
     }

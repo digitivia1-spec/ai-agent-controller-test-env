@@ -1,22 +1,21 @@
-// messenger-webhook Edge Function.
+// whatsapp-webhook Edge Function.
 //
-// Handles Meta Messenger webhooks (Facebook Page messages).
-//   GET  -> hub challenge verification (uses META_VERIFY_TOKEN env)
-//   POST -> HMAC-SHA256 verify against META_APP_SECRET, then forward
-//           inbound message events to the existing n8n unified webhook.
+// Identical contract to messenger-webhook / instagram-webhook except:
+//   - body.object must be 'whatsapp_business_account'
+//   - org_channel_accounts.platform = 'whatsapp'
+//   - entry.id is the WhatsApp Business Account (WABA) ID, stored as
+//     external_account_id when the wizard runs Embedded Signup.
+//   - WhatsApp events live under entry.changes[].value.messages[] (and
+//     entry.changes[].value.statuses[] for delivery/read receipts).
 //
-// All Meta credentials are read ONLY from environment variables:
-//   - META_APP_SECRET     (required)
-//   - META_VERIFY_TOKEN   (required)
-//   - SUPABASE_URL                  (auto-injected by Supabase)
-//   - SUPABASE_SERVICE_ROLE_KEY     (auto-injected by Supabase)
+// Credentials are read ONLY from environment variables:
+//   - META_APP_SECRET, META_VERIFY_TOKEN
+//   - SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (auto-injected)
 //
-// Deploy with `verify_jwt=true` (default). Meta does not send a JWT, but
-// the function is invoked by Meta directly via the public function URL,
-// which accepts the request because the function performs its own
-// signature check.
-//
-// We never modify any other Edge Function. This file only forwards events.
+// The downstream n8n workflow already normalises WhatsApp events into
+// inbox_contacts / inbox_conversations / inbox_messages -- see the row
+// counts under platform='whatsapp' in inbox_messages. We just forward
+// the raw envelope in the same shape Messenger and Instagram use.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -29,10 +28,8 @@ const SERVICE_ROLE      = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const N8N_UNIFIED_WEBHOOK =
     "https://n8n.srv1174105.hstgr.cloud/webhook/meta_unified_digitivia";
 
-const PLATFORM = "page";        // org_channel_accounts.platform value for Messenger
-const EXPECTED_OBJECT = "page"; // Meta payload's `object` field for Page events
-
-// ---------- helpers ----------
+const PLATFORM = "whatsapp";
+const EXPECTED_OBJECT = "whatsapp_business_account";
 
 async function verifySignature(rawBody: string, sigHeader: string | null): Promise<boolean> {
     if (!sigHeader || !sigHeader.startsWith("sha256=")) return false;
@@ -49,7 +46,6 @@ async function verifySignature(rawBody: string, sigHeader: string | null): Promi
     const hex = Array.from(new Uint8Array(sig))
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
-    // constant-time-ish comparison
     if (hex.length !== expected.length) return false;
     let diff = 0;
     for (let i = 0; i < hex.length; i++) diff |= hex.charCodeAt(i) ^ expected.charCodeAt(i);
@@ -68,17 +64,13 @@ async function forwardToN8n(rawBody: string, parsed: unknown, sigHeader: string 
             }),
         });
     } catch (err) {
-        // We never fail the request to Meta because n8n forwarding hiccupped.
         console.warn(`[${PLATFORM}-webhook] n8n forward failed:`, err);
     }
 }
 
-// ---------- entrypoint ----------
-
 Deno.serve(async (req) => {
     const url = new URL(req.url);
 
-    // GET: Meta hub challenge verification
     if (req.method === "GET") {
         const mode      = url.searchParams.get("hub.mode");
         const token     = url.searchParams.get("hub.verify_token");
@@ -114,53 +106,37 @@ Deno.serve(async (req) => {
         auth: { persistSession: false, autoRefreshToken: false },
     });
 
-    // Walk all entries to (a) confirm at least one event maps to a known
-    // active org, and (b) confirm at least one event has user-typed text
-    // (i.e. not an echo / read / delivery receipt). If both are true we
-    // forward the FULL raw body to n8n exactly once -- n8n normalises the
-    // entries itself. If neither is true we drop the request silently.
+    // Walk all entries; forward the full raw body to n8n exactly once if
+    // any entry has at least one inbound user message for a known active
+    // org. Status-only callbacks (sent/delivered/read) are ignored here --
+    // n8n normalises the rest itself.
     let shouldForward = false;
     for (const entry of parsed.entry ?? []) {
-        const pageId: string | undefined = entry?.id;
-        if (!pageId) continue;
+        const wabaId: string | undefined = entry?.id;
+        if (!wabaId) continue;
 
         const { data: orgRow, error } = await supabase
             .from("org_channel_accounts")
             .select("org_id")
             .eq("platform", PLATFORM)
-            .eq("external_account_id", pageId)
+            .eq("external_account_id", wabaId)
             .eq("is_active", true)
             .maybeSingle();
 
         if (error) {
-            console.warn(`[${PLATFORM}-webhook] org lookup error for ${pageId}:`, error.message);
+            console.warn(`[${PLATFORM}-webhook] org lookup error for WABA ${wabaId}:`, error.message);
             continue;
         }
         if (!orgRow) {
-            console.warn(`[${PLATFORM}-webhook] no active org for page ${pageId}`);
+            console.warn(`[${PLATFORM}-webhook] no active org for WABA ${wabaId}`);
             continue;
         }
 
-        for (const event of entry?.messaging ?? []) {
-            if (event?.message?.is_echo === true) continue;
-            if (event?.delivery || event?.read) continue;
-            if (!event?.message?.text) continue;
-            shouldForward = true;
-            break;
-        }
-        if (shouldForward) break;
-
-        // Page comments arrive as entry.changes[] with field='feed' and
-        // value.item='comment'. We forward inbound non-self comments so the
-        // AI Inbox can show them alongside DMs. Self-comments (the page
-        // commenting on its own post) are filtered to avoid loops.
         for (const change of entry?.changes ?? []) {
-            if (change?.field !== "feed") continue;
+            if (change?.field !== "messages") continue;
             const value = change?.value ?? {};
-            if (value.item !== "comment") continue;
-            if (value.verb && value.verb !== "add") continue;
-            const fromId = value.from?.id ?? "";
-            if (fromId && fromId === pageId) continue;
+            const messages = Array.isArray(value.messages) ? value.messages : [];
+            if (messages.length === 0) continue;
             shouldForward = true;
             break;
         }

@@ -135,6 +135,21 @@ Deno.serve(async (req) => {
             break;
         }
         if (shouldForward) break;
+
+        // IG comments arrive as entry.changes[] with field='comments'. The
+        // value.from.id is the commenter's IG user id; we filter self-comments
+        // (the connected IG business account commenting on its own media) to
+        // avoid feedback loops with our own AI replies.
+        for (const change of entry?.changes ?? []) {
+            if (change?.field !== "comments") continue;
+            const value = change?.value ?? {};
+            const fromId = value.from?.id ?? "";
+            if (fromId && fromId === igAccountId) continue;
+            if (!value.id) continue;
+            shouldForward = true;
+            break;
+        }
+        if (shouldForward) break;
     }
 
     if (shouldForward) {
