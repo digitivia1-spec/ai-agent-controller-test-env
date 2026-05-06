@@ -9,7 +9,11 @@
       "Bash(python3 -c *)",
       "Bash(python3 -m *)",
       "mcp__supabase__list_extensions",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(npm run *)",
+      "Bash(npx vite *)",
+      "Bash(node_modules/.bin/vite build *)",
+      "Bash(node -e ' *)"
     ]
   }
 }

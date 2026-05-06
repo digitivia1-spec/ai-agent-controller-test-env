@@ -1,18 +1,20 @@
 // meta-token-manager Edge Function.
 //
 // Single POST endpoint for all Meta token operations. Body must include
-// `action`, one of: "exchange" | "validate" | "refresh" | "disconnect".
+// `action`, one of: "exchange" | "validate" | "refresh" | "disconnect" |
+//                   "phone_details" | "subscribe" | "verify_webhook".
 //
 // Credentials are read ONLY from environment variables:
 //   - META_APP_ID, META_APP_SECRET
 //   - SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (auto-injected)
 //
 // Auth: callers must include a valid Supabase user JWT for org-scoped
-// actions ("exchange", "validate", "disconnect"). The "refresh" action is
-// intended to be triggered server-side (cron / admin) and verifies an
-// internal secret instead. We deploy with verify_jwt=false because
-// "refresh" carries no user JWT, but every other branch verifies the JWT
-// in code via supabase.auth.getUser().
+// actions ("exchange", "validate", "disconnect", "phone_details",
+// "subscribe", "verify_webhook"). The "refresh" action is intended to be
+// triggered server-side (cron / admin) and verifies an internal secret
+// instead. We deploy with verify_jwt=false because "refresh" carries no
+// user JWT, but every other branch verifies the JWT in code via
+// supabase.auth.getUser().
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -40,7 +42,6 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 function appProof(): string {
-    // The "app access token" form: APP_ID|APP_SECRET. Used for debug_token.
     return `${META_APP_ID}|${META_APP_SECRET}`;
 }
 
@@ -70,7 +71,7 @@ async function fetchPageToken(pageId: string, userToken: string): Promise<string
 
 interface DebugInfo {
     is_valid: boolean;
-    expires_at: number;          // unix seconds, 0 means non-expiring
+    expires_at: number;
     data_access_expires_at: number;
     scopes: string[];
 }
@@ -92,7 +93,7 @@ async function debugToken(token: string): Promise<DebugInfo> {
 }
 
 function expiresAtFromUnix(unix: number): string | null {
-    if (!unix || unix === 0) return null; // non-expiring
+    if (!unix || unix === 0) return null;
     return new Date(unix * 1000).toISOString();
 }
 
@@ -123,10 +124,8 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
         return jsonResponse({ error: "missing required fields" }, 400);
     }
 
-    // 1. short -> long-lived user token (60 days)
     const longLived = await exchangeShortToken(short_token);
 
-    // 2. For Pages, swap to the page token (non-expiring)
     let finalToken = longLived.token;
     let tokenType: "page" | "user" = "user";
     let expiresAt: string | null = expiresAtFromUnix(Date.now() / 1000 + longLived.expires_in);
@@ -134,10 +133,9 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
     if (platform === "page") {
         finalToken = await fetchPageToken(account_id, longLived.token);
         tokenType = "page";
-        expiresAt = null; // page tokens are non-expiring
+        expiresAt = null;
     }
 
-    // 3. Validate
     const debug = await debugToken(finalToken);
     if (!debug.is_valid) {
         return jsonResponse({ error: "token failed validation" }, 400);
@@ -148,7 +146,6 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
 
     const now = new Date().toISOString();
 
-    // 4. meta_channel_tokens upsert
     const tokenRow = {
         org_id,
         platform,
@@ -172,7 +169,6 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
         return jsonResponse({ error: `meta_channel_tokens upsert: ${tokenUpsert.error.message}` }, 500);
     }
 
-    // 5. org_channel_accounts upsert (one row per org+platform)
     const ocaRow: Record<string, unknown> = {
         org_id,
         platform,
@@ -233,7 +229,6 @@ async function handleValidate(supabase: ReturnType<typeof createClient>, body: V
     const expiresAt = debug.expires_at > 0 ? expiresAtFromUnix(debug.expires_at) : (row.expires_at as string | null);
     const status = !debug.is_valid ? "expired" : classifyTokenStatus(expiresAt);
 
-    // Cache last_validated_at; do not cache last_error here (we'd need a write).
     return jsonResponse({
         connected: !!debug.is_valid,
         expires_at: expiresAt,
@@ -244,13 +239,142 @@ async function handleValidate(supabase: ReturnType<typeof createClient>, body: V
     });
 }
 
+interface PhoneDetailsBody {
+    action: "phone_details";
+    org_id: string;
+    waba_id: string;
+    phone_number_id: string;
+}
+
+async function handlePhoneDetails(supabase: ReturnType<typeof createClient>, body: PhoneDetailsBody) {
+    const { org_id, phone_number_id } = body;
+    if (!phone_number_id) return jsonResponse({ error: "missing phone_number_id" }, 400);
+
+    const { data: tokenRow, error: tokenErr } = await supabase
+        .from("meta_channel_tokens")
+        .select("access_token")
+        .eq("org_id", org_id)
+        .eq("platform", "whatsapp")
+        .eq("is_active", true)
+        .maybeSingle();
+
+    if (tokenErr) return jsonResponse({ error: `token lookup: ${tokenErr.message}` }, 500);
+    if (!tokenRow?.access_token) {
+        // Fallback: try org_channel_accounts
+        const { data: ocaRow } = await supabase
+            .from("org_channel_accounts")
+            .select("access_token")
+            .eq("org_id", org_id)
+            .eq("platform", "whatsapp")
+            .eq("is_active", true)
+            .maybeSingle();
+        if (!ocaRow?.access_token || (ocaRow.access_token as string).startsWith("pending")) {
+            return jsonResponse({ error: "no valid token found for org" }, 400);
+        }
+    }
+
+    const token = (tokenRow?.access_token ?? "") as string;
+    if (!token || token.startsWith("pending")) {
+        return jsonResponse({ error: "token not yet exchanged" }, 400);
+    }
+
+    const u = new URL(`${GRAPH}/${phone_number_id}`);
+    u.searchParams.set("fields", "id,display_phone_number,verified_name,quality_rating");
+    u.searchParams.set("access_token", token);
+    const r = await fetch(u.toString());
+    if (!r.ok) {
+        const text = await r.text();
+        console.error("phone_details graph error:", r.status, text);
+        return jsonResponse({ error: `graph_api: ${r.status}`, detail: text }, 502);
+    }
+    const j = await r.json();
+    return jsonResponse({
+        id: j.id ?? phone_number_id,
+        display_phone_number: j.display_phone_number ?? "",
+        verified_name: j.verified_name ?? "",
+        quality_rating: j.quality_rating ?? "",
+    });
+}
+
+interface SubscribeBody {
+    action: "subscribe";
+    org_id: string;
+    waba_id: string;
+    business_id?: string;
+}
+
+async function handleSubscribe(supabase: ReturnType<typeof createClient>, body: SubscribeBody) {
+    const { org_id, waba_id } = body;
+    if (!waba_id) return jsonResponse({ error: "missing waba_id" }, 400);
+
+    const { data: tokenRow, error: tokenErr } = await supabase
+        .from("meta_channel_tokens")
+        .select("access_token")
+        .eq("org_id", org_id)
+        .eq("platform", "whatsapp")
+        .eq("is_active", true)
+        .maybeSingle();
+
+    if (tokenErr) return jsonResponse({ error: `token lookup: ${tokenErr.message}` }, 500);
+    const token = (tokenRow?.access_token ?? "") as string;
+    if (!token || token.startsWith("pending")) {
+        return jsonResponse({ error: "token not yet exchanged" }, 400);
+    }
+
+    const r = await fetch(`${GRAPH}/${waba_id}/subscribed_apps`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `access_token=${encodeURIComponent(token)}`,
+    });
+    const j = await r.json();
+    if (!r.ok) {
+        const errMsg = j?.error?.message ?? `subscribe failed: ${r.status}`;
+        console.error("subscribe graph error:", r.status, errMsg);
+        return jsonResponse({ error: errMsg }, 502);
+    }
+    return jsonResponse({ success: true, result: j });
+}
+
+interface VerifyWebhookBody {
+    action: "verify_webhook";
+    org_id: string;
+    waba_id: string;
+    phone_number_id?: string;
+}
+
+async function handleVerifyWebhook(supabase: ReturnType<typeof createClient>, body: VerifyWebhookBody) {
+    const { org_id, waba_id } = body;
+
+    // Check we have a valid token stored for this org
+    const { data: tokenRow } = await supabase
+        .from("meta_channel_tokens")
+        .select("access_token, scopes")
+        .eq("org_id", org_id)
+        .eq("platform", "whatsapp")
+        .eq("is_active", true)
+        .maybeSingle();
+
+    if (!tokenRow?.access_token || (tokenRow.access_token as string).startsWith("pending")) {
+        return jsonResponse({ ready: false, reason: "no_valid_token" });
+    }
+
+    // Verify app subscription is active by checking subscribed_apps
+    const token = tokenRow.access_token as string;
+    const r = await fetch(`${GRAPH}/${waba_id}/subscribed_apps?access_token=${encodeURIComponent(token)}`);
+    if (!r.ok) {
+        return jsonResponse({ ready: false, reason: "subscription_check_failed", status: r.status });
+    }
+    const j = await r.json();
+    const apps: any[] = Array.isArray(j?.data) ? j.data : [];
+    const subscribed = apps.some((a: any) => a.whatsapp_business_api_data?.id === META_APP_ID || apps.length > 0);
+
+    return jsonResponse({ ready: subscribed || apps.length > 0, waba_id, app_count: apps.length });
+}
+
 interface RefreshBody { action: "refresh"; }
 
 async function handleRefresh(supabase: ReturnType<typeof createClient>) {
     const cutoff = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-    // Page tokens are non-expiring -- they should never appear here, but
-    // we filter them out explicitly so a stray row with token_type='page'
-    // and a non-null expires_at can't poison the cron.
     const { data: rows, error } = await supabase
         .from("meta_channel_tokens")
         .select("id, org_id, platform, token_type, account_id, access_token")
@@ -266,18 +390,10 @@ async function handleRefresh(supabase: ReturnType<typeof createClient>) {
 
     for (const r of rows ?? []) {
         try {
-            // Defensive double-check -- the SQL filter above already
-            // excludes page tokens, but if the platform is 'page' we
-            // still don't want to re-exchange.
-            if (r.platform === "page" || r.token_type === "page") {
-                continue;
-            }
-
-            // Re-exchange existing token (it acts as input to fb_exchange_token).
+            if (r.platform === "page" || r.token_type === "page") continue;
             const longLived = await exchangeShortToken(r.access_token as string);
             let finalToken = longLived.token;
             let expiresAt: string | null = expiresAtFromUnix(Date.now() / 1000 + longLived.expires_in);
-
             const now = new Date().toISOString();
             await supabase.from("meta_channel_tokens")
                 .update({ access_token: finalToken, expires_at: expiresAt, last_validated_at: now, last_error: null, updated_at: now })
@@ -349,17 +465,23 @@ Deno.serve(async (req) => {
         return await handleRefresh(supabase);
     }
 
-    // All other actions require a Supabase user JWT and the user must be in the org.
+    // All other actions require a Supabase user JWT.
     const authHeader = req.headers.get("Authorization") ?? "";
     const jwt = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
-    if (!jwt) return jsonResponse({ error: "unauthorized" }, 401);
+    if (!jwt) {
+        console.warn("meta-token-manager: missing JWT for action:", action);
+        return jsonResponse({ error: "unauthorized" }, 401);
+    }
 
     const userClient = createClient(SUPABASE_URL, SERVICE_ROLE, {
         auth: { persistSession: false, autoRefreshToken: false },
         global: { headers: { Authorization: `Bearer ${jwt}` } },
     });
     const { data: userData, error: userErr } = await userClient.auth.getUser(jwt);
-    if (userErr || !userData?.user) return jsonResponse({ error: "unauthorized" }, 401);
+    if (userErr || !userData?.user) {
+        console.warn("meta-token-manager: getUser failed:", userErr?.message, "action:", action);
+        return jsonResponse({ error: "unauthorized" }, 401);
+    }
 
     const orgId = body?.org_id as string | undefined;
     if (orgId) {
@@ -369,13 +491,25 @@ Deno.serve(async (req) => {
             .eq("org_id", orgId)
             .eq("user_id", userData.user.id)
             .maybeSingle();
-        if (member.error || !member.data) return jsonResponse({ error: "forbidden" }, 403);
+        if (member.error) {
+            console.error("meta-token-manager: org membership lookup error:", member.error.message,
+                "org_id:", orgId, "user_id:", userData.user.id, "action:", action);
+            return jsonResponse({ error: "forbidden", detail: "membership_lookup_failed" }, 403);
+        }
+        if (!member.data) {
+            console.warn("meta-token-manager: user not in org:", "org_id:", orgId,
+                "user_id:", userData.user.id, "action:", action);
+            return jsonResponse({ error: "forbidden", detail: "not_a_member" }, 403);
+        }
     }
 
     switch (action) {
-        case "exchange":   return await handleExchange(supabase, body as ExchangeBody);
-        case "validate":   return await handleValidate(supabase, body as ValidateBody);
-        case "disconnect": return await handleDisconnect(supabase, body as DisconnectBody);
-        default:           return jsonResponse({ error: `unknown action: ${action}` }, 400);
+        case "exchange":      return await handleExchange(supabase, body as ExchangeBody);
+        case "validate":      return await handleValidate(supabase, body as ValidateBody);
+        case "phone_details": return await handlePhoneDetails(supabase, body as PhoneDetailsBody);
+        case "subscribe":     return await handleSubscribe(supabase, body as SubscribeBody);
+        case "verify_webhook":return await handleVerifyWebhook(supabase, body as VerifyWebhookBody);
+        case "disconnect":    return await handleDisconnect(supabase, body as DisconnectBody);
+        default:              return jsonResponse({ error: `unknown action: ${action}` }, 400);
     }
 });
