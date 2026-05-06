@@ -1200,6 +1200,11 @@
                 <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
                 <span class="nav-label" data-i18n="sidebar.nav_inbox">AI Inbox</span>
             </li>
+            <!-- 2b. Comments (FB Page + IG comments — read-only for App Review) -->
+            <li class="nav-item" onclick="switchTab('comments', this)">
+                <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg></div>
+                <span class="nav-label" data-i18n="comments.title">Comments</span>
+            </li>
             <!-- 3. Follow-ups (Live Operations — adjacent to Inbox) -->
             <li class="nav-item" onclick="switchTab('followups', this)">
                 <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="16" r="3"/><path d="M12 14v2l1.5 1"/></svg></div>
@@ -5222,6 +5227,24 @@
                 </div>
             </div>`;
 
+            // C2. COMMENTS TAB — read-only stream of FB Page + IG comments
+            // Populated by n8n (`meta_unified_digitivia`) into public.social_comments.
+            html += `
+            <div id="comments" class="tab-content">
+                <div class="card glass" style="padding:20px;">
+                    <header class="tab-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;">
+                        <h2 data-i18n="comments.title" style="margin:0;">Comments</h2>
+                        <select id="comments-platform-filter" onchange="loadComments(this.value)" aria-label="Filter comments by platform">
+                            <option value="all" data-i18n="comments.all">All</option>
+                            <option value="facebook" data-i18n="comments.facebook">Facebook</option>
+                            <option value="instagram" data-i18n="comments.instagram">Instagram</option>
+                        </select>
+                    </header>
+                    <ul id="comments-list" class="comments-list" aria-live="polite" style="list-style:none; padding:0; margin:0;"></ul>
+                    <div id="comments-empty" class="empty-state" hidden data-i18n="comments.empty">No comments yet</div>
+                </div>
+            </div>`;
+
             // D. LEADS AREA TAB (Same as Phase 3)
             html += `
             <!-- CRM TAB -->
@@ -6845,6 +6868,13 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'website') color = '#5BAEB0';
             if (tabId === 'inbox') color = '#5BAEB0'; // Consistent Teal for inbox
             if (tabId === 'inbox') document.body.style.overflow = '';
+            if (tabId === 'comments') {
+                color = '#5BAEB0';
+                if (typeof loadComments === 'function') {
+                    const filter = document.getElementById('comments-platform-filter');
+                    loadComments(filter ? filter.value : 'all');
+                }
+            }
             if (tabId === 'integrations') {
                 color = '#4f98a0';
                 if (typeof renderIntegrationsHub === 'function') renderIntegrationsHub();
@@ -8016,6 +8046,84 @@ Thank you for shopping with {store_name}!</textarea>
                     ${retryBtn}
                 </div>
             `;
+        }
+
+        // --- Comments tab (read-only stream from social_comments) ---
+        let commentsRealtimeChannel = null;
+        let currentCommentsPlatform = 'all';
+
+        function renderComments(rows) {
+            const list = document.getElementById('comments-list');
+            const empty = document.getElementById('comments-empty');
+            if (!list || !empty) return;
+            if (!rows || rows.length === 0) {
+                list.innerHTML = '';
+                empty.hidden = false;
+                return;
+            }
+            empty.hidden = true;
+            list.innerHTML = rows.map(c => {
+                const author = c.author_name ? String(c.author_name) : '';
+                const body = c.body ? String(c.body) : '';
+                const when = c.created_at ? new Date(c.created_at).toLocaleString() : '';
+                const platformLabel = c.platform === 'instagram'
+                    ? t('comments.instagram')
+                    : t('comments.facebook');
+                const safe = (s) => String(s || '').replace(/[&<>"']/g, ch => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                })[ch]);
+                const link = c.permalink
+                    ? `<a href="${safe(c.permalink)}" target="_blank" rel="noopener noreferrer" style="margin-inline-start:8px; font-size:0.8rem;">↗</a>`
+                    : '';
+                return `
+                    <li class="comment-item" style="padding:12px 0; border-bottom:1px solid var(--glass-border);">
+                        <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; opacity:0.75;">
+                            <span class="comment-platform-tag">${safe(platformLabel)}</span>
+                            <span class="comment-author">${safe(author)}</span>
+                            <span class="comment-time" style="margin-inline-start:auto;">${safe(when)}</span>
+                        </div>
+                        <div class="comment-body" style="margin-top:6px;">${safe(body)}${link}</div>
+                    </li>`;
+            }).join('');
+        }
+
+        async function loadComments(platform = 'all') {
+            currentCommentsPlatform = platform;
+            if (!currentUserOrgId) return;
+            let q = supabaseClient
+                .from('social_comments')
+                .select('id, platform, author_name, body, permalink, created_at')
+                .eq('org_id', currentUserOrgId)
+                .order('created_at', { ascending: false })
+                .limit(50);
+            if (platform !== 'all') q = q.eq('platform', platform);
+            const { data, error } = await q;
+            if (error) {
+                console.warn('[comments] load failed', error);
+                return;
+            }
+            renderComments(data || []);
+            subscribeToComments();
+        }
+
+        function subscribeToComments() {
+            if (!currentUserOrgId) return;
+            if (commentsRealtimeChannel) {
+                supabaseClient.removeChannel(commentsRealtimeChannel);
+                commentsRealtimeChannel = null;
+            }
+            commentsRealtimeChannel = supabaseClient
+                .channel(`public:social_comments:${currentUserOrgId}`)
+                .on('postgres_changes', {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'social_comments',
+                    filter: `org_id=eq.${currentUserOrgId}`
+                }, () => {
+                    // Reload with the active filter so the list stays consistent.
+                    loadComments(currentCommentsPlatform);
+                })
+                .subscribe();
         }
 
         async function loadInbox(platform, isAutoRefresh = false) {

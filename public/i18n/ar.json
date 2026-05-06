@@ -186,6 +186,13 @@
       "new_conversations": "محادثات جديدة"
     }
   },
+  "comments": {
+    "title": "التعليقات",
+    "empty": "لا توجد تعليقات بعد",
+    "all": "الكل",
+    "facebook": "فيسبوك",
+    "instagram": "إنستغرام"
+  },
   "inbox": {
     "btn_export": "تصدير البيانات",
     "label_platform": "اختر المنصة",
