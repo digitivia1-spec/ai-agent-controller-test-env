@@ -186,6 +186,13 @@
       "new_conversations": "New Conversations"
     }
   },
+  "comments": {
+    "title": "Comments",
+    "empty": "No comments yet",
+    "all": "All",
+    "facebook": "Facebook",
+    "instagram": "Instagram"
+  },
   "inbox": {
     "btn_export": "Export Data",
     "label_platform": "Select Platform",
