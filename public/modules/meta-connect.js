@@ -325,9 +325,13 @@
                 .eq('org_id', window.currentUserOrgId)
                 .eq('platform', platform)
                 .eq('is_active', true)
-                .maybeSingle();
+                .order('connected_at', { ascending: false })
+                .limit(1)
+                .single();
             if (base.error) {
-                console.warn('[meta-connect] fetch row', platform, base.error.message);
+                if (base.error.code !== 'PGRST116') {
+                    console.warn('[meta-connect] fetch row', platform, base.error.message);
+                }
                 return null;
             }
             if (!base.data) return null;
@@ -346,7 +350,9 @@
                 .eq('org_id', window.currentUserOrgId)
                 .eq('platform', platform)
                 .eq('is_active', true)
-                .maybeSingle();
+                .order('connected_at', { ascending: false })
+                .limit(1)
+                .single();
             if (!enrich.error && enrich.data) {
                 Object.assign(row, enrich.data);
             }
