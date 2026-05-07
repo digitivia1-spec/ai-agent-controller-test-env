@@ -27,7 +27,7 @@ const SUPABASE_URL      = Deno.env.get("SUPABASE_URL")      ?? "";
 const SERVICE_ROLE      = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 const N8N_UNIFIED_WEBHOOK =
-    "https://n8n.srv1174105.hstgr.cloud/webhook/meta_unified_digitivia";
+    "https://n8n.srv1174105.hstgr.cloud/webhook/digitivia_meta_unified";
 
 const PLATFORM = "page";        // org_channel_accounts.platform value for Messenger
 const EXPECTED_OBJECT = "page"; // Meta payload's `object` field for Page events

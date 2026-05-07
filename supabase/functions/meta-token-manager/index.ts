@@ -3,7 +3,8 @@
 // Single POST endpoint for all Meta token operations. Body must include
 // `action`, one of: "exchange" | "validate" | "refresh" | "disconnect" |
 //                   "phone_details" | "subscribe" | "verify_webhook" |
-//                   "request_code" | "verify_code" | "register_number".
+//                   "request_code" | "verify_code" | "register_number" |
+//                   "complete_setup".
 //
 // Credentials are read ONLY from environment variables:
 //   - META_APP_ID, META_APP_SECRET
@@ -494,6 +495,207 @@ async function handleRegisterNumber(supabase: ReturnType<typeof createClient>, b
     return jsonResponse({ success: true, result: j });
 }
 
+// complete_setup: one-shot wiring for orgs that bypass Embedded Signup.
+// Use case: the app-owning business cannot Embedded-Signup itself (Meta
+// permission model), or you want to attach a number using a permanent
+// System User token from Business Manager. Caller pastes:
+//   - waba_id, phone_number_id, business_id, account_name
+//   - system_user_token (long-lived; usually permanent for system users)
+// The action validates the token, upserts both meta_channel_tokens and
+// org_channel_accounts, calls subscribed_apps to attach the app to the
+// WABA, fetches phone_details to populate the UI, and writes the
+// connection summary into organizations.external_onboarding_data so the
+// wizard renders "connected" on next reload. Each step's status is
+// reported in the response so partial failures are visible.
+
+interface CompleteSetupBody {
+    action: "complete_setup";
+    org_id: string;
+    waba_id: string;
+    phone_number_id: string;
+    business_id?: string;
+    account_name?: string;
+    system_user_token: string;
+}
+
+async function handleCompleteSetup(supabase: ReturnType<typeof createClient>, body: CompleteSetupBody) {
+    const { org_id, waba_id, phone_number_id, system_user_token } = body;
+    if (!org_id || !waba_id || !phone_number_id || !system_user_token) {
+        return jsonResponse({ error: "missing required fields" }, 400);
+    }
+
+    // 1. Validate token
+    let debug: DebugInfo;
+    try {
+        debug = await debugToken(system_user_token);
+    } catch (e) {
+        return jsonResponse({ error: `debug_token failed: ${String(e)}` }, 400);
+    }
+    if (!debug.is_valid) {
+        return jsonResponse({ error: "token failed validation (debug_token returned is_valid=false)" }, 400);
+    }
+
+    const now = new Date().toISOString();
+    const expiresAt = debug.expires_at > 0 ? expiresAtFromUnix(debug.expires_at) : null;
+    const accountName = body.account_name ?? null;
+
+    // 2. Persist token
+    const tokenUpsert = await supabase
+        .from("meta_channel_tokens")
+        .upsert({
+            org_id,
+            platform: "whatsapp",
+            account_id: waba_id,
+            account_name: accountName,
+            access_token: system_user_token,
+            token_type: "user",
+            expires_at: expiresAt,
+            scopes: debug.scopes,
+            is_active: true,
+            last_validated_at: now,
+            last_error: null,
+            updated_at: now,
+        }, { onConflict: "org_id,platform,account_id" });
+    if (tokenUpsert.error) {
+        return jsonResponse({ error: `meta_channel_tokens: ${tokenUpsert.error.message}` }, 500);
+    }
+
+    const baseMeta = {
+        app_id: META_APP_ID,
+        waba_id,
+        phone_number_id,
+        business_id: body.business_id ?? "",
+        verified_name: "",
+        display_phone_number: "",
+        quality_rating: "",
+    };
+    const ocaUpsert = await supabase
+        .from("org_channel_accounts")
+        .upsert({
+            org_id,
+            platform: "whatsapp",
+            external_account_id: waba_id,
+            account_name: accountName,
+            access_token: system_user_token,
+            is_active: true,
+            connected_at: now,
+            updated_at: now,
+            meta: baseMeta,
+        }, { onConflict: "org_id,platform,external_account_id" });
+    if (ocaUpsert.error) {
+        return jsonResponse({ error: `org_channel_accounts: ${ocaUpsert.error.message}` }, 500);
+    }
+
+    const steps: Record<string, unknown> = {
+        token_validated: { ok: true, scopes: debug.scopes, expires_at: expiresAt },
+    };
+
+    // 3. Subscribe app to WABA (the failing step in Embedded Signup for
+    //    same-business setups). With a system user token holding admin on
+    //    the WABA, this should succeed.
+    {
+        const r = await fetch(`${GRAPH}/${encodeURIComponent(waba_id)}/subscribed_apps`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `access_token=${encodeURIComponent(system_user_token)}`,
+        });
+        const j = await r.json().catch(() => ({}));
+        steps.subscribe_app = r.ok
+            ? { ok: true, result: j }
+            : { ok: false, status: r.status, error: j?.error?.message ?? `http_${r.status}`, detail: j };
+    }
+
+    // 4. Fetch phone_details and update UI fields. Don't fail if this
+    //    errors -- a brand-new unregistered number returns 500 here, but
+    //    that's fixable separately via request_code/verify_code/register.
+    let phoneDetails: { display_phone_number: string; verified_name: string; quality_rating: string } | null = null;
+    {
+        const u = new URL(`${GRAPH}/${encodeURIComponent(phone_number_id)}`);
+        u.searchParams.set("fields", "id,display_phone_number,verified_name,quality_rating");
+        u.searchParams.set("access_token", system_user_token);
+        const r = await fetch(u.toString());
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) {
+            phoneDetails = {
+                display_phone_number: j.display_phone_number ?? "",
+                verified_name:        j.verified_name ?? "",
+                quality_rating:       j.quality_rating ?? "",
+            };
+            const updatedMeta = { ...baseMeta, ...phoneDetails };
+            await supabase
+                .from("org_channel_accounts")
+                .update({
+                    account_name: phoneDetails.verified_name || accountName,
+                    meta: updatedMeta,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq("org_id", org_id)
+                .eq("platform", "whatsapp")
+                .eq("external_account_id", waba_id);
+            steps.phone_details = { ok: true, ...phoneDetails };
+        } else {
+            steps.phone_details = {
+                ok: false, status: r.status,
+                error: j?.error?.message ?? `http_${r.status}`,
+                hint: r.status === 500 || r.status === 400
+                    ? "phone number likely not registered yet; run request_code -> verify_code -> register_number"
+                    : undefined,
+            };
+        }
+    }
+
+    // 5. Write the connection summary into organizations.external_onboarding_data
+    //    so the wizard reads "connected" on next page load.
+    const subscribeOk = (steps.subscribe_app as any)?.ok === true;
+    const channelStatus = subscribeOk && phoneDetails ? "connected" : "partial";
+    {
+        const orgRes = await supabase
+            .from("organizations")
+            .select("external_onboarding_data")
+            .eq("id", org_id)
+            .maybeSingle();
+        const merged: any = orgRes.data?.external_onboarding_data ?? {};
+        if (!merged.channels) merged.channels = {};
+        merged.channels.whatsapp_connection = {
+            channel_connection_status: channelStatus,
+            waba_id,
+            phone_number_id,
+            business_id: body.business_id ?? "",
+            display_phone_number: phoneDetails?.display_phone_number ?? "",
+            verified_name:        phoneDetails?.verified_name ?? "",
+            quality_rating:       phoneDetails?.quality_rating ?? "",
+            backend_status: {
+                code_exchange:       "success",
+                phone_details_fetch: phoneDetails ? "success" : "error",
+                subscribe_app:       subscribeOk ? "success" : "error",
+                webhook_ready:       subscribeOk ? "success" : "pending",
+            },
+            updated_at: new Date().toISOString(),
+        };
+        merged.channels.whatsapp_number = phoneDetails?.display_phone_number ?? "";
+        await supabase
+            .from("organizations")
+            .update({ external_onboarding_data: merged })
+            .eq("id", org_id);
+        steps.organization_state = { ok: true, channel_connection_status: channelStatus };
+    }
+
+    return jsonResponse({
+        success: subscribeOk,
+        channel_connection_status: channelStatus,
+        steps,
+        phone_details: phoneDetails,
+        next_steps: phoneDetails
+            ? ["Configure webhook URL in Meta App Dashboard if not done", "Send a test message to confirm flow"]
+            : [
+                "Phone number not registered yet -- run actions:",
+                "  1) request_code (sends SMS to the number)",
+                "  2) verify_code (paste 6-digit SMS code)",
+                "  3) register_number (set a 6-digit PIN)",
+            ],
+    });
+}
+
 interface RefreshBody { action: "refresh"; }
 
 async function handleRefresh(supabase: ReturnType<typeof createClient>) {
@@ -635,6 +837,7 @@ Deno.serve(async (req) => {
         case "request_code":  return await handleRequestCode(supabase, body as RequestCodeBody);
         case "verify_code":   return await handleVerifyCode(supabase, body as VerifyCodeBody);
         case "register_number": return await handleRegisterNumber(supabase, body as RegisterNumberBody);
+        case "complete_setup":  return await handleCompleteSetup(supabase, body as CompleteSetupBody);
         case "disconnect":    return await handleDisconnect(supabase, body as DisconnectBody);
         default:              return jsonResponse({ error: `unknown action: ${action}` }, 400);
     }
