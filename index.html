@@ -16584,7 +16584,9 @@ Thank you for shopping with {store_name}!</textarea>
         const assetRows = [
             ['result_page_ids', joinArray(state.page_ids)],
             ['result_instagram_account_ids', joinArray(state.instagram_account_ids)],
-            ['result_ad_account_ids', joinArray(state.ad_account_ids)],
+            // Ad account IDs intentionally hidden -- Omnio is messaging-only,
+            // we don't use ads. The Embedded Signup config still returns
+            // ad_account_ids but we don't surface them in the UI.
             ['result_catalog_ids', joinArray(state.catalog_ids)],
             ['result_dataset_ids', joinArray(state.dataset_ids)],
             ['result_page_name', state.page_name],
@@ -16783,6 +16785,26 @@ Thank you for shopping with {store_name}!</textarea>
         initWhatsAppEmbeddedSignup().catch((error) => {
             console.warn('initWhatsAppEmbeddedSignup failed', error);
         });
+    }
+
+    // Globally expose the FB SDK loader so the per-channel Messenger /
+    // Instagram cards (public/modules/meta-connect.js) can await it
+    // before calling FB.login. Without this, clicking Connect Facebook
+    // Page or Connect Instagram before opening the WhatsApp modal
+    // produces "Facebook SDK not ready" because the SDK is only loaded
+    // by initWhatsAppEmbeddedSignup. Eager-loads on app boot below.
+    window.ensureFbSdk = function () {
+        return initWhatsAppEmbeddedSignup();
+    };
+    if (typeof document !== 'undefined') {
+        const eagerLoad = () => {
+            try { initWhatsAppEmbeddedSignup(); } catch (e) { /* non-fatal */ }
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', eagerLoad, { once: true });
+        } else {
+            eagerLoad();
+        }
     }
 
     async function initWhatsAppEmbeddedSignup() {

@@ -33,6 +33,14 @@
 
     // ----- shared FB token helper (Prompt 3) -----
     window.getOrRefreshMetaToken = async function(requiredScopes) {
+        // Wait for the FB SDK if it's still loading -- the SDK is loaded
+        // by initWhatsAppEmbeddedSignup in index.html, exposed globally
+        // as window.ensureFbSdk. Without this await, clicking Connect
+        // Facebook Page or Connect Instagram before the WhatsApp modal
+        // is ever opened reliably hits "Facebook SDK not ready".
+        if (typeof window.ensureFbSdk === 'function') {
+            try { await window.ensureFbSdk(); } catch (_) { /* fall through */ }
+        }
         const existing = window.FB && window.FB.getAuthResponse && window.FB.getAuthResponse();
         if (existing && existing.accessToken && existing.expiresIn > 0) return existing.accessToken;
         return new Promise((resolve, reject) => {
