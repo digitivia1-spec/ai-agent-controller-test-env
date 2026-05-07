@@ -5232,15 +5232,15 @@
             html += `
             <div id="comments" class="tab-content">
                 <div class="card glass" style="padding:20px;">
-                    <header class="tab-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;">
-                        <h2 data-i18n="comments.title" style="margin:0;">Comments</h2>
+                    <div class="tab-header">
+                        <h2 data-i18n="comments.title">Comments</h2>
                         <select id="comments-platform-filter" onchange="loadComments(this.value)" aria-label="Filter comments by platform">
                             <option value="all" data-i18n="comments.all">All</option>
                             <option value="facebook" data-i18n="comments.facebook">Facebook</option>
                             <option value="instagram" data-i18n="comments.instagram">Instagram</option>
                         </select>
-                    </header>
-                    <ul id="comments-list" class="comments-list" aria-live="polite" style="list-style:none; padding:0; margin:0;"></ul>
+                    </div>
+                    <ul id="comments-list" class="comments-list" aria-live="polite"></ul>
                     <div id="comments-empty" class="empty-state" hidden data-i18n="comments.empty">No comments yet</div>
                 </div>
             </div>`;
@@ -8076,13 +8076,13 @@ Thank you for shopping with {store_name}!</textarea>
                     ? `<a href="${safe(c.permalink)}" target="_blank" rel="noopener noreferrer" style="margin-inline-start:8px; font-size:0.8rem;">↗</a>`
                     : '';
                 return `
-                    <li class="comment-item" style="padding:12px 0; border-bottom:1px solid var(--glass-border);">
-                        <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; opacity:0.75;">
+                    <li class="comment-item">
+                        <div class="comment-meta">
                             <span class="comment-platform-tag">${safe(platformLabel)}</span>
                             <span class="comment-author">${safe(author)}</span>
-                            <span class="comment-time" style="margin-inline-start:auto;">${safe(when)}</span>
+                            <span class="comment-time">${safe(when)}</span>
                         </div>
-                        <div class="comment-body" style="margin-top:6px;">${safe(body)}${link}</div>
+                        <div class="comment-body">${safe(body)}${link}</div>
                     </li>`;
             }).join('');
         }
