@@ -64,6 +64,32 @@ async function forwardToN8n(rawBody: string, parsed: unknown, sigHeader: string 
     }
 }
 
+async function resolveAndUpsertContact(
+    supabase: ReturnType<typeof createClient>,
+    orgId: string,
+    platform: string,
+    senderId: string,
+    pageToken: string,
+): Promise<void> {
+    let displayName: string | null = null;
+    try {
+        const r = await fetch(
+            `https://graph.facebook.com/v24.0/${senderId}?fields=name,username&access_token=${pageToken}`,
+        );
+        if (r.ok) {
+            const p = await r.json();
+            displayName = p.name || p.username || null;
+        }
+    } catch { /* ignore — fall through to senderId */ }
+
+    await supabase.from("inbox_contacts").upsert({
+        org_id:              orgId,
+        platform,
+        external_contact_id: senderId,
+        display_name:        displayName ?? senderId,
+    }, { onConflict: "org_id,platform,external_contact_id" });
+}
+
 Deno.serve(async (req) => {
     const url = new URL(req.url);
 
@@ -112,7 +138,7 @@ Deno.serve(async (req) => {
 
         const { data: orgRow, error } = await supabase
             .from("org_channel_accounts")
-            .select("org_id")
+            .select("org_id, access_token")
             .eq("platform", PLATFORM)
             .eq("external_account_id", igAccountId)
             .eq("is_active", true)
@@ -131,23 +157,37 @@ Deno.serve(async (req) => {
             if (event?.message?.is_echo === true) continue;
             if (event?.delivery || event?.read) continue;
             if (!event?.message?.text) continue;
+            const senderId = String(event?.sender?.id ?? "");
+            if (senderId && orgRow.access_token) {
+                await resolveAndUpsertContact(
+                    supabase, orgRow.org_id, PLATFORM, senderId, orgRow.access_token,
+                );
+            }
             shouldForward = true;
             break;
         }
         if (shouldForward) break;
 
-        // IG comments arrive as entry.changes[] with field='comments'. The
-        // value.from.id is the commenter's IG user id; we filter self-comments
-        // (the connected IG business account commenting on its own media) to
-        // avoid feedback loops with our own AI replies.
+        // IG comments: persist to social_comments and forward to n8n.
         for (const change of entry?.changes ?? []) {
             if (change?.field !== "comments") continue;
             const value = change?.value ?? {};
-            const fromId = value.from?.id ?? "";
-            if (fromId && fromId === igAccountId) continue;
+            const fromId = String(value.from?.id ?? "");
+            if (fromId && fromId === igAccountId) continue; // skip self-comments
             if (!value.id) continue;
+            await supabase.from("social_comments").upsert({
+                org_id:              orgRow.org_id,
+                platform:            "instagram",
+                external_post_id:    value.media?.id ? String(value.media.id) : null,
+                external_comment_id: String(value.id),
+                parent_external_id:  value.parent_id ? String(value.parent_id) : null,
+                author_external_id:  fromId || null,
+                author_name:         value.from?.username ?? null,
+                body:                value.text ?? "",
+                permalink:           null,
+                raw:                 value,
+            }, { onConflict: "platform,external_comment_id", ignoreDuplicates: true });
             shouldForward = true;
-            break;
         }
         if (shouldForward) break;
     }

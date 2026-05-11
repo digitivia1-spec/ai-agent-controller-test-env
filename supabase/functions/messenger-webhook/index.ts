@@ -73,6 +73,34 @@ async function forwardToN8n(rawBody: string, parsed: unknown, sigHeader: string 
     }
 }
 
+// ---------- helpers ----------
+
+async function resolveAndUpsertContact(
+    supabase: ReturnType<typeof createClient>,
+    orgId: string,
+    platform: string,
+    senderId: string,
+    pageToken: string,
+): Promise<void> {
+    let displayName: string | null = null;
+    try {
+        const r = await fetch(
+            `https://graph.facebook.com/v24.0/${senderId}?fields=name,username&access_token=${pageToken}`,
+        );
+        if (r.ok) {
+            const p = await r.json();
+            displayName = p.name || p.username || null;
+        }
+    } catch { /* ignore — fall through to senderId */ }
+
+    await supabase.from("inbox_contacts").upsert({
+        org_id:              orgId,
+        platform,
+        external_contact_id: senderId,
+        display_name:        displayName ?? senderId,
+    }, { onConflict: "org_id,platform,external_contact_id" });
+}
+
 // ---------- entrypoint ----------
 
 Deno.serve(async (req) => {
@@ -126,7 +154,7 @@ Deno.serve(async (req) => {
 
         const { data: orgRow, error } = await supabase
             .from("org_channel_accounts")
-            .select("org_id")
+            .select("org_id, access_token")
             .eq("platform", PLATFORM)
             .eq("external_account_id", pageId)
             .eq("is_active", true)
@@ -145,24 +173,42 @@ Deno.serve(async (req) => {
             if (event?.message?.is_echo === true) continue;
             if (event?.delivery || event?.read) continue;
             if (!event?.message?.text) continue;
+            // Resolve and persist contact name before n8n creates the contact row
+            const senderId = String(event?.sender?.id ?? "");
+            if (senderId && orgRow.access_token) {
+                await resolveAndUpsertContact(
+                    supabase, orgRow.org_id, PLATFORM, senderId, orgRow.access_token,
+                );
+            }
             shouldForward = true;
             break;
         }
         if (shouldForward) break;
 
-        // Page comments arrive as entry.changes[] with field='feed' and
-        // value.item='comment'. We forward inbound non-self comments so the
-        // AI Inbox can show them alongside DMs. Self-comments (the page
-        // commenting on its own post) are filtered to avoid loops.
+        // Page comments: persist to social_comments and forward to n8n.
         for (const change of entry?.changes ?? []) {
             if (change?.field !== "feed") continue;
             const value = change?.value ?? {};
             if (value.item !== "comment") continue;
             if (value.verb && value.verb !== "add") continue;
-            const fromId = value.from?.id ?? "";
-            if (fromId && fromId === pageId) continue;
+            const fromId = String(value.from?.id ?? "");
+            if (fromId && fromId === pageId) continue; // skip self-comments
+            if (!value.comment_id) continue;
+            await supabase.from("social_comments").upsert({
+                org_id:              orgRow.org_id,
+                platform:            "facebook",
+                external_post_id:    value.post_id ? String(value.post_id) : null,
+                external_comment_id: String(value.comment_id),
+                parent_external_id:  value.parent_id ? String(value.parent_id) : null,
+                author_external_id:  fromId || null,
+                author_name:         value.from?.name ?? null,
+                body:                value.message ?? "",
+                permalink:           value.post_id
+                    ? `https://www.facebook.com/${value.post_id}?comment_id=${value.comment_id}`
+                    : null,
+                raw:                 value,
+            }, { onConflict: "platform,external_comment_id", ignoreDuplicates: true });
             shouldForward = true;
-            break;
         }
         if (shouldForward) break;
     }
