@@ -224,6 +224,37 @@ Deno.serve(async (req) => {
                     : null,
                 raw:                 value,
             }, { onConflict: "platform,external_comment_id", ignoreDuplicates: true });
+            // Auto-reply to customer comment (prototype template)
+            const fbReplyText = "Thank you for your comment! Our team will get back to you soon. 🙏";
+            try {
+                const fbReplyRes = await fetch(
+                    `https://graph.facebook.com/v24.0/${value.comment_id}/comments`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: fbReplyText, access_token: orgRow.access_token }),
+                    },
+                );
+                if (fbReplyRes.ok) {
+                    const fbReplyData = await fbReplyRes.json();
+                    const fbReplyId: string | undefined = fbReplyData?.id;
+                    if (fbReplyId) {
+                        await supabase.from("social_comments").upsert({
+                            org_id:              orgRow.org_id,
+                            platform:            "facebook",
+                            external_post_id:    value.post_id ? String(value.post_id) : null,
+                            external_comment_id: fbReplyId,
+                            parent_external_id:  String(value.comment_id),
+                            author_external_id:  pageId,
+                            author_name:         null,
+                            body:                fbReplyText,
+                            permalink:           null,
+                            is_page_reply:       true,
+                            raw:                 {},
+                        }, { onConflict: "platform,external_comment_id", ignoreDuplicates: true });
+                    }
+                }
+            } catch { /* ignore — reply is best-effort */ }
             shouldForward = true;
         }
         if (shouldForward) break;

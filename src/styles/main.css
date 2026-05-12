@@ -20598,6 +20598,21 @@
 .comment-time {
     margin-inline-start: auto;
 }
+.comment-thread { list-style: none; margin-bottom: 12px; }
+.comment-item--page-reply {
+    margin-inline-start: 24px;
+    margin-top: 6px;
+    border-inline-start: 3px solid var(--accent, #7c6af7);
+    padding: 8px 12px;
+    background: rgba(124,106,247,0.06);
+    border-radius: 0 8px 8px 0;
+}
+.comment-reply-label {
+    color: var(--accent, #7c6af7);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+}
 .comment-post-link {
     color: var(--accent, #7c6af7);
     text-decoration: none;

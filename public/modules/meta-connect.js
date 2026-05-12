@@ -175,6 +175,7 @@
           </div>`;
         body.insertAdjacentHTML('beforeend', html);
         body.querySelector('#wa-view-templates-btn').addEventListener('click', loadWabaTemplates);
+        loadWabaTemplates(); // auto-load on connect
     }
 
     async function loadWabaTemplates() {

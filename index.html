@@ -8062,42 +8062,73 @@ Thank you for shopping with {store_name}!</textarea>
                 return;
             }
             empty.hidden = true;
-            list.innerHTML = rows.map(c => {
-                const author = c.author_name ? String(c.author_name) : '';
+
+            const safe = (s) => String(s || '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[ch]);
+
+            // Separate root comments from page replies
+            const roots = rows.filter(c => !c.is_page_reply);
+            const replies = rows.filter(c => c.is_page_reply);
+            // Map reply by parent external_comment_id for quick lookup
+            const replyMap = {};
+            replies.forEach(r => {
+                if (r.parent_external_id) {
+                    if (!replyMap[r.parent_external_id]) replyMap[r.parent_external_id] = [];
+                    replyMap[r.parent_external_id].push(r);
+                }
+            });
+            // Orphan replies (no matching root in this page) treated as roots
+            const rootIds = new Set(roots.map(c => c.external_comment_id));
+            replies.forEach(r => {
+                if (r.parent_external_id && !rootIds.has(r.parent_external_id)) roots.push(r);
+            });
+
+            function renderCommentCard(c, isPageReply) {
+                const author = c.author_name ? String(c.author_name) : (isPageReply ? 'Our Page' : '');
                 const body = c.body ? String(c.body) : '';
                 const when = c.created_at ? new Date(c.created_at).toLocaleString() : '';
                 const platformLabel = c.platform === 'instagram'
                     ? t('comments.instagram')
                     : t('comments.facebook');
-                const safe = (s) => String(s || '').replace(/[&<>"']/g, ch => ({
-                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-                })[ch]);
-                // Post link: strip comment anchor from permalink to get the post URL
-                const postUrl = c.permalink
-                    ? c.permalink.split('?comment_id=')[0]
-                    : null;
+
+                if (isPageReply) {
+                    return `<div class="comment-item comment-item--page-reply">
+                        <div class="comment-meta">
+                            <span class="comment-reply-label">✓ Our Reply</span>
+                            <span class="comment-time">${safe(when)}</span>
+                        </div>
+                        <div class="comment-body">${safe(body)}</div>
+                    </div>`;
+                }
+
+                const postUrl = c.permalink ? c.permalink.split('?comment_id=')[0] : null;
                 const postLink = postUrl
                     ? `<a href="${safe(postUrl)}" target="_blank" rel="noopener noreferrer" class="comment-post-link" title="${safe(postUrl)}">📄 Post</a>`
                     : (c.external_post_id
-                        ? `<span class="comment-post-link" title="Post ID: ${safe(c.external_post_id)}">📄 Post ${safe(c.external_post_id.slice(-8))}</span>`
+                        ? `<span class="comment-post-link" title="Post ID: ${safe(c.external_post_id)}">📄 Post</span>`
                         : '');
-                // Reply badge: parent differs from the post itself
-                const isReply = c.parent_external_id && c.parent_external_id !== c.external_post_id;
-                const replyBadge = isReply ? `<span class="comment-reply-badge">↩ Reply</span>` : '';
                 const externalLink = c.permalink
-                    ? `<a href="${safe(c.permalink)}" target="_blank" rel="noopener noreferrer" style="margin-inline-start:8px; font-size:0.8rem;">↗</a>`
+                    ? `<a href="${safe(c.permalink)}" target="_blank" rel="noopener noreferrer" style="margin-inline-start:8px;font-size:0.8rem;">↗</a>`
                     : '';
-                return `
-                    <li class="comment-item">
-                        <div class="comment-meta">
-                            <span class="comment-platform-tag">${safe(platformLabel)}</span>
-                            ${postLink}
-                            ${replyBadge}
-                            <span class="comment-author">${safe(author)}</span>
-                            <span class="comment-time">${safe(when)}</span>
-                        </div>
-                        <div class="comment-body">${safe(body)}${externalLink}</div>
-                    </li>`;
+                return `<div class="comment-item">
+                    <div class="comment-meta">
+                        <span class="comment-platform-tag">${safe(platformLabel)}</span>
+                        ${postLink}
+                        <span class="comment-author">${safe(author)}</span>
+                        <span class="comment-time">${safe(when)}</span>
+                    </div>
+                    <div class="comment-body">${safe(body)}${externalLink}</div>
+                </div>`;
+            }
+
+            list.innerHTML = roots.map(c => {
+                const threadReplies = (replyMap[c.external_comment_id] || [])
+                    .map(r => renderCommentCard(r, true)).join('');
+                return `<li class="comment-thread">
+                    ${renderCommentCard(c, false)}
+                    ${threadReplies}
+                </li>`;
             }).join('');
         }
 
@@ -8106,7 +8137,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (!currentUserOrgId) return;
             let q = supabaseClient
                 .from('social_comments')
-                .select('id, platform, author_name, body, permalink, created_at, external_post_id, parent_external_id')
+                .select('id, platform, author_name, body, permalink, created_at, external_post_id, parent_external_id, external_comment_id, is_page_reply')
                 .eq('org_id', currentUserOrgId)
                 .order('created_at', { ascending: false })
                 .limit(50);

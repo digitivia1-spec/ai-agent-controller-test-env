@@ -187,6 +187,37 @@ Deno.serve(async (req) => {
                 permalink:           null,
                 raw:                 value,
             }, { onConflict: "platform,external_comment_id", ignoreDuplicates: true });
+            // Auto-reply to Instagram comment (prototype template)
+            const igReplyText = "Thank you for your comment! Our team will get back to you soon. 🙏";
+            try {
+                const igReplyRes = await fetch(
+                    `https://graph.facebook.com/v24.0/${value.id}/replies`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: igReplyText, access_token: orgRow.access_token }),
+                    },
+                );
+                if (igReplyRes.ok) {
+                    const igReplyData = await igReplyRes.json();
+                    const igReplyId: string | undefined = igReplyData?.id;
+                    if (igReplyId) {
+                        await supabase.from("social_comments").upsert({
+                            org_id:              orgRow.org_id,
+                            platform:            "instagram",
+                            external_post_id:    value.media?.id ? String(value.media.id) : null,
+                            external_comment_id: igReplyId,
+                            parent_external_id:  String(value.id),
+                            author_external_id:  igAccountId,
+                            author_name:         null,
+                            body:                igReplyText,
+                            permalink:           null,
+                            is_page_reply:       true,
+                            raw:                 {},
+                        }, { onConflict: "platform,external_comment_id", ignoreDuplicates: true });
+                    }
+                }
+            } catch { /* ignore — reply is best-effort */ }
             shouldForward = true;
         }
         if (shouldForward) break;
