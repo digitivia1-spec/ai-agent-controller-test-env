@@ -20598,6 +20598,21 @@
 .comment-time {
     margin-inline-start: auto;
 }
+.comment-post-link {
+    color: var(--accent, #7c6af7);
+    text-decoration: none;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+.comment-post-link:hover { text-decoration: underline; }
+.comment-reply-badge {
+    background: rgba(124,106,247,0.15);
+    color: var(--accent, #7c6af7);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
 .comment-body {
     font-size: 0.88rem;
     color: var(--text-secondary, #ccc);

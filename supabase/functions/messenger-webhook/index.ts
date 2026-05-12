@@ -81,17 +81,33 @@ async function resolveAndUpsertContact(
     platform: string,
     senderId: string,
     pageToken: string,
+    pageId: string,
 ): Promise<void> {
     let displayName: string | null = null;
+    // Primary: conversations endpoint returns real participant name for PSIDs
     try {
         const r = await fetch(
-            `https://graph.facebook.com/v24.0/${senderId}?fields=name,username&access_token=${pageToken}`,
+            `https://graph.facebook.com/v24.0/${pageId}/conversations?user_id=${senderId}&fields=participants&access_token=${pageToken}`,
         );
         if (r.ok) {
-            const p = await r.json();
-            displayName = p.name || p.username || null;
+            const d = await r.json();
+            const participants: any[] = d.data?.[0]?.participants?.data ?? [];
+            const user = participants.find((p: any) => p.id !== pageId);
+            if (user?.name) displayName = user.name;
         }
-    } catch { /* ignore — fall through to senderId */ }
+    } catch { /* ignore */ }
+    // Fallback: direct profile lookup
+    if (!displayName) {
+        try {
+            const r = await fetch(
+                `https://graph.facebook.com/v24.0/${senderId}?fields=name,username&access_token=${pageToken}`,
+            );
+            if (r.ok) {
+                const p = await r.json();
+                displayName = p.name || p.username || null;
+            }
+        } catch { /* ignore — fall through to senderId */ }
+    }
 
     await supabase.from("inbox_contacts").upsert({
         org_id:              orgId,
@@ -177,7 +193,7 @@ Deno.serve(async (req) => {
             const senderId = String(event?.sender?.id ?? "");
             if (senderId && orgRow.access_token) {
                 await resolveAndUpsertContact(
-                    supabase, orgRow.org_id, PLATFORM, senderId, orgRow.access_token,
+                    supabase, orgRow.org_id, PLATFORM, senderId, orgRow.access_token, pageId,
                 );
             }
             shouldForward = true;
