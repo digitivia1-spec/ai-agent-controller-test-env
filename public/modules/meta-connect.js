@@ -336,11 +336,9 @@
                 .eq('is_active', true)
                 .order('connected_at', { ascending: false })
                 .limit(1)
-                .single();
+                .maybeSingle();
             if (base.error) {
-                if (base.error.code !== 'PGRST116') {
-                    console.warn('[meta-connect] fetch row', platform, base.error.message);
-                }
+                console.warn('[meta-connect] fetch row', platform, base.error.message);
                 return null;
             }
             if (!base.data) return null;
@@ -361,7 +359,7 @@
                 .eq('is_active', true)
                 .order('connected_at', { ascending: false })
                 .limit(1)
-                .single();
+                .maybeSingle();
             if (!enrich.error && enrich.data) {
                 Object.assign(row, enrich.data);
             }
@@ -382,17 +380,20 @@
 
     function buildCard(platform) {
         const isIG = platform === 'instagram';
+        const isWA = platform === 'whatsapp';
         const card = document.createElement('div');
         card.id = `${platform}-connect-card`;
         card.className = 'card glass meta-connect-card';
         card.dataset.platform = platform;
         card.style.cssText = 'margin-top:18px;padding:18px;';
+        const title = isWA
+            ? tr('whatsapp_connect.card_title', 'WhatsApp Channel Connection')
+            : (isIG
+                ? tr('instagram_connect.card_title', 'Instagram Channel Connection')
+                : tr('messenger_connect.card_title',  'Messenger Channel Connection'));
         card.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <div style="font-size:0.95rem;font-weight:600;color:var(--text-primary);">
-              ${isIG ? tr('instagram_connect.card_title', 'Instagram Channel Connection')
-                     : tr('messenger_connect.card_title',  'Messenger Channel Connection')}
-            </div>
+            <div style="font-size:0.95rem;font-weight:600;color:var(--text-primary);">${title}</div>
             <span class="beta-badge">BETA</span>
           </div>
           <div class="${platform}-card-status" style="font-size:0.85rem;margin-bottom:8px;">…</div>
@@ -403,6 +404,13 @@
     }
 
     function platformCopy(platform) {
+        if (platform === 'whatsapp') {
+            return {
+                desc:   tr('whatsapp_connect.description',
+                    'Connect your WhatsApp Business Account to send and receive WhatsApp messages inside Omnio.'),
+                helper: '',
+            };
+        }
         if (platform === 'instagram') {
             return {
                 desc:   tr('instagram_connect.description',
@@ -420,6 +428,7 @@
 
     async function renderCardStatus(card, platform) {
         const isIG = platform === 'instagram';
+        const isWA = platform === 'whatsapp';
         const row = await fetchActiveChannelRow(platform);
         const status = card.querySelector(`.${platform}-card-status`);
         const desc   = card.querySelector(`.${platform}-card-desc`);
@@ -430,30 +439,63 @@
         helper.textContent = copy.helper;
 
         if (row) {
-            const label = isIG
-                ? `@${row.instagram_username || row.account_name || row.external_account_id}`
-                : (row.account_name || row.external_account_id);
+            let label;
+            let prefix;
+            if (isWA) {
+                label = row.account_name || row.external_account_id;
+                prefix = tr('whatsapp_connect.status_connected_prefix', 'Connected — Phone: ');
+            } else if (isIG) {
+                label = `@${row.instagram_username || row.account_name || row.external_account_id}`;
+                prefix = tr('instagram_connect.status_connected_prefix', 'Connected — ');
+            } else {
+                label = row.account_name || row.external_account_id;
+                prefix = tr('messenger_connect.status_connected_prefix', 'Connected — Page: ');
+            }
+            const settingsLink = isWA
+                ? `<a href="#" class="whatsapp-settings-link" style="margin-left:10px;color:var(--text-secondary);font-size:0.78rem;text-decoration:underline;">${tr('whatsapp_connect.view_settings', 'View Settings')}</a>`
+                : '';
             status.innerHTML = `
               <span style="color:#10b981;font-size:1rem;">●</span>
-              ${isIG ? tr('instagram_connect.status_connected_prefix', 'Connected — ')
-                     : tr('messenger_connect.status_connected_prefix', 'Connected — Page: ')}<b></b>
-              <a href="#" class="${platform}-disconnect-link" style="margin-left:10px;color:var(--text-secondary);font-size:0.78rem;text-decoration:underline;">${tr('meta_connect.disconnect', 'Disconnect')}</a>`;
+              ${prefix}<b></b>
+              <a href="#" class="${platform}-disconnect-link" style="margin-left:10px;color:var(--text-secondary);font-size:0.78rem;text-decoration:underline;">${tr('meta_connect.disconnect', 'Disconnect')}</a>${settingsLink}`;
             status.querySelector('b').textContent = label;
             body.innerHTML = '';
             card.querySelector(`.${platform}-disconnect-link`).addEventListener('click', (ev) => {
                 ev.preventDefault();
                 handleDisconnect(card, platform);
             });
+            if (isWA) {
+                const settings = card.querySelector('.whatsapp-settings-link');
+                if (settings) settings.addEventListener('click', (ev) => {
+                    ev.preventDefault();
+                    if (typeof window.openWhatsAppConnectModal === 'function') {
+                        window.openWhatsAppConnectModal('settings');
+                    }
+                });
+            }
         } else {
             status.innerHTML = `<span style="color:#ef4444;font-size:1rem;">●</span> ${tr('meta_connect.not_connected', 'Not Connected')}`;
+            const btnLabel = isWA
+                ? tr('whatsapp_connect.btn_connect_card', 'Connect WhatsApp')
+                : (isIG
+                    ? tr('instagram_connect.btn_connect', 'Connect Instagram')
+                    : tr('messenger_connect.btn_connect',  'Connect Facebook Page'));
+            const btnTitle = isWA
+                ? tr('whatsapp_connect.tip_connect_card', 'Opens the Meta WhatsApp Business Embedded Signup to link your WABA and phone number.')
+                : (isIG
+                    ? tr('instagram_connect.tip_connect', 'Opens Facebook login to discover your linked Instagram Professional account.')
+                    : tr('messenger_connect.tip_connect',  'Opens Facebook login. You will select which Page to connect to Messenger.'));
             body.innerHTML = `
-              <button class="lp-btn lp-btn-primary ${platform}-connect-btn"
-                title="${isIG ? tr('instagram_connect.tip_connect', 'Opens Facebook login to discover your linked Instagram Professional account.')
-                              : tr('messenger_connect.tip_connect',  'Opens Facebook login. You will select which Page to connect to Messenger.')}">
-                ${isIG ? tr('instagram_connect.btn_connect', 'Connect Instagram')
-                       : tr('messenger_connect.btn_connect',  'Connect Facebook Page')}
-              </button>`;
-            card.querySelector(`.${platform}-connect-btn`).addEventListener('click', () => handleConnect(card, platform));
+              <button class="lp-btn lp-btn-primary ${platform}-connect-btn" title="${btnTitle}">${btnLabel}</button>`;
+            card.querySelector(`.${platform}-connect-btn`).addEventListener('click', () => {
+                if (isWA) {
+                    if (typeof window.startWhatsAppEmbeddedSignup === 'function') {
+                        window.startWhatsAppEmbeddedSignup();
+                    }
+                    return;
+                }
+                handleConnect(card, platform);
+            });
         }
     }
 
@@ -608,9 +650,15 @@
 
     async function handleDisconnect(card, platform) {
         const isIG = platform === 'instagram';
-        const msg = isIG
-            ? tr('instagram_connect.disconnect_confirm', 'Disconnect Instagram? DMs will stop being received in Omnio.')
-            : tr('messenger_connect.disconnect_confirm',  'Disconnect this Facebook Page? Messenger conversations will stop being received.');
+        const isWA = platform === 'whatsapp';
+        let msg;
+        if (isWA) {
+            msg = tr('whatsapp_connect.disconnect_confirm', 'Disconnect WhatsApp? Messages will stop being received in Omnio.');
+        } else if (isIG) {
+            msg = tr('instagram_connect.disconnect_confirm', 'Disconnect Instagram? DMs will stop being received in Omnio.');
+        } else {
+            msg = tr('messenger_connect.disconnect_confirm', 'Disconnect this Facebook Page? Messenger conversations will stop being received.');
+        }
         if (!window.confirm(msg)) return;
         const headers = await getSessionAuthHeaders();
         try {
@@ -624,8 +672,15 @@
             toast(`${tr('meta_connect.disconnect_failed', 'Disconnect failed:')} ${e.message}`, 'error');
             return;
         }
-        toast(isIG ? tr('instagram_connect.disconnect_success', 'Instagram disconnected.')
-                   : tr('messenger_connect.disconnect_success', 'Messenger disconnected.'), 'info');
+        let successMsg;
+        if (isWA) {
+            successMsg = tr('whatsapp_connect.disconnect_success', 'WhatsApp disconnected.');
+        } else if (isIG) {
+            successMsg = tr('instagram_connect.disconnect_success', 'Instagram disconnected.');
+        } else {
+            successMsg = tr('messenger_connect.disconnect_success', 'Messenger disconnected.');
+        }
+        toast(successMsg, 'info');
         renderCardStatus(card, platform);
     }
 
@@ -638,12 +693,20 @@
         renderCardStatus(card, platform);
     }
 
+    function refreshWhatsAppCardStatus() {
+        const tab = document.getElementById('whatsapp');
+        if (!tab) return;
+        const card = tab.querySelector('#whatsapp-connect-card');
+        if (card) renderCardStatus(card, 'whatsapp');
+    }
+
     function watchTabs() {
         let scheduled = false;
         const runOnce = () => {
             scheduled = false;
             mountIfNeeded('page');
             mountIfNeeded('instagram');
+            mountIfNeeded('whatsapp');
             renderScreencastBanner();
         };
         const schedule = () => {
@@ -652,13 +715,15 @@
             (window.requestIdleCallback || requestAnimationFrame)(runOnce);
         };
         const attach = () => {
-            // Watch only the two tab-content nodes we care about, plus
-            // the WhatsApp connect slot's parent (for the screencast
-            // banner). This avoids a global observer that fires on every
-            // DOM mutation in the 19k-line app.
+            // Watch the three agent tab-content nodes plus the WhatsApp
+            // connect slot (which receives state-change innerHTML rewrites
+            // from renderWhatsAppConnectState after Embedded Signup runs).
+            // This avoids a global observer that fires on every DOM
+            // mutation in the 19k-line app.
             const targets = [
                 document.getElementById('page'),
                 document.getElementById('instagram'),
+                document.getElementById('whatsapp'),
                 document.getElementById('whatsapp-agent-connect-slot'),
             ].filter(Boolean);
             if (!targets.length) return setTimeout(attach, 400);
@@ -666,11 +731,17 @@
             for (const t of targets) {
                 obs.observe(t, { attributes: true, attributeFilter: ['class'], childList: true });
             }
+            // When renderWhatsAppConnectState updates the slot (after the
+            // Embedded Signup completes / state changes), refresh the
+            // simple card too so the user sees the new phone label.
+            const waSlotObs = new MutationObserver(refreshWhatsAppCardStatus);
+            const waSlot = document.getElementById('whatsapp-agent-connect-slot');
+            if (waSlot) waSlotObs.observe(waSlot, { childList: true, subtree: true });
             // Also listen for class flips on the active tab from outside
             // (switchTab toggles .active on .tab-content elements).
             const activeObs = new MutationObserver(schedule);
             document.querySelectorAll('.tab-content').forEach((el) => {
-                if (el.id === 'page' || el.id === 'instagram') {
+                if (el.id === 'page' || el.id === 'instagram' || el.id === 'whatsapp') {
                     activeObs.observe(el, { attributes: true, attributeFilter: ['class'] });
                 }
             });

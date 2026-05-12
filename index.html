@@ -16583,21 +16583,13 @@ Thank you for shopping with {store_name}!</textarea>
     }
 
     function renderWhatsAppAgentHeaderActionsMarkup() {
-        const state = getWhatsAppConnectionState();
-        const visibleState = getWhatsAppVisibleConnectionState(state);
-        if (visibleState !== 'disconnected') {
-            return `
-                <div class="wa-connect-actions">
-                    <div class="wa-header-status ${visibleState}">${getWhatsAppHeaderBadgeLabel(visibleState)}</div>
-                    <button type="button" class="wa-header-btn wa-header-btn-secondary" onclick="openWhatsAppConnectModal('settings')">${t('whatsapp_connect.btn_settings')}</button>
-                </div>
-            `;
-        }
-        return `
-            <div class="wa-connect-actions">
-                <button type="button" class="wa-header-btn wa-header-btn-primary" onclick="openWhatsAppConnectModal('connect')">${t('whatsapp_connect.btn_connect')}</button>
-            </div>
-        `;
+        // The header slot used to expose a Connect/Settings button + state
+        // badge. We've moved the WhatsApp channel surface into the simple
+        // in-tab card mounted by meta-connect.js (matches Messenger/IG).
+        // The slot is kept (id whatsapp-agent-connect-slot) because
+        // renderWhatsAppConnectState() still writes here on state change;
+        // meta-connect.js observes those writes to refresh the in-tab card.
+        return '';
     }
 
     function renderWhatsAppConnectState() {
