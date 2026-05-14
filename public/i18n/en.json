@@ -293,6 +293,22 @@
     "section_assignment": "Assignment",
     "section_timeline": "Timeline",
     "section_notes": "Notes",
+    "section_custom_fields": "Custom Fields",
+    "cf_section_hint": "Add any extra info you need to track.",
+    "cf_empty": "No custom fields yet — add one below.",
+    "cf_add": "Add Custom Field",
+    "cf_name": "Custom field name",
+    "cf_name_placeholder": "Field name (e.g. Budget)",
+    "cf_value": "Custom field value",
+    "cf_value_placeholder": "Value",
+    "cf_type": "Field type",
+    "cf_remove": "Remove field",
+    "platform": {
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "messenger": "Messenger",
+      "website": "Website"
+    },
     "unassigned": "Unassigned",
     "btn_save": "Save",
     "btn_import": "Import",
@@ -355,16 +371,23 @@
       "follow_up_completed": "Follow-up completed",
       "ai_summary_refreshed": "AI summary refreshed",
       "assignment_changed": "Assignment changed",
+      "platform_changed": "Platform changed",
+      "due_date_set": "Due date set",
       "profile_opened": "Profile opened"
     },
     "error_loading": "Failed to load CRM data.",
     "note_saved": "Note saved.",
     "note_error": "Failed to save note.",
+    "note_draft_saved": "Draft saved",
+    "note_draft_empty": "",
     "follow_up_set": "Follow-up scheduled.",
     "follow_up_error": "Failed to schedule follow-up.",
     "follow_up_completed": "Follow-up marked complete.",
-    "assign_saved": "Lead assigned.",
-    "assign_error": "Failed to assign lead."
+    "follow_up_pick_required": "Please pick a date and time.",
+    "follow_up_hint": "Pick the date and time you want to be reminded.",
+    "assign_saved": "Lead saved.",
+    "assign_error": "Failed to save lead.",
+    "status_updated": "Status updated."
   },
   "task_manager": {
     "title": "Task Manager",
@@ -1317,6 +1340,10 @@
       "crm_status_changed": {
         "title": "Lead Status Updated",
         "body": "Lead \"{lead_name}\" status changed to {new_status}."
+      },
+      "crm_due_date_set": {
+        "title": "Lead Due Date Set",
+        "body": "You scheduled a due date for \"{lead_name}\" on {due_at}."
       },
       "task_assigned": {
         "title": "Task Assigned",
