@@ -2388,6 +2388,17 @@
             const categories = [...new Set(leads.map(l => l.category).filter(Boolean))].sort();
             const catOptions = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
 
+            // Platform filter options (whatsapp / instagram / messenger / website)
+            const PLATFORM_FILTER_OPTIONS = [
+                { value: 'whatsapp',  label: t('leads.platform.whatsapp')  || 'WhatsApp',  icon: '🟢' },
+                { value: 'instagram', label: t('leads.platform.instagram') || 'Instagram', icon: '📷' },
+                { value: 'page',      label: t('leads.platform.messenger') || 'Messenger', icon: '💬' },
+                { value: 'website',   label: t('leads.platform.website')   || 'Website',   icon: '🌐' }
+            ];
+            const platformOptions = PLATFORM_FILTER_OPTIONS
+                .map(p => `<option value="${p.value}">${p.icon} ${esc(p.label)}</option>`)
+                .join('');
+
             const currentView = document.querySelector('.crm-view-btn.active')?.dataset.view || 'table';
 
             toolbar.innerHTML = `
@@ -2412,6 +2423,10 @@
                     <select id="crm-category-filter" class="crm-filter-select" onchange="filterAndRenderCrmData()">
                         <option value="">${t('leads.filter_all_categories')}</option>
                         ${catOptions}
+                    </select>
+                    <select id="crm-platform-filter" class="crm-filter-select" onchange="filterAndRenderCrmData()" title="${t('leads.filter_all_platforms')}">
+                        <option value="">${t('leads.filter_all_platforms')}</option>
+                        ${platformOptions}
                     </select>
                     <select id="crm-date-preset" class="crm-filter-select" onchange="applyCrmDatePreset(this.value)">
                         <option value="">All Time</option>
@@ -2454,10 +2469,12 @@
             const q  = (document.getElementById('crm-search-input')?.value || '').toLowerCase();
             const sf = document.getElementById('crm-status-filter')?.value || '';
             const cf = document.getElementById('crm-category-filter')?.value || '';
+            const pf = document.getElementById('crm-platform-filter')?.value || '';
             return leads.filter(l =>
                 (!q  || (l.full_name||'').toLowerCase().includes(q) || (l.phone||'').includes(q) || (l.email||'').toLowerCase().includes(q)) &&
                 (!sf || String(l.status||'').toLowerCase() === sf) &&
-                (!cf || (l.category||'') === cf)
+                (!cf || (l.category||'') === cf) &&
+                (!pf || String(l.source||'').toLowerCase() === pf)
             );
         }
 
@@ -2699,6 +2716,105 @@
             }
         }
 
+        // Convert a Date or ISO-string to a "datetime-local" value (local-time YYYY-MM-DDTHH:MM)
+        function formatDatetimeLocal(value) {
+            if (!value) return '';
+            const d = (value instanceof Date) ? value : new Date(value);
+            if (Number.isNaN(d.getTime())) return '';
+            const off = d.getTimezoneOffset() * 60000;
+            return new Date(d.getTime() - off).toISOString().slice(0, 16);
+        }
+
+        // ── Custom Fields helpers ───────────────────────────────────
+        const CUSTOM_FIELD_TYPES = [
+            { value: 'text',   label: 'Text'    },
+            { value: 'number', label: 'Number'  },
+            { value: 'date',   label: 'Date'    },
+            { value: 'url',    label: 'URL'     },
+            { value: 'phone',  label: 'Phone'   },
+            { value: 'email',  label: 'Email'   }
+        ];
+        function getLeadCustomFields(lead) {
+            try {
+                const arr = lead?.meta?.crm?.custom_fields;
+                if (Array.isArray(arr)) return arr.filter(f => f && typeof f === 'object');
+            } catch (_) {}
+            return [];
+        }
+        function renderCustomFieldsSection(lead) {
+            const fields = getLeadCustomFields(lead);
+            const rows = fields.map((f, i) => {
+                const id = esc(f.id || ('cf-' + i));
+                const name = esc(f.name || '');
+                const type = CUSTOM_FIELD_TYPES.find(x => x.value === f.type) ? f.type : 'text';
+                const val = f.value == null ? '' : String(f.value);
+                return `
+                <div class="lead-cf-row" data-cf-id="${id}" data-cf-type="${esc(type)}">
+                    <div class="lead-cf-row-grid">
+                        <input type="text" class="lead-cf-name" value="${name}" placeholder="${esc(t('leads.cf_name_placeholder') || 'Field name')}" dir="auto" aria-label="${esc(t('leads.cf_name') || 'Custom field name')}">
+                        <input type="${type === 'number' ? 'number' : type === 'date' ? 'date' : 'text'}" class="lead-cf-value" value="${esc(val)}" placeholder="${esc(t('leads.cf_value_placeholder') || 'Value')}" dir="auto" aria-label="${esc(t('leads.cf_value') || 'Custom field value')}">
+                    </div>
+                    <button type="button" class="lead-cf-remove" onclick="removeLeadCustomField('${id}')" title="${esc(t('leads.cf_remove') || 'Remove')}" aria-label="${esc(t('leads.cf_remove') || 'Remove')}">✕</button>
+                </div>`;
+            }).join('');
+            const typeOpts = CUSTOM_FIELD_TYPES.map(t2 => `<option value="${t2.value}">${esc(t2.label)}</option>`).join('');
+            return `
+                <div class="lead-detail-section">
+                    <div class="lead-detail-section-title">
+                        <span>${esc(t('leads.section_custom_fields') || 'Custom Fields')}</span>
+                        <span class="lead-cf-section-hint">${esc(t('leads.cf_section_hint') || 'Add any extra info you need to track.')}</span>
+                    </div>
+                    <div id="lead-cf-list" class="lead-cf-list">${rows || `<div class="lead-cf-empty">${esc(t('leads.cf_empty') || 'No custom fields yet.')}</div>`}</div>
+                    <div class="lead-cf-add-row">
+                        <select id="lead-cf-new-type" class="lead-cf-type-select" aria-label="${esc(t('leads.cf_type') || 'Field type')}">${typeOpts}</select>
+                        <button type="button" class="btn-secondary lead-cf-add-btn" onclick="addLeadCustomField()">
+                            <span aria-hidden="true">＋</span> ${esc(t('leads.cf_add') || 'Add Custom Field')}
+                        </button>
+                    </div>
+                </div>`;
+        }
+        function readCustomFieldsFromDom() {
+            const out = [];
+            document.querySelectorAll('#lead-cf-list .lead-cf-row').forEach(row => {
+                const id = row.dataset.cfId || ('cf-' + Math.random().toString(36).slice(2, 10));
+                const type = row.dataset.cfType || 'text';
+                const name = row.querySelector('.lead-cf-name')?.value?.trim() || '';
+                const value = row.querySelector('.lead-cf-value')?.value ?? '';
+                if (!name && !value) return; // drop fully empty rows
+                out.push({ id, name, type, value });
+            });
+            return out;
+        }
+        window.addLeadCustomField = function() {
+            const list = document.getElementById('lead-cf-list');
+            if (!list) return;
+            const empty = list.querySelector('.lead-cf-empty');
+            if (empty) empty.remove();
+            const type = document.getElementById('lead-cf-new-type')?.value || 'text';
+            const id = 'cf-' + Math.random().toString(36).slice(2, 10);
+            const inputType = type === 'number' ? 'number' : type === 'date' ? 'date' : 'text';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'lead-cf-row';
+            wrapper.dataset.cfId = id;
+            wrapper.dataset.cfType = type;
+            wrapper.innerHTML = `
+                <div class="lead-cf-row-grid">
+                    <input type="text" class="lead-cf-name" value="" placeholder="${esc(t('leads.cf_name_placeholder') || 'Field name')}" dir="auto" aria-label="${esc(t('leads.cf_name') || 'Custom field name')}">
+                    <input type="${inputType}" class="lead-cf-value" value="" placeholder="${esc(t('leads.cf_value_placeholder') || 'Value')}" dir="auto" aria-label="${esc(t('leads.cf_value') || 'Custom field value')}">
+                </div>
+                <button type="button" class="lead-cf-remove" onclick="removeLeadCustomField('${id}')" title="${esc(t('leads.cf_remove') || 'Remove')}" aria-label="${esc(t('leads.cf_remove') || 'Remove')}">✕</button>`;
+            list.appendChild(wrapper);
+            wrapper.querySelector('.lead-cf-name')?.focus();
+        };
+        window.removeLeadCustomField = function(id) {
+            const row = document.querySelector(`#lead-cf-list .lead-cf-row[data-cf-id="${CSS.escape(id)}"]`);
+            if (row) row.remove();
+            const list = document.getElementById('lead-cf-list');
+            if (list && !list.querySelector('.lead-cf-row')) {
+                list.innerHTML = `<div class="lead-cf-empty">${esc(t('leads.cf_empty') || 'No custom fields yet.')}</div>`;
+            }
+        };
+
         function renderLeadExtendedFields(lead) {
             const el = document.getElementById('lead-profile-fields');
             if (!el) return;
@@ -2775,10 +2891,11 @@
                             </div>
                             <div class="lead-detail-field">
                                 <label>${t('leads.col_due_date')}</label>
-                                <input type="date" id="lf-due_at" value="${lead.due_at ? new Date(lead.due_at).toISOString().split('T')[0] : ''}">
+                                <input type="datetime-local" id="lf-due_at" value="${lead.due_at ? formatDatetimeLocal(lead.due_at) : ''}">
                             </div>
                         </div>
                     </div>
+                    ${renderCustomFieldsSection(lead)}
                     <div class="lead-detail-section">
                         <div class="lead-detail-section-title">${t('leads.section_timeline')}</div>
                         <div class="lead-detail-grid">
@@ -2810,6 +2927,8 @@
             const oldLead = window.currentLeadProfileData || {};
             const newAssignee = getVal('lf-assigned_to_user_id');
             const newSource = getVal('lf-source');
+            const dueAtRaw = getVal('lf-due_at');
+            const dueAtIso = dueAtRaw ? new Date(dueAtRaw).toISOString() : null;
             const updates = {
                 full_name: getVal('lf-full_name'),
                 phone: getVal('lf-phone'),
@@ -2819,7 +2938,7 @@
                 service_required: getVal('lf-service_required'),
                 priority: getVal('lf-priority'),
                 assigned_to_user_id: newAssignee || null,
-                due_at: getVal('lf-due_at') ? new Date(getVal('lf-due_at')).toISOString() : null,
+                due_at: dueAtIso,
                 first_call_at: getVal('lf-first_call_at') || null,
                 subscription_date: getVal('lf-subscription_date') || null,
                 notes: getVal('lf-notes'),
@@ -2827,10 +2946,21 @@
             };
             // Only write platform (source) when the select actually has a value — keeps payload clean for DB enum
             if (newSource) updates.source = newSource;
+            const customFields = readCustomFieldsFromDom();
             try {
                 const {error} = await supabaseClient.from('leads').update(updates)
                     .eq('id', window.currentLeadProfileId).eq('org_id', window.currentLeadProfileOrgId);
                 if (error) throw error;
+                // Persist custom fields into meta.crm.custom_fields (jsonb merge via RPC)
+                try {
+                    await supabaseClient.rpc('patch_lead_crm_state', {
+                        p_lead_id: window.currentLeadProfileId,
+                        p_org_id: window.currentLeadProfileOrgId,
+                        p_crm_patch: { custom_fields: customFields }
+                    });
+                } catch (cfErr) {
+                    console.warn('Save custom fields failed:', cfErr);
+                }
                 // Fire notification if assignee changed
                 if (newAssignee && newAssignee !== oldLead.assigned_to_user_id) {
                     insertCrmNotification({
@@ -2849,7 +2979,23 @@
                     const hdr = document.getElementById('lead-profile-platform');
                     if (hdr) hdr.textContent = String(newSource).toUpperCase();
                 }
-                window.currentLeadProfileData = {...oldLead, ...updates};
+                // Fire email + log activity when due date changes
+                const oldDueIso = oldLead.due_at ? new Date(oldLead.due_at).toISOString() : null;
+                if (dueAtIso && dueAtIso !== oldDueIso) {
+                    try { logLeadActivity('due_date_set', 'Due date set to ' + new Date(dueAtIso).toLocaleString(), {due_at: dueAtIso}); } catch (_) {}
+                    try {
+                        await notifyLeadDueDateSet({
+                            leadId: window.currentLeadProfileId,
+                            orgId: window.currentLeadProfileOrgId,
+                            leadName: updates.full_name || oldLead.full_name || 'Lead',
+                            leadEmail: updates.email || oldLead.email || '',
+                            leadPhone: updates.phone || oldLead.phone || '',
+                            source: updates.source || oldLead.source || '',
+                            dueAtIso
+                        });
+                    } catch (nErr) { console.warn('Due-date email notification failed:', nErr); }
+                }
+                window.currentLeadProfileData = {...oldLead, ...updates, meta: {...(oldLead.meta||{}), crm: {...((oldLead.meta||{}).crm||{}), custom_fields: customFields}}};
                 showToast(t('crm.assign_saved'));
                 initCrmTab();
             } catch(err) {
@@ -2857,6 +3003,57 @@
                 showToast(t('crm.assign_error'));
             }
         };
+
+        // Fire an email notification (to the current user) when a due date is set on a lead.
+        // Uses the existing semantic-notification pipeline; the email channel is force-dispatched
+        // via `bypass_channel_check=true` so the user gets the email regardless of org channel toggles.
+        async function notifyLeadDueDateSet({leadId, orgId, leadName, leadEmail, leadPhone, source, dueAtIso}) {
+            try {
+                const {data: {user: authUser}} = await supabaseClient.auth.getUser();
+                if (!authUser?.id) return;
+                const recipientEmail = authUser.email || '';
+                if (!recipientEmail) return;
+
+                const dueLocal = new Date(dueAtIso).toLocaleString();
+                const title = (t('notifications.events.crm_due_date_set.title') || 'Due date set');
+                const body  = (t('notifications.events.crm_due_date_set.body',  { lead_name: leadName, due_at: dueLocal }) ||
+                              `Due date for ${leadName} is now ${dueLocal}.`);
+
+                // Insert the semantic notification with explicit recipient_emails so the email
+                // function delivers to the user who scheduled the due date.
+                const {data: notifId, error} = await supabaseClient.rpc('insert_semantic_notification', {
+                    p_org_id: orgId,
+                    p_type: 'crm',
+                    p_title: title,
+                    p_message: body,
+                    p_entity: 'lead',
+                    p_entity_id: leadId,
+                    p_event_key: 'crm_due_date_set',
+                    p_payload: {
+                        recipient_user_id: authUser.id,
+                        recipient_emails: [recipientEmail],
+                        lead_name: leadName,
+                        lead_email: leadEmail || '',
+                        lead_phone: leadPhone || '',
+                        source: source || '',
+                        due_at: dueAtIso,
+                        due_at_local: dueLocal
+                    }
+                });
+                if (error) throw error;
+
+                // Force-dispatch the email even if the org-level channel toggle is off — the user
+                // explicitly scheduled this due date and asked to be reminded by email.
+                try {
+                    await supabaseClient.rpc('dispatch_email_notification', {
+                        p_notification_id: notifId,
+                        p_bypass_channel_check: true
+                    });
+                } catch (_) { /* notification still exists in-app */ }
+            } catch (err) {
+                console.warn('notifyLeadDueDateSet failed:', err);
+            }
+        }
 
         function getStatusLabel(status) {
             return t('leads.status.' + status) || status;
@@ -2907,6 +3104,11 @@
         window.updateLeadStatus = async function(newStatus) {
             if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
 
+            // Preserve any in-flight draft note across the status change. The textarea is
+            // re-rendered when the profile re-renders, but the draft survives via localStorage.
+            const ta = document.getElementById('note-textarea');
+            if (ta && window.currentLeadProfileId) setNoteDraft(window.currentLeadProfileId, ta.value);
+
             try {
                 const {data: updatedLead, error} = await supabaseClient
                     .from('leads')
@@ -2918,12 +3120,26 @@
 
                 if (error) throw error;
 
-                window.currentLeadProfileData = updatedLead;
+                // Keep meta (notes / activity / custom_fields) merged in so a status update
+                // never blanks the in-memory lead snapshot.
+                window.currentLeadProfileData = {
+                    ...(window.currentLeadProfileData || {}),
+                    ...updatedLead,
+                    meta: updatedLead.meta || (window.currentLeadProfileData||{}).meta || {}
+                };
                 const crmRefresh = await supabaseClient.rpc('get_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId
                 });
-                renderLeadProfile(updatedLead, crmRefresh.data || window.currentLeadCrmState || {});
+                window.currentLeadCrmState = crmRefresh.data || window.currentLeadCrmState || {};
+                renderLeadProfile(window.currentLeadProfileData, window.currentLeadCrmState);
+
+                // Re-attach autosave to the freshly-rendered textarea & restore the draft.
+                if (window.currentLeadProfileId) {
+                    const ta2 = document.getElementById('note-textarea');
+                    if (ta2) ta2.value = getNoteDraft(window.currentLeadProfileId);
+                    bindNoteDraftAutosave();
+                }
 
                 logLeadActivity('status_changed', `Status changed to ${newStatus}`, {new_status: newStatus});
                 // Fire status change notification
@@ -2945,15 +3161,65 @@
             }
         };
 
+        // Note drafts are saved to localStorage so they survive status changes, modal closes,
+        // and accidental navigation. Drafts are keyed per lead. Cleared on successful save.
+        function noteDraftKey(leadId) { return `crm:note-draft:${leadId || 'unknown'}`; }
+        function getNoteDraft(leadId) {
+            try { return localStorage.getItem(noteDraftKey(leadId)) || ''; } catch (_) { return ''; }
+        }
+        function setNoteDraft(leadId, text) {
+            try {
+                if (text && text.trim()) localStorage.setItem(noteDraftKey(leadId), text);
+                else localStorage.removeItem(noteDraftKey(leadId));
+            } catch (_) {}
+        }
+        function clearNoteDraft(leadId) {
+            try { localStorage.removeItem(noteDraftKey(leadId)); } catch (_) {}
+        }
+        function bindNoteDraftAutosave() {
+            const ta = document.getElementById('note-textarea');
+            if (!ta || ta.dataset.draftBound === '1') return;
+            ta.dataset.draftBound = '1';
+            let timer = null;
+            const flush = () => {
+                if (!window.currentLeadProfileId) return;
+                setNoteDraft(window.currentLeadProfileId, ta.value);
+                const ind = document.getElementById('note-draft-status');
+                if (ind) {
+                    ind.textContent = ta.value.trim()
+                        ? (t('crm.note_draft_saved') || 'Draft saved')
+                        : (t('crm.note_draft_empty') || '');
+                    ind.classList.toggle('is-visible', !!ta.value.trim());
+                }
+            };
+            ta.addEventListener('input', () => {
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(flush, 250); // ~realtime draft persistence
+            });
+            ta.addEventListener('blur', flush);
+        }
+
         window.openAddNoteModal = function() {
             const modal = document.getElementById('add-note-modal');
-            document.getElementById('note-textarea').value = '';
+            const ta = document.getElementById('note-textarea');
+            if (ta && window.currentLeadProfileId) {
+                // Restore any unsent draft for this lead — don't blow it away every open.
+                const draft = getNoteDraft(window.currentLeadProfileId);
+                ta.value = draft;
+                bindNoteDraftAutosave();
+                const ind = document.getElementById('note-draft-status');
+                if (ind) ind.classList.toggle('is-visible', !!draft);
+            }
             if (modal) modal.style.display = 'flex';
+            setTimeout(() => { try { ta?.focus(); } catch (_) {} }, 60);
         };
 
         window.closeAddNoteModal = function(event) {
             if (event && event.target.id !== 'add-note-modal') return;
             const modal = document.getElementById('add-note-modal');
+            const ta = document.getElementById('note-textarea');
+            // Persist the current text as a draft so closing the modal never destroys typed work.
+            if (ta && window.currentLeadProfileId) setNoteDraft(window.currentLeadProfileId, ta.value);
             if (modal) modal.style.display = 'none';
         };
 
@@ -2994,9 +3260,17 @@
 
                 logLeadActivity('note_added', 'Added a note', {note_id: noteId});
                 showToast(t('crm.note_saved'));
-                closeAddNoteModal();
+                // Successfully saved → discard the draft.
+                clearNoteDraft(window.currentLeadProfileId);
+                const ta = document.getElementById('note-textarea');
+                if (ta) ta.value = '';
+                const ind = document.getElementById('note-draft-status');
+                if (ind) ind.classList.remove('is-visible');
+                const modal = document.getElementById('add-note-modal');
+                if (modal) modal.style.display = 'none';
             } catch (err) {
                 console.error('Save note failed:', err);
+                // Keep the draft on failure so the user doesn't lose what they typed.
                 showToast(t('crm.note_error'));
             }
         };
@@ -3006,15 +3280,17 @@
             const input = document.getElementById('followup-datetime');
 
             if (window.currentLeadCrmState && window.currentLeadCrmState.follow_up_due_at) {
-                const date = new Date(window.currentLeadCrmState.follow_up_due_at);
-                input.value = date.toISOString().slice(0, 16);
+                input.value = formatDatetimeLocal(window.currentLeadCrmState.follow_up_due_at);
             } else {
                 const tomorrow = new Date();
                 tomorrow.setDate(tomorrow.getDate() + 1);
-                input.value = tomorrow.toISOString().slice(0, 16);
+                tomorrow.setHours(9, 0, 0, 0);
+                input.value = formatDatetimeLocal(tomorrow);
             }
 
             if (modal) modal.style.display = 'flex';
+            // Defer focus so the modal animates in before the picker pops open
+            setTimeout(() => { try { input.focus(); } catch (_) {} }, 60);
         };
 
         window.closeFollowUpModal = function(event) {
@@ -3026,36 +3302,65 @@
         window.saveFollowUpDate = async function() {
             if (!window.currentLeadProfileId || !window.currentLeadProfileOrgId) return;
 
-            const datetimeStr = document.getElementById('followup-datetime').value;
+            const inputEl = document.getElementById('followup-datetime');
+            const datetimeStr = inputEl?.value || '';
             if (!datetimeStr) {
-                showToast('Please select a date and time');
+                showToast(t('crm.follow_up_pick_required') || 'Please select a date and time');
+                inputEl?.focus();
                 return;
             }
+            // Guard against double-clicks
+            const saveBtn = document.querySelector('#follow-up-modal .btn-primary');
+            if (saveBtn) { saveBtn.disabled = true; saveBtn.classList.add('is-saving'); }
+
+            const dueIso = new Date(datetimeStr).toISOString();
+            const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || 'UTC';
 
             try {
-                const {data, error} = await supabaseClient.rpc('patch_lead_crm_state', {
-                    p_lead_id: window.currentLeadProfileId,
-                    p_org_id: window.currentLeadProfileOrgId,
-                    p_crm_patch: {follow_up_due_at: new Date(datetimeStr).toISOString()}
-                });
-
-                if (error) throw error;
+                // Prefer the dedicated RPC (resets completion + logs activity server-side).
+                let saveErr = null;
+                try {
+                    const {error: e1} = await supabaseClient.rpc('update_lead_follow_up_due', {
+                        p_lead_id: window.currentLeadProfileId,
+                        p_org_id: window.currentLeadProfileOrgId,
+                        p_due_at_utc: dueIso,
+                        p_due_timezone: tz
+                    });
+                    saveErr = e1;
+                } catch (rpcErr) { saveErr = rpcErr; }
+                // Fallback to the generic patch RPC if the dedicated one is unavailable
+                if (saveErr) {
+                    const {error: e2} = await supabaseClient.rpc('patch_lead_crm_state', {
+                        p_lead_id: window.currentLeadProfileId,
+                        p_org_id: window.currentLeadProfileOrgId,
+                        p_crm_patch: {
+                            follow_up_due_at: dueIso,
+                            follow_up_due_timezone: tz,
+                            follow_up_completed_at: null
+                        }
+                    });
+                    if (e2) throw e2;
+                    // The dedicated RPC logs activity itself; only log here when we fell back.
+                    try { logLeadActivity('follow_up_set', `Follow-up set for ${new Date(datetimeStr).toLocaleString()}`, {due_at: dueIso}); } catch (_) {}
+                }
 
                 const crmState = await supabaseClient.rpc('get_lead_crm_state', {
                     p_lead_id: window.currentLeadProfileId,
                     p_org_id: window.currentLeadProfileOrgId
                 });
+                window.currentLeadCrmState = crmState.data || {};
 
                 if (window.currentLeadProfileData) {
-                    renderLeadProfile(window.currentLeadProfileData, crmState.data || {});
+                    renderLeadProfile(window.currentLeadProfileData, window.currentLeadCrmState);
                 }
 
-                logLeadActivity('follow_up_set', `Follow-up set for ${new Date(datetimeStr).toLocaleDateString()}`, {due_at: new Date(datetimeStr).toISOString()});
                 showToast(t('crm.follow_up_set'));
                 closeFollowUpModal();
             } catch (err) {
                 console.error('Save follow-up failed:', err);
                 showToast(t('crm.follow_up_error'));
+            } finally {
+                if (saveBtn) { saveBtn.disabled = false; saveBtn.classList.remove('is-saving'); }
             }
         };
 

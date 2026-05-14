@@ -293,6 +293,22 @@
     "section_assignment": "التعيين",
     "section_timeline": "الجدول الزمني",
     "section_notes": "الملاحظات",
+    "section_custom_fields": "حقول مخصصة",
+    "cf_section_hint": "أضف أي معلومات إضافية تريد متابعتها.",
+    "cf_empty": "لا توجد حقول مخصصة بعد — أضف واحداً أدناه.",
+    "cf_add": "إضافة حقل مخصص",
+    "cf_name": "اسم الحقل المخصص",
+    "cf_name_placeholder": "اسم الحقل (مثل: الميزانية)",
+    "cf_value": "قيمة الحقل المخصص",
+    "cf_value_placeholder": "القيمة",
+    "cf_type": "نوع الحقل",
+    "cf_remove": "حذف الحقل",
+    "platform": {
+      "whatsapp": "واتساب",
+      "instagram": "إنستغرام",
+      "messenger": "ماسنجر",
+      "website": "الموقع"
+    },
     "unassigned": "غير معيّن",
     "btn_save": "حفظ",
     "btn_import": "استيراد",
@@ -355,16 +371,23 @@
       "follow_up_completed": "تمت المتابعة",
       "ai_summary_refreshed": "تم تحديث ملخص الذكاء الاصطناعي",
       "assignment_changed": "تم تغيير التعيين",
+      "platform_changed": "تم تغيير المنصة",
+      "due_date_set": "تم تعيين تاريخ الاستحقاق",
       "profile_opened": "تم فتح الملف"
     },
     "error_loading": "فشل تحميل بيانات إدارة العملاء.",
     "note_saved": "تم حفظ الملاحظة.",
     "note_error": "فشل حفظ الملاحظة.",
+    "note_draft_saved": "تم حفظ المسودة",
+    "note_draft_empty": "",
     "follow_up_set": "تم جدولة المتابعة.",
     "follow_up_error": "فشل جدولة المتابعة.",
     "follow_up_completed": "تم تحديد المتابعة كمكتملة.",
-    "assign_saved": "تم تعيين العميل.",
-    "assign_error": "فشل تعيين العميل."
+    "follow_up_pick_required": "يرجى اختيار التاريخ والوقت.",
+    "follow_up_hint": "اختر التاريخ والوقت الذي تريد التذكير فيه.",
+    "assign_saved": "تم حفظ بيانات العميل.",
+    "assign_error": "فشل حفظ بيانات العميل.",
+    "status_updated": "تم تحديث الحالة."
   },
   "task_manager": {
     "title": "مدير المهام",
@@ -1310,6 +1333,10 @@
       "crm_lead_assigned": {
         "title": "تم تعيين عميل",
         "body": "تم تعيين العميل \"{lead_name}\" إليك."
+      },
+      "crm_due_date_set": {
+        "title": "تم تعيين تاريخ استحقاق",
+        "body": "قمت بجدولة تاريخ استحقاق للعميل \"{lead_name}\" في {due_at}."
       },
       "crm_status_changed": {
         "title": "تحديث حالة العميل",

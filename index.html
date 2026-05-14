@@ -1651,7 +1651,8 @@
                 <button class="modal-close-btn" onclick="closeAddNoteModal()">✕</button>
             </div>
             <div class="modal-body">
-                <textarea id="note-textarea" class="form-input" rows="4" placeholder="Write your note here..." style="resize:vertical;"></textarea>
+                <textarea id="note-textarea" class="form-input" rows="4" placeholder="Write your note here..." dir="auto" style="resize:vertical;" aria-describedby="note-draft-status"></textarea>
+                <div id="note-draft-status" class="note-draft-status" role="status" aria-live="polite" data-i18n="crm.note_draft_saved">Draft saved</div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeAddNoteModal()" data-i18n="modals.btn_cancel">Cancel</button>
@@ -1668,8 +1669,9 @@
                 <button class="modal-close-btn" onclick="closeFollowUpModal()">✕</button>
             </div>
             <div class="modal-body" style="display:flex;flex-direction:column;gap:10px;">
-                <label class="form-label" data-i18n="crm.label_follow_up_due">Due Date &amp; Time</label>
-                <input type="datetime-local" id="followup-datetime" class="form-input">
+                <label class="form-label" for="followup-datetime" data-i18n="crm.label_follow_up_due">Due Date &amp; Time</label>
+                <input type="datetime-local" id="followup-datetime" class="form-input" aria-describedby="followup-hint">
+                <div id="followup-hint" class="form-hint" data-i18n="crm.follow_up_hint">Pick the date and time you want to be reminded.</div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeFollowUpModal()" data-i18n="modals.btn_cancel">Cancel</button>
