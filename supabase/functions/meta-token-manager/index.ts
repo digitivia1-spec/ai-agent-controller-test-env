@@ -148,6 +148,16 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
 
     const now = new Date().toISOString();
 
+    // Deactivate any other active tokens for this org+platform with a different account_id.
+    // Prevents duplicate active rows that break maybeSingle() lookups on reconnect.
+    await supabase
+        .from("meta_channel_tokens")
+        .update({ is_active: false, updated_at: now })
+        .eq("org_id", org_id)
+        .eq("platform", platform)
+        .eq("is_active", true)
+        .neq("account_id", account_id);
+
     const tokenRow = {
         org_id,
         platform,
@@ -258,6 +268,8 @@ async function handlePhoneDetails(supabase: ReturnType<typeof createClient>, bod
         .eq("org_id", org_id)
         .eq("platform", "whatsapp")
         .eq("is_active", true)
+        .order("updated_at", { ascending: false })
+        .limit(1)
         .maybeSingle();
 
     if (tokenErr) return jsonResponse({ error: `token lookup: ${tokenErr.message}` }, 500);
@@ -315,6 +327,8 @@ async function handleSubscribe(supabase: ReturnType<typeof createClient>, body: 
         .eq("org_id", org_id)
         .eq("platform", "whatsapp")
         .eq("is_active", true)
+        .order("updated_at", { ascending: false })
+        .limit(1)
         .maybeSingle();
 
     if (tokenErr) return jsonResponse({ error: `token lookup: ${tokenErr.message}` }, 500);
@@ -391,6 +405,8 @@ async function loadWhatsAppToken(
         .eq("org_id", org_id)
         .eq("platform", "whatsapp")
         .eq("is_active", true)
+        .order("updated_at", { ascending: false })
+        .limit(1)
         .maybeSingle();
     if (error) return { error: `token lookup: ${error.message}`, status: 500 };
     const token = (tokenRow?.access_token ?? "") as string;
@@ -538,6 +554,15 @@ async function handleCompleteSetup(supabase: ReturnType<typeof createClient>, bo
     const now = new Date().toISOString();
     const expiresAt = debug.expires_at > 0 ? expiresAtFromUnix(debug.expires_at) : null;
     const accountName = body.account_name ?? null;
+
+    // Deactivate any other active WhatsApp tokens for this org with a different waba_id.
+    await supabase
+        .from("meta_channel_tokens")
+        .update({ is_active: false, updated_at: now })
+        .eq("org_id", org_id)
+        .eq("platform", "whatsapp")
+        .eq("is_active", true)
+        .neq("account_id", waba_id);
 
     // 2. Persist token
     const tokenUpsert = await supabase

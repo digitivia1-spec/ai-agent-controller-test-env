@@ -1921,7 +1921,7 @@
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         Object.assign(window.LANG_EN, {
-            whatsapp_connect: {
+            whatsapp_connect: Object.assign({}, window.LANG_EN.whatsapp_connect || {}, {
                 kicker: "Meta Embedded Signup",
                 modal_title: "WhatsApp Channel Connection",
                 modal_subtitle: "Connect your WhatsApp Business account using Meta Embedded Signup. This flow will let you connect a WABA and phone number to your Digitivia WhatsApp Agent. On success, your WhatsApp connection details will appear below.",
@@ -2090,11 +2090,11 @@
                 screencast_title: "Screencast Mode Active",
                 screencast_steps: "Steps: 1) Click “Continue with Facebook”  2) Log in and grant WhatsApp Business access  3) Confirm connection below",
                 screencast_dismiss: "Dismiss screencast mode"
-            }
+            })
         });
 
         Object.assign(window.LANG_AR, {
-            whatsapp_connect: {
+            whatsapp_connect: Object.assign({}, window.LANG_AR.whatsapp_connect || {}, {
                 kicker: "Meta Embedded Signup",
                 modal_title: "ربط قناة واتساب",
                 modal_subtitle: "قم بربط حساب WhatsApp Business الخاص بك باستخدام Meta Embedded Signup. هذا التدفق يربط WABA ورقم الهاتف مع وكيل واتساب في Digitivia. عند النجاح ستظهر تفاصيل الاتصال بالأسفل.",
@@ -2263,7 +2263,7 @@
                 screencast_title: "وضع التسجيل المرئي نشط",
                 screencast_steps: "الخطوات: 1) انقر على \"المتابعة عبر فيسبوك\"  2) سجّل الدخول وامنح صلاحية الوصول لـ WhatsApp Business  3) أكّد الاتصال بالأسفل",
                 screencast_dismiss: "إغلاق وضع التسجيل المرئي"
-            }
+            })
         });
         window.supabaseClient = supabaseClient; // Expose globally
 
@@ -17037,6 +17037,13 @@ Thank you for shopping with {store_name}!</textarea>
                         await handleWhatsAppEmbeddedSignupSuccess({
                             auth_code_received: true,
                             auth_code_preview: preview
+                        });
+                    } else if (browserToken) {
+                        // FB.login returned an access token but no auth code.
+                        // Exchange still works via getBrowserMetaAccessToken().
+                        await handleWhatsAppEmbeddedSignupSuccess({
+                            auth_code_received: true,
+                            auth_code_preview: '(access-token)'
                         });
                     } else {
                         await handleWhatsAppEmbeddedSignupCancel(sanitizeWhatsAppPayload(response));

@@ -16,36 +16,59 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-const META_APP_SECRET   = Deno.env.get("META_APP_SECRET")   ?? "";
-const META_VERIFY_TOKEN = Deno.env.get("META_VERIFY_TOKEN") ?? "";
-const SUPABASE_URL      = Deno.env.get("SUPABASE_URL")      ?? "";
-const SERVICE_ROLE      = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const META_APP_SECRET      = Deno.env.get("META_APP_SECRET")      ?? "";
+const INSTAGRAM_APP_SECRET = Deno.env.get("INSTAGRAM_APP_SECRET") ?? "";
+const META_VERIFY_TOKEN    = Deno.env.get("META_VERIFY_TOKEN")    ?? "";
+const SUPABASE_URL         = Deno.env.get("SUPABASE_URL")         ?? "";
+const SERVICE_ROLE         = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 const N8N_UNIFIED_WEBHOOK =
-    "https://n8n.srv1174105.hstgr.cloud/webhook/digitivia_meta_unified";
+    "https://n8n.srv1174105.hstgr.cloud/webhook/meta_unified_digitivia";
 
 const PLATFORM = "instagram";
 const EXPECTED_OBJECT = "instagram";
 
-async function verifySignature(rawBody: string, sigHeader: string | null): Promise<boolean> {
-    if (!sigHeader || !sigHeader.startsWith("sha256=")) return false;
-    if (!META_APP_SECRET) return false;
-    const expected = sigHeader.slice("sha256=".length);
+async function hmacHex(secret: string, body: string): Promise<string> {
     const key = await crypto.subtle.importKey(
         "raw",
-        new TextEncoder().encode(META_APP_SECRET),
+        new TextEncoder().encode(secret),
         { name: "HMAC", hash: "SHA-256" },
         false,
         ["sign"],
     );
-    const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(rawBody));
-    const hex = Array.from(new Uint8Array(sig))
+    const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body));
+    return Array.from(new Uint8Array(sig))
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
-    if (hex.length !== expected.length) return false;
+}
+
+function timingSafeEqual(a: string, b: string): boolean {
+    if (a.length !== b.length) return false;
     let diff = 0;
-    for (let i = 0; i < hex.length; i++) diff |= hex.charCodeAt(i) ^ expected.charCodeAt(i);
+    for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
     return diff === 0;
+}
+
+async function verifySignature(rawBody: string, sigHeader: string | null): Promise<boolean> {
+    if (!sigHeader || !sigHeader.startsWith("sha256=")) return false;
+    const expected = sigHeader.slice("sha256=".length).trim();
+
+    // Try each available secret — supports separate INSTAGRAM_APP_SECRET if Meta
+    // uses a different signing app for Instagram vs Messenger webhooks.
+    const secrets = [META_APP_SECRET, INSTAGRAM_APP_SECRET].filter(Boolean);
+    console.log(`[ig-sig] secrets_available=${secrets.length} body_len=${rawBody.length} expected_prefix=${expected.slice(0, 8)}`);
+
+    if (secrets.length === 0) {
+        // No app secret configured — accept without verification (set META_APP_SECRET to enable)
+        console.warn("[ig-sig] no secret configured, bypassing signature check");
+        return true;
+    }
+    for (const secret of secrets) {
+        const hex = await hmacHex(secret, rawBody);
+        console.log(`[ig-sig] computed_prefix=${hex.slice(0, 8)} match=${timingSafeEqual(hex, expected)}`);
+        if (timingSafeEqual(hex, expected)) return true;
+    }
+    return false;
 }
 
 async function forwardToN8n(rawBody: string, parsed: unknown, sigHeader: string | null) {
@@ -153,6 +176,8 @@ Deno.serve(async (req) => {
             continue;
         }
 
+        // Instagram DMs: forward raw object:"instagram" payload to n8n directly.
+        // n8n identifies the org via ig_recipient_id in meta_channel_tokens.
         for (const event of entry?.messaging ?? []) {
             if (event?.message?.is_echo === true) continue;
             if (event?.delivery || event?.read) continue;

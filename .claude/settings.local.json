@@ -16,5 +16,9 @@
       "Bash(node -e ' *)",
       "mcp__2c6656fa-f4a6-4ff9-880b-8ebe232ef84b__execute_sql"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "supabase"
+  ],
+  "enableAllProjectMcpServers": true
 }
