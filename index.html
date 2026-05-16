@@ -16240,6 +16240,7 @@ Thank you for shopping with {store_name}!</textarea>
             short_token: shortToken,
             platform: 'whatsapp',
             account_id: wabaId,
+            phone_number_id: state?.phone_number_id || '',
             account_name: state?.verified_name || state?.display_phone_number || '',
             meta_user_id: state?.business_id || ''
         });
@@ -16529,40 +16530,11 @@ Thank you for shopping with {store_name}!</textarea>
             console.warn('submitWhatsAppEmbeddedSignupResultToBackend: no org_id');
             return { ok: false, status: 'error', reason: 'no_org_id' };
         }
-        try {
-            const headers = await getMetaTokenManagerHeaders();
-            const wabaId = payload.waba_id || '';
-            const { data, error } = await supabaseClient
-                .from('org_channel_accounts')
-                .upsert({
-                    org_id: currentUserOrgId,
-                    platform: 'whatsapp',
-                    is_active: true,
-                    external_account_id: wabaId,
-                    account_name: payload.verified_name || payload.display_phone_number || '',
-                    access_token: 'pending_exchange',
-                    connected_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString(),
-                    meta: sanitizeWhatsAppPayload({
-                        app_id: payload.app_id,
-                        config_id: payload.config_id,
-                        business_id: payload.business_id,
-                        waba_id: payload.waba_id,
-                        phone_number_id: payload.phone_number_id,
-                        display_phone_number: payload.display_phone_number,
-                        verified_name: payload.verified_name,
-                        auth_code_received: payload.auth_code_received
-                    })
-                }, { onConflict: 'org_id,platform,external_account_id' });
-            if (error) {
-                console.warn('submitWhatsAppEmbeddedSignupResultToBackend upsert error:', error);
-                return { ok: false, status: 'error', reason: error.message || 'upsert_failed' };
-            }
-            return { ok: true, received_at: new Date().toISOString(), payload: sanitizeWhatsAppPayload(payload) };
-        } catch (error) {
-            console.warn('submitWhatsAppEmbeddedSignupResultToBackend error:', error);
-            return { ok: false, status: 'error', reason: error?.message || String(error) };
-        }
+        // org_channel_accounts is now managed exclusively by finalizeWhatsAppConnection()
+        // via meta-token-manager (which stores phone_number_id as external_account_id).
+        // The legacy direct upsert here used WABA ID as external_account_id and
+        // re-activated the wrong row after the exchange already set the correct one.
+        return { ok: true, received_at: new Date().toISOString(), payload: sanitizeWhatsAppPayload(payload) };
     }
 
     function buildWhatsAppJsonForDisplay() {
@@ -16929,6 +16901,7 @@ Thank you for shopping with {store_name}!</textarea>
         renderWhatsAppConnectModal();
         await persistWhatsAppConnectionState(persistedState);
         await finalizeWhatsAppConnection();
+        window.refreshWhatsAppCardStatus?.();
         try {
             await submitWhatsAppEmbeddedSignupResultToBackend({
                 app_id: persistedState.app_id,

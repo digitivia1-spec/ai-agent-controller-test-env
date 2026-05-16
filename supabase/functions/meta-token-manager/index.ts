@@ -181,10 +181,44 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
         return jsonResponse({ error: `meta_channel_tokens upsert: ${tokenUpsert.error.message}` }, 500);
     }
 
+    // For WhatsApp: external_account_id must be phone_number_id, not WABA ID.
+    // n8n routes inbound messages by value.metadata.phone_number_id, so the
+    // org_channel_accounts row must use that as the lookup key.
+    // The frontend passes phone_number_id directly from the Embedded Signup
+    // callback payload; if missing we fall back to the /phone_numbers API.
+    let externalAccountId = account_id;
+    if (platform === "whatsapp") {
+        const frontendPhoneId = (body as any).phone_number_id as string | undefined;
+        if (frontendPhoneId) {
+            externalAccountId = frontendPhoneId;
+        } else {
+            try {
+                const phoneRes = await fetch(
+                    `${GRAPH}/${encodeURIComponent(account_id)}/phone_numbers?fields=id&access_token=${encodeURIComponent(finalToken)}`
+                );
+                if (phoneRes.ok) {
+                    const phoneData = await phoneRes.json();
+                    const firstPhone = phoneData?.data?.[0];
+                    if (firstPhone?.id) externalAccountId = String(firstPhone.id);
+                }
+            } catch { /* fall back to WABA ID */ }
+        }
+    }
+
+    // Deactivate all other active rows for this org+platform so reconnect
+    // doesn't leave stale active rows that cause lookup mismatches.
+    await supabase
+        .from("org_channel_accounts")
+        .update({ is_active: false, updated_at: now })
+        .eq("org_id", org_id)
+        .eq("platform", platform)
+        .eq("is_active", true)
+        .neq("external_account_id", externalAccountId);
+
     const ocaRow: Record<string, unknown> = {
         org_id,
         platform,
-        external_account_id: account_id,
+        external_account_id: externalAccountId,
         account_name: account_name ?? null,
         access_token: finalToken,
         is_active: true,
@@ -198,12 +232,52 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
         return jsonResponse({ error: `org_channel_accounts upsert: ${ocaUpsert.error.message}` }, 500);
     }
 
+    // Auto-subscribe page/instagram to webhook fields so Meta delivers events
+    // without requiring a manual step in the Meta App Dashboard.
+    let subscribeResult: string | null = null;
+    if (platform === "page") {
+        try {
+            const fields = "messages,feed";
+            const sr = await fetch(
+                `${GRAPH}/${encodeURIComponent(account_id)}/subscribed_apps`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `access_token=${encodeURIComponent(finalToken)}&subscribed_fields=${encodeURIComponent(fields)}`,
+                }
+            );
+            const sj = await sr.json().catch(() => ({}));
+            subscribeResult = sr.ok ? "ok" : `failed:${sj?.error?.message ?? sr.status}`;
+            if (!sr.ok) console.warn("[meta-token-manager] page subscribe_fields failed:", sj);
+        } catch (e) {
+            subscribeResult = `error:${String(e)}`;
+        }
+    } else if (platform === "instagram") {
+        const igId = (body as any).ig_account_id as string | undefined || account_id;
+        try {
+            const sr = await fetch(
+                `${GRAPH}/${encodeURIComponent(igId)}/subscribed_apps`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `access_token=${encodeURIComponent(finalToken)}&subscribed_fields=messages`,
+                }
+            );
+            const sj = await sr.json().catch(() => ({}));
+            subscribeResult = sr.ok ? "ok" : `failed:${sj?.error?.message ?? sr.status}`;
+            if (!sr.ok) console.warn("[meta-token-manager] instagram subscribe_fields failed:", sj);
+        } catch (e) {
+            subscribeResult = `error:${String(e)}`;
+        }
+    }
+
     return jsonResponse({
         success: true,
         token_type: tokenType,
         expires_at: expiresAt,
         is_non_expiring: expiresAt === null,
         scopes: debug.scopes,
+        subscribe_result: subscribeResult,
     });
 }
 
@@ -599,7 +673,7 @@ async function handleCompleteSetup(supabase: ReturnType<typeof createClient>, bo
         .upsert({
             org_id,
             platform: "whatsapp",
-            external_account_id: waba_id,
+            external_account_id: phone_number_id,
             account_name: accountName,
             access_token: system_user_token,
             is_active: true,
@@ -656,7 +730,7 @@ async function handleCompleteSetup(supabase: ReturnType<typeof createClient>, bo
                 })
                 .eq("org_id", org_id)
                 .eq("platform", "whatsapp")
-                .eq("external_account_id", waba_id);
+                .eq("external_account_id", phone_number_id);
             steps.phone_details = { ok: true, ...phoneDetails };
         } else {
             steps.phone_details = {

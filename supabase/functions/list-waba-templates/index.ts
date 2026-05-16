@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
         const { data: userData, error: userErr } = await supabase.auth.getUser(jwt);
         if (userErr || !userData?.user) return jsonResponse({ error: "unauthorized" }, 401);
         const member = await supabase
-            .from("org_members")
+            .from("organization_members")
             .select("org_id")
             .eq("org_id", orgId)
             .eq("user_id", userData.user.id)

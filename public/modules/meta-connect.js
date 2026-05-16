@@ -699,6 +699,7 @@
         const card = tab.querySelector('#whatsapp-connect-card');
         if (card) renderCardStatus(card, 'whatsapp');
     }
+    window.refreshWhatsAppCardStatus = refreshWhatsAppCardStatus;
 
     function watchTabs() {
         let scheduled = false;
