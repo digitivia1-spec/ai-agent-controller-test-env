@@ -205,15 +205,29 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
         }
     }
 
-    // Deactivate all other active rows for this org+platform so reconnect
-    // doesn't leave stale active rows that cause lookup mismatches.
-    await supabase
-        .from("org_channel_accounts")
-        .update({ is_active: false, updated_at: now })
-        .eq("org_id", org_id)
-        .eq("platform", platform)
-        .eq("is_active", true)
-        .neq("external_account_id", externalAccountId);
+    // For page/instagram: deactivate old rows on reconnect (one account per platform).
+    // For whatsapp: do NOT deactivate other phone rows — a WABA can have multiple
+    // phones and n8n routes by phone_number_id, so all valid phones must stay active.
+    // We only deactivate the WABA ID row (account_id) since it is not a phone_number_id
+    // and causes routing mismatches when left active.
+    if (platform !== "whatsapp") {
+        await supabase
+            .from("org_channel_accounts")
+            .update({ is_active: false, updated_at: now })
+            .eq("org_id", org_id)
+            .eq("platform", platform)
+            .eq("is_active", true)
+            .neq("external_account_id", externalAccountId);
+    } else {
+        // Deactivate only the WABA ID row (if it exists and is active)
+        await supabase
+            .from("org_channel_accounts")
+            .update({ is_active: false, updated_at: now })
+            .eq("org_id", org_id)
+            .eq("platform", "whatsapp")
+            .eq("external_account_id", account_id)
+            .eq("is_active", true);
+    }
 
     const ocaRow: Record<string, unknown> = {
         org_id,
@@ -253,19 +267,33 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
             subscribeResult = `error:${String(e)}`;
         }
     } else if (platform === "instagram") {
-        const igId = (body as any).ig_account_id as string | undefined || account_id;
+        // Instagram DMs arrive via the linked Facebook Page webhook (object:'instagram').
+        // Subscription must be done on the linked page using the page token, not the
+        // IG account directly (POST /{ig_id}/subscribed_apps is not a valid endpoint).
+        // Look up the active page token and re-subscribe messages on that page.
         try {
-            const sr = await fetch(
-                `${GRAPH}/${encodeURIComponent(igId)}/subscribed_apps`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `access_token=${encodeURIComponent(finalToken)}&subscribed_fields=messages`,
-                }
-            );
-            const sj = await sr.json().catch(() => ({}));
-            subscribeResult = sr.ok ? "ok" : `failed:${sj?.error?.message ?? sr.status}`;
-            if (!sr.ok) console.warn("[meta-token-manager] instagram subscribe_fields failed:", sj);
+            const { data: pageRow } = await supabase
+                .from("org_channel_accounts")
+                .select("external_account_id, access_token")
+                .eq("org_id", org_id)
+                .eq("platform", "page")
+                .eq("is_active", true)
+                .maybeSingle();
+            if (pageRow?.access_token && pageRow?.external_account_id) {
+                const sr = await fetch(
+                    `${GRAPH}/${encodeURIComponent(pageRow.external_account_id)}/subscribed_apps`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `access_token=${encodeURIComponent(pageRow.access_token as string)}&subscribed_fields=messages%2Cfeed`,
+                    }
+                );
+                const sj = await sr.json().catch(() => ({}));
+                subscribeResult = sr.ok ? "ok" : `failed:${sj?.error?.message ?? sr.status}`;
+                if (!sr.ok) console.warn("[meta-token-manager] ig page subscribe failed:", sj);
+            } else {
+                subscribeResult = "skipped:no_page_token";
+            }
         } catch (e) {
             subscribeResult = `error:${String(e)}`;
         }

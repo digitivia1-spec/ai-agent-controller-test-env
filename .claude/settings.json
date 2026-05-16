@@ -3,7 +3,27 @@
     "allow": [
       "mcp__plugin_claude-mem_mcp-search__smart_outline",
       "mcp__plugin_claude-mem_mcp-search__get_observations",
-      "mcp__supabase__authenticate"
+      "mcp__supabase__authenticate",
+      "mcp__supabase__get_logs",
+      "Bash(gh repo *)",
+      "Bash(cat \"c:\\\\Users\\\\HP\\\\Documents\\\\GitHub\\\\ai-agent-digitivia-production\\\\.claude\\\\worktrees\\\\practical-mclaren\\\\ai-agent-controller-test-env\\\\supabase\\\\functions\\\\meta-token-manager\\\\index.ts\" > /tmp/meta-token-manager.ts && wc -l /tmp/meta-token-manager.ts)",
+      "Bash(python -c ' *)",
+      "Bash(curl -s -w '\\\\nHTTP_STATUS:%{http_code}' https://n8n.srv1174105.hstgr.cloud/webhook/meta_unified_digitivia -X POST -H 'Content-Type: application/json' -d '{\"object\":\"whatsapp_business_account\",\"entry\":[{\"id\":\"892001963898152\",\"changes\":[{\"value\":{\"messaging_product\":\"whatsapp\",\"metadata\":{\"display_phone_number\":\"15551434525\",\"phone_number_id\":\"1071570106048251\"},\"contacts\":[{\"profile\":{\"name\":\"Test User\"},\"wa_id\":\"201001234567\"}],\"messages\":[{\"from\":\"201001234567\",\"id\":\"wamid.test123\",\"timestamp\":\"1778870604\",\"type\":\"text\",\"text\":{\"body\":\"Hello test message\"}}]},\"field\":\"messages\"}]}]}')",
+      "Bash(curl -s \"https://n8n.srv1174105.hstgr.cloud/api/v1/executions?limit=5\" -H \"X-N8N-API-KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYjc0ZTE1MC0xNGYwLTRjZTQtYmVhNi1mYzRjNzg1MmM5NDMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNTM3OTIzN2EtZTMwNy00MTNhLTg2ODUtMWUyMjBhOWMwOGU4IiwiaWF0IjoxNzc4MTEwMzM2fQ.S_WVMEpQ3oLlhXuWyIWh1JZl405sRwhzUsTKAVbYdYY\")",
+      "Bash(curl -s \"https://n8n.srv1174105.hstgr.cloud/api/v1/executions?limit=20\" -H \"X-N8N-API-KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYjc0ZTE1MC0xNGYwLTRjZTQtYmVhNi1mYzRjNzg1MmM5NDMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNTM3OTIzN2EtZTMwNy00MTNhLTg2ODUtMWUyMjBhOWMwOGU4IiwiaWF0IjoxNzc4MTEwMzM2fQ.S_WVMEpQ3oLlhXuWyIWh1JZl405sRwhzUsTKAVbYdYY\")",
+      "Bash(curl -s \"https://n8n.srv1174105.hstgr.cloud/api/v1/executions/659092?includeData=true\" -H \"X-N8N-API-KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYjc0ZTE1MC0xNGYwLTRjZTQtYmVhNi1mYzRjNzg1MmM5NDMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNTM3OTIzN2EtZTMwNy00MTNhLTg2ODUtMWUyMjBhOWMwOGU4IiwiaWF0IjoxNzc4MTEwMzM2fQ.S_WVMEpQ3oLlhXuWyIWh1JZl405sRwhzUsTKAVbYdYY\")",
+      "Bash(curl -s \"https://n8n.srv1174105.hstgr.cloud/api/v1/executions?limit=5&cursor=eyJsYXN0SWQiOiI2NTkzNTciLCJsaW1pdCI6NX0=\" -H \"X-N8N-API-KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYjc0ZTE1MC0xNGYwLTRjZTQtYmVhNi1mYzRjNzg1MmM5NDMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNTM3OTIzN2EtZTMwNy00MTNhLTg2ODUtMWUyMjBhOWMwOGU4IiwiaWF0IjoxNzc4MTEwMzM2fQ.S_WVMEpQ3oLlhXuWyIWh1JZl405sRwhzUsTKAVbYdYY\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(x['id'], x['startedAt'][:19]\\) for x in d.get\\('data',[]\\)]\")",
+      "Bash(curl -s \"https://n8n.srv1174105.hstgr.cloud/api/v1/executions?limit=30\" -H \"X-N8N-API-KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYjc0ZTE1MC0xNGYwLTRjZTQtYmVhNi1mYzRjNzg1MmM5NDMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNTM3OTIzN2EtZTMwNy00MTNhLTg2ODUtMWUyMjBhOWMwOGU4IiwiaWF0IjoxNzc4MTEwMzM2fQ.S_WVMEpQ3oLlhXuWyIWh1JZl405sRwhzUsTKAVbYdYY\")",
+      "Bash(curl -s -X POST https://graph.facebook.com/v24.0/26948339574772430/subscribed_apps -H 'Content-Type: application/x-www-form-urlencoded' -d access_token=EAAMcbq3YTAcBRVCJc4mTZA2v9oDstbZBoyZARGn41FaveZCCZAtACCTdtdbFPNYashPRm4VC8XEJjA9ZBgjMjq3ZBv4v5470CivwxiT6n56a7xZClD15cv9VjslKYwp5Bw6ZCovIcBItmzp6bhnPX6ifY58lZAXh4BXVvzbrjZAScwEMo5fbHYX9Bpz35cywDKCsiPz)",
+      "PowerShell(Get-Content \"c:\\\\Users\\\\HP\\\\Documents\\\\GitHub\\\\ai-agent-digitivia-production\\\\.claude\\\\worktrees\\\\practical-mclaren\\\\ai-agent-controller-test-env\\\\supabase\\\\functions\\\\meta-token-manager\\\\index.ts\" | Select-Object -Index \\(122..220\\) | ForEach-Object { $_ })",
+      "Bash(curl -s -X POST https://graph.facebook.com/v24.0/806620595863220/subscribed_apps -H 'Content-Type: application/x-www-form-urlencoded' -d 'access_token=EAAMcbq3YTAcBRawZCZBNExeSh2ByU8Cc0JeoHJXbPLCMd29WZBvyFKNVmnW1eZCBhwLUtZCkjJSfq7Hv06N60GH8LXtk5r7rZBozsypEf5R5T1z6pGOsFFACDvQDG0w1xpfmsUxyP4ZB1bYAhFKMd0vVEy3a6AqVMZBKya5uGVeUjYrAoUY7d5LZAV2P2ZCeVMaBr58o9L&subscribed_fields=messages%2Cfeed')",
+      "Bash(curl -s -X POST https://graph.facebook.com/v24.0/806620595863220/subscribed_apps -H 'Content-Type: application/x-www-form-urlencoded' -d 'access_token=EAAMcbq3YTAcBRVVzVGSrGQK1oMzNuuFgspswGS4TdxGYn4Sqe9DmZBJ1zaMtguClhx1hjPIQSpQPkud90rD1k1S3ycdf5wBUpQstOrdnxHojhWZCTtMYwZAf3xqVAqUIQnwVloY8zVSMfYSatA0qZA9ovcyaNBLBU4mD4RXGKWOdM9fRFrEJ16veyuevZAS4zryrQ&subscribed_fields=messages%2Cfeed%2Cinstagram_manage_messages%2Cinstagram_mentions')",
+      "Bash(curl -s -X POST https://graph.facebook.com/v24.0/806620595863220/subscribed_apps -H 'Content-Type: application/x-www-form-urlencoded' -d 'access_token=EAAMcbq3YTAcBRVVzVGSrGQK1oMzNuuFgspswGS4TdxGYn4Sqe9DmZBJ1zaMtguClhx1hjPIQSpQPkud90rD1k1S3ycdf5wBUpQstOrdnxHojhWZCTtMYwZAf3xqVAqUIQnwVloY8zVSMfYSatA0qZA9ovcyaNBLBU4mD4RXGKWOdM9fRFrEJ16veyuevZAS4zryrQ&subscribed_fields=messages%2Cfeed')",
+      "Bash(curl -s \"https://graph.facebook.com/v24.0/17841476933573998/subscribed_apps?access_token=EAAMcbq3YTAcBRXlPZA4Cpy698o9eMIy1RfNWzwymgbC8Gv2R1Ka9puvxPQRWkItq42rP9aitB8wESRHBUURWHBuzYJLAh7xpBwnkgjeAf8DjK4hev0XFgOD88ZAUDyNpLDlZB6d3Gy7xNaE4fOwmtAGAXAMNj3zjKZBsQzZBDMZBbBFD1R8eNgYuJvDl9F\")"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
     ]
   }
 }
