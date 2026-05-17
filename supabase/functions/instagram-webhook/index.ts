@@ -176,8 +176,24 @@ Deno.serve(async (req) => {
             continue;
         }
 
+        // Fetch the Page token for direct IG DM sends (non-expiring, stored in
+        // meta_channel_tokens after the Instagram exchange fix).
+        let igSendToken: string | null = (orgRow.access_token as string) || null;
+        {
+            const { data: tokenRow } = await supabase
+                .from("meta_channel_tokens")
+                .select("access_token")
+                .eq("org_id", orgRow.org_id)
+                .eq("platform", "instagram")
+                .eq("is_active", true)
+                .maybeSingle();
+            if (tokenRow?.access_token) igSendToken = tokenRow.access_token as string;
+        }
+
         // Instagram DMs: forward raw object:"instagram" payload to n8n directly.
         // n8n identifies the org via ig_recipient_id in meta_channel_tokens.
+        // Also send a fixed reply directly here because n8n's send node calls
+        // /me/messages (broken for IG) — remove this block once n8n is fixed.
         for (const event of entry?.messaging ?? []) {
             if (event?.message?.is_echo === true) continue;
             if (event?.delivery || event?.read) continue;
@@ -187,6 +203,24 @@ Deno.serve(async (req) => {
                 await resolveAndUpsertContact(
                     supabase, orgRow.org_id, PLATFORM, senderId, orgRow.access_token,
                 );
+            }
+            // Direct fixed reply — bypasses n8n's broken /me/messages send step.
+            if (senderId && igSendToken) {
+                try {
+                    await fetch(
+                        `https://graph.facebook.com/v24.0/${igAccountId}/messages`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                recipient: { id: senderId },
+                                message: { text: "شكراً لتواصلك معنا! سيتواصل معك فريقنا قريباً. 🙏\nThank you for reaching out! Our team will get back to you shortly. 🙏" },
+                                messaging_type: "RESPONSE",
+                                access_token: igSendToken,
+                            }),
+                        },
+                    );
+                } catch { /* best-effort — n8n still processes for inbox */ }
             }
             shouldForward = true;
             break;
