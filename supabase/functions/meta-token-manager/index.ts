@@ -189,23 +189,9 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
                 }
             } catch { /* fall back to WABA ID */ }
         }
-        // Try to use the linked page token (never expires, has WA scopes).
-        if (tokenType !== "page") {
-            try {
-                const r = await fetch(
-                    `${GRAPH}/me/accounts?fields=access_token&access_token=${encodeURIComponent(longLived.token)}`
-                );
-                if (r.ok) {
-                    const d = await r.json();
-                    const pg = (d.data ?? [])[0];
-                    if (pg?.access_token) {
-                        finalToken = pg.access_token as string;
-                        tokenType = "page";
-                        expiresAt = null;
-                    }
-                }
-            } catch { /* fall back to long-lived user token */ }
-        }
+        // WhatsApp keeps the long-lived user token — page tokens cannot call
+        // subscribed_apps on a WABA (requires whatsapp_business_management on
+        // the WABA itself, which only user tokens carry).
     }
 
     // Deactivate other active tokens for this org+platform.
