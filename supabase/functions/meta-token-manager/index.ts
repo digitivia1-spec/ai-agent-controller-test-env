@@ -169,44 +169,9 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
 
     const now = new Date().toISOString();
 
-    // Deactivate any other active tokens for this org+platform with a different account_id.
-    // Prevents duplicate active rows that break maybeSingle() lookups on reconnect.
-    await supabase
-        .from("meta_channel_tokens")
-        .update({ is_active: false, updated_at: now })
-        .eq("org_id", org_id)
-        .eq("platform", platform)
-        .eq("is_active", true)
-        .neq("account_id", account_id);
-
-    const tokenRow = {
-        org_id,
-        platform,
-        account_id,
-        account_name: account_name ?? null,
-        access_token: finalToken,
-        token_type: tokenType,
-        expires_at: expiresAt,
-        scopes: debug.scopes,
-        meta_user_id: body.meta_user_id ?? null,
-        ig_account_id: body.ig_account_id ?? null,
-        is_active: true,
-        last_validated_at: now,
-        last_error: null,
-        updated_at: now,
-    };
-    const tokenUpsert = await supabase
-        .from("meta_channel_tokens")
-        .upsert(tokenRow, { onConflict: "org_id,platform,account_id" });
-    if (tokenUpsert.error) {
-        return jsonResponse({ error: `meta_channel_tokens upsert: ${tokenUpsert.error.message}` }, 500);
-    }
-
-    // For WhatsApp: external_account_id must be phone_number_id, not WABA ID.
-    // n8n routes inbound messages by value.metadata.phone_number_id, so the
-    // org_channel_accounts row must use that as the lookup key.
-    // The frontend passes phone_number_id directly from the Embedded Signup
-    // callback payload; if missing we fall back to the /phone_numbers API.
+    // For WhatsApp: resolve phone_number_id early — it becomes the routing key in
+    // meta_channel_tokens.account_id so n8n can match value.metadata.phone_number_id.
+    // Also try the page token (non-expiring) so WA sends don't break after 60 days.
     let externalAccountId = account_id;
     if (platform === "whatsapp") {
         const frontendPhoneId = (body as any).phone_number_id as string | undefined;
@@ -224,6 +189,57 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
                 }
             } catch { /* fall back to WABA ID */ }
         }
+        // Try to use the linked page token (never expires, has WA scopes).
+        if (tokenType !== "page") {
+            try {
+                const r = await fetch(
+                    `${GRAPH}/me/accounts?fields=access_token&access_token=${encodeURIComponent(longLived.token)}`
+                );
+                if (r.ok) {
+                    const d = await r.json();
+                    const pg = (d.data ?? [])[0];
+                    if (pg?.access_token) {
+                        finalToken = pg.access_token as string;
+                        tokenType = "page";
+                        expiresAt = null;
+                    }
+                }
+            } catch { /* fall back to long-lived user token */ }
+        }
+    }
+
+    // Deactivate other active tokens for this org+platform.
+    // For WhatsApp use phone_number_id as the key (not WABA ID) to match n8n routing.
+    const tokenAccountId = platform === "whatsapp" ? externalAccountId : account_id;
+    await supabase
+        .from("meta_channel_tokens")
+        .update({ is_active: false, updated_at: now })
+        .eq("org_id", org_id)
+        .eq("platform", platform)
+        .eq("is_active", true)
+        .neq("account_id", tokenAccountId);
+
+    const tokenRow = {
+        org_id,
+        platform,
+        account_id: tokenAccountId,
+        account_name: account_name ?? null,
+        access_token: finalToken,
+        token_type: tokenType,
+        expires_at: expiresAt,
+        scopes: debug.scopes,
+        meta_user_id: body.meta_user_id ?? null,
+        ig_account_id: body.ig_account_id ?? null,
+        is_active: true,
+        last_validated_at: now,
+        last_error: null,
+        updated_at: now,
+    };
+    const tokenUpsert = await supabase
+        .from("meta_channel_tokens")
+        .upsert(tokenRow, { onConflict: "org_id,platform,account_id" });
+    if (tokenUpsert.error) {
+        return jsonResponse({ error: `meta_channel_tokens upsert: ${tokenUpsert.error.message}` }, 500);
     }
 
     // For page/instagram: deactivate old rows on reconnect (one account per platform).
