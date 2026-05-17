@@ -138,6 +138,27 @@ async function handleExchange(supabase: ReturnType<typeof createClient>, body: E
         expiresAt = null;
     }
 
+    if (platform === "instagram") {
+        // Instagram user tokens expire in ~60 days. Use the linked Page token instead
+        // (Page tokens never expire and work for all Instagram Graph API calls).
+        try {
+            const r = await fetch(
+                `${GRAPH}/me/accounts?fields=access_token,instagram_business_account{id}&access_token=${encodeURIComponent(longLived.token)}`
+            );
+            if (r.ok) {
+                const d = await r.json();
+                const linkedPage = (d.data ?? []).find(
+                    (p: any) => p.instagram_business_account?.id === account_id
+                );
+                if (linkedPage?.access_token) {
+                    finalToken = linkedPage.access_token as string;
+                    tokenType = "page";
+                    expiresAt = null;
+                }
+            }
+        } catch { /* fall back to long-lived user token */ }
+    }
+
     const debug = await debugToken(finalToken);
     if (!debug.is_valid) {
         return jsonResponse({ error: "token failed validation" }, 400);
